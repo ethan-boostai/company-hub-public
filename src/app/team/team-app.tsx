@@ -242,19 +242,25 @@ function RequestForm({ data, teamKey, done }: { data: TeamData; teamKey: string;
   const { busy, msg, setMsg, send } = useSend(teamKey);
   const [name, setName] = useState("");
   const [category, setCategory] = useState(data.categories[0] ?? "");
+  const [own, setOwn] = useState("");
+  const other = category === "Other";
   const [details, setDetails] = useState("");
   const [urgency, setUrgency] = useState("this_week");
   return (
     <form noValidate onSubmit={(e) => {
       e.preventDefault();
       if (!name) return setMsg("Pick your name.");
+      if (other && !own.trim()) return setMsg("Say what it is for.");
       if (!details.trim()) return setMsg("Add some details.");
-      send({ type: "request", name, category, details, urgency }, () => done("Request sent to the office."));
+      send({ type: "request", name, category: other ? own : category, other, details, urgency }, () => done("Request sent to the office."));
     }}>
       <NameField names={data.names} value={name} onChange={setName} />
       <Labelled label="What is it for">{(id) => (<select id={id} className={field} value={category} onChange={(e) => setCategory(e.target.value)}>
           {data.categories.map((c) => <option key={c}>{c}</option>)}
         </select>)}</Labelled>
+      {other && (
+        <Labelled label="Other: say what it is for">{(id) => (<input id={id} className={field} spellCheck maxLength={60} value={own} onChange={(e) => setOwn(e.target.value)} placeholder="e.g. Ladder" />)}</Labelled>
+      )}
       <Labelled label="Details">{(id) => (<textarea id={id} className={`${field} min-h-[90px]`} spellCheck placeholder="e.g. lost the fuel card for van 2, need a new one" value={details} onChange={(e) => setDetails(e.target.value)} />)}</Labelled>
       <Labelled label="How urgent">{(id) => (<select id={id} className={field} value={urgency} onChange={(e) => setUrgency(e.target.value)}>
           <option value="today">Today</option>

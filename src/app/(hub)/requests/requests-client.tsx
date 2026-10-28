@@ -10,6 +10,7 @@ import { niceDateTime } from "../_registers/dates";
 import { DeleteButton } from "../_registers/delete-button";
 import { RecordFiles } from "../_registers/record-files";
 import { Chip, Choice, RecordSelect, ViewSwitch } from "../_registers/ui";
+import { addSelectOption } from "@/app/actions/select-options";
 import { deleteRequest, saveRequest } from "./actions";
 import type { RequestRow, RequestsData } from "./data";
 import { CATEGORY_LIST, isOpen, REQUEST_STATUSES, URGENCIES } from "./rules";
@@ -22,6 +23,7 @@ export function RequestsClient({ initial }: { initial: RequestsData }) {
   const [filter, setFilter] = useState<Filter>("open");
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState<number | "new" | null>(null);
+  const [categories, setCategories] = useState(initial.categories);
 
   const q = query.trim().toLowerCase();
   const shown = rows.filter((r) => {
@@ -82,6 +84,9 @@ export function RequestsClient({ initial }: { initial: RequestsData }) {
       <Drawer open={open !== null} onClose={() => setOpen(null)} title={current ? `${current.requestedBy} · ${current.category}` : "Add request"}>
         {open !== null && (
           <div key={current ? JSON.stringify(current) : "new"}>
+            {current && !categories.some((c) => c.toLowerCase() === current.category.toLowerCase()) && (
+              <TypedCategory value={current.category} onAdded={(v) => setCategories((list) => [...list, v])} />
+            )}
             {current && (
               <p className="mb-4 text-sm text-muted">
                 Requested {niceDateTime(current.requestedAt)}{current.source === "team" ? " in the team app" : ""}.
@@ -99,7 +104,7 @@ export function RequestsClient({ initial }: { initial: RequestsData }) {
                   <>
                     {current && <input type="hidden" name="id" value={current.id} />}
                     <RecordSelect label="Requested by" name="requested_by_id" options={people} defaultValue={current?.requestedById ? String(current.requestedById) : ""} error={err.requested_by_id} />
-                    <SelectWithAdd list={CATEGORY_LIST} name="category" label="What is it for" options={initial.categories} defaultValue={current?.category ?? ""} />
+                    <SelectWithAdd list={CATEGORY_LIST} name="category" label="What is it for" options={categories} defaultValue={current?.category ?? ""} />
                     {err.category && <p className="-mt-3 mb-4 text-sm text-danger">{err.category}</p>}
                     <TextArea label="Details" name="details" defaultValue={current?.details} error={err.details} rows={4} />
                     <Choice label="How urgent" name="urgency" options={URGENCIES} defaultValue={current?.urgency ?? "this_week"} />
@@ -127,6 +132,34 @@ export function RequestsClient({ initial }: { initial: RequestsData }) {
           </div>
         )}
       </Drawer>
+    </div>
+  );
+}
+
+// A category the crew typed under "Other": the office can make it a list option.
+function TypedCategory({ value, onAdded }: { value: string; onAdded: (v: string) => void }) {
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  return (
+    <div className="mb-4 rounded-lg border border-line bg-paper px-3 py-2 text-sm">
+      <p>&ldquo;{value}&rdquo; was typed under Other and isn&apos;t on the list.</p>
+      <button type="button" disabled={busy} className="mt-2 px-3 py-1.5 rounded-lg border border-dark font-semibold disabled:opacity-60"
+        onClick={async () => {
+          setBusy(true);
+          setError("");
+          try {
+            const r = await addSelectOption(CATEGORY_LIST, value, crypto.randomUUID());
+            if (r.ok) onAdded(r.data ?? value);
+            else setError(r.message);
+          } catch {
+            setError("Couldn't add it. Check the connection and try again.");
+          } finally {
+            setBusy(false);
+          }
+        }}>
+        {busy ? "Adding…" : `Add “${value}” to the list`}
+      </button>
+      {error && <p role="alert" className="mt-1 text-danger">{error}</p>}
     </div>
   );
 }

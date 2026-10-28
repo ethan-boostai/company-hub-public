@@ -42,6 +42,7 @@ const Request = z.object({
   type: z.literal("request"),
   name,
   category: z.string().trim().min(1).max(120),
+  other: z.boolean().optional().default(false), // "Other": the crew typed their own category
   details: z.string().trim().min(1).max(4000),
   urgency: z.enum(["today", "this_week", "no_rush"]),
 });
@@ -70,7 +71,9 @@ export async function POST(req: Request) {
   if (report.type === "accident" && report.when && !(LOCAL_DATETIME.test(report.when) && isIsoDate(report.when.slice(0, 10)))) {
     return fail("Enter a valid date and time.");
   }
-  if (report.type === "request") {
+  if (report.type === "request" && report.other) {
+    if (report.category.length > 60) return fail("Keep what it is for under 60 characters.");
+  } else if (report.type === "request") {
     const listed = await sql<{ value: string }[]>`select value from select_options where list = ${CATEGORY_LIST}`;
     const ok = mergeOptions(DEFAULT_CATEGORIES, listed.map((r) => r.value)).some((c) => c.toLowerCase() === report.category.toLowerCase());
     if (!ok) return fail("Choose what it is for from the list.");

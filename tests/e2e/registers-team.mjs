@@ -100,7 +100,8 @@ try {
   // Team: request.
   await team.getByRole("button", { name: /Make a request/ }).click();
   await team.getByLabel("Your name").selectOption("Test Office One");
-  await team.getByLabel("What is it for").selectOption("PPE or uniform");
+  await team.getByLabel("What is it for", { exact: true }).selectOption("Other");
+  await team.getByLabel("Other: say what it is for").fill(`ZZ Ladder ${REG}`);
   await team.getByLabel("Details").fill(DETAILS);
   await team.getByLabel("How urgent").selectOption("today");
   await team.getByRole("button", { name: "Send request" }).click();
@@ -123,7 +124,11 @@ try {
   await office.getByLabel("Search requests").fill(DETAILS);
   const req = office.getByTestId("request-list").locator("li").filter({ hasText: DETAILS });
   check("request shows as Today, New, Team app", (await req.getByText("Today").count()) === 1 && (await req.getByText("Team app").count()) === 1);
+  check("typed category kept", (await req.getByText(`ZZ Ladder ${REG}`).count()) === 1);
   await req.click();
+  await drawer.getByRole("button", { name: `Add “ZZ Ladder ${REG}” to the list` }).click();
+  await drawer.getByText("isn't on the list").waitFor({ state: "detached" });
+  check("office turned the typed category into a list option", true);
   await drawer.getByText("Done", { exact: true }).click();
   await drawer.getByLabel("Office response").fill("ZZ test: ordered");
   await drawer.getByRole("button", { name: "Save" }).click();

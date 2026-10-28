@@ -17,6 +17,7 @@ export async function loadTeamData(): Promise<TeamData> {
   return {
     names: people.map((p) => p.name),
     vehicles: vehicles.map((v) => ({ id: Number(v.id), label: v.make_model ? `${v.reg} - ${v.make_model}` : v.reg })),
-    categories: mergeOptions(DEFAULT_CATEGORIES, cats),
+    // "Other" always last: the crew choose it and type their own.
+    categories: [...mergeOptions(DEFAULT_CATEGORIES, cats).filter((c) => c.toLowerCase() !== "other"), "Other"],
   };
 }
