@@ -1,5 +1,5 @@
 -- Phase 1: jobs and tasks. Schema from docs/plan.md section 3.3, approved 28/10/2026, plus the
--- ServiceM8 sync tables the webhook test (job 10278) showed are needed. Additive only.
+-- ServiceM8 sync tables the 28/10/2026 webhook test showed are needed. Additive only.
 -- ServiceM8 is the master for jobs, folders, clients and the schedule: the sm8_* columns and tables
 -- are written only by the sync.
 

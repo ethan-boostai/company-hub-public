@@ -17,7 +17,7 @@ export const NAV: { group?: string; items: { href: string; label: string }[] }[]
   },
 ];
 
-// The highlighted item depends on the address, which is only known per request (e.g. /jobs/10278),
+// The highlighted item depends on the address, which is only known per request (e.g. /jobs/12),
 // so the links first render without a highlight and pick it up when the request arrives.
 export function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   return (

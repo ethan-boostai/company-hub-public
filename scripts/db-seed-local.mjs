@@ -1,5 +1,5 @@
 // Local development only: adds fake test people (PIN 1234), CBS's ServiceM8 folder list (fake ids
-// apart from Maintenance) and test job 10278 from its recorded webhook events.
+// apart from Maintenance) and test job 12 (from recorded ServiceM8 webhook events, renumbered).
 // Refuses to run against anything that is not a local database.
 import { readFileSync } from "node:fs";
 import bcrypt from "bcryptjs";
@@ -37,9 +37,9 @@ try {
     uuid: name.startsWith("Maintenance") ? "01a15ea9-6031-79fe-9531-85247ade10bb" : `local-folder-${i + 1}`, name, active: 1,
   }));
   await sql`select sm8_apply_records('folder', ${sql.json(rows)})`;
-  const events = JSON.parse(readFileSync(new URL("../tests/fixtures/sm8-events-10278.json", import.meta.url), "utf8"));
+  const events = JSON.parse(readFileSync(new URL("../tests/fixtures/sm8-events-test-job.json", import.meta.url), "utf8"));
   for (const ev of events.slice(0, 6)) await sql`select sm8_apply_event(${sql.json(ev)})`;
-  console.log("seeded local test people (PIN 1234), role options, ServiceM8 folders and test job 10278");
+  console.log("seeded local test people (PIN 1234), role options, ServiceM8 folders and test job 12");
 } finally {
   await sql.end();
 }

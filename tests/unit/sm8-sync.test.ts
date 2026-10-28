@@ -6,7 +6,7 @@ import { afterAll, beforeEach, describe, expect, it } from "vitest";
 // Runs the ServiceM8 sync functions against the local dev database only (they write test rows).
 const url = process.env.DATABASE_URL || "";
 const local = /@(127\.0\.0\.1|localhost)[:/]/.test(url);
-const events = JSON.parse(readFileSync(path.join(__dirname, "../fixtures/sm8-events-10278.json"), "utf8"));
+const events = JSON.parse(readFileSync(path.join(__dirname, "../fixtures/sm8-events-test-job.json"), "utf8"));
 const JOB = "01a18295-f573-79fe-9531-536fcf0f1b5d";
 const MAINT = "01a15ea9-6031-79fe-9531-85247ade10bb";
 
@@ -18,20 +18,21 @@ describe.skipIf(!local)("ServiceM8 sync (database functions)", () => {
 
   beforeEach(async () => {
     await sql`delete from sm8_events where event_id like 'smwe_test-%' or event_id like 'test-%'`;
+    await sql`delete from jobs where sm8_uuid = 'other-uuid'`;
     await sql`delete from jobs where sm8_uuid = ${JOB} or job_no in ('10279')`;
     await sql`delete from clients where sm8_uuid = '01a18296-2204-79fe-9531-b3059f6d7fbb'`;
     await sql`delete from sm8_folders where sm8_uuid = ${MAINT}`;
-    await setting({ jobs: "allowlist", allow: ["10278"], folder_keeper: false });
+    await setting({ jobs: "allowlist", allow: ["12"], write_allow: ["12"], folder_keeper: false });
   });
   afterAll(async () => {
-    await setting({ jobs: "allowlist", allow: ["10278"], folder_keeper: false });
+    await setting({ jobs: "allowlist", allow: ["12"], write_allow: ["12"], folder_keeper: false });
     await sql.end();
   });
 
   it("applies the test job's events in delivery order, keeping the client a later copy left blank", async () => {
     for (const ev of events.slice(0, 6)) await apply(ev);
     const j = await job();
-    expect(j.job_no).toBe("10278");
+    expect(j.job_no).toBe("12");
     expect(j.sm8_status).toBe("Work Order");
     expect(j.stage).toBe("approved");
     expect(j.sm8_folder_uuid).toBe(MAINT);
@@ -62,14 +63,25 @@ describe.skipIf(!local)("ServiceM8 sync (database functions)", () => {
     expect((await job()).sm8_folder_uuid).toBeNull();
 
     await sql`delete from sm8_events where event_id = 'smwe_test-07'`;
-    await setting({ jobs: "allowlist", allow: ["10278"], folder_keeper: true });
+    await setting({ jobs: "allowlist", allow: ["12"], write_allow: ["12"], folder_keeper: true });
     const on = await apply(events[6]);
     expect(on.actions).toHaveLength(1);
-    expect(on.actions[0]).toMatchObject({ action: "restore_folder", job_uuid: JOB, folder_uuid: MAINT, job_no: "10278" });
+    expect(on.actions[0]).toMatchObject({ action: "restore_folder", job_uuid: JOB, folder_uuid: MAINT, job_no: "12" });
+  });
+
+  it("never restores the folder of a job outside the write list", async () => {
+    await setting({ jobs: "allowlist", allow: ["12", "13"], write_allow: ["12"], folder_keeper: true });
+    const other = (e: { id: string; data: object }, id: string) => ({ ...e, id, data: { ...e.data, uuid: "other-uuid", generated_job_id: "13" } });
+    await apply(other(events[4], "test-o5"));
+    await apply(other(events[5], "test-o6"));
+    const r = await apply(other(events[6], "test-o7"));
+    expect(r.outcome).toBe("applied");
+    expect(r.actions).toEqual([]);
+    await sql`delete from jobs where sm8_uuid = 'other-uuid'`;
   });
 
   it("never files a Quote job", async () => {
-    await setting({ jobs: "allowlist", allow: ["10278"], folder_keeper: true });
+    await setting({ jobs: "allowlist", allow: ["12"], write_allow: ["12"], folder_keeper: true });
     const r = await apply({ ...events[0], id: "test-quote", data: { ...events[0].data, queue_uuid: "" } });
     expect(r.actions).toEqual([]);
   });

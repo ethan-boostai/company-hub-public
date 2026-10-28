@@ -21,3 +21,4 @@ grant execute on function sm8_apply_records(text, jsonb) to cbs_n8n_sync;
 -- The helper functions are only called from inside the two above (or by the app's own login).
 revoke all on function sm8_upsert_job(jsonb, jsonb), sm8_upsert_client(jsonb), sm8_upsert_contact(jsonb),
   sm8_upsert_staff(jsonb), sm8_upsert_booking(jsonb), sm8_upsert_folder(jsonb, int) from public;
+revoke all on function sm8_write_allowed(text) from public;

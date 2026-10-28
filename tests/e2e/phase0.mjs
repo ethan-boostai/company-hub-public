@@ -106,14 +106,12 @@ try {
   const fBefore = await files.filter({ hasNotText: "No test files yet." }).count();
   const png = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFBQIAX8jx0gAAAABJRU5ErkJggg==", "base64");
   await page.locator('input[type="file"]').setInputFiles({ name: "test-photo.png", mimeType: "image/png", buffer: png });
-  await page.waitForFunction(
-    (n) => document.querySelectorAll('[data-testid="demo-files"] li').length > n || (n === 0 && document.querySelector('[data-testid="demo-files"] li')?.textContent?.includes("test-photo.png")),
-    fBefore, { timeout: 15000 },
-  );
+  const realRows = () => [...document.querySelectorAll('[data-testid="demo-files"] li')].filter((li) => !li.textContent.includes("No test files yet.")).length;
+  await page.waitForFunction(`(${realRows.toString()})() > ${fBefore}`, null, { timeout: 15000 });
   const fAfter = await files.filter({ hasNotText: "No test files yet." }).count();
   check("Upload file records one file", fAfter === fBefore + 1, `${fBefore} -> ${fAfter}`);
   await page.locator('input[type="file"]').setInputFiles({ name: "notes.xyz", mimeType: "application/octet-stream", buffer: Buffer.from("any type of file") });
-  await page.waitForFunction((n) => document.querySelectorAll('[data-testid="demo-files"] li').length > n, fAfter, { timeout: 15000 });
+  await page.waitForFunction(`(${realRows.toString()})() > ${fAfter}`, null, { timeout: 15000 });
   check("Upload file accepts any file type", true);
 
   await files.filter({ hasText: "test-photo.png" }).first().getByRole("button", { name: "Open file" }).click();

@@ -6,14 +6,16 @@
 --    events can arrive out of order. A blank client on an equally new copy never clears a known client.
 --  * Each ServiceM8 event id is applied once (sm8_events).
 --  * Folders are matched by uuid; names are trimmed (ServiceM8 names can have stray spaces).
---  * Jobs: only those allowed by the 'sm8_sync' setting (test job 10278 until live data is approved).
+--  * Jobs: only those allowed by the 'sm8_sync' setting (test job 12 until live data is approved).
+--  * Writes back to ServiceM8 (folder restore here; hub changes in the app): only jobs in the
+--    setting's write_allow list (test job 12 until Ethan approves the Phase 1 switch-over).
 --  * A Work Order that drops out of its folder goes back to the folder it was in (Approved, Part
 --    Approved, Reactive, Maintenance). The function only says so (action restore_folder); n8n writes
 --    it to ServiceM8. Off unless the 'sm8_sync' setting has folder_keeper = true (the old hub still
 --    does this until it is switched off).
 
 insert into settings (key, value, created_by)
-values ('sm8_sync', '{"jobs": "allowlist", "allow": ["10278"], "folder_keeper": false}', 'migration')
+values ('sm8_sync', '{"jobs": "allowlist", "allow": ["12"], "write_allow": ["12"], "folder_keeper": false}', 'migration')
 on conflict (key) do nothing;
 
 -- ServiceM8 date text ('2026-10-28 12:57:19', UK local time; '0000-00-00 00:00:00' = none).
@@ -45,6 +47,14 @@ create or replace function sm8_job_allowed(job_no text) returns boolean
 language sql stable as $$
   select coalesce((select case when value->>'jobs' = 'all' then true
                                else coalesce(value->'allow', '[]'::jsonb) ? job_no end
+                   from settings where key = 'sm8_sync'), false)
+$$;
+
+-- May the hub change this job in ServiceM8? Only jobs in write_allow ("all" once switched over).
+create or replace function sm8_write_allowed(job_no text) returns boolean
+language sql stable as $$
+  select coalesce((select case when value->'write_allow' = '"all"'::jsonb then true
+                               else coalesce(value->'write_allow', '[]'::jsonb) ? job_no end
                    from settings where key = 'sm8_sync'), false)
 $$;
 
@@ -218,7 +228,7 @@ begin
   end if;
 
   -- Folder restore: a Work Order with no folder goes back to its last kept folder.
-  if keeper and new_status = 'Work Order' and folder is null and kept is not null then
+  if keeper and new_status = 'Work Order' and folder is null and kept is not null and sm8_write_allowed(job_no) then
     actions := actions || jsonb_build_array(jsonb_build_object(
       'action', 'restore_folder', 'job_uuid', cur.sm8_uuid, 'job_no', job_no, 'folder_uuid', kept,
       'expires', to_char((now() + interval '1 year') at time zone 'Europe/London', 'YYYY-MM-DD HH24:MI:SS')));

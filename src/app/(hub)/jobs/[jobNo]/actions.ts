@@ -27,7 +27,7 @@ export async function moveJobFolder(jobNo: string, folderUuid: string, note: str
     if (!folder) return { ok: false, message: "That folder isn't in ServiceM8 any more. Reload the page." };
     if (folder.sm8_uuid === job.sm8_folder_uuid) return { ok: true, message: "Already in that folder." };
     try {
-      await writeToServiceM8({ action: "set_folder", job_uuid: job.sm8_uuid, folder_uuid: folder.sm8_uuid, days: 365, note: cleanNote(note), by: person.name });
+      await writeToServiceM8({ action: "set_folder", job_no: job.job_no, job_uuid: job.sm8_uuid, folder_uuid: folder.sm8_uuid, days: 365, note: cleanNote(note), by: person.name });
     } catch (e) {
       return { ok: false, message: e instanceof Sm8Error ? e.message : "ServiceM8 didn't accept the change." };
     }
@@ -52,7 +52,7 @@ export async function setJobStatus(jobNo: string, stage: string, note: string, r
     const sm8 = STAGES[stage as Stage].sm8;
     if (sm8 === job.sm8_status) return { ok: true, message: "Already at that status." };
     try {
-      await writeToServiceM8({ action: "set_status", job_uuid: job.sm8_uuid, status: sm8, note: cleanNote(note), by: person.name });
+      await writeToServiceM8({ action: "set_status", job_no: job.job_no, job_uuid: job.sm8_uuid, status: sm8, note: cleanNote(note), by: person.name });
     } catch (e) {
       return { ok: false, message: e instanceof Sm8Error ? e.message : "ServiceM8 didn't accept the change." };
     }
