@@ -65,6 +65,16 @@ This repo replaces the original n8n-served hub (pages served from n8n webhooks o
 - Never test on real jobs or real tasks. Use test job 12 (in ServiceM8) and fake test tasks. Until the Phase 1 switch-over is approved, the hub may only change job 12 in ServiceM8.
 - Give Ethan test instructions as clear numbered steps.
 
+## Change process (every change, every session)
+Never merge a pull request and never commit or push to `main`. That includes docs-only changes and conflict fixes. Every change goes through these steps:
+1. Work on a branch, commit, push.
+2. Open a pull request with a plain summary of what changed and why.
+3. Make sure the pull request's preview deploys.
+4. Give Ethan numbered test steps for that preview (job 12 and fake data only).
+5. Ethan tests. He approves by replying "approved, merge #N", and only then is the pull request merged, by Ethan. If he reports a problem, fix it on the same branch and give fresh steps.
+- A conflict with `main` is fixed on your own branch (merge `main` into it), never on `main`.
+- Production changes only when Ethan merges an approved pull request.
+
 ## Working process
 - Explain the approach before building anything non-trivial and wait for a go-ahead.
 - Small commits, one branch per feature.
