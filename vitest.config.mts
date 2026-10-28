@@ -8,5 +8,11 @@ export default defineConfig({
       "server-only": path.resolve(import.meta.dirname, "tests/server-only-stub.ts"),
     },
   },
-  test: { include: ["tests/unit/**/*.test.ts"], environment: "node", fileParallelism: false }, // database tests share one local database
+  test: {
+    include: ["tests/unit/**/*.test.ts"],
+    environment: "node",
+    // Replaces DATABASE_URL with a local/dev test database or removes it: tests never touch live.
+    setupFiles: ["tests/setup.ts"],
+    fileParallelism: false, // database tests share one test database
+  },
 });
