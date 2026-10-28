@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useScrollLock } from "@/components/ui/scroll-lock";
-import { Drawer } from "@/components/ui/overlay";
 import { NavLinks } from "./nav";
+import { useTasks } from "@/components/tasks/task-provider";
 
 // Mobile: a menu button that opens a narrow drawer (the menu is never sticky on mobile).
 export function MobileMenu() {
@@ -58,17 +58,16 @@ export function GlobalSearch({ initial = "" }: { initial?: string }) {
   );
 }
 
-// "+ New task" is on every page. The task panel arrives in Phase 1.
+// "+ New task" is on every page. On a job's pages the job is chosen already.
 export function NewTaskButton() {
-  const [open, setOpen] = useState(false);
+  const { newTask } = useTasks();
   return (
-    <>
-      <button type="button" onClick={() => setOpen(true)} className="rounded-lg bg-brand px-3 py-1.5 text-sm font-semibold text-white hover:bg-brand-dark whitespace-nowrap">
-        + New task
-      </button>
-      <Drawer open={open} onClose={() => setOpen(false)} title="New task">
-        <p className="text-sm text-muted">Tasks are built in Phase 1. This button opens the one task panel from then on.</p>
-      </Drawer>
-    </>
+    <button
+      type="button"
+      onClick={() => newTask({ jobNo: /^\/jobs\/(\d+)/.exec(window.location.pathname)?.[1] ?? null })}
+      className="rounded-lg bg-brand px-3 py-1.5 text-sm font-semibold text-white hover:bg-brand-dark whitespace-nowrap"
+    >
+      + New task
+    </button>
   );
 }

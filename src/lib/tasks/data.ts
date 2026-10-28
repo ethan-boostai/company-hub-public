@@ -97,7 +97,7 @@ export async function taskFiles(taskId: number) {
 export async function taskHistory(taskId: number) {
   const sql = await readDb();
   const rows = await sql<{ at: Date; person_name: string; action: string; changes: Record<string, [unknown, unknown]> | null }[]>`
-    select created_at as at, person_name, action, changes from activity_log
+    select at, person_name, action, changes from activity_log
     where table_name = 'tasks' and row_id = ${taskId} order by id desc limit 30`;
   return rows.map((r) => ({ at: r.at.toISOString(), by: r.person_name, action: r.action, changes: r.changes || {} }));
 }

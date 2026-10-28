@@ -1,3 +1,4 @@
+import type postgres from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 // The task rules (src/lib/tasks/service.ts), on the local test database only.
@@ -9,7 +10,7 @@ describe.skipIf(!/@(127\.0\.0\.1|localhost)[:/]/.test(url))("tasks", async () =>
   let approved = 0;
   let estimate = 0;
   const by = "Test Office One";
-  const run = <T,>(fn: (tx: Parameters<Parameters<typeof sql.begin>[0]>[0]) => Promise<T>) => sql.begin(fn) as Promise<T>;
+  const run = <T,>(fn: (tx: postgres.TransactionSql) => Promise<T>) => sql.begin(fn) as Promise<T>;
   const task = async (id: number) => (await sql`select * from tasks where id = ${id}`)[0];
 
   beforeAll(async () => {

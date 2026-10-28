@@ -4,6 +4,8 @@ import { z } from "zod";
 import { getCurrentPerson } from "@/lib/auth/session";
 import { cleanFileName, MAX_UPLOAD_BYTES, storageMode, UPLOAD_FOLDER } from "@/lib/files/storage";
 import { signTicket } from "@/lib/files/ticket";
+import { db } from "@/lib/db";
+import { taskFolder } from "@/lib/requirements";
 import { SharePointError, startUpload, UNREACHABLE } from "@/lib/files/sharepoint";
 
 const Body = z.object({
@@ -27,9 +29,21 @@ export async function POST(req: Request) {
   if (b.size > MAX_UPLOAD_BYTES) {
     return NextResponse.json({ ok: false, message: "That file is over 250 MB. Upload a smaller copy." }, { status: 400 });
   }
-  // Generic tasks (no job) don't get file uploads.
-  if (b.entityTable === "tasks" && !b.jobId) {
-    return NextResponse.json({ ok: false, message: "Files can only be added to tasks on a job." }, { status: 400 });
+  // Task files: the job and folder come from the task itself, never the browser. Generic tasks (no job)
+  // don't get file uploads. Job files go to CBS System/Operations/Jobs/Job N/<requirement's folder>.
+  let folder = UPLOAD_FOLDER;
+  let jobId = b.jobId ?? null;
+  if (b.entityTable === "tasks") {
+    const [t] = b.entityId
+      ? await db()<{ job_id: string | null; job_no: string | null; req_key: string | null }[]>`
+          select t.job_id, j.job_no, t.req_key from tasks t left join jobs j on j.id = t.job_id
+          where t.id = ${b.entityId} and t.removed_at is null`
+      : [];
+    if (!t || !t.job_id || !t.job_no) {
+      return NextResponse.json({ ok: false, message: "Files can only be added to tasks on a job." }, { status: 400 });
+    }
+    jobId = Number(t.job_id);
+    folder = taskFolder(t.job_no, t.req_key);
   }
 
   const name = cleanFileName(b.name);
@@ -42,7 +56,7 @@ export async function POST(req: Request) {
       path,
       entityTable: b.entityTable ?? null,
       entityId: b.entityId ?? null,
-      jobId: b.jobId ?? null,
+      jobId,
       role: b.role ?? null,
       personId: person.id,
       requestKey: b.requestKey,
@@ -54,7 +68,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, mode, uploadUrl: `/api/files/local?t=${encodeURIComponent(ticket)}`, ticket });
   }
   try {
-    const s = await startUpload(UPLOAD_FOLDER, name, b.size);
+    const s = await startUpload(folder, name, b.size);
     // SharePoint may rename the file if the name is taken; the ticket keeps the folder it must land in.
     return NextResponse.json({ ok: true, mode, uploadUrl: s.uploadUrl, ticket: ticketFor(`${s.folder}/${s.name}`) });
   } catch (e) {
