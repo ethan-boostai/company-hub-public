@@ -1,6 +1,7 @@
 import "server-only";
 import { connection } from "next/server";
 import postgres from "postgres";
+import { assertNotLive } from "./live-guard.mjs";
 
 // One shared Postgres connection pool. Supabase: use the transaction pooler URL (prepare: false).
 const globalForSql = globalThis as unknown as { cbsSql?: postgres.Sql };
@@ -15,6 +16,7 @@ export function db(): postgres.Sql {
   if (!globalForSql.cbsSql) {
     const url = process.env.DATABASE_URL;
     if (!url) throw new Error("DATABASE_URL is not set");
+    assertNotLive(url, "Connecting to the database");
     globalForSql.cbsSql = postgres(url, {
       prepare: false,
       max: 5,

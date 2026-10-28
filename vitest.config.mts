@@ -12,6 +12,7 @@ export default defineConfig({
     include: ["tests/unit/**/*.test.ts"],
     environment: "node",
     // Replaces DATABASE_URL with a local/dev test database or removes it: tests never touch live.
+    globalSetup: ["tests/global-setup.ts"], // refuses the whole run if the database is the live one
     setupFiles: ["tests/setup.ts"],
     fileParallelism: false, // database tests share one test database
   },

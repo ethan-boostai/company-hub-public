@@ -11,6 +11,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import postgres from "postgres";
+import { liveRefusal } from "../src/lib/live-guard.mjs";
 
 const onBuild = process.argv.includes("--on-build");
 if (onBuild && process.env.MIGRATE_ON_BUILD !== "1") {
@@ -21,6 +22,11 @@ if (onBuild && process.env.MIGRATE_ON_BUILD !== "1") {
 const url = process.env.DATABASE_URL;
 if (!url) {
   console.error("DATABASE_URL is not set.");
+  process.exit(1);
+}
+const refused = liveRefusal(url, "Database migrations");
+if (refused) {
+  console.error(refused);
   process.exit(1);
 }
 

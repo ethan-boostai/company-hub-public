@@ -2,8 +2,14 @@
 // Refuses to run against anything that is not a local database.
 import bcrypt from "bcryptjs";
 import postgres from "postgres";
+import { liveRefusal } from "../src/lib/live-guard.mjs";
 
 const url = process.env.DATABASE_URL || "";
+const refused = liveRefusal(url, "db-seed-local", { neverLive: true });
+if (refused) {
+  console.error(refused);
+  process.exit(1);
+}
 if (!/@(127\.0\.0\.1|localhost)[:/]/.test(url)) {
   console.error("db-seed-local only runs against a local database (127.0.0.1 or localhost).");
   process.exit(1);
