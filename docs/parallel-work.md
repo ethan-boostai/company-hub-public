@@ -19,7 +19,7 @@ How several Claude Code sessions build the hub at the same time without getting 
   - `src/proxy.ts`, `scripts/`, `vercel.json`, `next.config.ts`, `package.json`.
 - **Rules and docs:** `CLAUDE.md`, `docs/plan.md`, `docs/inventory.md` and this file.
 - **n8n workflows** "CBS Hub - Files" and "CBS Hub - ServiceM8".
-- **Phases:** Phase 1 (jobs and tasks), then Clients, Phase 5 (Money and close) and the parts of Phase 6 not handed out (TV dashboard, notifications, look-ahead, requests and time off, support).
+- **Phases:** Phase 1 (jobs and tasks), then Clients, Phase 5 (Money and close) and the parts of Phase 6 not handed out (TV dashboard, notifications, look-ahead, time off, support). Requests and the team app moved to Registers (Ethan, 28/10/2026).
 
 ## Workstreams
 
@@ -42,11 +42,13 @@ Tables and pages from `docs/plan.md` §3.3:
 | Subcontractors and suppliers | `subcontractors`, `subcontractor_docs`, `suppliers` |
 | Insurance and accreditations | `insurance_policies`, `claims`, `company_certs` |
 | Equipment and materials registers | `assets`, `asset_services`, `materials`, `stock_moves`, `stocktakes` and `stocktake_lines` |
+| Team app and requests | `requests` (from `cbs_requests`) and its office page, plus the open-link team app (no sign-in, name picked per report, never remembered): vehicle check, vehicle accident, make a request, lost/stolen/damaged tool. Its open `/team` route and sign-in-free photo uploads are agreed with Core first (Ethan, 28/10/2026). |
 
 On `stock_moves`, leave the job link empty until jobs exist on `main`. Its `job_id` column is nullable and gets its foreign key in a later migration.
 
 Not in Registers, because these need jobs or other phases:
 
+- **On-site accident and incident forms**: they stay with the onsite app (Safety/Site), not the team app.
 - **Clients**: its tables and the ServiceM8 sync/write-back are built in Phase 1 (Core).
 - **`subcontractor_job_docs`, `job_plant`, load-up sheets, stock moves to jobs**: Site.
 - **Claim links to jobs and incidents:** claims get `job_id` and `incident_id` columns, with no foreign key until those tables exist.
