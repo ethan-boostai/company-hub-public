@@ -33,10 +33,16 @@ This repo replaces the original n8n-served hub (pages served from n8n webhooks o
 - Every task is a single task. No items or lines inside tasks.
 - Three statuses: To do, In progress, Done. Verified is a sign-off step after Done. "In hand" is a note on an In progress task, not a status.
 - One task panel, used everywhere. Never build a second copy of it.
-- Task panel has one Save, one Assigned to + Due row in the same place, Upload file on every task, and the office can mark any task Done by hand.
+- Task panel has one Save, one Assigned to + Due row in the same place, Upload file on every job task, and the office can mark any task Done by hand.
+- Generic tasks with no job don't get file uploads.
 - No Category field. Category is automatic (requirement tasks by requirement, one-off tasks Office).
 - Tasks are created through + New task: Office tasks / On site tasks toggle, requirements grouped by stage (Estimate, Approved: Planning, Approved: on site, Completed), Other (one-off) at the top.
+- Requirement types: types that open a builder or page are defined in code. The office can add simple custom types (a plain task with a stage) from a table.
 - Saving a record (e.g. a survey) never auto-completes its task. Office closes tasks by hand.
+- The TV dashboard's tasks show exactly what's on the Actions board, no filters.
+
+## Old hub
+- `docs/inventory.md` section 5 lists old behaviour that breaks these rules. Follow it: never copy that behaviour into the rebuild.
 
 ## UI rules (non-negotiable)
 - No button may ever double save. Disable on submit, guard server-side.
