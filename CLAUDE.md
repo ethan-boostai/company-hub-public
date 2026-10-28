@@ -62,7 +62,7 @@ This repo replaces the original n8n-served hub (pages served from n8n webhooks o
 - All builder PDFs use one standard house PDF format.
 
 ## Testing
-- Never test on real jobs or real tasks. Use test job 99901 and fake test tasks.
+- Never test on real jobs or real tasks. Use test job 10278 (in ServiceM8, client "TEST - Hub rebuild - do not invoice") and fake test tasks.
 - Give Ethan test instructions as clear numbered steps.
 
 ## Working process

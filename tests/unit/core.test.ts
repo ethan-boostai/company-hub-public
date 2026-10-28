@@ -58,7 +58,7 @@ describe("upload tickets", () => {
 describe("file names", () => {
   it("keep any type but drop unsafe characters and folders", () => {
     expect(cleanFileName("../../etc/passwd")).toBe("passwd");
-    expect(cleanFileName('Job 99901 - "RAMS" v2?.pdf')).toBe("Job 99901 - RAMS v2.pdf");
+    expect(cleanFileName('Job 10278 - "RAMS" v2?.pdf')).toBe("Job 10278 - RAMS v2.pdf");
     expect(cleanFileName("photo.HEIC")).toBe("photo.HEIC");
     expect(cleanFileName("")).toBe("file");
   });
@@ -69,7 +69,7 @@ describe("file names", () => {
 
 describe("house PDF", () => {
   it("builds a multi-page A4 document with page numbers and survives odd characters", async () => {
-    const pdf = await HousePdf.create({ title: "Test document", jobNo: "99901", subtitle: "Test site | Test client" });
+    const pdf = await HousePdf.create({ title: "Test document", jobNo: "10278", subtitle: "Test site | Test client" });
     pdf.heading("Section");
     pdf.paragraph("Plain text with £ and – and an unsupported character → and emoji 🙂.");
     pdf.keyValues([["Prepared by", "Test Office One"]]);
@@ -81,7 +81,7 @@ describe("house PDF", () => {
     const [w, h] = [doc.getPage(0).getWidth(), doc.getPage(0).getHeight()];
     expect(Math.round(w)).toBe(595);
     expect(Math.round(h)).toBe(842);
-    expect(doc.getTitle()).toBe("Test document - Job 99901");
+    expect(doc.getTitle()).toBe("Test document - Job 10278");
   });
 });
 

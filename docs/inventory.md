@@ -146,7 +146,7 @@ Workflows marked **drop** are temp, one-off or developer tools; nothing to rebui
 
 ## 4. Integrations
 
-- **ServiceM8** (master for jobs, schedule, folders). Today: webhooks for job/company changes (Auto Job Files) plus a 5-minute poll and many live reads at page load. Reads `job`, `queue` (folders), `jobactivity` (schedule), `staff`, `attachment`, `company`, `companycontact`. Writes job status/folder, job notes (notifications) and attachments (one copy per hub document). Test job 99901; jobs 10871 and 10885 are generic and ignored.
+- **ServiceM8** (master for jobs, schedule, folders). Today: webhooks for job/company changes (Auto Job Files) plus a 5-minute poll and many live reads at page load. Reads `job`, `queue` (folders), `jobactivity` (schedule), `staff`, `attachment`, `company`, `companycontact`. Writes job status/folder, job notes (notifications) and attachments (one copy per hub document). The old hub used test job 99901 (not in ServiceM8); the rebuild uses ServiceM8 test job 10278. Jobs 10871 and 10885 are generic and ignored.
 - **SharePoint** (Microsoft Graph, tenant chelmsfordbuildingservices, drive "CBS System"). `Operations/Jobs/Job N/<folder>/`, `Operations/Enquiries/Job N/`, `H&S/…`, `Fleet/<REG>/…`. Builder PDFs overwrite their own file; other uploads are renamed on clash. Full layout in `_notes_batch1.md` and `_notes_batch2.md`. The old Graph credential is delegated (files show as uploaded by ZZ Person A); the new app needs a single-tenant app registration.
 - **QuickBooks**: POs raised in QuickBooks; PO PDF upload; bills/expenses sync into job costs (inactive).
 - **PO PDF reading**: OpenRouter, Claude Haiku 4.5, JSON-only prompt. Stays in n8n.
