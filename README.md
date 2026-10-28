@@ -62,7 +62,17 @@ node tests/e2e/phase1-tasks.mjs
 node tests/e2e/phase1-board.mjs
 ```
 
-A `DATABASE_URL` set in the shell wins over `.env.local`. Before `next start` for local tests, check the shell doesn't hold a Supabase address (`echo $DATABASE_URL`), or start with the local one set explicitly.
+## Live database safety (hard block)
+
+Everything that connects to a database refuses an address containing the live project ref (`chvyskcfjmxxprxoczon`), in any form (pooler, direct, encoded). The rule is in `src/lib/live-guard.mjs`.
+
+- **The app** (`next dev`, `next start`, and every Vercel server) checks at start-up (`src/instrumentation.ts`) and on every new connection (`src/lib/db.ts`). It stops with a "refused" message.
+- **Migrations and `add-person`** refuse before connecting.
+- **Tests and the local seed never run against live**, even with the flag. `npm test` stops before any test file runs. To run tests, point `TEST_DATABASE_URL` at the local or dev database.
+- **The two exceptions:**
+  - the live site itself: Vercel's production deployment (`VERCEL=1` and `VERCEL_ENV=production`, both set by Vercel). Preview deployments are refused.
+  - the switch-over flag: `CBS_LIVE_DATABASE=switch-over`, set only with Ethan's approval.
+- `tests/unit/live-guard.test.ts` checks every one of these.
 
 ## Live database (Supabase)
 
