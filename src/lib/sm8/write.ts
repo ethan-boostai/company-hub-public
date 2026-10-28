@@ -20,7 +20,7 @@ export type Sm8Write =
 // changed. Checked against the stored job, so the number and ServiceM8 id must belong together.
 export async function writeAllowed(jobNo: string, jobUuid: string): Promise<boolean> {
   const [r] = await db()<{ ok: boolean }[]>`
-    select sm8_write_allowed(${jobNo}) and exists (select 1 from jobs where job_no = ${jobNo} and sm8_uuid = ${jobUuid}) as ok`;
+    select cbs_sync.sm8_write_allowed(${jobNo}) and exists (select 1 from jobs where job_no = ${jobNo} and sm8_uuid = ${jobUuid}) as ok`;
   return !!r?.ok;
 }
 

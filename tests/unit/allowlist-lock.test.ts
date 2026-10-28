@@ -30,10 +30,10 @@ describe.skipIf(!/@(127\.0\.0\.1|localhost)[:/]/.test(url))("ServiceM8 allow lis
   afterAll(() => sql.end());
 
   it("refuses a change without the opt-in", async () => {
-    await expect(sql`update settings set value = jsonb_set(value, '{write_allow}', '"all"') where key = 'sm8_sync'`)
+    await expect(sql`update settings set value = jsonb_set(value, '{allow}', '["12", "99"]') where key = 'sm8_sync'`)
       .rejects.toThrow(/approved migration/);
     await expect(sql`delete from settings where key = 'sm8_sync'`).rejects.toThrow(/approved migration/);
-    const [r] = await sql`select value->'write_allow' as w from settings where key = 'sm8_sync'`;
+    const [r] = await sql`select value->'allow' as w from settings where key = 'sm8_sync'`;
     expect(r.w).toEqual(["12"]);
   });
 

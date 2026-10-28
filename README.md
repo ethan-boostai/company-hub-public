@@ -91,6 +91,25 @@ Everything that connects to a database refuses an address containing the live pr
 - By hand (local database): `npm run db:migrate`. `supabase/setup/phase0-sql-editor.sql` was the one-off first setup and is no longer needed.
 - First office user: `node scripts/add-person.mjs "Full Name" 1234`. Everyone else is added on the People page.
 
+## ServiceM8 sync (n8n → database)
+
+n8n's "CBS Hub - ServiceM8" workflows call three database functions through one locked-down login, `cbs_n8n_sync`:
+
+- `cbs_sync.sm8_apply_event(event)` for each ServiceM8 webhook;
+- `cbs_sync.sm8_apply_records(kind, rows)` for the 5-minute and nightly reads, where kind is `folder`, `client`, `contact`, `staff`, `booking` or `job`;
+- `cbs_sync.sm8_sync_since(kind)`, which gives where the last 5-minute read got to.
+
+Rules for the login and the data:
+
+- **What the login can do:** no rights on any table, no access to the `public` schema, no CREATE, a 15-second statement timeout, and at most 5 connections. The functions sit in `cbs_sync`, which the Supabase API doesn't expose. They run as their owner with a fixed search_path.
+- **The sync filter:** until Ethan approves the trial copy, only jobs in the locked allow list (job 12) are stored, with their client, the client's contacts, the job's bookings and moves. Other jobs' events and records are ignored and leave nothing behind. Staff and folders sync in full. The write-back reads the same list.
+- **Where n8n connects:** `cbs-hub-dev` first, never live, until switch-over. Use the **Session pooler** address (port 5432, IPv4) from Supabase → Connect, user `cbs_n8n_sync.<project ref>`, with SSL required.
+- **Turning the login on:** it is created without a password. Once the dev tables exist, Ethan runs this once in the project's SQL editor with his own password:
+
+  ```sql
+  alter role cbs_n8n_sync with login password 'choose-a-long-password';
+  ```
+
 ## Environment variables (Vercel)
 
 See `.env.example`. Server-only secrets: `DATABASE_URL`, `APP_SECRET`, `SUPABASE_SERVICE_ROLE_KEY`, `N8N_FILES_KEY`. On Vercel `FILE_STORAGE` must be `sharepoint`.

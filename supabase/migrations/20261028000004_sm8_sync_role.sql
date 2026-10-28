@@ -1,29 +1,56 @@
--- A database login for n8n that can do one thing: run the two ServiceM8 sync functions.
--- It can't read or change any table directly. Created without a password (NOLOGIN); Ethan turns it
--- on once with a password he chooses (see README "ServiceM8 sync"). The functions run with the owner's
--- rights (security definer) and a fixed search_path.
+-- A database login for n8n that can do three things: run the two ServiceM8 sync functions and
+-- read where the 5-minute read got to. Nothing else:
+--  * no rights on any table, and no access to the public schema at all;
+--  * it can't create anything; a short statement timeout; at most 5 connections.
+-- Created without a password (NOLOGIN); Ethan turns the login on with a password he chooses
+-- (README "ServiceM8 sync"). The three functions are in cbs_sync, which the Supabase API doesn't
+-- expose, and run with the owner's rights (security definer) and a fixed search_path.
 do $$
 begin
   if not exists (select 1 from pg_roles where rolname = 'cbs_n8n_sync') then
     create role cbs_n8n_sync nologin;
   end if;
 end $$;
+alter role cbs_n8n_sync nosuperuser nocreatedb nocreaterole noinherit noreplication nobypassrls connection limit 5;
+alter role cbs_n8n_sync set statement_timeout = '15s';
+alter role cbs_n8n_sync set idle_in_transaction_session_timeout = '30s';
 
-alter function sm8_apply_event(jsonb) security definer set search_path = public, pg_temp;
-alter function sm8_apply_records(text, jsonb) security definer set search_path = public, pg_temp;
+alter function cbs_sync.sm8_apply_event(jsonb) security definer set search_path = public, pg_temp;
+alter function cbs_sync.sm8_apply_records(text, jsonb) security definer set search_path = public, pg_temp;
+alter function cbs_sync.sm8_sync_since(text) security definer set search_path = public, pg_temp;
 
-revoke all on function sm8_apply_event(jsonb) from public;
-revoke all on function sm8_apply_records(text, jsonb) from public;
-grant usage on schema public to cbs_n8n_sync;
-grant execute on function sm8_apply_event(jsonb) to cbs_n8n_sync;
-grant execute on function sm8_apply_records(text, jsonb) to cbs_n8n_sync;
+-- Nothing in cbs_sync can be run or read by anyone but its owner, except the three functions
+-- below for cbs_n8n_sync. Supabase's API roles are named too (they only exist on Supabase).
+do $$
+declare
+  r text;
+begin
+  revoke all on all functions in schema cbs_sync from public;
+  revoke all on all tables in schema cbs_sync from public;
+  revoke all on schema cbs_sync from public;
+  alter default privileges in schema cbs_sync revoke all on functions from public;
+  foreach r in array array['anon', 'authenticated', 'service_role'] loop
+    if exists (select 1 from pg_roles where rolname = r) then
+      execute format('revoke all on all functions in schema cbs_sync from %I', r);
+      execute format('revoke all on all tables in schema cbs_sync from %I', r);
+      execute format('revoke all on schema cbs_sync from %I', r);
+      execute format('alter default privileges in schema cbs_sync revoke all on functions from %I', r);
+      execute format('alter default privileges in schema cbs_sync revoke all on tables from %I', r);
+    end if;
+  end loop;
+end $$;
 
--- The helper functions are only called from inside the two above (or by the app's own login).
-revoke all on function sm8_upsert_job(jsonb, jsonb), sm8_upsert_client(jsonb), sm8_upsert_contact(jsonb),
-  sm8_upsert_staff(jsonb), sm8_upsert_booking(jsonb), sm8_upsert_folder(jsonb, int) from public;
-revoke all on function sm8_write_allowed(text) from public;
+grant usage on schema cbs_sync to cbs_n8n_sync;
+grant execute on function cbs_sync.sm8_apply_event(jsonb) to cbs_n8n_sync;
+grant execute on function cbs_sync.sm8_apply_records(text, jsonb) to cbs_n8n_sync;
+grant execute on function cbs_sync.sm8_sync_since(text) to cbs_n8n_sync;
 
--- The ServiceM8 allow lists (settings key 'sm8_sync') can't be changed by the hub. A change needs the
+-- No CREATE anywhere, and no way into the public schema.
+revoke create on schema public from public, cbs_n8n_sync;
+revoke all on schema public from cbs_n8n_sync;
+revoke create on schema cbs_sync from cbs_n8n_sync;
+
+-- The ServiceM8 allow list (settings key 'sm8_sync') can't be changed by the hub. A change needs the
 -- session to opt in first, which only migrations and an approved direct change do:
 --   set local cbs.allow_sync_settings = 'on';  (inside a transaction), then the update.
 create or replace function settings_guard_sm8_sync() returns trigger

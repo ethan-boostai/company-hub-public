@@ -73,6 +73,7 @@ create table jobs (
   sm8_description text,
   sm8_job_contact jsonb,                 -- the job's own contact in ServiceM8 (name, phone, email)
   client_id bigint references clients(id),
+  sm8_company_uuid text,                 -- ServiceM8 client of the job (the sync filter keeps only allowed jobs' clients)
   site_address text,
   sm8_edit_date timestamptz,             -- newest ServiceM8 version applied (events can arrive out of order)
   -- hub stage, derived from sm8_status and stored for filtering

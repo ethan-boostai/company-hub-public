@@ -42,9 +42,9 @@ try {
   const rows = folders.map((name, i) => ({
     uuid: name.startsWith("Maintenance") ? "01a15ea9-6031-79fe-9531-85247ade10bb" : `local-folder-${i + 1}`, name, active: 1,
   }));
-  await sql`select sm8_apply_records('folder', ${sql.json(rows)})`;
+  await sql`select cbs_sync.sm8_apply_records('folder', ${sql.json(rows)})`;
   const events = JSON.parse(readFileSync(new URL("../tests/fixtures/sm8-events-test-job.json", import.meta.url), "utf8"));
-  for (const ev of events.slice(0, 6)) await sql`select sm8_apply_event(${sql.json(ev)})`;
+  for (const ev of events.slice(0, 6)) await sql`select cbs_sync.sm8_apply_event(${sql.json(ev)})`;
   console.log("seeded local test people (PIN 1234), role options, ServiceM8 folders and test job 12");
 } finally {
   await sql.end();
