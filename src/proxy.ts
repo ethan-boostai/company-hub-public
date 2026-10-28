@@ -17,5 +17,5 @@ export function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!sign-in|api/health|_next/|favicon.ico|cbs-logo.png).*)"],
+  matcher: ["/((?!sign-in|api/health|team$|team/|api/team/|_next/|favicon.ico|cbs-logo.png).*)"],
 };
