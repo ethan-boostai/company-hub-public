@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 // Main left menu. Items are added here as each phase is built.
 export const NAV: { group?: string; items: { href: string; label: string }[] }[] = [
   { items: [{ href: "/", label: "Home" }] },
+  { items: [{ href: "/fleet", label: "Fleet" }] },
   {
     group: "Settings",
     items: [
