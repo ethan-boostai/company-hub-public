@@ -3,15 +3,29 @@
 import { useEffect, useId, useRef, type ReactNode } from "react";
 import { useScrollLock } from "./scroll-lock";
 
+// Open overlays, newest last. Escape closes only the top one (a confirm over a drawer
+// closes the confirm, not both).
+const openStack: object[] = [];
+
 function useEscape(open: boolean, onClose: () => void, disabled?: boolean) {
+  const latest = useRef({ onClose, disabled });
+  useEffect(() => {
+    latest.current = { onClose, disabled };
+  });
   useEffect(() => {
     if (!open) return;
+    const me = {};
+    openStack.push(me);
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && !disabled) onClose();
+      if (e.key !== "Escape" || openStack[openStack.length - 1] !== me) return;
+      if (!latest.current.disabled) latest.current.onClose();
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open, onClose, disabled]);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      openStack.splice(openStack.indexOf(me), 1);
+    };
+  }, [open]);
 }
 
 function useInitialFocus(open: boolean) {

@@ -52,6 +52,18 @@ Browser test of the whole Phase 0 flow (app running on port 3100 against the see
 node tests/e2e/phase0.mjs
 ```
 
+Phase 1 browser tests (test job 12 must be at Approved in the local database):
+
+```bash
+node tests/e2e/phase1-tasks.mjs
+```
+
+```bash
+node tests/e2e/phase1-board.mjs
+```
+
+A `DATABASE_URL` set in the shell wins over `.env.local`. Before `next start` for local tests, check the shell doesn't hold a Supabase address (`echo $DATABASE_URL`), or start with the local one set explicitly.
+
 ## Live database (Supabase)
 
 - `DATABASE_URL` is the Supabase "Transaction pooler" connection string (port 6543).
