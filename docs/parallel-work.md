@@ -19,7 +19,8 @@ How several Claude Code sessions build the hub at the same time without getting 
   - `src/proxy.ts`, `scripts/`, `vercel.json`, `next.config.ts`, `package.json`.
 - **Rules and docs:** `CLAUDE.md`, `docs/plan.md`, `docs/inventory.md` and this file.
 - **n8n workflows** "CBS Hub - Files" and "CBS Hub - ServiceM8".
-- **Phases:** Phase 1 (jobs and tasks), then Clients, Phase 5 (Money and close) and the parts of Phase 6 not handed out (TV dashboard, notifications, look-ahead, requests and time off, support).
+- **Phases:** Phase 1 (jobs and tasks), then Clients, Phase 5 (Money and close) and the parts of Phase 6 not handed out (TV dashboard, notifications, look-ahead, time off, support).
+- **Shared helpers other workstreams may call (never edit):** `signToken` / `readToken` (`src/lib/files/ticket.ts`) and `uploadBytes` (`src/lib/files/server-upload.ts`).
 
 ## Workstreams
 
@@ -41,6 +42,7 @@ Tables and pages from `docs/plan.md` §3.3:
 | Team and training matrix | `training_records`, plus the matrix page. The People page and the `people` table stay Core. |
 | Subcontractors and suppliers | `subcontractors`, `subcontractor_docs`, `suppliers` |
 | Insurance and accreditations | `insurance_policies`, `claims`, `company_certs` |
+| Team app (agreed on PR #4) | `/team` (secret link, `TEAM_LINK_KEY`) and `/api/team/*`; vehicle checks, accidents, requests and tool reports from the team; owns the `requests` table (moved from Core) |
 | Equipment and materials registers | `assets`, `asset_services`, `materials`, `stock_moves`, `stocktakes` and `stocktake_lines` |
 
 On `stock_moves`, leave the job link empty until jobs exist on `main`. Its `job_id` column is nullable and gets its foreign key in a later migration.
