@@ -9,7 +9,7 @@ export type RecordFile = { id: number; name: string; mime: string; size: number;
 // Tables whose records can hold files on the register pages.
 const TABLES = new Set([
   "vehicles", "vehicle_checks", "vehicle_services", "vehicle_accidents",
-  "subcontractors", "suppliers", "subcontractor_docs",
+  "subcontractors", "suppliers", "subcontractor_docs", "requests",
 ]);
 
 // Files attached to one register record, newest first.
