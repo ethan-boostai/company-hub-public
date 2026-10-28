@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { afterAll, describe, expect, it } from "vitest";
 
-// Needs a database: runs against DATABASE_URL (local dev database), skipped when it isn't set.
+// Needs a database: tests/setup.ts leaves DATABASE_URL only if it is a local or dev database.
 const url = process.env.DATABASE_URL;
 
 describe.skipIf(!url)("double-save guard (database)", async () => {
