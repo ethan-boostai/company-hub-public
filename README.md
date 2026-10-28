@@ -49,7 +49,7 @@ node tests/e2e/phase0.mjs
 ## Live database (Supabase)
 
 - `DATABASE_URL` is the Supabase "Transaction pooler" connection string (port 6543).
-- Apply migrations with `npm run db:migrate`. Migrations live in `supabase/migrations` and are tracked in `schema_migrations`; don't mix with `supabase db push`.
+- Apply migrations with `npm run db:migrate`. Where the database can't be reached directly (e.g. a sandbox that only allows HTTPS), use `supabase/setup/phase0-sql-editor.sql` in the Supabase SQL Editor instead; it records the migration so `db:migrate` skips it later. Migrations live in `supabase/migrations` and are tracked in `schema_migrations`; don't mix with `supabase db push`.
 - First office user: `node scripts/add-person.mjs "Full Name" 1234`. Everyone else is added on the People page.
 
 ## Environment variables (Vercel)
