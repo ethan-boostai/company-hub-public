@@ -1,26 +1,31 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* CBS house colours */
+@theme {
+  --color-brand: #f47920;
+  --color-brand-dark: #d9640f;
+  --color-ink: #1d1d1d;
+  --color-dark: #3d4043;
+  --color-paper: #f2f2f0;
+  --color-line: #d9d9d6;
+  --color-muted: #6b6e70;
+  --color-danger: #b3261e;
+  --color-ok: #1a7f37;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  color: var(--color-ink);
+  background: var(--color-paper);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* While a drawer or modal is open the page behind never scrolls; only the drawer does. */
+html.scroll-locked,
+html.scroll-locked body {
+  overflow: hidden;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]) {
+  cursor: pointer;
 }

@@ -7,9 +7,68 @@ Operations Hub for Chelmsford Building Services. Replaces the old n8n-served hub
 - Rebuild plan and Supabase schema: `docs/plan.md`
 - Old hub reference (read only): `legacy/`
 
-Stack: Next.js (App Router, TypeScript, Tailwind) on Vercel (London), Supabase (London).
+Stack: Next.js (App Router, TypeScript, Tailwind) on Vercel (London), Supabase Postgres (London).
+
+## Local development
+
+1. Copy `.env.example` to `.env.local` and fill it in. For a local database, any Postgres 16 works; `DATABASE_URL` points at it.
+2. Install and set up the database:
 
 ```bash
 npm install
+```
+
+```bash
+npm run db:migrate
+```
+
+```bash
+npm run db:seed-local
+```
+
+The local seed adds fake test people (Test Office One / Two, PIN 1234). It refuses to run against anything but a local database.
+
+3. Run the app:
+
+```bash
 npm run dev
 ```
+
+## Database access rule
+
+Builds never touch the database. Pages and the `data.ts` helpers they call read through `readDb()` (in `src/lib/db.ts`), which marks the render as needing a live request; server actions and API routes run per request and use `db()`. If anything uses the database during `next build`, the build fails with a clear message, even on a machine that has a database.
+
+## Checks
+
+```bash
+npm run lint && npm run typecheck && npm test
+```
+
+Browser test of the whole Phase 0 flow (app running on port 3100 against the seeded local database; uses the Playwright install in the dev environment):
+
+```bash
+node tests/e2e/phase0.mjs
+```
+
+## Live database (Supabase)
+
+- `DATABASE_URL` is the Supabase "Transaction pooler" connection string (port 6543).
+- Migrations live in `supabase/migrations` and are tracked in `schema_migrations`; don't mix with `supabase db push`.
+- **Migrations run automatically on deploy.** Vercel runs `npm run vercel-build`, which applies any new migrations to that environment's `DATABASE_URL` and then builds. It only runs where the Vercel environment has `MIGRATE_ON_BUILD=1`. A failed migration fails the deploy, so the new code never goes live against an old database. A lock stops two builds applying the same migration at once.
+- **Every migration must keep the previous release working**: add tables and columns; remove or rename only in a later release once nothing uses the old one. The database changes just before new code goes live, and a Vercel instant rollback doesn't undo a migration.
+- By hand (local database): `npm run db:migrate`. `supabase/setup/phase0-sql-editor.sql` was the one-off first setup and is no longer needed.
+- First office user: `node scripts/add-person.mjs "Full Name" 1234`. Everyone else is added on the People page.
+
+## Environment variables (Vercel)
+
+See `.env.example`. Server-only secrets: `DATABASE_URL`, `APP_SECRET`, `SUPABASE_SERVICE_ROLE_KEY`, `N8N_FILES_KEY`. On Vercel `FILE_STORAGE` must be `sharepoint`.
+
+## Files (SharePoint through n8n)
+
+The app never talks to Microsoft directly. The n8n workflow **CBS Hub - Files** has three webhooks, each protected by the `X-CBS-Files-Key` header:
+
+- `cbs-hub-files-start` starts a resumable upload in a folder inside `CBS System`. The browser then sends the file to SharePoint in 5 MB chunks, so there's no size limit from Vercel or n8n (SharePoint allows up to 250 GB; the app caps uploads at 250 MB).
+- `cbs-hub-files-info` returns a file's name, size, folder and web link (used to check an upload before it's recorded).
+- `cbs-hub-files-link` returns short-lived view and download links, fetched fresh each time a file is opened.
+
+All SharePoint calls go through the one "Graph Request" node, so the SharePoint credential is set in one place in n8n (the existing CBS Microsoft credential, kept permanently). If SharePoint fails, the workflow emails an alert (at most one per 15 minutes) and the app shows "SharePoint isn't reachable right now". Phase 0 uploads go to `CBS System/Hub uploads/Test` only.

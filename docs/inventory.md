@@ -146,7 +146,7 @@ Workflows marked **drop** are temp, one-off or developer tools; nothing to rebui
 
 ## 4. Integrations
 
-- **ServiceM8** (master for jobs, schedule, folders). Today: webhooks for job/company changes (Auto Job Files) plus a 5-minute poll and many live reads at page load. Reads `job`, `queue` (folders), `jobactivity` (schedule), `staff`, `attachment`, `company`, `companycontact`. Writes job status/folder, job notes (notifications) and attachments (one copy per hub document). Test job 99901; jobs 10871 and 10885 are generic and ignored.
+- **ServiceM8** (master for jobs, schedule, folders). Today: webhooks for job/company changes (Auto Job Files) plus a 5-minute poll and many live reads at page load. Reads `job`, `queue` (folders), `jobactivity` (schedule), `staff`, `attachment`, `company`, `companycontact`. Writes job status/folder, job notes (notifications) and attachments (one copy per hub document). The old hub used test job 99901 (not in ServiceM8); the rebuild uses ServiceM8 test job 10278. Jobs 10871 and 10885 are generic and ignored.
 - **SharePoint** (Microsoft Graph, tenant chelmsfordbuildingservices, drive "CBS System"). `Operations/Jobs/Job N/<folder>/`, `Operations/Enquiries/Job N/`, `H&S/…`, `Fleet/<REG>/…`. Builder PDFs overwrite their own file; other uploads are renamed on clash. Full layout in `_notes_batch1.md` and `_notes_batch2.md`. The old Graph credential is delegated (files show as uploaded by ZZ Person A); the new app needs a single-tenant app registration.
 - **QuickBooks**: POs raised in QuickBooks; PO PDF upload; bills/expenses sync into job costs (inactive).
 - **PO PDF reading**: OpenRouter, Claude Haiku 4.5, JSON-only prompt. Stays in n8n.
@@ -165,6 +165,14 @@ These conflict with `CLAUDE.md`. **This list is binding: the rebuild must not co
 6. Categories are a stored field on tasks. They become automatic (requirement group, or Office for one-off tasks).
 7. The TV dashboard's "Needs attention" list adds TV-only alerts and category filters on top of the Actions board feed. In the rebuild the TV's tasks are exactly what's on the Actions board, no filters.
 8. Office tasks with no job can have files uploaded (to `Office Tasks/<folder>`). In the rebuild, generic tasks with no job don't get file uploads.
+9. Automatic register reminders close themselves when the register record stops triggering them (a `sync()` script in `cbs-admin.html` sets them to Done, "Cleared – fixed in the record"). Roll-up reminders also close themselves. **New rule: nothing closes a task except the office, by hand.**
+10. "In hand" is treated as a status in places: the server accepts `In hand`, the Actions board and job Tasks panel group it separately, and the drawings task card has an In hand button. **New rule: In hand is a note on an In progress task, never a status.**
+11. There are several task panels: the shared drawer, the board's own fallback drawer, the Job File fallback drawer, the notices view, claim forms, the drawings task card and the old admin Actions board. **New rule: one task panel, used everywhere.**
+12. The task screens use browser pop-ups as well as the pages in item 3: `prompt()` for the name and the send-back note and `alert()` in the site-task drawer, `prompt()` on the drawings task card, `confirm()` when closing the task drawer without saving, `prompt('Your name:')` on the board and the job Tasks panel. **New rule: all prompts are in-app; the name comes from the sign-in.**
+13. The office's on site controls (Send to site, Move to office, Approve and mark done, Send back to site) exist but are hidden by a CSS rule in the final task drawer, so the office can't see or act on Submitted or sent-back site tasks. **New rule: these controls are visible on every on site task.**
+14. On the + New task picker's On site side, the Site survey, Additional surveys, Permits, Pre-use checks and Sub-contractor audit tiles create a one-off site task instead of switching the requirement on, so those requirements can no longer be added to a job. **New rule (approved 28/10/2026): those tiles add the requirement to the job; its task is an On site task.**
+15. The Jobs list puts Completed jobs that have no folder under "No folder". **New rule (approved 28/10/2026): "No folder" holds Quote jobs with no folder only; Completed jobs with no folder are not listed there.**
+16. The Jobs list hides Unsuccessful jobs from holding folders (On hold, Awaiting client, …) and "No folder" but still shows them in Enquiry, Estimated and Approved. **New rule (28/10/2026): Unsuccessful jobs are hidden everywhere by default, with one "Show unsuccessful" toggle (see plan §3.6).**
 
 ## 6. Secrets and hard-coded config found
 

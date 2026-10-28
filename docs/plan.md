@@ -10,7 +10,7 @@ Reference for every session: `CLAUDE.md` (build rules), `docs/inventory.md` (wha
 
 - Rebuild the n8n-served hub as one Next.js app (App Router, TypeScript, Tailwind) on Vercel (London), with Supabase Postgres + Storage (London).
 - n8n stays for integrations only: ServiceM8, QuickBooks, SharePoint, PO PDF reading, notifications. n8n calls this app's API routes, or reads and writes Supabase directly.
-- Move one area at a time. For each area: build it, copy that area's n8n tables into Supabase with a one-off script, Ethan tests on job 99901, then that area switches over. The old hub stays live until every area has moved.
+- Move one area at a time. For each area: build it, copy that area's n8n tables into Supabase with a one-off script, Ethan tests on test job 10278, then that area switches over. The old hub stays live until every area has moved.
 - Until the Supabase project's URL and keys are added as env secrets, work against a local Postgres (Supabase CLI) only.
 
 ## 2. Phases
@@ -18,11 +18,11 @@ Reference for every session: `CLAUDE.md` (build rules), `docs/inventory.md` (wha
 | Phase | What | Done when |
 |---|---|---|
 | 0. Foundations | App shell: left menu (drawer on mobile), standard header (title, global search, + New task, signed-in name). Name + 4-digit PIN sign-in. Shared parts: single-save buttons (disabled on submit, server guard), in-app "are you sure", drawer without page scroll behind it, dropdowns with "add new", Upload file (any type), in-window document viewer, house PDF format. Tables: `people`, `sessions`, `select_options`, `activity_log`, `files`, `settings`. | Ethan can sign in, sees the shell on desktop and phone, and the shared parts on a demo page. |
-| 1. Jobs and tasks | ServiceM8 → `jobs`/`clients`/`sites` by webhook. Project/CDM switching, hub stage names in colour, folder/status any-to-any, start date on programme only. One job page with the grouped left menu and estimate-stage lock-out. Requirements per job. The single task panel and + New task (all task rules). Office task list. | Job 99901 works end to end with tasks; matches the old Job File. |
-| 2. Safety | RAMS (+ templates, hazard library), CPHSP (+ wording), permits, pre-starts, inspections (site + scaffold), toolbox talks (+ topics), sign-ons, visitors, incidents (+ reports), CoSHH (substances + job CoSHH). H&S policy. Crew job portal (no sign-in, name per action). | Each Safety page on 99901 creates its record, PDF and SharePoint copy. |
-| 3. Site | Daily diary, purchase orders (incl. AI PO reading), plant (job bookings, yard/assets), materials (stock, moves, stocktakes), load-up sheets, snagging, forms (checklists, pre-use checks, sub audits), yard tablet page. Onsite add-on (ServiceM8). | Site pages on 99901 match the old hub; onsite add-on works on a shared device with no sign-in. |
-| 4. Plan | Scope of works, programme, drawings, pre-con info, RFIs, variations, site surveys, enquiry prep (estimate-stage requirements). | Plan pages on 99901 match the old hub. |
-| 5. Money and close | Job costing, QuickBooks sync (PO + bills), service sheets, close-out (ServiceM8 Completed + "Works completed" folder, close-out report). | 99901 closes out and reopens correctly. |
+| 1. Jobs and tasks | ServiceM8 → `jobs`/`clients`/`sites` by webhook. Project/CDM switching, hub stage names in colour, folder/status any-to-any, start date on programme only. One job page with the grouped left menu and estimate-stage lock-out. Requirements per job. The single task panel and + New task (all task rules). Office task list. | Test job 10278 works end to end with tasks; matches the old Job File. |
+| 2. Safety | RAMS (+ templates, hazard library), CPHSP (+ wording), permits, pre-starts, inspections (site + scaffold), toolbox talks (+ topics), sign-ons, visitors, incidents (+ reports), CoSHH (substances + job CoSHH). H&S policy. Crew job portal (no sign-in, name per action). | Each Safety page on test job 10278 creates its record, PDF and SharePoint copy. |
+| 3. Site | Daily diary, purchase orders (incl. AI PO reading), plant (job bookings, yard/assets), materials (stock, moves, stocktakes), load-up sheets, snagging, forms (checklists, pre-use checks, sub audits), yard tablet page. Onsite add-on (ServiceM8). | Site pages on test job 10278 match the old hub; onsite add-on works on a shared device with no sign-in. |
+| 4. Plan | Scope of works, programme, drawings, pre-con info, RFIs, variations, site surveys, enquiry prep (estimate-stage requirements). | Plan pages on test job 10278 match the old hub. |
+| 5. Money and close | Job costing, QuickBooks sync (PO + bills), service sheets, close-out (ServiceM8 Completed + "Works completed" folder, close-out report). | Test job 10278 closes out and reopens correctly. |
 | 6. Company-wide | Team and training, vehicles (checks, services, accidents), insurance and claims, company certs, subcontractors and suppliers, requests and time off, support, notifications, TV dashboard (its tasks are exactly the Actions board, no filters), look-ahead / today on site. | Every remaining old page has a new home; old hub can be switched off. |
 
 Each phase is its own feature branch with small commits. Each phase ends with numbered test steps for Ethan.
@@ -92,6 +92,12 @@ Columns listed are the business columns; the standard columns from 3.1 are on ev
 - `signature_file_id → files` (image), `site_lead boolean`, `hide_from_portal boolean`
 - `lists text[]` — which pick-lists the person appears in. Replaces the 17 `in_*` booleans (`crew`, `tasks`, `rams`, `coshh`, `cphsp`, `checks`, `toolbox`, `permits`, `incidents`, `po`, `survey`, `diary`, `docs`, `director`, `sm8`, `service`).
 - `sm8_staff_uuid text` (ServiceM8 staff link, when known), `notes text`
+
+**Added during Phase 0 (needs Ethan's OK; small and infrastructure only):**
+- `people`: `legacy_pin_hash` (old hub PIN hash, checked once then cleared), `failed_pin_count` and `locked_until` (lock-out after 5 wrong PINs for 15 minutes).
+- `files.storage` also allows `local`, used only on a developer's machine; Vercel refuses it.
+- **request_keys** (new) — `key text primary key`, `person_id`, `created_at`. The server-side double-save guard: every save carries a one-time key and a second save with the same key is refused. Rows older than 7 days are cleared.
+- **schema_migrations** — which migration files have been applied.
 
 **sessions** (new) — `person_id → people`, `token_hash text unique`, `device text`, `created_at`, `last_seen_at`, `expires_at`, `revoked_at`. Office sign-in only; the onsite add-on has no sessions.
 
@@ -241,12 +247,25 @@ files: belongs to one row anywhere via (entity_table, entity_id), plus job_id fo
 ### 3.5 Decisions (Ethan, 28/10/2026)
 
 1. **Requirement types: both.** Types that open a builder or page stay in code; the `requirement_types` table lets the office add simple custom types (plain task with a stage).
-2. **Documents:** SharePoint stays the home for documents and PDFs (`files.storage = 'sharepoint'`). Supabase Storage holds signatures and thumbnails only.
+2. **Documents:** SharePoint stays the home for documents and PDFs (`files.storage = 'sharepoint'`). Supabase Storage holds signatures and thumbnails only. The app reaches SharePoint only through the n8n workflow "CBS Hub - Files" (start upload / file info / short-lived links, secret header `X-CBS-Files-Key`); n8n holds the SharePoint credential, set in its one "Graph Request" node. Uploads go from the browser straight to SharePoint in 5 MB chunks (no Vercel or n8n size limit). Same library and `CBS System` folder as the old hub; Phase 0 uses `CBS System/Hub uploads/Test` only.
 3. **PINs** carry over: old hashes are copied, the existing PIN is accepted on first sign-in, then re-stored with bcrypt plus a lock-out after repeated wrong PINs. Old sign-in tokens are not migrated.
 4. **`/legacy`** has no real contact details: phone numbers, emails and addresses are replaced with fake values.
 5. **TV dashboard:** its tasks show exactly what's on the Actions board, no filters.
 6. **Generic tasks** (no job) don't get file uploads.
 7. `docs/inventory.md` section 5 is binding: the rebuild never copies that old behaviour.
+
+**Phase 0 open items:** upload test with a file over 10 MB (Ethan, when a large drawing is to hand). People have no Role dropdown: Role is a plain text box; who appears in which pick-list comes from the per-person section ticks (`people.lists`), added as each section is built.
+
+### 3.6 Phase 1 decisions (Ethan, 28/10/2026)
+
+1. **Requirements are added only through + New task**: picker tiles grouped by stage (Estimate, Approved: Planning, Approved: on site, Completed), Other (one-off) at the top, Office tasks / On site tasks toggle. Tiles already on the job show On or Done, and tapping one opens that task. No requirements panel or on/off toggles on the job page. A requirement is taken off a job with "Remove from job" in its task (in-app "are you sure"; its files are kept).
+2. **Jobs list mirrors the old Jobs screen**: every active ServiceM8 folder as a tile in ServiceM8's order, plus "Booked / on site" (Work Orders with no folder) and "No folder" (Quote jobs with no folder). Tap a tile to show or hide it, remembered on the device; Enquiry, Reactive, Maintenance and Approved show by default; Show all / Default buttons. Search covers the folders shown; Enter opens a typed job number.
+3. **Unsuccessful jobs** are hidden from every folder, from "No folder", from the tile counts and from the list search by default. One "Show unsuccessful" toggle on the Jobs list shows them in whichever folder they're in, remembered on the device like the folder tiles. Typing a job number and pressing Enter still opens an Unsuccessful job. Global search always finds them.
+4. **ServiceM8 rules**: jobs are created in ServiceM8 only. New Quote jobs stay in No folder. A Work Order that drops out of its folder (when scheduled, or when the folder expires) goes back to the folder it was in: Approved, Part Approved, Reactive or Maintenance. The last kept folder is stored on the job. Hub folder changes set a one-year folder expiry. The ServiceM8 schedule is the only source for who's on site.
+5. **Folder and status changes**: any to any, no reason or warning. Each change adds a ServiceM8 job note naming who made it, with an optional note. Setting Completed doesn't close the job out; setting a closed-out job back to Estimate or Approved reopens it.
+6. **Sync**: ServiceM8 webhooks through the n8n workflow "CBS Hub - ServiceM8" (live 28/10/2026, API-key credential "Chelmsford Building Services - Servicem8"; tested with job 10278: job created/updated/folder/status/completed and client created all arrive, each with the full job, client, folder and job contact). The app keeps the newest version by ServiceM8 `edit_date` (events can arrive out of order), skips event ids it has already seen, and matches folders by uuid (names can have stray spaces). ServiceM8 has no webhooks for client contacts or the schedule, so those are read every 5 minutes, only records changed since the last check (approved 28/10/2026). Plus a nightly catch-up. No existing workflow is changed.
+7. **Test job 10278** (created in ServiceM8 28/10/2026, client "TEST - Hub rebuild - do not invoice") replaces 99901 for all testing. Its files go to its real job folder, `CBS System/Operations/Jobs/Job 10278/…`.
+8. **Job folders in SharePoint** (same as the old hub, all inside `CBS System`, so the "CBS Hub - Files" folder rule needs no change): job files go to `CBS System/Operations/Jobs/Job N/<folder>`, where the folder comes from the requirement (RAMS and Subcontractor RAMS → `RAMS`; Supplier POs, Subcontractor POs, Hire plant → `Purchase orders`; Survey → `Surveys`; Estimate → `Estimate`; Supplier and Subcontractor quotes → `Quotes`; Documentation → `Documents`; RFIs → `RFIs`; Programme → `Programme`; Inspections → `Inspections`; Permits → `Permits`; CPHSP and Pre-con info → `CDM`; Inductions → `Inductions`; Toolbox talks → `Toolbox talks`), else `Tasks`. The old Enquiry prep page also saved estimate-stage uploads to `CBS System/Operations/Enquiries/Job N`; the job page reads both locations for old files.
 
 ## 4. Migration (per area)
 
