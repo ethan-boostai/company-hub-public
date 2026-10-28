@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Suspense } from "react";
 
 // Main left menu. Items are added here as each phase is built.
 export const NAV: { group?: string; items: { href: string; label: string }[] }[] = [
@@ -16,8 +17,21 @@ export const NAV: { group?: string; items: { href: string; label: string }[] }[]
   },
 ];
 
+// The highlighted item depends on the address, which is only known per request (e.g. /jobs/10278),
+// so the links first render without a highlight and pick it up when the request arrives.
 export function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
-  const path = usePathname();
+  return (
+    <Suspense fallback={<Links path="" onNavigate={onNavigate} />}>
+      <LiveLinks onNavigate={onNavigate} />
+    </Suspense>
+  );
+}
+
+function LiveLinks({ onNavigate }: { onNavigate?: () => void }) {
+  return <Links path={usePathname()} onNavigate={onNavigate} />;
+}
+
+function Links({ path, onNavigate }: { path: string; onNavigate?: () => void }) {
   return (
     <nav aria-label="Main menu" className="flex flex-col gap-1">
       {NAV.map((section, i) => (
