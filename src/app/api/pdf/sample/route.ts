@@ -2,11 +2,11 @@ import { NextResponse } from "next/server";
 import { getCurrentPerson } from "@/lib/auth/session";
 import { HousePdf } from "@/lib/pdf/house";
 
-// A sample in the house PDF format, so the layout can be checked. Uses test job 10278.
+// A sample in the house PDF format, so the layout can be checked. Uses test job 12.
 export async function GET() {
   const person = await getCurrentPerson();
   if (!person) return NextResponse.json({ ok: false, message: "Sign in again." }, { status: 401 });
-  const pdf = await HousePdf.create({ title: "Sample document", jobNo: "10278", subtitle: "Test site | Test client" });
+  const pdf = await HousePdf.create({ title: "Sample document", jobNo: "12", subtitle: "Test site | Test client" });
   pdf.heading("About this sample");
   pdf.paragraph(
     "Every builder PDF in the hub uses this one house format: A4, the orange bar and logo at the top, section headings with an orange rule, orange table headers and the footer with page numbers.",
@@ -14,7 +14,7 @@ export async function GET() {
   pdf.keyValues([
     ["Prepared by", person.name],
     ["Date", new Date().toLocaleDateString("en-GB", { timeZone: "Europe/London" })],
-    ["Job", "10278 (test job)"],
+    ["Job", "12 (test job)"],
   ]);
   pdf.heading("Example table");
   pdf.table(
@@ -30,7 +30,7 @@ export async function GET() {
   return new Response(new Uint8Array(bytes), {
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": 'inline; filename="Job 10278 - Sample document.pdf"',
+      "Content-Disposition": 'inline; filename="Job 12 - Sample document.pdf"',
       "Cache-Control": "private, no-store",
     },
   });
