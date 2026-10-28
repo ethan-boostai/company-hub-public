@@ -64,6 +64,14 @@ Everything that connects to a database refuses an address containing the live pr
   - the switch-over flag: `CBS_LIVE_DATABASE=switch-over`, set only with Ethan's approval.
 - `tests/unit/live-guard.test.ts` checks every one of these.
 
+## Dev database (cbs-hub-dev)
+
+- Supabase project `cbs-hub-dev`, ref `fbfkwwaeigrggcdrduit`, London, free plan. All Vercel previews use it; live is only for production.
+- Locked down like live: RLS on every table, no policies, no public access. Only the app's server and the n8n sync role connect.
+- Migrations run on each preview build (`MIGRATE_ON_BUILD=1` on Preview only).
+- Tests may use it: set `TEST_DEV_DATABASE_REF=fbfkwwaeigrggcdrduit` and `TEST_DATABASE_URL` to its pooler address.
+- A free project pauses after a week with no use; restore it from the Supabase dashboard.
+
 ## Live database (Supabase)
 
 - `DATABASE_URL` is the Supabase "Transaction pooler" connection string (port 6543).
