@@ -3,10 +3,16 @@
 // Usage: DATABASE_URL=postgres://... node scripts/add-person.mjs "Full Name" 1234 [role]
 import bcrypt from "bcryptjs";
 import postgres from "postgres";
+import { liveRefusal } from "../src/lib/live-guard.mjs";
 
 const [name, pin, role] = process.argv.slice(2);
 if (!process.env.DATABASE_URL) {
   console.error("DATABASE_URL is not set.");
+  process.exit(1);
+}
+const refused = liveRefusal(process.env.DATABASE_URL, "add-person");
+if (refused) {
+  console.error(refused);
   process.exit(1);
 }
 if (!name || !/^\d{4}$/.test(pin || "")) {
