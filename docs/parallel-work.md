@@ -76,7 +76,7 @@ Not in Registers, because these need jobs or other phases:
    - files and PDFs: `UploadFile` and `DocViewer` for files, `HousePdf` for every PDF.
 5. **Tasks:** never write to the `tasks` table directly; use the Core helper in `src/lib/tasks` once Phase 1 is on `main`. Saving a record never completes a task.
 6. **Before each pull request:** `git fetch origin main && git rebase origin/main`, then run `npm run lint && npm run typecheck && npm test` and a production build. Open the pull request with numbered test steps for Ethan.
-7. **Testing:** use a local database only, test job 10278 and fake test data. Never run migrations or scripts against the environment's `DATABASE_URL`: it is the live database.
+7. **Testing:** use a local database only, test job 12 and fake test data. Never run migrations or scripts against the environment's `DATABASE_URL`: it is the live database.
 8. **n8n:** never change an existing workflow. A new workflow needs Ethan's OK and is named "CBS Hub - <thing>".
 9. **Approach first:** explain your approach for anything non-trivial and wait for Ethan's go-ahead (`CLAUDE.md`).
 10. **Secrets:** never in chat, code or commits.
@@ -130,7 +130,7 @@ You're joining the CBS Operations Hub rebuild as the Safety workstream (Phase 2)
 
 Scope: everything in Phase 2 of docs/plan.md: RAMS (templates, hazard library), CPHSP (wording), permits, pre-starts, inspections (site and scaffold), toolbox talks (topics), sign-ons, visitors, incidents (reports, RIDDOR), CoSHH (substances, job CoSHH), the H&S policy, and the crew job portal (no sign-in, name picked per action, never remembered). Each record creates its PDF in the house format and its SharePoint copy in the job's folder (src/lib/requirements.ts gives the folder). Job pages go in their own route folders under src/app/(hub)/jobs/[jobNo]/<slug>/ using the slugs in src/lib/jobs/menu.ts. Saving a record never completes its task; use the src/lib/tasks helper for anything task-related. The old hub's builders are in /legacy (pages/cbs-rams-builder.html, cbs-cphsp-builder.html, cbs-toolbox-builder.html, cbs-permit.html, cbs-prestart.html, cbs-site-inspection.html, cbs-incident-report.html, cbs-coshh-builder.html, cbs-sign.html, cbs-visit.html, cbs-hs.html and the matching workflows); reference only, never copy docs/inventory.md section 5 behaviour.
 
-Test on a local database with test job 10278 (setup in docs/parallel-work.md); never run anything against the environment's DATABASE_URL.
+Test on a local database with test job 12 (setup in docs/parallel-work.md); never run anything against the environment's DATABASE_URL.
 
 First step: don't build yet. Give me your approach: tables, pages, the order of small pull requests, anything in docs/plan.md to change, and any shared change you'd need from the Core session. Wait for my go-ahead.
 ```
@@ -142,7 +142,7 @@ You're joining the CBS Operations Hub rebuild as the Site workstream (Phase 3), 
 
 Scope: Phase 3 of docs/plan.md, building on the registers already on main (suppliers, assets, materials): daily diary, purchase orders (QuickBooks upload and AI PO reading through new n8n workflows, only with my OK), plant booked to jobs, stock moves to jobs and stocktakes in use, load-up sheets, snagging, forms (checklists, pre-use checks, subcontractor audits), subcontractor job documents, the yard tablet page and the ServiceM8 onsite add-on (shared device, no sign-in, name picked per action). Job pages go in their own route folders under src/app/(hub)/jobs/[jobNo]/<slug>/ using the slugs in src/lib/jobs/menu.ts. Saving a record never completes its task; use the src/lib/tasks helper for anything task-related. The crew portal belongs to the Safety workstream: ask before adding to it. The old hub is in /legacy (cbs-po.html, cbs-po-board.html, cbs-ptm-sheet.html, cbs-ptm-crew.html and the matching workflows); reference only, never copy docs/inventory.md section 5 behaviour.
 
-Test on a local database with test job 10278 (setup in docs/parallel-work.md); never run anything against the environment's DATABASE_URL.
+Test on a local database with test job 12 (setup in docs/parallel-work.md); never run anything against the environment's DATABASE_URL.
 
 First step: don't build yet. Give me your approach: tables, pages, the order of small pull requests, anything in docs/plan.md to change, and any shared change you'd need from the Core session. Wait for my go-ahead.
 ```
@@ -154,7 +154,7 @@ You're joining the CBS Operations Hub rebuild as the Plan workstream (Phase 4), 
 
 Scope: Phase 4 of docs/plan.md: scope of works, programme (the only place a job's start date lives), drawings (with markups and task pins), pre-construction information, RFIs, variations, site surveys and enquiry prep (estimate-stage records). The pages open at Estimate are Scope, Programme, Drawings and Pre-con info; the rest unlock once the job is Approved (src/lib/jobs/menu.ts). Job pages go in their own route folders under src/app/(hub)/jobs/[jobNo]/<slug>/. Saving a record never completes its task; use the src/lib/tasks helper for anything task-related. The old hub is in /legacy (programme, scope, drawings, rfis, variations, site-survey and enquiry-prep workflows, cbs-pci.html); reference only, never copy docs/inventory.md section 5 behaviour (the old programme, RFI and variation pages use browser pop-ups: all prompts are in-app here).
 
-Test on a local database with test job 10278 (setup in docs/parallel-work.md); never run anything against the environment's DATABASE_URL.
+Test on a local database with test job 12 (setup in docs/parallel-work.md); never run anything against the environment's DATABASE_URL.
 
 First step: don't build yet. Give me your approach: tables, pages, the order of small pull requests, anything in docs/plan.md to change, and any shared change you'd need from the Core session. Wait for my go-ahead.
 ```
