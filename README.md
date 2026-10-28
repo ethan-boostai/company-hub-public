@@ -78,7 +78,7 @@ Everything that connects to a database refuses an address containing the live pr
 
 - Supabase project `cbs-hub-dev`, ref `fbfkwwaeigrggcdrduit`, London, free plan. All Vercel previews use it; live is only for production.
 - Locked down like live: RLS on every table, no policies, no public access. Only the app's server and the n8n sync role connect.
-- Only Core migrates it: `MIGRATE_ON_BUILD=1` is set for the `phase-1-jobs-tasks` preview branch only, not for every preview (docs/parallel-work.md).
+- Migrations run on each preview build (`MIGRATE_ON_BUILD=1` on Preview only).
 - Tests may use it: set `TEST_DEV_DATABASE_REF=fbfkwwaeigrggcdrduit` and `TEST_DATABASE_URL` to its pooler address.
 - A free project pauses after a week with no use; restore it from the Supabase dashboard.
 
