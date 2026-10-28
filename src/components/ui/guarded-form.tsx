@@ -1,7 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState, type ReactNode } from "react";
-import { useFormStatus } from "react-dom";
+import { createContext, startTransition, useActionState, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { REQUEST_KEY_FIELD, type ActionResult } from "@/lib/action-types";
 
 function newKey() {
@@ -11,6 +10,12 @@ function newKey() {
 // A form that can never save twice: every save carries a one-time key, so a double click or a
 // retried request sends the same key and the server refuses the second one. The key changes
 // when the form is edited or a save fails, so the next real save gets a fresh key.
+//
+// It submits through onSubmit, not the form's action prop: React resets a form with an action prop
+// after every save, even a refused one, which cleared everything the user typed. Here the fields are
+// kept when a save is refused and reset only after a successful save (as before).
+const PendingContext = createContext(false);
+
 export function GuardedForm<T>({
   action,
   onSaved,
@@ -28,9 +33,11 @@ export function GuardedForm<T>({
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setKey(newKey()), []);
 
-  const [state, formAction] = useActionState<ActionResult<T> | null, FormData>(async (prev, form) => {
+  const formRef = useRef<HTMLFormElement>(null);
+  const [state, formAction, pending] = useActionState<ActionResult<T> | null, FormData>(async (prev, form) => {
     const result = await action(form);
     if (result.ok) {
+      formRef.current?.reset();
       onSaved?.(result);
       return result;
     }
@@ -40,10 +47,23 @@ export function GuardedForm<T>({
   }, null);
 
   return (
-    <form action={formAction} onChange={() => setKey(newKey())} className={className} noValidate>
-      <input type="hidden" name={REQUEST_KEY_FIELD} value={key} />
-      {typeof children === "function" ? children(state) : children}
-      <FormMessage state={state} />
+    <form
+      ref={formRef}
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (pending) return;
+        const form = new FormData(e.currentTarget, (e.nativeEvent as SubmitEvent).submitter);
+        startTransition(() => formAction(form));
+      }}
+      onChange={() => setKey(newKey())}
+      className={className}
+      noValidate
+    >
+      <PendingContext.Provider value={pending}>
+        <input type="hidden" name={REQUEST_KEY_FIELD} value={key} />
+        {typeof children === "function" ? children(state) : children}
+        <FormMessage state={state} />
+      </PendingContext.Provider>
     </form>
   );
 }
@@ -59,7 +79,7 @@ function FormMessage({ state }: { state: ActionResult<unknown> | null }) {
 
 // Save button: disabled from the moment it is pressed until the server answers.
 export function SaveButton({ children = "Save", className = "" }: { children?: ReactNode; className?: string }) {
-  const { pending } = useFormStatus();
+  const pending = useContext(PendingContext);
   return (
     <button
       type="submit"

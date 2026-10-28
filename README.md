@@ -40,6 +40,8 @@ Builds never touch the database. Pages and the `data.ts` helpers they call read 
 
 ## Checks
 
+Tests never touch the live database. `tests/setup.ts` keeps `DATABASE_URL` (or `TEST_DATABASE_URL`) only if it is a local database or the dev project named in `TEST_DEV_DATABASE_REF`, and never the live project; otherwise it removes it and database tests skip. Run them with the local address, e.g. `DATABASE_URL=postgres://postgres@127.0.0.1:54329/cbs_hub npm test`.
+
 ```bash
 npm run lint && npm run typecheck && npm test
 ```
