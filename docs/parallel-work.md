@@ -5,7 +5,7 @@ How several Claude Code sessions build the hub at the same time without getting 
 ## Before a parallel session starts
 
 1. **Phase 0 is on `main`** (pull request #1 merged). Every workstream branches from `main` and needs the shared parts.
-2. **Dev database for previews.** Previews still share the live database. Until `cbs-hub-dev` exists and `MIGRATE_ON_BUILD=1` is set for Preview only, a preview build must not run migrations, so other sessions test their tables on a local database only (see "Local database" below). Their previews can show pages but not the new tables.
+2. **Dev database for previews.** Every preview uses the shared dev database `cbs-hub-dev` (never live). **Only Core applies migrations to it:** `MIGRATE_ON_BUILD=1` is set in Vercel for Core's branch (`phase-1-jobs-tasks`) only, not for other previews. Other sessions test their tables on a local database (see "Local database" below). Their previews show pages, and their new tables reach the dev database once Core's branch includes them (from `main`).
 3. Ethan merges every pull request. No session merges its own.
 
 ## Who owns what
@@ -78,7 +78,7 @@ Not in Registers, because these need jobs or other phases:
    - files and PDFs: `UploadFile` and `DocViewer` for files, `HousePdf` for every PDF.
 5. **Tasks:** never write to the `tasks` table directly; use the Core helper in `src/lib/tasks` once Phase 1 is on `main`. Saving a record never completes a task.
 6. **Before each pull request:** `git fetch origin main && git rebase origin/main`, then run `npm run lint && npm run typecheck && npm test` and a production build. Open the pull request with numbered test steps for Ethan.
-7. **Testing:** use a local database only, test job 12 and fake test data. Never run migrations or scripts against the environment's `DATABASE_URL`: it is the live database.
+7. **Testing:** use a local database only, test job 12 (the only ServiceM8 test job) and fake test data. Never run migrations or scripts against the environment's `DATABASE_URL`: it is the live database, and the hard block refuses it (README "Live database safety"). Never apply migrations to the shared dev database yourself, and never set `MIGRATE_ON_BUILD` for your branch: only Core migrates `cbs-hub-dev`.
 8. **n8n:** never change an existing workflow. A new workflow needs Ethan's OK and is named "CBS Hub - <thing>".
 9. **Approach first:** explain your approach for anything non-trivial and wait for Ethan's go-ahead (`CLAUDE.md`).
 10. **Secrets:** never in chat, code or commits.
