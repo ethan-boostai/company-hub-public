@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { db } from "@/lib/db";
+import { readDb } from "@/lib/db";
 import { PageHeader } from "@/components/shell/page-header";
 
 // Global search. Searches people for now; jobs, tasks and records are added as each phase lands.
@@ -8,7 +8,8 @@ async function Results({ searchParams }: { searchParams: Promise<{ q?: string }>
   const q = String((await searchParams).q || "").trim().slice(0, 100);
   if (!q) return <p className="text-sm text-muted">Type in the search box at the top.</p>;
   const like = `%${q.replace(/[\\%_]/g, (c) => `\\${c}`)}%`;
-  const people = await db()<{ id: string; name: string; role: string | null; active: boolean }[]>`
+  const sql = await readDb();
+  const people = await sql<{ id: string; name: string; role: string | null; active: boolean }[]>`
     select id, name, role, active from people
     where name ilike ${like} or role ilike ${like} or email ilike ${like}
     order by active desc, lower(name) limit 50`;

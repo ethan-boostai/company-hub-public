@@ -34,6 +34,10 @@ The local seed adds fake test people (Test Office One / Two, PIN 1234). It refus
 npm run dev
 ```
 
+## Database access rule
+
+Builds never touch the database. Pages and the `data.ts` helpers they call read through `readDb()` (in `src/lib/db.ts`), which marks the render as needing a live request; server actions and API routes run per request and use `db()`. If anything uses the database during `next build`, the build fails with a clear message, even on a machine that has a database.
+
 ## Checks
 
 ```bash

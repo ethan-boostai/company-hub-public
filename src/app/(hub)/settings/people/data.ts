@@ -1,5 +1,5 @@
 import "server-only";
-import { db } from "@/lib/db";
+import { readDb } from "@/lib/db";
 
 export type PersonRow = {
   id: number;
@@ -28,14 +28,16 @@ function toRow(r: Raw): PersonRow {
 }
 
 export async function listPeople(): Promise<PersonRow[]> {
-  const rows = await db()<Raw[]>`
+  const sql = await readDb();
+  const rows = await sql<Raw[]>`
     select id, name, role, mobile, email, active, can_sign_in, (pin_hash is not null or legacy_pin_hash is not null) as has_pin
     from people order by active desc, lower(name)`;
   return rows.map(toRow);
 }
 
 export async function loadPerson(id: number): Promise<PersonRow | null> {
-  const [r] = await db()<Raw[]>`
+  const sql = await readDb();
+  const [r] = await sql<Raw[]>`
     select id, name, role, mobile, email, active, can_sign_in, (pin_hash is not null or legacy_pin_hash is not null) as has_pin
     from people where id = ${id}`;
   return r ? toRow(r) : null;
