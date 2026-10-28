@@ -88,3 +88,20 @@ export function isoTime(v: unknown): string | null {
   if (!v) return null;
   return v instanceof Date ? v.toISOString() : String(v);
 }
+
+// Makes database values comparable with form values for the activity log (dates as YYYY-MM-DD,
+// times as ISO, ids as numbers).
+export function forLog(row: Record<string, unknown>): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const [k, val] of Object.entries(row)) {
+    if (val instanceof Date) out[k] = k.endsWith("_at") ? val.toISOString() : val.toISOString().slice(0, 10);
+    else if (typeof val === "string" && /^\d+$/.test(val) && (k.endsWith("_id") || k === "id")) out[k] = Number(val);
+    else out[k] = val;
+  }
+  return out;
+}
+
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export function emailError(v: string | null): string | null {
+  return v && !EMAIL.test(v) ? "That email address doesn't look right." : null;
+}

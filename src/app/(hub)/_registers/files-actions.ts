@@ -7,7 +7,10 @@ import type { ActionResult } from "@/lib/action-types";
 export type RecordFile = { id: number; name: string; mime: string; size: number; storage: string; by: string; at: string };
 
 // Tables whose records can hold files on the register pages.
-const TABLES = new Set(["vehicles", "vehicle_checks", "vehicle_services", "vehicle_accidents"]);
+const TABLES = new Set([
+  "vehicles", "vehicle_checks", "vehicle_services", "vehicle_accidents",
+  "subcontractors", "suppliers", "subcontractor_docs",
+]);
 
 // Files attached to one register record, newest first.
 export async function listRecordFiles(entityTable: string, entityId: number): Promise<ActionResult<RecordFile[]>> {
