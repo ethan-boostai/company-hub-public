@@ -254,6 +254,16 @@ files: belongs to one row anywhere via (entity_table, entity_id), plus job_id fo
 6. **Generic tasks** (no job) don't get file uploads.
 7. `docs/inventory.md` section 5 is binding: the rebuild never copies that old behaviour.
 
+### 3.6 Phase 1 decisions (Ethan, 28/10/2026)
+
+1. **Requirements are added only through + New task**: picker tiles grouped by stage (Estimate, Approved: Planning, Approved: on site, Completed), Other (one-off) at the top, Office tasks / On site tasks toggle. Tiles already on the job show On or Done, and tapping one opens that task. No requirements panel or on/off toggles on the job page. A requirement is taken off a job with "Remove from job" in its task (in-app "are you sure"; its files are kept).
+2. **Jobs list mirrors the old Jobs screen**: every active ServiceM8 folder as a tile in ServiceM8's order, plus "Booked / on site" (Work Orders with no folder) and "No folder" (Quote jobs with no folder). Tap a tile to show or hide it, remembered on the device; Enquiry, Reactive, Maintenance and Approved show by default; Show all / Default buttons. Search covers the folders shown; Enter opens a typed job number.
+3. **Unsuccessful jobs** are hidden from every folder, from "No folder", from the tile counts and from the list search by default. One "Show unsuccessful" toggle on the Jobs list shows them in whichever folder they're in, remembered on the device like the folder tiles. Typing a job number and pressing Enter still opens an Unsuccessful job. Global search always finds them.
+4. **ServiceM8 rules**: jobs are created in ServiceM8 only. New Quote jobs stay in No folder. A Work Order that drops out of its folder (when scheduled, or when the folder expires) goes back to the folder it was in: Approved, Part Approved, Reactive or Maintenance. The last kept folder is stored on the job. Hub folder changes set a one-year folder expiry. The ServiceM8 schedule is the only source for who's on site.
+5. **Folder and status changes**: any to any, no reason or warning. Each change adds a ServiceM8 job note naming who made it, with an optional note. Setting Completed doesn't close the job out; setting a closed-out job back to Estimate or Approved reopens it.
+6. **Sync**: ServiceM8 webhooks through a new n8n workflow, plus a nightly catch-up. No existing workflow is changed.
+7. **Test job**: Phase 1 tests use a test job created in ServiceM8. Its files go to its real job folder in SharePoint.
+
 ## 4. Migration (per area)
 
 1. Script in `scripts/migrate/<area>.ts` reads the n8n tables (through a read-only n8n export workflow or JSON exports) and upserts into Supabase on `legacy_id`.
