@@ -26,3 +26,9 @@ export function cleanFileName(name: string): string {
 
 // SharePoint folder for uploads. Phase 0 uses the test folder only; job folders come with Phase 1.
 export const UPLOAD_FOLDER = "CBS System/Hub uploads/Test";
+
+// Only the live site (Vercel production) may put files in real folders. Previews, local development
+// and tests always upload into the test folder, whatever folder was asked for (Ethan, 28/10/2026).
+export function uploadFolderFor(folder: string, env: Record<string, string | undefined> = process.env): string {
+  return env.VERCEL === "1" && env.VERCEL_ENV === "production" ? folder : UPLOAD_FOLDER;
+}
