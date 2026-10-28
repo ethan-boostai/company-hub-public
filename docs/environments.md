@@ -15,6 +15,9 @@ Checked against Vercel on 28/10/2026.
 **Rules that hold in every environment:**
 - **The live database is blocked everywhere except the live site.** `src/lib/live-guard.mjs` refuses any connection to the live database unless the code is running as Vercel production, or the switch-over flag is set (only with Ethan's approval). Tests and the local seed never use live.
 - **Only the live site writes to real SharePoint folders.** Outside production, every upload goes to `CBS System/Hub uploads/Test`, whatever folder the code asks for (`uploadFolderFor` in `src/lib/files/storage.ts`, applied when every upload starts in `src/lib/files/sharepoint.ts`).
+- **Every preview migrates the dev database.** `MIGRATE_ON_BUILD=1` is set for all preview branches, so each preview build applies any new migration files from its branch to `cbs-hub-dev` (Ethan, 28/10/2026). Because of that:
+  - never edit a migration file once it has been pushed, on any branch: add a new migration instead;
+  - the dev database holds test data only. It can be reset and rebuilt from `main` whenever needed (empty it, then run a preview build or `npm run db:migrate` from `main`).
 - **Preview builds create a test office user.** Each preview build creates or updates "Preview Admin" on the dev database, with `PREVIEW_ADMIN_PIN` as its PIN (`scripts/preview-admin.mjs`). Production builds skip this.
 
 ## Variables
@@ -29,7 +32,7 @@ Checked against Vercel on 28/10/2026.
 | `FILE_STORAGE` | `sharepoint` | `sharepoint` | `local` | Where uploads go. `local` writes to `.local/uploads` and is refused on Vercel. On previews, SharePoint uploads still go only to the test folder (see above). |
 | `TEAM_LINK_KEY` | set | set | any 16+ character string | The secret in the team app's link (`/team?k=…`). The app refuses every team request if it is missing or shorter than 16 characters. Changing it cuts off every old team link. |
 | `N8N_WEBHOOK_BASE` | not set | not set | not set | Optional. The n8n webhook address; defaults to `https://old-hub.example/webhook`. |
-| `LEGACY_PIN_SALT` | **not set** | not set | only for PIN tests | The fixed prefix the old hub used in its PIN hashes. Needed on Production only when people are imported with their old PINs: until it is set, an old PIN can't be accepted and those people need a new PIN set on the People page. |
+| `LEGACY_PIN_SALT` | not set yet | not set | only for PIN tests | The fixed prefix the old hub used in its PIN hashes. Set on Production at the People switch-over, with Ethan's OK, so people can sign in with their old PINs once. Until then an old PIN can't be accepted. |
 | `CBS_LIVE_DATABASE` | not set | must never be set | not set | Switch-over flag. Set to `switch-over` only with Ethan's approval, to run an import script against the live database. Remove it afterwards. |
 | `TEST_DATABASE_URL` | not used | not used | local (or dev) database | The database the tests use. `npm test` refuses anything but a local database, or the dev database named in `TEST_DEV_DATABASE_REF`. |
 | `TEST_DEV_DATABASE_REF` | not used | not used | `fbfkwwaeigrggcdrduit` (optional) | Lets the tests use the dev database. |
@@ -38,7 +41,7 @@ Checked against Vercel on 28/10/2026.
 
 Browser tests in `tests/e2e/` also read `BASE_URL` and `TEAM_KEY` from the shell. These are local only and never set in Vercel.
 
-## Things to tidy in Vercel
+## Notes
 
-- **"Development" copies:** Vercel also holds "Development" copies of `DATABASE_URL`, `APP_SECRET`, `N8N_FILES_KEY`, `FILE_STORAGE` and `TEAM_LINK_KEY`, unchanged since the project was set up. Nothing uses the Development environment today. If anyone runs `vercel env pull`, that `DATABASE_URL` may point at the live database; the live-database guard still refuses it. Point it at the dev database, or delete those copies.
-- **`LEGACY_PIN_SALT`** needs adding to Production before people are imported with their old PINs (see above).
+- **"Development" copies:** Vercel also holds "Development" copies of `DATABASE_URL`, `APP_SECRET`, `N8N_FILES_KEY`, `FILE_STORAGE` and `TEAM_LINK_KEY` from the first setup. They stay as they are (Ethan, 28/10/2026). Nothing uses the Development environment. If anyone runs `vercel env pull`, that `DATABASE_URL` may point at the live database; the live-database guard still refuses it.
+- **`LEGACY_PIN_SALT`** is added to Production at the People switch-over, with Ethan's OK (see above).
