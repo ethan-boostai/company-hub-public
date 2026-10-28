@@ -98,7 +98,7 @@ export function SharedPartsClient({
       </Card>
 
       <Card title="6. House PDF format">
-        <p className="text-sm text-muted mb-3">A sample document in the one house format every builder PDF uses (test job 10278).</p>
+        <p className="text-sm text-muted mb-3">A sample document in the one house format every builder PDF uses (test job 12).</p>
         <button type="button" onClick={() => setPdfOpen(true)} className="px-4 py-2 rounded-lg border border-dark font-semibold">Open sample PDF</button>
       </Card>
 
@@ -122,7 +122,7 @@ export function SharedPartsClient({
       />
 
       <DocViewer file={viewing} onClose={() => setViewing(null)} />
-      <DocViewer file={pdfOpen ? { id: 0, name: "Job 10278 - Sample document.pdf", mime: "application/pdf", url: "/api/pdf/sample" } : null} onClose={() => setPdfOpen(false)} />
+      <DocViewer file={pdfOpen ? { id: 0, name: "Job 12 - Sample document.pdf", mime: "application/pdf", url: "/api/pdf/sample" } : null} onClose={() => setPdfOpen(false)} />
     </div>
   );
 }
