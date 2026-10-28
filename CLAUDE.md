@@ -69,3 +69,4 @@ This repo replaces the original n8n-served hub (pages served from n8n webhooks o
 - Explain the approach before building anything non-trivial and wait for a go-ahead.
 - Small commits, one branch per feature.
 - The old n8n hub is reference only: read it, never change production n8n workflows without asking.
+- Parallel sessions: `docs/parallel-work.md` says who owns shared parts, schema and migrations, and the rules every session follows.
