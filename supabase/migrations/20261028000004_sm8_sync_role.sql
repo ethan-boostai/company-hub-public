@@ -5,13 +5,22 @@
 -- Created without a password (NOLOGIN); Ethan turns the login on with a password he chooses
 -- (README "ServiceM8 sync"). The three functions are in cbs_sync, which the Supabase API doesn't
 -- expose, and run with the owner's rights (security definer) and a fixed search_path.
+-- On Supabase migrations run as "postgres", which can create roles but isn't a superuser, so it
+-- can't name the SUPERUSER attribute at all. A new role is never a superuser; the check below
+-- stops the migration if this one somehow is.
 do $$
 begin
   if not exists (select 1 from pg_roles where rolname = 'cbs_n8n_sync') then
-    create role cbs_n8n_sync nologin;
+    create role cbs_n8n_sync nologin noinherit nocreatedb nocreaterole noreplication nobypassrls connection limit 5;
   end if;
 end $$;
-alter role cbs_n8n_sync nosuperuser nocreatedb nocreaterole noinherit noreplication nobypassrls connection limit 5;
+alter role cbs_n8n_sync nologin noinherit nocreatedb nocreaterole noreplication nobypassrls connection limit 5;
+do $$
+begin
+  if exists (select 1 from pg_roles where rolname = 'cbs_n8n_sync' and (rolsuper or rolbypassrls or rolcreaterole or rolcreatedb)) then
+    raise exception 'cbs_n8n_sync must not be a superuser or have any admin rights';
+  end if;
+end $$;
 alter role cbs_n8n_sync set statement_timeout = '15s';
 alter role cbs_n8n_sync set idle_in_transaction_session_timeout = '30s';
 
