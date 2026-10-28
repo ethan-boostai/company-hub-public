@@ -22,3 +22,22 @@ grant execute on function sm8_apply_records(text, jsonb) to cbs_n8n_sync;
 revoke all on function sm8_upsert_job(jsonb, jsonb), sm8_upsert_client(jsonb), sm8_upsert_contact(jsonb),
   sm8_upsert_staff(jsonb), sm8_upsert_booking(jsonb), sm8_upsert_folder(jsonb, int) from public;
 revoke all on function sm8_write_allowed(text) from public;
+
+-- The ServiceM8 allow lists (settings key 'sm8_sync') can't be changed by the hub. A change needs the
+-- session to opt in first, which only migrations and an approved direct change do:
+--   set local cbs.allow_sync_settings = 'on';  (inside a transaction), then the update.
+create or replace function settings_guard_sm8_sync() returns trigger
+language plpgsql as $$
+begin
+  if coalesce(current_setting('cbs.allow_sync_settings', true), '') <> 'on' then
+    raise exception 'The ServiceM8 allow lists can only be changed by an approved migration.';
+  end if;
+  return coalesce(new, old);
+end;
+$$;
+create trigger settings_sm8_sync_guard
+  before update or delete on settings
+  for each row when (old.key = 'sm8_sync') execute function settings_guard_sm8_sync();
+create trigger settings_sm8_sync_guard_insert
+  before insert on settings
+  for each row when (new.key = 'sm8_sync') execute function settings_guard_sm8_sync();

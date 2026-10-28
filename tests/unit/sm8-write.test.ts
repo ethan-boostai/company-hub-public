@@ -14,7 +14,9 @@ describe.skipIf(!local)("ServiceM8 write-back guard", async () => {
   beforeAll(async () => {
     await sql`insert into jobs (sm8_uuid, job_no, sm8_status) values ('guard-uuid-12', '9999912', 'Quote'), ('guard-uuid-13', '9999913', 'Quote')
               on conflict do nothing`;
+    await sql`select set_config('cbs.allow_sync_settings', 'on', false)`;
     await sql`update settings set value = jsonb_set(value, '{write_allow}', '["9999912"]') where key = 'sm8_sync'`;
+    await sql`select set_config('cbs.allow_sync_settings', '', false)`;
     vi.stubGlobal("fetch", fetchMock);
     vi.stubEnv("N8N_SM8_KEY", "test-key");
     vi.stubEnv("N8N_WEBHOOK_BASE", "https://n8n.example.test/webhook");
@@ -22,7 +24,9 @@ describe.skipIf(!local)("ServiceM8 write-back guard", async () => {
   afterEach(() => fetchMock.mockClear());
   afterAll(async () => {
     await sql`delete from jobs where sm8_uuid like 'guard-uuid-%'`;
+    await sql`select set_config('cbs.allow_sync_settings', 'on', false)`;
     await sql`update settings set value = jsonb_set(value, '{write_allow}', '["12"]') where key = 'sm8_sync'`;
+    await sql`select set_config('cbs.allow_sync_settings', '', false)`;
     vi.unstubAllGlobals();
     vi.unstubAllEnvs();
     await sql.end();

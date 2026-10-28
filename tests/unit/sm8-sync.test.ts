@@ -13,7 +13,12 @@ const MAINT = "01a15ea9-6031-79fe-9531-85247ade10bb";
 describe.skipIf(!local)("ServiceM8 sync (database functions)", () => {
   const sql = postgres(url, { prepare: false, max: 1, onnotice: () => {} });
   const apply = async (ev: unknown) => (await sql`select sm8_apply_event(${sql.json(ev as never)}) as r`)[0].r;
-  const setting = (v: object) => sql`update settings set value = ${sql.json(v as never)} where key = 'sm8_sync'`;
+  // Tests change the allow lists the way an approved migration does (the lock needs this opt-in).
+  const setting = async (v: object) => {
+    await sql`select set_config('cbs.allow_sync_settings', 'on', false)`;
+    await sql`update settings set value = ${sql.json(v as never)} where key = 'sm8_sync'`;
+    await sql`select set_config('cbs.allow_sync_settings', '', false)`;
+  };
   const job = async () => (await sql`select * from jobs where sm8_uuid = ${JOB}`)[0];
 
   beforeEach(async () => {

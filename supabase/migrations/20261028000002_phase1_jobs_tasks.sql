@@ -105,6 +105,7 @@ create table requirement_types (
   name text not null,
   stage text not null check (stage in ('estimate','approved_planning','approved_onsite','completed')),
   side text not null default 'office' check (side in ('office','site')),
+  repeatable boolean not null default false,   -- every pick makes a new task (else one per job: On / Done)
   active boolean not null default true,
   sort int,
   created_at timestamptz not null default now(),
@@ -176,6 +177,13 @@ create table tasks (
   drawing_pin jsonb,
   repeat text,
   last_done_on date,
+  is_repeat boolean not null default false,    -- from a repeatable requirement (many per job allowed)
+  repeat_no int,                               -- 1, 2, 3 ... for repeatable requirements on a job
+  -- Made by the system (e.g. daily pre-start per booked day from the ServiceM8 schedule). The key
+  -- makes re-runs safe: one task per key, ever. Picked tasks leave these empty.
+  system_key text unique,
+  generated_by text,
+  for_date date,
   created_at timestamptz not null default now(),
   created_by text,
   updated_at timestamptz,
@@ -185,7 +193,10 @@ create index tasks_job on tasks (job_id);
 create index tasks_open on tasks (status) where removed_at is null;
 create index tasks_assignee on tasks (assignee_id);
 -- One live task per requirement per job.
-create unique index tasks_job_req on tasks (job_id, req_key) where req_key is not null and removed_at is null;
+-- One live task per non-repeatable requirement per job (picked tasks; system tasks have their own key).
+create unique index tasks_job_req on tasks (job_id, req_key)
+  where req_key is not null and removed_at is null and not is_repeat and system_key is null;
+create index tasks_for_date on tasks (for_date) where for_date is not null;
 create trigger tasks_updated_at before update on tasks for each row execute function set_updated_at();
 
 -- ServiceM8 staff, for the schedule (who's booked on site).

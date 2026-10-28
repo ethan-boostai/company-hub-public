@@ -16,7 +16,7 @@ export type Sm8Write =
   | { action: "set_folder"; job_no: string; job_uuid: string; folder_uuid: string; days: number; note: string; by: string }
   | { action: "set_status"; job_no: string; job_uuid: string; status: string; note: string; by: string };
 
-// Only jobs in the 'sm8_sync' setting's write_allow list (test job 12 until the switch-over) may be
+// Only jobs in the database's ServiceM8 write allow list (test job 12 until the switch-over) may be
 // changed. Checked against the stored job, so the number and ServiceM8 id must belong together.
 export async function writeAllowed(jobNo: string, jobUuid: string): Promise<boolean> {
   const [r] = await db()<{ ok: boolean }[]>`
