@@ -93,6 +93,12 @@ Columns listed are the business columns; the standard columns from 3.1 are on ev
 - `lists text[]` — which pick-lists the person appears in. Replaces the 17 `in_*` booleans (`crew`, `tasks`, `rams`, `coshh`, `cphsp`, `checks`, `toolbox`, `permits`, `incidents`, `po`, `survey`, `diary`, `docs`, `director`, `sm8`, `service`).
 - `sm8_staff_uuid text` (ServiceM8 staff link, when known), `notes text`
 
+**Added during Phase 0 (needs Ethan's OK; small and infrastructure only):**
+- `people`: `legacy_pin_hash` (old hub PIN hash, checked once then cleared), `failed_pin_count` and `locked_until` (lock-out after 5 wrong PINs for 15 minutes).
+- `files.storage` also allows `local`, used only on a developer's machine; Vercel refuses it.
+- **request_keys** (new) — `key text primary key`, `person_id`, `created_at`. The server-side double-save guard: every save carries a one-time key and a second save with the same key is refused. Rows older than 7 days are cleared.
+- **schema_migrations** — which migration files have been applied.
+
 **sessions** (new) — `person_id → people`, `token_hash text unique`, `device text`, `created_at`, `last_seen_at`, `expires_at`, `revoked_at`. Office sign-in only; the onsite add-on has no sessions.
 
 **clients** (new, synced from ServiceM8) — `sm8_uuid text unique`, `name`, `address`, `phone`, `email`, `active`.
