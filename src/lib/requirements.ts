@@ -22,48 +22,49 @@ export type Requirement = {
   cdm?: boolean;             // CDM jobs only
   hidden?: boolean;          // not offered in + New task (always on, or added on a schedule)
   phase?: number;            // phase that builds its page (until then it's a plain task)
+  page?: string;             // job page that opens it: /jobs/<job no>/<page> (slug from src/lib/jobs/menu.ts)
 };
 
 export const REQUIREMENTS: Requirement[] = [
   { key: "survey", label: "Site survey", stage: "estimate", side: "site", category: "Survey", folder: "Surveys", phase: 4 },
-  { key: "pci", label: "Pre-construction information", stage: "estimate", side: "office", category: "H&S", folder: "CDM", phase: 4 },
-  { key: "rfis", label: "RFIs (info from client)", stage: "estimate", side: "office", category: "Client", folder: "RFIs", phase: 4 },
+  { key: "pci", label: "Pre-construction information", stage: "estimate", side: "office", category: "H&S", folder: "CDM", phase: 4, page: "pre-con" },
+  { key: "rfis", label: "RFIs (info from client)", stage: "estimate", side: "office", category: "Client", folder: "RFIs", phase: 4, page: "rfis" },
   { key: "docs", label: "Documentation (we supply)", stage: "estimate", side: "office", category: "Paperwork", folder: "Documents" },
   { key: "supplier_quotes", label: "Supplier quotes", stage: "estimate", side: "office", category: "Procurement", folder: "Quotes" },
   { key: "sub_quotes", label: "Subcontractor quotes", stage: "estimate", side: "office", category: "Procurement", folder: "Quotes" },
   { key: "estimate", label: "Estimate", stage: "estimate", side: "office", category: "Paperwork", folder: "Estimate" },
-  { key: "programme", label: "Programme", stage: "estimate", side: "office", category: "Paperwork", folder: "Programme", phase: 4 },
+  { key: "programme", label: "Programme", stage: "estimate", side: "office", category: "Paperwork", folder: "Programme", phase: 4, page: "programme" },
 
   { key: "client_po", label: "Client PO", stage: "approved_planning", side: "office", category: "Client" },
-  { key: "scope", label: "Scope of works", stage: "approved_planning", side: "office", category: "Paperwork", phase: 4 },
+  { key: "scope", label: "Scope of works", stage: "approved_planning", side: "office", category: "Paperwork", phase: 4, page: "scope" },
   { key: "extra_survey", label: "Additional surveys", stage: "approved_planning", side: "site", category: "Survey", folder: "Surveys", phase: 4 },
-  { key: "cphsp", label: "Construction phase plan", stage: "approved_planning", side: "office", category: "H&S", folder: "CDM", cdm: true, phase: 2 },
-  { key: "rams", label: "CBS RAMS", stage: "approved_planning", side: "office", category: "H&S", folder: "RAMS", phase: 2 },
-  { key: "sub_rams", label: "Subcontractor RAMS", stage: "approved_planning", side: "office", category: "Paperwork", folder: "RAMS", phase: 2 },
-  { key: "coshh", label: "CoSHH", stage: "approved_planning", side: "office", category: "H&S", phase: 2 },
-  { key: "supplier_pos", label: "Supplier POs", stage: "approved_planning", side: "office", category: "Procurement", folder: "Purchase orders", phase: 3 },
-  { key: "sub_pos", label: "Subcontractor POs", stage: "approved_planning", side: "office", category: "Procurement", folder: "Purchase orders", phase: 3 },
-  { key: "hire", label: "Hire plant", stage: "approved_planning", side: "office", category: "Procurement", folder: "Purchase orders", phase: 3 },
-  { key: "loadup", label: "Load-up (plant & materials)", stage: "approved_planning", side: "office", category: "Procurement", phase: 3 },
+  { key: "cphsp", label: "Construction phase plan", stage: "approved_planning", side: "office", category: "H&S", folder: "CDM", cdm: true, phase: 2, page: "cphsp" },
+  { key: "rams", label: "CBS RAMS", stage: "approved_planning", side: "office", category: "H&S", folder: "RAMS", phase: 2, page: "rams" },
+  { key: "sub_rams", label: "Subcontractor RAMS", stage: "approved_planning", side: "office", category: "Paperwork", folder: "RAMS", phase: 2, page: "rams" },
+  { key: "coshh", label: "CoSHH", stage: "approved_planning", side: "office", category: "H&S", phase: 2, page: "coshh" },
+  { key: "supplier_pos", label: "Supplier POs", stage: "approved_planning", side: "office", category: "Procurement", folder: "Purchase orders", phase: 3, page: "purchase-orders" },
+  { key: "sub_pos", label: "Subcontractor POs", stage: "approved_planning", side: "office", category: "Procurement", folder: "Purchase orders", phase: 3, page: "purchase-orders" },
+  { key: "hire", label: "Hire plant", stage: "approved_planning", side: "office", category: "Procurement", folder: "Purchase orders", phase: 3, page: "plant" },
+  { key: "loadup", label: "Load-up (plant & materials)", stage: "approved_planning", side: "office", category: "Procurement", phase: 3, page: "load-up" },
   { key: "reactive_estimate", label: "Reactive Estimate", stage: "approved_planning", side: "office", category: "Paperwork" },
   { key: "order_materials", label: "Order Materials", stage: "approved_planning", side: "office", category: "Procurement" },
 
   { key: "meetings", label: "Site meetings", stage: "approved_onsite", side: "office", category: "H&S", phase: 2 },
-  { key: "permits", label: "Permits to work", stage: "approved_onsite", side: "site", category: "H&S", folder: "Permits", cdm: true, phase: 2 },
-  { key: "inductions", label: "Site inductions", stage: "approved_onsite", side: "office", category: "H&S", folder: "Inductions", cdm: true, phase: 2 },
+  { key: "permits", label: "Permits to work", stage: "approved_onsite", side: "site", category: "H&S", folder: "Permits", cdm: true, phase: 2, page: "permits" },
+  { key: "inductions", label: "Site inductions", stage: "approved_onsite", side: "office", category: "H&S", folder: "Inductions", cdm: true, phase: 2, page: "sign-ons" },
   { key: "preuse", label: "Plant pre-use checks", stage: "approved_onsite", side: "site", category: "H&S", phase: 3 },
   { key: "sub_audit", label: "Subcontractor H&S audit", stage: "approved_onsite", side: "site", category: "H&S", phase: 3 },
-  { key: "diary", label: "Daily diary", stage: "approved_onsite", side: "office", category: "Paperwork", cdm: true, phase: 3 },
-  { key: "visitors", label: "Visitors log", stage: "approved_onsite", side: "office", category: "H&S", cdm: true, phase: 2 },
-  { key: "toolbox", label: "Toolbox talks", stage: "approved_onsite", side: "office", category: "H&S", folder: "Toolbox talks", hidden: true, phase: 2 },
-  { key: "inspections", label: "Inspections", stage: "approved_onsite", side: "office", category: "H&S", folder: "Inspections", hidden: true, phase: 2 },
-  { key: "site_inspection", label: "Site inspection", stage: "approved_onsite", side: "site", category: "H&S", folder: "Inspections", hidden: true, phase: 2 },
-  { key: "prestart", label: "Daily pre-start", stage: "approved_onsite", side: "site", category: "H&S", hidden: true, phase: 2 },
+  { key: "diary", label: "Daily diary", stage: "approved_onsite", side: "office", category: "Paperwork", cdm: true, phase: 3, page: "diary" },
+  { key: "visitors", label: "Visitors log", stage: "approved_onsite", side: "office", category: "H&S", cdm: true, phase: 2, page: "visitors" },
+  { key: "toolbox", label: "Toolbox talks", stage: "approved_onsite", side: "office", category: "H&S", folder: "Toolbox talks", hidden: true, phase: 2, page: "toolbox-talks" },
+  { key: "inspections", label: "Inspections", stage: "approved_onsite", side: "office", category: "H&S", folder: "Inspections", hidden: true, phase: 2, page: "inspections" },
+  { key: "site_inspection", label: "Site inspection", stage: "approved_onsite", side: "site", category: "H&S", folder: "Inspections", hidden: true, phase: 2, page: "inspections" },
+  { key: "prestart", label: "Daily pre-start", stage: "approved_onsite", side: "site", category: "H&S", hidden: true, phase: 2, page: "pre-starts" },
 
-  { key: "snagging", label: "Snagging", stage: "completed", side: "office", category: "Snag", phase: 3 },
-  { key: "costing", label: "Job costing", stage: "completed", side: "office", category: "Office", phase: 5 },
-  { key: "service_sheet", label: "Service sheet", stage: "completed", side: "office", category: "Office", phase: 5 },
-  { key: "closeout", label: "Close-out", stage: "completed", side: "office", category: "Office", phase: 5 },
+  { key: "snagging", label: "Snagging", stage: "completed", side: "office", category: "Snag", phase: 3, page: "snagging" },
+  { key: "costing", label: "Job costing", stage: "completed", side: "office", category: "Office", phase: 5, page: "costing" },
+  { key: "service_sheet", label: "Service sheet", stage: "completed", side: "office", category: "Office", phase: 5, page: "service-sheets" },
+  { key: "closeout", label: "Close-out", stage: "completed", side: "office", category: "Office", phase: 5, page: "close-out" },
 ];
 
 const BY_KEY = new Map(REQUIREMENTS.map((r) => [r.key, r]));
