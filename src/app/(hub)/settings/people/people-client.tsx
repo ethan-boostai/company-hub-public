@@ -6,13 +6,12 @@ import { CheckboxField, TextField } from "@/components/ui/fields";
 import { GuardedForm, SaveButton } from "@/components/ui/guarded-form";
 import { Drawer } from "@/components/ui/overlay";
 import { SearchBox } from "@/components/ui/search-box";
-import { SelectWithAdd } from "@/components/ui/select-with-add";
 import { markPersonLeft, savePerson, setPersonPin } from "./actions";
 import type { PersonRow } from "./data";
 
 type Editing = PersonRow | "new" | null;
 
-export function PeopleClient({ people: initial, roles, openId }: { people: PersonRow[]; roles: string[]; openId: number | null }) {
+export function PeopleClient({ people: initial, openId }: { people: PersonRow[]; openId: number | null }) {
   const [people, setPeople] = useState(initial);
   const [query, setQuery] = useState("");
   const [showLeft, setShowLeft] = useState(false);
@@ -84,7 +83,7 @@ export function PeopleClient({ people: initial, roles, openId }: { people: Perso
                   <>
                     {current && <input type="hidden" name="id" value={current.id} />}
                     <TextField label="Name" name="name" defaultValue={current?.name} error={err.name} autoComplete="off" required />
-                    <SelectWithAdd list="people.role" name="role" label="Role" options={roles} defaultValue={current?.role} />
+                    <TextField label="Role" name="role" defaultValue={current?.role} autoComplete="off" />
                     <TextField label="Mobile" name="mobile" type="tel" defaultValue={current?.mobile} />
                     <TextField label="Email" name="email" type="email" defaultValue={current?.email} error={err.email} spellCheck={false} />
                     <CheckboxField label="Can sign in to the hub (office)" name="can_sign_in" defaultChecked={current?.canSignIn} />

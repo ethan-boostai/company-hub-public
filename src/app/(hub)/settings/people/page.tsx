@@ -1,12 +1,11 @@
 import { Suspense } from "react";
 import { PageHeader } from "@/components/shell/page-header";
-import { getOptions } from "@/lib/select-options";
 import { listPeople } from "./data";
 import { PeopleClient } from "./people-client";
 
 async function PeopleLoader({ searchParams }: { searchParams: Promise<{ open?: string }> }) {
-  const [people, roles, sp] = await Promise.all([listPeople(), getOptions("people.role"), searchParams]);
-  return <PeopleClient people={people} roles={roles} openId={Number(sp.open) || null} />;
+  const [people, sp] = await Promise.all([listPeople(), searchParams]);
+  return <PeopleClient people={people} openId={Number(sp.open) || null} />;
 }
 
 export default function PeoplePage(props: PageProps<"/settings/people">) {

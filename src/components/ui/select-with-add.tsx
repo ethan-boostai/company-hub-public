@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import { useRouter } from "next/navigation";
 import { addSelectOption } from "@/app/actions/select-options";
 import { inputClass } from "./fields";
 
@@ -23,9 +24,12 @@ export function SelectWithAdd({
   required?: boolean;
 }) {
   const id = useId();
-  const [options, setOptions] = useState(() =>
-    defaultValue && !initial.includes(defaultValue) ? [...initial, defaultValue] : initial,
-  );
+  const router = useRouter();
+  // Options from the server, plus any added here before the page refreshes. After an add the page
+  // re-fetches its data, so every dropdown on the same list shows the new option.
+  const [added, setAdded] = useState<string[]>([]);
+  const options = [...initial];
+  for (const o of [...added, defaultValue]) if (o && !options.includes(o)) options.push(o);
   const [value, setValue] = useState(defaultValue);
   const [adding, setAdding] = useState(false);
   const [draft, setDraft] = useState("");
@@ -43,8 +47,9 @@ export function SelectWithAdd({
         return;
       }
       const v = r.data ?? draft.trim();
-      if (!options.includes(v)) setOptions([...options, v]);
+      if (!options.includes(v)) setAdded((a) => [...a, v]);
       setValue(v);
+      router.refresh();
       setAdding(false);
       setDraft("");
     } catch {

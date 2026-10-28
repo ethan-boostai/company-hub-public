@@ -98,6 +98,9 @@ try {
   await page.getByRole("button", { name: "Add", exact: true }).click();
   await page.waitForFunction((c) => document.querySelector("select[name=colour]")?.value === c, colour);
   check("dropdown adds a new option and selects it", true);
+  await page.reload({ waitUntil: "networkidle" });
+  const kept = await page.locator("select[name=colour] option").allTextContents();
+  check("a new dropdown option is saved for everyone (still there after a reload)", kept.includes(colour));
 
   const files = page.getByTestId("demo-files").locator("li");
   const fBefore = await files.filter({ hasNotText: "No test files yet." }).count();
@@ -117,9 +120,16 @@ try {
   const viewer = page.getByRole("dialog");
   await viewer.locator("img").waitFor();
   const imgOk = await viewer.locator("img").evaluate((i) => i.complete && i.naturalWidth > 0);
-  const full = await viewer.getByRole("link", { name: "Open full screen" }).getAttribute("target");
+  const fullLink = viewer.getByRole("link", { name: "Open full screen" });
+  const full = await fullLink.getAttribute("target");
   check("photo opens in-window with 'Open full screen' in a new tab", imgOk && full === "_blank");
   await shot(page, "05-viewer");
+  const [tab] = await Promise.all([ctx.waitForEvent("page"), fullLink.click()]);
+  await tab.waitForLoadState();
+  await tab.locator("img").waitFor({ timeout: 10000 });
+  const tabImg = await tab.locator("img").evaluate((i) => i.complete && i.naturalWidth > 0);
+  check("'Open full screen' shows the photo on a viewer page, not a download", tabImg && /\/files\/\d+$/.test(tab.url()), tab.url());
+  await tab.close();
   await viewer.getByRole("button", { name: "Close" }).click();
 
   const pdf = await page.request.get(`${BASE}/api/pdf/sample`);
@@ -133,6 +143,9 @@ try {
   await page.getByRole("button", { name: "Add person" }).click();
   const drawer = page.getByRole("dialog", { name: "Add person" });
   await drawer.getByLabel("Name").fill(name);
+  const roleTag = await drawer.getByLabel("Role").evaluate((el) => el.tagName);
+  check("Role is a plain text box", roleTag === "INPUT", roleTag);
+  await drawer.getByLabel("Role").fill("Test role");
   await drawer.getByLabel("Can sign in to the hub (office)").check();
   await page.waitForTimeout(300);
   await drawer.getByRole("button", { name: "Add person" }).dblclick();

@@ -254,6 +254,8 @@ files: belongs to one row anywhere via (entity_table, entity_id), plus job_id fo
 6. **Generic tasks** (no job) don't get file uploads.
 7. `docs/inventory.md` section 5 is binding: the rebuild never copies that old behaviour.
 
+**Phase 0 open items:** upload test with a file over 10 MB (Ethan, when a large drawing is to hand). People have no Role dropdown: Role is a plain text box; who appears in which pick-list comes from the per-person section ticks (`people.lists`), added as each section is built.
+
 ### 3.6 Phase 1 decisions (Ethan, 28/10/2026)
 
 1. **Requirements are added only through + New task**: picker tiles grouped by stage (Estimate, Approved: Planning, Approved: on site, Completed), Other (one-off) at the top, Office tasks / On site tasks toggle. Tiles already on the job show On or Done, and tapping one opens that task. No requirements panel or on/off toggles on the job page. A requirement is taken off a job with "Remove from job" in its task (in-app "are you sure"; its files are kept).
