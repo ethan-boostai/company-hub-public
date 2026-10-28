@@ -37,6 +37,8 @@ const dir = path.join(process.cwd(), "supabase", "migrations");
 try {
   if (onBuild) console.log(`Database migrations (${process.env.VERCEL_ENV || "build"}):`);
   await sql`create table if not exists schema_migrations (name text primary key, applied_at timestamptz not null default now())`;
+  // Locked like every other table: no Supabase API access (RLS on, no policies).
+  await sql`alter table schema_migrations enable row level security`;
   const done = new Set((await sql`select name from schema_migrations`).map((r) => r.name));
   const files = (await readdir(dir)).filter((f) => f.endsWith(".sql")).sort();
   let applied = 0;
