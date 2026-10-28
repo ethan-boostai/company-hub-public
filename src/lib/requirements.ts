@@ -19,7 +19,8 @@ export type Requirement = {
   side: Side;
   category: string;          // automatic task category
   folder?: string;           // SharePoint subfolder under Jobs/Job N (else Tasks)
-  cdm?: boolean;             // CDM jobs only
+  cdm?: boolean;             // CDM jobs only (locked on Project jobs)
+  cdmPrompt?: boolean;       // on every job, but only prompted for on CDM jobs (prompts come later)
   repeatable?: boolean;      // every pick makes a new task; otherwise one per job (tile shows On / Done)
   phase?: number;            // phase that builds its page (until then it's a plain task)
   page?: string;             // job page that opens it: /jobs/<job no>/<page> (slug from src/lib/jobs/menu.ts)
@@ -38,7 +39,7 @@ export const REQUIREMENTS: Requirement[] = [
   { key: "client_po", label: "Client PO", stage: "approved_planning", side: "office", category: "Client" },
   { key: "scope", label: "Scope of works", stage: "approved_planning", side: "office", category: "Paperwork", phase: 4, page: "scope" },
   { key: "extra_survey", label: "Additional surveys", stage: "approved_planning", side: "site", category: "Survey", folder: "Surveys", phase: 4, repeatable: true },
-  { key: "cphsp", label: "Construction phase plan", stage: "approved_planning", side: "office", category: "H&S", folder: "CDM", cdm: true, phase: 2, page: "cphsp" },
+  { key: "cphsp", label: "Construction phase plan", stage: "approved_planning", side: "office", category: "H&S", folder: "CDM", cdmPrompt: true, phase: 2, page: "cphsp" },
   { key: "rams", label: "CBS RAMS", stage: "approved_planning", side: "office", category: "H&S", folder: "RAMS", phase: 2, page: "rams" },
   { key: "sub_rams", label: "Subcontractor RAMS", stage: "approved_planning", side: "office", category: "Paperwork", folder: "RAMS", phase: 2, page: "rams" },
   { key: "coshh", label: "CoSHH", stage: "approved_planning", side: "office", category: "H&S", phase: 2, page: "coshh" },
@@ -56,7 +57,8 @@ export const REQUIREMENTS: Requirement[] = [
   { key: "sub_audit", label: "Subcontractor H&S audit", stage: "approved_onsite", side: "site", category: "H&S", phase: 3 },
   { key: "diary", label: "Daily diary", stage: "approved_onsite", side: "office", category: "Paperwork", cdm: true, phase: 3, page: "diary" },
   { key: "visitors", label: "Visitors log", stage: "approved_onsite", side: "office", category: "H&S", cdm: true, phase: 2, page: "visitors" },
-  { key: "toolbox", label: "Toolbox talks", stage: "approved_onsite", side: "office", category: "H&S", folder: "Toolbox talks", phase: 2, page: "toolbox-talks" },
+  { key: "toolbox", label: "Toolbox talks", stage: "approved_onsite", side: "site", category: "H&S", folder: "Toolbox talks", phase: 2, page: "toolbox-talks" },
+  // Inspections: CBS never inspect; the office uploads the contractor's report.
   { key: "inspections", label: "Inspections", stage: "approved_onsite", side: "office", category: "H&S", folder: "Inspections", phase: 2, page: "inspections" },
   { key: "site_inspection", label: "Site inspection", stage: "approved_onsite", side: "site", category: "H&S", folder: "Inspections", cdm: true, phase: 2, page: "inspections" },
   { key: "prestart", label: "Daily pre-start", stage: "approved_onsite", side: "site", category: "H&S", phase: 2, page: "pre-starts" },
