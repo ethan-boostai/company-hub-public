@@ -49,7 +49,10 @@ node tests/e2e/phase0.mjs
 ## Live database (Supabase)
 
 - `DATABASE_URL` is the Supabase "Transaction pooler" connection string (port 6543).
-- Apply migrations with `npm run db:migrate`. Where the database can't be reached directly (e.g. a sandbox that only allows HTTPS), use `supabase/setup/phase0-sql-editor.sql` in the Supabase SQL Editor instead; it records the migration so `db:migrate` skips it later. Migrations live in `supabase/migrations` and are tracked in `schema_migrations`; don't mix with `supabase db push`.
+- Migrations live in `supabase/migrations` and are tracked in `schema_migrations`; don't mix with `supabase db push`.
+- **Migrations run automatically on deploy.** Vercel runs `npm run vercel-build`, which applies any new migrations to that environment's `DATABASE_URL` and then builds. It only runs where the Vercel environment has `MIGRATE_ON_BUILD=1`. A failed migration fails the deploy, so the new code never goes live against an old database. A lock stops two builds applying the same migration at once.
+- **Every migration must keep the previous release working**: add tables and columns; remove or rename only in a later release once nothing uses the old one. The database changes just before new code goes live, and a Vercel instant rollback doesn't undo a migration.
+- By hand (local database): `npm run db:migrate`. `supabase/setup/phase0-sql-editor.sql` was the one-off first setup and is no longer needed.
 - First office user: `node scripts/add-person.mjs "Full Name" 1234`. Everyone else is added on the People page.
 
 ## Environment variables (Vercel)
@@ -64,4 +67,4 @@ The app never talks to Microsoft directly. The n8n workflow **CBS Hub - Files** 
 - `cbs-hub-files-info` returns a file's name, size, folder and web link (used to check an upload before it's recorded).
 - `cbs-hub-files-link` returns short-lived view and download links, fetched fresh each time a file is opened.
 
-All SharePoint calls go through the one "Graph Request" node, so the SharePoint credential can be swapped (e.g. to the app/service principal credential) in n8n with no app change. If SharePoint fails, the workflow emails an alert (at most one per 15 minutes) and the app shows "SharePoint isn't reachable right now". Phase 0 uploads go to `CBS System/Hub uploads/Test` only.
+All SharePoint calls go through the one "Graph Request" node, so the SharePoint credential is set in one place in n8n (the existing CBS Microsoft credential, kept permanently). If SharePoint fails, the workflow emails an alert (at most one per 15 minutes) and the app shows "SharePoint isn't reachable right now". Phase 0 uploads go to `CBS System/Hub uploads/Test` only.
