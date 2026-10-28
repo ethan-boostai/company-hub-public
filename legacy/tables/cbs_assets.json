@@ -1,0 +1,177 @@
+{
+  "table": "cbs_assets",
+  "n8n_id": "8CWS3fZeytjpf4HX",
+  "columns": [
+    {
+      "name": "asset_tag",
+      "type": "string"
+    },
+    {
+      "name": "assigned_to",
+      "type": "string"
+    },
+    {
+      "name": "category",
+      "type": "string"
+    },
+    {
+      "name": "due_back",
+      "type": "string"
+    },
+    {
+      "name": "hav_magnitude",
+      "type": "string"
+    },
+    {
+      "name": "hav_ref",
+      "type": "string"
+    },
+    {
+      "name": "hav_trigger_mins",
+      "type": "string"
+    },
+    {
+      "name": "last_service",
+      "type": "string"
+    },
+    {
+      "name": "location",
+      "type": "string"
+    },
+    {
+      "name": "make_model",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "next_service",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "out_job",
+      "type": "string"
+    },
+    {
+      "name": "out_since",
+      "type": "string"
+    },
+    {
+      "name": "out_with",
+      "type": "string"
+    },
+    {
+      "name": "purchased_on",
+      "type": "string"
+    },
+    {
+      "name": "serial_no",
+      "type": "string"
+    },
+    {
+      "name": "service_interval",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "test_tag_due",
+      "type": "string"
+    },
+    {
+      "name": "yard_status",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "name": "Plate compactor 16\"",
+      "category": "Plant and machinery",
+      "make_model": "Altrad Belle",
+      "serial_no": null,
+      "asset_tag": "CBS1001",
+      "location": "CBS Warehouse",
+      "assigned_to": "",
+      "purchased_on": null,
+      "service_interval": "None",
+      "last_service": null,
+      "next_service": null,
+      "test_tag_due": null,
+      "status": "In service",
+      "notes": "Compactor | Imported from asset records 05/10/2026",
+      "yard_status": "Out",
+      "out_job": "10148",
+      "out_with": "ZZ01ZZA - ZZ Person H",
+      "out_since": "2026-10-20",
+      "due_back": "2026-10-26",
+      "hav_ref": null,
+      "hav_magnitude": null,
+      "hav_trigger_mins": null,
+      "id": 1,
+      "createdAt": "2026-10-06T09:25:48.475Z",
+      "updatedAt": "2026-10-20T13:51:12.692Z"
+    },
+    {
+      "name": "Porto screed drive unit Honda GX160",
+      "category": "Plant and machinery",
+      "make_model": "Altrad Belle",
+      "serial_no": null,
+      "asset_tag": "CBS1002",
+      "location": "CBS Warehouse",
+      "assigned_to": "",
+      "purchased_on": null,
+      "service_interval": "None",
+      "last_service": null,
+      "next_service": null,
+      "test_tag_due": null,
+      "status": "In service",
+      "notes": "Vibrating Tamp Engine | Imported from asset records 05/10/2026",
+      "yard_status": null,
+      "out_job": null,
+      "out_with": null,
+      "out_since": null,
+      "due_back": null,
+      "hav_ref": null,
+      "hav_magnitude": null,
+      "hav_trigger_mins": null,
+      "id": 2,
+      "createdAt": "2026-10-06T09:25:48.475Z",
+      "updatedAt": "2026-10-06T09:25:48.475Z"
+    },
+    {
+      "name": "Chemical spill kit (grab bag)",
+      "category": "Safety equipment",
+      "make_model": "Altrad Belle",
+      "serial_no": null,
+      "asset_tag": "CBS1003",
+      "location": "CBS Warehouse",
+      "assigned_to": "",
+      "purchased_on": null,
+      "service_interval": "None",
+      "last_service": null,
+      "next_service": null,
+      "test_tag_due": null,
+      "status": "In service",
+      "notes": "Chemical spill kit | Imported from asset records 05/10/2026",
+      "yard_status": null,
+      "out_job": null,
+      "out_with": null,
+      "out_since": null,
+      "due_back": null,
+      "hav_ref": null,
+      "hav_magnitude": null,
+      "hav_trigger_mins": null,
+      "id": 3,
+      "createdAt": "2026-10-06T09:25:48.475Z",
+      "updatedAt": "2026-10-06T09:25:48.475Z"
+    }
+  ]
+}

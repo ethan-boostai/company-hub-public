@@ -1,0 +1,71 @@
+{
+  "table": "cbs_vehicle_checks",
+  "n8n_id": "WZid64FJ4not0CvS",
+  "columns": [
+    {
+      "name": "action",
+      "type": "string"
+    },
+    {
+      "name": "body_ok",
+      "type": "boolean"
+    },
+    {
+      "name": "checked_by",
+      "type": "string"
+    },
+    {
+      "name": "checked_on",
+      "type": "string"
+    },
+    {
+      "name": "defects",
+      "type": "string"
+    },
+    {
+      "name": "doc_url",
+      "type": "string"
+    },
+    {
+      "name": "extinguisher_ok",
+      "type": "boolean"
+    },
+    {
+      "name": "first_aid_ok",
+      "type": "boolean"
+    },
+    {
+      "name": "fluids_ok",
+      "type": "boolean"
+    },
+    {
+      "name": "lights_ok",
+      "type": "boolean"
+    },
+    {
+      "name": "odometer",
+      "type": "string"
+    },
+    {
+      "name": "restraints_ok",
+      "type": "boolean"
+    },
+    {
+      "name": "reviewed",
+      "type": "boolean"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "tyres_ok",
+      "type": "boolean"
+    },
+    {
+      "name": "vehicle",
+      "type": "string"
+    }
+  ],
+  "sample_rows": []
+}

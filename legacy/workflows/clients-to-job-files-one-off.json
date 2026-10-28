@@ -1,0 +1,645 @@
+{
+  "id": "UvaSqlT4JfmFqSzq",
+  "name": "CBS - Clients to Job Files (one-off)",
+  "active": false,
+  "isArchived": false,
+  "versionId": "00cfc590-eea9-4a06-88ad-9c5c7df1b3b7",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "createdAt": "2026-10-20T15:11:12.594Z",
+  "updatedAt": "2026-10-20T15:14:02.715Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Run Hook": {
+      "main": [
+        [
+          {
+            "node": "Seed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Seed": {
+      "main": [
+        [
+          {
+            "node": "List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List": {
+      "main": [
+        [
+          {
+            "node": "Collect",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect": {
+      "main": [
+        [
+          {
+            "node": "Crawl done?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crawl done?": {
+      "main": [
+        [
+          {
+            "node": "Hub Jobs",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hub Jobs": {
+      "main": [
+        [
+          {
+            "node": "Plan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Plan": {
+      "main": [
+        [
+          {
+            "node": "Dry run?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dry run?": {
+      "main": [
+        [
+          {
+            "node": "Dry Result",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Job Folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Job Folders": {
+      "main": [
+        [
+          {
+            "node": "Create Job Folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Job Folder": {
+      "main": [
+        [
+          {
+            "node": "Category Folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Category Folders": {
+      "main": [
+        [
+          {
+            "node": "Create Category Folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Category Folder": {
+      "main": [
+        [
+          {
+            "node": "Category List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Category List": {
+      "main": [
+        [
+          {
+            "node": "Get Category Folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Category Folder": {
+      "main": [
+        [
+          {
+            "node": "Copy List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Copy List": {
+      "main": [
+        [
+          {
+            "node": "Copy File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Copy File": {
+      "main": [
+        [
+          {
+            "node": "Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "a690d993-6220-4f99-b1ae-fcfb742d1dff",
+      "name": "Run Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        96
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-clients-import",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "webhookId": "69f321df-8361-4261-b1ae-6812f05746b3"
+    },
+    {
+      "id": "b08c82bf-d111-42ba-b92a-2bd70d2497da",
+      "name": "Seed",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        96
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{json:{done:false,url:'https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/Clients:/children?$top=999&$select=id,name,folder,file,size,lastModifiedDateTime,parentReference'}}];"
+      }
+    },
+    {
+      "id": "8bafee34-2f74-42ad-aa87-b26f404d0ba7",
+      "name": "List",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        96
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "batching": {
+            "batch": {
+              "batchInterval": 600,
+              "batchSize": 5
+            }
+          },
+          "pagination": {
+            "pagination": {
+              "paginationMode": "responseContainsNextURL",
+              "nextURL": "={{ $response.body[\"@odata.nextLink\"] }}",
+              "paginationCompleteWhen": "other",
+              "completeExpression": "={{ !$response.body[\"@odata.nextLink\"] }}"
+            }
+          },
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        }
+      }
+    },
+    {
+      "id": "cea07577-6534-4c96-b3f1-85c5eaac02f7",
+      "name": "Collect",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        32
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var out=[];$input.all().forEach(function(it){(it.json.value||[]).forEach(function(x){if(x.folder&&x.folder.childCount>0)out.push({json:{done:false,url:'https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/'+x.id+'/children?$top=999&$select=id,name,folder,file,size,lastModifiedDateTime,parentReference'}});});});if(!out.length)return [{json:{done:true}}];return out;"
+      }
+    },
+    {
+      "id": "4cd2b199-fa59-4924-8631-ed7a84e7a5ff",
+      "name": "Crawl done?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        96
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.done }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "bd0d48d4-e501-4206-80f1-37aa6bc30dc1",
+      "name": "Hub Jobs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1120,
+        96
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "https://old-hub.example/webhook/cbs-newjob-data",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 120000
+        }
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "d6a374c6-6a90-4083-a525-ebc4e3280107",
+      "name": "Plan",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        96
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var dry=String(($('Run Hook').first().json.query||{}).dry||'1')!=='0';\nvar hub=$('Hub Jobs').first().json;var refs={};\n(hub.clients||[]).forEach(function(c){(c.jobs||[]).forEach(function(j){var m=String(j.desc||'').match(/^\\s*(\\d{5})\\b/);if(m)refs[m[1]]={no:String(j.no),client:c.name.toLowerCase()};});});\nvar okmap={'zz client a':['zz client a'],'zz client p':['zz client p'],'zz client q':['zz client a - site 2','zz client p - zz client a site 2'],'zz client b':['zz client b'],'zz client c':['zz client c'],'zz client d':['zz client d'],'zz client e':['zz client e2','zz client e'],'zz client f':['zz client f'],'zz client g':['zz client g','zz client g school'],'zz client h':['zz client h'],'zz client i':['zz client i'],'zz client j':['zz client j'],'zz client k':['zz client k'],'zz client l ltd':['zz client l'],'zz client m':['zz client m'],'zz client n':['zz client n'],'zz client o':[],'zz client r':['zz client r']};\nfunction cat(n,e){var u=n.toUpperCase();\n if(/\\bQW\\b|\\bDD\\b|\\bRP\\b|QUOTE|ESTIMATE|PRICING|COSTING/.test(u))return 'Estimate';\n if(/\\bRAMS?\\b|METHOD STATEMENT/.test(u))return 'RAMS';\n if(/\\bP\\.?O\\b|PURCHASE.?ORDER/.test(u))return 'Purchase orders';\n if(/SURVEY|REPORT/.test(u))return 'Site Surveys';\n if(/DRAWING|\\bDWG\\b|LAYOUT|\\bGA\\b|-DR-|SK\\d|ELEVATION/.test(u)||e==='dwg'||e==='dxf')return 'Drawings';\n if(/DATA ?SHEET|\\bSDS\\b|\\bTDS\\b|ALTRO|SIKA|COLORCOAT|SOURCING|BDI /.test(u))return '';\n if(['pdf','xlsx','doc','docx'].indexOf(e)>=0)return 'Estimate';return '';}\nvar files=[],skipped={};function sk(k){skipped[k]=(skipped[k]||0)+1;}\nfor(var r=0;r<300;r++){var arr=null;try{arr=$('List').all(0,r);}catch(e){break;}if(!arr||!arr.length)break;\n arr.forEach(function(it){(it.json.value||[]).forEach(function(x){if(!x.file)return;\n  var m=String(x.name).match(/^(\\d{5})(?:r\\d+)?(?!\\d)/);if(!m||!refs[m[1]])return;var job=refs[m[1]];\n  var p=(x.parentReference&&x.parentReference.path)||'';try{p=decodeURIComponent(p);}catch(e){}p=p.replace(/^\\/drives\\/[^\\/]+\\/root:?\\/?/,'');\n  var top=(p.split('/')[1]||'').toLowerCase();var keys=okmap[top];if(keys&&!keys.some(function(k){return job.client.indexOf(k)>=0;})){sk('client folder mismatch');return;}\n  var em=String(x.name).match(/\\.([a-z0-9]{1,5})$/i);var e=em?em[1].toLowerCase():'';\n  if(e==='pub'||e==='lnk'){sk('pub/lnk');return;}\n  if(String(x.lastModifiedDateTime||'')<'2025-01-01'){sk('pre-2025');return;}\n  var c=cat(x.name,e);if(!c){sk('data sheet / unknown');return;}\n  files.push({json:{id:x.id,name:x.name,job:job.no,cat:c,src:p}});});});}\nvar byCat={},jobs={};files.forEach(function(f){byCat[f.json.cat]=(byCat[f.json.cat]||0)+1;jobs[f.json.job]=1;});\nif(dry)return [{json:{dry:true,files:files.length,jobs:Object.keys(jobs).length,byCat:byCat,skipped:skipped,sample:files.slice(0,15).map(function(f){return f.json.job+' | '+f.json.cat+' | '+f.json.name;})}}];\nreturn files;"
+      }
+    },
+    {
+      "id": "1d2ff941-8c5e-4abb-a94e-38eded45a4d8",
+      "name": "Dry run?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1568,
+        96
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.dry === true }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "579ddc8d-31af-4de5-af30-bbdfdc22179b",
+      "name": "Dry Result",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "e0917a42-29bf-4aad-a35d-814f62ebb367",
+      "name": "Job Folders",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1792,
+        192
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var s={};$input.all().forEach(function(i){s[i.json.job]=1;});return Object.keys(s).map(function(j){return {json:{job:j}};});"
+      }
+    },
+    {
+      "id": "5be3cf05-1def-4ab6-9613-2f1b7fd3d648",
+      "name": "Create Job Folder",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2016,
+        192
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/01ZZZZZZ000000000000000000000000H6/children",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ name: \"Job \" + $json.job, folder: {}, \"@microsoft.graph.conflictBehavior\": \"fail\" }) }}",
+        "options": {
+          "batching": {
+            "batch": {
+              "batchInterval": 800,
+              "batchSize": 1
+            }
+          },
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "d5f796ca-9fc3-44a3-ab1e-18b3050d6235",
+      "name": "Category Folders",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2240,
+        192
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var s={};$('Plan').all().forEach(function(i){s[i.json.job+'|'+i.json.cat]=1;});return Object.keys(s).map(function(k){var a=k.split('|');return {json:{job:a[0],cat:a[1]}};});"
+      }
+    },
+    {
+      "id": "8e40cda4-a20a-49a3-8b3d-5ca9d7f92199",
+      "name": "Create Category Folder",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2464,
+        192
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ \"https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/CBS System/Operations/Jobs/Job \" + $json.job + \":/children\" }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ name: $json.cat, folder: {}, \"@microsoft.graph.conflictBehavior\": \"fail\" }) }}",
+        "options": {
+          "batching": {
+            "batch": {
+              "batchInterval": 800,
+              "batchSize": 1
+            }
+          },
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "7c050f8b-18c5-4237-8095-a48b519efa9a",
+      "name": "Category List",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2688,
+        192
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return $('Category Folders').all().map(function(i){return {json:i.json};});"
+      }
+    },
+    {
+      "id": "e98ff509-9c5b-4357-add4-76631e819027",
+      "name": "Get Category Folder",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2912,
+        192
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ \"https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/CBS System/Operations/Jobs/Job \" + $json.job + \"/\" + $json.cat + \"?$select=id,name\" }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "batching": {
+            "batch": {
+              "batchInterval": 600,
+              "batchSize": 1
+            }
+          },
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "cc389a28-a8d3-46a4-a1da-a2a0f6cfd5b8",
+      "name": "Copy List",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3136,
+        192
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var cl=$('Category List').all(),got=$input.all(),map={};cl.forEach(function(c,i){var r=got[i]&&got[i].json;if(r&&r.id)map[c.json.job+'|'+c.json.cat]=r.id;});var out=[],miss=0;$('Plan').all().forEach(function(f){var pid=map[f.json.job+'|'+f.json.cat];if(!pid){miss++;return;}out.push({json:{id:f.json.id,pid:pid,job:f.json.job,cat:f.json.cat,name:'Job '+f.json.job+' - '+f.json.name}});});if(!out.length)return [{json:{none:true,miss:miss}}];return out;"
+      }
+    },
+    {
+      "id": "595deb38-7c58-40bb-af96-c8ee20dcd1b8",
+      "name": "Copy File",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3360,
+        192
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ \"https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/\" + $json.id + \"/copy?@microsoft.graph.conflictBehavior=fail\" }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ parentReference: { driveId: \"b!ZZ-example-drive-id\", id: $json.pid }, name: $json.name }) }}",
+        "options": {
+          "batching": {
+            "batch": {
+              "batchInterval": 1500,
+              "batchSize": 1
+            }
+          },
+          "response": {
+            "response": {
+              "neverError": true,
+              "fullResponse": true,
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 60000
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "307abd71-8880-41b1-86db-e55f588220f9",
+      "name": "Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3584,
+        192
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var src=$('Copy List').all(),res=$input.all(),ok=0,fail=[];src.forEach(function(s,i){var r=res[i]&&res[i].json||{};var sc=Number(r.statusCode||0);if(sc===202||sc===200)ok++;else fail.push(s.json.job+' | '+s.json.cat+' | '+s.json.name+' | '+(sc||'no reply')+' '+String(r.body||'').slice(0,120));});return [{json:{requested:src.length,accepted:ok,failed:fail.length,failures:fail.slice(0,100)}}];"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": null,
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "One-off: copies confident Clients-folder documents (job number at start of name, right client folder, 2025+, no .pub/.lnk/data sheets) into CBS System/Operations/Jobs/Job N/<Category> as 'Job N - name'. GET cbs-clients-import?dry=1 previews; dry=0 copies.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

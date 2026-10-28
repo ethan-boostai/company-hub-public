@@ -1,0 +1,142 @@
+{
+  "table": "cbs_form_templates",
+  "n8n_id": "HHZAwIIwzII5kCDv",
+  "columns": [
+    {
+      "name": "doc_ref",
+      "type": "string"
+    },
+    {
+      "name": "footer",
+      "type": "string"
+    },
+    {
+      "name": "header_json",
+      "type": "string"
+    },
+    {
+      "name": "history",
+      "type": "string"
+    },
+    {
+      "name": "intro",
+      "type": "string"
+    },
+    {
+      "name": "items_json",
+      "type": "string"
+    },
+    {
+      "name": "kind",
+      "type": "string"
+    },
+    {
+      "name": "prepared_on",
+      "type": "string"
+    },
+    {
+      "name": "refs",
+      "type": "string"
+    },
+    {
+      "name": "review_on",
+      "type": "string"
+    },
+    {
+      "name": "sort",
+      "type": "number"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "title",
+      "type": "string"
+    },
+    {
+      "name": "tkey",
+      "type": "string"
+    },
+    {
+      "name": "updated_at",
+      "type": "string"
+    },
+    {
+      "name": "updated_by",
+      "type": "string"
+    },
+    {
+      "name": "version",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "tkey": "tower",
+      "kind": "preuse",
+      "title": "Tower Scaffold",
+      "doc_ref": "CBS-PU-01",
+      "version": "1.0",
+      "prepared_on": "2026-10-09",
+      "review_on": "2027-10-09",
+      "status": "Active",
+      "header_json": "[{\"k\": \"asset\", \"l\": \"Tower ID / make / model\", \"t\": \"asset\"}, {\"k\": \"height\", \"l\": \"Platform height\", \"t\": \"text\"}, {\"k\": \"insp_ref\", \"l\": \"Inspection report ref\", \"t\": \"text\"}, {\"k\": \"last_insp\", \"l\": \"Last inspection\", \"t\": \"date\"}, {\"k\": \"rams\", \"l\": \"Task / RAMS ref\", \"t\": \"text\"}]",
+      "items_json": "[{\"id\": \"1\", \"text\": \"Tower suitable for task; manufacturer instructions available; users competent.\"}, {\"id\": \"2\", \"text\": \"Competent-person assembly inspection completed; required inspection record current.\"}, {\"id\": \"3\", \"text\": \"Complete, compatible components; no bent frames, cracks, corrosion or missing parts.\"}, {\"id\": \"4\", \"text\": \"Firm, level supporting surface; no improvised brick/block supports or nearby voids.\"}, {\"id\": \"5\", \"text\": \"Tower upright and level; base plates/castors supported; castor brakes locked.\"}, {\"id\": \"6\", \"text\": \"Adjustable legs, locking pins and frame connections secure within permitted limits.\"}, {\"id\": \"7\", \"text\": \"All required horizontal/diagonal braces fitted correctly and fully locked.\"}, {\"id\": \"8\", \"text\": \"Stabilisers, outriggers, ties or ballast fitted as specified for this configuration.\"}, {\"id\": \"9\", \"text\": \"Platforms secure, undamaged and clear; trapdoors and platform locks work correctly.\"}, {\"id\": \"10\", \"text\": \"Complete guardrails, intermediate rails and toe boards fitted to working platforms.\"}, {\"id\": \"11\", \"text\": \"Internal access provided and secure; trapdoor access usable without unsafe climbing.\"}, {\"id\": \"12\", \"text\": \"Height/configuration and planned people, materials and loads within stated limits.\"}, {\"id\": \"13\", \"text\": \"Wind/weather acceptable for manufacturer limits; no strong winds or slippery decks.\"}, {\"id\": \"14\", \"text\": \"Power lines, overhead obstructions, traffic and falling-object risks controlled.\"}, {\"i...[truncated]",
+      "intro": "Complete before use. Pass = satisfactory; Fail = defect/unsafe; N/A = not applicable (give the reason). Any Fail or uncertainty: STOP, prevent use and report to the supervisor.",
+      "footer": "Recheck after moving or changed conditions. This is not the formal scaffold inspection report. All towers need inspection after assembly and at suitable intervals; construction towers with a possible fall of 2 m or more require inspection at least every 7 days. Arrange inspection after events affecting safety. If failed: competent person must rectify and authorise release; complete a new pre-use check.",
+      "refs": "HSE: Tower scaffolds",
+      "sort": 1,
+      "updated_by": "Ethan",
+      "updated_at": "2026-10-12T00:00:00Z",
+      "history": "[{\"at\": \"2026-10-12T00:00:00Z\", \"by\": \"Ethan\", \"v\": \"1.0\", \"note\": \"Created\"}]",
+      "id": 1,
+      "createdAt": "2026-10-12T08:31:25.949Z",
+      "updatedAt": "2026-10-12T08:31:25.949Z"
+    },
+    {
+      "tkey": "ladder",
+      "kind": "preuse",
+      "title": "Ladders & Stepladders",
+      "doc_ref": "CBS-PU-02",
+      "version": "1.0",
+      "prepared_on": "2026-10-09",
+      "review_on": "2027-10-09",
+      "status": "Active",
+      "header_json": "[{\"k\": \"asset\", \"l\": \"Ladder ID / make\", \"t\": \"asset\"}, {\"k\": \"type\", \"l\": \"Type\", \"t\": \"select\", \"o\": [\"Leaning ladder\", \"Extension ladder\", \"Stepladder\", \"Combination ladder\"], \"req\": true}, {\"k\": \"length\", \"l\": \"Length\", \"t\": \"text\"}, {\"k\": \"insp_ref\", \"l\": \"Detailed inspection ref / date\", \"t\": \"text\"}, {\"k\": \"location\", \"l\": \"Work location\", \"t\": \"text\"}, {\"k\": \"rams\", \"l\": \"Task / RAMS ref\", \"t\": \"text\"}]",
+      "items_json": "[{\"id\": \"1\", \"text\": \"Task assessment confirms ladder is suitable for low-risk, short-duration work.\"}, {\"id\": \"2\", \"text\": \"User competent; instructions available; correct ladder type, reach and load rating.\"}, {\"id\": \"3\", \"text\": \"Detailed visual inspection current under CBS arrangements; no unresolved defects.\"}, {\"id\": \"4\", \"text\": \"Stiles straight and sound; no bends, cracks, splitting or serious corrosion.\"}, {\"id\": \"5\", \"text\": \"Rungs/steps present, secure and undamaged; no contamination or slippery surfaces.\"}, {\"id\": \"6\", \"text\": \"Feet present, secure, clean and unworn; appropriate grip for the supporting surface.\"}, {\"id\": \"7\", \"text\": \"Braces, hinges, rivets and fixings secure; no unauthorised repairs or alterations.\"}, {\"id\": \"8\", \"text\": \"Extension locks/catches engage; ropes/pulleys sound; overlap meets instructions.\", \"show_if\": {\"type\": [\"Extension ladder\", \"Combination ladder\"]}}, {\"id\": \"9\", \"text\": \"Stepladder platform sound; spreaders/restraints fully open and locked as designed.\", \"show_if\": {\"type\": [\"Stepladder\", \"Combination ladder\"]}}, {\"id\": \"10\", \"text\": \"Firm, level, clean base; all feet supported; no makeshift packing or unstable objects.\"}, {\"id\": \"11\", \"text\": \"Leaning ladder set at approximately 75 degrees (1 out for every 4 up).\", \"show_if\": {\"type\": [\"Leaning ladder\", \"Extension ladder\", \"Combination ladder\"]}}, {\"id\": \"12\", \"text\": \"Leaning ladder secured against slipping, preferably tied at both stiles.\", \"show_if\": {\"type\": [\"Leaning ladde...[truncated]",
+      "intro": "Complete before use. Pass = satisfactory; Fail = defect/unsafe; N/A = not applicable (give the reason). Any Fail or uncertainty: STOP, prevent use and report to the supervisor.",
+      "footer": "User to check before first use each working day and again after a drop, relocation or other change that could affect safety. This form does not replace periodic detailed visual inspections. If failed: competent person must rectify and authorise release; complete a new pre-use check.",
+      "refs": "HSE: Ladder pre-use checks | HSE: Safe use of ladders",
+      "sort": 2,
+      "updated_by": "Ethan",
+      "updated_at": "2026-10-12T00:00:00Z",
+      "history": "[{\"at\": \"2026-10-12T00:00:00Z\", \"by\": \"Ethan\", \"v\": \"1.0\", \"note\": \"Created\"}]",
+      "id": 2,
+      "createdAt": "2026-10-12T08:31:25.949Z",
+      "updatedAt": "2026-10-12T08:31:25.949Z"
+    },
+    {
+      "tkey": "mewp",
+      "kind": "preuse",
+      "title": "MEWP - Boom / Scissor Lift",
+      "doc_ref": "CBS-PU-03",
+      "version": "1.1",
+      "prepared_on": "2026-10-12",
+      "review_on": "2027-10-09",
+      "status": "Active",
+      "header_json": "[{\"k\": \"asset\", \"l\": \"Asset / make / model\", \"t\": \"asset\", \"allow_hire\": true}, {\"k\": \"mtype\", \"l\": \"Machine type\", \"t\": \"select\", \"o\": [\"Scissor lift\", \"Boom lift\", \"Vertical mast\"], \"req\": true}, {\"k\": \"hours\", \"l\": \"Hours\", \"t\": \"text\"}, {\"k\": \"loler\", \"l\": \"Thorough exam ref / next due\", \"t\": \"text\"}, {\"k\": \"hire_co\", \"l\": \"Hire company (if hired)\", \"t\": \"text\"}, {\"k\": \"on_hire\", \"l\": \"Date on hire\", \"t\": \"date\"}, {\"k\": \"rams\", \"l\": \"Task / RAMS ref\", \"t\": \"text\"}]",
+      "items_json": "[{\"id\": \"1\", \"text\": \"Operator trained for the category (IPAF), authorised and familiar with this model.\", \"section\": \"Documentation and operator\"}, {\"id\": \"2\", \"text\": \"Thorough examination certificate in date (within 6 months) and service status current.\"}, {\"id\": \"3\", \"text\": \"Manufacturer's operator manual is on the machine.\"}, {\"id\": \"4\", \"text\": \"Wheel nuts and retainers are secure, with none loose, damaged or missing.\", \"section\": \"Wheels and tyres\"}, {\"id\": \"5\", \"text\": \"Tyres or tracks are sound at the correct pressure, with no cuts, splits, exposed braiding or damaged rims.\"}, {\"id\": \"6\", \"text\": \"Engine oil, coolant and fuel are at the correct levels, with no leaks around the engine.\", \"section\": \"Engine and power\"}, {\"id\": \"7\", \"text\": \"Battery electrolyte, security and charging plug are sound; no unsafe charging or refuelling.\"}, {\"id\": \"8\", \"text\": \"Hydraulic fluid is at the correct level.\", \"section\": \"Hydraulics, hoses and cables\"}, {\"id\": \"9\", \"text\": \"No leaks at hoses, pipe connections, rams or cylinders.\"}, {\"id\": \"10\", \"text\": \"Hoses and cables are secure, with no cuts, chafing or bulges.\"}, {\"id\": \"11\", \"text\": \"Power track and cable trays are free from damage and debris.\"}, {\"id\": \"12\", \"text\": \"Chassis and boom/scissor pack show no damage, misalignment or corrosion.\", \"section\": \"Structure\"}, {\"id\": \"13\", \"text\": \"There are no weld cracks.\"}, {\"id\": \"14\", \"text\": \"Pins and retainers are secure, with no signs of wear.\"}, ...[truncated]",
+      "intro": "Complete before use. Pass = satisfactory; Fail = defect/unsafe; N/A = not applicable (give the reason). Any Fail or uncertainty: STOP, prevent use and report to the supervisor.",
+      "footer": "Complete daily before use; repeat after changes affecting safety. Perform function tests only as instructed by the manufacturer in a safe area. Do not bypass safety devices. This is not a LOLER examination (normally 6-monthly for lifting people, or per examination scheme). Hired MEWPs: weekly supervisor sign-off required while on hire. If failed: competent person must rectify and authorise release; complete a new pre-use check.",
+      "refs": "HSE: MEWPs | HSE: Lifting people",
+      "sort": 3,
+      "updated_by": "Ethan",
+      "updated_at": "2026-10-12T00:00:00Z",
+      "history": "[{\"at\": \"2026-10-12T00:00:00Z\", \"by\": \"Ethan\", \"v\": \"1.1\", \"note\": \"Created\"}]",
+      "id": 3,
+      "createdAt": "2026-10-12T08:31:25.949Z",
+      "updatedAt": "2026-10-12T08:31:25.949Z"
+    }
+  ]
+}

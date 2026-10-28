@@ -1,0 +1,55 @@
+{
+  "table": "cbs_scaffold_insp",
+  "n8n_id": "lMecsHQvsqOwDED3",
+  "columns": [
+    {
+      "name": "cisrs_card",
+      "type": "string"
+    },
+    {
+      "name": "company",
+      "type": "string"
+    },
+    {
+      "name": "inspected_on",
+      "type": "string"
+    },
+    {
+      "name": "inspector",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "next_due",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "report_url",
+      "type": "string"
+    },
+    {
+      "name": "requested_by",
+      "type": "string"
+    },
+    {
+      "name": "requested_on",
+      "type": "string"
+    },
+    {
+      "name": "result",
+      "type": "string"
+    },
+    {
+      "name": "site",
+      "type": "string"
+    }
+  ],
+  "sample_rows": []
+}

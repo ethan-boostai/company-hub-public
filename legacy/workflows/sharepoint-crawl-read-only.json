@@ -1,0 +1,240 @@
+{
+  "id": "voGONRD39vL0mjWo",
+  "name": "CBS - SharePoint Crawl (read only)",
+  "active": false,
+  "isArchived": false,
+  "versionId": "73b9db5f-839f-4254-95cd-cbeb6b720fc8",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "createdAt": "2026-10-20T14:52:04.974Z",
+  "updatedAt": "2026-10-20T14:52:04.974Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Crawl Hook": {
+      "main": [
+        [
+          {
+            "node": "Seed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Seed": {
+      "main": [
+        [
+          {
+            "node": "List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List": {
+      "main": [
+        [
+          {
+            "node": "Collect",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect": {
+      "main": [
+        [
+          {
+            "node": "Done?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Done?": {
+      "main": [
+        [
+          {
+            "node": "Inventory",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "a6d9c127-5ab9-40c2-800b-6c2282accfca",
+      "name": "Crawl Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        80
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-sp-crawl",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "webhookId": "71830f5a-f86f-45b8-b8e7-d7be424b2dae"
+    },
+    {
+      "id": "2415225e-052e-4e85-98ed-5e19e1628a16",
+      "name": "Seed",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        80
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var q=$input.first().json.query||{};var path=String(q.path||'Clients').trim().replace(/^\\/+|\\/+$/g,'');var D='b!ZZ-example-drive-id';return [{json:{done:false,url:'https://graph.microsoft.com/v1.0/drives/'+D+'/root:/'+path.split('/').map(encodeURIComponent).join('/')+':/children?$top=999&$select=id,name,folder,file,size,lastModifiedDateTime,parentReference'}}];"
+      }
+    },
+    {
+      "id": "0ab86f04-1d99-4b7c-88d4-46fffbf32c6d",
+      "name": "List",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        80
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 10,
+              "batchInterval": 300
+            }
+          },
+          "pagination": {
+            "pagination": {
+              "paginationMode": "responseContainsNextURL",
+              "nextURL": "={{ $response.body[\"@odata.nextLink\"] }}",
+              "paginationCompleteWhen": "other",
+              "completeExpression": "={{ !$response.body[\"@odata.nextLink\"] }}"
+            }
+          },
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        }
+      }
+    },
+    {
+      "id": "797cd110-7ff6-4bcc-81a8-1c04ba53664e",
+      "name": "Collect",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var D='b!ZZ-example-drive-id';var out=[];$input.all().forEach(function(it){(it.json.value||[]).forEach(function(x){if(x.folder&&x.folder.childCount>0)out.push({json:{done:false,url:'https://graph.microsoft.com/v1.0/drives/'+D+'/items/'+x.id+'/children?$top=999&$select=id,name,folder,file,size,lastModifiedDateTime,parentReference'}});});});if(!out.length)return [{json:{done:true}}];return out;"
+      }
+    },
+    {
+      "id": "4c450fa2-6639-4011-a3f4-43a5cee5239e",
+      "name": "Done?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        80
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.done }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "8506d73d-c837-45ec-ab90-54eb82989625",
+      "name": "Inventory",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        80
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var files=[],errs=0,pages=0;for(var r=0;r<200;r++){var arr=null;try{arr=$('List').all(0,r);}catch(e){break;}if(!arr||!arr.length)break;arr.forEach(function(it){pages++;if(it.json.error)errs++;(it.json.value||[]).forEach(function(x){if(!x.file)return;var p=(x.parentReference&&x.parentReference.path)||'';try{p=decodeURIComponent(p);}catch(e){}p=p.replace(/^\\/drives\\/[^/]+\\/root:?\\/?/,'');var m=String(x.name).match(/\\.([a-z0-9]{1,5})$/i);files.push({p:p,n:x.name,e:m?m[1].toLowerCase():'',s:x.size,d:String(x.lastModifiedDateTime||'').slice(0,10),id:x.id});});});}return [{json:{pages:pages,errors:errs,count:files.length,files:files}}];"
+      },
+      "executeOnce": true
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": null,
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Read-only: GET cbs-sp-crawl?path=Clients walks every subfolder under a SharePoint path in CBS Shared Documents and returns a file inventory (path, name, type, size, modified).",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

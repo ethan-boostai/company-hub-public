@@ -1,0 +1,59 @@
+{
+  "table": "cbs_sub_jobdocs",
+  "n8n_id": "0KkYwJ3A3fi1wGXd",
+  "columns": [
+    {
+      "name": "client",
+      "type": "string"
+    },
+    {
+      "name": "company",
+      "type": "string"
+    },
+    {
+      "name": "doc_type",
+      "type": "string"
+    },
+    {
+      "name": "docs_json",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "received_on",
+      "type": "string"
+    },
+    {
+      "name": "requested_on",
+      "type": "string"
+    },
+    {
+      "name": "reviewed_by",
+      "type": "string"
+    },
+    {
+      "name": "reviewed_on",
+      "type": "string"
+    },
+    {
+      "name": "site",
+      "type": "string"
+    },
+    {
+      "name": "start_date",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    }
+  ],
+  "sample_rows": []
+}

@@ -1,0 +1,32 @@
+{
+  "table": "cbs_photos",
+  "n8n_id": "vcQV6GSFEmjZkxxy",
+  "columns": [
+    {
+      "name": "caption",
+      "type": "string"
+    },
+    {
+      "name": "image",
+      "type": "string"
+    },
+    {
+      "name": "ref_id",
+      "type": "string"
+    },
+    {
+      "name": "ref_table",
+      "type": "string"
+    },
+    {
+      "name": "taken_at",
+      "type": "string"
+    },
+    {
+      "name": "taken_by",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [],
+  "note": "no sample found (no workflow found reading it via a dataTable node with saved executions)"
+}

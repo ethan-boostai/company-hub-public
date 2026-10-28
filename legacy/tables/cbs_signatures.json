@@ -1,0 +1,33 @@
+{
+  "table": "cbs_signatures",
+  "n8n_id": "EZ9RqBzPGq5YmBSK",
+  "columns": [
+    {
+      "name": "image",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "role",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "name": "Ethan Paraha",
+      "role": "Business Development",
+      "image": "[redacted]",
+      "notes": "",
+      "id": 1,
+      "createdAt": "2026-10-27T14:37:50.397Z",
+      "updatedAt": "2026-10-27T14:37:50.397Z"
+    }
+  ]
+}

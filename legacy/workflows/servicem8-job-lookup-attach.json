@@ -1,0 +1,3372 @@
+{
+  "id": "0nSnjdVd4P7oKYSe",
+  "name": "CBS - ServiceM8 Job Lookup & Attach",
+  "active": true,
+  "isArchived": false,
+  "versionId": "ae043c30-3f03-4174-8187-0597d281ca61",
+  "activeVersionId": "ae043c30-3f03-4174-8187-0597d281ca61",
+  "triggerCount": 11,
+  "createdAt": "2026-10-05T09:56:06.426Z",
+  "updatedAt": "2026-10-20T13:50:45.516Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Job Hook": {
+      "main": [
+        [
+          {
+            "node": "Find Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Job": {
+      "main": [
+        [
+          {
+            "node": "Pick Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick Job": {
+      "main": [
+        [
+          {
+            "node": "Get Client",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Client": {
+      "main": [
+        [
+          {
+            "node": "Get Bookings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Bookings": {
+      "main": [
+        [
+          {
+            "node": "Get Staff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Staff": {
+      "main": [
+        [
+          {
+            "node": "Combine Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Job": {
+      "main": [
+        [
+          {
+            "node": "Respond Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attach Hook": {
+      "main": [
+        [
+          {
+            "node": "Check Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Input": {
+      "main": [
+        [
+          {
+            "node": "Find Attach Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Attach Job": {
+      "main": [
+        [
+          {
+            "node": "Pick Attach Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get PDF": {
+      "main": [
+        [
+          {
+            "node": "Attach to Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attach to Job": {
+      "main": [
+        [
+          {
+            "node": "List Job Attachments",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Doc Note",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Job Attachments": {
+      "main": [
+        [
+          {
+            "node": "Older Copies",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Older Copies": {
+      "main": [
+        [
+          {
+            "node": "Deactivate Older",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Work Hook": {
+      "main": [
+        [
+          {
+            "node": "SM8 Bookings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SM8 Bookings": {
+      "main": [
+        [
+          {
+            "node": "SM8 Work Orders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SM8 Work Orders": {
+      "main": [
+        [
+          {
+            "node": "SM8 Quotes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SM8 Quotes": {
+      "main": [
+        [
+          {
+            "node": "SM8 Staff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SM8 Staff": {
+      "main": [
+        [
+          {
+            "node": "Summarise Work",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarise Work": {
+      "main": [
+        [
+          {
+            "node": "Respond Work",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PTM Loaded Hook": {
+      "main": [
+        [
+          {
+            "node": "PTM Loaded",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PTM Loaded": {
+      "main": [
+        [
+          {
+            "node": "Respond PTM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PO Receive Hook": {
+      "main": [
+        [
+          {
+            "node": "PO Receive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PO Receive": {
+      "main": [
+        [
+          {
+            "node": "Respond PO Receive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PO Save Hook": {
+      "main": [
+        [
+          {
+            "node": "PO Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PO Prep": {
+      "main": [
+        [
+          {
+            "node": "PO Has PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PO Has PDF": {
+      "main": [
+        [
+          {
+            "node": "Upload PO",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "PO Finish",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload PO": {
+      "main": [
+        [
+          {
+            "node": "PO Finish",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PO Finish": {
+      "main": [
+        [
+          {
+            "node": "Respond PO Save",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Incident Record Hook": {
+      "main": [
+        [
+          {
+            "node": "Incident Record PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Incident Record PDF": {
+      "main": [
+        [
+          {
+            "node": "Upload Incident Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Incident Record": {
+      "main": [
+        [
+          {
+            "node": "Incident Record Finish",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Incident Report Hook": {
+      "main": [
+        [
+          {
+            "node": "Incident Report Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Incident Report Prep": {
+      "main": [
+        [
+          {
+            "node": "Upload Incident Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Incident Report": {
+      "main": [
+        [
+          {
+            "node": "Incident Report Finish",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Incident Report Finish": {
+      "main": [
+        [
+          {
+            "node": "Respond Incident Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sign Data Hook": {
+      "main": [
+        [
+          {
+            "node": "Sign Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sign Data": {
+      "main": [
+        [
+          {
+            "node": "Respond Sign Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sign Save Hook": {
+      "main": [
+        [
+          {
+            "node": "Sign Save",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sign Save": {
+      "main": [
+        [
+          {
+            "node": "Respond Sign Save",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF Out Hook": {
+      "main": [
+        [
+          {
+            "node": "PDF Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF Out": {
+      "main": [
+        [
+          {
+            "node": "Respond PDF Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick Attach Job": {
+      "main": [
+        [
+          {
+            "node": "Existing Attachments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Existing Attachments": {
+      "main": [
+        [
+          {
+            "node": "Skip If Already Attached",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Skip If Already Attached": {
+      "main": [
+        [
+          {
+            "node": "Get PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "1f27076f-0b29-4122-b4ea-8f2a559bb2f2",
+      "name": "Job Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-sm8-job",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "9ff8d77a-4152-4e21-bb67-acd35a2abb0d"
+    },
+    {
+      "id": "b191300a-ba63-4728-b43e-ba6a9ef30de6",
+      "name": "Find Job",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "url": "={{ 'https://api.servicem8.com/api_1.0/job.json?%24filter=' + encodeURIComponent(\"generated_job_id eq '\" + String($json.query.no || '').replace(/[^0-9A-Za-z-]/g, '') + \"'\") }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "f59af589-6aa0-45e0-bfca-081b8c87cc70",
+      "name": "Pick Job",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var rows=$input.all().map(function(i){return i.json;}).filter(function(j){return j&&j.uuid&&String(j.active)!=='0';});var j=rows[0]||null;return [{json:{found:!!j,job:j||{},uuid:j?j.uuid:'none',company_uuid:j&&j.company_uuid?j.company_uuid:'none'}}];"
+      }
+    },
+    {
+      "id": "8ced9487-c164-4aea-a153-757cb2dd452b",
+      "name": "Get Client",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "url": "={{ 'https://api.servicem8.com/api_1.0/company/' + $json.company_uuid + '.json' }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "4ca48e9f-7533-4d35-aa22-594d54d61e0a",
+      "name": "Get Bookings",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "url": "={{ 'https://api.servicem8.com/api_1.0/jobactivity.json?%24filter=' + encodeURIComponent(\"job_uuid eq '\" + $('Pick Job').first().json.uuid + \"'\") }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "86dab749-dba4-48f1-b60f-cada52311baf",
+      "name": "Get Staff",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "url": "https://api.servicem8.com/api_1.0/staff.json",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "83f6b8a2-af2c-46ea-9783-402f645630bd",
+      "name": "Combine Job",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1320,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var p=$('Pick Job').first().json;if(!p.found)return [{json:{found:false}}];var j=p.job;\nvar co=($('Get Client').first()||{}).json||{};\nvar sname={};$('Get Staff').all().map(function(i){return i.json;}).filter(function(s){return s&&s.uuid;}).forEach(function(s){sname[s.uuid]=[s.first,s.last].filter(Boolean).join(' ');});\nvar acts=$('Get Bookings').all().map(function(i){return i.json;}).filter(function(a){return a&&a.uuid&&String(a.active)==='1'&&String(a.activity_was_scheduled)==='1';});\nacts.sort(function(a,b){return String(a.start_date).localeCompare(String(b.start_date));});\nvar crew=[];acts.forEach(function(a){var n=sname[a.staff_uuid];if(n&&crew.indexOf(n)<0)crew.push(n);});\nvar dates=acts.map(function(a){return String(a.start_date||'').slice(0,10);}).filter(function(d){return d&&d!=='0000-00-00';});\nreturn [{json:{found:true,job_no:String(j.generated_job_id||''),site:String(j.job_address||'').replace(/\\n/g,', ').trim(),client:String(co.name||''),description:String(j.job_description||'').replace(/\\r/g,'').trim().slice(0,600),status:String(j.status||''),crew:crew,booked:dates}}];"
+      }
+    },
+    {
+      "id": "5f15fe01-88bb-4f26-a68c-00134033613f",
+      "name": "Respond Job",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1540,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "debdb7a0-35cb-473a-858a-178c33751f10",
+      "name": "Attach Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        400
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-sm8-attach",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "webhookId": "f9579a03-c3eb-46ce-af84-95b6518da5b5"
+    },
+    {
+      "id": "cccf206a-e079-491f-8505-1a9fa090280e",
+      "name": "Check Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        400
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var b=$input.first().json.body||{};\nvar raw=String(b.job_no||'');var dm=raw.match(/\\d{3,}/);var no=dm?dm[0]:raw.replace(/[^0-9A-Za-z-]/g,'');\nvar D='b!ZZ-example-drive-id';\nvar item=String(b.item_id||'').replace(/[^A-Za-z0-9!_-]/g,''),url=String(b.pdf_url||'');\nvar dl=item?'https://graph.microsoft.com/v1.0/drives/'+D+'/items/'+item+'/content':(/sharepoint\\.com/i.test(url)?'https://graph.microsoft.com/v1.0/shares/u!'+Buffer.from(url).toString('base64').replace(/=+$/,'').replace(/\\//g,'_').replace(/\\+/g,'-')+'/driveItem/content':'');\nvar name=String(b.name||'CBS document.pdf').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^\\x20-\\x7E]/g,'').replace(/[\\\\\\/:*?\"<>|\\r\\n\\t]+/g,' ').replace(/\\s{2,}/g,' ').trim()||'CBS document.pdf';if(!/\\.pdf$/i.test(name))name+='.pdf';\nvar key=String(b.doc_key||'').replace(/[^A-Za-z0-9 #&,.-]/g,'').trim();\nif(!no||!dl)return [];\nreturn [{json:{job_no:no,dl:dl,pdf_url:url,name:name,source:key?'CBS Operations Hub - '+key:String(b.source||'CBS Operations Hub'),doc_key:key,quiet:b.quiet===true||b.quiet==='true',dedupe:b.dedupe===true||b.dedupe==='true',replace:b.replace===true||b.replace==='true'}}];"
+      }
+    },
+    {
+      "id": "faba53bf-6970-47f1-8236-1f85d253cacb",
+      "name": "Find Attach Job",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        400
+      ],
+      "parameters": {
+        "method": "GET",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "url": "={{ 'https://api.servicem8.com/api_1.0/job.json?%24filter=' + encodeURIComponent(\"generated_job_id eq '\" + $json.job_no + \"'\") }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "89f5ae96-d7dc-44f6-b341-258c96e5c80e",
+      "name": "Pick Attach Job",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        400
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var i=$('Check Input').first().json;var jobs=$input.all().map(function(x){return x.json;}).filter(function(j){return j&&j.uuid&&String(j.active)!=='0';});if(!jobs.length)return [];return [{json:Object.assign({},i,{job_uuid:jobs[0].uuid})}];"
+      }
+    },
+    {
+      "id": "b1c97cf9-f335-4643-927a-c835e1588178",
+      "name": "Get PDF",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        400
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.dl }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "data"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "cc28c196-c482-460e-8813-bdad3a5c5b98",
+      "name": "Attach to Job",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        400
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.servicem8.com/api_1.0/attachment.json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            },
+            {
+              "parameterType": "formData",
+              "name": "related_object",
+              "value": "job"
+            },
+            {
+              "parameterType": "formData",
+              "name": "related_object_uuid",
+              "value": "={{ $('Pick Attach Job').first().json.job_uuid }}"
+            },
+            {
+              "parameterType": "formData",
+              "name": "attachment_name",
+              "value": "={{ $('Pick Attach Job').first().json.name }}"
+            },
+            {
+              "parameterType": "formData",
+              "name": "attachment_source",
+              "value": "={{ $('Pick Attach Job').first().json.source }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "fullResponse": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "bf757401-7f29-4e5d-ad3a-ece34e021474",
+      "name": "List Job Attachments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        400
+      ],
+      "parameters": {
+        "method": "GET",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "url": "={{ 'https://api.servicem8.com/api_1.0/attachment.json?%24filter=' + encodeURIComponent(\"related_object_uuid eq '\" + $('Pick Attach Job').first().json.job_uuid + \"'\") }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "392cd5ac-c011-486f-8e7d-0a55fc50ec79",
+      "name": "Older Copies",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1540,
+        400
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* Keep one copy per document on the ServiceM8 job: after a successful attach, remove every other active copy of the same document - same document key (all revisions of e.g. RAMS #4) or the same file name. */\nvar up=$('Attach to Job').first().json||{};var ok=Number(up.statusCode)===201||Number(up.statusCode)===200;var newId=String((up.body&&up.body.uuid)||up.headers&&up.headers['x-record-uuid']||'');var p=$('Pick Attach Job').first().json;\nif(!ok||!newId)return [];\nfunction k(s){return String(s||'').toLowerCase().replace(/\\.pdf$/,'').replace(/[^a-z0-9]/g,'');}\nreturn $input.all().map(function(i){return i.json;}).filter(function(a){if(!a||!a.uuid||a.uuid===newId||String(a.active)!=='1'||String(a.related_object)!=='job')return false;return (p.doc_key&&String(a.attachment_source)===p.source)||k(a.attachment_name)===k(p.name);}).map(function(a){return {json:{uuid:a.uuid}};});\n"
+      }
+    },
+    {
+      "id": "ee863ca1-cb31-41f3-b9ef-55246a2a183a",
+      "name": "Deactivate Older",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1760,
+        400
+      ],
+      "parameters": {
+        "method": "DELETE",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "url": "={{ 'https://api.servicem8.com/api_1.0/attachment/' + $json.uuid + '.json' }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "374eaecc-efc9-4427-a4b1-cc9c6a718a2b",
+      "name": "Doc Note",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1320,
+        620
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var p=$('Pick Attach Job').first().json||{};var up=$('Attach to Job').first().json||{};\nvar ok=Number(up.statusCode)===201||Number(up.statusCode)===200;if(!ok||p.quiet)return [];\nvar H='https://old-hub.example/webhook/';var key=String(p.doc_key||'');\nvar T=[[/^RAMS/i,'rams','RAMS','rams','rams'],[/^CPHSP/i,'cphsp','Construction phase H&S plan','cphsp','cphsp'],[/^Team meeting/i,'toolbox','Team meeting','meeting','toolbox'],[/^Toolbox/i,'toolbox','Toolbox talk','toolbox','toolbox'],[/^Pre-start/i,'prestart','Daily pre-start','prestart','prestarts'],[/^Site inspection/i,'toolbox','Site safety inspection','',''],[/^PTM/i,'ptm','Plant, tools & materials sheet','','ptmsheets']];\nvar t=T.filter(function(x){return x[0].test(key);})[0];var res={};\ntry{await this.helpers.httpRequest({method:'POST',url:H+'cbs-job-links',body:{job_no:p.job_no},json:true,timeout:10000});res.links=true;}catch(e){res.linksError=String(e.message||e);}\nif(!t)return [{json:res}];\nvar idm=key.match(/#\\s*(\\d+)/);var rid=idm?idm[1]:'';\nvar sign=(rid&&t[3])?H+'cbs-sign?doc='+t[3]+'&id='+rid:'';\nvar hub=H+'cbs-admin'+(t[4]?'?open='+t[4]+(rid?'&id='+rid:''):'');\nvar msg=t[2]+' saved to this job: '+String(p.name||'').replace(/\\.pdf$/i,'')+'. The PDF is also in this job\\'s attachments.';\ntry{await this.helpers.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:t[1],job_no:p.job_no,message:msg,sign:sign,link:hub,pdf:p.pdf_url||''},json:true,timeout:15000});res.notified=t[1];}catch(e){res.notifyError=String(e.message||e);}\nif(rid&&t[3]){try{res.restamp=await this.helpers.httpRequest({method:'POST',url:H+'cbs-sign-restamp',body:{doc:t[3],id:rid},json:true,timeout:60000});}catch(e){res.restampError=String(e.message||e);}}\nreturn [{json:res}];"
+      }
+    },
+    {
+      "id": "e4f9e518-7b83-4a62-bddb-6849c76c17ea",
+      "name": "Work Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        900
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-work-ahead",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "4a2f73ee-0a38-4ffc-b72a-ad16cc427450"
+    },
+    {
+      "id": "8ec8473e-8ac2-4020-9e77-fd01cbb53b0c",
+      "name": "SM8 Bookings",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        900
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "GET",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "timeout": 20000
+        },
+        "url": "=https://api.servicem8.com/api_1.0/jobactivity.json?%24filter=end_date%20gt%20'{{ $now.setZone('Europe/London').toFormat('yyyy-MM-dd') }}%2000%3A00%3A00'"
+      },
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "f73a9d16-267d-453f-8c58-086c8c3be40e",
+      "name": "SM8 Work Orders",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        900
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "GET",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "timeout": 20000
+        },
+        "url": "https://api.servicem8.com/api_1.0/job.json?%24filter=status%20eq%20'Work%20Order'"
+      },
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "97e8f8df-50c9-410e-9606-01989efe2c9b",
+      "name": "SM8 Quotes",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        900
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "GET",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "timeout": 20000
+        },
+        "url": "https://api.servicem8.com/api_1.0/job.json?%24filter=status%20eq%20'Quote'"
+      },
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "16c7b206-2e3c-44d4-93f7-00e4b5f50b25",
+      "name": "SM8 Staff",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        900
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "GET",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "timeout": 20000
+        },
+        "url": "https://api.servicem8.com/api_1.0/staff.json"
+      },
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "631e960e-342e-437d-9a44-a77340b25d95",
+      "name": "Summarise Work",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        900
+      ],
+      "parameters": {
+        "jsCode": "function rows(n){ try { return $(n).all().map(function(i){ return i.json; }).filter(function(x){ return x && x.uuid; }); } catch (e) { return []; } }\nvar acts = rows('SM8 Bookings'), wos = rows('SM8 Work Orders'), qts = rows('SM8 Quotes'), staff = rows('SM8 Staff');\nfunction ukDate(d){ return new Date(new Date(d).toLocaleString('en-US', { timeZone: 'Europe/London' })); }\nfunction ymd(d){ return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }\nvar now = ukDate(new Date()), today = ymd(now);\nvar mon = new Date(now); mon.setDate(mon.getDate() - ((mon.getDay() + 6) % 7));\nvar WEEKS = 8, end = new Date(mon); end.setDate(end.getDate() + WEEKS * 7); var endS = ymd(end);\nvar sName = {}; staff.forEach(function(s){ sName[s.uuid] = ((s.first || '') + ' ' + (s.last || '')).trim(); });\nvar jobs = {}; wos.concat(qts).forEach(function(j){ jobs[j.uuid] = j; });\n/* Each booking covers every day from its start date to its end date (a booking ending at 00:00:00 does not cover that day).\n   Days before today and after the 8-week window are dropped, so a job that started yesterday and runs today still shows. */\nfunction addD(s, n){ var p = s.split('-'); var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2] + n)); return d.toISOString().slice(0, 10); }\nfunction spanDays(a){ var s = String(a.start_date || '').slice(0, 10), e = String(a.end_date || '').slice(0, 10), et = String(a.end_date || '').slice(11, 19);\n  if (!/^\\d{4}-\\d\\d-\\d\\d$/.test(s) || s === '0000-00-00') return [];\n  if (!/^\\d{4}-\\d\\d-\\d\\d$/.test(e) || e === '0000-00-00' || e < s) e = s;\n  if (e > s && et === '00:00:00') e = addD(e, -1);\n  var out = [], d = s < today ? today : s, n = 0; while (d <= e && d < endS && n < 400) { out.push(d); d = addD(d, 1); n++; } return out; }\nvar live = acts.filter(function(a){ return String(a.active) === '1' && String(a.activity_was_scheduled) === '1'; });\nvar byJob = {}, dayCount = {};\nlive.forEach(function(a){ var ds = spanDays(a); if (!ds.length) return; var g = byJob[a.job_uuid] = byJob[a.job_uuid] || { uuid: a.job_uuid, dates: {}, staff: {} }; ds.forEach(function(d){ g.dates[d] = 1; dayCount[d] = (dayCount[d] || 0) + 1; }); if (sName[a.staff_uuid]) g.staff[sName[a.staff_uuid]] = 1; });\nfunction first(t){ return String(t || '').split(/\\r?\\n/).map(function(x){ return x.trim(); }).filter(Boolean)[0] || ''; }\nvar list = Object.keys(byJob).map(function(k){ var g = byJob[k], j = jobs[k] || {}, ds = Object.keys(g.dates).sort();\n  return { uuid: k, date: ds[0], last: ds[ds.length - 1], days: ds.length, job: j.generated_job_id || '', address: String(j.job_address || '').replace(/\\s*\\n\\s*/g, ', '), desc: first(j.job_description), staff: Object.keys(g.staff), flags: [], mandays: '' }; })\n  .sort(function(a, b){ return a.date.localeCompare(b.date); });\nvar weeks = []; for (var w = 0; w < WEEKS; w++) { var s = new Date(mon); s.setDate(s.getDate() + w * 7); var e = new Date(s); e.setDate(e.getDate() + 7); var sS = ymd(s), eS = ymd(e);\n  var js = list.filter(function(j){ return Object.keys(byJob[j.uuid].dates).some(function(d){ return d >= sS && d < eS; }); });\n  var dd = 0; Object.keys(dayCount).forEach(function(d){ if (d >= sS && d < eS) dd += dayCount[d]; });\n  weeks.push({ start: sS, jobs: js.length, days: dd }); }\nvar totalDays = 0; Object.keys(dayCount).forEach(function(d){ totalDays += dayCount[d]; });\nvar bookedAny = {}; live.forEach(function(a){ if (String(a.end_date || a.start_date || '').slice(0, 10) >= today) bookedAny[a.job_uuid] = 1; });\nvar unsched = wos.filter(function(j){ return String(j.active) === '1' && !bookedAny[j.uuid]; }).sort(function(a, b){ return String(a.work_order_date || a.date).localeCompare(String(b.work_order_date || b.date)); });\nvar openQ = qts.filter(function(q){ return String(q.active) === '1'; });\nvar m30 = new Date(now); m30.setDate(m30.getDate() - 30); var m30S = ymd(m30);\nvar detailEnd = new Date(mon); detailEnd.setDate(detailEnd.getDate() + 28); var dS = ymd(detailEnd);\nreturn [{ json: { generated: today, weeks: weeks, totalJobs: list.length, totalDays: totalDays, jobs: list.filter(function(j){ return j.date < dS; }).slice(0, 30), laterJobs: list.filter(function(j){ return j.date >= dS; }).length,\n  unscheduled: { count: unsched.length, list: unsched.slice(0, 10).map(function(j){ return { job: j.generated_job_id || '', address: String(j.job_address || '').replace(/\\s*\\n\\s*/g, ', '), desc: first(j.job_description), since: String(j.work_order_date || j.date || '').slice(0, 10) }; }) },\n  quotes: { open: openQ.length, value: openQ.reduce(function(t, q){ return t + (Number(q.total_invoice_amount) || 0); }, 0), recent: openQ.filter(function(q){ return String(q.quote_date || q.date || '').slice(0, 10) >= m30S; }).length } } }];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "59c475f7-07f4-49d2-8434-d7543e703970",
+      "name": "Respond Work",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1320,
+        900
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}"
+      }
+    },
+    {
+      "id": "d29d5023-91a0-4ba5-89e3-8f32454f14de",
+      "name": "PTM Loaded Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        3000
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "options": {},
+        "path": "cbs-ptm-loaded",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "6c4d6084-a064-4714-b98c-85f05ea1fca9"
+    },
+    {
+      "id": "2dfedb4e-4bba-41cc-a0ca-8aec0ef3ab95",
+      "name": "PTM Loaded",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        3000
+      ],
+      "parameters": {
+        "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst list=async t=>{const d=await h.httpRequest({url:H+'cbs-admin-data?t='+t,json:true});return (d&&d[t])||[];};\nconst save=(t,id,row,p)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t='+t+'&id='+(id||0)+'&k='+K+(p?'&partial=1':''),body:row,json:true});\nconst b=$input.first().json.body||{};const S=v=>v==null?'':String(v);\nconst TZ='Europe/London',now=new Date().toLocaleString('sv-SE',{timeZone:TZ}).replace(' ','T').slice(0,16),today=now.slice(0,10);\nconst sheets=await list('ptmsheets');const sh=sheets.find(r=>String(r.id)===S(b.id));\nif(!sh)return [{json:{ok:false,message:'That load-up sheet was not found.'}}];\nif(/^loaded$/i.test(S(sh.status)))return [{json:{ok:false,already:true,message:'This sheet has already been signed out by '+S(sh.loaded_by)+'. Ask the office if it needs reopening.'}}];\nconst by=S(b.by)||'crew';const job=S(sh.job_no).replace(/[^0-9A-Za-z-]/g,'');const ref='Load-up sheet '+sh.id+(job?' (job '+job+')':'');let n=0,low=[];\nlet IT={};try{IT=JSON.parse(sh.items_json||'{}')||{};}catch(e){}\nconst due=/^\\d{4}-\\d{2}-\\d{2}$/.test(S(IT.due_back))?S(IT.due_back):'';\n/* plant is booked out with the vehicle it went on, e.g. ZZ01ZZA - ZZ Person H */\nlet withV=by;if(S(sh.vehicle)){const V=await list('vehicles');const v=V.find(x=>S(x.reg).trim()===S(sh.vehicle).trim());withV=S(sh.vehicle).trim()+(v&&S(v.assigned_to).trim()?' - '+S(v.assigned_to).trim():'');}\nconst mats=Array.isArray(b.mats)?b.mats:[];if(mats.length){const M=await list('materials');\n for(const x of mats){const m=M.find(r=>String(r.id)===S(x.id));const q=Number(x.qty)||0;if(!m||q<=0)continue;\n  const after=Math.round((Number(m.qty_on_hand||0)-q)*100)/100;\n  await save('materials',m.id,{qty_on_hand:String(after)},true);\n  await save('stockmoves',0,{material_id:String(m.id),material:S(m.name),change:String(-q),qty_after:String(after),reason:'Loaded for job',ref:ref,by:by,at:now,notes:''});\n  n++;if(m.min_level!==''&&m.min_level!=null&&after<=Number(m.min_level||0))low.push(m.name+' ('+after+' left)');}}\nconst plant=Array.isArray(b.plant)?b.plant:[];let out=0;if(plant.length&&job){const A=await list('assets');\n for(const pid of plant){const a=A.find(r=>String(r.id)===S(pid)||r.name===S(pid));if(!a||/^(retired|lost|sold|disposed)$/i.test(S(a.status)))continue;\n  await save('assets',a.id,{yard_status:'Out',out_job:job,out_with:withV,out_since:today,due_back:due,_by:by,_source:'Load-up sheet '+sh.id},true);out++;}}\nconst extra=(Array.isArray(b.extra)?b.extra:[]).map(S).filter(Boolean);\nconst lj=JSON.stringify({plant:plant.map(S),extra:extra,mats:mats.map(x=>({id:S(x.id),qty:S(x.qty)})),by:by});\nawait save('ptmsheets',sh.id,{status:'Loaded',loaded_by:by,loaded_at:now,loaded_json:lj},true);\nconst msg='Load-up sheet loaded by '+by+(sh.vehicle?' into '+withV:'')+'. '+n+' stock item'+(n===1?'':'s')+' deducted'+(out?', '+out+' plant item'+(out===1?'':'s')+' booked out to job '+job:'')+'.'+(low.length?' Running low: '+low.join(', ')+'.':'');\ntry{await h.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:'ptm_loaded',job_no:S(sh.job_no),message:msg,link:H+'cbs-admin?open=ptmsheets&id='+sh.id},json:true,timeout:8000});}catch(e){}\nreturn [{json:{ok:true,deducted:n,booked:out,plant_out:out,job:job,low:low}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "bea3d557-5eec-439e-8bc4-d2edf08088b4",
+      "name": "Respond PTM",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        3000
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}"
+      }
+    },
+    {
+      "id": "29e164e5-f6f4-4f27-8130-57792ff6906a",
+      "name": "PO Receive Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        3200
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "options": {},
+        "path": "cbs-po-receive",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "a9e3108a-876a-4f2a-a2c1-b40b4c216d56"
+    },
+    {
+      "id": "28fdbdc6-5141-451a-bb1d-89aa2127cec8",
+      "name": "PO Receive",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        3200
+      ],
+      "parameters": {
+        "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst list=async t=>{const d=await h.httpRequest({url:H+'cbs-admin-data?t='+t,json:true});return (d&&d[t])||[];};\nconst save=(t,id,row,p)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t='+t+'&id='+(id||0)+'&k='+K+(p?'&partial=1':''),body:row,json:true});\nconst b=$input.first().json.body||{};const S=v=>v==null?'':String(v);const num=v=>Number(String(v==null?'':v).replace(/[^0-9.\\-]/g,''))||0;\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst P=(await list('pos')).find(r=>String(r.id)===S(b.id));if(!P)return [{json:{ok:false,message:'Purchase order not found. Save it first.'}}];\nlet L=[],R={};try{L=JSON.parse(P.lines_json||'[]');}catch(e){}try{R=JSON.parse(P.received_json||'{}')||{};}catch(e){}\nconst by=S(b.by);let stocked=0,M=null;\nfor(const x of (b.lines||[])){const i=Number(x.i),q=num(x.qty),ln=L[i];if(!ln||q<=0)continue;R[i]=Math.round((num(R[i])+q)*1000)/1000;\n if(ln.material_id){if(!M)M=await list('materials');const m=M.find(r=>String(r.id)===S(ln.material_id));if(m){const after=Math.round((num(m.qty_on_hand)+q)*100)/100;m.qty_on_hand=String(after);\n  await save('materials',m.id,{qty_on_hand:String(after)},true);\n  await save('stockmoves',0,{material_id:String(m.id),material:S(m.name),change:String(q),qty_after:String(after),reason:'Purchase order received',ref:S(P.po_no),by:by,at:now,notes:''});stocked++;}}}\nconst all=L.every((ln,i)=>!num(ln.qty)||num(R[i])>=num(ln.qty)-1e-9);const st=all?'Received':'Part received';\nconst hist=(S(P.notes)?S(P.notes)+'\\n':'')+now.replace('T',' ')+' received by '+by;\nawait save('pos',P.id,{received_json:JSON.stringify(R),status:st,notes:hist},true);\ntry{await h.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:'po_received',job_no:S(P.job_no),message:S(P.po_no)+' from '+S(P.supplier)+': '+(all?'everything has arrived':'part delivery received')+' (checked in by '+by+').',link:H+'cbs-po?id='+P.id},json:true,timeout:8000});}catch(e){}\nreturn [{json:{ok:true,received:R,status:st,stocked:stocked}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "dc484cfc-d463-40c6-bae5-04a2ca437d0b",
+      "name": "Respond PO Receive",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        3200
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}"
+      }
+    },
+    {
+      "id": "263490e7-7dd8-49de-8733-fdee92783bdb",
+      "name": "PO Save Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        3400
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "options": {},
+        "path": "cbs-po-save",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "8b3d7b24-17b3-4d9f-8e6e-9b4518b61a71"
+    },
+    {
+      "id": "fd4745ba-db0b-4157-bdec-cd18a79661ba",
+      "name": "PO Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        3400
+      ],
+      "parameters": {
+        "jsCode": "const b=$input.first().json.body||{};const S=v=>v==null?'':String(v);\nconst clean=s=>S(s).replace(/[\\\\/:*?\"<>|#%]+/g,' ').replace(/\\s+/g,' ').trim();\nconst row=b.row||{};let fn=clean(b.filename)||clean((row.po_no||'PO')+' - '+(row.supplier||''));if(!/\\.pdf$/i.test(fn))fn+='.pdf';\n/* Overwrite, don't add: an edited PO saves over its existing PDF (same name, same link). */\nconst ex=S(b.existing_pdf_url).match(/sharepoint\\.com\\/(.+)$/i);if(ex){try{const path=decodeURIComponent(ex[1].split('?')[0]);if(/\\/CBS System\\/Operations\\/Purchase Orders\\/[^/]+\\.pdf$/i.test('/'+path))fn=path.split('/').pop();}catch(e){}}\nconst o={json:{has_pdf:!!b.pdf,folder:'CBS%20System/Operations/Purchase%20Orders',filename:fn}};\nif(b.pdf)o.binary={data:{data:String(b.pdf),mimeType:'application/pdf',fileName:fn}};return [o];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "2a9a1e56-2f8a-4147-b7b8-031bd6dd11ff",
+      "name": "PO Has PDF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        3400
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{ $json.has_pdf }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "ac57aaee-7aed-4c78-98bc-2a108498bfed",
+      "name": "Upload PO",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        3340
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "method": "PUT",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {},
+        "sendBody": true,
+        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.folder }}/{{ encodeURIComponent($json.filename) }}:/content?@microsoft.graph.conflictBehavior=replace"
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "5dcaa89f-ceb0-4ed5-b93e-6a4f6328c57c",
+      "name": "PO Finish",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        3400
+      ],
+      "parameters": {
+        "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';const S=v=>v==null?'':String(v);\nconst b=$('PO Save Hook').first().json.body||{};const prep=$('PO Prep').first().json;\nlet up=null;try{up=$('Upload PO').first().json;}catch(e){}\nif(prep.has_pdf&&(!up||!up.id))return [{json:{ok:false,message:'The PDF could not be saved to SharePoint. Try again.'}}];\nconst row=Object.assign({},b.row||{});row.pdf_url=up&&up.webUrl?up.webUrl:S(b.existing_pdf_url);\nconst r=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=pos&id='+(Number(b.id)||0)+'&k='+K,body:row,json:true});\nconst id=Number(r&&r.id)||Number(b.id)||0;\nif(up&&up.id&&S(row.job_no)){try{await h.httpRequest({method:'POST',url:H+'cbs-sm8-attach',body:{job_no:S(row.job_no),item_id:up.id,name:prep.filename,doc_key:'po-'+S(row.po_no)},json:true,timeout:60000});}catch(e){}}\nif(b.notify){try{await h.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:'po_issued',job_no:S(row.job_no),message:S(row.po_no)+' issued to '+S(row.supplier)+(row.total?' (\\u00a3'+row.total+' inc VAT)':'')+(row.needed_by?', needed by '+row.needed_by.split('-').reverse().join('/'):'')+'. Ordered by '+(S(row.ordered_by)||'the office')+'.',link:H+'cbs-po?id='+id,pdf:row.pdf_url},json:true,timeout:8000});}catch(e){}}\nreturn [{json:{ok:true,id:id,pdf_url:row.pdf_url}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "961861af-a27b-4e35-b19e-594dbb5d569f",
+      "name": "Respond PO Save",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        3400
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}"
+      }
+    },
+    {
+      "id": "3e386363-6f08-4f02-a2f4-5d616d3a572c",
+      "name": "Incident Record Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        3650
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "options": {},
+        "path": "cbs-incident-record",
+        "responseMode": "onReceived"
+      },
+      "webhookId": "0c57ae41-4647-4f6e-baea-f93cca636da5"
+    },
+    {
+      "id": "693cb394-6e6b-49ce-af49-c2a1495f7d8d",
+      "name": "Incident Record PDF",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        3650
+      ],
+      "parameters": {
+        "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/';const S=v=>v==null?'':String(v);\nconst id=S(($input.first().json.body||{}).id);const d=await h.httpRequest({url:H+'cbs-admin-data?t=incidents',json:true});\nconst I=((d&&d.incidents)||[]).find(r=>String(r.id)===id);if(!I)return [];\nconst A=s=>S(s).replace(/[\\u2018\\u2019]/g,\"'\").replace(/[\\u201c\\u201d]/g,'\"').replace(/[\\u2013\\u2014]/g,'-').replace(/\\u00a3/g,'GBP ').replace(/[^\\x20-\\x7e\\n]/g,'');\nconst E=s=>A(s).replace(/\\\\/g,'\\\\\\\\').replace(/\\(/g,'\\\\(').replace(/\\)/g,'\\\\)');\nfunction wrap(t,n){const out=[];A(t).split('\\n').forEach(p=>{let l='';p.split(' ').forEach(w=>{if((l+' '+w).trim().length>n){if(l)out.push(l);l=w;}else l=(l?l+' ':'')+w;});out.push(l);});return out;}\nfunction dt(v){v=S(v);if(!v)return '';const p=v.slice(0,10).split('-');return (p.length===3?p[2]+'/'+p[1]+'/'+p[0]:v)+(v.length>10?' '+v.slice(11,16):'');}\nconst rows=[['Reference',I.ref],['Date and time',dt(I.occurred_at)],['Type',I.kind],['Severity',I.severity],['Person involved',I.person],['Location / site',I.location],['ServiceM8 job',I.sm8_job],['Reported by',I.reported_by],['What happened',I.description],['Immediate action taken',I.immediate_action],['Injury details',I.injury_detail||'None reported'],['Treatment',I.treatment],['Status',I.status]].filter(r=>S(r[1]).trim());\nconst pages=[];let ops=[],y=0;\nfunction newPage(){if(ops.length)pages.push(ops);ops=[];y=760;\n ops.push('0.957 0.475 0.125 rg 40 772 515 4 re f','0 g','BT /F2 16 Tf 40 785 Td ('+E('Incident record - '+S(I.ref))+') Tj ET','BT /F1 9 Tf 360 800 Td ('+E('Chelmsford Building Services Ltd')+') Tj ET');}\nnewPage();\nrows.forEach(r=>{const L=wrap(r[1],78);const need=14+L.length*12;if(y-need<60)newPage();\n ops.push('BT /F2 10 Tf 40 '+y+' Td ('+E(r[0])+') Tj ET');y-=13;L.forEach(l=>{ops.push('BT /F1 10 Tf 52 '+y+' Td ('+E(l)+') Tj ET');y-=12;});y-=6;});\n/* This PDF is attached to the ServiceM8 job, which the crew can see: no link to the office investigation page. */\nif(y<120)newPage();ops.push('0.4 g','BT /F1 8 Tf 40 50 Td ('+E('Reported from the CBS team page.')+') Tj ET');pages.push(ops);\nlet objs=['<< /Type /Catalog /Pages 2 0 R >>',null,'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>','<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>'];const kids=[];\npages.forEach(p=>{const c=p.join('\\n');objs.push('<< /Length '+Buffer.byteLength(c,'latin1')+' >>\\nstream\\n'+c+'\\nendstream');const cid=objs.length;objs.push('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents '+cid+' 0 R >>');kids.push(objs.length+' 0 R');});\nobjs[1]='<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+kids.length+' >>';\nlet pdf='%PDF-1.4\\n',off=[];objs.forEach((o,i)=>{off.push(Buffer.byteLength(pdf,'latin1'));pdf+=(i+1)+' 0 obj\\n'+o+'\\nendobj\\n';});\nconst xr=Buffer.byteLength(pdf,'latin1');pdf+='xref\\n0 '+(objs.length+1)+'\\n0000000000 65535 f \\n'+off.map(o=>String(o).padStart(10,'0')+' 00000 n \\n').join('')+'trailer\\n<< /Size '+(objs.length+1)+' /Root 1 0 R >>\\nstartxref\\n'+xr+'\\n%%EOF';\nconst fn=[S(I.occurred_at).slice(0,10),S(I.ref),S(I.kind),'Incident Record'].map(x=>x.replace(/[\\\\/:*?\"<>|#%]+/g,' ').trim()).filter(Boolean).join(' - ')+'.pdf';\nreturn [{json:{id:I.id,inc:I,folder:'CBS%20System/H%26S/Incidents',filename:fn},binary:{data:{data:Buffer.from(pdf,'latin1').toString('base64'),mimeType:'application/pdf',fileName:fn}}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "d8f8faac-6f53-4855-8530-98d2f060b6e7",
+      "name": "Upload Incident Record",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        3650
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "method": "PUT",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {},
+        "sendBody": true,
+        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.folder }}/{{ encodeURIComponent($json.filename) }}:/content?@microsoft.graph.conflictBehavior=replace"
+      }
+    },
+    {
+      "id": "eebfe16e-6e3e-438a-bfdc-04de6934c546",
+      "name": "Incident Record Finish",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        3650
+      ],
+      "parameters": {
+        "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';const S=v=>v==null?'':String(v);\nconst p=$('Incident Record PDF').first().json,I=p.inc,up=$input.first().json||{};const url=S(up.webUrl);\nif(url)await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=incidents&id='+I.id+'&k='+K+'&partial=1',body:{record_pdf_url:url},json:true});\nconst job=S(I.sm8_job).replace(/[^0-9]/g,'');\nif(up.id&&job){try{await h.httpRequest({method:'POST',url:H+'cbs-sm8-attach',body:{job_no:job,item_id:up.id,name:p.filename,doc_key:'incident-'+I.id},json:true,timeout:60000});}catch(e){}}\nconst hurt=/injury|illness/i.test(S(I.kind))||(S(I.injury_detail).trim()&&!/^(none|no|nil|n\\/a|na)$/i.test(S(I.injury_detail).trim()));\nconst msg=(hurt?'INJURY / ILLNESS reported':S(I.kind||'Incident')+' reported')+(I.location?' at '+I.location:'')+' by '+(S(I.reported_by)||'a team member')+'. '+S(I.description).slice(0,300);\ntry{await h.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:'incident_reported',job_no:job,message:msg,link:H+'cbs-incident-report?id='+I.id,pdf:url},json:true,timeout:8000});}catch(e){}\nreturn [{json:{ok:true,url:url}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "36ac54e7-9605-474f-b551-5fe6ac8bbd85",
+      "name": "Incident Report Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        3880
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "options": {},
+        "path": "cbs-incident-report-save",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "ed411f73-55ba-49cb-b987-7af3bdf15009"
+    },
+    {
+      "id": "5d638952-f4cc-478b-9474-2b7e67d34e2c",
+      "name": "Incident Report Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        3880
+      ],
+      "parameters": {
+        "jsCode": "const b=$input.first().json.body||{};const S=v=>v==null?'':String(v);\nlet fn=S(b.filename).replace(/[\\\\/:*?\"<>|#%]+/g,' ').replace(/\\s+/g,' ').trim()||('Incident '+S(b.incident_id)+' - Incident Report');if(!/\\.pdf$/i.test(fn))fn+='.pdf';\nif(!b.pdf||!b.incident_id)throw new Error('Missing report or incident');\nreturn [{json:{folder:'CBS%20System/H%26S/Incident%20Reports',filename:fn},binary:{data:{data:String(b.pdf),mimeType:'application/pdf',fileName:fn}}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "4c5f3171-147c-47d2-a48e-f097acf39578",
+      "name": "Upload Incident Report",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        3880
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "method": "PUT",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {},
+        "sendBody": true,
+        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.folder }}/{{ encodeURIComponent($json.filename) }}:/content?@microsoft.graph.conflictBehavior=replace"
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "ec266a68-1844-42ca-a863-7aba160acf8b",
+      "name": "Incident Report Finish",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        3880
+      ],
+      "parameters": {
+        "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';const S=v=>v==null?'':String(v);\nconst b=$('Incident Report Hook').first().json.body||{};const fn=$('Incident Report Prep').first().json.filename;const up=$input.first().json||{};\nif(!up.id)return [{json:{ok:false,message:'The PDF could not be saved to SharePoint. Try again.'}}];\nconst row=Object.assign({},b.row||{});row.incident_id=S(b.incident_id);row.pdf_url=S(up.webUrl);\nconst r=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=increports&id='+(Number(b.id)||0)+'&k='+K,body:row,json:true});\nconst id=Number(r&&r.id)||Number(b.id)||0;\nif(b.inc&&typeof b.inc==='object')await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=incidents&id='+Number(b.incident_id)+'&k='+K+'&partial=1',body:b.inc,json:true});\nconst job=S(row.job_no).replace(/[^0-9]/g,'');\nif(job){try{await h.httpRequest({method:'POST',url:H+'cbs-sm8-attach',body:{job_no:job,item_id:up.id,name:fn,doc_key:'increport-'+b.incident_id},json:true,timeout:60000});}catch(e){}}\nconst st=S(b.inc&&b.inc.status)||S(row.status);\ntry{await h.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:'incident_report_saved',job_no:job,message:'Incident investigation report '+(row.signed_by?'signed off by '+row.signed_by:'saved')+(row.person?' for '+row.person:'')+'. Status: '+st+'.'+(row.riddor_required==='Yes'?' RIDDOR report required.':''),link:H+'cbs-incident-report?id='+b.incident_id,pdf:row.pdf_url},json:true,timeout:8000});}catch(e){}\nreturn [{json:{ok:true,id:id,pdf_url:row.pdf_url}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "15546875-3b1d-4add-ba27-42cdde5912ce",
+      "name": "Respond Incident Report",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        3880
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}"
+      }
+    },
+    {
+      "id": "754e53a7-6395-4843-bc0f-7002d7348f29",
+      "name": "Sign Data Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        4100
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-sign-data",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "6a6fa608-b7bc-42b9-bca4-dfcdbd17bf03"
+    },
+    {
+      "id": "fdfc405f-d0dd-4d25-b565-4d7fd4c55707",
+      "name": "Sign Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        4100
+      ],
+      "parameters": {
+        "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/';const S=v=>v==null?'':String(v);\nconst list=async t=>{const d=await h.httpRequest({url:H+'cbs-admin-data?t='+t,json:true});return (d&&d[t])||[];};\nconst q=$input.first().json.query||{};const MAP={rams:'rams',swms:'rams',cphsp:'cphsp',sssp:'cphsp',prestart:'prestarts',toolbox:'toolbox',meeting:'toolbox',hsmeet:'toolbox'};\nconst type=S(q.doc).toLowerCase(),t=MAP[type],id=S(q.id);if(!t||!id)return [{json:{ok:false,message:'This sign-on link is not complete. Check with the office.'}}];\nconst r=(await list(t)).find(x=>String(x.id)===id);if(!r)return [{json:{ok:false,message:'Document not found. Check with the office.'}}];\nconst NAMES={rams:'RAMS',cphsp:'Construction Phase Plan (site induction)',prestarts:'Pre-start briefing',toolbox:r.meeting_type&&/meeting/i.test(r.meeting_type)?'Team meeting':'Toolbox talk'};\nconst title=t==='rams'?[r.activity||r.task,r.site].filter(Boolean).join(' - '):t==='cphsp'?[r.cphsp_no,r.project||r.site].filter(Boolean).join(' - '):t==='prestarts'?[r.ps_no,r.site,r.held_on].filter(Boolean).join(' - '):[r.topic,r.site,r.held_on].filter(Boolean).join(' - ');\nconst rev=S(r.revision||r.version||'');const dtype=type==='swms'?'rams':type==='sssp'?'cphsp':type;\nconst signed=(await list('signons')).filter(s=>S(s.doc_type)===dtype&&S(s.doc_id)===id&&(!rev||!s.doc_rev||S(s.doc_rev)===rev)).map(s=>({name:s.name,company:s.company,signed_at:s.signed_at}));\nconst workers=(await list('workers')).filter(w=>w.name&&w.active!==false).map(w=>String(w.name)).sort();\nlet ind=null;\nif(t==='cphsp'){let st={};try{st=JSON.parse(r.state_json||'{}')||{};}catch(e){}\n const L=v=>S(v).split('\\n').map(x=>x.replace(/^[-*\\u2022]\\s*/,'').trim()).filter(Boolean);\n const J=(a,b)=>[S(a).trim(),S(b).trim()].filter(Boolean).join(' - ');\n const job=S(r.job_no||st.job_no);const secs=[];\n secs.push({h:'The project',kv:[['Project',st.project||r.project],['Site',st.site||r.site],['Client',st.client||r.client],['Working hours',st.hours],['Site manager',J(st.site_contact,st.site_contact_phone)],['Deputy',J(st.deputy,st.deputy_phone)],[\"Client's project manager\",J(st.client_contact,st.client_phone)]],p:S(st.description)});\n secs.push({h:'Emergencies',kv:[['Emergency services','999'],['Nearest A&E',st.hospital],['First aiders',st.first_aiders],['First aid kit',st.firstaid_loc],['Fire warden',st.fire_warden],['Fire extinguishers',st.extinguisher_loc],['Assembly point',st.assembly],['Defibrillator (AED)',st.defib]],p:[S(st.client_fire).trim(),'If you discover a fire, raise the alarm at the nearest call point, call 999 and go to the assembly point. Do not go back in until you are told it is safe. If someone is hurt, get a first aider and call 999 for anything serious.'].filter(Boolean).join('\\n\\n')});\n const RK=(Array.isArray(st.risks)?st.risks:[]).filter(x=>x&&(x.t||x.c));\n if(RK.length||st.rescue)secs.push({h:'High-risk activities and controls',items:RK.map(x=>S(x.t)+(L(x.c).length?': '+L(x.c).join('; '):'')),p:st.rescue?'Rescue from height:\\n'+S(st.rescue):''});\n const rules=L(st.site_rules).concat(L(st.traffic));\n secs.push({h:'Site rules, hygiene and PPE',items:rules,kv:[['PPE',st.ppe]],p:S(st.hygiene)});\n const pm=(Array.isArray(st.permits)?st.permits:[]).concat(L(st.permits_other));\n const PMD=['Hot works, including grinding or anything that makes sparks','Roof work and work on fragile surfaces','Work at height needing a harness','Breaking ground or excavation','Confined spaces','Live electrical work or isolations','Lifting operations and crane lifts','Asbestos-related work'];\n secs.push({h:'Permits to work',p0:'Some work on this site cannot start until the site manager has issued a permit to work. If your work includes any of the following, request a permit from the site manager before you start:',items:pm.length?pm:PMD,p:'Do not start permit work until the permit has been issued and you have been briefed on it.'});\n secs.push({h:'Your RAMS',items:['Contractors: we need your RAMS for the work you will be doing. Give them to the site manager before you start work. You cannot start until they have been reviewed and accepted.','CBS operatives: you will be briefed on the CBS RAMS for your task and sign them before you start that task.','If your task changes, or the RAMS do not match the work, stop and speak to the site manager.']});\n if(st.welfare)secs.push({h:'Welfare',p:S(st.welfare)});\n secs.push({h:'Reporting and your responsibilities',items:['Sign in and out with the site manager every day.','Report every accident, incident, near miss and hazard to the site manager straight away.','You have the right to stop any work you believe is unsafe.','Be fit for work. No drugs or alcohol on site.','Follow the instructions of the site manager or the deputy.']});\n const acc=(st.std&&st.std.acceptance)||\"By signing, I confirm that I have read, discussed with management and understood the method statements and risk assessments that apply to the work I am carrying out on this project, and this construction phase plan. I agree to follow the restrictions and control methods that apply to the way the work is to be carried out.\";\n const PR=[],addP=n=>{n=S(n).split('\\n')[0].trim();if(n&&PR.indexOf(n)<0)PR.push(n);};addP(st.site_contact);addP(st.deputy);\n (Array.isArray(st.chain)?st.chain:[]).forEach(c=>{if(c&&/site manager|deputy|supervisor|site lead|foreman|assistant|chargehand|charge hand/i.test(S(c.role))&&!/client/i.test(S(c.role)))addP(c.name);});\n ind={sections:secs,acceptance:acc,presenters:PR};}\nreturn [{json:{ok:true,doc:{type:dtype,id:id,kind:NAMES[t],title:title,rev:rev,job_no:S(r.job_no),site:S(r.site),pdf_url:S(r.pdf_url),prepared_by:S(r.prepared_by||r.site_lead||r.presenter)},signed:signed,workers:workers,ind:ind}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "e8448e24-c71a-4e5d-8883-c5d02f2dda70",
+      "name": "Respond Sign Data",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        4100
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}"
+      }
+    },
+    {
+      "id": "93a13396-a783-477b-98d8-f6a4fab0960f",
+      "name": "Sign Save Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        4300
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "options": {},
+        "path": "cbs-sign-save",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "16f9f81f-0889-483c-9388-70b0244894e4"
+    },
+    {
+      "id": "0c57d4a3-a88c-4196-b3cb-17e3bfcaa839",
+      "name": "Sign Save",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        4300
+      ],
+      "parameters": {
+        "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';const S=v=>v==null?'':String(v).trim();\nconst b=$input.first().json.body||{};\nif(!S(b.name)||!S(b.doc_type)||!S(b.doc_id))return [{json:{ok:false,message:'Enter your name.'}}];\nif(!/^data:image\\/(png|jpeg);base64,/.test(S(b.signature))||S(b.signature).length>400000)return [{json:{ok:false,message:'Please sign in the box.'}}];\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst row={doc_type:S(b.doc_type),doc_id:S(b.doc_id),doc_rev:S(b.doc_rev),doc_label:S(b.doc_label).slice(0,200),job_no:S(b.job_no),name:S(b.name).slice(0,80),company:S(b.company).slice(0,80)||'Chelmsford Building Services',is_worker:b.is_worker?'Yes':'No',signed_at:now,signature:S(b.signature),reviewed:'No',record_pdf_url:'',inducted_by:S(b.inducted_by).slice(0,80)};\nconst r=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=signons&id=0&k='+K,body:row,json:true});\nconst sid=Number(r&&r.id)||0;\ntry{await h.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:'signon',job_no:row.job_no,message:row.name+' ('+row.company+') signed '+row.doc_label+'.',sign:H+'cbs-sign?doc='+row.doc_type+'&id='+row.doc_id,link:H+'cbs-admin?open=signons'+(sid?'&id='+sid:'')},json:true,timeout:8000});}catch(e){}\nif(sid){try{await h.httpRequest({method:'POST',url:H+'cbs-sign-restamp',body:{doc:row.doc_type,id:row.doc_id},json:true,timeout:15000});}catch(e){}}\nreturn [{json:{ok:true,id:sid,signed_at:now}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "306f0979-4035-45d4-985f-e0c52df86816",
+      "name": "Respond Sign Save",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        4300
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}"
+      }
+    },
+    {
+      "id": "471d741b-712a-4387-ac22-50916f51ed99",
+      "name": "PDF Out Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        4520
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "options": {},
+        "path": "cbs-pdf-out",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "1a80d25c-1aaf-4af5-bf68-0051313685e4"
+    },
+    {
+      "id": "75c5c995-ce9e-47ae-9d12-0871e3b33f3a",
+      "name": "PDF Out",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        4520
+      ],
+      "parameters": {
+        "jsCode": "const b=$input.first().json.body||{};const S=v=>v==null?'':String(v);\nlet name=S(b.name).replace(/[\\\\/:*?\"<>|\\r\\n]+/g,' ').replace(/\\s+/g,' ').trim().slice(0,150)||'document.pdf';if(!/\\.pdf$/i.test(name))name+='.pdf';\nlet data=S(b.data).replace(/^data:[^,]*,/,'').replace(/[^A-Za-z0-9+/=]/g,'');\nif(data.length<100)throw new Error('No PDF data');\nconst ascii=name.replace(/[^\\x20-\\x7e]/g,'_').replace(/\"/g,'');\nreturn [{json:{name:name,disp:'inline; filename=\"'+ascii+'\"; filename*=UTF-8\\'\\''+encodeURIComponent(name)},binary:{data:{data:data,mimeType:'application/pdf',fileName:name}}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "3f076de6-7dd3-4b49-8bd5-8e80844880a8",
+      "name": "Respond PDF Out",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        4520
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/pdf"
+              },
+              {
+                "name": "Content-Disposition",
+                "value": "={{ $json.disp }}"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        },
+        "respondWith": "binary"
+      }
+    },
+    {
+      "id": "86f1a673-bf19-40a5-bd13-4bf58ea52d4f",
+      "name": "Existing Attachments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        770,
+        520
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "GET",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        },
+        "url": "={{ 'https://api.servicem8.com/api_1.0/attachment.json?%24filter=' + encodeURIComponent(\"related_object_uuid eq '\" + $json.job_uuid + \"'\") }}"
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "37f17b47-f6f1-4cc7-b18b-c9959a68ef3f",
+      "name": "Skip If Already Attached",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        620
+      ],
+      "parameters": {
+        "jsCode": "var p=$('Pick Attach Job').first().json;\nif(!p.dedupe)return [{json:p}];\nfunction k(s){return String(s||'').toLowerCase().replace(/\\.pdf$/,'').replace(/[^a-z0-9]/g,'');}\nvar have=$input.all().map(function(i){return i.json;}).filter(function(a){return a&&a.uuid&&String(a.active)==='1'&&k(a.attachment_name)===k(p.name);});\nif(have.length)return [];\nreturn [{json:p}];",
+        "mode": "runOnceForAllItems"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "1f27076f-0b29-4122-b4ea-8f2a559bb2f2",
+        "name": "Job Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-sm8-job",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "9ff8d77a-4152-4e21-bb67-acd35a2abb0d"
+      },
+      {
+        "id": "b191300a-ba63-4728-b43e-ba6a9ef30de6",
+        "name": "Find Job",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          220,
+          0
+        ],
+        "parameters": {
+          "method": "GET",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "url": "={{ 'https://api.servicem8.com/api_1.0/job.json?%24filter=' + encodeURIComponent(\"generated_job_id eq '\" + String($json.query.no || '').replace(/[^0-9A-Za-z-]/g, '') + \"'\") }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            }
+          }
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "f59af589-6aa0-45e0-bfca-081b8c87cc70",
+        "name": "Pick Job",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          440,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var rows=$input.all().map(function(i){return i.json;}).filter(function(j){return j&&j.uuid&&String(j.active)!=='0';});var j=rows[0]||null;return [{json:{found:!!j,job:j||{},uuid:j?j.uuid:'none',company_uuid:j&&j.company_uuid?j.company_uuid:'none'}}];"
+        }
+      },
+      {
+        "id": "8ced9487-c164-4aea-a153-757cb2dd452b",
+        "name": "Get Client",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          660,
+          0
+        ],
+        "parameters": {
+          "method": "GET",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "url": "={{ 'https://api.servicem8.com/api_1.0/company/' + $json.company_uuid + '.json' }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            }
+          }
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "4ca48e9f-7533-4d35-aa22-594d54d61e0a",
+        "name": "Get Bookings",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          880,
+          0
+        ],
+        "parameters": {
+          "method": "GET",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "url": "={{ 'https://api.servicem8.com/api_1.0/jobactivity.json?%24filter=' + encodeURIComponent(\"job_uuid eq '\" + $('Pick Job').first().json.uuid + \"'\") }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "86dab749-dba4-48f1-b60f-cada52311baf",
+        "name": "Get Staff",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1100,
+          0
+        ],
+        "parameters": {
+          "method": "GET",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "url": "https://api.servicem8.com/api_1.0/staff.json",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            }
+          }
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "83f6b8a2-af2c-46ea-9783-402f645630bd",
+        "name": "Combine Job",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1320,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var p=$('Pick Job').first().json;if(!p.found)return [{json:{found:false}}];var j=p.job;\nvar co=($('Get Client').first()||{}).json||{};\nvar sname={};$('Get Staff').all().map(function(i){return i.json;}).filter(function(s){return s&&s.uuid;}).forEach(function(s){sname[s.uuid]=[s.first,s.last].filter(Boolean).join(' ');});\nvar acts=$('Get Bookings').all().map(function(i){return i.json;}).filter(function(a){return a&&a.uuid&&String(a.active)==='1'&&String(a.activity_was_scheduled)==='1';});\nacts.sort(function(a,b){return String(a.start_date).localeCompare(String(b.start_date));});\nvar crew=[];acts.forEach(function(a){var n=sname[a.staff_uuid];if(n&&crew.indexOf(n)<0)crew.push(n);});\nvar dates=acts.map(function(a){return String(a.start_date||'').slice(0,10);}).filter(function(d){return d&&d!=='0000-00-00';});\nreturn [{json:{found:true,job_no:String(j.generated_job_id||''),site:String(j.job_address||'').replace(/\\n/g,', ').trim(),client:String(co.name||''),description:String(j.job_description||'').replace(/\\r/g,'').trim().slice(0,600),status:String(j.status||''),crew:crew,booked:dates}}];"
+        }
+      },
+      {
+        "id": "5f15fe01-88bb-4f26-a68c-00134033613f",
+        "name": "Respond Job",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1540,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "debdb7a0-35cb-473a-858a-178c33751f10",
+        "name": "Attach Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          400
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-sm8-attach",
+          "responseMode": "onReceived",
+          "options": {}
+        },
+        "webhookId": "f9579a03-c3eb-46ce-af84-95b6518da5b5"
+      },
+      {
+        "id": "cccf206a-e079-491f-8505-1a9fa090280e",
+        "name": "Check Input",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          220,
+          400
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var b=$input.first().json.body||{};\nvar raw=String(b.job_no||'');var dm=raw.match(/\\d{3,}/);var no=dm?dm[0]:raw.replace(/[^0-9A-Za-z-]/g,'');\nvar D='b!ZZ-example-drive-id';\nvar item=String(b.item_id||'').replace(/[^A-Za-z0-9!_-]/g,''),url=String(b.pdf_url||'');\nvar dl=item?'https://graph.microsoft.com/v1.0/drives/'+D+'/items/'+item+'/content':(/sharepoint\\.com/i.test(url)?'https://graph.microsoft.com/v1.0/shares/u!'+Buffer.from(url).toString('base64').replace(/=+$/,'').replace(/\\//g,'_').replace(/\\+/g,'-')+'/driveItem/content':'');\nvar name=String(b.name||'CBS document.pdf').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^\\x20-\\x7E]/g,'').replace(/[\\\\\\/:*?\"<>|\\r\\n\\t]+/g,' ').replace(/\\s{2,}/g,' ').trim()||'CBS document.pdf';if(!/\\.pdf$/i.test(name))name+='.pdf';\nvar key=String(b.doc_key||'').replace(/[^A-Za-z0-9 #&,.-]/g,'').trim();\nif(!no||!dl)return [];\nreturn [{json:{job_no:no,dl:dl,pdf_url:url,name:name,source:key?'CBS Operations Hub - '+key:String(b.source||'CBS Operations Hub'),doc_key:key,quiet:b.quiet===true||b.quiet==='true',dedupe:b.dedupe===true||b.dedupe==='true',replace:b.replace===true||b.replace==='true'}}];"
+        }
+      },
+      {
+        "id": "faba53bf-6970-47f1-8236-1f85d253cacb",
+        "name": "Find Attach Job",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          440,
+          400
+        ],
+        "parameters": {
+          "method": "GET",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "url": "={{ 'https://api.servicem8.com/api_1.0/job.json?%24filter=' + encodeURIComponent(\"generated_job_id eq '\" + $json.job_no + \"'\") }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            }
+          }
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "89f5ae96-d7dc-44f6-b341-258c96e5c80e",
+        "name": "Pick Attach Job",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          660,
+          400
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var i=$('Check Input').first().json;var jobs=$input.all().map(function(x){return x.json;}).filter(function(j){return j&&j.uuid&&String(j.active)!=='0';});if(!jobs.length)return [];return [{json:Object.assign({},i,{job_uuid:jobs[0].uuid})}];"
+        }
+      },
+      {
+        "id": "b1c97cf9-f335-4643-927a-c835e1588178",
+        "name": "Get PDF",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          880,
+          400
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "={{ $json.dl }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {
+            "response": {
+              "response": {
+                "responseFormat": "file",
+                "outputPropertyName": "data"
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "cc28c196-c482-460e-8813-bdad3a5c5b98",
+        "name": "Attach to Job",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1100,
+          400
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.servicem8.com/api_1.0/attachment.json",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "sendBody": true,
+          "contentType": "multipart-form-data",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "parameterType": "formBinaryData",
+                "name": "file",
+                "inputDataFieldName": "data"
+              },
+              {
+                "parameterType": "formData",
+                "name": "related_object",
+                "value": "job"
+              },
+              {
+                "parameterType": "formData",
+                "name": "related_object_uuid",
+                "value": "={{ $('Pick Attach Job').first().json.job_uuid }}"
+              },
+              {
+                "parameterType": "formData",
+                "name": "attachment_name",
+                "value": "={{ $('Pick Attach Job').first().json.name }}"
+              },
+              {
+                "parameterType": "formData",
+                "name": "attachment_source",
+                "value": "={{ $('Pick Attach Job').first().json.source }}"
+              }
+            ]
+          },
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "fullResponse": true,
+                "responseFormat": "json"
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "bf757401-7f29-4e5d-ad3a-ece34e021474",
+        "name": "List Job Attachments",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1320,
+          400
+        ],
+        "parameters": {
+          "method": "GET",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "url": "={{ 'https://api.servicem8.com/api_1.0/attachment.json?%24filter=' + encodeURIComponent(\"related_object_uuid eq '\" + $('Pick Attach Job').first().json.job_uuid + \"'\") }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "392cd5ac-c011-486f-8e7d-0a55fc50ec79",
+        "name": "Older Copies",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1540,
+          400
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* Keep one copy per document on the ServiceM8 job: after a successful attach, remove every other active copy of the same document - same document key (all revisions of e.g. RAMS #4) or the same file name. */\nvar up=$('Attach to Job').first().json||{};var ok=Number(up.statusCode)===201||Number(up.statusCode)===200;var newId=String((up.body&&up.body.uuid)||up.headers&&up.headers['x-record-uuid']||'');var p=$('Pick Attach Job').first().json;\nif(!ok||!newId)return [];\nfunction k(s){return String(s||'').toLowerCase().replace(/\\.pdf$/,'').replace(/[^a-z0-9]/g,'');}\nreturn $input.all().map(function(i){return i.json;}).filter(function(a){if(!a||!a.uuid||a.uuid===newId||String(a.active)!=='1'||String(a.related_object)!=='job')return false;return (p.doc_key&&String(a.attachment_source)===p.source)||k(a.attachment_name)===k(p.name);}).map(function(a){return {json:{uuid:a.uuid}};});\n"
+        }
+      },
+      {
+        "id": "ee863ca1-cb31-41f3-b9ef-55246a2a183a",
+        "name": "Deactivate Older",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1760,
+          400
+        ],
+        "parameters": {
+          "method": "DELETE",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "url": "={{ 'https://api.servicem8.com/api_1.0/attachment/' + $json.uuid + '.json' }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "374eaecc-efc9-4427-a4b1-cc9c6a718a2b",
+        "name": "Doc Note",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1320,
+          620
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var p=$('Pick Attach Job').first().json||{};var up=$('Attach to Job').first().json||{};\nvar ok=Number(up.statusCode)===201||Number(up.statusCode)===200;if(!ok||p.quiet)return [];\nvar H='https://old-hub.example/webhook/';var key=String(p.doc_key||'');\nvar T=[[/^RAMS/i,'rams','RAMS','rams','rams'],[/^CPHSP/i,'cphsp','Construction phase H&S plan','cphsp','cphsp'],[/^Team meeting/i,'toolbox','Team meeting','meeting','toolbox'],[/^Toolbox/i,'toolbox','Toolbox talk','toolbox','toolbox'],[/^Pre-start/i,'prestart','Daily pre-start','prestart','prestarts'],[/^Site inspection/i,'toolbox','Site safety inspection','',''],[/^PTM/i,'ptm','Plant, tools & materials sheet','','ptmsheets']];\nvar t=T.filter(function(x){return x[0].test(key);})[0];var res={};\ntry{await this.helpers.httpRequest({method:'POST',url:H+'cbs-job-links',body:{job_no:p.job_no},json:true,timeout:10000});res.links=true;}catch(e){res.linksError=String(e.message||e);}\nif(!t)return [{json:res}];\nvar idm=key.match(/#\\s*(\\d+)/);var rid=idm?idm[1]:'';\nvar sign=(rid&&t[3])?H+'cbs-sign?doc='+t[3]+'&id='+rid:'';\nvar hub=H+'cbs-admin'+(t[4]?'?open='+t[4]+(rid?'&id='+rid:''):'');\nvar msg=t[2]+' saved to this job: '+String(p.name||'').replace(/\\.pdf$/i,'')+'. The PDF is also in this job\\'s attachments.';\ntry{await this.helpers.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:t[1],job_no:p.job_no,message:msg,sign:sign,link:hub,pdf:p.pdf_url||''},json:true,timeout:15000});res.notified=t[1];}catch(e){res.notifyError=String(e.message||e);}\nif(rid&&t[3]){try{res.restamp=await this.helpers.httpRequest({method:'POST',url:H+'cbs-sign-restamp',body:{doc:t[3],id:rid},json:true,timeout:60000});}catch(e){res.restampError=String(e.message||e);}}\nreturn [{json:res}];"
+        }
+      },
+      {
+        "id": "e4f9e518-7b83-4a62-bddb-6849c76c17ea",
+        "name": "Work Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          900
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-work-ahead",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "4a2f73ee-0a38-4ffc-b72a-ad16cc427450"
+      },
+      {
+        "id": "8ec8473e-8ac2-4020-9e77-fd01cbb53b0c",
+        "name": "SM8 Bookings",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          220,
+          900
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "method": "GET",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "options": {
+            "timeout": 20000
+          },
+          "url": "=https://api.servicem8.com/api_1.0/jobactivity.json?%24filter=end_date%20gt%20'{{ $now.setZone('Europe/London').toFormat('yyyy-MM-dd') }}%2000%3A00%3A00'"
+        },
+        "onError": "continueRegularOutput",
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "f73a9d16-267d-453f-8c58-086c8c3be40e",
+        "name": "SM8 Work Orders",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          440,
+          900
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "method": "GET",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "options": {
+            "timeout": 20000
+          },
+          "url": "https://api.servicem8.com/api_1.0/job.json?%24filter=status%20eq%20'Work%20Order'"
+        },
+        "onError": "continueRegularOutput",
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "97e8f8df-50c9-410e-9606-01989efe2c9b",
+        "name": "SM8 Quotes",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          660,
+          900
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "method": "GET",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "options": {
+            "timeout": 20000
+          },
+          "url": "https://api.servicem8.com/api_1.0/job.json?%24filter=status%20eq%20'Quote'"
+        },
+        "onError": "continueRegularOutput",
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "16c7b206-2e3c-44d4-93f7-00e4b5f50b25",
+        "name": "SM8 Staff",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          880,
+          900
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "method": "GET",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "options": {
+            "timeout": 20000
+          },
+          "url": "https://api.servicem8.com/api_1.0/staff.json"
+        },
+        "onError": "continueRegularOutput",
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "631e960e-342e-437d-9a44-a77340b25d95",
+        "name": "Summarise Work",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1100,
+          900
+        ],
+        "parameters": {
+          "jsCode": "function rows(n){ try { return $(n).all().map(function(i){ return i.json; }).filter(function(x){ return x && x.uuid; }); } catch (e) { return []; } }\nvar acts = rows('SM8 Bookings'), wos = rows('SM8 Work Orders'), qts = rows('SM8 Quotes'), staff = rows('SM8 Staff');\nfunction ukDate(d){ return new Date(new Date(d).toLocaleString('en-US', { timeZone: 'Europe/London' })); }\nfunction ymd(d){ return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }\nvar now = ukDate(new Date()), today = ymd(now);\nvar mon = new Date(now); mon.setDate(mon.getDate() - ((mon.getDay() + 6) % 7));\nvar WEEKS = 8, end = new Date(mon); end.setDate(end.getDate() + WEEKS * 7); var endS = ymd(end);\nvar sName = {}; staff.forEach(function(s){ sName[s.uuid] = ((s.first || '') + ' ' + (s.last || '')).trim(); });\nvar jobs = {}; wos.concat(qts).forEach(function(j){ jobs[j.uuid] = j; });\n/* Each booking covers every day from its start date to its end date (a booking ending at 00:00:00 does not cover that day).\n   Days before today and after the 8-week window are dropped, so a job that started yesterday and runs today still shows. */\nfunction addD(s, n){ var p = s.split('-'); var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2] + n)); return d.toISOString().slice(0, 10); }\nfunction spanDays(a){ var s = String(a.start_date || '').slice(0, 10), e = String(a.end_date || '').slice(0, 10), et = String(a.end_date || '').slice(11, 19);\n  if (!/^\\d{4}-\\d\\d-\\d\\d$/.test(s) || s === '0000-00-00') return [];\n  if (!/^\\d{4}-\\d\\d-\\d\\d$/.test(e) || e === '0000-00-00' || e < s) e = s;\n  if (e > s && et === '00:00:00') e = addD(e, -1);\n  var out = [], d = s < today ? today : s, n = 0; while (d <= e && d < endS && n < 400) { out.push(d); d = addD(d, 1); n++; } return out; }\nvar live = acts.filter(function(a){ return String(a.active) === '1' && String(a.activity_was_scheduled) === '1'; });\nvar byJob = {}, dayCount = {};\nlive.forEach(function(a){ var ds = spanDays(a); if (!ds.length) return; var g = byJob[a.job_uuid] = byJob[a.job_uuid] || { uuid: a.job_uuid, dates: {}, staff: {} }; ds.forEach(function(d){ g.dates[d] = 1; dayCount[d] = (dayCount[d] || 0) + 1; }); if (sName[a.staff_uuid]) g.staff[sName[a.staff_uuid]] = 1; });\nfunction first(t){ return String(t || '').split(/\\r?\\n/).map(function(x){ return x.trim(); }).filter(Boolean)[0] || ''; }\nvar list = Object.keys(byJob).map(function(k){ var g = byJob[k], j = jobs[k] || {}, ds = Object.keys(g.dates).sort();\n  return { uuid: k, date: ds[0], last: ds[ds.length - 1], days: ds.length, job: j.generated_job_id || '', address: String(j.job_address || '').replace(/\\s*\\n\\s*/g, ', '), desc: first(j.job_description), staff: Object.keys(g.staff), flags: [], mandays: '' }; })\n  .sort(function(a, b){ return a.date.localeCompare(b.date); });\nvar weeks = []; for (var w = 0; w < WEEKS; w++) { var s = new Date(mon); s.setDate(s.getDate() + w * 7); var e = new Date(s); e.setDate(e.getDate() + 7); var sS = ymd(s), eS = ymd(e);\n  var js = list.filter(function(j){ return Object.keys(byJob[j.uuid].dates).some(function(d){ return d >= sS && d < eS; }); });\n  var dd = 0; Object.keys(dayCount).forEach(function(d){ if (d >= sS && d < eS) dd += dayCount[d]; });\n  weeks.push({ start: sS, jobs: js.length, days: dd }); }\nvar totalDays = 0; Object.keys(dayCount).forEach(function(d){ totalDays += dayCount[d]; });\nvar bookedAny = {}; live.forEach(function(a){ if (String(a.end_date || a.start_date || '').slice(0, 10) >= today) bookedAny[a.job_uuid] = 1; });\nvar unsched = wos.filter(function(j){ return String(j.active) === '1' && !bookedAny[j.uuid]; }).sort(function(a, b){ return String(a.work_order_date || a.date).localeCompare(String(b.work_order_date || b.date)); });\nvar openQ = qts.filter(function(q){ return String(q.active) === '1'; });\nvar m30 = new Date(now); m30.setDate(m30.getDate() - 30); var m30S = ymd(m30);\nvar detailEnd = new Date(mon); detailEnd.setDate(detailEnd.getDate() + 28); var dS = ymd(detailEnd);\nreturn [{ json: { generated: today, weeks: weeks, totalJobs: list.length, totalDays: totalDays, jobs: list.filter(function(j){ return j.date < dS; }).slice(0, 30), laterJobs: list.filter(function(j){ return j.date >= dS; }).length,\n  unscheduled: { count: unsched.length, list: unsched.slice(0, 10).map(function(j){ return { job: j.generated_job_id || '', address: String(j.job_address || '').replace(/\\s*\\n\\s*/g, ', '), desc: first(j.job_description), since: String(j.work_order_date || j.date || '').slice(0, 10) }; }) },\n  quotes: { open: openQ.length, value: openQ.reduce(function(t, q){ return t + (Number(q.total_invoice_amount) || 0); }, 0), recent: openQ.filter(function(q){ return String(q.quote_date || q.date || '').slice(0, 10) >= m30S; }).length } } }];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "59c475f7-07f4-49d2-8434-d7543e703970",
+        "name": "Respond Work",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1320,
+          900
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}"
+        }
+      },
+      {
+        "id": "d29d5023-91a0-4ba5-89e3-8f32454f14de",
+        "name": "PTM Loaded Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          3000
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "options": {},
+          "path": "cbs-ptm-loaded",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "6c4d6084-a064-4714-b98c-85f05ea1fca9"
+      },
+      {
+        "id": "2dfedb4e-4bba-41cc-a0ca-8aec0ef3ab95",
+        "name": "PTM Loaded",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          220,
+          3000
+        ],
+        "parameters": {
+          "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst list=async t=>{const d=await h.httpRequest({url:H+'cbs-admin-data?t='+t,json:true});return (d&&d[t])||[];};\nconst save=(t,id,row,p)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t='+t+'&id='+(id||0)+'&k='+K+(p?'&partial=1':''),body:row,json:true});\nconst b=$input.first().json.body||{};const S=v=>v==null?'':String(v);\nconst TZ='Europe/London',now=new Date().toLocaleString('sv-SE',{timeZone:TZ}).replace(' ','T').slice(0,16),today=now.slice(0,10);\nconst sheets=await list('ptmsheets');const sh=sheets.find(r=>String(r.id)===S(b.id));\nif(!sh)return [{json:{ok:false,message:'That load-up sheet was not found.'}}];\nif(/^loaded$/i.test(S(sh.status)))return [{json:{ok:false,already:true,message:'This sheet has already been signed out by '+S(sh.loaded_by)+'. Ask the office if it needs reopening.'}}];\nconst by=S(b.by)||'crew';const job=S(sh.job_no).replace(/[^0-9A-Za-z-]/g,'');const ref='Load-up sheet '+sh.id+(job?' (job '+job+')':'');let n=0,low=[];\nlet IT={};try{IT=JSON.parse(sh.items_json||'{}')||{};}catch(e){}\nconst due=/^\\d{4}-\\d{2}-\\d{2}$/.test(S(IT.due_back))?S(IT.due_back):'';\n/* plant is booked out with the vehicle it went on, e.g. ZZ01ZZA - ZZ Person H */\nlet withV=by;if(S(sh.vehicle)){const V=await list('vehicles');const v=V.find(x=>S(x.reg).trim()===S(sh.vehicle).trim());withV=S(sh.vehicle).trim()+(v&&S(v.assigned_to).trim()?' - '+S(v.assigned_to).trim():'');}\nconst mats=Array.isArray(b.mats)?b.mats:[];if(mats.length){const M=await list('materials');\n for(const x of mats){const m=M.find(r=>String(r.id)===S(x.id));const q=Number(x.qty)||0;if(!m||q<=0)continue;\n  const after=Math.round((Number(m.qty_on_hand||0)-q)*100)/100;\n  await save('materials',m.id,{qty_on_hand:String(after)},true);\n  await save('stockmoves',0,{material_id:String(m.id),material:S(m.name),change:String(-q),qty_after:String(after),reason:'Loaded for job',ref:ref,by:by,at:now,notes:''});\n  n++;if(m.min_level!==''&&m.min_level!=null&&after<=Number(m.min_level||0))low.push(m.name+' ('+after+' left)');}}\nconst plant=Array.isArray(b.plant)?b.plant:[];let out=0;if(plant.length&&job){const A=await list('assets');\n for(const pid of plant){const a=A.find(r=>String(r.id)===S(pid)||r.name===S(pid));if(!a||/^(retired|lost|sold|disposed)$/i.test(S(a.status)))continue;\n  await save('assets',a.id,{yard_status:'Out',out_job:job,out_with:withV,out_since:today,due_back:due,_by:by,_source:'Load-up sheet '+sh.id},true);out++;}}\nconst extra=(Array.isArray(b.extra)?b.extra:[]).map(S).filter(Boolean);\nconst lj=JSON.stringify({plant:plant.map(S),extra:extra,mats:mats.map(x=>({id:S(x.id),qty:S(x.qty)})),by:by});\nawait save('ptmsheets',sh.id,{status:'Loaded',loaded_by:by,loaded_at:now,loaded_json:lj},true);\nconst msg='Load-up sheet loaded by '+by+(sh.vehicle?' into '+withV:'')+'. '+n+' stock item'+(n===1?'':'s')+' deducted'+(out?', '+out+' plant item'+(out===1?'':'s')+' booked out to job '+job:'')+'.'+(low.length?' Running low: '+low.join(', ')+'.':'');\ntry{await h.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:'ptm_loaded',job_no:S(sh.job_no),message:msg,link:H+'cbs-admin?open=ptmsheets&id='+sh.id},json:true,timeout:8000});}catch(e){}\nreturn [{json:{ok:true,deducted:n,booked:out,plant_out:out,job:job,low:low}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "bea3d557-5eec-439e-8bc4-d2edf08088b4",
+        "name": "Respond PTM",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          3000
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}"
+        }
+      },
+      {
+        "id": "29e164e5-f6f4-4f27-8130-57792ff6906a",
+        "name": "PO Receive Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          3200
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "options": {},
+          "path": "cbs-po-receive",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "a9e3108a-876a-4f2a-a2c1-b40b4c216d56"
+      },
+      {
+        "id": "28fdbdc6-5141-451a-bb1d-89aa2127cec8",
+        "name": "PO Receive",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          220,
+          3200
+        ],
+        "parameters": {
+          "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst list=async t=>{const d=await h.httpRequest({url:H+'cbs-admin-data?t='+t,json:true});return (d&&d[t])||[];};\nconst save=(t,id,row,p)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t='+t+'&id='+(id||0)+'&k='+K+(p?'&partial=1':''),body:row,json:true});\nconst b=$input.first().json.body||{};const S=v=>v==null?'':String(v);const num=v=>Number(String(v==null?'':v).replace(/[^0-9.\\-]/g,''))||0;\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst P=(await list('pos')).find(r=>String(r.id)===S(b.id));if(!P)return [{json:{ok:false,message:'Purchase order not found. Save it first.'}}];\nlet L=[],R={};try{L=JSON.parse(P.lines_json||'[]');}catch(e){}try{R=JSON.parse(P.received_json||'{}')||{};}catch(e){}\nconst by=S(b.by);let stocked=0,M=null;\nfor(const x of (b.lines||[])){const i=Number(x.i),q=num(x.qty),ln=L[i];if(!ln||q<=0)continue;R[i]=Math.round((num(R[i])+q)*1000)/1000;\n if(ln.material_id){if(!M)M=await list('materials');const m=M.find(r=>String(r.id)===S(ln.material_id));if(m){const after=Math.round((num(m.qty_on_hand)+q)*100)/100;m.qty_on_hand=String(after);\n  await save('materials',m.id,{qty_on_hand:String(after)},true);\n  await save('stockmoves',0,{material_id:String(m.id),material:S(m.name),change:String(q),qty_after:String(after),reason:'Purchase order received',ref:S(P.po_no),by:by,at:now,notes:''});stocked++;}}}\nconst all=L.every((ln,i)=>!num(ln.qty)||num(R[i])>=num(ln.qty)-1e-9);const st=all?'Received':'Part received';\nconst hist=(S(P.notes)?S(P.notes)+'\\n':'')+now.replace('T',' ')+' received by '+by;\nawait save('pos',P.id,{received_json:JSON.stringify(R),status:st,notes:hist},true);\ntry{await h.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:'po_received',job_no:S(P.job_no),message:S(P.po_no)+' from '+S(P.supplier)+': '+(all?'everything has arrived':'part delivery received')+' (checked in by '+by+').',link:H+'cbs-po?id='+P.id},json:true,timeout:8000});}catch(e){}\nreturn [{json:{ok:true,received:R,status:st,stocked:stocked}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "dc484cfc-d463-40c6-bae5-04a2ca437d0b",
+        "name": "Respond PO Receive",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          3200
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}"
+        }
+      },
+      {
+        "id": "263490e7-7dd8-49de-8733-fdee92783bdb",
+        "name": "PO Save Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          3400
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "options": {},
+          "path": "cbs-po-save",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "8b3d7b24-17b3-4d9f-8e6e-9b4518b61a71"
+      },
+      {
+        "id": "fd4745ba-db0b-4157-bdec-cd18a79661ba",
+        "name": "PO Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          220,
+          3400
+        ],
+        "parameters": {
+          "jsCode": "const b=$input.first().json.body||{};const S=v=>v==null?'':String(v);\nconst clean=s=>S(s).replace(/[\\\\/:*?\"<>|#%]+/g,' ').replace(/\\s+/g,' ').trim();\nconst row=b.row||{};let fn=clean(b.filename)||clean((row.po_no||'PO')+' - '+(row.supplier||''));if(!/\\.pdf$/i.test(fn))fn+='.pdf';\n/* Overwrite, don't add: an edited PO saves over its existing PDF (same name, same link). */\nconst ex=S(b.existing_pdf_url).match(/sharepoint\\.com\\/(.+)$/i);if(ex){try{const path=decodeURIComponent(ex[1].split('?')[0]);if(/\\/CBS System\\/Operations\\/Purchase Orders\\/[^/]+\\.pdf$/i.test('/'+path))fn=path.split('/').pop();}catch(e){}}\nconst o={json:{has_pdf:!!b.pdf,folder:'CBS%20System/Operations/Purchase%20Orders',filename:fn}};\nif(b.pdf)o.binary={data:{data:String(b.pdf),mimeType:'application/pdf',fileName:fn}};return [o];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "2a9a1e56-2f8a-4147-b7b8-031bd6dd11ff",
+        "name": "PO Has PDF",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          440,
+          3400
+        ],
+        "parameters": {
+          "conditions": {
+            "combinator": "and",
+            "conditions": [
+              {
+                "leftValue": "={{ $json.has_pdf }}",
+                "operator": {
+                  "operation": "true",
+                  "singleValue": true,
+                  "type": "boolean"
+                },
+                "rightValue": ""
+              }
+            ],
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            }
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "ac57aaee-7aed-4c78-98bc-2a108498bfed",
+        "name": "Upload PO",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          660,
+          3340
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "contentType": "binaryData",
+          "inputDataFieldName": "data",
+          "method": "PUT",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {},
+          "sendBody": true,
+          "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.folder }}/{{ encodeURIComponent($json.filename) }}:/content?@microsoft.graph.conflictBehavior=replace"
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "5dcaa89f-ceb0-4ed5-b93e-6a4f6328c57c",
+        "name": "PO Finish",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          3400
+        ],
+        "parameters": {
+          "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';const S=v=>v==null?'':String(v);\nconst b=$('PO Save Hook').first().json.body||{};const prep=$('PO Prep').first().json;\nlet up=null;try{up=$('Upload PO').first().json;}catch(e){}\nif(prep.has_pdf&&(!up||!up.id))return [{json:{ok:false,message:'The PDF could not be saved to SharePoint. Try again.'}}];\nconst row=Object.assign({},b.row||{});row.pdf_url=up&&up.webUrl?up.webUrl:S(b.existing_pdf_url);\nconst r=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=pos&id='+(Number(b.id)||0)+'&k='+K,body:row,json:true});\nconst id=Number(r&&r.id)||Number(b.id)||0;\nif(up&&up.id&&S(row.job_no)){try{await h.httpRequest({method:'POST',url:H+'cbs-sm8-attach',body:{job_no:S(row.job_no),item_id:up.id,name:prep.filename,doc_key:'po-'+S(row.po_no)},json:true,timeout:60000});}catch(e){}}\nif(b.notify){try{await h.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:'po_issued',job_no:S(row.job_no),message:S(row.po_no)+' issued to '+S(row.supplier)+(row.total?' (\\u00a3'+row.total+' inc VAT)':'')+(row.needed_by?', needed by '+row.needed_by.split('-').reverse().join('/'):'')+'. Ordered by '+(S(row.ordered_by)||'the office')+'.',link:H+'cbs-po?id='+id,pdf:row.pdf_url},json:true,timeout:8000});}catch(e){}}\nreturn [{json:{ok:true,id:id,pdf_url:row.pdf_url}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "961861af-a27b-4e35-b19e-594dbb5d569f",
+        "name": "Respond PO Save",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1100,
+          3400
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}"
+        }
+      },
+      {
+        "id": "3e386363-6f08-4f02-a2f4-5d616d3a572c",
+        "name": "Incident Record Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          3650
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "options": {},
+          "path": "cbs-incident-record",
+          "responseMode": "onReceived"
+        },
+        "webhookId": "0c57ae41-4647-4f6e-baea-f93cca636da5"
+      },
+      {
+        "id": "693cb394-6e6b-49ce-af49-c2a1495f7d8d",
+        "name": "Incident Record PDF",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          220,
+          3650
+        ],
+        "parameters": {
+          "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/';const S=v=>v==null?'':String(v);\nconst id=S(($input.first().json.body||{}).id);const d=await h.httpRequest({url:H+'cbs-admin-data?t=incidents',json:true});\nconst I=((d&&d.incidents)||[]).find(r=>String(r.id)===id);if(!I)return [];\nconst A=s=>S(s).replace(/[\\u2018\\u2019]/g,\"'\").replace(/[\\u201c\\u201d]/g,'\"').replace(/[\\u2013\\u2014]/g,'-').replace(/\\u00a3/g,'GBP ').replace(/[^\\x20-\\x7e\\n]/g,'');\nconst E=s=>A(s).replace(/\\\\/g,'\\\\\\\\').replace(/\\(/g,'\\\\(').replace(/\\)/g,'\\\\)');\nfunction wrap(t,n){const out=[];A(t).split('\\n').forEach(p=>{let l='';p.split(' ').forEach(w=>{if((l+' '+w).trim().length>n){if(l)out.push(l);l=w;}else l=(l?l+' ':'')+w;});out.push(l);});return out;}\nfunction dt(v){v=S(v);if(!v)return '';const p=v.slice(0,10).split('-');return (p.length===3?p[2]+'/'+p[1]+'/'+p[0]:v)+(v.length>10?' '+v.slice(11,16):'');}\nconst rows=[['Reference',I.ref],['Date and time',dt(I.occurred_at)],['Type',I.kind],['Severity',I.severity],['Person involved',I.person],['Location / site',I.location],['ServiceM8 job',I.sm8_job],['Reported by',I.reported_by],['What happened',I.description],['Immediate action taken',I.immediate_action],['Injury details',I.injury_detail||'None reported'],['Treatment',I.treatment],['Status',I.status]].filter(r=>S(r[1]).trim());\nconst pages=[];let ops=[],y=0;\nfunction newPage(){if(ops.length)pages.push(ops);ops=[];y=760;\n ops.push('0.957 0.475 0.125 rg 40 772 515 4 re f','0 g','BT /F2 16 Tf 40 785 Td ('+E('Incident record - '+S(I.ref))+') Tj ET','BT /F1 9 Tf 360 800 Td ('+E('Chelmsford Building Services Ltd')+') Tj ET');}\nnewPage();\nrows.forEach(r=>{const L=wrap(r[1],78);const need=14+L.length*12;if(y-need<60)newPage();\n ops.push('BT /F2 10 Tf 40 '+y+' Td ('+E(r[0])+') Tj ET');y-=13;L.forEach(l=>{ops.push('BT /F1 10 Tf 52 '+y+' Td ('+E(l)+') Tj ET');y-=12;});y-=6;});\n/* This PDF is attached to the ServiceM8 job, which the crew can see: no link to the office investigation page. */\nif(y<120)newPage();ops.push('0.4 g','BT /F1 8 Tf 40 50 Td ('+E('Reported from the CBS team page.')+') Tj ET');pages.push(ops);\nlet objs=['<< /Type /Catalog /Pages 2 0 R >>',null,'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>','<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>'];const kids=[];\npages.forEach(p=>{const c=p.join('\\n');objs.push('<< /Length '+Buffer.byteLength(c,'latin1')+' >>\\nstream\\n'+c+'\\nendstream');const cid=objs.length;objs.push('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents '+cid+' 0 R >>');kids.push(objs.length+' 0 R');});\nobjs[1]='<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+kids.length+' >>';\nlet pdf='%PDF-1.4\\n',off=[];objs.forEach((o,i)=>{off.push(Buffer.byteLength(pdf,'latin1'));pdf+=(i+1)+' 0 obj\\n'+o+'\\nendobj\\n';});\nconst xr=Buffer.byteLength(pdf,'latin1');pdf+='xref\\n0 '+(objs.length+1)+'\\n0000000000 65535 f \\n'+off.map(o=>String(o).padStart(10,'0')+' 00000 n \\n').join('')+'trailer\\n<< /Size '+(objs.length+1)+' /Root 1 0 R >>\\nstartxref\\n'+xr+'\\n%%EOF';\nconst fn=[S(I.occurred_at).slice(0,10),S(I.ref),S(I.kind),'Incident Record'].map(x=>x.replace(/[\\\\/:*?\"<>|#%]+/g,' ').trim()).filter(Boolean).join(' - ')+'.pdf';\nreturn [{json:{id:I.id,inc:I,folder:'CBS%20System/H%26S/Incidents',filename:fn},binary:{data:{data:Buffer.from(pdf,'latin1').toString('base64'),mimeType:'application/pdf',fileName:fn}}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "d8f8faac-6f53-4855-8530-98d2f060b6e7",
+        "name": "Upload Incident Record",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          440,
+          3650
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "contentType": "binaryData",
+          "inputDataFieldName": "data",
+          "method": "PUT",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {},
+          "sendBody": true,
+          "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.folder }}/{{ encodeURIComponent($json.filename) }}:/content?@microsoft.graph.conflictBehavior=replace"
+        }
+      },
+      {
+        "id": "eebfe16e-6e3e-438a-bfdc-04de6934c546",
+        "name": "Incident Record Finish",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          660,
+          3650
+        ],
+        "parameters": {
+          "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';const S=v=>v==null?'':String(v);\nconst p=$('Incident Record PDF').first().json,I=p.inc,up=$input.first().json||{};const url=S(up.webUrl);\nif(url)await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=incidents&id='+I.id+'&k='+K+'&partial=1',body:{record_pdf_url:url},json:true});\nconst job=S(I.sm8_job).replace(/[^0-9]/g,'');\nif(up.id&&job){try{await h.httpRequest({method:'POST',url:H+'cbs-sm8-attach',body:{job_no:job,item_id:up.id,name:p.filename,doc_key:'incident-'+I.id},json:true,timeout:60000});}catch(e){}}\nconst hurt=/injury|illness/i.test(S(I.kind))||(S(I.injury_detail).trim()&&!/^(none|no|nil|n\\/a|na)$/i.test(S(I.injury_detail).trim()));\nconst msg=(hurt?'INJURY / ILLNESS reported':S(I.kind||'Incident')+' reported')+(I.location?' at '+I.location:'')+' by '+(S(I.reported_by)||'a team member')+'. '+S(I.description).slice(0,300);\ntry{await h.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:'incident_reported',job_no:job,message:msg,link:H+'cbs-incident-report?id='+I.id,pdf:url},json:true,timeout:8000});}catch(e){}\nreturn [{json:{ok:true,url:url}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "36ac54e7-9605-474f-b551-5fe6ac8bbd85",
+        "name": "Incident Report Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          3880
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "options": {},
+          "path": "cbs-incident-report-save",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "ed411f73-55ba-49cb-b987-7af3bdf15009"
+      },
+      {
+        "id": "5d638952-f4cc-478b-9474-2b7e67d34e2c",
+        "name": "Incident Report Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          220,
+          3880
+        ],
+        "parameters": {
+          "jsCode": "const b=$input.first().json.body||{};const S=v=>v==null?'':String(v);\nlet fn=S(b.filename).replace(/[\\\\/:*?\"<>|#%]+/g,' ').replace(/\\s+/g,' ').trim()||('Incident '+S(b.incident_id)+' - Incident Report');if(!/\\.pdf$/i.test(fn))fn+='.pdf';\nif(!b.pdf||!b.incident_id)throw new Error('Missing report or incident');\nreturn [{json:{folder:'CBS%20System/H%26S/Incident%20Reports',filename:fn},binary:{data:{data:String(b.pdf),mimeType:'application/pdf',fileName:fn}}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "4c5f3171-147c-47d2-a48e-f097acf39578",
+        "name": "Upload Incident Report",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          440,
+          3880
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "contentType": "binaryData",
+          "inputDataFieldName": "data",
+          "method": "PUT",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {},
+          "sendBody": true,
+          "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.folder }}/{{ encodeURIComponent($json.filename) }}:/content?@microsoft.graph.conflictBehavior=replace"
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "ec266a68-1844-42ca-a863-7aba160acf8b",
+        "name": "Incident Report Finish",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          660,
+          3880
+        ],
+        "parameters": {
+          "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';const S=v=>v==null?'':String(v);\nconst b=$('Incident Report Hook').first().json.body||{};const fn=$('Incident Report Prep').first().json.filename;const up=$input.first().json||{};\nif(!up.id)return [{json:{ok:false,message:'The PDF could not be saved to SharePoint. Try again.'}}];\nconst row=Object.assign({},b.row||{});row.incident_id=S(b.incident_id);row.pdf_url=S(up.webUrl);\nconst r=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=increports&id='+(Number(b.id)||0)+'&k='+K,body:row,json:true});\nconst id=Number(r&&r.id)||Number(b.id)||0;\nif(b.inc&&typeof b.inc==='object')await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=incidents&id='+Number(b.incident_id)+'&k='+K+'&partial=1',body:b.inc,json:true});\nconst job=S(row.job_no).replace(/[^0-9]/g,'');\nif(job){try{await h.httpRequest({method:'POST',url:H+'cbs-sm8-attach',body:{job_no:job,item_id:up.id,name:fn,doc_key:'increport-'+b.incident_id},json:true,timeout:60000});}catch(e){}}\nconst st=S(b.inc&&b.inc.status)||S(row.status);\ntry{await h.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:'incident_report_saved',job_no:job,message:'Incident investigation report '+(row.signed_by?'signed off by '+row.signed_by:'saved')+(row.person?' for '+row.person:'')+'. Status: '+st+'.'+(row.riddor_required==='Yes'?' RIDDOR report required.':''),link:H+'cbs-incident-report?id='+b.incident_id,pdf:row.pdf_url},json:true,timeout:8000});}catch(e){}\nreturn [{json:{ok:true,id:id,pdf_url:row.pdf_url}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "15546875-3b1d-4add-ba27-42cdde5912ce",
+        "name": "Respond Incident Report",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          880,
+          3880
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}"
+        }
+      },
+      {
+        "id": "754e53a7-6395-4843-bc0f-7002d7348f29",
+        "name": "Sign Data Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          4100
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-sign-data",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "6a6fa608-b7bc-42b9-bca4-dfcdbd17bf03"
+      },
+      {
+        "id": "fdfc405f-d0dd-4d25-b565-4d7fd4c55707",
+        "name": "Sign Data",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          220,
+          4100
+        ],
+        "parameters": {
+          "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/';const S=v=>v==null?'':String(v);\nconst list=async t=>{const d=await h.httpRequest({url:H+'cbs-admin-data?t='+t,json:true});return (d&&d[t])||[];};\nconst q=$input.first().json.query||{};const MAP={rams:'rams',swms:'rams',cphsp:'cphsp',sssp:'cphsp',prestart:'prestarts',toolbox:'toolbox',meeting:'toolbox',hsmeet:'toolbox'};\nconst type=S(q.doc).toLowerCase(),t=MAP[type],id=S(q.id);if(!t||!id)return [{json:{ok:false,message:'This sign-on link is not complete. Check with the office.'}}];\nconst r=(await list(t)).find(x=>String(x.id)===id);if(!r)return [{json:{ok:false,message:'Document not found. Check with the office.'}}];\nconst NAMES={rams:'RAMS',cphsp:'Construction Phase Plan (site induction)',prestarts:'Pre-start briefing',toolbox:r.meeting_type&&/meeting/i.test(r.meeting_type)?'Team meeting':'Toolbox talk'};\nconst title=t==='rams'?[r.activity||r.task,r.site].filter(Boolean).join(' - '):t==='cphsp'?[r.cphsp_no,r.project||r.site].filter(Boolean).join(' - '):t==='prestarts'?[r.ps_no,r.site,r.held_on].filter(Boolean).join(' - '):[r.topic,r.site,r.held_on].filter(Boolean).join(' - ');\nconst rev=S(r.revision||r.version||'');const dtype=type==='swms'?'rams':type==='sssp'?'cphsp':type;\nconst signed=(await list('signons')).filter(s=>S(s.doc_type)===dtype&&S(s.doc_id)===id&&(!rev||!s.doc_rev||S(s.doc_rev)===rev)).map(s=>({name:s.name,company:s.company,signed_at:s.signed_at}));\nconst workers=(await list('workers')).filter(w=>w.name&&w.active!==false).map(w=>String(w.name)).sort();\nlet ind=null;\nif(t==='cphsp'){let st={};try{st=JSON.parse(r.state_json||'{}')||{};}catch(e){}\n const L=v=>S(v).split('\\n').map(x=>x.replace(/^[-*\\u2022]\\s*/,'').trim()).filter(Boolean);\n const J=(a,b)=>[S(a).trim(),S(b).trim()].filter(Boolean).join(' - ');\n const job=S(r.job_no||st.job_no);const secs=[];\n secs.push({h:'The project',kv:[['Project',st.project||r.project],['Site',st.site||r.site],['Client',st.client||r.client],['Working hours',st.hours],['Site manager',J(st.site_contact,st.site_contact_phone)],['Deputy',J(st.deputy,st.deputy_phone)],[\"Client's project manager\",J(st.client_contact,st.client_phone)]],p:S(st.description)});\n secs.push({h:'Emergencies',kv:[['Emergency services','999'],['Nearest A&E',st.hospital],['First aiders',st.first_aiders],['First aid kit',st.firstaid_loc],['Fire warden',st.fire_warden],['Fire extinguishers',st.extinguisher_loc],['Assembly point',st.assembly],['Defibrillator (AED)',st.defib]],p:[S(st.client_fire).trim(),'If you discover a fire, raise the alarm at the nearest call point, call 999 and go to the assembly point. Do not go back in until you are told it is safe. If someone is hurt, get a first aider and call 999 for anything serious.'].filter(Boolean).join('\\n\\n')});\n const RK=(Array.isArray(st.risks)?st.risks:[]).filter(x=>x&&(x.t||x.c));\n if(RK.length||st.rescue)secs.push({h:'High-risk activities and controls',items:RK.map(x=>S(x.t)+(L(x.c).length?': '+L(x.c).join('; '):'')),p:st.rescue?'Rescue from height:\\n'+S(st.rescue):''});\n const rules=L(st.site_rules).concat(L(st.traffic));\n secs.push({h:'Site rules, hygiene and PPE',items:rules,kv:[['PPE',st.ppe]],p:S(st.hygiene)});\n const pm=(Array.isArray(st.permits)?st.permits:[]).concat(L(st.permits_other));\n const PMD=['Hot works, including grinding or anything that makes sparks','Roof work and work on fragile surfaces','Work at height needing a harness','Breaking ground or excavation','Confined spaces','Live electrical work or isolations','Lifting operations and crane lifts','Asbestos-related work'];\n secs.push({h:'Permits to work',p0:'Some work on this site cannot start until the site manager has issued a permit to work. If your work includes any of the following, request a permit from the site manager before you start:',items:pm.length?pm:PMD,p:'Do not start permit work until the permit has been issued and you have been briefed on it.'});\n secs.push({h:'Your RAMS',items:['Contractors: we need your RAMS for the work you will be doing. Give them to the site manager before you start work. You cannot start until they have been reviewed and accepted.','CBS operatives: you will be briefed on the CBS RAMS for your task and sign them before you start that task.','If your task changes, or the RAMS do not match the work, stop and speak to the site manager.']});\n if(st.welfare)secs.push({h:'Welfare',p:S(st.welfare)});\n secs.push({h:'Reporting and your responsibilities',items:['Sign in and out with the site manager every day.','Report every accident, incident, near miss and hazard to the site manager straight away.','You have the right to stop any work you believe is unsafe.','Be fit for work. No drugs or alcohol on site.','Follow the instructions of the site manager or the deputy.']});\n const acc=(st.std&&st.std.acceptance)||\"By signing, I confirm that I have read, discussed with management and understood the method statements and risk assessments that apply to the work I am carrying out on this project, and this construction phase plan. I agree to follow the restrictions and control methods that apply to the way the work is to be carried out.\";\n const PR=[],addP=n=>{n=S(n).split('\\n')[0].trim();if(n&&PR.indexOf(n)<0)PR.push(n);};addP(st.site_contact);addP(st.deputy);\n (Array.isArray(st.chain)?st.chain:[]).forEach(c=>{if(c&&/site manager|deputy|supervisor|site lead|foreman|assistant|chargehand|charge hand/i.test(S(c.role))&&!/client/i.test(S(c.role)))addP(c.name);});\n ind={sections:secs,acceptance:acc,presenters:PR};}\nreturn [{json:{ok:true,doc:{type:dtype,id:id,kind:NAMES[t],title:title,rev:rev,job_no:S(r.job_no),site:S(r.site),pdf_url:S(r.pdf_url),prepared_by:S(r.prepared_by||r.site_lead||r.presenter)},signed:signed,workers:workers,ind:ind}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "e8448e24-c71a-4e5d-8883-c5d02f2dda70",
+        "name": "Respond Sign Data",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          4100
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}"
+        }
+      },
+      {
+        "id": "93a13396-a783-477b-98d8-f6a4fab0960f",
+        "name": "Sign Save Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          4300
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "options": {},
+          "path": "cbs-sign-save",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "16f9f81f-0889-483c-9388-70b0244894e4"
+      },
+      {
+        "id": "0c57d4a3-a88c-4196-b3cb-17e3bfcaa839",
+        "name": "Sign Save",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          220,
+          4300
+        ],
+        "parameters": {
+          "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';const S=v=>v==null?'':String(v).trim();\nconst b=$input.first().json.body||{};\nif(!S(b.name)||!S(b.doc_type)||!S(b.doc_id))return [{json:{ok:false,message:'Enter your name.'}}];\nif(!/^data:image\\/(png|jpeg);base64,/.test(S(b.signature))||S(b.signature).length>400000)return [{json:{ok:false,message:'Please sign in the box.'}}];\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst row={doc_type:S(b.doc_type),doc_id:S(b.doc_id),doc_rev:S(b.doc_rev),doc_label:S(b.doc_label).slice(0,200),job_no:S(b.job_no),name:S(b.name).slice(0,80),company:S(b.company).slice(0,80)||'Chelmsford Building Services',is_worker:b.is_worker?'Yes':'No',signed_at:now,signature:S(b.signature),reviewed:'No',record_pdf_url:'',inducted_by:S(b.inducted_by).slice(0,80)};\nconst r=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=signons&id=0&k='+K,body:row,json:true});\nconst sid=Number(r&&r.id)||0;\ntry{await h.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:'signon',job_no:row.job_no,message:row.name+' ('+row.company+') signed '+row.doc_label+'.',sign:H+'cbs-sign?doc='+row.doc_type+'&id='+row.doc_id,link:H+'cbs-admin?open=signons'+(sid?'&id='+sid:'')},json:true,timeout:8000});}catch(e){}\nif(sid){try{await h.httpRequest({method:'POST',url:H+'cbs-sign-restamp',body:{doc:row.doc_type,id:row.doc_id},json:true,timeout:15000});}catch(e){}}\nreturn [{json:{ok:true,id:sid,signed_at:now}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "306f0979-4035-45d4-985f-e0c52df86816",
+        "name": "Respond Sign Save",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          4300
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}"
+        }
+      },
+      {
+        "id": "471d741b-712a-4387-ac22-50916f51ed99",
+        "name": "PDF Out Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          4520
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "options": {},
+          "path": "cbs-pdf-out",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "1a80d25c-1aaf-4af5-bf68-0051313685e4"
+      },
+      {
+        "id": "75c5c995-ce9e-47ae-9d12-0871e3b33f3a",
+        "name": "PDF Out",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          220,
+          4520
+        ],
+        "parameters": {
+          "jsCode": "const b=$input.first().json.body||{};const S=v=>v==null?'':String(v);\nlet name=S(b.name).replace(/[\\\\/:*?\"<>|\\r\\n]+/g,' ').replace(/\\s+/g,' ').trim().slice(0,150)||'document.pdf';if(!/\\.pdf$/i.test(name))name+='.pdf';\nlet data=S(b.data).replace(/^data:[^,]*,/,'').replace(/[^A-Za-z0-9+/=]/g,'');\nif(data.length<100)throw new Error('No PDF data');\nconst ascii=name.replace(/[^\\x20-\\x7e]/g,'_').replace(/\"/g,'');\nreturn [{json:{name:name,disp:'inline; filename=\"'+ascii+'\"; filename*=UTF-8\\'\\''+encodeURIComponent(name)},binary:{data:{data:data,mimeType:'application/pdf',fileName:name}}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "3f076de6-7dd3-4b49-8bd5-8e80844880a8",
+        "name": "Respond PDF Out",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          4520
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/pdf"
+                },
+                {
+                  "name": "Content-Disposition",
+                  "value": "={{ $json.disp }}"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          },
+          "respondWith": "binary"
+        }
+      },
+      {
+        "id": "86f1a673-bf19-40a5-bd13-4bf58ea52d4f",
+        "name": "Existing Attachments",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          770,
+          520
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "method": "GET",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            }
+          },
+          "url": "={{ 'https://api.servicem8.com/api_1.0/attachment.json?%24filter=' + encodeURIComponent(\"related_object_uuid eq '\" + $json.job_uuid + \"'\") }}"
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "37f17b47-f6f1-4cc7-b18b-c9959a68ef3f",
+        "name": "Skip If Already Attached",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          620
+        ],
+        "parameters": {
+          "jsCode": "var p=$('Pick Attach Job').first().json;\nif(!p.dedupe)return [{json:p}];\nfunction k(s){return String(s||'').toLowerCase().replace(/\\.pdf$/,'').replace(/[^a-z0-9]/g,'');}\nvar have=$input.all().map(function(i){return i.json;}).filter(function(a){return a&&a.uuid&&String(a.active)==='1'&&k(a.attachment_name)===k(p.name);});\nif(have.length)return [];\nreturn [{json:p}];",
+          "mode": "runOnceForAllItems"
+        }
+      }
+    ],
+    "connections": {
+      "Job Hook": {
+        "main": [
+          [
+            {
+              "node": "Find Job",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Find Job": {
+        "main": [
+          [
+            {
+              "node": "Pick Job",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pick Job": {
+        "main": [
+          [
+            {
+              "node": "Get Client",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Client": {
+        "main": [
+          [
+            {
+              "node": "Get Bookings",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Bookings": {
+        "main": [
+          [
+            {
+              "node": "Get Staff",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Staff": {
+        "main": [
+          [
+            {
+              "node": "Combine Job",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Combine Job": {
+        "main": [
+          [
+            {
+              "node": "Respond Job",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Attach Hook": {
+        "main": [
+          [
+            {
+              "node": "Check Input",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Check Input": {
+        "main": [
+          [
+            {
+              "node": "Find Attach Job",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Find Attach Job": {
+        "main": [
+          [
+            {
+              "node": "Pick Attach Job",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get PDF": {
+        "main": [
+          [
+            {
+              "node": "Attach to Job",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Attach to Job": {
+        "main": [
+          [
+            {
+              "node": "List Job Attachments",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Doc Note",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "List Job Attachments": {
+        "main": [
+          [
+            {
+              "node": "Older Copies",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Older Copies": {
+        "main": [
+          [
+            {
+              "node": "Deactivate Older",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Work Hook": {
+        "main": [
+          [
+            {
+              "node": "SM8 Bookings",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SM8 Bookings": {
+        "main": [
+          [
+            {
+              "node": "SM8 Work Orders",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SM8 Work Orders": {
+        "main": [
+          [
+            {
+              "node": "SM8 Quotes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SM8 Quotes": {
+        "main": [
+          [
+            {
+              "node": "SM8 Staff",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SM8 Staff": {
+        "main": [
+          [
+            {
+              "node": "Summarise Work",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Summarise Work": {
+        "main": [
+          [
+            {
+              "node": "Respond Work",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PTM Loaded Hook": {
+        "main": [
+          [
+            {
+              "node": "PTM Loaded",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PTM Loaded": {
+        "main": [
+          [
+            {
+              "node": "Respond PTM",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PO Receive Hook": {
+        "main": [
+          [
+            {
+              "node": "PO Receive",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PO Receive": {
+        "main": [
+          [
+            {
+              "node": "Respond PO Receive",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PO Save Hook": {
+        "main": [
+          [
+            {
+              "node": "PO Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PO Prep": {
+        "main": [
+          [
+            {
+              "node": "PO Has PDF",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PO Has PDF": {
+        "main": [
+          [
+            {
+              "node": "Upload PO",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "PO Finish",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upload PO": {
+        "main": [
+          [
+            {
+              "node": "PO Finish",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PO Finish": {
+        "main": [
+          [
+            {
+              "node": "Respond PO Save",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Incident Record Hook": {
+        "main": [
+          [
+            {
+              "node": "Incident Record PDF",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Incident Record PDF": {
+        "main": [
+          [
+            {
+              "node": "Upload Incident Record",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upload Incident Record": {
+        "main": [
+          [
+            {
+              "node": "Incident Record Finish",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Incident Report Hook": {
+        "main": [
+          [
+            {
+              "node": "Incident Report Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Incident Report Prep": {
+        "main": [
+          [
+            {
+              "node": "Upload Incident Report",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upload Incident Report": {
+        "main": [
+          [
+            {
+              "node": "Incident Report Finish",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Incident Report Finish": {
+        "main": [
+          [
+            {
+              "node": "Respond Incident Report",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Sign Data Hook": {
+        "main": [
+          [
+            {
+              "node": "Sign Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Sign Data": {
+        "main": [
+          [
+            {
+              "node": "Respond Sign Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Sign Save Hook": {
+        "main": [
+          [
+            {
+              "node": "Sign Save",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Sign Save": {
+        "main": [
+          [
+            {
+              "node": "Respond Sign Save",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PDF Out Hook": {
+        "main": [
+          [
+            {
+              "node": "PDF Out",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PDF Out": {
+        "main": [
+          [
+            {
+              "node": "Respond PDF Out",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pick Attach Job": {
+        "main": [
+          [
+            {
+              "node": "Existing Attachments",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Existing Attachments": {
+        "main": [
+          [
+            {
+              "node": "Skip If Already Attached",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Skip If Already Attached": {
+        "main": [
+          [
+            {
+              "node": "Get PDF",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS ServiceM8 + crew saves: sm8-job, sm8-attach, work-ahead, ptm-loaded, po-save, po-receive, incident-record, incident-report-save, sign-data, sign-save. Writes go via cbs-admin-save.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

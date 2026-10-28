@@ -1,0 +1,63 @@
+{
+  "table": "cbs_prestarts",
+  "n8n_id": "Wg8zT3VHAzrdt8Sw",
+  "columns": [
+    {
+      "name": "acknowledged",
+      "type": "string"
+    },
+    {
+      "name": "client",
+      "type": "string"
+    },
+    {
+      "name": "docs_json",
+      "type": "string"
+    },
+    {
+      "name": "headcount",
+      "type": "string"
+    },
+    {
+      "name": "held_at",
+      "type": "string"
+    },
+    {
+      "name": "held_on",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "linked",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "ps_no",
+      "type": "string"
+    },
+    {
+      "name": "site",
+      "type": "string"
+    },
+    {
+      "name": "site_lead",
+      "type": "string"
+    },
+    {
+      "name": "state_json",
+      "type": "string"
+    }
+  ],
+  "sample_rows": []
+}

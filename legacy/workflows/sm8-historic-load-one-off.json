@@ -1,0 +1,666 @@
+{
+  "id": "R9eivHS8pvMpl1bi",
+  "name": "CBS - SM8 Historic Load (one-off)",
+  "active": false,
+  "isArchived": false,
+  "versionId": "0af2a00f-5bf2-434f-8599-9df608bf2a3d",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "createdAt": "2026-10-19T11:24:40.019Z",
+  "updatedAt": "2026-10-20T14:44:06.305Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Run": {
+      "main": [
+        [
+          {
+            "node": "Settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Settings": {
+      "main": [
+        [
+          {
+            "node": "SM8 Queues",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SM8 Queues": {
+      "main": [
+        [
+          {
+            "node": "SM8 Clients",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SM8 Clients": {
+      "main": [
+        [
+          {
+            "node": "SM8 Jobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SM8 Jobs": {
+      "main": [
+        [
+          {
+            "node": "List Worksheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Worksheets": {
+      "main": [
+        [
+          {
+            "node": "Client Tabs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Client Tabs": {
+      "main": [
+        [
+          {
+            "node": "Read Tab",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Tab": {
+      "main": [
+        [
+          {
+            "node": "Plan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Plan": {
+      "main": [
+        [
+          {
+            "node": "Dry Run?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dry Run?": {
+      "main": [
+        [
+          {
+            "node": "Dry Run - Review Plan",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Client Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Client Items": {
+      "main": [
+        [
+          {
+            "node": "New Clients?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "New Clients?": {
+      "main": [
+        [
+          {
+            "node": "Job Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create Client",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Job Items": {
+      "main": [
+        [
+          {
+            "node": "Create Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Client": {
+      "main": [
+        [
+          {
+            "node": "Job Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Job": {
+      "main": [
+        [
+          {
+            "node": "Read Job Back",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Job Back": {
+      "main": [
+        [
+          {
+            "node": "Build Sheet Writes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Sheet Writes": {
+      "main": [
+        [
+          {
+            "node": "Write Back to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "f85c4384-804e-4554-8e76-f0b41ecf46b9",
+      "name": "Run",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        96
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "months",
+              "monthsInterval": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "e393fe9c-fac3-4f29-95f5-d141fd41816e",
+      "name": "Settings",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        96
+      ],
+      "parameters": {
+        "jsCode": "// Set dryRun to false to create the jobs for real.\n// onlyTab / rowFrom / rowTo limit the run to specific sheet rows (blank = all).\n// Rows picked this way skip the 2025+ date check.\nreturn [{ json: { dryRun: true, onlyTab: '', rowFrom: 0, rowTo: 0 } }];"
+      }
+    },
+    {
+      "id": "3120c82d-dff5-4647-9b81-84808137bfc1",
+      "name": "SM8 Queues",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        448,
+        96
+      ],
+      "parameters": {
+        "url": "https://api.servicem8.com/api_1.0/queue.json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        }
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "b0d0fc6d-4df3-42b9-b6d8-974c0cfa0189",
+      "name": "SM8 Clients",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        672,
+        96
+      ],
+      "parameters": {
+        "url": "https://api.servicem8.com/api_1.0/company.json?%24filter=active%20eq%201",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        }
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "9bb6d9bb-d0cd-4301-8686-9d7f6a4e80ff",
+      "name": "SM8 Jobs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        896,
+        96
+      ],
+      "parameters": {
+        "url": "https://api.servicem8.com/api_1.0/job.json?%24filter=active%20eq%201",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        }
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "611c3434-760f-404b-bf0e-01f57d9cb3ae",
+      "name": "List Worksheets",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1120,
+        96
+      ],
+      "parameters": {
+        "url": "https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/01ZZZZZZ000000000000000000000000H7/workbook/worksheets?$select=id,name,visibility",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {}
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "7c3de39f-d966-4000-b4b8-530376f1e9c5",
+      "name": "Client Tabs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        96
+      ],
+      "parameters": {
+        "jsCode": "// Visible client tabs only - the pivot/summary tabs are not job lists.\nvar EXCLUDE=['summary','to be quoted','approved works','works completed'];\nvar only=String($('Settings').first().json.onlyTab||'').trim().toLowerCase();\nreturn ($('List Worksheets').first().json.value||[]).filter(function(s){var n=String(s.name).trim().toLowerCase();return s.visibility==='Visible'&&EXCLUDE.indexOf(n)<0&&(!only||n===only);}).map(function(s){return {json:{id:s.id,name:String(s.name).trim()}};});"
+      }
+    },
+    {
+      "id": "2b4df6eb-0d50-415d-973b-0bc4756c1d5a",
+      "name": "Read Tab",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1568,
+        96
+      ],
+      "parameters": {
+        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/01ZZZZZZ000000000000000000000000H7/workbook/worksheets('{{ encodeURIComponent($json.id) }}')/usedRange?$select=address,values",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "batching": {
+            "batch": {
+              "batchInterval": 1500,
+              "batchSize": 1
+            }
+          }
+        }
+      },
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "57e77d2d-8009-4674-b784-a33bb4463813",
+      "name": "Plan",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1792,
+        96
+      ],
+      "parameters": {
+        "jsCode": "function S(v){return v==null?'':String(v).trim();}\nfunction norm(s){return S(s).toLowerCase().replace(/[^a-z0-9]/g,'');}\nfunction toDate(v){\n  if(v===''||v==null)return null;\n  if(typeof v==='number'&&v>20000&&v<80000){return new Date(Math.round((v-25569)*86400000));}\n  var s=String(v).trim();var m=s.match(/^(\\d{1,2})[\\/.-](\\d{1,2})[\\/.-](\\d{2,4})$/);\n  if(m){var y=+m[3];if(y<100)y+=2000;return new Date(Date.UTC(y,+m[2]-1,+m[1]));}\n  var d=new Date(s);return isNaN(d)?null:d;\n}\nfunction colL(n){var s='';while(n>0){var r=(n-1)%26;s=String.fromCharCode(65+r)+s;n=Math.floor((n-1)/26);}return s;}\nfunction colN(s){var n=0;for(var i=0;i<s.length;i++)n=n*26+(s.charCodeAt(i)-64);return n;}\nvar CUTOFF=new Date(Date.UTC(2025,0,1));\nvar SET=$('Settings').first().json;var RF=+SET.rowFrom||0,RT=+SET.rowTo||0;\n// Only these sheet statuses go to ServiceM8: [ServiceM8 status, folder]. 'Equiry' is a sheet typo for Enquiry.\nvar STATUS={enquiry:['Quote','Enquiry'],equiry:['Quote','Enquiry'],estimated:['Quote','Estimated'],onhold:['Quote','On Hold'],approved:['Work Order','Approved'],partapproved:['Work Order','Part Approved'],reactivecallout:['Work Order','Reactive (Call-Out)']};\n// Misspelt client names on the sheet -> one ServiceM8 client.\nvar CLIENT_ALIAS={zzclientf:'ZZ Client F',zzclientgschool:'ZZ Client G School'};\nvar queues={};$('SM8 Queues').all().forEach(function(i){if(i.json.uuid&&i.json.active==1)queues[norm(i.json.name)]=i.json.uuid;});\nvar clients={};$('SM8 Clients').all().forEach(function(i){if(i.json.uuid)clients[norm(i.json.name)]={uuid:i.json.uuid,name:i.json.name,address:S(i.json.address).replace(/\\s*\\n\\s*/g,', ').replace(/,\\s*,/g,',')};});\nvar existingPO={};$('SM8 Jobs').all().forEach(function(i){var p=S(i.json.purchase_order_number);if(p&&i.json.active==1)existingPO[p.toLowerCase()]={no:S(i.json.generated_job_id),uuid:S(i.json.uuid)};});\nvar tabs=$('Client Tabs').all().map(function(i){return i.json;});\n// Client - Site naming. Tabs where the tab is the client and the cell is the site.\nvar PREFIX={'ZZ Client A':'ZZ Client A','ZZ Client B':'ZZ Client B','ZZ Client P':'ZZ Client P'};\nfunction clientName(tab,site){\n  site=S(site).replace(/\\s+/g,' ');\n  var p=PREFIX[tab];\n  if(p){\n    var rest=site;\n    if(rest.toLowerCase().indexOf(p.toLowerCase())===0)rest=rest.slice(p.length).replace(/^[\\s\\-]+/,'');\n    if(p==='ZZ Client A'&&/^mk$/i.test(rest))rest='Sampletown A';\n    if(p==='ZZ Client P')rest=rest.replace(/^zz client a\\s*-?\\s*mk$/i,'ZZ Client A - Site 2').replace(/^zz client a\\s+/i,'ZZ Client A ');\n    return rest?p+' - '+rest:p;\n  }\n  if(tab==='ZZ Client C')return 'ZZ Client C';\n  var name=site||tab;\n  return CLIENT_ALIAS[norm(name)]||name;\n}\nvar rows=[],skipped={},problems=[],newClients={},seen={},noDesc=[],writeOnly=[],inRange=[];\nfunction count(k){skipped[k]=(skipped[k]||0)+1;}\n$input.all().forEach(function(item,idx){\n  var t=tabs[idx]||{};var tab=S(t.name);var r=item.json;var values=r.values||[];\n  if(!values.length||!r.address){problems.push(tab+': could not read the tab');return;}\n  var ref=String(r.address).split('!').pop();var m=ref.split(':')[0].match(/([A-Z]+)(\\d+)/);var c0=colN(m[1]),r0=parseInt(m[2],10);\n  var hi=-1;for(var k=0;k<Math.min(values.length,10);k++){var nr=values[k].map(norm);if(nr.indexOf('status')>=0&&nr.indexOf('description')>=0){hi=k;break;}}\n  if(hi<0){problems.push(tab+': no Status + Description header row, tab skipped');return;}\n  var H=values[hi].map(norm);\n  function col(al){for(var a=0;a<al.length;a++){var j=H.indexOf(norm(al[a]));if(j>=0)return j;}return -1;}\n  var C={job:col(['Job Number','Reference','Job No','Job Ref']),status:col(['Status']),date:col(['Date of Enquiry','Enquiry Date']),site:col(['Site','Client']),area:col(['Area']),desc:col(['Description']),orig:col(['Originator']),sys:col(['Fergus Status','ServiceM8 Status']),link:col(['Link to job','Job Link'])};\n  var sysL=C.sys>=0?colL(c0+C.sys):'',linkL=C.link>=0?colL(c0+C.link):'';\n  var undatedTab=C.date<0;\n  for(var i=hi+1;i<values.length;i++){\n    var v=values[i];var rowNum=r0+i;\n    if(RF&&(rowNum<RF||rowNum>RT))continue;\n    if(RF)inRange.push({row:rowNum,jobNo:C.job>=0?S(v[C.job]):'',status:S(v[C.status]),site:C.site>=0?S(v[C.site]):'',desc:C.desc>=0?S(v[C.desc]):'',sysCell:C.sys>=0?S(v[C.sys]):''});\n    if(!v.some(function(c){return S(c)!=='';}))continue;\n    var st=S(v[C.status]);var map=STATUS[norm(st)];\n    if(!map){count(tab+' | status '+(st||'(blank)'));continue;}\n    var d=null;\n    // Rows picked explicitly with rowFrom/rowTo skip the date checks.\n    if(!undatedTab){d=toDate(v[C.date]);if(!RF){if(!d){count(tab+' | no date');continue;}if(d<CUTOFF){count(tab+' | before 2025');continue;}}}\n    var jobNo=C.job>=0?S(v[C.job]):'';\n    var ex0=jobNo?existingPO[jobNo.toLowerCase()]:null;\n    if(C.sys>=0&&S(v[C.sys])==='Created'){\n      if(ex0&&C.link>=0&&S(v[C.link])===''){writeOnly.push({sheetId:t.id,row:rowNum,sysCol:'',linkCol:linkL,uuid:ex0.uuid,no:ex0.no});count(tab+' | Created but link missing, link to be added');}\n      else{count(tab+' | already Created on sheet');}\n      continue;\n    }\n    var desc=S(v[C.desc]);\n    if(!jobNo){problems.push(tab+' row '+rowNum+': missing job number, skipped');continue;}\n    if(ex0){count(tab+' | already in ServiceM8, sheet to be marked');writeOnly.push({sheetId:t.id,row:rowNum,sysCol:sysL,linkCol:linkL,uuid:ex0.uuid,no:ex0.no});continue;}\n    if(!desc){desc='No description on sheet';noDesc.push(tab+' row '+rowNum+' (job '+jobNo+')');}\n    if(seen[jobNo.toLowerCase()]){problems.push(tab+' row '+rowNum+': job number '+jobNo+' duplicates '+seen[jobNo.toLowerCase()]+', skipped');continue;}\n    seen[jobNo.toLowerCase()]=tab+' row '+rowNum;\n    var site=C.site>=0?S(v[C.site]):'';var cname=clientName(tab,site);var ex=clients[norm(cname)];\n    if(!ex)newClients[cname]=(newClients[cname]||0)+1;\n    var qu=queues[norm(map[1])];if(!qu){problems.push(tab+' row '+rowNum+': no active folder '+map[1]);continue;}\n    var area=C.area>=0?S(v[C.area]):'';var orig=C.orig>=0?S(v[C.orig]):'';\n    var jd=jobNo+' '+desc;var det=[];if(area)det.push('Area: '+area);if(orig)det.push('Raised by: '+orig);if(det.length)jd+='\\n\\n'+det.join('\\n');\n    rows.push({tab:tab,sheetId:t.id,row:rowNum,jobNo:jobNo,sheetStatus:st,status:map[0],folder:map[1],queueUuid:qu,clientName:cname,clientUuid:ex?ex.uuid:'',jobAddress:(ex&&ex.address)?ex.address:cname,jobDescription:jd,date:d?d.toISOString().slice(0,10)+' 00:00:00':'',sysCol:sysL,linkCol:linkL});\n  }\n});\nvar byTab={},byFolder={};rows.forEach(function(x){byTab[x.tab]=(byTab[x.tab]||0)+1;byFolder[x.folder]=(byFolder[x.folder]||0)+1;});\nreturn [{json:{total:rows.length,byTab:byTab,byFolder:byFolder,newClients:newClients,noDescription:noDesc,writeOnlyCount:writeOnly.length,skipped:skipped,problems:problems,inRange:inRange,sample:rows.slice(0,6).map(function(x){return {tab:x.tab,row:x.row,client:x.clientName,folder:x.folder,status:x.status,description:x.jobDescription};}),rows:rows,writeOnly:writeOnly}}];"
+      }
+    },
+    {
+      "id": "4a4e7de9-8607-4c1e-a40e-06fe9649c0d1",
+      "name": "Dry Run?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2016,
+        96
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('Settings').first().json.dryRun }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "5df9b0b2-3548-41f7-8663-1391c98d24c4",
+      "name": "Dry Run - Review Plan",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2240,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "8805e86f-2321-431e-876e-06cf09111671",
+      "name": "Client Items",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2240,
+        192
+      ],
+      "parameters": {
+        "jsCode": "\nvar rows=$('Plan').first().json.rows||[];var names={};\nrows.forEach(function(r){if(!r.clientUuid)names[r.clientName]=1;});\nvar list=Object.keys(names).map(function(n){return {json:{name:n}};});\nreturn list.length?list:[{json:{skip:true}}];"
+      }
+    },
+    {
+      "id": "7ca506ad-bacb-49e4-bf75-4914dabd9858",
+      "name": "New Clients?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2464,
+        192
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.skip }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "30393068-b359-4fb7-86aa-45dab786e39c",
+      "name": "Job Items",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2912,
+        192
+      ],
+      "parameters": {
+        "jsCode": "\nvar rows=$('Plan').first().json.rows||[];var made={};\ntry{var asked=$('Client Items').all();$('Create Client').all().forEach(function(i,idx){var u=i.json&&i.json.headers&&i.json.headers['x-record-uuid'];var n=asked[idx]&&asked[idx].json.name;if(u&&n)made[n]=u;});}catch(e){}\nvar exp=$now.setZone('Europe/London').plus({days:14}).toFormat('yyyy-MM-dd')+' 17:00:00';\nvar out=[];\nrows.forEach(function(r){\n  var cu=r.clientUuid||made[r.clientName];\n  if(!cu)return;\n  var body={active:1,status:r.status,company_uuid:cu,job_address:r.jobAddress,job_description:r.jobDescription,purchase_order_number:r.jobNo,queue_uuid:r.queueUuid,queue_expiry_date:exp};\n  if(r.date)body.date=r.date;\n  out.push({json:Object.assign({},r,{clientUuid:cu,body:body})});\n});\nreturn out;"
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "2b2691e9-bb26-4722-8643-fd33d2f30adf",
+      "name": "Create Client",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2688,
+        272
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.servicem8.com/api_1.0/company.json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ name: $json.name, active: 1 }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "batching": {
+            "batch": {
+              "batchSize": 3,
+              "batchInterval": 1500
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "e42dc28d-19e3-40dc-bec8-c6bf1ecdafc9",
+      "name": "Create Job",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        3136,
+        192
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.servicem8.com/api_1.0/job.json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "batching": {
+            "batch": {
+              "batchSize": 3,
+              "batchInterval": 1500
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "2d5be904-b2e5-41ff-beeb-ebae626dd2b0",
+      "name": "Read Job Back",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        3360,
+        192
+      ],
+      "parameters": {
+        "url": "={{ 'https://api.servicem8.com/api_1.0/job/' + (($json.headers && $json.headers['x-record-uuid']) || 'none') + '.json' }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "batching": {
+            "batch": {
+              "batchSize": 3,
+              "batchInterval": 1000
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "eef6dbd4-dbe9-4bdd-9790-d7916ad1fa3f",
+      "name": "Build Sheet Writes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3584,
+        192
+      ],
+      "parameters": {
+        "jsCode": "var JOB_URL='https://go.servicem8.com/openjob/';\nvar src=$('Job Items').all();var created=$('Create Job').all();var out=[];\n$input.all().forEach(function(item,i){\n  var s=src[i]&&src[i].json;if(!s)return;\n  var uuid=created[i]&&created[i].json&&created[i].json.headers&&created[i].json.headers['x-record-uuid'];\n  if(!uuid)return;\n  var no=String(item.json.generated_job_id||'');\n  if(s.sysCol)out.push({json:{sheetId:s.sheetId,address:s.sysCol+s.row,field:'values',value:'Created'}});\n  if(s.linkCol)out.push({json:{sheetId:s.sheetId,address:s.linkCol+s.row,field:'formulas',value:'=HYPERLINK(\"'+JOB_URL+uuid+'\",\"'+(no||'Open job')+'\")'}});\n});\n// Rows already in ServiceM8 whose sheet was never marked (e.g. throttled writes on an earlier run).\n($('Plan').first().json.writeOnly||[]).forEach(function(w){\n  if(w.sysCol)out.push({json:{sheetId:w.sheetId,address:w.sysCol+w.row,field:'values',value:'Created'}});\n  if(w.linkCol&&w.uuid)out.push({json:{sheetId:w.sheetId,address:w.linkCol+w.row,field:'formulas',value:'=HYPERLINK(\"'+JOB_URL+w.uuid+'\",\"'+(w.no||'Open job')+'\")'}});\n});\nreturn out;"
+      }
+    },
+    {
+      "id": "870fed9b-53cd-4edc-a066-2a5ec74c0fc4",
+      "name": "Write Back to Sheet",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        3808,
+        192
+      ],
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/01ZZZZZZ000000000000000000000000H7/workbook/worksheets('{{ encodeURIComponent($json.sheetId) }}')/range(address='{{ $json.address }}')",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ [$json.field]: [[$json.value]] }) }}",
+        "options": {
+          "batching": {
+            "batch": {
+              "batchInterval": 1200,
+              "batchSize": 1
+            }
+          }
+        }
+      },
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": null,
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "One-off: loads 2025+ jobs (Enquiry, Estimated, Approved, Part Approved, Reactive, On Hold; ZZ Client P all) from the Master Estimates and Jobs List into ServiceM8 with status + folder, creates missing Client - Site clients, writes Created + link back. Dry run by",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

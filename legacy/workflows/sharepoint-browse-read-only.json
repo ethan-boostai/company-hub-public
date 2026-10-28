@@ -1,0 +1,151 @@
+{
+  "id": "wTE7KdfOAgMn3TOF",
+  "name": "CBS - SharePoint Browse (read only)",
+  "active": false,
+  "isArchived": false,
+  "versionId": "884e450e-523e-4c2e-9d4e-a60b8a2c1185",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "createdAt": "2026-10-20T14:38:38.484Z",
+  "updatedAt": "2026-10-20T14:38:38.484Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Browse Hook": {
+      "main": [
+        [
+          {
+            "node": "Plan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Plan": {
+      "main": [
+        [
+          {
+            "node": "List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List": {
+      "main": [
+        [
+          {
+            "node": "Shape",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "8906f033-98a7-4930-bc3f-5373a78e91e6",
+      "name": "Browse Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-sp-browse",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "webhookId": "6a315f56-6722-4472-8332-458d7451a0ef"
+    },
+    {
+      "id": "0f190ddf-04d3-4950-b4cd-6c54c6c2875e",
+      "name": "Plan",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var j=$input.first().json;var q=j.query||{};var b=j.body||{};var path=String(q.path||b.path||'').trim().replace(/^\\/+|\\/+$/g,'');var s=String(q.q||b.q||'').trim();var D='b!ZZ-example-drive-id';var sel='$select=name,folder,file,size,lastModifiedDateTime,webUrl,parentReference&$top=999';var url;if(s){url='https://graph.microsoft.com/v1.0/drives/'+D+\"/root/search(q='\"+encodeURIComponent(s.replace(/'/g,\"''\"))+\"')?\"+sel;}else if(path){url='https://graph.microsoft.com/v1.0/drives/'+D+'/root:/'+path.split('/').map(encodeURIComponent).join('/')+':/children?'+sel;}else{url='https://graph.microsoft.com/v1.0/drives/'+D+'/root/children?'+sel;}return [{json:{url:url,path:path,q:s}}];"
+      }
+    },
+    {
+      "id": "bb098a57-24ae-4f5a-9f4a-fd2da13218ee",
+      "name": "List",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        }
+      }
+    },
+    {
+      "id": "cb4313bf-ea8a-4ad2-9f8c-c40b10d0a822",
+      "name": "Shape",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var r=$input.first().json;var p=$('Plan').first().json;if(r.error)return [{json:{ok:false,path:p.path,q:p.q,error:r.error}}];var items=(r.value||[]).map(function(x){var pp=(x.parentReference&&x.parentReference.path)||'';try{pp=decodeURIComponent(pp).replace(/^\\/drives\\/[^/]+\\/root:?/,'');}catch(e){}return {name:x.name,type:x.folder?'folder':'file',children:x.folder?x.folder.childCount:undefined,size:x.size,modified:x.lastModifiedDateTime,parent:pp,url:x.webUrl};});return [{json:{ok:true,path:p.path,q:p.q,count:items.length,items:items}}];"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": null,
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Read-only helper: GET cbs-sp-browse?path=Folder/Sub lists a SharePoint folder in CBS Shared Documents; ?q=term searches the library. Uses the CBS Microsoft OAuth2 credential.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

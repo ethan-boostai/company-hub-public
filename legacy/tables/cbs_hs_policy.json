@@ -1,0 +1,128 @@
+{
+  "table": "cbs_hs_policy",
+  "n8n_id": "q2arIW3u7D7bOWdi",
+  "columns": [
+    {
+      "name": "approved_by",
+      "type": "string"
+    },
+    {
+      "name": "approved_on",
+      "type": "string"
+    },
+    {
+      "name": "approver_role",
+      "type": "string"
+    },
+    {
+      "name": "commitment",
+      "type": "string"
+    },
+    {
+      "name": "doc",
+      "type": "string"
+    },
+    {
+      "name": "effective_on",
+      "type": "string"
+    },
+    {
+      "name": "manual_url",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "objectives",
+      "type": "string"
+    },
+    {
+      "name": "pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "review_due",
+      "type": "string"
+    },
+    {
+      "name": "scope",
+      "type": "string"
+    },
+    {
+      "name": "state_json",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "version",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "version": "2026.1",
+      "status": "Current",
+      "effective_on": "2026-10-05",
+      "review_due": "2027-10-03",
+      "approved_by": "ZZ Person A",
+      "approver_role": "Director",
+      "approved_on": "2026-10-05",
+      "scope": "",
+      "commitment": "",
+      "objectives": "",
+      "notes": "",
+      "pdf_url": "",
+      "manual_url": null,
+      "doc": null,
+      "state_json": null,
+      "id": 1,
+      "createdAt": "2026-10-05T14:47:05.796Z",
+      "updatedAt": "2026-10-05T14:47:05.796Z"
+    },
+    {
+      "version": "January 2026",
+      "status": "Current",
+      "effective_on": "2026-01-01",
+      "review_due": "2027-01-01",
+      "approved_by": "ZZ Person A",
+      "approver_role": "Director",
+      "approved_on": null,
+      "scope": null,
+      "commitment": null,
+      "objectives": null,
+      "notes": null,
+      "pdf_url": null,
+      "manual_url": "https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-8.pdf",
+      "doc": "manual",
+      "state_json": null,
+      "id": 2,
+      "createdAt": "2026-10-05T15:20:50.637Z",
+      "updatedAt": "2026-10-05T15:20:50.637Z"
+    },
+    {
+      "version": "October 2026",
+      "status": "Issued",
+      "effective_on": "2026-10-05",
+      "review_due": "2027-10-05",
+      "approved_by": "ZZ Person A",
+      "approver_role": "Director",
+      "approved_on": "2026-10-05",
+      "scope": "Health, Safety & Welfare Policy - General Statement",
+      "commitment": "CHELMSFORD BUILDING SERVICES LTD (the Company) is committed to ensuring the health, safety, and welfare of its employees in accordance with the Health and Safety at Work etc. Act 1974 and all relevant regulations, so far as is reasonably practicable.\n\nOur Directors, represented by Mr. ZZ Person A, who is also our named competent person working in conjunction with Citation, our Health & Safety advisors, are ultimately responsible for fulfilling this commitment.\n\nWe also fully accept our responsibility for other persons who may be affected by our activities.\n\nWe will take appropriate steps to ensure that our statutory duties are met at all times. It is the duty of management to ensure that adequate resources are made available to fulfil these obligations and that all processes and systems of work are designed with due consideration for health and safety and are properly supervised at all times.\n\nEach employee and any person engaged by the Company will be provided with the necessary information, instruction, and training. We will consult with all such individuals and encourage feedback to support the safe performance of all work activities.\n\nAdequate facilities and arrangements will be maintained to enable employees and their representatives to raise health and safety concerns.\n\nCompetent persons will be appointed to assist in meeting our statutory duties, including, where appropriate, the engagement of external specialists.\n\nAll employees and persons engaged by the Company m...[truncated]",
+      "objectives": null,
+      "notes": "",
+      "pdf_url": "https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-9.pdf",
+      "manual_url": null,
+      "doc": "policy",
+      "state_json": "{\"paragraphs\":[\"CHELMSFORD BUILDING SERVICES LTD (the Company) is committed to ensuring the health, safety, and welfare of its employees in accordance with the Health and Safety at Work etc. Act 1974 and all relevant regulations, so far as is reasonably practicable.\",\"Our Directors, represented by Mr. ZZ Person A, who is also our named competent person working in conjunction with Citation, our Health & Safety advisors, are ultimately responsible for fulfilling this commitment.\",\"We also fully accept our responsibility for other persons who may be affected by our activities.\",\"We will take appropriate steps to ensure that our statutory duties are met at all times. It is the duty of management to ensure that adequate resources are made available to fulfil these obligations and that all processes and systems of work are designed with due consideration for health and safety and are properly supervised at all times.\",\"Each employee and any person engaged by the Company will be provided with the necessary information, instruction, and training. We will consult with all such individuals and encourage feedback to support the safe performance of all work activities.\",\"Adequate facilities and arrangements will be maintained to enable employees and their representatives to raise health and safety concerns.\",\"Competent persons will be appointed to assist in meeting our statutory duties, including, where appropriate, the engagement of external specialists.\",\"All employees and persons e...[truncated]",
+      "id": 3,
+      "createdAt": "2026-10-05T15:28:53.263Z",
+      "updatedAt": "2026-10-05T15:28:53.263Z"
+    }
+  ]
+}

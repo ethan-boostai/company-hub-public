@@ -1,0 +1,3659 @@
+{
+  "id": "z6dTrharbJN85U5S",
+  "name": "CBS - Hub Data",
+  "active": true,
+  "isArchived": false,
+  "versionId": "733cb5b6-14a0-4de1-9b37-a363e3fd354f",
+  "activeVersionId": "733cb5b6-14a0-4de1-9b37-a363e3fd354f",
+  "triggerCount": 1,
+  "createdAt": "2026-10-05T09:43:41.246Z",
+  "updatedAt": "2026-10-27T16:06:41.915Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none"
+  },
+  "connections": {
+    "Data Hook": {
+      "main": [
+        [
+          {
+            "node": "Get workers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get workers": {
+      "main": [
+        [
+          {
+            "node": "Get incidents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get incidents": {
+      "main": [
+        [
+          {
+            "node": "Get toolbox",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get toolbox": {
+      "main": [
+        [
+          {
+            "node": "Get training",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get training": {
+      "main": [
+        [
+          {
+            "node": "Get substances",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get substances": {
+      "main": [
+        [
+          {
+            "node": "Get rams",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get rams": {
+      "main": [
+        [
+          {
+            "node": "Get subbies",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get subbies": {
+      "main": [
+        [
+          {
+            "node": "Get subdocs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get subdocs": {
+      "main": [
+        [
+          {
+            "node": "Get insurance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get insurance": {
+      "main": [
+        [
+          {
+            "node": "Get vehicles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get vehicles": {
+      "main": [
+        [
+          {
+            "node": "Get checks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get checks": {
+      "main": [
+        [
+          {
+            "node": "Get crashes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get crashes": {
+      "main": [
+        [
+          {
+            "node": "Get assets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get assets": {
+      "main": [
+        [
+          {
+            "node": "Get services",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get services": {
+      "main": [
+        [
+          {
+            "node": "Get requests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get requests": {
+      "main": [
+        [
+          {
+            "node": "Get leave",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get leave": {
+      "main": [
+        [
+          {
+            "node": "Get vservices",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get vservices": {
+      "main": [
+        [
+          {
+            "node": "Get taskstat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get taskstat": {
+      "main": [
+        [
+          {
+            "node": "Get hazards",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get hazards": {
+      "main": [
+        [
+          {
+            "node": "Get increports",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get increports": {
+      "main": [
+        [
+          {
+            "node": "Get materials",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get materials": {
+      "main": [
+        [
+          {
+            "node": "Get stockmoves",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get stockmoves": {
+      "main": [
+        [
+          {
+            "node": "Get ptmsheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get ptmsheets": {
+      "main": [
+        [
+          {
+            "node": "Get claims",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get claims": {
+      "main": [
+        [
+          {
+            "node": "Get covertasks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get covertasks": {
+      "main": [
+        [
+          {
+            "node": "Get companycerts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get companycerts": {
+      "main": [
+        [
+          {
+            "node": "Get subjobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get subjobs": {
+      "main": [
+        [
+          {
+            "node": "Get cphsp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get cphsp": {
+      "main": [
+        [
+          {
+            "node": "Get prestarts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get prestarts": {
+      "main": [
+        [
+          {
+            "node": "Get hspolicy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get hspolicy": {
+      "main": [
+        [
+          {
+            "node": "Get notifyrules",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get notifyrules": {
+      "main": [
+        [
+          {
+            "node": "Get suppliers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get suppliers": {
+      "main": [
+        [
+          {
+            "node": "Get pos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get pos": {
+      "main": [
+        [
+          {
+            "node": "Get signatures",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get signatures": {
+      "main": [
+        [
+          {
+            "node": "Get signons",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine": {
+      "main": [
+        [
+          {
+            "node": "Respond Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get signons": {
+      "main": [
+        [
+          {
+            "node": "Get notices",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get notices": {
+      "main": [
+        [
+          {
+            "node": "Get scaffinsp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get scaffinsp": {
+      "main": [
+        [
+          {
+            "node": "Get tbtopics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get tbtopics": {
+      "main": [
+        [
+          {
+            "node": "Get ramstypes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get ramstypes": {
+      "main": [
+        [
+          {
+            "node": "Get cphspwording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get cphspwording": {
+      "main": [
+        [
+          {
+            "node": "Combine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "636ae0eb-1893-4479-be6c-6b8ba3d2632f",
+      "name": "Data Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-admin-data",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "8566feb2-e6de-472f-a96f-bf6bc19300a1"
+    },
+    {
+      "id": "34df40ce-9424-4002-82f3-5c81af9696f2",
+      "name": "Get workers",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "pNNkwGO5VvlhEsnP"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('workers')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "cfdc3531-d7a6-4c6f-82a6-3b2b1c5d8820",
+      "name": "Get incidents",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "vZXrt8GrhPBPSqQH"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('incidents')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "fca32c68-586c-4ac5-9d39-b1062e600ae7",
+      "name": "Get toolbox",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "yzh0N48ZuMVkpQk4"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');var a=t.split(',').map(function(s){return s.trim();});return !t||a.indexOf('toolbox')>-1||a.indexOf('hsmeet')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "ef13563e-a5ea-4b0d-bf40-0e8786ab6b1e",
+      "name": "Get training",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "ezLk4vRfMEVGhY8I"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('training')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "e80fdf5c-1435-465e-aa65-7fe6062747a3",
+      "name": "Get substances",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "9c2E0sNG9VtxTCPf"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('substances')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "59b0c42f-10b1-4bc7-b069-877538caafca",
+      "name": "Get rams",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "b2FkFIy27taH73i9"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('rams')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "26e90277-1d9b-4414-926f-d7422c601e1d",
+      "name": "Get subbies",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1568,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "ibSO7Sf8VzGU4jsS"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('subbies')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "151bf4d3-f3d1-48a6-a898-17d384b9f17a",
+      "name": "Get subdocs",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1792,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "ePhwDX0yjxjLQ9AR"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('subdocs')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "cffac81f-503e-4f14-9fb0-d9e195834d32",
+      "name": "Get insurance",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2016,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "s93fmXaKYCfghbbO"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('insurance')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "e311ef5d-15e4-4fb2-87f7-2e02d522245a",
+      "name": "Get vehicles",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2240,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "chFjXqeuWU1vB1l6"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('vehicles')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "4d0a7113-adcd-45ff-b2e3-eac5f3f71172",
+      "name": "Get checks",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2464,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "WZid64FJ4not0CvS"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('checks')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "b3d414e2-c23c-4a3a-9477-27e9eea2f95c",
+      "name": "Get crashes",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2688,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "rN0tkhyp5UwvQCRR"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('crashes')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "6f3a669a-6cca-4d98-a9be-07c284d32b28",
+      "name": "Get assets",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2912,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "8CWS3fZeytjpf4HX"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('assets')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "ec75f839-7dfa-4f46-a082-fdab6260db76",
+      "name": "Get services",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3136,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "9w65GkpM5Psif5aC"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('services')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "0a8d2d90-d1e7-4127-806a-5d3cd8bc1f47",
+      "name": "Get requests",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3360,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "iTWIDSrGauy7iKM9"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('requests')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "9826ca11-a2bb-4e3b-a207-a2197ff72097",
+      "name": "Get leave",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3584,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1XLRtGEOAZq22Abq"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('leave')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "42655921-b29a-4e84-be20-0ef7bbc3956f",
+      "name": "Get vservices",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3808,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "A3l5dkWTSqdlFZjZ"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('vservices')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "f8cc0407-d298-4599-a6ba-d7edfd84400d",
+      "name": "Get taskstat",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        4032,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "79HTD2OG21IvSBZT"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('taskstat')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "6d011e04-7e54-4bc8-a7b5-71a294079155",
+      "name": "Get hazards",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        4256,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "54zh8DQCjiJzj31U"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('hazards')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "1768d29e-b67c-43d8-a532-684d920a383e",
+      "name": "Get increports",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        4480,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "19HFiSBMOKK9bVz4"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('increports')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "cf36e3cb-6201-4a42-98cd-8ce1588b68bc",
+      "name": "Get materials",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        4704,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "cISot2CtqSItFj93"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('materials')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "1c10ce62-ad7d-4ef2-b005-fd165e0e7d42",
+      "name": "Get stockmoves",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        4928,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "i1dOh6PyUvWAZTBI"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('stockmoves')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "3cc0c2dc-a757-4050-9d8a-81294c247587",
+      "name": "Get ptmsheets",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        5152,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "9HztIXJq3gqHZMFK"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('ptmsheets')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "20c06841-8f19-4dc8-99b5-4324d729fe51",
+      "name": "Get claims",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        5376,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "WvaoWW7AaE8P8rkc"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('claims')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "1c84c5a1-d009-4ec6-962f-2a66bdc9da52",
+      "name": "Get covertasks",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        5600,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "EqArJk9NBswgBxOf"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('covertasks')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "0a26e41a-3474-4403-a12b-3021f687b551",
+      "name": "Get companycerts",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        5824,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "JtJMHxXtn3dB9uia"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('companycerts')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "9a9b2702-a333-44bf-a594-000f8c426d9d",
+      "name": "Get subjobs",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        6048,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "0KkYwJ3A3fi1wGXd"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('subjobs')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "86e9a516-f7e9-4463-8db5-ede504580a3a",
+      "name": "Get cphsp",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        6272,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "VrPaSgrY1W6zm3HN"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('cphsp')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "20c51faa-5a6f-43cb-944e-8a7735916bb4",
+      "name": "Get prestarts",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        6496,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "Wg8zT3VHAzrdt8Sw"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('prestarts')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "2ccf861d-d5a7-4c3a-8022-ea7998cc9493",
+      "name": "Get hspolicy",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        6720,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "q2arIW3u7D7bOWdi"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('hspolicy')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "5324c9db-29c9-4d7e-bffc-d5d2851dc71e",
+      "name": "Get notifyrules",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        6944,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "ADSvZbpbCr0gisiO"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('notifyrules')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "e5ba8ede-4266-4040-adeb-d33717f69f04",
+      "name": "Get suppliers",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        7168,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "iFTLTgEAxiTHNTgA"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('suppliers')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "00c18f54-d00e-4837-bc5c-7c54835f5e78",
+      "name": "Get pos",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        7392,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "Z1lGdRMfPFALqbCR"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('pos')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "b58ef17f-2eac-4282-973c-c71762c427f4",
+      "name": "Get signatures",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        7616,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "EZ9RqBzPGq5YmBSK"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('signatures')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "30cb3cbb-75b8-4fc0-83a9-783aa73eb69e",
+      "name": "Get signons",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        7840,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "7mnxJyfK2DSbq7J4"
+        },
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('signons')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "09d52fa5-e156-4bf8-b710-6dd20f14a902",
+      "name": "Combine",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        8064,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var K = [\"workers\",\"incidents\",\"toolbox\",\"training\",\"substances\",\"rams\",\"subbies\",\"subdocs\",\"insurance\",\"vehicles\",\"checks\",\"crashes\",\"assets\",\"services\",\"requests\",\"leave\",\"vservices\",\"taskstat\",\"hazards\",\"increports\",\"materials\",\"stockmoves\",\"ptmsheets\",\"claims\",\"covertasks\",\"companycerts\",\"subjobs\",\"cphsp\",\"prestarts\",\"hspolicy\",\"notifyrules\",\"suppliers\",\"pos\",\"signatures\",\"signons\",\"notices\",\"scaffinsp\",\"tbtopics\",\"ramstypes\",\"cphspwording\"];\nvar q = ($('Data Hook').first().json.query || {});\nvar want = String(q.t || '').split(',').map(function(s){ return s.trim(); }).filter(Boolean);\nvar out = {};\nK.forEach(function(k){ out[k] = $('Get ' + k).all().map(function(i){ return i.json; }).filter(function(r){ return r && r.id; }); });\nout.signons = out.signons.map(function(r){ var o = Object.assign({}, r); o.has_signature = r.signature ? 'Yes' : 'No'; delete o.signature; return o; });\nout.hsmeet = out.toolbox;\n/* Signatures live on each person's Team record (cbs_workers.signature, 27/10/2026). The signatures list every page reads\n   (approvals in the hub, RAMS and CPHSP builders) is built from Team: current staff with a saved signature. When workers\n   were not loaded (t= without workers), they are read once here. cbs_signatures is kept only as a backup. */\nvar W = out.workers;\nif ((!W || !W.length) && want.length && want.indexOf('signatures') > -1) {\n  try { W = await this.helpers.httpRequest({ method: 'POST', url: 'https://old-hub.example/webhook/cbs-admin-save?a=list&t=workers', body: {}, json: true, timeout: 20000 }); } catch (e) { W = []; }\n  W = (Array.isArray(W) ? W : []).filter(function(r){ return r && r.id; });\n}\nout.signatures = (W || []).filter(function(w){ return w && String(w.name || '').trim() && w.signature && w.active !== false; })\n  .map(function(w){ return { id: w.id, worker_id: w.id, name: String(w.name).trim(), role: w.role || '', image: w.signature, notes: '' }; });\n/* Each person keeps their signature when the request also asks for signatures (the hub's own load, which shows and edits it on the\n   Team record). Other pages that only ask for workers get it dropped to stay light (has_signature tells them whether one exists). */\nif (want.length && want.indexOf('signatures') < 0) { out.workers = out.workers.map(function(r){ var o = Object.assign({}, r); o.has_signature = r.signature ? true : false; delete o.signature; return o; }); }\nif (want.length) { var o2 = {}; want.forEach(function(t){ if (out[t]) o2[t] = out[t]; }); out = o2; }\nreturn [{ json: out }];"
+      }
+    },
+    {
+      "id": "c966adf2-d2da-4468-b100-f2756266d823",
+      "name": "Respond Data",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        8288,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "e327bb6f-f04f-41dc-9d16-5b075da8d046",
+      "name": "Get notices",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        7952,
+        200
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "rwwt31z4XNj4DyO6"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('notices')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "7d5cf426-5917-4ac1-8403-bf0aa84e1cae",
+      "name": "Get scaffinsp",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        7952,
+        400
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "lMecsHQvsqOwDED3"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('scaffinsp')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "ea3910e1-5fff-42fd-86eb-c89e12a0c258",
+      "name": "Get tbtopics",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        7952,
+        600
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "n09BRWLCB3wFEi5e"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('tbtopics')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "1c06fb55-c276-4b9a-a387-3760f9911d51",
+      "name": "Get ramstypes",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        8172,
+        600
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "eJhN4Cu9DqgoD8Dt"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('ramstypes')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "3dac022c-152a-4390-afd7-4d82b6222c64",
+      "name": "Get cphspwording",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        8392,
+        600
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "USuvqXrUrO1Giqay"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('cphspwording')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "636ae0eb-1893-4479-be6c-6b8ba3d2632f",
+        "name": "Data Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-admin-data",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "8566feb2-e6de-472f-a96f-bf6bc19300a1"
+      },
+      {
+        "id": "34df40ce-9424-4002-82f3-5c81af9696f2",
+        "name": "Get workers",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "pNNkwGO5VvlhEsnP"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('workers')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "cfdc3531-d7a6-4c6f-82a6-3b2b1c5d8820",
+        "name": "Get incidents",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "vZXrt8GrhPBPSqQH"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('incidents')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "fca32c68-586c-4ac5-9d39-b1062e600ae7",
+        "name": "Get toolbox",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "yzh0N48ZuMVkpQk4"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');var a=t.split(',').map(function(s){return s.trim();});return !t||a.indexOf('toolbox')>-1||a.indexOf('hsmeet')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "ef13563e-a5ea-4b0d-bf40-0e8786ab6b1e",
+        "name": "Get training",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "ezLk4vRfMEVGhY8I"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('training')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "e80fdf5c-1435-465e-aa65-7fe6062747a3",
+        "name": "Get substances",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1120,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "9c2E0sNG9VtxTCPf"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('substances')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "59b0c42f-10b1-4bc7-b069-877538caafca",
+        "name": "Get rams",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1344,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "b2FkFIy27taH73i9"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('rams')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "26e90277-1d9b-4414-926f-d7422c601e1d",
+        "name": "Get subbies",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1568,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "ibSO7Sf8VzGU4jsS"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('subbies')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "151bf4d3-f3d1-48a6-a898-17d384b9f17a",
+        "name": "Get subdocs",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1792,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "ePhwDX0yjxjLQ9AR"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('subdocs')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "cffac81f-503e-4f14-9fb0-d9e195834d32",
+        "name": "Get insurance",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2016,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "s93fmXaKYCfghbbO"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('insurance')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "e311ef5d-15e4-4fb2-87f7-2e02d522245a",
+        "name": "Get vehicles",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2240,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "chFjXqeuWU1vB1l6"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('vehicles')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "4d0a7113-adcd-45ff-b2e3-eac5f3f71172",
+        "name": "Get checks",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2464,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "WZid64FJ4not0CvS"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('checks')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "b3d414e2-c23c-4a3a-9477-27e9eea2f95c",
+        "name": "Get crashes",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2688,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "rN0tkhyp5UwvQCRR"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('crashes')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "6f3a669a-6cca-4d98-a9be-07c284d32b28",
+        "name": "Get assets",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2912,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "8CWS3fZeytjpf4HX"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('assets')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "ec75f839-7dfa-4f46-a082-fdab6260db76",
+        "name": "Get services",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3136,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "9w65GkpM5Psif5aC"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('services')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "0a8d2d90-d1e7-4127-806a-5d3cd8bc1f47",
+        "name": "Get requests",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3360,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "iTWIDSrGauy7iKM9"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('requests')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "9826ca11-a2bb-4e3b-a207-a2197ff72097",
+        "name": "Get leave",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3584,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "1XLRtGEOAZq22Abq"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('leave')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "42655921-b29a-4e84-be20-0ef7bbc3956f",
+        "name": "Get vservices",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3808,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "A3l5dkWTSqdlFZjZ"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('vservices')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "f8cc0407-d298-4599-a6ba-d7edfd84400d",
+        "name": "Get taskstat",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          4032,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "79HTD2OG21IvSBZT"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('taskstat')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "6d011e04-7e54-4bc8-a7b5-71a294079155",
+        "name": "Get hazards",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          4256,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "54zh8DQCjiJzj31U"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('hazards')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "1768d29e-b67c-43d8-a532-684d920a383e",
+        "name": "Get increports",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          4480,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "19HFiSBMOKK9bVz4"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('increports')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "cf36e3cb-6201-4a42-98cd-8ce1588b68bc",
+        "name": "Get materials",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          4704,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "cISot2CtqSItFj93"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('materials')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "1c10ce62-ad7d-4ef2-b005-fd165e0e7d42",
+        "name": "Get stockmoves",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          4928,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "i1dOh6PyUvWAZTBI"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('stockmoves')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "3cc0c2dc-a757-4050-9d8a-81294c247587",
+        "name": "Get ptmsheets",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          5152,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "9HztIXJq3gqHZMFK"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('ptmsheets')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "20c06841-8f19-4dc8-99b5-4324d729fe51",
+        "name": "Get claims",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          5376,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "WvaoWW7AaE8P8rkc"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('claims')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "1c84c5a1-d009-4ec6-962f-2a66bdc9da52",
+        "name": "Get covertasks",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          5600,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "EqArJk9NBswgBxOf"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('covertasks')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "0a26e41a-3474-4403-a12b-3021f687b551",
+        "name": "Get companycerts",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          5824,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "JtJMHxXtn3dB9uia"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('companycerts')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "9a9b2702-a333-44bf-a594-000f8c426d9d",
+        "name": "Get subjobs",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          6048,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "0KkYwJ3A3fi1wGXd"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('subjobs')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "86e9a516-f7e9-4463-8db5-ede504580a3a",
+        "name": "Get cphsp",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          6272,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "VrPaSgrY1W6zm3HN"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('cphsp')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "20c51faa-5a6f-43cb-944e-8a7735916bb4",
+        "name": "Get prestarts",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          6496,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Wg8zT3VHAzrdt8Sw"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('prestarts')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "2ccf861d-d5a7-4c3a-8022-ea7998cc9493",
+        "name": "Get hspolicy",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          6720,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "q2arIW3u7D7bOWdi"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('hspolicy')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "5324c9db-29c9-4d7e-bffc-d5d2851dc71e",
+        "name": "Get notifyrules",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          6944,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "ADSvZbpbCr0gisiO"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('notifyrules')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "e5ba8ede-4266-4040-adeb-d33717f69f04",
+        "name": "Get suppliers",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          7168,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "iFTLTgEAxiTHNTgA"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('suppliers')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "00c18f54-d00e-4837-bc5c-7c54835f5e78",
+        "name": "Get pos",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          7392,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Z1lGdRMfPFALqbCR"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('pos')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "b58ef17f-2eac-4282-973c-c71762c427f4",
+        "name": "Get signatures",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          7616,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "EZ9RqBzPGq5YmBSK"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('signatures')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "30cb3cbb-75b8-4fc0-83a9-783aa73eb69e",
+        "name": "Get signons",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          7840,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "7mnxJyfK2DSbq7J4"
+          },
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('signons')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "09d52fa5-e156-4bf8-b710-6dd20f14a902",
+        "name": "Combine",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          8064,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var K = [\"workers\",\"incidents\",\"toolbox\",\"training\",\"substances\",\"rams\",\"subbies\",\"subdocs\",\"insurance\",\"vehicles\",\"checks\",\"crashes\",\"assets\",\"services\",\"requests\",\"leave\",\"vservices\",\"taskstat\",\"hazards\",\"increports\",\"materials\",\"stockmoves\",\"ptmsheets\",\"claims\",\"covertasks\",\"companycerts\",\"subjobs\",\"cphsp\",\"prestarts\",\"hspolicy\",\"notifyrules\",\"suppliers\",\"pos\",\"signatures\",\"signons\",\"notices\",\"scaffinsp\",\"tbtopics\",\"ramstypes\",\"cphspwording\"];\nvar q = ($('Data Hook').first().json.query || {});\nvar want = String(q.t || '').split(',').map(function(s){ return s.trim(); }).filter(Boolean);\nvar out = {};\nK.forEach(function(k){ out[k] = $('Get ' + k).all().map(function(i){ return i.json; }).filter(function(r){ return r && r.id; }); });\nout.signons = out.signons.map(function(r){ var o = Object.assign({}, r); o.has_signature = r.signature ? 'Yes' : 'No'; delete o.signature; return o; });\nout.hsmeet = out.toolbox;\n/* Signatures live on each person's Team record (cbs_workers.signature, 27/10/2026). The signatures list every page reads\n   (approvals in the hub, RAMS and CPHSP builders) is built from Team: current staff with a saved signature. When workers\n   were not loaded (t= without workers), they are read once here. cbs_signatures is kept only as a backup. */\nvar W = out.workers;\nif ((!W || !W.length) && want.length && want.indexOf('signatures') > -1) {\n  try { W = await this.helpers.httpRequest({ method: 'POST', url: 'https://old-hub.example/webhook/cbs-admin-save?a=list&t=workers', body: {}, json: true, timeout: 20000 }); } catch (e) { W = []; }\n  W = (Array.isArray(W) ? W : []).filter(function(r){ return r && r.id; });\n}\nout.signatures = (W || []).filter(function(w){ return w && String(w.name || '').trim() && w.signature && w.active !== false; })\n  .map(function(w){ return { id: w.id, worker_id: w.id, name: String(w.name).trim(), role: w.role || '', image: w.signature, notes: '' }; });\n/* Each person keeps their signature when the request also asks for signatures (the hub's own load, which shows and edits it on the\n   Team record). Other pages that only ask for workers get it dropped to stay light (has_signature tells them whether one exists). */\nif (want.length && want.indexOf('signatures') < 0) { out.workers = out.workers.map(function(r){ var o = Object.assign({}, r); o.has_signature = r.signature ? true : false; delete o.signature; return o; }); }\nif (want.length) { var o2 = {}; want.forEach(function(t){ if (out[t]) o2[t] = out[t]; }); out = o2; }\nreturn [{ json: out }];"
+        }
+      },
+      {
+        "id": "c966adf2-d2da-4468-b100-f2756266d823",
+        "name": "Respond Data",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          8288,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "e327bb6f-f04f-41dc-9d16-5b075da8d046",
+        "name": "Get notices",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          7952,
+          200
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "rwwt31z4XNj4DyO6"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('notices')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "7d5cf426-5917-4ac1-8403-bf0aa84e1cae",
+        "name": "Get scaffinsp",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          7952,
+          400
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "lMecsHQvsqOwDED3"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('scaffinsp')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "ea3910e1-5fff-42fd-86eb-c89e12a0c258",
+        "name": "Get tbtopics",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          7952,
+          600
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "n09BRWLCB3wFEi5e"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('tbtopics')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "1c06fb55-c276-4b9a-a387-3760f9911d51",
+        "name": "Get ramstypes",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          8172,
+          600
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "eJhN4Cu9DqgoD8Dt"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('ramstypes')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "3dac022c-152a-4390-afd7-4d82b6222c64",
+        "name": "Get cphspwording",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          8392,
+          600
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "USuvqXrUrO1Giqay"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ (function(t){t=String(t||'');return !t||t.split(',').map(function(s){return s.trim();}).indexOf('cphspwording')>-1;})($('Data Hook').first().json.query.t) ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      }
+    ],
+    "connections": {
+      "Data Hook": {
+        "main": [
+          [
+            {
+              "node": "Get workers",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get workers": {
+        "main": [
+          [
+            {
+              "node": "Get incidents",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get incidents": {
+        "main": [
+          [
+            {
+              "node": "Get toolbox",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get toolbox": {
+        "main": [
+          [
+            {
+              "node": "Get training",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get training": {
+        "main": [
+          [
+            {
+              "node": "Get substances",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get substances": {
+        "main": [
+          [
+            {
+              "node": "Get rams",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get rams": {
+        "main": [
+          [
+            {
+              "node": "Get subbies",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get subbies": {
+        "main": [
+          [
+            {
+              "node": "Get subdocs",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get subdocs": {
+        "main": [
+          [
+            {
+              "node": "Get insurance",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get insurance": {
+        "main": [
+          [
+            {
+              "node": "Get vehicles",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get vehicles": {
+        "main": [
+          [
+            {
+              "node": "Get checks",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get checks": {
+        "main": [
+          [
+            {
+              "node": "Get crashes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get crashes": {
+        "main": [
+          [
+            {
+              "node": "Get assets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get assets": {
+        "main": [
+          [
+            {
+              "node": "Get services",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get services": {
+        "main": [
+          [
+            {
+              "node": "Get requests",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get requests": {
+        "main": [
+          [
+            {
+              "node": "Get leave",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get leave": {
+        "main": [
+          [
+            {
+              "node": "Get vservices",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get vservices": {
+        "main": [
+          [
+            {
+              "node": "Get taskstat",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get taskstat": {
+        "main": [
+          [
+            {
+              "node": "Get hazards",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get hazards": {
+        "main": [
+          [
+            {
+              "node": "Get increports",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get increports": {
+        "main": [
+          [
+            {
+              "node": "Get materials",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get materials": {
+        "main": [
+          [
+            {
+              "node": "Get stockmoves",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get stockmoves": {
+        "main": [
+          [
+            {
+              "node": "Get ptmsheets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get ptmsheets": {
+        "main": [
+          [
+            {
+              "node": "Get claims",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get claims": {
+        "main": [
+          [
+            {
+              "node": "Get covertasks",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get covertasks": {
+        "main": [
+          [
+            {
+              "node": "Get companycerts",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get companycerts": {
+        "main": [
+          [
+            {
+              "node": "Get subjobs",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get subjobs": {
+        "main": [
+          [
+            {
+              "node": "Get cphsp",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get cphsp": {
+        "main": [
+          [
+            {
+              "node": "Get prestarts",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get prestarts": {
+        "main": [
+          [
+            {
+              "node": "Get hspolicy",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get hspolicy": {
+        "main": [
+          [
+            {
+              "node": "Get notifyrules",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get notifyrules": {
+        "main": [
+          [
+            {
+              "node": "Get suppliers",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get suppliers": {
+        "main": [
+          [
+            {
+              "node": "Get pos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get pos": {
+        "main": [
+          [
+            {
+              "node": "Get signatures",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get signatures": {
+        "main": [
+          [
+            {
+              "node": "Get signons",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Combine": {
+        "main": [
+          [
+            {
+              "node": "Respond Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get signons": {
+        "main": [
+          [
+            {
+              "node": "Get notices",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get notices": {
+        "main": [
+          [
+            {
+              "node": "Get scaffinsp",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get scaffinsp": {
+        "main": [
+          [
+            {
+              "node": "Get tbtopics",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get tbtopics": {
+        "main": [
+          [
+            {
+              "node": "Get ramstypes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get ramstypes": {
+        "main": [
+          [
+            {
+              "node": "Get cphspwording",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get cphspwording": {
+        "main": [
+          [
+            {
+              "node": "Combine",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Returns all CBS Operations Hub registers in one request from the cbs_ data tables (GET /webhook/cbs-admin-data)",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

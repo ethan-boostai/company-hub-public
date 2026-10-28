@@ -1,0 +1,80 @@
+{
+  "table": "cbs_variations",
+  "n8n_id": "FRxxY87u7qKb7JcN",
+  "columns": [
+    {
+      "name": "cost",
+      "type": "number"
+    },
+    {
+      "name": "created_at",
+      "type": "string"
+    },
+    {
+      "name": "created_by",
+      "type": "string"
+    },
+    {
+      "name": "decided_by",
+      "type": "string"
+    },
+    {
+      "name": "decided_on",
+      "type": "string"
+    },
+    {
+      "name": "description",
+      "type": "string"
+    },
+    {
+      "name": "files_json",
+      "type": "string"
+    },
+    {
+      "name": "history",
+      "type": "string"
+    },
+    {
+      "name": "instructed_by",
+      "type": "string"
+    },
+    {
+      "name": "instructed_on",
+      "type": "string"
+    },
+    {
+      "name": "instruction_via",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "prog_item_ids",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "time_days",
+      "type": "number"
+    },
+    {
+      "name": "title",
+      "type": "string"
+    },
+    {
+      "name": "var_no",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [],
+  "note": "no rows in table (backend list returned empty 2026-10-28)"
+}

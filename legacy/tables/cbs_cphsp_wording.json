@@ -1,0 +1,72 @@
+{
+  "table": "cbs_cphsp_wording",
+  "n8n_id": "USuvqXrUrO1Giqay",
+  "columns": [
+    {
+      "name": "item_key",
+      "type": "string"
+    },
+    {
+      "name": "list",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "sort",
+      "type": "string"
+    },
+    {
+      "name": "text",
+      "type": "string"
+    },
+    {
+      "name": "title",
+      "type": "string"
+    },
+    {
+      "name": "updated_by",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "list": "std",
+      "item_key": "about",
+      "title": "About this plan",
+      "text": "This plan is structured as recommended by HSE guidance on the construction phase plan (CDM 2015) and covers the duties placed on Chelmsford Building Services Ltd (CBS) when appointed as Principal Contractor under the Construction (Design and Management) Regulations 2015.\nAll relevant legislation is referred to and covered in the CBS Health, Safety and Welfare Manual, supplied as a separate document.\nThis plan is based on CBS's own site survey work to date and the pre-construction information provided by the client. Where specific methods cannot be fixed before work starts, the approach is described here and confirmed in the RAMS. The plan is reviewed and reissued as the work progresses, when the scope or methods change, or when the client, Principal Designer or any contractor raises a change. Comments from everyone involved are welcome and changes are communicated to those affected.",
+      "sort": "100",
+      "notes": "",
+      "updated_by": "Built-in (copied 25 Oct 2026)",
+      "id": 1,
+      "createdAt": "2026-10-25T07:51:11.931Z",
+      "updatedAt": "2026-10-25T07:51:11.931Z"
+    },
+    {
+      "list": "std",
+      "item_key": "principles",
+      "title": "Health and safety principles and objectives",
+      "text": "Our health and safety principles and objectives for this project are to:\n- achieve no accidents, no harm to people and no damage to the environment\n- meet the client's health, safety and environmental requirements as they relate to this project, including those set by the client's authorised agents\n- plan every activity carried out by CBS, our subcontractors and anyone else employed on the project in line with best practice\n- eliminate hazards, or reduce the risks so far as is reasonably practicable, for everyone working on the project and everyone who could be affected by it.",
+      "sort": "101",
+      "notes": "",
+      "updated_by": "Built-in (copied 25 Oct 2026)",
+      "id": 2,
+      "createdAt": "2026-10-25T07:51:12.076Z",
+      "updatedAt": "2026-10-25T07:51:12.076Z"
+    },
+    {
+      "list": "std",
+      "item_key": "pc_design",
+      "title": "Principal Contractor's actions",
+      "text": "The Principal Contractor will make sure that:\n- the residual risks are communicated to all operatives at induction and in the RAMS\n- method statements address every identified risk\n- the work is coordinated with the client, the Principal Designer and any following trades.",
+      "sort": "102",
+      "notes": "",
+      "updated_by": "Built-in (copied 25 Oct 2026)",
+      "id": 3,
+      "createdAt": "2026-10-25T07:51:12.219Z",
+      "updatedAt": "2026-10-25T07:51:12.219Z"
+    }
+  ]
+}

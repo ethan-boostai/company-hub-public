@@ -1,0 +1,327 @@
+{
+  "id": "qLsJB7RiMHRP1Cbi",
+  "name": "CBS - Page Patch (temp)",
+  "active": false,
+  "isArchived": false,
+  "versionId": "f5e6ebfc-44c9-4fff-b5ce-37ba0809ef4c",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "createdAt": "2026-10-06T15:11:34.253Z",
+  "updatedAt": "2026-10-23T16:23:20.943Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Patch Hook": {
+      "main": [
+        [
+          {
+            "node": "Get Pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Pages": {
+      "main": [
+        [
+          {
+            "node": "Build",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build": {
+      "main": [
+        [
+          {
+            "node": "Apply?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apply?": {
+      "main": [
+        [
+          {
+            "node": "Backup Page",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Dry Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Backup Page": {
+      "main": [
+        [
+          {
+            "node": "Save Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Page": {
+      "main": [
+        [
+          {
+            "node": "Done",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "2eda9e1e-0a73-4bc8-b9af-48921b984abf",
+      "name": "Patch Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        96
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-page-patch-temp",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "webhookId": "1e6e0f11-2307-4e89-a184-5e5cc7ba76b6"
+    },
+    {
+      "id": "3d7743e8-7ca5-49ee-be9e-e7dd6f37e320",
+      "name": "Get Pages",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        96
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HOHWTBOJHrHF0TvB"
+        },
+        "returnAll": true
+      }
+    },
+    {
+      "id": "31364606-6798-4e70-b0c9-d880419e03c5",
+      "name": "Build",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        96
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const b=$('Patch Hook').first().json.body||{};\nconst rows=$input.all().map(i=>i.json);\nif(b.list)return [{json:{apply:false,err:'list',names:rows.map(r=>r.name).filter(n=>!/^_bak_/.test(n)&&(!b.list.length||String(n).indexOf(b.list)>-1)).slice(0,200),total:rows.length}}];\nconst page=b.page||'page:cbs-admin';\nconst row=rows.find(r=>r.name===page);\nif(!row)return [{json:{apply:false,err:'no page'}}];\nlet o,h,raw=false;try{o=JSON.parse(row.content);h=o.b;}catch(e){raw=true;h=row.content;}\nif(typeof h!=='string'){raw=true;h=row.content;}\nconst syn=[];(b.checks||[]).forEach((js,i)=>{try{new Function(js);syn.push('ok');}catch(e){syn.push('ERR '+i+': '+e.message);}});\nif(syn.some(s=>s!=='ok'))return [{json:{apply:false,err:'syntax',syn}}];\nconst counts=[];let bad=false;\nfor(const [a,c] of (b.reps||[])){const n=h.split(a).length-1;counts.push(n);if(n!==1){bad=true;continue;}h=h.split(a).join(c);}\nif(bad)return [{json:{apply:false,err:'counts',counts}}];\nif(b.wholeCheck){try{new Function(h);syn.push('whole ok');}catch(e){return [{json:{apply:false,err:'whole script error: '+e.message}}];}}\nconst content=raw?h:JSON.stringify(Object.assign(o,{b:h}));const apply=b.dry===false;\nreturn [{json:{apply,raw,counts,syn,id:row.id,bakName:'_bak_'+(b.tag||'patch')+'_'+page,before:row.content.length,after:content.length,bak:apply?row.content:'',content:apply?content:''}}];"
+      }
+    },
+    {
+      "id": "8a36f899-fa38-4ab2-ad04-71371e870d15",
+      "name": "Apply?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        96
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.apply }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "e76c419d-fff4-4614-b592-b93cc26c3346",
+      "name": "Backup Page",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HOHWTBOJHrHF0TvB"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "name": "={{ $json.bakName }}",
+            "content": "={{ $json.bak }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "content",
+              "displayName": "content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "bc4666d3-dbc5-44b5-88b9-75835ac31285",
+      "name": "Save Page",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HOHWTBOJHrHF0TvB"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Build').first().json.id }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "content": "={{ $('Build').first().json.content }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "content",
+              "displayName": "content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "96ef18aa-7f8d-4925-9c1c-d97b62a1e995",
+      "name": "Done",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const b=$('Build').first().json;return [{json:{saved:true,counts:b.counts,syn:b.syn,before:b.before,after:b.after,backup:b.bakName}}];"
+      }
+    },
+    {
+      "id": "68fe9416-aaa1-4f83-bb4c-63d26fc84c07",
+      "name": "Dry Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        192
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const b=$('Build').first().json;return [{json:{dry:true,err:b.err||'',names:b.names,total:b.total,raw:b.raw,counts:b.counts,syn:b.syn,before:b.before,after:b.after}}];"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": null,
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Temporary: exact-once string replacements on a cbs_page_parts page, with syntax checks, backup first and dry-run by default.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

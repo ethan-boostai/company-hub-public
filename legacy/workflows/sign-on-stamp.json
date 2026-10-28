@@ -1,0 +1,958 @@
+{
+  "id": "aZ2zvdT0Rtf7ArGL",
+  "name": "CBS - Sign-on Stamp",
+  "active": true,
+  "isArchived": false,
+  "versionId": "f3aa8794-d1c8-4f25-9221-78192c4ff4ab",
+  "activeVersionId": "f3aa8794-d1c8-4f25-9221-78192c4ff4ab",
+  "triggerCount": 1,
+  "createdAt": "2026-10-08T10:19:47.319Z",
+  "updatedAt": "2026-10-08T10:42:29.595Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Restamp Hook": {
+      "main": [
+        [
+          {
+            "node": "Get Signons",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Signons": {
+      "main": [
+        [
+          {
+            "node": "Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Item Meta": {
+      "main": [
+        [
+          {
+            "node": "Get PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get PDF": {
+      "main": [
+        [
+          {
+            "node": "Build",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build": {
+      "main": [
+        [
+          {
+            "node": "Stamped?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Stamped?": {
+      "main": [
+        [
+          {
+            "node": "Replace PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace PDF": {
+      "main": [
+        [
+          {
+            "node": "Re-attach",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prep": {
+      "main": [
+        [
+          {
+            "node": "Register?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Register?": {
+      "main": [
+        [
+          {
+            "node": "Build Register",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Item Meta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Register": {
+      "main": [
+        [
+          {
+            "node": "Upload Register",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Register": {
+      "main": [
+        [
+          {
+            "node": "Register Done",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Register Done": {
+      "main": [
+        [
+          {
+            "node": "Save Register URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "e6fd8dbc-1cc5-4d49-b918-beab1df9adbe",
+      "name": "Restamp Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-sign-restamp",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "webhookId": "cc339243-0fe4-4d99-bfe1-54378f6ac92d"
+    },
+    {
+      "id": "86322557-b3fd-4cef-a591-416ca4756287",
+      "name": "Get Signons",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "7mnxJyfK2DSbq7J4"
+        },
+        "matchType": "allConditions",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "doc_id",
+              "condition": "eq",
+              "keyValue": "={{ String($json.body.id || '') }}"
+            }
+          ]
+        }
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "22072018-767b-4105-a1db-fbac9c939de8",
+      "name": "Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/';const S=v=>v==null?'':String(v);\nconst b=$('Restamp Hook').first().json.body||{};\nconst MAP={rams:'rams',swms:'rams',prestart:'prestarts',toolbox:'toolbox',meeting:'toolbox',hsmeet:'toolbox',cphsp:'cphsp',sssp:'cphsp'};\nconst type=S(b.doc).toLowerCase().trim(),t=MAP[type],id=S(b.id).trim();\nif(!t||!id)return [];\nconst d=await h.httpRequest({url:H+'cbs-admin-data?t='+t,json:true});\nconst r=((d&&d[t])||[]).find(x=>S(x.id)===id);if(!r)return [];\nconst url=S(r.pdf_url);if(t!=='cphsp'&&!/sharepoint\\.com/i.test(url))return [];\nconst rev=S(r.revision||r.version||'').trim();\nconst types=t==='rams'?['rams','swms']:t==='prestarts'?['prestart']:t==='cphsp'?['cphsp','sssp']:['toolbox','meeting','hsmeet'];\nconst list=$input.all().map(i=>i.json).filter(s=>s&&types.indexOf(S(s.doc_type))>-1&&S(s.doc_id)===id&&(!rev||!S(s.doc_rev).trim()||S(s.doc_rev).trim()===rev)&&/^data:image\\/jpeg;base64,/.test(S(s.signature)))\n .sort((a,c)=>S(a.signed_at).localeCompare(S(c.signed_at)))\n .map(s=>({name:S(s.name),company:S(s.company),is_worker:S(s.is_worker),signed_at:S(s.signed_at),inducted_by:S(s.inducted_by),signature:S(s.signature)}));\nif(t==='cphsp'){if(!list.length&&!S(r.register_pdf_url))return [];let st={};try{st=JSON.parse(S(r.state_json)||'{}')||{};}catch(e){}\n const dm=S(r.dated).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);\n return [{json:{reg:true,doc:'cphsp',id:id,rev:rev,job:S(r.job_no).replace(/[^0-9]/g,''),label:S(r.cphsp_no)||('CPHSP '+id),date:dm?dm[3]+'/'+dm[2]+'/'+dm[1]:'',dated_iso:dm?dm[0]:'',title:[S(st.project||r.project),S(st.site||r.site)].filter(Boolean).join(' - '),list:list}}];}\nlet meeting=t==='toolbox'&&/meeting/i.test(S(r.meeting_type));\nconst doc=t==='rams'?'rams':t==='prestarts'?'prestart':(meeting?'meeting':'toolbox');\nlet ramsNo='';try{const js=JSON.parse(S(r.job_json)||'{}');ramsNo=S(js&&js.meta&&js.meta.ramsNo);}catch(e){}\nconst dmy=v=>{const m=S(v).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:S(v);};\nconst KEYS={rams:'RAMS #',prestart:'Pre-start #',toolbox:'Toolbox talk #',meeting:'Team meeting #'};\nconst label=doc==='rams'?('RAMS '+(ramsNo||id)):doc==='prestart'?(S(r.ps_no)||('Pre-start '+id)):(meeting?'Team meeting ':'Toolbox talk ')+id;\nconst date=doc==='rams'?dmy(r.dated):dmy(r.held_on);\nconst share='u!'+Buffer.from(url).toString('base64').replace(/=+$/,'').replace(/\\//g,'_').replace(/\\+/g,'-');\nreturn [{json:{doc:doc,id:id,rev:rev,job:S(r.job_no).replace(/[^0-9]/g,''),site:S(r.site),title:S(r.activity||r.task||r.topic||''),label:label,date:date,doc_key:KEYS[doc]+id,meta_url:'https://graph.microsoft.com/v1.0/shares/'+share+'/driveItem',list:list}}];\n"
+      }
+    },
+    {
+      "id": "9f9f9c8c-f504-42d8-83b5-a3573a9f7c98",
+      "name": "Item Meta",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        672,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.meta_url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {}
+      }
+    },
+    {
+      "id": "377c6065-3d8d-4aab-a29b-2724be73c6f4",
+      "name": "Get PDF",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        896,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ \"https://graph.microsoft.com/v1.0/drives/\" + $json.parentReference.driveId + \"/items/\" + $json.id + \"/content\" }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "data"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "5bde8717-9b1d-41ff-9c52-ca5c2be29a77",
+      "name": "Build",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "function nzTime(v){ var s=String(v||''); var m=s.match(/^(\\d{4})-(\\d{2})-(\\d{2})[T ](\\d{2}):(\\d{2})(?!.*(Z|[+-]\\d{2}:?\\d{2})$)/); if(m) return m[3]+'/'+m[2]+'/'+m[1]+' '+m[4]+':'+m[5]; var d=new Date(v); if(!v||isNaN(d.getTime())) return s; try { return new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(d).replace(',',''); } catch (e) { return d.toISOString().slice(0,16).replace('T',' '); } }\nvar NL=String.fromCharCode(10), BS=String.fromCharCode(92);\nvar meta=$('Prep').first().json; var p={doc:meta.doc,id:meta.id}; var list=meta.list||[];\nvar im0=$('Item Meta').first().json||{};\nvar item=$input.first(); var bin=item.binary&&item.binary.data;\nvar out={ stamped:false, item_id:String(im0.id||''), drive_id:String((im0.parentReference&&im0.parentReference.driveId)||''), job:meta.job, label:meta.label, doc_key:meta.doc_key, count:list.length };\nif(!bin || !out.item_id){ out.reason=!bin?'no pdf':'no file'; return [{ json: out }]; }\nvar src=await this.helpers.getBinaryDataBuffer(0,'data');\nout.filename=String(im0.name||bin.fileName||(meta.label+'.pdf'));\nvar MARK=NL+'%CBS-SIGNON'+NL;\nvar s=src.toString('latin1'); var mk=s.indexOf(MARK); if(mk>-1) s=s.slice(0,mk);\ns=s.replace(/\\s+$/,'')+NL;\nif(!list.length){ if(mk<0){ out.reason='no sign-ons'; return [{ json: out }]; } out.stamped=true; out.pages=0; return [{ json: out, binary: { data: await this.helpers.prepareBinaryData(Buffer.from(s,'latin1'), out.filename, 'application/pdf') } }]; }\nfunction lastObj(n){ var re=new RegExp('(^|[^0-9])'+n+'\\\\s+0\\\\s+obj','g'), m, at=-1; while((m=re.exec(s))){ at=m.index+m[1].length; } if(at<0) return null; var e=s.indexOf('endobj',at); return e<0?null:s.slice(at,e); }\nvar sx=s.lastIndexOf('startxref'); var prev=sx>-1?parseInt(s.slice(sx+9).trim(),10):NaN;\nvar tpos=s.lastIndexOf('trailer'); var tr=(tpos>-1&&tpos>prev)?s.slice(tpos,sx):s.slice(prev,prev+4000);\nvar sizeM=tr.match(/\\/Size\\s+(\\d+)/), rootM=tr.match(/\\/Root\\s+(\\d+)\\s+0\\s+R/), infoM=tr.match(/\\/Info\\s+(\\d+\\s+\\d+\\s+R)/);\nvar cat=rootM?lastObj(rootM[1]):null; var pm=cat?cat.match(/\\/Pages\\s+(\\d+)\\s+0\\s+R/):null; var pagesN=pm?pm[1]:null; var pob=pagesN?lastObj(pagesN):null;\nif(isNaN(prev)||!sizeM||!rootM||!pob||!/\\/Kids\\s*\\[/.test(pob)||!/\\/Count\\s+\\d+/.test(pob)){ out.reason='could not read pdf structure'; return [{ json: out }]; }\nvar dict=pob.slice(pob.indexOf('<<'), pob.lastIndexOf('>>')+2);\nvar oldKids=dict.match(/\\/Kids\\s*\\[([^\\]]*)\\]/)[1].trim(), oldCount=parseInt(dict.match(/\\/Count\\s+(\\d+)/)[1],10);\nvar mb=[0,0,595.28,841.89]; var fk=oldKids.match(/(\\d+)\\s+0\\s+R/); if(fk){ var fp=lastObj(fk[1]); var mm=fp&&fp.match(/\\/MediaBox\\s*\\[\\s*([-\\d.]+)\\s+([-\\d.]+)\\s+([-\\d.]+)\\s+([-\\d.]+)\\s*\\]/); if(!mm){ mm=dict.match(/\\/MediaBox\\s*\\[\\s*([-\\d.]+)\\s+([-\\d.]+)\\s+([-\\d.]+)\\s+([-\\d.]+)\\s*\\]/); } if(mm) mb=[+mm[1],+mm[2],+mm[3],+mm[4]]; }\nvar PW=mb[2]-mb[0], PH=mb[3]-mb[1]; if(PW<300||PH<300){ PW=595.28; PH=841.89; mb=[0,0,PW,PH]; }\nvar X0=mb[0], Y0=mb[1];\nfunction asc(t){ return String(t==null?'':t).normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^\\x20-\\x7E]/g,'').split(BS).join('/').replace(/[()]/g,function(c){ return BS+c; }); }\nfunction fit(t,w,size){ t=String(t==null?'':t); var max=Math.floor(w/(size*0.52)); return t.length>max?t.slice(0,Math.max(1,max-1))+'.':t; }\nfunction f2(n){ return (Math.round(n*100)/100).toString(); }\nfunction T(x,y,size,bold,t){ return 'BT /'+(bold?'EF2':'EF1')+' '+size+' Tf '+f2(X0+x)+' '+f2(Y0+y)+' Td ('+asc(t)+') Tj ET'+NL; }\nfunction L(x1,y1,x2,y2){ return f2(X0+x1)+' '+f2(Y0+y1)+' m '+f2(X0+x2)+' '+f2(Y0+y2)+' l S'+NL; }\nfunction jpg(buf){ var i=2; while(i+9<buf.length){ if(buf[i]!==255){ i++; continue; } var m=buf[i+1]; if(m===216||m===1||m===255||(m>=208&&m<=215)){ i+=(m===255?1:2); continue; } if(m>=192&&m<=207&&m!==196&&m!==200&&m!==204){ return { h: buf.readUInt16BE(i+5), w: buf.readUInt16BE(i+7), c: buf[i+9] }; } i+=2+buf.readUInt16BE(i+2); } return null; }\nvar B=function(t){ return Buffer.from(t,'latin1'); };\nvar base=parseInt(sizeM[1],10), objs=[]; function res(){ objs.push(null); return base+objs.length-1; } function set(n,b){ objs[n-base]=b; }\nvar f1=res(), fb=res();\nset(f1,B('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>'));\nset(fb,B('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>'));\nvar IM={};\nlist.forEach(function(r,i){ var t=String(r.signature||''); var k=t.indexOf('base64,'); if(k<0) return; var buf=Buffer.from(t.slice(k+7),'base64'); var inf=jpg(buf); if(!inf||inf.c===4) return; var n=res(); set(n,Buffer.concat([B('<< /Type /XObject /Subtype /Image /Width '+inf.w+' /Height '+inf.h+' /ColorSpace /'+(inf.c===1?'DeviceGray':'DeviceRGB')+' /BitsPerComponent 8 /Filter /DCTDecode /Length '+buf.length+' >>'+NL+'stream'+NL),buf,B(NL+'endstream')])); IM[i]={ name:'ESig'+i, obj:n, w:inf.w, h:inf.h }; });\nvar K=72/25.4; function px(x){ return X0+x*K; } function py(y){ return Y0+PH-y*K; }\nvar WB={32:278,33:333,34:474,35:556,36:556,37:889,38:722,39:238,40:333,41:333,42:389,43:584,44:278,45:333,46:278,47:278,58:333,59:333,60:584,61:584,62:584,63:611,64:975,65:722,66:722,67:722,68:722,69:667,70:611,71:778,72:722,73:278,74:556,75:722,76:611,77:833,78:722,79:778,80:667,81:778,82:722,83:667,84:611,85:722,86:667,87:944,88:667,89:667,90:611,91:333,92:278,93:333,94:584,95:556,96:333,97:556,98:611,99:556,100:611,101:556,102:333,103:611,104:611,105:278,106:278,107:556,108:278,109:889,110:611,111:611,112:611,113:611,114:389,115:556,116:333,117:611,118:556,119:778,120:556,121:556,122:500,123:389,124:280,125:389,126:584};\nvar WR={32:278,33:278,34:355,35:556,36:556,37:889,38:667,39:191,40:333,41:333,42:389,43:584,44:278,45:333,46:278,47:278,58:278,59:278,60:584,61:584,62:584,63:556,64:1015,65:667,66:667,67:722,68:722,69:667,70:611,71:778,72:722,73:278,74:500,75:667,76:556,77:833,78:722,79:778,80:667,81:778,82:722,83:667,84:611,85:722,86:667,87:944,88:667,89:667,90:611,91:278,92:278,93:278,94:469,95:556,96:333,97:556,98:556,99:500,100:556,101:556,102:278,103:556,104:556,105:222,106:222,107:500,108:222,109:833,110:556,111:556,112:556,113:556,114:333,115:500,116:278,117:556,118:500,119:722,120:500,121:500,122:500,123:334,124:260,125:334,126:584};\nfunction clean(t){ return String(t==null?'':t).normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^\\x20-\\x7E]/g,''); }\nfunction tw(t,size,bold){ var s=clean(t),w=0,T=bold?WB:WR; for(var i=0;i<s.length;i++){ var c=s.charCodeAt(i); w+=(c>=48&&c<=57)?556:(T[c]||556); } return w*size/1000/K; }\nfunction fitw(t,wmm,size,bold){ var s=clean(t); if(tw(s,size,bold)<=wmm) return s; while(s.length>1&&tw(s+'...',size,bold)>wmm) s=s.slice(0,-1); return s+'...'; }\nfunction esc2(t){ return clean(t).split(BS).join('/').replace(/[()]/g,function(c){ return BS+c; }); }\nfunction TX(x,y,size,bold,t,gray,align){ var s=clean(t); var xx=align==='r'?x-tw(s,size,bold):x; return (gray!=null?gray+' g ':'')+'BT /'+(bold?'EF2':'EF1')+' '+size+' Tf '+f2(px(xx))+' '+f2(py(y))+' Td ('+esc2(s)+') Tj ET'+(gray!=null?' 0 g':'')+NL; }\nfunction RF(x,y,w,h,rgb){ return rgb+' rg '+f2(px(x))+' '+f2(py(y+h))+' '+f2(w*K)+' '+f2(h*K)+' re f 0 g'+NL; }\nfunction RS(x,y,w,h){ return f2(px(x))+' '+f2(py(y+h))+' '+f2(w*K)+' '+f2(h*K)+' re S'+NL; }\nfunction RFS(x,y,w,h,rgb){ return rgb+' rg '+f2(px(x))+' '+f2(py(y+h))+' '+f2(w*K)+' '+f2(h*K)+' re B 0 g'+NL; }\nvar LOGO=null;\nvar KIND={rams:'Risk Assessment and Method Statement',prestart:'Daily Pre-start',toolbox:'Toolbox Talk',meeting:'Team Meeting'}[p.doc]||'Document';\nvar SECT={rams:'12. Worker sign-on',prestart:'Crew sign-on',toolbox:'Crew sign-on',meeting:'Attendance sign-on'}[p.doc]||'Crew sign-on';\nvar INTRO='Each person below confirmed they have read and understood this document and will follow it.';\nvar IND=false;\nvar COLS=IND?[['#',7],['Name',32],['Company',29],['Type',26],['Signed',24],['Inducted by',27],['Signature',37]]:[['#',8],['Name',40],['Company',36],['Type',26],['Signed',28],['Signature',44]];\nvar RH=13, FIRST=Math.floor((281-53.5)/RH), NEXT=Math.floor((281-47.5)/RH);\nvar total=list.length<=FIRST?1:1+Math.ceil((list.length-FIRST)/NEXT), kids=[], idx=0;\nvar sub=meta.label+((p.doc==='rams'&&meta.rev!=='')?' rev '+meta.rev:'')+(meta.date?' | '+meta.date:'')+' | Job '+(meta.job||'-');\nfor(var pg=0;pg<total;pg++){\n var c='q 0 g 0 G'+NL, xo=[];\n if(LOGO){ var lh2=8.5, lw2=Math.min(44,lh2*LOGO.w/LOGO.h); c+='q '+f2(lw2*K)+' 0 0 '+f2(lh2*K)+' '+f2(px(14))+' '+f2(py(9+lh2))+' cm /CLogo Do Q'+NL; xo.push('/CLogo '+LOGO.obj+' 0 R'); }\n else c+=TX(14,15,13,true,'Chelmsford Building Services');\n c+=TX(196,14,12.5,true,KIND,null,'r');\n c+=TX(196,18.5,8,false,fitw(sub,120,8,false),'0.27','r');\n c+=RF(14,21.5,182,1.3,'0.957 0.475 0.125');\n var y=30;\n c+=RF(14,y,182,7.5,'0 0 0');\n c+='1 g'+NL+TX(17,y+5.2,10.5,true,SECT+(pg>0?' (continued)':''))+'0 g'+NL; y+=10;\n if(pg===0){ c+=TX(14,y+3.5,9,false,fitw(INTRO,182,9,false)); y+=6; }\n c+='0.71 w 0 G'+NL;\n var x=14; COLS.forEach(function(col){ c+=RFS(x,y,col[1],7.5,'0.992 0.878 0.8'); c+=TX(x+1.5,y+5,9,true,col[0]); x+=col[1]; }); y+=7.5;\n var cap=pg===0?FIRST:NEXT;\n for(var k=0;k<cap&&idx<list.length;k++,idx++){\n  var r=list[idx], vals=[String(idx+1), r.name, r.company||'', String(r.is_worker)==='Yes'?'Worker':(String(r.company||'').trim().toLowerCase()==='visitor'?'Visitor':'Subcontractor'), '', IND?(r.inducted_by||''):null, ''];\n  if(!IND) vals.splice(5,1);\n  x=14; COLS.forEach(function(col,ci){ c+=RS(x,y,col[1],RH); var hd=col[0];\n   if(hd==='Signed'){ var tt=nzTime(r.signed_at).split(' '); c+=TX(x+1.5,y+5,9,false,tt[0]||''); c+=TX(x+1.5,y+9.5,8,false,tt[1]||'','0.3'); }\n   else if(hd==='Signature'){ var im=IM[idx]; if(im){ var sc=Math.min((col[1]-3)/im.w,(RH-2)/im.h), iw=im.w*sc, ih=im.h*sc; c+='q '+f2(iw*K)+' 0 0 '+f2(ih*K)+' '+f2(px(x+1.5))+' '+f2(py(y+1+ih))+' cm /'+im.name+' Do Q'+NL; xo.push('/'+im.name+' '+im.obj+' 0 R'); } else c+=TX(x+1.5,y+7.5,8,false,'(no signature)','0.4'); }\n   else { var v=vals[ci]; c+=TX(x+1.5,y+7.5,9,hd==='Name',fitw(v,col[1]-3,9,hd==='Name')); }\n   x+=col[1]; });\n  y+=RH;\n }\n c+='0.85 w'+NL+f2(px(14))+' '+f2(py(287))+' m '+f2(px(196))+' '+f2(py(287))+' l S'+NL;\n c+=TX(14,291,7.8,false,fitw('Chelmsford Building Services | '+meta.label+' | '+KIND+' | Job '+(meta.job||'-'),130,7.8,false),'0.31');\n c+=TX(196,291,7.8,false,(IND?'Induction register':'Sign-on')+' page '+(pg+1)+' of '+total+' | updated '+nzTime(new Date().toISOString()),'0.31','r');\n c+='Q'+NL;\n var cs=res(); set(cs,B('<< /Length '+Buffer.byteLength(c,'latin1')+' >>'+NL+'stream'+NL+c+NL+'endstream'));\n var po=res(); set(po,B('<< /Type /Page /Parent '+pagesN+' 0 R /MediaBox ['+mb.join(' ')+'] /Resources << /ProcSet [/PDF /Text /ImageC /ImageB /ImageI] /Font << /EF1 '+f1+' 0 R /EF2 '+fb+' 0 R >>'+(xo.length?' /XObject << '+xo.filter(function(v,i,a){ return a.indexOf(v)===i; }).join(' ')+' >>':'')+' >> /Contents '+cs+' 0 R >>'));\n kids.push(po+' 0 R');\n}\nvar nd=dict.replace(/\\/Kids\\s*\\[[^\\]]*\\]/,'/Kids ['+oldKids+' '+kids.join(' ')+']').replace(/\\/Count\\s+\\d+/,'/Count '+(oldCount+kids.length));\nvar head=B(s+'%CBS-SIGNON'+NL), off=head.length, parts=[head];\nvar pOff=off; var pc=B(pagesN+' 0 obj'+NL+nd+NL+'endobj'+NL); parts.push(pc); off+=pc.length;\nvar xr=[]; objs.forEach(function(b,i){ xr.push(off); var ch=Buffer.concat([B((base+i)+' 0 obj'+NL),b,B(NL+'endobj'+NL)]); parts.push(ch); off+=ch.length; });\nfunction e(o){ return ('0000000000'+o).slice(-10)+' 00000 n '+NL; }\nvar newSize=base+objs.length;\nvar xs='xref'+NL+pagesN+' 1'+NL+e(pOff)+base+' '+objs.length+NL+xr.map(e).join('');\nparts.push(B(xs+'trailer'+NL+'<< /Size '+newSize+' /Root '+rootM[1]+' 0 R'+(infoM?' /Info '+infoM[1]:'')+' /Prev '+prev+' >>'+NL+'startxref'+NL+off+NL+'%%EOF'+NL));\nvar pdf=Buffer.concat(parts);\nout.stamped=true; out.pages=kids.length;\nreturn [{ json: out, binary: { data: await this.helpers.prepareBinaryData(pdf, out.filename, 'application/pdf') } }];\n"
+      }
+    },
+    {
+      "id": "f53009c9-3526-4db5-a4fa-3e5366daf589",
+      "name": "Stamped?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.stamped }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "f7c59f34-e972-4db4-85a9-0a41e72fb431",
+      "name": "Replace PDF",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1568,
+        0
+      ],
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ \"https://graph.microsoft.com/v1.0/drives/\" + $json.drive_id + \"/items/\" + $json.item_id + \"/content\" }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      }
+    },
+    {
+      "id": "3f74b2ae-6323-486d-a86d-8f374caf59bc",
+      "name": "Re-attach",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1792,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const o=$('Build').first().json;const H='https://old-hub.example/webhook/';\nlet r=null;if(o.job){try{r=await this.helpers.httpRequest({method:'POST',url:H+'cbs-sm8-attach',body:{job_no:o.job,item_id:o.item_id,name:o.filename,doc_key:o.doc_key,quiet:true},json:true,timeout:30000});}catch(e){r=String(e.message||e);}}\nreturn [{json:{ok:true,stamped:true,signatures:o.count,pages:o.pages,attached:!!o.job}}];"
+      }
+    },
+    {
+      "id": "39e1ce09-4453-46a2-babd-bdd338ff9cc3",
+      "name": "Register?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        200
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{ $json.reg === true }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "7128c27e-8133-443f-8270-e02ab8ef81d4",
+      "name": "Build Register",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        780,
+        200
+      ],
+      "parameters": {
+        "jsCode": "function nzTime(v){ var s=String(v||''); var m=s.match(/^(\\d{4})-(\\d{2})-(\\d{2})[T ](\\d{2}):(\\d{2})(?!.*(Z|[+-]\\d{2}:?\\d{2})$)/); if(m) return m[3]+'/'+m[2]+'/'+m[1]+' '+m[4]+':'+m[5]; var d=new Date(v); if(!v||isNaN(d.getTime())) return s; try { return new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(d).replace(',',''); } catch (e) { return d.toISOString().slice(0,16).replace('T',' '); } }\nvar NL=String.fromCharCode(10), BS=String.fromCharCode(92);\nvar meta=$('Prep').first().json; var list=meta.list||[];\nvar PW=595.28, PH=841.89, X0=0, Y0=0, mb=[0,0,PW,PH], pagesN=2;\nfunction asc(t){ return String(t==null?'':t).normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^\\x20-\\x7E]/g,'').split(BS).join('/').replace(/[()]/g,function(c){ return BS+c; }); }\nfunction fit(t,w,size){ t=String(t==null?'':t); var max=Math.floor(w/(size*0.52)); return t.length>max?t.slice(0,Math.max(1,max-1))+'.':t; }\nfunction f2(n){ return (Math.round(n*100)/100).toString(); }\nfunction T(x,y,size,bold,t){ return 'BT /'+(bold?'EF2':'EF1')+' '+size+' Tf '+f2(X0+x)+' '+f2(Y0+y)+' Td ('+asc(t)+') Tj ET'+NL; }\nfunction L(x1,y1,x2,y2){ return f2(X0+x1)+' '+f2(Y0+y1)+' m '+f2(X0+x2)+' '+f2(Y0+y2)+' l S'+NL; }\nfunction jpg(buf){ var i=2; while(i+9<buf.length){ if(buf[i]!==255){ i++; continue; } var m=buf[i+1]; if(m===216||m===1||m===255||(m>=208&&m<=215)){ i+=(m===255?1:2); continue; } if(m>=192&&m<=207&&m!==196&&m!==200&&m!==204){ return { h: buf.readUInt16BE(i+5), w: buf.readUInt16BE(i+7), c: buf[i+9] }; } i+=2+buf.readUInt16BE(i+2); } return null; }\nvar B=function(t){ return Buffer.from(t,'latin1'); };\nvar base=3, objs=[]; function res(){ objs.push(null); return base+objs.length-1; } function set(n,b){ objs[n-base]=b; }\nvar f1=res(), fb=res();\nset(f1,B('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>'));\nset(fb,B('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>'));\nvar IM={};\nlist.forEach(function(r,i){ var t=String(r.signature||''); var k=t.indexOf('base64,'); if(k<0) return; var buf=Buffer.from(t.slice(k+7),'base64'); var inf=jpg(buf); if(!inf||inf.c===4) return; var n=res(); set(n,Buffer.concat([B('<< /Type /XObject /Subtype /Image /Width '+inf.w+' /Height '+inf.h+' /ColorSpace /'+(inf.c===1?'DeviceGray':'DeviceRGB')+' /BitsPerComponent 8 /Filter /DCTDecode /Length '+buf.length+' >>'+NL+'stream'+NL),buf,B(NL+'endstream')])); IM[i]={ name:'ESig'+i, obj:n, w:inf.w, h:inf.h }; });\nvar K=72/25.4; function px(x){ return X0+x*K; } function py(y){ return Y0+PH-y*K; }\nvar WB={32:278,33:333,34:474,35:556,36:556,37:889,38:722,39:238,40:333,41:333,42:389,43:584,44:278,45:333,46:278,47:278,58:333,59:333,60:584,61:584,62:584,63:611,64:975,65:722,66:722,67:722,68:722,69:667,70:611,71:778,72:722,73:278,74:556,75:722,76:611,77:833,78:722,79:778,80:667,81:778,82:722,83:667,84:611,85:722,86:667,87:944,88:667,89:667,90:611,91:333,92:278,93:333,94:584,95:556,96:333,97:556,98:611,99:556,100:611,101:556,102:333,103:611,104:611,105:278,106:278,107:556,108:278,109:889,110:611,111:611,112:611,113:611,114:389,115:556,116:333,117:611,118:556,119:778,120:556,121:556,122:500,123:389,124:280,125:389,126:584};\nvar WR={32:278,33:278,34:355,35:556,36:556,37:889,38:667,39:191,40:333,41:333,42:389,43:584,44:278,45:333,46:278,47:278,58:278,59:278,60:584,61:584,62:584,63:556,64:1015,65:667,66:667,67:722,68:722,69:667,70:611,71:778,72:722,73:278,74:500,75:667,76:556,77:833,78:722,79:778,80:667,81:778,82:722,83:667,84:611,85:722,86:667,87:944,88:667,89:667,90:611,91:278,92:278,93:278,94:469,95:556,96:333,97:556,98:556,99:500,100:556,101:556,102:278,103:556,104:556,105:222,106:222,107:500,108:222,109:833,110:556,111:556,112:556,113:556,114:333,115:500,116:278,117:556,118:500,119:722,120:500,121:500,122:500,123:334,124:260,125:334,126:584};\nfunction clean(t){ return String(t==null?'':t).normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^\\x20-\\x7E]/g,''); }\nfunction tw(t,size,bold){ var s=clean(t),w=0,T=bold?WB:WR; for(var i=0;i<s.length;i++){ var c=s.charCodeAt(i); w+=(c>=48&&c<=57)?556:(T[c]||556); } return w*size/1000/K; }\nfunction fitw(t,wmm,size,bold){ var s=clean(t); if(tw(s,size,bold)<=wmm) return s; while(s.length>1&&tw(s+'...',size,bold)>wmm) s=s.slice(0,-1); return s+'...'; }\nfunction esc2(t){ return clean(t).split(BS).join('/').replace(/[()]/g,function(c){ return BS+c; }); }\nfunction TX(x,y,size,bold,t,gray,align){ var s=clean(t); var xx=align==='r'?x-tw(s,size,bold):x; return (gray!=null?gray+' g ':'')+'BT /'+(bold?'EF2':'EF1')+' '+size+' Tf '+f2(px(xx))+' '+f2(py(y))+' Td ('+esc2(s)+') Tj ET'+(gray!=null?' 0 g':'')+NL; }\nfunction RF(x,y,w,h,rgb){ return rgb+' rg '+f2(px(x))+' '+f2(py(y+h))+' '+f2(w*K)+' '+f2(h*K)+' re f 0 g'+NL; }\nfunction RS(x,y,w,h){ return f2(px(x))+' '+f2(py(y+h))+' '+f2(w*K)+' '+f2(h*K)+' re S'+NL; }\nfunction RFS(x,y,w,h,rgb){ return rgb+' rg '+f2(px(x))+' '+f2(py(y+h))+' '+f2(w*K)+' '+f2(h*K)+' re B 0 g'+NL; }\nvar KIND='Site Induction Register';\nvar SECT='Site induction register';\nvar INTRO='Each person below has completed the site induction for this site and agreed to follow the construction phase plan.';\nvar COLS=[['#',7],['Name',32],['Company',29],['Type',26],['Signed',24],['Inducted by',27],['Signature',37]];\nvar RH=13, FIRST=Math.floor((281-60)/RH), NEXT=Math.floor((281-47.5)/RH);\nvar total=list.length<=FIRST?1:1+Math.ceil((list.length-FIRST)/NEXT), kids=[], idx=0;\nvar sub=meta.label+(meta.rev!==''?' rev '+meta.rev:'')+(meta.date?' | '+meta.date:'')+' | Job '+(meta.job||'-');\nfor(var pg=0;pg<total;pg++){\n var c='q 0 g 0 G'+NL, xo=[];\n c+=TX(14,15,13,true,'Chelmsford Building Services');\n c+=TX(196,14,12.5,true,KIND,null,'r');\n c+=TX(196,18.5,8,false,fitw(sub,120,8,false),'0.27','r');\n c+=RF(14,21.5,182,1.3,'0.957 0.475 0.125');\n var y=30;\n c+=RF(14,y,182,7.5,'0 0 0');\n c+='1 g'+NL+TX(17,y+5.2,10.5,true,SECT+(pg>0?' (continued)':''))+'0 g'+NL; y+=10;\n if(pg===0){ if(meta.title){ c+=TX(14,y+3.5,9,true,fitw(meta.title,182,9,true)); y+=5.5; } c+=TX(14,y+3.5,9,false,fitw(INTRO,182,9,false)); y+=6; }\n c+='0.71 w 0 G'+NL;\n var x=14; COLS.forEach(function(col){ c+=RFS(x,y,col[1],7.5,'0.992 0.878 0.8'); c+=TX(x+1.5,y+5,9,true,col[0]); x+=col[1]; }); y+=7.5;\n if(!list.length){ c+=RS(14,y,182,RH); c+=TX(17,y+7.5,9,false,'No inductions recorded yet.','0.4'); y+=RH; }\n var cap=pg===0?FIRST:NEXT;\n for(var k=0;k<cap&&idx<list.length;k++,idx++){\n  var r=list[idx], vals=[String(idx+1), r.name, r.company||'', String(r.is_worker)==='Yes'?'Worker':(String(r.company||'').trim().toLowerCase()==='visitor'?'Visitor':'Subcontractor'), '', r.inducted_by||'', ''];\n  x=14; COLS.forEach(function(col,ci){ c+=RS(x,y,col[1],RH); var hd=col[0];\n   if(hd==='Signed'){ var tt=nzTime(r.signed_at).split(' '); c+=TX(x+1.5,y+5,9,false,tt[0]||''); c+=TX(x+1.5,y+9.5,8,false,tt[1]||'','0.3'); }\n   else if(hd==='Signature'){ var im=IM[idx]; if(im){ var sc=Math.min((col[1]-3)/im.w,(RH-2)/im.h), iw=im.w*sc, ih=im.h*sc; c+='q '+f2(iw*K)+' 0 0 '+f2(ih*K)+' '+f2(px(x+1.5))+' '+f2(py(y+1+ih))+' cm /'+im.name+' Do Q'+NL; xo.push('/'+im.name+' '+im.obj+' 0 R'); } else c+=TX(x+1.5,y+7.5,8,false,'(no signature)','0.4'); }\n   else { var v=vals[ci]; c+=TX(x+1.5,y+7.5,9,hd==='Name',fitw(v,col[1]-3,9,hd==='Name')); }\n   x+=col[1]; });\n  y+=RH;\n }\n c+='0.85 w'+NL+f2(px(14))+' '+f2(py(287))+' m '+f2(px(196))+' '+f2(py(287))+' l S'+NL;\n c+=TX(14,291,7.8,false,fitw('Chelmsford Building Services | '+meta.label+' | '+KIND+' | Job '+(meta.job||'-'),130,7.8,false),'0.31');\n c+=TX(196,291,7.8,false,'Page '+(pg+1)+' of '+total+' | updated '+nzTime(new Date().toISOString()),'0.31','r');\n c+='Q'+NL;\n var cs=res(); set(cs,B('<< /Length '+Buffer.byteLength(c,'latin1')+' >>'+NL+'stream'+NL+c+NL+'endstream'));\n var po=res(); set(po,B('<< /Type /Page /Parent 2 0 R /MediaBox ['+mb.join(' ')+'] /Resources << /ProcSet [/PDF /Text /ImageC /ImageB /ImageI] /Font << /EF1 '+f1+' 0 R /EF2 '+fb+' 0 R >>'+(xo.length?' /XObject << '+xo.filter(function(v,i,a){ return a.indexOf(v)===i; }).join(' ')+' >>':'')+' >> /Contents '+cs+' 0 R >>'));\n kids.push(po+' 0 R');\n}\nvar all=[B('<< /Type /Catalog /Pages 2 0 R >>'),B('<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+kids.length+' >>')].concat(objs);\nvar parts=[B('%PDF-1.4'+NL)], off=parts[0].length, xr=[];\nall.forEach(function(b,i){ xr.push(off); var ch=Buffer.concat([B((i+1)+' 0 obj'+NL),b,B(NL+'endobj'+NL)]); parts.push(ch); off+=ch.length; });\nfunction e(o){ return ('0000000000'+o).slice(-10)+' 00000 n '+NL; }\nparts.push(B('xref'+NL+'0 '+(all.length+1)+NL+'0000000000 65535 f '+NL+xr.map(e).join('')+'trailer'+NL+'<< /Size '+(all.length+1)+' /Root 1 0 R >>'+NL+'startxref'+NL+off+NL+'%%EOF'+NL));\nvar pdf=Buffer.concat(parts);\nvar fn=[meta.dated_iso,meta.job,meta.label,'Site Induction Register'].map(function(v){ return String(v||'').replace(/[\\\\/:*?\"<>|#%]+/g,' ').trim(); }).filter(Boolean).join(' - ')+'.pdf';\nreturn [{ json: { cphsp_id:meta.id, job:meta.job, filename:fn, folder:'CBS%20System/H%26S/Construction%20Phase%20Plans/Induction%20Registers', doc_key:'Induction register #'+meta.id, count:list.length }, binary: { data: await this.helpers.prepareBinaryData(pdf, fn, 'application/pdf') } }];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "360ff6d1-1bc2-44e8-b4d3-590dcfa9b46b",
+      "name": "Upload Register",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        200
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "method": "PUT",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {},
+        "sendBody": true,
+        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.folder }}/{{ encodeURIComponent($json.filename) }}:/content?@microsoft.graph.conflictBehavior=replace"
+      }
+    },
+    {
+      "id": "4f32c886-9063-4142-98a2-ff22057b86db",
+      "name": "Register Done",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1220,
+        200
+      ],
+      "parameters": {
+        "jsCode": "const o=$('Build Register').first().json;const up=$input.first().json||{};const H='https://old-hub.example/webhook/';\nif(up.id&&o.job){try{await this.helpers.httpRequest({method:'POST',url:H+'cbs-sm8-attach',body:{job_no:o.job,item_id:up.id,name:o.filename,doc_key:o.doc_key,quiet:true},json:true,timeout:30000});}catch(e){}}\nreturn [{json:{cphsp_id:Number(o.cphsp_id),register_pdf_url:String(up.webUrl||''),inductions:o.count}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "8673c41a-5957-4ded-a130-7bd97c67fb8e",
+      "name": "Save Register URL",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1440,
+        200
+      ],
+      "parameters": {
+        "columns": {
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "register_pdf_url",
+              "id": "register_pdf_url",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "value": {
+            "register_pdf_url": "={{ $json.register_pdf_url }}"
+          }
+        },
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "VrPaSgrY1W6zm3HN"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "id",
+              "keyValue": "={{ $json.cphsp_id }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "update",
+        "options": {},
+        "resource": "row"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "e6fd8dbc-1cc5-4d49-b918-beab1df9adbe",
+        "name": "Restamp Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-sign-restamp",
+          "responseMode": "onReceived",
+          "options": {}
+        },
+        "webhookId": "cc339243-0fe4-4d99-bfe1-54378f6ac92d"
+      },
+      {
+        "id": "86322557-b3fd-4cef-a591-416ca4756287",
+        "name": "Get Signons",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "7mnxJyfK2DSbq7J4"
+          },
+          "matchType": "allConditions",
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "doc_id",
+                "condition": "eq",
+                "keyValue": "={{ String($json.body.id || '') }}"
+              }
+            ]
+          }
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "22072018-767b-4105-a1db-fbac9c939de8",
+        "name": "Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/';const S=v=>v==null?'':String(v);\nconst b=$('Restamp Hook').first().json.body||{};\nconst MAP={rams:'rams',swms:'rams',prestart:'prestarts',toolbox:'toolbox',meeting:'toolbox',hsmeet:'toolbox',cphsp:'cphsp',sssp:'cphsp'};\nconst type=S(b.doc).toLowerCase().trim(),t=MAP[type],id=S(b.id).trim();\nif(!t||!id)return [];\nconst d=await h.httpRequest({url:H+'cbs-admin-data?t='+t,json:true});\nconst r=((d&&d[t])||[]).find(x=>S(x.id)===id);if(!r)return [];\nconst url=S(r.pdf_url);if(t!=='cphsp'&&!/sharepoint\\.com/i.test(url))return [];\nconst rev=S(r.revision||r.version||'').trim();\nconst types=t==='rams'?['rams','swms']:t==='prestarts'?['prestart']:t==='cphsp'?['cphsp','sssp']:['toolbox','meeting','hsmeet'];\nconst list=$input.all().map(i=>i.json).filter(s=>s&&types.indexOf(S(s.doc_type))>-1&&S(s.doc_id)===id&&(!rev||!S(s.doc_rev).trim()||S(s.doc_rev).trim()===rev)&&/^data:image\\/jpeg;base64,/.test(S(s.signature)))\n .sort((a,c)=>S(a.signed_at).localeCompare(S(c.signed_at)))\n .map(s=>({name:S(s.name),company:S(s.company),is_worker:S(s.is_worker),signed_at:S(s.signed_at),inducted_by:S(s.inducted_by),signature:S(s.signature)}));\nif(t==='cphsp'){if(!list.length&&!S(r.register_pdf_url))return [];let st={};try{st=JSON.parse(S(r.state_json)||'{}')||{};}catch(e){}\n const dm=S(r.dated).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);\n return [{json:{reg:true,doc:'cphsp',id:id,rev:rev,job:S(r.job_no).replace(/[^0-9]/g,''),label:S(r.cphsp_no)||('CPHSP '+id),date:dm?dm[3]+'/'+dm[2]+'/'+dm[1]:'',dated_iso:dm?dm[0]:'',title:[S(st.project||r.project),S(st.site||r.site)].filter(Boolean).join(' - '),list:list}}];}\nlet meeting=t==='toolbox'&&/meeting/i.test(S(r.meeting_type));\nconst doc=t==='rams'?'rams':t==='prestarts'?'prestart':(meeting?'meeting':'toolbox');\nlet ramsNo='';try{const js=JSON.parse(S(r.job_json)||'{}');ramsNo=S(js&&js.meta&&js.meta.ramsNo);}catch(e){}\nconst dmy=v=>{const m=S(v).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:S(v);};\nconst KEYS={rams:'RAMS #',prestart:'Pre-start #',toolbox:'Toolbox talk #',meeting:'Team meeting #'};\nconst label=doc==='rams'?('RAMS '+(ramsNo||id)):doc==='prestart'?(S(r.ps_no)||('Pre-start '+id)):(meeting?'Team meeting ':'Toolbox talk ')+id;\nconst date=doc==='rams'?dmy(r.dated):dmy(r.held_on);\nconst share='u!'+Buffer.from(url).toString('base64').replace(/=+$/,'').replace(/\\//g,'_').replace(/\\+/g,'-');\nreturn [{json:{doc:doc,id:id,rev:rev,job:S(r.job_no).replace(/[^0-9]/g,''),site:S(r.site),title:S(r.activity||r.task||r.topic||''),label:label,date:date,doc_key:KEYS[doc]+id,meta_url:'https://graph.microsoft.com/v1.0/shares/'+share+'/driveItem',list:list}}];\n"
+        }
+      },
+      {
+        "id": "9f9f9c8c-f504-42d8-83b5-a3573a9f7c98",
+        "name": "Item Meta",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          672,
+          0
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "={{ $json.meta_url }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {}
+        }
+      },
+      {
+        "id": "377c6065-3d8d-4aab-a29b-2724be73c6f4",
+        "name": "Get PDF",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          896,
+          0
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "={{ \"https://graph.microsoft.com/v1.0/drives/\" + $json.parentReference.driveId + \"/items/\" + $json.id + \"/content\" }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {
+            "response": {
+              "response": {
+                "responseFormat": "file",
+                "outputPropertyName": "data"
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "5bde8717-9b1d-41ff-9c52-ca5c2be29a77",
+        "name": "Build",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "function nzTime(v){ var s=String(v||''); var m=s.match(/^(\\d{4})-(\\d{2})-(\\d{2})[T ](\\d{2}):(\\d{2})(?!.*(Z|[+-]\\d{2}:?\\d{2})$)/); if(m) return m[3]+'/'+m[2]+'/'+m[1]+' '+m[4]+':'+m[5]; var d=new Date(v); if(!v||isNaN(d.getTime())) return s; try { return new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(d).replace(',',''); } catch (e) { return d.toISOString().slice(0,16).replace('T',' '); } }\nvar NL=String.fromCharCode(10), BS=String.fromCharCode(92);\nvar meta=$('Prep').first().json; var p={doc:meta.doc,id:meta.id}; var list=meta.list||[];\nvar im0=$('Item Meta').first().json||{};\nvar item=$input.first(); var bin=item.binary&&item.binary.data;\nvar out={ stamped:false, item_id:String(im0.id||''), drive_id:String((im0.parentReference&&im0.parentReference.driveId)||''), job:meta.job, label:meta.label, doc_key:meta.doc_key, count:list.length };\nif(!bin || !out.item_id){ out.reason=!bin?'no pdf':'no file'; return [{ json: out }]; }\nvar src=await this.helpers.getBinaryDataBuffer(0,'data');\nout.filename=String(im0.name||bin.fileName||(meta.label+'.pdf'));\nvar MARK=NL+'%CBS-SIGNON'+NL;\nvar s=src.toString('latin1'); var mk=s.indexOf(MARK); if(mk>-1) s=s.slice(0,mk);\ns=s.replace(/\\s+$/,'')+NL;\nif(!list.length){ if(mk<0){ out.reason='no sign-ons'; return [{ json: out }]; } out.stamped=true; out.pages=0; return [{ json: out, binary: { data: await this.helpers.prepareBinaryData(Buffer.from(s,'latin1'), out.filename, 'application/pdf') } }]; }\nfunction lastObj(n){ var re=new RegExp('(^|[^0-9])'+n+'\\\\s+0\\\\s+obj','g'), m, at=-1; while((m=re.exec(s))){ at=m.index+m[1].length; } if(at<0) return null; var e=s.indexOf('endobj',at); return e<0?null:s.slice(at,e); }\nvar sx=s.lastIndexOf('startxref'); var prev=sx>-1?parseInt(s.slice(sx+9).trim(),10):NaN;\nvar tpos=s.lastIndexOf('trailer'); var tr=(tpos>-1&&tpos>prev)?s.slice(tpos,sx):s.slice(prev,prev+4000);\nvar sizeM=tr.match(/\\/Size\\s+(\\d+)/), rootM=tr.match(/\\/Root\\s+(\\d+)\\s+0\\s+R/), infoM=tr.match(/\\/Info\\s+(\\d+\\s+\\d+\\s+R)/);\nvar cat=rootM?lastObj(rootM[1]):null; var pm=cat?cat.match(/\\/Pages\\s+(\\d+)\\s+0\\s+R/):null; var pagesN=pm?pm[1]:null; var pob=pagesN?lastObj(pagesN):null;\nif(isNaN(prev)||!sizeM||!rootM||!pob||!/\\/Kids\\s*\\[/.test(pob)||!/\\/Count\\s+\\d+/.test(pob)){ out.reason='could not read pdf structure'; return [{ json: out }]; }\nvar dict=pob.slice(pob.indexOf('<<'), pob.lastIndexOf('>>')+2);\nvar oldKids=dict.match(/\\/Kids\\s*\\[([^\\]]*)\\]/)[1].trim(), oldCount=parseInt(dict.match(/\\/Count\\s+(\\d+)/)[1],10);\nvar mb=[0,0,595.28,841.89]; var fk=oldKids.match(/(\\d+)\\s+0\\s+R/); if(fk){ var fp=lastObj(fk[1]); var mm=fp&&fp.match(/\\/MediaBox\\s*\\[\\s*([-\\d.]+)\\s+([-\\d.]+)\\s+([-\\d.]+)\\s+([-\\d.]+)\\s*\\]/); if(!mm){ mm=dict.match(/\\/MediaBox\\s*\\[\\s*([-\\d.]+)\\s+([-\\d.]+)\\s+([-\\d.]+)\\s+([-\\d.]+)\\s*\\]/); } if(mm) mb=[+mm[1],+mm[2],+mm[3],+mm[4]]; }\nvar PW=mb[2]-mb[0], PH=mb[3]-mb[1]; if(PW<300||PH<300){ PW=595.28; PH=841.89; mb=[0,0,PW,PH]; }\nvar X0=mb[0], Y0=mb[1];\nfunction asc(t){ return String(t==null?'':t).normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^\\x20-\\x7E]/g,'').split(BS).join('/').replace(/[()]/g,function(c){ return BS+c; }); }\nfunction fit(t,w,size){ t=String(t==null?'':t); var max=Math.floor(w/(size*0.52)); return t.length>max?t.slice(0,Math.max(1,max-1))+'.':t; }\nfunction f2(n){ return (Math.round(n*100)/100).toString(); }\nfunction T(x,y,size,bold,t){ return 'BT /'+(bold?'EF2':'EF1')+' '+size+' Tf '+f2(X0+x)+' '+f2(Y0+y)+' Td ('+asc(t)+') Tj ET'+NL; }\nfunction L(x1,y1,x2,y2){ return f2(X0+x1)+' '+f2(Y0+y1)+' m '+f2(X0+x2)+' '+f2(Y0+y2)+' l S'+NL; }\nfunction jpg(buf){ var i=2; while(i+9<buf.length){ if(buf[i]!==255){ i++; continue; } var m=buf[i+1]; if(m===216||m===1||m===255||(m>=208&&m<=215)){ i+=(m===255?1:2); continue; } if(m>=192&&m<=207&&m!==196&&m!==200&&m!==204){ return { h: buf.readUInt16BE(i+5), w: buf.readUInt16BE(i+7), c: buf[i+9] }; } i+=2+buf.readUInt16BE(i+2); } return null; }\nvar B=function(t){ return Buffer.from(t,'latin1'); };\nvar base=parseInt(sizeM[1],10), objs=[]; function res(){ objs.push(null); return base+objs.length-1; } function set(n,b){ objs[n-base]=b; }\nvar f1=res(), fb=res();\nset(f1,B('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>'));\nset(fb,B('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>'));\nvar IM={};\nlist.forEach(function(r,i){ var t=String(r.signature||''); var k=t.indexOf('base64,'); if(k<0) return; var buf=Buffer.from(t.slice(k+7),'base64'); var inf=jpg(buf); if(!inf||inf.c===4) return; var n=res(); set(n,Buffer.concat([B('<< /Type /XObject /Subtype /Image /Width '+inf.w+' /Height '+inf.h+' /ColorSpace /'+(inf.c===1?'DeviceGray':'DeviceRGB')+' /BitsPerComponent 8 /Filter /DCTDecode /Length '+buf.length+' >>'+NL+'stream'+NL),buf,B(NL+'endstream')])); IM[i]={ name:'ESig'+i, obj:n, w:inf.w, h:inf.h }; });\nvar K=72/25.4; function px(x){ return X0+x*K; } function py(y){ return Y0+PH-y*K; }\nvar WB={32:278,33:333,34:474,35:556,36:556,37:889,38:722,39:238,40:333,41:333,42:389,43:584,44:278,45:333,46:278,47:278,58:333,59:333,60:584,61:584,62:584,63:611,64:975,65:722,66:722,67:722,68:722,69:667,70:611,71:778,72:722,73:278,74:556,75:722,76:611,77:833,78:722,79:778,80:667,81:778,82:722,83:667,84:611,85:722,86:667,87:944,88:667,89:667,90:611,91:333,92:278,93:333,94:584,95:556,96:333,97:556,98:611,99:556,100:611,101:556,102:333,103:611,104:611,105:278,106:278,107:556,108:278,109:889,110:611,111:611,112:611,113:611,114:389,115:556,116:333,117:611,118:556,119:778,120:556,121:556,122:500,123:389,124:280,125:389,126:584};\nvar WR={32:278,33:278,34:355,35:556,36:556,37:889,38:667,39:191,40:333,41:333,42:389,43:584,44:278,45:333,46:278,47:278,58:278,59:278,60:584,61:584,62:584,63:556,64:1015,65:667,66:667,67:722,68:722,69:667,70:611,71:778,72:722,73:278,74:500,75:667,76:556,77:833,78:722,79:778,80:667,81:778,82:722,83:667,84:611,85:722,86:667,87:944,88:667,89:667,90:611,91:278,92:278,93:278,94:469,95:556,96:333,97:556,98:556,99:500,100:556,101:556,102:278,103:556,104:556,105:222,106:222,107:500,108:222,109:833,110:556,111:556,112:556,113:556,114:333,115:500,116:278,117:556,118:500,119:722,120:500,121:500,122:500,123:334,124:260,125:334,126:584};\nfunction clean(t){ return String(t==null?'':t).normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^\\x20-\\x7E]/g,''); }\nfunction tw(t,size,bold){ var s=clean(t),w=0,T=bold?WB:WR; for(var i=0;i<s.length;i++){ var c=s.charCodeAt(i); w+=(c>=48&&c<=57)?556:(T[c]||556); } return w*size/1000/K; }\nfunction fitw(t,wmm,size,bold){ var s=clean(t); if(tw(s,size,bold)<=wmm) return s; while(s.length>1&&tw(s+'...',size,bold)>wmm) s=s.slice(0,-1); return s+'...'; }\nfunction esc2(t){ return clean(t).split(BS).join('/').replace(/[()]/g,function(c){ return BS+c; }); }\nfunction TX(x,y,size,bold,t,gray,align){ var s=clean(t); var xx=align==='r'?x-tw(s,size,bold):x; return (gray!=null?gray+' g ':'')+'BT /'+(bold?'EF2':'EF1')+' '+size+' Tf '+f2(px(xx))+' '+f2(py(y))+' Td ('+esc2(s)+') Tj ET'+(gray!=null?' 0 g':'')+NL; }\nfunction RF(x,y,w,h,rgb){ return rgb+' rg '+f2(px(x))+' '+f2(py(y+h))+' '+f2(w*K)+' '+f2(h*K)+' re f 0 g'+NL; }\nfunction RS(x,y,w,h){ return f2(px(x))+' '+f2(py(y+h))+' '+f2(w*K)+' '+f2(h*K)+' re S'+NL; }\nfunction RFS(x,y,w,h,rgb){ return rgb+' rg '+f2(px(x))+' '+f2(py(y+h))+' '+f2(w*K)+' '+f2(h*K)+' re B 0 g'+NL; }\nvar LOGO=null;\nvar KIND={rams:'Risk Assessment and Method Statement',prestart:'Daily Pre-start',toolbox:'Toolbox Talk',meeting:'Team Meeting'}[p.doc]||'Document';\nvar SECT={rams:'12. Worker sign-on',prestart:'Crew sign-on',toolbox:'Crew sign-on',meeting:'Attendance sign-on'}[p.doc]||'Crew sign-on';\nvar INTRO='Each person below confirmed they have read and understood this document and will follow it.';\nvar IND=false;\nvar COLS=IND?[['#',7],['Name',32],['Company',29],['Type',26],['Signed',24],['Inducted by',27],['Signature',37]]:[['#',8],['Name',40],['Company',36],['Type',26],['Signed',28],['Signature',44]];\nvar RH=13, FIRST=Math.floor((281-53.5)/RH), NEXT=Math.floor((281-47.5)/RH);\nvar total=list.length<=FIRST?1:1+Math.ceil((list.length-FIRST)/NEXT), kids=[], idx=0;\nvar sub=meta.label+((p.doc==='rams'&&meta.rev!=='')?' rev '+meta.rev:'')+(meta.date?' | '+meta.date:'')+' | Job '+(meta.job||'-');\nfor(var pg=0;pg<total;pg++){\n var c='q 0 g 0 G'+NL, xo=[];\n if(LOGO){ var lh2=8.5, lw2=Math.min(44,lh2*LOGO.w/LOGO.h); c+='q '+f2(lw2*K)+' 0 0 '+f2(lh2*K)+' '+f2(px(14))+' '+f2(py(9+lh2))+' cm /CLogo Do Q'+NL; xo.push('/CLogo '+LOGO.obj+' 0 R'); }\n else c+=TX(14,15,13,true,'Chelmsford Building Services');\n c+=TX(196,14,12.5,true,KIND,null,'r');\n c+=TX(196,18.5,8,false,fitw(sub,120,8,false),'0.27','r');\n c+=RF(14,21.5,182,1.3,'0.957 0.475 0.125');\n var y=30;\n c+=RF(14,y,182,7.5,'0 0 0');\n c+='1 g'+NL+TX(17,y+5.2,10.5,true,SECT+(pg>0?' (continued)':''))+'0 g'+NL; y+=10;\n if(pg===0){ c+=TX(14,y+3.5,9,false,fitw(INTRO,182,9,false)); y+=6; }\n c+='0.71 w 0 G'+NL;\n var x=14; COLS.forEach(function(col){ c+=RFS(x,y,col[1],7.5,'0.992 0.878 0.8'); c+=TX(x+1.5,y+5,9,true,col[0]); x+=col[1]; }); y+=7.5;\n var cap=pg===0?FIRST:NEXT;\n for(var k=0;k<cap&&idx<list.length;k++,idx++){\n  var r=list[idx], vals=[String(idx+1), r.name, r.company||'', String(r.is_worker)==='Yes'?'Worker':(String(r.company||'').trim().toLowerCase()==='visitor'?'Visitor':'Subcontractor'), '', IND?(r.inducted_by||''):null, ''];\n  if(!IND) vals.splice(5,1);\n  x=14; COLS.forEach(function(col,ci){ c+=RS(x,y,col[1],RH); var hd=col[0];\n   if(hd==='Signed'){ var tt=nzTime(r.signed_at).split(' '); c+=TX(x+1.5,y+5,9,false,tt[0]||''); c+=TX(x+1.5,y+9.5,8,false,tt[1]||'','0.3'); }\n   else if(hd==='Signature'){ var im=IM[idx]; if(im){ var sc=Math.min((col[1]-3)/im.w,(RH-2)/im.h), iw=im.w*sc, ih=im.h*sc; c+='q '+f2(iw*K)+' 0 0 '+f2(ih*K)+' '+f2(px(x+1.5))+' '+f2(py(y+1+ih))+' cm /'+im.name+' Do Q'+NL; xo.push('/'+im.name+' '+im.obj+' 0 R'); } else c+=TX(x+1.5,y+7.5,8,false,'(no signature)','0.4'); }\n   else { var v=vals[ci]; c+=TX(x+1.5,y+7.5,9,hd==='Name',fitw(v,col[1]-3,9,hd==='Name')); }\n   x+=col[1]; });\n  y+=RH;\n }\n c+='0.85 w'+NL+f2(px(14))+' '+f2(py(287))+' m '+f2(px(196))+' '+f2(py(287))+' l S'+NL;\n c+=TX(14,291,7.8,false,fitw('Chelmsford Building Services | '+meta.label+' | '+KIND+' | Job '+(meta.job||'-'),130,7.8,false),'0.31');\n c+=TX(196,291,7.8,false,(IND?'Induction register':'Sign-on')+' page '+(pg+1)+' of '+total+' | updated '+nzTime(new Date().toISOString()),'0.31','r');\n c+='Q'+NL;\n var cs=res(); set(cs,B('<< /Length '+Buffer.byteLength(c,'latin1')+' >>'+NL+'stream'+NL+c+NL+'endstream'));\n var po=res(); set(po,B('<< /Type /Page /Parent '+pagesN+' 0 R /MediaBox ['+mb.join(' ')+'] /Resources << /ProcSet [/PDF /Text /ImageC /ImageB /ImageI] /Font << /EF1 '+f1+' 0 R /EF2 '+fb+' 0 R >>'+(xo.length?' /XObject << '+xo.filter(function(v,i,a){ return a.indexOf(v)===i; }).join(' ')+' >>':'')+' >> /Contents '+cs+' 0 R >>'));\n kids.push(po+' 0 R');\n}\nvar nd=dict.replace(/\\/Kids\\s*\\[[^\\]]*\\]/,'/Kids ['+oldKids+' '+kids.join(' ')+']').replace(/\\/Count\\s+\\d+/,'/Count '+(oldCount+kids.length));\nvar head=B(s+'%CBS-SIGNON'+NL), off=head.length, parts=[head];\nvar pOff=off; var pc=B(pagesN+' 0 obj'+NL+nd+NL+'endobj'+NL); parts.push(pc); off+=pc.length;\nvar xr=[]; objs.forEach(function(b,i){ xr.push(off); var ch=Buffer.concat([B((base+i)+' 0 obj'+NL),b,B(NL+'endobj'+NL)]); parts.push(ch); off+=ch.length; });\nfunction e(o){ return ('0000000000'+o).slice(-10)+' 00000 n '+NL; }\nvar newSize=base+objs.length;\nvar xs='xref'+NL+pagesN+' 1'+NL+e(pOff)+base+' '+objs.length+NL+xr.map(e).join('');\nparts.push(B(xs+'trailer'+NL+'<< /Size '+newSize+' /Root '+rootM[1]+' 0 R'+(infoM?' /Info '+infoM[1]:'')+' /Prev '+prev+' >>'+NL+'startxref'+NL+off+NL+'%%EOF'+NL));\nvar pdf=Buffer.concat(parts);\nout.stamped=true; out.pages=kids.length;\nreturn [{ json: out, binary: { data: await this.helpers.prepareBinaryData(pdf, out.filename, 'application/pdf') } }];\n"
+        }
+      },
+      {
+        "id": "f53009c9-3526-4db5-a4fa-3e5366daf589",
+        "name": "Stamped?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1344,
+          0
+        ],
+        "parameters": {
+          "conditions": {
+            "combinator": "and",
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.stamped }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ]
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "f7c59f34-e972-4db4-85a9-0a41e72fb431",
+        "name": "Replace PDF",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1568,
+          0
+        ],
+        "parameters": {
+          "method": "PUT",
+          "url": "={{ \"https://graph.microsoft.com/v1.0/drives/\" + $json.drive_id + \"/items/\" + $json.item_id + \"/content\" }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "sendBody": true,
+          "contentType": "binaryData",
+          "inputDataFieldName": "data",
+          "options": {}
+        }
+      },
+      {
+        "id": "3f74b2ae-6323-486d-a86d-8f374caf59bc",
+        "name": "Re-attach",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1792,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const o=$('Build').first().json;const H='https://old-hub.example/webhook/';\nlet r=null;if(o.job){try{r=await this.helpers.httpRequest({method:'POST',url:H+'cbs-sm8-attach',body:{job_no:o.job,item_id:o.item_id,name:o.filename,doc_key:o.doc_key,quiet:true},json:true,timeout:30000});}catch(e){r=String(e.message||e);}}\nreturn [{json:{ok:true,stamped:true,signatures:o.count,pages:o.pages,attached:!!o.job}}];"
+        }
+      },
+      {
+        "id": "39e1ce09-4453-46a2-babd-bdd338ff9cc3",
+        "name": "Register?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          560,
+          200
+        ],
+        "parameters": {
+          "conditions": {
+            "combinator": "and",
+            "conditions": [
+              {
+                "leftValue": "={{ $json.reg === true }}",
+                "operator": {
+                  "operation": "true",
+                  "singleValue": true,
+                  "type": "boolean"
+                },
+                "rightValue": ""
+              }
+            ],
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            }
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "7128c27e-8133-443f-8270-e02ab8ef81d4",
+        "name": "Build Register",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          780,
+          200
+        ],
+        "parameters": {
+          "jsCode": "function nzTime(v){ var s=String(v||''); var m=s.match(/^(\\d{4})-(\\d{2})-(\\d{2})[T ](\\d{2}):(\\d{2})(?!.*(Z|[+-]\\d{2}:?\\d{2})$)/); if(m) return m[3]+'/'+m[2]+'/'+m[1]+' '+m[4]+':'+m[5]; var d=new Date(v); if(!v||isNaN(d.getTime())) return s; try { return new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(d).replace(',',''); } catch (e) { return d.toISOString().slice(0,16).replace('T',' '); } }\nvar NL=String.fromCharCode(10), BS=String.fromCharCode(92);\nvar meta=$('Prep').first().json; var list=meta.list||[];\nvar PW=595.28, PH=841.89, X0=0, Y0=0, mb=[0,0,PW,PH], pagesN=2;\nfunction asc(t){ return String(t==null?'':t).normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^\\x20-\\x7E]/g,'').split(BS).join('/').replace(/[()]/g,function(c){ return BS+c; }); }\nfunction fit(t,w,size){ t=String(t==null?'':t); var max=Math.floor(w/(size*0.52)); return t.length>max?t.slice(0,Math.max(1,max-1))+'.':t; }\nfunction f2(n){ return (Math.round(n*100)/100).toString(); }\nfunction T(x,y,size,bold,t){ return 'BT /'+(bold?'EF2':'EF1')+' '+size+' Tf '+f2(X0+x)+' '+f2(Y0+y)+' Td ('+asc(t)+') Tj ET'+NL; }\nfunction L(x1,y1,x2,y2){ return f2(X0+x1)+' '+f2(Y0+y1)+' m '+f2(X0+x2)+' '+f2(Y0+y2)+' l S'+NL; }\nfunction jpg(buf){ var i=2; while(i+9<buf.length){ if(buf[i]!==255){ i++; continue; } var m=buf[i+1]; if(m===216||m===1||m===255||(m>=208&&m<=215)){ i+=(m===255?1:2); continue; } if(m>=192&&m<=207&&m!==196&&m!==200&&m!==204){ return { h: buf.readUInt16BE(i+5), w: buf.readUInt16BE(i+7), c: buf[i+9] }; } i+=2+buf.readUInt16BE(i+2); } return null; }\nvar B=function(t){ return Buffer.from(t,'latin1'); };\nvar base=3, objs=[]; function res(){ objs.push(null); return base+objs.length-1; } function set(n,b){ objs[n-base]=b; }\nvar f1=res(), fb=res();\nset(f1,B('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>'));\nset(fb,B('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>'));\nvar IM={};\nlist.forEach(function(r,i){ var t=String(r.signature||''); var k=t.indexOf('base64,'); if(k<0) return; var buf=Buffer.from(t.slice(k+7),'base64'); var inf=jpg(buf); if(!inf||inf.c===4) return; var n=res(); set(n,Buffer.concat([B('<< /Type /XObject /Subtype /Image /Width '+inf.w+' /Height '+inf.h+' /ColorSpace /'+(inf.c===1?'DeviceGray':'DeviceRGB')+' /BitsPerComponent 8 /Filter /DCTDecode /Length '+buf.length+' >>'+NL+'stream'+NL),buf,B(NL+'endstream')])); IM[i]={ name:'ESig'+i, obj:n, w:inf.w, h:inf.h }; });\nvar K=72/25.4; function px(x){ return X0+x*K; } function py(y){ return Y0+PH-y*K; }\nvar WB={32:278,33:333,34:474,35:556,36:556,37:889,38:722,39:238,40:333,41:333,42:389,43:584,44:278,45:333,46:278,47:278,58:333,59:333,60:584,61:584,62:584,63:611,64:975,65:722,66:722,67:722,68:722,69:667,70:611,71:778,72:722,73:278,74:556,75:722,76:611,77:833,78:722,79:778,80:667,81:778,82:722,83:667,84:611,85:722,86:667,87:944,88:667,89:667,90:611,91:333,92:278,93:333,94:584,95:556,96:333,97:556,98:611,99:556,100:611,101:556,102:333,103:611,104:611,105:278,106:278,107:556,108:278,109:889,110:611,111:611,112:611,113:611,114:389,115:556,116:333,117:611,118:556,119:778,120:556,121:556,122:500,123:389,124:280,125:389,126:584};\nvar WR={32:278,33:278,34:355,35:556,36:556,37:889,38:667,39:191,40:333,41:333,42:389,43:584,44:278,45:333,46:278,47:278,58:278,59:278,60:584,61:584,62:584,63:556,64:1015,65:667,66:667,67:722,68:722,69:667,70:611,71:778,72:722,73:278,74:500,75:667,76:556,77:833,78:722,79:778,80:667,81:778,82:722,83:667,84:611,85:722,86:667,87:944,88:667,89:667,90:611,91:278,92:278,93:278,94:469,95:556,96:333,97:556,98:556,99:500,100:556,101:556,102:278,103:556,104:556,105:222,106:222,107:500,108:222,109:833,110:556,111:556,112:556,113:556,114:333,115:500,116:278,117:556,118:500,119:722,120:500,121:500,122:500,123:334,124:260,125:334,126:584};\nfunction clean(t){ return String(t==null?'':t).normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^\\x20-\\x7E]/g,''); }\nfunction tw(t,size,bold){ var s=clean(t),w=0,T=bold?WB:WR; for(var i=0;i<s.length;i++){ var c=s.charCodeAt(i); w+=(c>=48&&c<=57)?556:(T[c]||556); } return w*size/1000/K; }\nfunction fitw(t,wmm,size,bold){ var s=clean(t); if(tw(s,size,bold)<=wmm) return s; while(s.length>1&&tw(s+'...',size,bold)>wmm) s=s.slice(0,-1); return s+'...'; }\nfunction esc2(t){ return clean(t).split(BS).join('/').replace(/[()]/g,function(c){ return BS+c; }); }\nfunction TX(x,y,size,bold,t,gray,align){ var s=clean(t); var xx=align==='r'?x-tw(s,size,bold):x; return (gray!=null?gray+' g ':'')+'BT /'+(bold?'EF2':'EF1')+' '+size+' Tf '+f2(px(xx))+' '+f2(py(y))+' Td ('+esc2(s)+') Tj ET'+(gray!=null?' 0 g':'')+NL; }\nfunction RF(x,y,w,h,rgb){ return rgb+' rg '+f2(px(x))+' '+f2(py(y+h))+' '+f2(w*K)+' '+f2(h*K)+' re f 0 g'+NL; }\nfunction RS(x,y,w,h){ return f2(px(x))+' '+f2(py(y+h))+' '+f2(w*K)+' '+f2(h*K)+' re S'+NL; }\nfunction RFS(x,y,w,h,rgb){ return rgb+' rg '+f2(px(x))+' '+f2(py(y+h))+' '+f2(w*K)+' '+f2(h*K)+' re B 0 g'+NL; }\nvar KIND='Site Induction Register';\nvar SECT='Site induction register';\nvar INTRO='Each person below has completed the site induction for this site and agreed to follow the construction phase plan.';\nvar COLS=[['#',7],['Name',32],['Company',29],['Type',26],['Signed',24],['Inducted by',27],['Signature',37]];\nvar RH=13, FIRST=Math.floor((281-60)/RH), NEXT=Math.floor((281-47.5)/RH);\nvar total=list.length<=FIRST?1:1+Math.ceil((list.length-FIRST)/NEXT), kids=[], idx=0;\nvar sub=meta.label+(meta.rev!==''?' rev '+meta.rev:'')+(meta.date?' | '+meta.date:'')+' | Job '+(meta.job||'-');\nfor(var pg=0;pg<total;pg++){\n var c='q 0 g 0 G'+NL, xo=[];\n c+=TX(14,15,13,true,'Chelmsford Building Services');\n c+=TX(196,14,12.5,true,KIND,null,'r');\n c+=TX(196,18.5,8,false,fitw(sub,120,8,false),'0.27','r');\n c+=RF(14,21.5,182,1.3,'0.957 0.475 0.125');\n var y=30;\n c+=RF(14,y,182,7.5,'0 0 0');\n c+='1 g'+NL+TX(17,y+5.2,10.5,true,SECT+(pg>0?' (continued)':''))+'0 g'+NL; y+=10;\n if(pg===0){ if(meta.title){ c+=TX(14,y+3.5,9,true,fitw(meta.title,182,9,true)); y+=5.5; } c+=TX(14,y+3.5,9,false,fitw(INTRO,182,9,false)); y+=6; }\n c+='0.71 w 0 G'+NL;\n var x=14; COLS.forEach(function(col){ c+=RFS(x,y,col[1],7.5,'0.992 0.878 0.8'); c+=TX(x+1.5,y+5,9,true,col[0]); x+=col[1]; }); y+=7.5;\n if(!list.length){ c+=RS(14,y,182,RH); c+=TX(17,y+7.5,9,false,'No inductions recorded yet.','0.4'); y+=RH; }\n var cap=pg===0?FIRST:NEXT;\n for(var k=0;k<cap&&idx<list.length;k++,idx++){\n  var r=list[idx], vals=[String(idx+1), r.name, r.company||'', String(r.is_worker)==='Yes'?'Worker':(String(r.company||'').trim().toLowerCase()==='visitor'?'Visitor':'Subcontractor'), '', r.inducted_by||'', ''];\n  x=14; COLS.forEach(function(col,ci){ c+=RS(x,y,col[1],RH); var hd=col[0];\n   if(hd==='Signed'){ var tt=nzTime(r.signed_at).split(' '); c+=TX(x+1.5,y+5,9,false,tt[0]||''); c+=TX(x+1.5,y+9.5,8,false,tt[1]||'','0.3'); }\n   else if(hd==='Signature'){ var im=IM[idx]; if(im){ var sc=Math.min((col[1]-3)/im.w,(RH-2)/im.h), iw=im.w*sc, ih=im.h*sc; c+='q '+f2(iw*K)+' 0 0 '+f2(ih*K)+' '+f2(px(x+1.5))+' '+f2(py(y+1+ih))+' cm /'+im.name+' Do Q'+NL; xo.push('/'+im.name+' '+im.obj+' 0 R'); } else c+=TX(x+1.5,y+7.5,8,false,'(no signature)','0.4'); }\n   else { var v=vals[ci]; c+=TX(x+1.5,y+7.5,9,hd==='Name',fitw(v,col[1]-3,9,hd==='Name')); }\n   x+=col[1]; });\n  y+=RH;\n }\n c+='0.85 w'+NL+f2(px(14))+' '+f2(py(287))+' m '+f2(px(196))+' '+f2(py(287))+' l S'+NL;\n c+=TX(14,291,7.8,false,fitw('Chelmsford Building Services | '+meta.label+' | '+KIND+' | Job '+(meta.job||'-'),130,7.8,false),'0.31');\n c+=TX(196,291,7.8,false,'Page '+(pg+1)+' of '+total+' | updated '+nzTime(new Date().toISOString()),'0.31','r');\n c+='Q'+NL;\n var cs=res(); set(cs,B('<< /Length '+Buffer.byteLength(c,'latin1')+' >>'+NL+'stream'+NL+c+NL+'endstream'));\n var po=res(); set(po,B('<< /Type /Page /Parent 2 0 R /MediaBox ['+mb.join(' ')+'] /Resources << /ProcSet [/PDF /Text /ImageC /ImageB /ImageI] /Font << /EF1 '+f1+' 0 R /EF2 '+fb+' 0 R >>'+(xo.length?' /XObject << '+xo.filter(function(v,i,a){ return a.indexOf(v)===i; }).join(' ')+' >>':'')+' >> /Contents '+cs+' 0 R >>'));\n kids.push(po+' 0 R');\n}\nvar all=[B('<< /Type /Catalog /Pages 2 0 R >>'),B('<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+kids.length+' >>')].concat(objs);\nvar parts=[B('%PDF-1.4'+NL)], off=parts[0].length, xr=[];\nall.forEach(function(b,i){ xr.push(off); var ch=Buffer.concat([B((i+1)+' 0 obj'+NL),b,B(NL+'endobj'+NL)]); parts.push(ch); off+=ch.length; });\nfunction e(o){ return ('0000000000'+o).slice(-10)+' 00000 n '+NL; }\nparts.push(B('xref'+NL+'0 '+(all.length+1)+NL+'0000000000 65535 f '+NL+xr.map(e).join('')+'trailer'+NL+'<< /Size '+(all.length+1)+' /Root 1 0 R >>'+NL+'startxref'+NL+off+NL+'%%EOF'+NL));\nvar pdf=Buffer.concat(parts);\nvar fn=[meta.dated_iso,meta.job,meta.label,'Site Induction Register'].map(function(v){ return String(v||'').replace(/[\\\\/:*?\"<>|#%]+/g,' ').trim(); }).filter(Boolean).join(' - ')+'.pdf';\nreturn [{ json: { cphsp_id:meta.id, job:meta.job, filename:fn, folder:'CBS%20System/H%26S/Construction%20Phase%20Plans/Induction%20Registers', doc_key:'Induction register #'+meta.id, count:list.length }, binary: { data: await this.helpers.prepareBinaryData(pdf, fn, 'application/pdf') } }];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "360ff6d1-1bc2-44e8-b4d3-590dcfa9b46b",
+        "name": "Upload Register",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1000,
+          200
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "contentType": "binaryData",
+          "inputDataFieldName": "data",
+          "method": "PUT",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {},
+          "sendBody": true,
+          "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.folder }}/{{ encodeURIComponent($json.filename) }}:/content?@microsoft.graph.conflictBehavior=replace"
+        }
+      },
+      {
+        "id": "4f32c886-9063-4142-98a2-ff22057b86db",
+        "name": "Register Done",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1220,
+          200
+        ],
+        "parameters": {
+          "jsCode": "const o=$('Build Register').first().json;const up=$input.first().json||{};const H='https://old-hub.example/webhook/';\nif(up.id&&o.job){try{await this.helpers.httpRequest({method:'POST',url:H+'cbs-sm8-attach',body:{job_no:o.job,item_id:up.id,name:o.filename,doc_key:o.doc_key,quiet:true},json:true,timeout:30000});}catch(e){}}\nreturn [{json:{cphsp_id:Number(o.cphsp_id),register_pdf_url:String(up.webUrl||''),inductions:o.count}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "8673c41a-5957-4ded-a130-7bd97c67fb8e",
+        "name": "Save Register URL",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1440,
+          200
+        ],
+        "parameters": {
+          "columns": {
+            "mappingMode": "defineBelow",
+            "matchingColumns": [],
+            "schema": [
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "register_pdf_url",
+                "id": "register_pdf_url",
+                "required": false,
+                "type": "string"
+              }
+            ],
+            "value": {
+              "register_pdf_url": "={{ $json.register_pdf_url }}"
+            }
+          },
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "VrPaSgrY1W6zm3HN"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "id",
+                "keyValue": "={{ $json.cphsp_id }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "update",
+          "options": {},
+          "resource": "row"
+        }
+      }
+    ],
+    "connections": {
+      "Restamp Hook": {
+        "main": [
+          [
+            {
+              "node": "Get Signons",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Signons": {
+        "main": [
+          [
+            {
+              "node": "Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Item Meta": {
+        "main": [
+          [
+            {
+              "node": "Get PDF",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get PDF": {
+        "main": [
+          [
+            {
+              "node": "Build",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Build": {
+        "main": [
+          [
+            {
+              "node": "Stamped?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Stamped?": {
+        "main": [
+          [
+            {
+              "node": "Replace PDF",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Replace PDF": {
+        "main": [
+          [
+            {
+              "node": "Re-attach",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Prep": {
+        "main": [
+          [
+            {
+              "node": "Register?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Register?": {
+        "main": [
+          [
+            {
+              "node": "Build Register",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Item Meta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Build Register": {
+        "main": [
+          [
+            {
+              "node": "Upload Register",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upload Register": {
+        "main": [
+          [
+            {
+              "node": "Register Done",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Register Done": {
+        "main": [
+          [
+            {
+              "node": "Save Register URL",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "POST cbs-sign-restamp {doc,id}: appends the crew sign-on pages (with signatures) to the document PDF in SharePoint and re-attaches it to the ServiceM8 job. Called after every sign-on and every RAMS/pre-start/toolbox save.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

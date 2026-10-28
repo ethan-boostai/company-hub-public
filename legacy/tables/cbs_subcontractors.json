@@ -1,0 +1,121 @@
+{
+  "table": "cbs_subcontractors",
+  "n8n_id": "ibSO7Sf8VzGU4jsS",
+  "columns": [
+    {
+      "name": "approved",
+      "type": "boolean"
+    },
+    {
+      "name": "company",
+      "type": "string"
+    },
+    {
+      "name": "contact",
+      "type": "string"
+    },
+    {
+      "name": "email",
+      "type": "string"
+    },
+    {
+      "name": "inducted",
+      "type": "boolean"
+    },
+    {
+      "name": "insurance_expiry",
+      "type": "string"
+    },
+    {
+      "name": "job",
+      "type": "string"
+    },
+    {
+      "name": "licence_expiry",
+      "type": "string"
+    },
+    {
+      "name": "licence_no",
+      "type": "string"
+    },
+    {
+      "name": "licence_type",
+      "type": "string"
+    },
+    {
+      "name": "mobile",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "trade",
+      "type": "string"
+    },
+    {
+      "name": "type",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "company": "ZZ Barriers",
+      "trade": "Safety barriers",
+      "job": "",
+      "contact": "ZZ Contact P",
+      "mobile": "0117 496 0007",
+      "email": "contact7@example.com",
+      "insurance_expiry": "",
+      "licence_type": "",
+      "licence_no": "",
+      "licence_expiry": "",
+      "inducted": false,
+      "approved": false,
+      "notes": "Imported from supplier list - compliance docs outstanding",
+      "type": "Subcontractor",
+      "id": 1,
+      "createdAt": "2026-10-06T08:51:45.113Z",
+      "updatedAt": "2026-10-06T15:50:53.989Z"
+    },
+    {
+      "company": "ZZ Security Ltd",
+      "trade": "Security systems",
+      "job": "",
+      "contact": "",
+      "mobile": "0117 496 0008",
+      "email": "contact8@example.com",
+      "insurance_expiry": "",
+      "licence_type": "",
+      "licence_no": "",
+      "licence_expiry": "",
+      "inducted": false,
+      "approved": false,
+      "notes": "Imported from supplier list - compliance docs outstanding",
+      "type": "Subcontractor",
+      "id": 2,
+      "createdAt": "2026-10-06T08:51:45.113Z",
+      "updatedAt": "2026-10-06T15:50:54.021Z"
+    },
+    {
+      "company": "ZZ Concrete Pumps Ltd",
+      "trade": "Concrete pumping",
+      "job": "",
+      "contact": "",
+      "mobile": "0117 496 0009",
+      "email": "contact9@example.com",
+      "insurance_expiry": "",
+      "licence_type": "",
+      "licence_no": "",
+      "licence_expiry": "",
+      "inducted": false,
+      "approved": false,
+      "notes": "Imported from supplier list - compliance docs outstanding",
+      "type": "Subcontractor",
+      "id": 3,
+      "createdAt": "2026-10-06T08:51:45.113Z",
+      "updatedAt": "2026-10-06T15:50:54.054Z"
+    }
+  ]
+}

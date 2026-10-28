@@ -1,0 +1,58 @@
+{
+  "table": "cbs_tb_topics",
+  "n8n_id": "n09BRWLCB3wFEi5e",
+  "columns": [
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "points",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "title",
+      "type": "string"
+    },
+    {
+      "name": "topic_key",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "topic_key": "abrasive",
+      "title": "Abrasive wheels and cut-off saws",
+      "points": "Only trained and authorised people may fit or change abrasive wheels and discs.\nCheck the disc is right for the tool and the material, undamaged and in date, and that its maximum speed is higher than the tool’s speed.\nUse reinforced discs only on handheld machines. Set the guard to expose as little of the disc as possible.\nDon’t force the disc, and never grind with the side of a cutting disc.\nWear eye, hearing and respiratory protection. Use water suppression or extraction when cutting masonry or concrete.\nWatch where the sparks go. Protect other people and combustibles, and work under a hot works permit where required.\nIsolate the tool before changing a disc, and never put it down while the disc is still spinning.\nAsk the team: what checks do you make before fitting a new disc?",
+      "status": "Active",
+      "notes": "",
+      "id": 1,
+      "createdAt": "2026-10-24T13:59:47.710Z",
+      "updatedAt": "2026-10-24T13:59:47.710Z"
+    },
+    {
+      "topic_key": "accidents",
+      "title": "Accident prevention",
+      "points": "Most accidents come from people not thinking, cutting corners or ignoring their instructions and training.\nNever remove guards, barriers or signs, and never use faulty equipment or make improvised repairs.\nOnly use plant, machines and products you are trained and authorised for. Check the CoSHH assessment before using any product.\nKeep the work area tidy: no tools left where they can fall, no trailing leads, clean up as you go.\nNever point compressed air at yourself or anyone else, and no horseplay on site.\nIf you see something unsafe, stop and report it to the site manager. Make it safe if you can do so without risk.\nAn injury can cost you your income, your hobbies and time with your family. Think about who relies on you.\nAsk the team: what would you do if you saw an unsafe condition on this job?",
+      "status": "Active",
+      "notes": "",
+      "id": 2,
+      "createdAt": "2026-10-24T13:59:47.881Z",
+      "updatedAt": "2026-10-24T13:59:47.881Z"
+    },
+    {
+      "topic_key": "drugs",
+      "title": "Alcohol, drugs and medication",
+      "points": "Alcohol and drugs slow your reactions and affect judgement, balance and vision. On site that gets people hurt.\nNobody works under the influence. Anyone unfit for work will be stood down, and CBS policy may lead to disciplinary action.\nAlcohol takes time to leave your body, roughly one unit an hour. A heavy night can leave you unfit to work or over the drink-drive limit the next morning.\nSome prescription and over-the-counter medicines cause drowsiness. Tell your supervisor if you are taking anything that could affect you.\nIf you are worried about a workmate, tell the site manager. It could save their life.\nIf you have a problem, talk to us. Confidential help is available, for example FRANK on 0300 123 6600. We would rather help than lose you.\nAsk the team: what would you do if a workmate turned up unfit for work?",
+      "status": "Active",
+      "notes": "",
+      "id": 3,
+      "createdAt": "2026-10-24T13:59:48.020Z",
+      "updatedAt": "2026-10-24T13:59:48.020Z"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "table": "cbs_job_costs",
+  "n8n_id": "Zex3Tm0OF5XNFWiB",
+  "columns": [
+    {
+      "name": "category",
+      "type": "string"
+    },
+    {
+      "name": "cost_date",
+      "type": "string"
+    },
+    {
+      "name": "created_at",
+      "type": "string"
+    },
+    {
+      "name": "created_by",
+      "type": "string"
+    },
+    {
+      "name": "description",
+      "type": "string"
+    },
+    {
+      "name": "file_url",
+      "type": "string"
+    },
+    {
+      "name": "gross",
+      "type": "number"
+    },
+    {
+      "name": "history",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "net",
+      "type": "number"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "po_no",
+      "type": "string"
+    },
+    {
+      "name": "qbo_id",
+      "type": "string"
+    },
+    {
+      "name": "ref",
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "type": "string"
+    },
+    {
+      "name": "supplier",
+      "type": "string"
+    },
+    {
+      "name": "vat",
+      "type": "number"
+    }
+  ],
+  "sample_rows": [],
+  "note": "no rows in table (backend list returned empty 2026-10-28)"
+}

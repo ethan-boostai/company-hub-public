@@ -1,0 +1,47 @@
+{
+  "table": "cbs_time_off",
+  "n8n_id": "1XLRtGEOAZq22Abq",
+  "columns": [
+    {
+      "name": "days",
+      "type": "string"
+    },
+    {
+      "name": "from_date",
+      "type": "string"
+    },
+    {
+      "name": "kind",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "part_day",
+      "type": "string"
+    },
+    {
+      "name": "requested_at",
+      "type": "string"
+    },
+    {
+      "name": "response",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "to_date",
+      "type": "string"
+    },
+    {
+      "name": "worker",
+      "type": "string"
+    }
+  ],
+  "sample_rows": []
+}

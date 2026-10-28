@@ -1,0 +1,177 @@
+{
+  "table": "cbs_surveys",
+  "n8n_id": "B0EZyoMvE4g9W20E",
+  "columns": [
+    {
+      "name": "area_count",
+      "type": "number"
+    },
+    {
+      "name": "areas_json",
+      "type": "string"
+    },
+    {
+      "name": "change_summary",
+      "type": "string"
+    },
+    {
+      "name": "client",
+      "type": "string"
+    },
+    {
+      "name": "conditions",
+      "type": "string"
+    },
+    {
+      "name": "contact_email",
+      "type": "string"
+    },
+    {
+      "name": "contact_phone",
+      "type": "string"
+    },
+    {
+      "name": "file_name",
+      "type": "string"
+    },
+    {
+      "name": "item_id",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "photo_count",
+      "type": "number"
+    },
+    {
+      "name": "raised_by",
+      "type": "string"
+    },
+    {
+      "name": "site",
+      "type": "string"
+    },
+    {
+      "name": "site_address",
+      "type": "string"
+    },
+    {
+      "name": "sm8_status",
+      "type": "string"
+    },
+    {
+      "name": "state_json",
+      "type": "string"
+    },
+    {
+      "name": "submitted_at",
+      "type": "string"
+    },
+    {
+      "name": "survey_date",
+      "type": "string"
+    },
+    {
+      "name": "survey_ref",
+      "type": "string"
+    },
+    {
+      "name": "surveyor",
+      "type": "string"
+    },
+    {
+      "name": "version",
+      "type": "number"
+    }
+  ],
+  "sample_rows": [
+    {
+      "survey_date": "2026-10-19",
+      "site": "ZZ Client A - Site 2",
+      "job_no": "10016",
+      "raised_by": "ZZ Client Contact D",
+      "surveyor": "ZZ Person B",
+      "conditions": "Site Open from 8am - 5pm weekdays only.",
+      "areas_json": "[{\"name\":\"External - Carpark\",\"scope\":\"To refresh majority of the carpark line marking. Mixture of thermo and painted line marking. Recommend scrabbling off existing line marking where alterations are taking place or where there is thermo. \\n3 visitors bays being changed to disabled bays. \\nExisting 2 no. disabled bays being removed and the space being used for a bike shelter. \\n> Addition Work - Supply and install new bike shelter.\",\"remedial\":\"\",\"photos\":1}]",
+      "area_count": 1,
+      "photo_count": 1,
+      "file_name": "CBS survey - Job 10016 - ZZ Client A - Site 2 - 2026-10-19 0957.pdf",
+      "pdf_url": "https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-5.pdf",
+      "item_id": "01ZZZZZZ000000000000000000000000H1",
+      "sm8_status": "Sent to ServiceM8",
+      "submitted_at": "2026-10-19T09:57",
+      "client": null,
+      "site_address": null,
+      "contact_phone": null,
+      "contact_email": null,
+      "survey_ref": null,
+      "version": null,
+      "state_json": null,
+      "change_summary": null,
+      "id": 1,
+      "createdAt": "2026-10-19T08:57:37.690Z",
+      "updatedAt": "2026-10-21T09:41:48.813Z"
+    },
+    {
+      "survey_date": "2026-10-22",
+      "site": "ZZ Client B - Site 1",
+      "job_no": "10269",
+      "raised_by": "ZZ Client Contact E",
+      "surveyor": "ZZ Person A",
+      "conditions": "Production Area - Dust Screen Required",
+      "areas_json": "[{\"name\":\"Dispatch\",\"scope\":\"To create a 2m (h)x 2m (w) opening into dispatch 300mm double skin wall. The purpose for the opening is a pedestrian walk through with trolleys. We will need to include a Hygenic dust screen to control dusts. Reveals to be finished in stainless steel channels. Including 4no flexible bolt down posts. To protect the walls either side\",\"remedial\":\"\",\"photos\":3}]",
+      "area_count": 1,
+      "photo_count": 3,
+      "file_name": "CBS survey - Job 10269 - ZZ Client B - Site 1 - 2026-10-22 0826.pdf",
+      "pdf_url": "https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-31.pdf",
+      "item_id": "01ZZZZZZ000000000000000000000000H4",
+      "sm8_status": "Sent to ServiceM8",
+      "submitted_at": "2026-10-22T08:26",
+      "client": "ZZ Client B - Site 1",
+      "site_address": "Sample Lane, Sampletown H, Kent, ZZ99 5ZZ",
+      "contact_phone": "",
+      "contact_email": "",
+      "survey_ref": null,
+      "version": null,
+      "state_json": null,
+      "change_summary": null,
+      "id": 2,
+      "createdAt": "2026-10-22T07:26:07.057Z",
+      "updatedAt": "2026-10-22T07:26:07.057Z"
+    },
+    {
+      "survey_date": "2026-10-22",
+      "site": "ZZ Client B - Site 1",
+      "job_no": "10269",
+      "raised_by": "ZZ Client Contact E",
+      "surveyor": "ZZ Person A",
+      "conditions": "Production Area - Dust Screen Required",
+      "areas_json": "[{\"name\":\"Dispatch\",\"scope\":\"To create a 3m (h)x 2.5m (w) opening into dispatch 300mm double skin wall. The purpose for the opening is a pedestrian walk through with trolleys. We will need to include a Hygenic dust screen to control dusts. Reveals to be finished in stainless steel channels. Including 4no flexible bolt down posts. To protect the walls either side\",\"remedial\":\"\",\"photos\":3}]",
+      "area_count": 1,
+      "photo_count": 3,
+      "file_name": "CBS survey - Job 10269 - ZZ Client B - Site 1 - 2026-10-22 - v2 0919.pdf",
+      "pdf_url": "https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-32.pdf",
+      "item_id": "01ZZZZZZ000000000000000000000000H5",
+      "sm8_status": "Sent to ServiceM8",
+      "submitted_at": "2026-10-22T09:19",
+      "client": "ZZ Client B - Site 1",
+      "site_address": "Sample Lane, Sampletown H, Kent, ZZ99 5ZZ",
+      "contact_phone": "",
+      "contact_email": "",
+      "survey_ref": "2",
+      "version": 2,
+      "state_json": "{\"v\":1,\"sk\":\"2026-10-22-md34q\",\"seq\":0,\"job\":\"10269\",\"client\":\"ZZ Client B - Site 1\",\"addr\":\"Sample Lane, Sampletown H, Kent, ZZ99 5ZZ\",\"phone\":\"\",\"email\":\"\",\"raised\":\"ZZ Client Contact E\",\"surveyor\":\"ZZ Person A\",\"date\":\"2026-10-22\",\"conditions\":\"Production Area - Dust Screen Required\",\"areas\":[{\"name\":\"Dispatch\",\"scope\":\"To create a 3m (h)x 2.5m (w) opening into dispatch 300mm double skin wall. The purpose for the opening is a pedestrian walk through with trolleys. We will need to include a Hygenic dust screen to control dusts. Reveals to be finished in stainless steel channels. Including 4no flexible bolt down posts. To protect the walls either side\",\"remedial\":\"\",\"photos\":[{\"n\":\"Survey 2026-10-22 - Area 1 Dispatch - photo 1.jpg\",\"f\":\"CBS System/Operations/Jobs/Job 10269/Site Surveys/Photos\",\"w\":1200,\"h\":1600},{\"n\":\"Survey 2026-10-22 - Area 1 Dispatch - photo 2.jpg\",\"f\":\"CBS System/Operations/Jobs/Job 10269/Site Surveys/Photos\",\"w\":1200,\"h\":1600},{\"n\":\"Survey 2026-10-22 - Area 1 Dispatch - photo 3.jpg\",\"f\":\"CBS System/Operations/Jobs/Job 10269/Site Surveys/Photos\",\"w\":1600,\"h\":1200}]}]}",
+      "change_summary": "1 area updated",
+      "id": 3,
+      "createdAt": "2026-10-22T08:19:06.426Z",
+      "updatedAt": "2026-10-22T08:19:06.426Z"
+    }
+  ]
+}

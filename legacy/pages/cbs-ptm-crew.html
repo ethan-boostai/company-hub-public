@@ -1,0 +1,236 @@
+<!--cbs-baked--><!doctype html><html lang="en-GB"><head><script id="cbsDl">(function(){if(window.__cbsDl)return;window.__cbsDl=1;
+var ua=navigator.userAgent||'',fr=false;try{fr=window.top!==window.self;}catch(e){fr=true;}
+var ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+var wv=(ios&&ua.indexOf('Safari/')<0)||ua.indexOf('; wv)')>-1||/ServiceM8/i.test(ua);
+window.__cbsDlPost=fr||wv;
+var oc=HTMLAnchorElement.prototype.click,od=HTMLAnchorElement.prototype.dispatchEvent;
+function want(a){if(!window.__cbsDlPost||!a||!a.download)return false;var h=String(a.href||'');return (h.indexOf('blob:')===0||h.indexOf('data:application/pdf')===0)&&(/[.]pdf$/i.test(a.download)||h.indexOf('data:application/pdf')===0);}
+function b64(href){return fetch(href).then(function(r){return r.blob();}).then(function(b){return new Promise(function(res,rej){var f=new FileReader();f.onload=function(){res(String(f.result).split(',')[1]);};f.onerror=rej;f.readAsDataURL(b);});});}
+function css(){if(document.getElementById('cbsDlCss'))return;var s=document.createElement('style');s.id='cbsDlCss';s.textContent='#cbsDlOv{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px;font-family:inherit}#cbsDlOv .bx{background:#fff;border-radius:12px;padding:20px;max-width:360px;width:100%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.25)}#cbsDlOv b{display:block;font-size:18px;margin-bottom:6px}#cbsDlOv p{margin:0 0 14px;color:#555;font-size:14px;word-break:break-word}#cbsDlOv button{display:block;width:100%;border:0;border-radius:8px;padding:13px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;margin-top:8px}#cbsDlGo{background:#F47920;color:#fff}#cbsDlX{background:#eef0f2;color:#1f2328}';document.head.appendChild(s);}
+function show(name,data){css();var o=document.getElementById('cbsDlOv');if(o)o.remove();o=document.createElement('div');o.id='cbsDlOv';
+ var bx=document.createElement('div');bx.className='bx';var t=document.createElement('b');t.textContent='Your PDF is ready';var p=document.createElement('p');p.textContent=name;
+ var f=document.createElement('form');f.method='POST';f.action='/webhook/cbs-pdf-out';f.target='_blank';f.style.margin='0';
+ [['name',name],['data',data]].forEach(function(x){var i=document.createElement('input');i.type='hidden';i.name=x[0];i.value=x[1];f.appendChild(i);});
+ var g=document.createElement('button');g.type='submit';g.id='cbsDlGo';g.textContent='Open PDF';f.appendChild(g);
+ var x=document.createElement('button');x.type='button';x.id='cbsDlX';x.textContent='Close';x.onclick=function(){o.remove();};
+ f.onsubmit=function(){setTimeout(function(){o.remove();},1500);};
+ bx.appendChild(t);bx.appendChild(p);bx.appendChild(f);bx.appendChild(x);o.appendChild(bx);document.body.appendChild(o);}
+function go(a){var n=a.download||'document.pdf';b64(a.href).then(function(d){show(n,d);})['catch'](function(){try{window.open(a.href,'_blank');}catch(e){}});}
+HTMLAnchorElement.prototype.click=function(){if(want(this)){go(this);return;}return oc.apply(this,arguments);};
+HTMLAnchorElement.prototype.dispatchEvent=function(e){if(e&&e.type==='click'&&want(this)){go(this);return true;}return od.apply(this,arguments);};
+})();</script><script id="cbsSp">(function(){if(window.__cbsSP)return;window.__cbsSP=1;var R=/^https:\/\/chelmsfordbuildingservices(-my)?\.sharepoint\.com\//i;function px(u){u=String(u||"");return R.test(u)?"/webhook/cbs-file?u="+encodeURIComponent(u):u;}window.__cbsPx=px;document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(!a)return;var h=a.getAttribute("href"),v=px(h);if(v!==h){a.setAttribute("href",v);a.setAttribute("target","_blank");a.setAttribute("rel","noopener");}},true);var wo=window.open;window.open=function(u){var a=[].slice.call(arguments);a[0]=px(u);return wo.apply(window,a);};})();</script><script id="cbsSaveGuard">(function(){if(window.__cbsSG)return;window.__cbsSG=1;var F=window.fetch.bind(window),P={},R={},IDS={};
+function isSave(u){return /\/webhook\/cbs-[a-z0-9-]*(save|record|upload|receive|loaded|pdf)(\?|$)/.test(u)&&!/[?&]a=del/.test(u);}
+function isDoc(u){return /\/webhook\/cbs-[a-z0-9-]*-save(\?|$)/.test(u)&&!/cbs-admin-save/.test(u);}
+window.fetch=function(u,o){o=o||{};var url=String(u&&u.url||u),m=String(o.method||'GET').toUpperCase();
+ if(m!=='POST'||!isSave(url))return F(u,o);
+ var body=o.body,key=url.split('?')[0]+location.pathname;
+ if(isDoc(url)&&typeof body==='string'&&IDS[key]){try{var j=JSON.parse(body);if(!Number(j.id)){j.id=IDS[key];body=JSON.stringify(j);o=Object.assign({},o,{body:body});}}catch(e){}}
+ var k=url+'|'+(typeof body==='string'?body:Math.random());
+ if(P[k])return P[k].then(function(r){return r.clone();});
+ if(R[k]&&Date.now()-R[k].t<15000)return Promise.resolve(R[k].r.clone());
+ var p=F(u,o).then(function(r){var c=r.clone();R[k]={t:Date.now(),r:r.clone()};delete P[k];
+   if(isDoc(url)&&r.ok)c.json().then(function(d){if(d&&Number(d.id))IDS[key]=Number(d.id);}).catch(function(){});return r;},
+  function(e){delete P[k];throw e;});
+ P[k]=p.then(function(r){return r.clone();});return p;};
+document.addEventListener('click',function(e){var b=e.target&&e.target.closest&&e.target.closest('button');if(!b||!/save|submit|issue/i.test(b.textContent||''))return;if(b.__cbsLock){e.stopImmediatePropagation();e.preventDefault();return;}b.__cbsLock=1;setTimeout(function(){b.__cbsLock=0;},1500);},true);
+})();</script><script id="cbsRoute">(function(){if(window.__cbsRT)return;window.__cbsRT=1;var M={"swms-save":"cbs-rams-save","sssp-save":"cbs-cphsp-save","swms-builder":"cbs-rams-builder","sssp-builder":"cbs-cphsp-builder","embr-builder-kit":"cbs-builder-kit","site-form-save":"cbs-site-inspection-save","embr-logo":"cbs-logo"},T=[["Embr Operations","Operations Hub"],["Embr Projects","Chelmsford Building Services"],["Embr - ","CBS - "],["embr-ops","cbs-ops"],["embr-toolbox-saved","cbs-toolbox-saved"],["embr_","cbs_"],["embr-","cbs-"],["Google Drive","SharePoint"],["WorkSafe","HSE"],["lang=\"en-NZ\"","lang=\"en-GB\""],["\"en-NZ\"","\"en-GB\""],["Pacific/Auckland","Europe/London"],["($\"+","(£\"+"]],TK={"swms":"rams","sssp":"cphsp"};function nm(n){return n.indexOf('cbs-')===0?n:(M[n]||('cbs-'+n));}function fx(u){try{var s=String(u);var x=new URL(s,location.href);if(x.origin!==location.origin)return u;var p=x.pathname.split('/');if(p.length!==3||p[1]!=='webhook'||!p[2])return u;var n=nm(p[2]);if(n===p[2])return u;return '/webhook/'+n+x.search+x.hash;}catch(e){return u;}}function lst(u){try{var x=new URL(String(u),location.href);if(x.origin!==location.origin)return null;if(x.pathname!=='/webhook/admin'&&x.pathname!=='/webhook/cbs-admin')return null;if(x.searchParams.get('a')!=='list')return null;return x.searchParams.get('t')||'';}catch(e){return null;}}window.__cbsUrl=fx;window.__cbsFix=function(h){h=String(h).replace(new RegExp('/webhook/(?!cbs-)([A-Za-z0-9-]+)','g'),function(a,n){return '/webhook/'+nm(n);});T.forEach(function(r){h=h.split(r[0]).join(r[1]);});return h;};var F=window.fetch;window.fetch=function(u,o){var q=u&&typeof u==='object'&&u.url;var t=lst(q?u.url:u);if(t!==null){var k=TK[t]||t;return F.call(window,'/webhook/cbs-admin-data?t='+encodeURIComponent(k)).then(function(r){return r.json();}).then(function(d){var a=(d&&Array.isArray(d[k]))?d[k]:[];return new Response(JSON.stringify(a),{status:200,headers:{'Content-Type':'application/json'}});});}if(q){var v=fx(u.url);if(v!==u.url)u=new Request(v,u);}else{u=fx(u);}return F.call(window,u,o);};var XO=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(m,u){var t=lst(u);if(t!==null){arguments[1]='/webhook/cbs-admin-data?t='+encodeURIComponent(TK[t]||t);}else{arguments[1]=fx(u);}return XO.apply(this,arguments);};document.addEventListener('click',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href]');if(a){var h=a.getAttribute('href'),v=fx(h);if(v!==h)a.setAttribute('href',v);}},true);})();</script><style id="cbsLogoFix">.topbar .logo,.topbar img,#topLogo,#cbsLogo,header img,img.logo{background:transparent!important;box-shadow:none!important;border:0!important;padding:0!important;border-radius:0!important;filter:none!important}</style><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CBS - Load up</title><style>:root{--bg:#f2f2f0;--panel:#fff;--text:#161616;--muted:#6b6e70;--border:#d9d9d6;--brand:#F47920;--brand-deep:#d4650f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;font-size:15px;padding-bottom:40px}
+.topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 14px;background:#fff;border-bottom:3px solid var(--brand);position:sticky;top:0;z-index:30}
+.topbar .logo{height:22px;width:auto;}
+.topbar h1{font-size:15px;margin:0;font-weight:600}
+.topbar .sub{color:var(--muted);font-size:11.5px}
+.topbar .spacer{flex:1}
+.btn{background:#f7f7f6;border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;font-family:inherit;text-decoration:none;display:inline-block}
+.btn:hover{border-color:var(--brand-deep)}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.primary{background:#F47920;border-color:#F47920;color:#fff;font-weight:600}
+@media(max-width:560px){.topbar .sub{display:none}.topbar .btn{padding:6px 9px;font-size:12.5px}}
+#statusLine{max-width:760px;margin:0 auto;padding:6px 14px 0;font-size:13px;color:var(--muted);min-height:6px}
+.wrap{max-width:760px;margin:0 auto;padding:12px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px}
+.card h3{margin:0 0 10px;font-size:15px}
+.card h3 small{font-weight:400;color:var(--muted);font-size:12px;margin-left:6px}
+.f{display:block;margin-bottom:10px}
+.f span{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px}
+input,select,textarea{width:100%;font:inherit;padding:10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:inherit}
+textarea{resize:vertical;min-height:70px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+@media(max-width:520px){.g2{grid-template-columns:1fr}}
+.note{font-size:12.5px;color:#5a4a2a;background:#fff4e0;border:1px solid #f0d7a6;border-radius:8px;padding:9px 10px;margin:6px 0 8px;line-height:1.4}
+.pill{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:700}
+.pill.draft{background:#fff4e0;color:#8a5a00}.pill.done{background:#e3f3e8;color:#1a7f37}
+.muted{color:var(--muted);font-size:13px}
+.lbl{display:block;font-size:12px;font-weight:600;color:var(--muted);margin:2px 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.chip{display:flex;align-items:center;gap:6px;border:1px solid var(--border);border-radius:16px;padding:6px 12px;font-size:13px;cursor:pointer;background:#fff}
+.chip input{width:16px;height:16px;margin:0}.chip.on{background:#F47920;color:#fff;border-color:#F47920}
+.it{border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-bottom:6px;background:#fff}
+.it.off{background:#f2f2f0}
+.it label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}.it label input{width:20px;height:20px;flex:0 0 auto;margin-top:1px}
+.it b{font-weight:600;font-size:14px;display:block}.it small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.tabs{display:flex;gap:8px;max-width:760px;margin:8px auto 0;padding:0 12px}.tabs .btn{flex:1;padding:9px}.tabs .btn[aria-selected=true]{background:#F47920;border-color:#F47920;color:#fff;font-weight:600}
+#prev{display:none;max-width:840px;margin:0 auto;padding:12px}body.show-prev #form{display:none}body.show-prev #prev{display:block}
+.pv{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12),0 8px 24px rgba(0,0,0,.06);padding:28px 26px;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#000;line-height:1.35}
+.pv .hd{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:4px solid #F47920;padding-bottom:8px;margin-bottom:10px}.pv .hd img{height:30px;width:auto}.pv .hd div{text-align:right}.pv .hd b{font-size:19px;display:block}.pv .hd span{font-size:10px;color:#444}
+.pv .st{background:#3d4043;color:#fff;font-weight:700;padding:5px 8px;margin-top:12px;font-size:12.5px}.pv table{width:100%;border-collapse:collapse}.pv th,.pv td{border:1px solid #000;padding:5px 7px;vertical-align:top;text-align:left;font-size:11.5px;white-space:pre-wrap}
+.pv tbody th{background:#f2f2f2;width:32%}.pv thead th{background:#fde4d0}.pv .li{border:1px solid #000;border-top:none;padding:6px 8px}.pv .li small{color:#555;display:block;white-space:pre-wrap}.pv .none{border:1px solid #000;border-top:none;padding:6px 8px;color:#777}.pv .ft{margin-top:14px;border-top:1px solid #000;padding-top:4px;font-size:9.5px;color:#555}
+@media(min-width:1100px){.wrap{max-width:1500px;display:grid;grid-template-columns:minmax(520px,640px) 1fr;gap:20px;align-items:start}.tabs{display:none}#prev{display:block!important;position:sticky;top:64px;max-height:calc(100vh - 80px);overflow:auto;padding:0}body.show-prev #form{display:block}#statusLine{max-width:1500px}}
+.sheet{display:block;text-decoration:none;color:inherit}.tk{display:flex;gap:10px;align-items:center;border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;background:#fff;cursor:pointer}
+.tk.on{background:#f1f8f3;border-color:#9fd3ae}.tk input[type=checkbox]{width:24px;height:24px;flex:0 0 auto}.tk small{display:block;color:var(--muted);font-size:12px}.tk .q{width:70px;text-align:right;padding:8px}
+.big{width:100%;padding:14px;font-size:16px}
+</style></head><body><div class="topbar"><div><h1>Load up for the job</h1><div class="sub">Tick off what you take</div></div><div class="spacer"></div></div><main class="wrap"><div id="app"><p class="muted">Loading&#8230;</p></div></main><script>(function(){var q=new URLSearchParams(location.search),no=(q.get('job')||'').replace(/[^0-9]/g,'');if(!no||q.get('id'))return;window.__cbsJobPick=true;
+function note(t){var m=document.querySelector('main.wrap');var b=document.createElement('div');b.id='jobNote';b.style.cssText='background:#fff4e0;border:1px solid #f0d7a6;color:#5a4a2a;padding:10px 14px;margin:10px auto;max-width:760px;border-radius:8px;font:14px system-ui,sans-serif';b.textContent=t;if(m&&m.parentNode)m.parentNode.insertBefore(b,m);else document.body.insertBefore(b,document.body.firstChild);}
+fetch('/webhook/cbs-admin-data?t=ptmsheets').then(function(r){return r.json();}).then(function(d){var L=((d&&d.ptmsheets)||[]).filter(function(s){return String(s.job_no||'').replace(/[^0-9]/g,'')===no;});
+L.sort(function(a,b){return String(b.sheet_date||'').localeCompare(String(a.sheet_date||''))||(Number(b.id)-Number(a.id));});
+var pick=L.filter(function(s){return s.status!=='Loaded';})[0]||L[0];
+if(pick){location.replace(location.pathname+'?id='+pick.id);return;}
+note('No load-up sheet for job '+no+' yet. Ask the office to make one in the Operations Hub.');})['catch'](function(){note('Couldn\'t look up job '+no+'. Pick the sheet from the list below.');});})();</script><script>(function(){
+var Q=new URLSearchParams(location.search),ID=Number(Q.get("id")||0),D={},W=[],CUR=null,T={plant:{},extra:{},mats:{}};
+function $(s){return document.querySelector(s);}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}
+function nz(d){d=String(d||"").slice(0,10);if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return d;var m=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];var w=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][new Date(d+"T12:00:00").getDay()];return w+" "+Number(d.slice(8))+" "+m[Number(d.slice(5,7))-1];}
+function st(r){try{return JSON.parse(r.items_json||"{}");}catch(e){return {};}}
+function asset(id){return (D.assets||[]).filter(function(a){return String(a.id)===String(id);})[0];}
+function mat(id){return (D.materials||[]).filter(function(a){return String(a.id)===String(id);})[0];}
+function EXL(S){var L=String(S.plantExtra||"").split("\n").map(function(s){return s.trim();}).filter(Boolean).map(function(n){return {k:"plant",name:n,qty:"",unit:"",label:n};});(S.custom||[]).forEach(function(c){var n=String(c&&c.name||"").trim();if(!n)return;if(c.buy&&c.kind==="mat")return;var q=String(c.qty||"").trim();L.push({k:c.kind==="mat"?"mat":"plant",name:n,qty:q,unit:c.unit||"",label:n+(q?" x "+q+(c.unit?" "+c.unit:""):"")});});return L;}
+function GM(S){var o={},L=[];(S.mats||[]).forEach(function(m){if(!m||!m.id||!mat(m.id))return;var k=String(m.id),q=parseFloat(m.qty)||0;if(!o[k]){o[k]={id:m.id,qty:0};L.push(o[k]);}o[k].qty+=q;});L.forEach(function(x){x.qty=String(Math.round(x.qty*100)/100);});return L;}
+function TKX(x,i,dis){var on=!!T.extra[i];return "<label class='tk"+(on?" on":"")+"'><input type='checkbox' data-x='"+i+"'"+(on?" checked":"")+dis+"><span>"+esc(x.name)+"<small>"+(x.qty?"Take "+esc(x.qty)+" "+esc(x.unit||"")+" \u2022 ":"")+(x.k==="mat"?"Custom, not from stock":"Custom")+"</small></span></label>";}
+function listView(){var t=today(),S=(D.ptmsheets||[]).filter(function(r){return r.status==="Issued"||(r.status==="Loaded"&&String(r.loaded_at||"").slice(0,10)>=t);}).sort(function(a,b){return String(a.sheet_date).localeCompare(String(b.sheet_date))||a.id-b.id;});
+ var h="<h2 style='margin:4px 0 12px;font-size:18px'>Equipment &amp; materials</h2>";
+ if(!S.length)h+="<div class='card'><p class='muted' style='margin:0'>No sheets waiting to be loaded.</p></div>";
+ S.forEach(function(r){var late=r.status==="Issued"&&String(r.sheet_date)<t;h+="<a class='card sheet' href='?id="+r.id+"'><div style='display:flex;justify-content:space-between;gap:8px'><b>"+esc(nz(r.sheet_date))+" \u2022 "+esc(r.site||"")+"</b><span class='pill "+(r.status==="Loaded"?"done":"draft")+"'>"+(r.status==="Loaded"?"Loaded":late?"Overdue":"To load")+"</span></div><div class='muted'>Job "+esc(r.job_no||"-")+(r.crew?" \u2022 "+esc(r.crew):"")+(r.vehicle?" \u2022 "+esc(r.vehicle):"")+"</div></a>";});
+ $("#app").innerHTML=h;}
+function sheetView(){var r=CUR,S=st(r),h="";
+ h+="<a href='?' class='muted' style='display:inline-block;margin:0 0 8px'>&#8249; All sheets</a>";
+ h+="<div class='card'><b style='font-size:16px'>"+esc(r.site||"")+"</b><div class='muted'>"+esc(nz(r.sheet_date))+" \u2022 Job "+esc(r.job_no||"-")+(r.vehicle?" \u2022 "+esc(r.vehicle):"")+"</div>"+(r.crew?"<div class='muted'>Crew: "+esc(r.crew)+"</div>":"")+(r.notes?"<div class='note' style='margin-top:8px'>"+esc(r.notes)+"</div>":"")+(r.pdf_url?"<a href='"+esc(r.pdf_url)+"' target='_blank' class='muted'>Open the PDF</a>":"")+"</div>";
+ if(r.status==="Loaded"){h+="<div class='card'><span class='pill done'>Loaded</span> <span class='muted'>by "+esc(r.loaded_by||"")+" "+esc(String(r.loaded_at||"").slice(0,16).replace("T"," "))+"</span></div>";}
+ var P=(S.plant||[]).map(asset).filter(Boolean),X=EXL(S),M=GM(S);
+ var dis=r.status==="Loaded"?" disabled":"";
+ h+="<div class='card'><h3>Equipment</h3>";if(!P.length&&!X.filter(function(x){return x.k!=="mat";}).length)h+="<p class='muted'>None listed.</p>";
+ P.forEach(function(a){var on=!!T.plant[a.id];h+="<label class='tk"+(on?" on":"")+"'><input type='checkbox' data-p='"+a.id+"'"+(on?" checked":"")+dis+"><span>"+esc(a.name)+"<small>"+esc(a.category||"")+"</small></span></label>";});
+ X.forEach(function(x,i){if(x.k!=="mat")h+=TKX(x,i,dis);});
+ h+="</div><div class='card'><h3>Materials</h3>";if(!M.length&&!X.filter(function(x){return x.k==="mat";}).length)h+="<p class='muted'>None listed.</p>";
+ M.forEach(function(m){var mm=mat(m.id),t=T.mats[m.id]||{on:false,qty:m.qty};h+="<div class='tk"+(t.on?" on":"")+"'><label style='display:flex;gap:10px;align-items:center;flex:1'><input type='checkbox' data-m='"+m.id+"'"+(t.on?" checked":"")+dis+"><span>"+esc(mm.name)+"<small>Planned "+esc(m.qty)+" "+esc(mm.unit||"")+"</small></span></label><input class='q' data-mq='"+m.id+"' inputmode='decimal' value='"+esc(t.qty)+"'"+dis+"><span class='muted' style='width:44px'>"+esc(mm.unit||"")+"</span></div>";});
+ X.forEach(function(x,i){if(x.k==="mat")h+=TKX(x,i,dis);});h+="</div>";
+ if(r.status!=="Loaded"){h+="<div class='card'><label class='f'><span>Your name</span><select id='by'><option value=''>Choose\u2026</option>"+W.map(function(w){return "<option>"+esc(w)+"</option>";}).join("")+"</select></label>";
+  h+="<button class='btn primary big' id='loadBtn'>Mark as loaded</button><p class='muted' style='margin:8px 0 0'>Materials you tick come off stock. Untick anything you didn't take, or change the quantity.</p><div id='msg' class='muted'></div></div>";}
+ $("#app").innerHTML=h;
+ Array.prototype.forEach.call(document.querySelectorAll("[data-p]"),function(e){e.onchange=function(){T.plant[e.getAttribute("data-p")]=e.checked;sheetView();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-x]"),function(e){e.onchange=function(){T.extra[e.getAttribute("data-x")]=e.checked;sheetView();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-m]"),function(e){e.onchange=function(){var id=e.getAttribute("data-m");var m=GM(S).filter(function(x){return String(x.id)===id;})[0];T.mats[id]=T.mats[id]||{qty:m?m.qty:""};T.mats[id].on=e.checked;sheetView();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-mq]"),function(e){e.onchange=function(){var id=e.getAttribute("data-mq");T.mats[id]=T.mats[id]||{on:true};T.mats[id].qty=e.value;};});
+ var lb=$("#loadBtn");if(lb)lb.onclick=submit;}
+function submit(){var by=$("#by").value;if(!by){alert("Choose your name.");return;}var S=st(CUR);
+ var plant=Object.keys(T.plant).filter(function(k){return T.plant[k];}),extra=Object.keys(T.extra).filter(function(k){return T.extra[k];}).map(function(i){var x=EXL(S)[Number(i)];return x?x.label:"";}).filter(Boolean),mats=Object.keys(T.mats).filter(function(k){return T.mats[k].on;}).map(function(k){return {id:k,qty:T.mats[k].qty};});
+ var P=(S.plant||[]).length,X=EXL(S).length,M=GM(S).length;
+ var miss=(P+X-plant.length-extra.length)+(M-mats.length);
+ if(miss>0&&!confirm(miss+" item"+(miss>1?"s are":" is")+" not ticked. Mark as loaded anyway?"))return;
+ var b=$("#loadBtn");b.disabled=true;$("#msg").textContent="Saving\u2026";
+ fetch("/webhook/cbs-ptm-loaded",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:CUR.id,by:by,plant:plant,extra:extra,mats:mats})}).then(function(r){return r.json();}).then(function(d){if(!d||!d.ok){throw new Error(d&&d.message||"save");}
+  alert("Marked as loaded."+(d.deducted?" "+d.deducted+" material"+(d.deducted>1?"s":"")+" taken off stock.":""));location.href="/webhook/cbs-yard";})["catch"](function(e){b.disabled=false;$("#msg").textContent=e&&e.message&&e.message!=="save"?e.message:"Couldn't save. Check your connection and try again.";});}
+var NL=String.fromCharCode(10),PB=null,RS=[["out","Out of stock"],["faulty","Faulty"],["missing","Can't find it"],["notneeded","Not needed"],["nobuy","Couldn't buy it"]];
+(function(){var ap=document.getElementById("app");if(ap)ap.setAttribute("data-nosearch","");if(document.body)document.body.setAttribute("data-nosearch","");var c=document.createElement("style");c.textContent="main.wrap{max-width:760px!important;display:block!important;margin:0 auto!important}#app{max-width:760px;width:100%;margin:0 auto;float:none;box-sizing:border-box}.rc{font:inherit;font-size:14px;border:1px solid #ccc;background:#fff;border-radius:999px;padding:7px 12px;margin:0 6px 6px 0;cursor:pointer;color:#161616}.rc.on{background:#F47920;border-color:#F47920;color:#fff}.rn{width:100%;padding:9px;border:1px solid #ccc;border-radius:8px;font:inherit;margin-top:4px;box-sizing:border-box}.ppe{display:inline-block;border:1px solid #d9d9d6;border-radius:999px;padding:4px 10px;margin:0 6px 6px 0;font-size:14px;background:#fff}.ordn{border:1px solid #c79a4a;background:#fff8ec}.issue{border:1px solid #e3b5b0;background:#fdf1f0}.tk.nfs{background:#fff8ec;border-color:#e8c98a}.tk.nfs.on{background:#f1f8f3;border-color:#9fd3ae}.nfsb{margin-left:auto;font-size:12px;font-weight:700;color:#8a5a00;background:#fde9c4;border-radius:999px;padding:3px 9px;white-space:nowrap;flex:0 0 auto}";document.head.appendChild(c);})();
+function vname(r){if(!r)return "";var v=(D.vehicles||[]).filter(function(x){return x.reg===r;})[0],n=v?String(v.assigned_to||"").trim():"";return r+(n?" - "+n:"");}
+function allItems(S){var o=[];(S.plant||[]).map(asset).filter(Boolean).forEach(function(a){o.push({t:"p",key:String(a.id),name:a.name,detail:a.category||""});});
+ EXL(S).forEach(function(x,i){o.push({t:"x",key:String(i),name:x.name,detail:x.qty?x.qty+" "+(x.unit||""):""});});
+ GM(S).forEach(function(m){var mm=mat(m.id);o.push({t:"m",key:String(m.id),name:mm?mm.name:"Material",planned:m.qty,unit:mm?(mm.unit||""):"",detail:m.qty+" "+(mm?(mm.unit||""):"")});});(S.custom||[]).forEach(function(c){if(c&&c.kind==="mat"&&c.buy&&String(c.name||"").trim()){var q=String(c.qty||"").trim();o.push({t:"b",key:"b"+o.length,name:String(c.name).trim(),detail:"buy on the way"+(q?", "+q+" "+(c.unit||""):"")});}});return o;}
+function missingItems(S){return allItems(S).filter(function(it){if(it.t==="b")return false;if(it.t==="p")return !T.plant[it.key];if(it.t==="x")return !T.extra[it.key];var t=T.mats[it.key];if(!t||!t.on)return true;var q=parseFloat(t.qty),p=parseFloat(it.planned);if(!isNaN(q)&&!isNaN(p)&&q<p){it.detail=String(q)+" of "+it.planned+" "+it.unit;return true;}return false;});}
+function msg(t,good){var m=$("#msg");if(m){m.textContent=t;m.style.color=good?"#1a7f37":"#b3261e";}}
+function sheetView(){var r=CUR,S=st(r),h="";
+ 
+ h+="<div class='card'><b style='font-size:16px'>"+esc(r.site||"")+"</b><div class='muted'>"+esc(nz(r.sheet_date))+" • Job "+esc(r.job_no||"-")+(r.client?" • "+esc(r.client):"")+"</div>"+
+  (r.vehicle?"<div class='muted'>Vehicle: "+esc(vname(r.vehicle))+"</div>":"")+(S.due_back?"<div class='muted'>Equipment due back to yard: "+esc(nz(S.due_back))+"</div>":"")+(r.prepared_by?"<div class='muted'>Prepared by "+esc(r.prepared_by)+"</div>":"")+
+  (S.desc?"<div style='margin-top:8px'>"+esc(S.desc)+"</div>":"")+(r.pdf_url?"<div style='margin-top:8px'><a href='"+esc(r.pdf_url)+"' target='_blank' class='muted'>Open the PDF</a></div>":"")+"</div>";
+ var HIDE=false;if(r.status==="Loaded"){var LJ=null;try{LJ=JSON.parse(r.loaded_json||"null");}catch(e){}HIDE=true;
+ var rows=[],nOk=0,nNo=0;function rw(st,name,det){if(st==="ok")nOk++;else nNo++;var col=st==="ok"?"#1a7f37":(st==="part"?"#8a5a00":"#b3261e");rows.push("<div style='display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid #eee'><span style='font-weight:700;color:"+col+";width:18px'>"+(st==="ok"?"✓":(st==="part"?"◐":"✗"))+"</span><span style='flex:1'>"+esc(name)+(det?"<small style='display:block;color:#6b6e70'>"+esc(det)+"</small>":"")+"</span><span style='font-size:13px;font-weight:600;color:"+col+";white-space:nowrap'>"+(st==="ok"?"Loaded":(st==="part"?"Part loaded":"Not loaded"))+"</span></div>");}
+ if(LJ){var LP=(LJ.plant||[]).map(String),LX=LJ.extra||[],LM={};(LJ.mats||[]).forEach(function(m){LM[String(m.id)]=m.qty;});
+  (S.plant||[]).map(asset).filter(Boolean).forEach(function(a){rw(LP.indexOf(String(a.id))>-1?"ok":"no",a.name,a.category||"");});
+  EXL(S).forEach(function(x){rw(LX.indexOf(x.label)>-1?"ok":"no",x.name,(x.qty?x.qty+" "+(x.unit||"")+" • ":"")+"Custom");});
+  GM(S).forEach(function(m){var mm=mat(m.id)||{},q=LM[String(m.id)],has=q!==undefined,lq=parseFloat(q),pq=parseFloat(m.qty),part=has&&!isNaN(lq)&&!isNaN(pq)&&lq<pq;rw(!has?"no":(part?"part":"ok"),mm.name||"Material",has?"Loaded "+q+" of "+m.qty+" "+(mm.unit||""):"Planned "+m.qty+" "+(mm.unit||""));});}
+ h+="<div class='card'><div style='display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap'><span><span class='pill done'>Loaded</span> <span class='muted'>by "+esc(r.loaded_by||"")+" "+esc(String(r.loaded_at||"").slice(0,16).replace("T"," "))+"</span></span>"+(LJ?"<span style='font-size:14px'><b style='color:#1a7f37'>"+nOk+" loaded</b>"+(nNo?" • <b style='color:#b3261e'>"+nNo+" not fully loaded</b>":"")+"</span>":"")+"</div>"+(LJ?"<h3 style='margin-top:12px'>What was loaded</h3>"+rows.join(""):"<p class='muted' style='margin:8px 0 0'>This sheet was signed out before the item-by-item record was switched on, so it can't show what was or wasn't ticked. Sheets signed out from now on will.</p><h3 style='margin-top:12px'>On the sheet</h3>"+(S.plant||[]).map(asset).filter(Boolean).map(function(a){return a.name;}).concat(EXL(S).map(function(x){return x.label;})).concat(GM(S).map(function(m){var mm=mat(m.id)||{};return (mm.name||"Material")+" - "+m.qty+" "+(mm.unit||"");})).map(function(n){return "<div style='padding:6px 0;border-bottom:1px solid #eee'>"+esc(n)+"</div>";}).join(""))+"</div>";}
+ var LI=String(r.load_issues||"").split(NL).filter(Boolean);if(LI.length)h+="<div class='card issue'><h3>Problems reported</h3>"+LI.map(function(l){return "<div style='margin-bottom:4px'>"+esc(l)+"</div>";}).join("")+"</div>";
+ var ON=String(r.shortages||"").split(NL).map(function(l){return l.trim();}).filter(Boolean);if(false)h+="<div class='card ordn'><h3>Order needed</h3>"+ON.map(function(l){return "<div style='margin-bottom:4px'>"+esc(l)+"</div>";}).join("")+"<p class='muted' style='margin:6px 0 0'>The office is ordering these, so they may not be in the yard yet.</p></div>";var CUTAT=h.length;
+ var P=(S.plant||[]).map(asset).filter(Boolean),X=EXL(S),M=GM(S);
+ var dis=r.status==="Loaded"?" disabled":"";
+ h+="<div class='card'><h3>Equipment</h3>";if(!P.length&&!X.filter(function(x){return x.k!=="mat";}).length)h+="<p class='muted'>None listed.</p>";
+ P.forEach(function(a){var on=!!T.plant[a.id];h+="<label class='tk"+(on?" on":"")+"'><input type='checkbox' data-p='"+a.id+"'"+(on?" checked":"")+dis+"><span>"+esc(a.name)+"<small>"+esc(a.category||"")+"</small></span></label>";});
+ X.forEach(function(x,i){if(x.k!=="mat")h+=TKX(x,i,dis);});
+ h+="</div><div class='card'><h3>Materials</h3>";if(!M.length&&!X.filter(function(x){return x.k==="mat";}).length)h+="<p class='muted'>None listed.</p>";
+ M.forEach(function(m){var mm=mat(m.id),t=T.mats[m.id]||{on:false,qty:m.qty};h+="<div class='tk"+(t.on?" on":"")+"'><label style='display:flex;gap:10px;align-items:center;flex:1'><input type='checkbox' data-m='"+m.id+"'"+(t.on?" checked":"")+dis+"><span>"+esc(mm.name)+"<small>Planned "+esc(m.qty)+" "+esc(mm.unit||"")+"</small></span></label><input class='q' data-mq='"+m.id+"' inputmode='decimal' value='"+esc(t.qty)+"'"+dis+"><span class='muted' style='width:44px'>"+esc(mm.unit||"")+"</span></div>";});
+ X.forEach(function(x,i){if(x.k==="mat")h+=TKX(x,i,dis);});h+="</div>";
+ if(HIDE)h=h.slice(0,CUTAT);
+ var BY=(S.custom||[]).filter(function(c){return c&&c.kind==="mat"&&c.buy&&String(c.name||"").trim();});if(BY.length)h+="<div class='card ordn'><h3>Buy on the way</h3>"+BY.map(function(c){var q=String(c.qty||"").trim();return "<div style='margin-bottom:8px'><b>"+esc(String(c.name).trim())+"</b>"+(q?" • "+esc(q)+" "+esc(c.unit||""):"")+"<div class='muted'>"+esc(String(c.buy_from||"").trim()||"Any merchant")+(String(c.buy_note||"").trim()?" • "+esc(c.buy_note):"")+"</div></div>";}).join("")+"<p class='muted' style='margin:4px 0 0'>Not part of Mark as loaded. If you can't get something, use Report a problem.</p></div>";
+ var PP=Array.isArray(S.ppe)?S.ppe:[];if(PP.length)h+="<div class='card'><h3>PPE</h3>"+PP.map(function(p){return "<span class='ppe'>"+esc(p)+"</span>";}).join("")+"</div>";
+ var NT=String(r.notes||S.notes||"").trim();if(NT)h+="<div class='card'><h3>Notes</h3><div class='note'>"+esc(NT)+"</div></div>";
+ if(r.status!=="Loaded"){h+="<div class='card'><label class='f'><span>Your name</span><select id='by'><option value=''>Choose…</option>"+W.map(function(w){return "<option>"+esc(w)+"</option>";}).join("")+"</select></label>";
+  h+="<button class='btn primary big' id='loadBtn'>Mark as loaded</button><button class='btn big' id='repBtn' style='margin-top:8px'>Report a problem</button><p class='muted' style='margin:8px 0 0'>Materials you tick come off stock. Untick anything you didn't take, or change the quantity. If something's missing you'll be asked why, and the office is told.</p><div id='msg' class='muted'></div></div>";}
+ $("#app").innerHTML=h;
+ Array.prototype.forEach.call(document.querySelectorAll("[data-p]"),function(e){e.onchange=function(){T.plant[e.getAttribute("data-p")]=e.checked;keepName(sheetView);};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-x]"),function(e){e.onchange=function(){T.extra[e.getAttribute("data-x")]=e.checked;keepName(sheetView);};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-m]"),function(e){e.onchange=function(){var id=e.getAttribute("data-m");var m=GM(S).filter(function(x){return String(x.id)===id;})[0];T.mats[id]=T.mats[id]||{qty:m?m.qty:""};T.mats[id].on=e.checked;keepName(sheetView);};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-mq]"),function(e){e.onchange=function(){var id=e.getAttribute("data-mq");T.mats[id]=T.mats[id]||{on:true};T.mats[id].qty=e.value;};});
+ var b=$("#by");if(b&&window.__ptmBy)b.value=window.__ptmBy;if(b)b.onchange=function(){window.__ptmBy=b.value;};
+ var lb=$("#loadBtn");if(lb)lb.onclick=submit;var rb=$("#repBtn");if(rb)rb.onclick=report;}
+function TKX(x,i,dis){var on=!!T.extra[i];return "<label class='tk nfs"+(on?" on":"")+"'><input type='checkbox' data-x='"+i+"'"+(on?" checked":"")+dis+"><span>"+esc(x.name)+"<small>"+(x.qty?"Take "+esc(x.qty)+" "+esc(x.unit||""):"Custom item")+"</small></span><span class='nfsb'>"+(x.k==="mat"?"Not from stock":"Not in register")+"</span></label>";}
+function keepName(fn){var b=$("#by");if(b)window.__ptmBy=b.value;fn();}
+function panelView(){var ld=PB.mode==="load",h="<div class='card'><h3 style='margin-top:0'>"+(ld?PB.items.length+" item"+(PB.items.length>1?"s":"")+" not fully loaded":"Report a problem")+"</h3><p class='muted' style='margin:0 0 8px'>"+(ld?"Pick a reason for each one. The office is told about anything not marked Not needed.":"Pick a reason against anything with a problem, or just write a note. Nothing is marked as loaded.")+"</p>";
+ PB.items.forEach(function(it,i){var r=PB.r[i]||"";h+="<div style='padding:10px 0;border-top:1px solid #eee'><b>"+esc(it.name)+"</b>"+(it.detail?" <span class='muted'>"+esc(it.detail)+"</span>":"")+"<div style='margin-top:6px'>"+RS.filter(function(x){if(it.t==="b")return x[0]==="nobuy";if(x[0]==="nobuy")return false;return ld||x[0]!=="notneeded";}).map(function(x){return "<button type='button' class='rc"+(r===x[0]?" on":"")+"' data-ri='"+i+"' data-rv='"+x[0]+"'>"+x[1]+"</button>";}).join("")+"</div>"+(r&&r!=="notneeded"?"<input class='rn' data-ni='"+i+"' placeholder='Note (optional)' value='"+esc(PB.n[i]||"")+"'>":"")+"</div>";});
+ h+="<label class='f' style='margin-top:10px'><span>"+(ld?"Anything else? (optional)":"Note")+"</span><textarea id='pbg'>"+esc(PB.gen)+"</textarea></label>";
+ h+="<div id='pbm' style='color:#b3261e;font-size:14px;margin:6px 0'></div><button class='btn primary big' id='pbGo'>"+(ld?"Load and tell the office":"Send to the office")+"</button><button class='btn big' id='pbBack' style='margin-top:8px'>Back</button></div>";
+ $("#app").innerHTML=h;
+ Array.prototype.forEach.call(document.querySelectorAll("[data-ri]"),function(e){e.onclick=function(){var i=e.getAttribute("data-ri"),v=e.getAttribute("data-rv");PB.r[i]=PB.r[i]===v&&!ld?"":v;panelView();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-ni]"),function(e){e.oninput=function(){PB.n[e.getAttribute("data-ni")]=e.value;};});
+ $("#pbg").oninput=function(){PB.gen=this.value;};
+ $("#pbBack").onclick=function(){PB=null;sheetView();window.scrollTo(0,0);};
+ $("#pbGo").onclick=function(){var go=this;
+  if(ld){var miss=PB.items.filter(function(it,i){return !PB.r[i];}).length;if(miss){$("#pbm").textContent="Pick a reason for "+(miss>1?"each item":"the item")+" first.";return;}doLoad(PB.by,go);return;}
+  var iss=issues(),gen=String(PB.gen||"").trim();if(!iss.length&&!gen){$("#pbm").textContent="Pick a reason against an item, or write a note.";return;}
+  go.disabled=true;$("#pbm").textContent="";go.textContent="Sending…";
+  sendIssue(PB.by,false,iss,gen).then(function(d){if(!d||!d.ok)throw new Error(d&&d.message||"");PB=null;CUR.load_issues=(CUR.load_issues?CUR.load_issues+NL:"")+"Just reported: "+iss.map(function(x){return x.name;}).join(", ")+(gen?(iss.length?". ":"")+gen:"");sheetView();msg("Sent to the office.",1);window.scrollTo(0,0);})
+  .catch(function(e){go.disabled=false;go.textContent="Send to the office";$("#pbm").textContent=(e&&e.message)||"Couldn't send. Check your connection and try again.";});};}
+function issues(){return PB?PB.items.map(function(it,i){return {name:it.name,detail:it.detail||"",reason:PB.r[i]||"",note:PB.n[i]||""};}).filter(function(x){return x.reason&&x.reason!=="notneeded";}):[];}
+function sendIssue(by,loaded,iss,gen){return fetch("/webhook/cbs-yard-act",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"loadissue",id:CUR.id,by:by,loaded:loaded,items:iss,note:gen||""})}).then(function(r){return r.json();});}
+function finish(t){$("#app").innerHTML="<div class='card'><span class='pill done'>Done</span><p style='margin:10px 0 0;font-size:16px'>"+esc(t)+"</p><p class='muted'>Taking you back to the Yard page…</p><a class='btn big' href='/webhook/cbs-yard'>Go now</a></div>";window.scrollTo(0,0);setTimeout(function(){location.href="/webhook/cbs-yard";},3500);}
+function submit(){var by=$("#by").value;if(!by){msg("Choose your name.");return;}window.__ptmBy=by;var miss=missingItems(st(CUR));
+ if(miss.length){PB={mode:"load",by:by,items:miss,r:{},n:{},gen:""};panelView();window.scrollTo(0,0);return;}
+ doLoad(by,$("#loadBtn"));}
+function report(){var by=$("#by").value;if(!by){msg("Choose your name first.");return;}window.__ptmBy=by;PB={mode:"report",by:by,items:allItems(st(CUR)),r:{},n:{},gen:""};panelView();window.scrollTo(0,0);}
+function doLoad(by,btn){var S=st(CUR);
+ var plant=Object.keys(T.plant).filter(function(k){return T.plant[k];}),extra=Object.keys(T.extra).filter(function(k){return T.extra[k];}).map(function(i){var x=EXL(S)[Number(i)];return x?x.label:"";}).filter(Boolean),mats=Object.keys(T.mats).filter(function(k){return T.mats[k].on;}).map(function(k){return {id:k,qty:T.mats[k].qty};});
+ var iss=issues(),gen=PB?String(PB.gen||"").trim():"";
+ if(btn){btn.disabled=true;btn.textContent="Saving…";}
+ fetch("/webhook/cbs-ptm-loaded",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:CUR.id,by:by,plant:plant,extra:extra,mats:mats})}).then(function(r){return r.json();}).then(function(d){if(!d||!d.ok){throw new Error(d&&d.message||"save");}
+  var txt="Marked as loaded."+(d.deducted?" "+d.deducted+" material"+(d.deducted>1?"s":"")+" taken off yard stock.":"")+(d.booked?" "+d.booked+" plant item"+(d.booked>1?"s":"")+" booked out to job "+d.job+".":(plant.length&&!d.job?" Plant wasn't booked out because the sheet has no job number.":""));
+  if(!iss.length&&!gen){finish(txt);return;}
+  return sendIssue(by,true,iss,gen).then(function(x){finish(txt+(x&&x.ok?" The office has been told about the missing items.":" Couldn't tell the office about the missing items, so please call them."));},function(){finish(txt+" Couldn't tell the office about the missing items, so please call them.");});
+ })["catch"](function(e){if(btn){btn.disabled=false;btn.textContent=PB?"Load and tell the office":"Mark as loaded";}var m=e&&e.message&&e.message!=="save"?e.message:"Couldn't save. Check your connection and try again.";if(PB&&$("#pbm"))$("#pbm").textContent=m;else msg(m);});}
+fetch("/webhook/cbs-admin-data?t=ptmsheets,assets,materials,workers,vehicles").then(function(r){return r.json();}).then(function(d){D=d||{};W=(D.workers||[]).filter(function(w){return w.active!==false;}).map(function(w){return w.name;}).filter(Boolean);
+ if(ID){CUR=(D.ptmsheets||[]).filter(function(r){return Number(r.id)===ID;})[0];if(!CUR){$("#app").innerHTML="<div class='card'>That sheet wasn't found. <a href='?'>See all sheets</a></div>";return;}sheetView();}else listView();})["catch"](function(){$("#app").innerHTML="<div class='card'>Couldn't load. Check your connection and refresh.</div>";});
+})();
+</script><script id="cbsDelGuard">(function(){
+if(window.__cbsDelGuard)return;window.__cbsDelGuard=1;
+var ok=false,SEL='#delBtn,.std-del,button[data-hub],button[data-rm]';
+var css=document.createElement('style');
+css.textContent='#delModal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:99999;padding:16px}#delModal .bx{background:#fff;border-radius:14px;max-width:380px;width:100%;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.3);font-family:inherit;text-align:left}#delModal h3{margin:0 0 8px;font-size:19px;color:#000}#delModal p{margin:0 0 6px;color:#333;font-size:15px}#delModal .what{font-weight:700;color:#000;margin:10px 0 4px;word-break:break-word}#delModal .row2{display:flex;gap:10px;margin-top:18px}#delModal button{flex:1;padding:12px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer}#delModal .cx{background:#F47920;color:#fff;border:0}#delModal .yes{background:#fff;color:#b3261e;border:2px solid #b3261e}';
+document.head.appendChild(css);
+function tgt(e){var t=e.target;if(!t||!t.closest)return null;var b=t.closest(SEL);if(!b||b.tagName!=='BUTTON'||b.disabled)return null;if(b.hasAttribute('data-hub')&&!/^delete/i.test((b.textContent||'').trim()))return null;return b;}
+function clean(el){if(!el)return '';var c=el.cloneNode(true);Array.prototype.forEach.call(c.querySelectorAll('button,a,input,select,textarea,script,style'),function(x){x.parentNode.removeChild(x);});return (c.textContent||'').replace(/\s+/g,' ').trim();}
+function what(b){var s='';if(b.hasAttribute('data-rm')){var p=b.parentElement;for(var i=0;i<4&&p&&!s;i++){s=clean(p);p=p.parentElement;}}
+ if(!s){var po=document.getElementById('po_no');s=po&&po.value?po.value:'';}
+ if(!s)s=clean(document.querySelector('h1,h2,h3'))||document.title||'this record';return s.slice(0,160);}
+function note(rm){var p=location.pathname;if(/cbs-coshh/.test(p))return 'It stays on the CoSHH register.';if(/cbs-pci/.test(p))return 'The file stays in SharePoint.';return rm?'':'Any PDF already saved stays in SharePoint.';}
+function ask(b){var rm=/^remove/i.test((b.textContent||'').trim());
+ var m=document.createElement('div');m.id='delModal';
+ m.innerHTML='<div class="bx" role="dialog" aria-modal="true"><h3>Are you sure?</h3><p>'+(rm?'This will remove it from the job:':'This will permanently delete:')+'</p><div class="what"></div><p class="xtra"></p>'+(rm?'':'<p>It cannot be undone.</p>')+'<div class="row2"><button class="cx" type="button">Cancel</button><button class="yes" type="button">Yes, '+(rm?'remove':'delete')+'</button></div></div>';
+ m.querySelector('.what').textContent=what(b);var n=note(rm);if(n)m.querySelector('.xtra').textContent=n;
+ document.body.appendChild(m);var cx=m.querySelector('.cx'),yes=m.querySelector('.yes');cx.focus();
+ function close(){if(m.parentNode)m.parentNode.removeChild(m);document.removeEventListener('keydown',key,true);}
+ function key(e){if(e.key==='Escape'){e.preventDefault();close();}}
+ document.addEventListener('keydown',key,true);
+ cx.onclick=close;m.onclick=function(e){if(e.target===m)close();};
+ yes.onclick=function(){close();ok=true;try{b.click();}finally{ok=false;}};}
+document.addEventListener('click',function(e){if(ok)return;var b=tgt(e);if(!b)return;e.preventDefault();e.stopImmediatePropagation();ask(b);},true);
+var _c=window.confirm;window.confirm=function(){if(ok)return true;return _c.apply(window,arguments);};
+})();</script><script src="/webhook/cbs-crew-me" defer></script></body></html>

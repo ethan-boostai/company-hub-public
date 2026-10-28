@@ -1,0 +1,1218 @@
+{
+  "id": "5WD5ParLvxON9WiN",
+  "name": "CBS - Job Costing",
+  "active": true,
+  "isArchived": false,
+  "versionId": "3da90300-ac9a-4328-9d5e-86931c56b37a",
+  "activeVersionId": "3da90300-ac9a-4328-9d5e-86931c56b37a",
+  "triggerCount": 5,
+  "createdAt": "2026-10-10T17:31:35.135Z",
+  "updatedAt": "2026-10-10T17:34:50.646Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Page Hook": {
+      "main": [
+        [
+          {
+            "node": "Costing Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Costing Page": {
+      "main": [
+        [
+          {
+            "node": "Send Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Hook": {
+      "main": [
+        [
+          {
+            "node": "Costing Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Costing Data": {
+      "main": [
+        [
+          {
+            "node": "Send Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Act Hook": {
+      "main": [
+        [
+          {
+            "node": "Cost Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cost Prep": {
+      "main": [
+        [
+          {
+            "node": "Has File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has File": {
+      "main": [
+        [
+          {
+            "node": "Upload Bill",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Cost Save",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Bill": {
+      "main": [
+        [
+          {
+            "node": "Cost Save",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cost Save": {
+      "main": [
+        [
+          {
+            "node": "Send Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Hook": {
+      "main": [
+        [
+          {
+            "node": "Read Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Prep": {
+      "main": [
+        [
+          {
+            "node": "Read Bill",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Bill": {
+      "main": [
+        [
+          {
+            "node": "Read Parse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Parse": {
+      "main": [
+        [
+          {
+            "node": "Send Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "QBO Sync": {
+      "main": [
+        [
+          {
+            "node": "Send Sync",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sync Hook": {
+      "main": [
+        [
+          {
+            "node": "QBO Sync",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "9e0c0dfd-0570-4ad1-964f-03bbff4fe384",
+      "name": "Page Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-costs",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "fe02b47a-0524-4b37-ae52-96a18261bc67"
+    },
+    {
+      "id": "bbce4a36-7dac-4021-a2b6-656825e0e171",
+      "name": "Costing Page",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* CBS job costing page (admin): cbs-costs?job=N. Data from cbs-costs-data, saves to cbs-cost-act, bills read by cbs-cost-read, QuickBooks via cbs-cost-qbo-sync. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v);const e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nlet info={};if(job){try{info=await h.httpRequest({url:H+'cbs-sm8-job?no='+encodeURIComponent(job),json:true,timeout:15000})||{};}catch(x){info={};}}\nconst D={job:job,site:S(info.site),client:S(info.client)};\nconst CSS='*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n+'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n+'.wrap{max-width:860px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}'\n+'.btn{background:#F47920;color:#fff;text-decoration:none;font-weight:600;border-radius:8px;padding:8px 14px;font-size:14px;border:0;font-family:inherit;cursor:pointer}.btn.ghost{background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}.btn.sm{padding:6px 10px;font-size:13px}.btn:disabled{opacity:.5}.btn.red{background:#fff;color:#b3261e;border:1px solid #e9b6b1}'\n+'.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}.pst{background:#fff;border:1px solid #d9d9d6;border-radius:10px;padding:8px 6px;text-align:center}.pst b{display:block;font-size:18px;line-height:1.2}.pst span{font-size:12px;color:#555}.pst.ed{cursor:pointer}.pst.ed:hover{border-color:#F47920}.pst.ok{border-color:#b9dfc1;background:#f1faf2}.pst.warn{border-color:#f2d398;background:#fff8ea}@media(max-width:560px){.strip{grid-template-columns:repeat(2,1fr)}}'\n+'.flt{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.flt button{border:1px solid #d9d9d6;background:#fff;border-radius:20px;padding:5px 11px;font:inherit;font-size:13px;cursor:pointer}.flt button.on{background:#F47920;color:#fff;border-color:#F47920}.srch{width:100%;font:inherit;padding:10px 12px;border:1px solid #ccc;border-radius:10px;margin-bottom:10px}'\n+'.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;margin-bottom:10px;padding:12px 14px}.t{font-weight:600}.m{color:#555;font-size:14px;margin-top:2px}.ds{white-space:pre-wrap;font-size:14px;margin-top:6px;color:#333}.b{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center}.amt{float:right;font-weight:700}'\n+'.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:20px;padding:1px 8px;margin-left:6px;background:#eee;color:#333;vertical-align:middle}.tag.Raised{background:#eee}.tag.Priced{background:#e6efff;color:#1f5fbf}.tag.Submitted{background:#fff1d6;color:#8a5a00}.tag.Approved{background:#e3f4e6;color:#1d6b2c}.tag.Rejected{background:#fde3e1;color:#b3261e}'\n+'select.st{font:inherit;font-size:13px;padding:5px 6px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}'\n+'.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}'\n+'.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;overflow:auto;z-index:20}.dlg{background:#fff;border-radius:14px;max-width:560px;width:100%;padding:16px}.dlg h2{margin:0 0 10px;font-size:18px}'\n+'label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}.dlg input[type=text],.dlg input[type=date],.dlg input[type=number],.dlg textarea,.dlg select{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}.dlg textarea{min-height:90px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}'\n+'.chk{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid #eee}.chk input{width:20px;height:20px;flex:0 0 auto}.note{font-size:13px;color:#6b6e70;margin-top:6px}.hist{white-space:pre-wrap;font-size:12px;color:#6b6e70;margin-top:8px}.msg{font-size:14px;color:#8a5a00;margin-top:8px;min-height:18px}'\n+'.opr{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid #eee}.opr span{flex:1}'\n+'table.ct{width:100%;border-collapse:collapse;background:#fff;border:1px solid #d9d9d6;border-radius:12px;overflow:hidden;font-size:14px;margin-bottom:12px}table.ct th,table.ct td{padding:8px 10px;border-bottom:1px solid #eee;text-align:left}table.ct th{font-size:12px;color:#555;background:#fafaf8}table.ct td.n,table.ct th.n{text-align:right;white-space:nowrap}table.ct tr.tot td{font-weight:700;background:#fafaf8}'\n+'.drop{border:2px dashed #ccc;border-radius:12px;padding:16px;text-align:center;background:#fafaf8;cursor:pointer;margin-bottom:6px}.drop.on{border-color:#F47920;background:#fff7f0}.ai{background:#fff7f0;border:1px solid #f7c9a3;border-radius:8px;padding:8px 10px;font-size:14px;margin:8px 0}.neg{color:#b3261e}.pos{color:#1d6b2c}.src{font-size:11px;font-weight:700;border-radius:20px;padding:1px 7px;margin-left:6px;background:#eef2f7;color:#3b4b63;vertical-align:middle}.wrapx{overflow-x:auto}';\nconst nav='<div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a>'+(job?'<a class=\"hub\" href=\"/webhook/cbs-job-file?job='+encodeURIComponent(job)+'\">Job File</a>':'')+'</div>';\nconst sub=e([D.site,D.client].filter(Boolean).join(' \\u00b7 ')||'Chelmsford Building Services');\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Job costing - Job '+e(job)+'</title><script src=\"/webhook/cbs-guard\"></script><style>'+CSS+'</style><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script></head><body><header>'+nav+'<h1>Job costing'+(job?' \\u00b7 Job '+e(job):'')+'</h1><p>'+sub+'</p></header><div class=\"wrap\" id=\"app\">'+(job?'<div class=\"empty\">Loading\\u2026</div>':'<div class=\"empty\">Open job costing from a job.</div>')+'</div><script>window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+';</script>'+(job?'<script>('+client.toString()+')();</script>':'')+'</body></html>';\nreturn [{json:{html:html}}];\n\nfunction client(){\nvar D=window.D,JOB=D.job,app=document.getElementById('app'),DATA=null,CAT='all',Q='',LOGO=null,BUSY=false;\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction n(v){var x=parseFloat(s(v).replace(/[^0-9.\\-]/g,''));return isNaN(x)?0:x;}\nfunction gbp(v){var neg=n(v)<0;return (neg?'-':'')+'\\u00a3'+Math.abs(n(v)).toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g,',');}\nfunction dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:s(d);}\nfunction today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction who(){var x='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)x=m.name;}catch(z){}if(!x){try{x=localStorage.getItem('cbs_name')||'';}catch(z){}}if(!x){x=(prompt('Your name:')||'').trim();if(x){try{localStorage.setItem('cbs_name',x);}catch(z){}}}return x;}\nfunction call(url,body){return fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw 0;return r.json();}).catch(function(){return {ok:false,message:'Could not reach the hub. Check your connection and try again.'};});}\nfunction post(body){var by=who();if(!by)return Promise.resolve({ok:false,cancel:true});body.job=JOB;body.by=by;return call('/webhook/cbs-cost-act',body);}\nfunction load(){return fetch('/webhook/cbs-costs-data?job='+encodeURIComponent(JOB),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){DATA=d;if(!D.site&&d.site){D.site=d.site;D.client=d.client;var hp=document.querySelector('header p');if(hp)hp.textContent=[d.site,d.client].filter(Boolean).join(' \\u00b7 ');}render();}).catch(function(){app.innerHTML='<div class=\"empty\">Could not load the job costs. Refresh to try again.</div>';});}\nfunction dlg(html){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg\">'+html+'</div>';document.body.appendChild(o);o.close=function(){o.remove();};return o;}\nfunction guard(o,isDirty){o.addEventListener('click',function(ev){if(ev.target!==o)return;if(isDirty&&isDirty()&&!confirm('Close without saving your changes?'))return;o.close();});}\nfunction rows(){return (DATA&&DATA.rows)||[];}\nfunction vis(){var q=Q.toLowerCase();return rows().filter(function(r){if(CAT!=='all'&&s(r.category)!==CAT)return false;if(!q)return true;return [r.supplier,r.ref,r.description,r.po_no,r.notes,r.category].join(' ').toLowerCase().indexOf(q)>-1;});}\nfunction syncLine(){var x=DATA.sync;if(!x)return 'QuickBooks has not been synced yet.';return (x.ok?'QuickBooks last synced ':'QuickBooks sync ')+dmy(x.at)+' '+s(x.at).slice(11,16)+' \\u2013 '+e(x.message||'');}\nfunction render(){var T=DATA.totals||{},h='';\n h+='<div class=\"strip\"><div class=\"pst\"><b>'+(T.income==null?'Set value':gbp(T.income))+'</b><span>Income'+(T.approved?' (incl. '+gbp(T.approved)+' variations)':'')+'</span></div><div class=\"pst\"><b>'+gbp(T.actual)+'</b><span>Costs to date</span></div><div class=\"pst\"><b>'+gbp(T.committed)+'</b><span>Committed (POs not billed)</span></div><div class=\"pst '+(T.margin==null?'':(T.margin<0?'warn':'ok'))+'\"><b class=\"'+(T.margin!=null&&T.margin<0?'neg':'')+'\">'+(T.margin==null?'\\u2013':gbp(T.margin))+'</b><span>Forecast margin'+(T.marginPct!=null?' ('+T.marginPct+'%)':'')+'</span></div></div>';\n if(T.income==null)h+='<p class=\"m\" style=\"margin:-4px 0 10px\">Set the contract value on the <a href=\"/webhook/cbs-variations?job='+encodeURIComponent(JOB)+'\">Variations</a> page to see the margin.</p>';\n if(T.pendingVar)h+='<p class=\"m\" style=\"margin:-4px 0 10px\">'+gbp(T.pendingVar)+' of variations are priced or with the client and not included in income yet.</p>';\n h+='<div class=\"tools\"><button class=\"btn\" id=\"add\">+ Add cost</button><button class=\"btn ghost\" id=\"qbo\">Sync QuickBooks</button><button class=\"btn ghost\" id=\"rep\">Costing report PDF</button><button class=\"btn ghost\" id=\"cats\">Categories</button></div><p class=\"m\" id=\"syncl\" style=\"margin:-4px 0 12px\">'+syncLine()+'</p>';\n var BC=(DATA.byCat||[]).filter(function(c){return c.actual||c.committed;});\n if(BC.length){h+='<div class=\"wrapx\"><table class=\"ct\"><tr><th>Category</th><th class=\"n\">Costs to date</th><th class=\"n\">Committed</th><th class=\"n\">Total</th></tr>'+BC.map(function(c){return '<tr><td>'+e(c.cat)+'</td><td class=\"n\">'+gbp(c.actual)+'</td><td class=\"n\">'+gbp(c.committed)+'</td><td class=\"n\">'+gbp(c.actual+c.committed)+'</td></tr>';}).join('')+'<tr class=\"tot\"><td>Total</td><td class=\"n\">'+gbp(T.actual)+'</td><td class=\"n\">'+gbp(T.committed)+'</td><td class=\"n\">'+gbp(T.forecast)+'</td></tr></table></div>';}\n var OP=(DATA.pos||[]).filter(function(p){return p.remaining>0;});\n if((DATA.pos||[]).length)h+='<details style=\"margin-bottom:12px\"><summary class=\"t\" style=\"cursor:pointer\">Purchase orders on this job ('+DATA.pos.length+(OP.length?', '+OP.length+' not fully billed':'')+')</summary><div class=\"wrapx\"><table class=\"ct\" style=\"margin-top:8px\"><tr><th>PO</th><th>Supplier</th><th>Status</th><th class=\"n\">PO value</th><th class=\"n\">Billed</th><th class=\"n\">Committed</th></tr>'+DATA.pos.map(function(p){return '<tr><td>'+e(p.po_no)+'</td><td>'+e(p.supplier)+'</td><td>'+e(p.status)+'</td><td class=\"n\">'+gbp(p.net)+'</td><td class=\"n\">'+gbp(p.billed)+'</td><td class=\"n\">'+gbp(p.remaining)+'</td></tr>';}).join('')+'</table></div><p class=\"m\">Committed is the part of each PO not yet matched by a bill. Link a bill to its PO so it is not counted twice.</p></details>';\n var CC={};rows().forEach(function(r){var c=s(r.category)||'Other';CC[c]=(CC[c]||0)+1;});\n h+='<div class=\"flt\">'+[['all','All',rows().length]].concat(Object.keys(CC).sort().map(function(k){return [k,k,CC[k]];})).map(function(f){return '<button data-f=\"'+e(f[0])+'\" class=\"'+(CAT===f[0]?'on':'')+'\">'+e(f[1])+' ('+f[2]+')</button>';}).join('')+'</div>';\n h+='<input class=\"srch\" id=\"q\" placeholder=\"Search costs\" value=\"'+e(Q)+'\">';\n var L=vis();\n if(!rows().length)h+='<div class=\"empty\">No costs on this job yet. Add a supplier bill, or sync QuickBooks.</div>';else if(!L.length)h+='<div class=\"empty\">Nothing matches.</div>';\n L.forEach(function(r){h+='<div class=\"card\" data-id=\"'+r.id+'\"><div class=\"t\">'+e(r.supplier||r.description||'Cost')+(r.ref?' \\u00b7 '+e(r.ref):'')+'<span class=\"src\">'+e(r.source||'Manual')+'</span><span class=\"amt\">'+gbp(r.net)+'</span></div>'\n  +'<div class=\"m\">'+[dmy(r.cost_date),e(r.category||'Other'),r.po_no?'PO '+e(r.po_no):'','VAT '+gbp(r.vat),'total '+gbp(r.gross)].filter(Boolean).join(' \\u00b7 ')+'</div>'\n  +(r.description&&r.supplier?'<div class=\"ds\">'+e(r.description)+'</div>':'')+(r.notes?'<div class=\"m\">'+e(r.notes)+'</div>':'')\n  +'<div class=\"b\"><button class=\"btn ghost sm\" data-a=\"edit\">Edit</button>'+(r.file_url?'<a class=\"btn ghost sm\" href=\"'+e(r.file_url)+'\" target=\"_blank\" rel=\"noopener\">View bill</a>':'')+(r.source!=='QuickBooks'?'<button class=\"btn red sm\" data-a=\"del\">Delete</button>':'')+'</div>'\n  +(r.history?'<details><summary class=\"m\" style=\"cursor:pointer\">History</summary><div class=\"hist\">'+e(r.history)+'</div></details>':'')+'</div>';});\n app.innerHTML=h;\n document.getElementById('add').onclick=function(){costDlg(null);};document.getElementById('qbo').onclick=sync;document.getElementById('rep').onclick=repDlg;document.getElementById('cats').onclick=catDlg;\n app.querySelectorAll('[data-f]').forEach(function(b){b.onclick=function(){CAT=b.getAttribute('data-f');render();};});\n var qi=document.getElementById('q');qi.oninput=function(){Q=qi.value;var p=qi.selectionStart;render();var x=document.getElementById('q');x.focus();try{x.setSelectionRange(p,p);}catch(z){}};\n app.querySelectorAll('[data-a]').forEach(function(el){var id=el.closest('.card').getAttribute('data-id');var r=rows().filter(function(x){return String(x.id)===id;})[0];var a=el.getAttribute('data-a');\n  el.onclick=function(){if(a==='edit')costDlg(r);else if(a==='del')delCost(r);};});}\nfunction sync(){if(BUSY)return;BUSY=true;var b=document.getElementById('qbo');b.disabled=true;b.textContent='Syncing\\u2026';\n call('/webhook/cbs-cost-qbo-sync',{}).then(function(x){BUSY=false;if(!x.ok)alert(x.message||'The QuickBooks sync did not finish.');load();});}\nfunction catOpts(cur){var O=(DATA.cats||[]).slice();if(cur&&O.indexOf(cur)<0)O.push(cur);return O.map(function(x){return '<option'+(x===cur?' selected':'')+'>'+e(x)+'</option>';}).join('');}\nfunction poOpts(cur){var P=DATA.pos||[];var h='<option value=\"\">Not linked to a PO</option>'+P.map(function(p){return '<option value=\"'+e(p.po_no)+'\"'+(p.po_no===cur?' selected':'')+'>'+e(p.po_no+' \\u2013 '+p.supplier+' ('+gbp(p.remaining)+' left)')+'</option>';}).join('');if(cur&&!P.some(function(p){return p.po_no===cur;}))h+='<option selected>'+e(cur)+'</option>';return h;}\nfunction costDlg(r){r=r||{};var qb=r.source==='QuickBooks',FILE=null;\n var o=dlg('<h2>'+(r.id?'Edit cost':'Add cost')+'</h2>'\n +(qb?'<div class=\"ai\">This cost comes from QuickBooks. The amounts update on each sync; you can change the category, PO link and notes here.</div>':(r.id?'':'<div class=\"drop\" id=\"dz\"><b>Upload the supplier bill</b><br><span class=\"m\">PDF or photo. The details are read for you to check. Or fill it in yourself below.</span></div><input type=\"file\" id=\"ff\" accept=\"application/pdf,image/jpeg,image/png\" style=\"display:none\"><div id=\"ain\"></div>'))\n +'<div class=\"row2\"><div><label class=\"f\">Date</label><input type=\"date\" id=\"cd\" value=\"'+e(r.cost_date||today())+'\"'+(qb?' disabled':'')+'></div><div><label class=\"f\">Category</label><select id=\"cc\">'+catOpts(s(r.category)||'Materials')+'</select></div></div>'\n +'<label class=\"f\">Supplier</label><input type=\"text\" id=\"cs\" list=\"supl\" value=\"'+e(r.supplier)+'\"'+(qb?' disabled':'')+'><datalist id=\"supl\">'+(DATA.suppliers||[]).map(function(x){return '<option value=\"'+e(x)+'\">';}).join('')+'</datalist>'\n +'<div class=\"row2\"><div><label class=\"f\">Invoice / ref</label><input type=\"text\" id=\"cr\" value=\"'+e(r.ref)+'\"'+(qb?' disabled':'')+'></div><div><label class=\"f\">Purchase order</label><select id=\"cp\">'+poOpts(s(r.po_no))+'</select></div></div>'\n +'<label class=\"f\">Description</label><input type=\"text\" id=\"cx\" value=\"'+e(r.description)+'\" placeholder=\"What it was for\"'+(qb?' disabled':'')+'>'\n +'<div class=\"row2\" style=\"grid-template-columns:1fr 1fr 1fr\"><div><label class=\"f\">Net (\\u00a3)</label><input type=\"number\" step=\"0.01\" id=\"cn\" value=\"'+e(r.net)+'\"'+(qb?' disabled':'')+'></div><div><label class=\"f\">VAT (\\u00a3)</label><input type=\"number\" step=\"0.01\" id=\"cv\" value=\"'+e(r.vat)+'\"'+(qb?' disabled':'')+'></div><div><label class=\"f\">Total (\\u00a3)</label><input type=\"number\" step=\"0.01\" id=\"cg\" value=\"'+e(r.gross)+'\"'+(qb?' disabled':'')+'></div></div>'\n +'<label class=\"f\">Notes</label><input type=\"text\" id=\"co\" value=\"'+e(r.notes)+'\">'\n +'<div class=\"msg\" id=\"cm\"></div><div class=\"b\"><button class=\"btn\" id=\"csv\">Save</button><button class=\"btn ghost\" id=\"cxl\">Cancel</button></div>');\n var ids=['cd','cc','cs','cr','cp','cx','cn','cv','cg','co'];function snap(){return ids.map(function(i){return o.querySelector('#'+i).value;}).join('|');}var st=snap();\n function dirty(){return !!FILE||snap()!==st;}\n guard(o,dirty);o.querySelector('#cxl').onclick=function(){if(dirty()&&!confirm('Close without saving your changes?'))return;o.close();};\n function calc(){var nv=o.querySelector('#cn').value,vv=o.querySelector('#cv').value;if(nv!=='')o.querySelector('#cg').value=(n(nv)+n(vv)).toFixed(2);}\n o.querySelector('#cn').oninput=calc;o.querySelector('#cv').oninput=calc;\n var dz=o.querySelector('#dz'),ff=o.querySelector('#ff');\n if(dz){dz.onclick=function(){ff.click();};dz.ondragover=function(ev){ev.preventDefault();dz.classList.add('on');};dz.ondragleave=function(){dz.classList.remove('on');};dz.ondrop=function(ev){ev.preventDefault();dz.classList.remove('on');if(ev.dataTransfer.files[0])take(ev.dataTransfer.files[0]);};ff.onchange=function(){if(ff.files[0])take(ff.files[0]);ff.value='';};}\n function put(id,v){var el=o.querySelector('#'+id);if(v!==''&&v!=null&&!el.value)el.value=v;}\n function take(f){if(!/pdf|jpe?g|png/i.test(f.type)){alert('Choose a PDF, JPG or PNG file.');return;}if(f.size>15*1024*1024){alert('That file is too big (15 MB max).');return;}\n  var rd=new FileReader();rd.onload=function(){FILE={name:f.name,mime:f.type,data:String(rd.result).split(',')[1]};dz.innerHTML='<b>'+e(f.name)+'</b><br><span class=\"m\">Saved to SharePoint with the cost. Tap to choose a different file.</span>';\n   var ai=o.querySelector('#ain');ai.innerHTML='<div class=\"ai\">Reading the bill\\u2026</div>';\n   call('/webhook/cbs-cost-read',{data:FILE.data,mime:FILE.mime}).then(function(x){if(!x||!x.ok){ai.innerHTML='<div class=\"ai\">Could not read the details from this file. Fill them in below.</div>';return;}\n    var b=x.bill||{};put('cd',b.date);put('cs',b.supplier);put('cr',b.invoice_no);put('cx',b.description);put('cn',b.net===''?'':Number(b.net).toFixed(2));put('cv',b.vat===''?'':Number(b.vat).toFixed(2));put('cg',b.gross===''?'':Number(b.gross).toFixed(2));\n    if(b.date)o.querySelector('#cd').value=b.date;if(b.category_guess)o.querySelector('#cc').value=b.category_guess;\n    if(b.po_ref){var sel=o.querySelector('#cp'),m=[].filter.call(sel.options,function(op){return op.value&&op.value.toLowerCase().replace(/[^a-z0-9]/g,'')===b.po_ref.toLowerCase().replace(/[^a-z0-9]/g,'');})[0];if(m)sel.value=m.value;}\n    var warn=b.job_ref&&b.job_ref!==String(JOB).replace(/[^0-9]/g,'')?' <b class=\"neg\">This bill mentions job '+e(b.job_ref)+', not job '+e(JOB)+'.</b>':'';\n    ai.innerHTML='<div class=\"ai\">Details read from the bill. <b>Check them before saving.</b>'+(b.po_ref&&!o.querySelector('#cp').value?' It quotes PO '+e(b.po_ref)+', which is not on this job.':'')+warn+'</div>';});};rd.readAsDataURL(f);}\n function go(force){var b=o.querySelector('#csv');b.disabled=true;o.querySelector('#cm').textContent='Saving\\u2026';\n  var body={a:'save',id:r.id||0,cost_date:o.querySelector('#cd').value,category:o.querySelector('#cc').value,supplier:o.querySelector('#cs').value,ref:o.querySelector('#cr').value,po_no:o.querySelector('#cp').value,description:o.querySelector('#cx').value,net:o.querySelector('#cn').value,vat:o.querySelector('#cv').value,gross:o.querySelector('#cg').value,notes:o.querySelector('#co').value,force:!!force};\n  if(FILE){body.file_name=FILE.name;body.file_data=FILE.data;}\n  post(body).then(function(x){if(x.ok){o.close();load();return;}b.disabled=false;o.querySelector('#cm').textContent='';if(x.cancel)return;if(x.dup){if(confirm(x.message))go(true);return;}o.querySelector('#cm').textContent=x.message||'Could not save.';});}\n o.querySelector('#csv').onclick=function(){go(false);};}\nfunction delCost(r){if(!confirm('Delete this cost ('+(r.supplier||r.description||'cost')+', '+gbp(r.net)+')?'))return;if(!confirm('Are you sure? This removes it from the job costs. Any bill file stays in SharePoint.'))return;\n post({a:'delete',id:r.id}).then(function(x){if(!x.ok&&!x.cancel)alert(x.message||'Could not delete.');load();});}\nfunction catDlg(){var o=dlg('<h2>Cost categories</h2><div id=\"ol\"></div><div class=\"row2\" style=\"margin-top:10px\"><input type=\"text\" id=\"on\" placeholder=\"Add a category\"><button class=\"btn ghost\" id=\"oa\">Add</button></div><div class=\"msg\" id=\"om\"></div><div class=\"b\"><button class=\"btn ghost\" id=\"ox\">Close</button></div>');\n function draw(){o.querySelector('#ol').innerHTML=(DATA.cats||[]).map(function(x){return '<div class=\"opr\"><span>'+e(x)+'</span><button class=\"btn red sm\" data-v=\"'+e(x)+'\">Remove</button></div>';}).join('');\n  o.querySelectorAll('[data-v]').forEach(function(b){b.onclick=function(){var v=b.getAttribute('data-v');if(!confirm('Are you sure you want to remove \\u201c'+v+'\\u201d? Costs already in it keep it.'))return;b.disabled=true;post({a:'opt',op:'del',value:v}).then(function(){refresh();});};});}\n function refresh(){fetch('/webhook/cbs-costs-data?job='+encodeURIComponent(JOB),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){DATA=d;draw();render();});}\n draw();o.querySelector('#ox').onclick=o.close;guard(o);\n o.querySelector('#oa').onclick=function(){var v=o.querySelector('#on').value.trim();if(!v)return;var b=this;b.disabled=true;post({a:'opt',op:'add',value:v}).then(function(x){b.disabled=false;if(x.ok){o.querySelector('#on').value='';refresh();}else if(!x.cancel)o.querySelector('#om').textContent=x.message||'Could not add.';});};}\nfunction getLogo(){if(LOGO!==null)return Promise.resolve(LOGO);return fetch('/webhook/cbs-programme-logo').then(function(r){return r.json();}).then(function(d){LOGO=(d&&d.lg)||'';return LOGO;}).catch(function(){LOGO='';return '';});}\nfunction head(doc,lg,title,W){doc.setFillColor(244,121,32);doc.rect(0,0,W,3,'F');var lx=14;if(lg){try{var pr=doc.getImageProperties(lg),hh=13,ww=pr.width*hh/pr.height;if(ww>48){ww=48;hh=pr.height*ww/pr.width;}doc.addImage(lg,'PNG',14,7,ww,hh);lx=14+ww+5;}catch(z){}}\n doc.setTextColor(30);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text(title,lx,12);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text(([D.site,D.client].filter(Boolean).join('  |  ')||'Chelmsford Building Services').slice(0,110),lx,17.5);doc.text('Chelmsford Building Services Ltd  |  '+new Date().toLocaleDateString('en-GB'),W-14,12,{align:'right'});return 28;}\nfunction foot(doc,W,HH){var np=doc.getNumberOfPages();for(var i=1;i<=np;i++){doc.setPage(i);doc.setFontSize(7.5);doc.setTextColor(120);doc.text('Job '+JOB+'  |  Page '+i+' of '+np,W-14,HH-8,{align:'right'});}}\nfunction table(doc,y,W,HH,cols,data){var tw=cols.reduce(function(m,c){return m+c.w;},0),sc=(W-28)/tw;cols.forEach(function(c){c.w*=sc;});\n function hdr(){var x=14;doc.setFillColor(244,121,32);doc.rect(14,y-4.5,W-28,7,'F');doc.setTextColor(255);doc.setFont('helvetica','bold');doc.setFontSize(8.5);cols.forEach(function(c){doc.text(c.l,c.r?x+c.w-1.5:x+1.5,y,c.r?{align:'right'}:undefined);x+=c.w;});y+=6;doc.setFont('helvetica','normal');}\n hdr();data.forEach(function(row,ri){doc.setFontSize(8.5);var L={},hg=1;cols.forEach(function(c){L[c.k]=doc.splitTextToSize(s(row[c.k]),c.w-3).slice(0,6);hg=Math.max(hg,L[c.k].length);});var rh=hg*3.8+2.5;\n  if(y+rh>HH-18){doc.addPage();y=20;hdr();}var x=14;doc.setTextColor(25);if(row._b)doc.setFont('helvetica','bold');cols.forEach(function(c){doc.text(L[c.k],c.r?x+c.w-1.5:x+1.5,y,c.r?{align:'right'}:undefined);x+=c.w;});doc.setFont('helvetica','normal');y+=rh;doc.setDrawColor(225);doc.line(14,y-3.2,W-14,y-3.2);});return y+4;}\nfunction repDlg(){var cats=Object.keys(rows().reduce(function(m,r){m[s(r.category)||'Other']=1;return m;},{})).sort();\n var o=dlg('<h2>Costing report PDF</h2><div class=\"m\">Choose what goes in the report.</div><label class=\"f\">Sections</label>'+[['sum','Summary (income, costs, committed, margin)'],['cat','Costs by category'],['pos','Purchase orders'],['list','Cost list']].map(function(c){return '<label class=\"chk\"><input type=\"checkbox\" class=\"rs\" value=\"'+c[0]+'\" checked><span>'+c[1]+'</span></label>';}).join('')\n +(cats.length?'<label class=\"f\">Categories in the cost list</label>'+cats.map(function(c){return '<label class=\"chk\"><input type=\"checkbox\" class=\"rc\" value=\"'+e(c)+'\" checked><span>'+e(c)+'</span></label>';}).join(''):'')\n +'<div class=\"b\"><button class=\"btn\" id=\"rg\">Download PDF</button><button class=\"btn ghost\" id=\"rx\">Cancel</button></div>');\n guard(o);o.querySelector('#rx').onclick=o.close;\n o.querySelector('#rg').onclick=function(){var S={};[].forEach.call(o.querySelectorAll('.rs'),function(x){S[x.value]=x.checked;});var CS=[].filter.call(o.querySelectorAll('.rc'),function(x){return x.checked;}).map(function(x){return x.value;});\n  if(!S.sum&&!S.cat&&!S.pos&&!S.list){alert('Tick at least one section.');return;}if(!window.jspdf){alert('The PDF tool did not load. Refresh and try again.');return;}\n  getLogo().then(function(lg){var doc=new window.jspdf.jsPDF({orientation:'landscape',unit:'mm',format:'a4'}),W=297,HH=210,y=head(doc,lg,'Job costing - Job '+JOB,W),T=DATA.totals||{};\n   function sec(t){if(y>HH-35){doc.addPage();y=20;}doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(30);doc.text(t,14,y);y+=7;}\n   if(S.sum){sec('Summary');y=table(doc,y,W,HH,[{k:'a',l:'',w:80},{k:'b',l:'Amount (ex VAT)',w:40,r:1}],[{a:'Contract value',b:T.contract==null?'Not set':gbp(T.contract)},{a:'Approved variations',b:gbp(T.approved)},{a:'Income',b:T.income==null?'-':gbp(T.income),_b:1},{a:'Costs to date',b:gbp(T.actual)},{a:'Committed (POs not yet billed)',b:gbp(T.committed)},{a:'Forecast cost',b:gbp(T.forecast),_b:1},{a:'Forecast margin',b:T.margin==null?'-':gbp(T.margin)+(T.marginPct!=null?' ('+T.marginPct+'%)':''),_b:1}].concat(T.pendingVar?[{a:'Variations priced or with the client (not in income)',b:gbp(T.pendingVar)}]:[]));}\n   if(S.cat){var BC=(DATA.byCat||[]).filter(function(c){return c.actual||c.committed;});if(BC.length){sec('Costs by category');y=table(doc,y,W,HH,[{k:'c',l:'Category',w:80},{k:'a',l:'Costs to date',w:40,r:1},{k:'m',l:'Committed',w:40,r:1},{k:'t',l:'Total',w:40,r:1}],BC.map(function(c){return {c:c.cat,a:gbp(c.actual),m:gbp(c.committed),t:gbp(c.actual+c.committed)};}).concat([{c:'Total',a:gbp(T.actual),m:gbp(T.committed),t:gbp(T.forecast),_b:1}]));}}\n   if(S.pos&&(DATA.pos||[]).length){sec('Purchase orders');y=table(doc,y,W,HH,[{k:'p',l:'PO',w:25},{k:'s',l:'Supplier',w:70},{k:'d',l:'Date',w:22},{k:'st',l:'Status',w:28},{k:'n',l:'PO value',w:28,r:1},{k:'b',l:'Billed',w:28,r:1},{k:'r',l:'Committed',w:28,r:1}],DATA.pos.map(function(p){return {p:p.po_no,s:p.supplier,d:dmy(p.date),st:p.status,n:gbp(p.net),b:gbp(p.billed),r:gbp(p.remaining)};}));}\n   if(S.list){var L=rows().filter(function(r){return CS.indexOf(s(r.category)||'Other')>-1;}).slice().sort(function(a,b){return s(a.cost_date).localeCompare(s(b.cost_date));});if(L.length){sec('Cost list');y=table(doc,y,W,HH,[{k:'d',l:'Date',w:20},{k:'s',l:'Supplier',w:50},{k:'r',l:'Ref',w:25},{k:'c',l:'Category',w:28},{k:'x',l:'Description',w:70},{k:'p',l:'PO',w:20},{k:'o',l:'Source',w:20},{k:'n',l:'Net',w:24,r:1}],L.map(function(r){return {d:dmy(r.cost_date),s:r.supplier,r:r.ref,c:r.category,x:r.description,p:r.po_no,o:r.source,n:gbp(r.net)};}).concat([{d:'',s:'Total',r:'',c:'',x:'',p:'',o:'',n:gbp(L.reduce(function(m,r){return m+n(r.net);},0)),_b:1}]));}}\n   foot(doc,W,HH);doc.save('Job '+JOB+' - Job costing - '+today()+'.pdf');o.close();});};}\nload();\n}\n"
+      }
+    },
+    {
+      "id": "096cdf73-0964-4612-b96d-56d2c94ec5a2",
+      "name": "Send Page",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "06b3336f-6ced-423f-9d67-1f23adb9d176",
+      "name": "Data Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        224
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-costs-data",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "a05e28a4-57ce-43a6-93c4-e737009ab702"
+    },
+    {
+      "id": "e45ca217-ad67-462c-a474-036b799f2abf",
+      "name": "Costing Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        224
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* Job costing data for one job: income (contract + approved variations), costs (bills / manual / QuickBooks),\n   committed (open POs not yet billed), totals by category, categories and the QuickBooks sync status. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>{const x=parseFloat(S(v).replace(/[^0-9.\\-]/g,''));return isNaN(x)?0:x;};\nconst r2=v=>Math.round(v*100)/100;\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nconst list=async t=>{try{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);}catch(e){return [];}};\nconst [C,P,V,J,O,SU,SB]=await Promise.all([list('jobcosts'),list('pos'),list('variations'),list('jobrows'),list('selectopts'),list('suppliers'),list('subbies')]);\nconst DEF=['Materials','Plant hire','Subcontractors','Labour','Other'];\nlet cats=O.filter(o=>S(o.reg)==='jobcosts'&&S(o.field)==='category').map(o=>S(o.value)).filter(Boolean);const custom=cats.length>0;if(!custom)cats=DEF.slice();\nlet sync=null;const so=O.filter(o=>S(o.reg)==='jobcosts'&&S(o.field)==='qbo_sync').sort((a,b)=>num(b.id)-num(a.id))[0];if(so){try{sync=JSON.parse(S(so.value));}catch(e){}}\nconst names={};SU.forEach(s=>{if(S(s.name))names[S(s.name)]=1;});SB.forEach(s=>{if(S(s.company))names[S(s.company)]=1;});\nif(!job)return [{json:{ok:true,job:'',cats:cats,catsCustom:custom,sync:sync,suppliers:Object.keys(names).sort()}}];\nconst rows=C.filter(r=>jk(r.job_no)===jk(job)).sort((a,b)=>S(b.cost_date).localeCompare(S(a.cost_date))||num(b.id)-num(a.id));\nconst jr=J.filter(r=>jk(r.ref)===jk(job)).sort((a,b)=>num(b.id)-num(a.id))[0]||null;\nconst vs=V.filter(r=>jk(r.job_no)===jk(job));\nconst contract=jr&&S(jr.contract_value)!==''?num(jr.contract_value):null;\nconst approved=r2(vs.filter(r=>S(r.status)==='Approved').reduce((m,r)=>m+num(r.cost),0));\nconst pendingVar=r2(vs.filter(r=>S(r.status)==='Submitted'||S(r.status)==='Priced').reduce((m,r)=>m+num(r.cost),0));\nconst billed={};rows.forEach(r=>{const k=S(r.po_no).toLowerCase();if(k)billed[k]=(billed[k]||0)+num(r.net);});\nconst poCat=p=>{const t=S(p.po_type);return t==='Plant'?'Plant hire':(t==='Subcontract'||/^sub:/i.test(S(p.supplier_id))?'Subcontractors':'Materials');};\nconst pos=P.filter(p=>jk(p.job_no)===jk(job)&&['Draft','Cancelled'].indexOf(S(p.status)||'Draft')<0).map(p=>{\n let net=num(p.subtotal);if(!net&&num(p.total))net=num(p.total)-num(p.vat);\n if(!net){try{net=(JSON.parse(p.lines_json||'[]')||[]).reduce((m,l)=>m+num(l.qty||1)*num(l.cost),0);}catch(e){}}\n net=r2(net);const b=r2(billed[S(p.po_no).toLowerCase()]||0);\n return {id:p.id,po_no:S(p.po_no),supplier:S(p.supplier),status:S(p.status),cat:poCat(p),net:net,billed:b,remaining:r2(Math.max(0,net-b)),date:S(p.ordered_on).slice(0,10)};});\nconst actual=r2(rows.reduce((m,r)=>m+num(r.net),0));const committed=r2(pos.reduce((m,p)=>m+p.remaining,0));\nconst income=contract==null?null:r2(contract+approved);\nconst byCat={};cats.forEach(c=>byCat[c]={cat:c,actual:0,committed:0});\nrows.forEach(r=>{const c=S(r.category)||'Other';byCat[c]=byCat[c]||{cat:c,actual:0,committed:0};byCat[c].actual=r2(byCat[c].actual+num(r.net));});\npos.forEach(p=>{const c=p.cat;byCat[c]=byCat[c]||{cat:c,actual:0,committed:0};byCat[c].committed=r2(byCat[c].committed+p.remaining);});\nconst margin=income==null?null:r2(income-actual-committed);\nconst totals={contract:contract,approved:approved,pendingVar:pendingVar,income:income,actual:actual,committed:committed,forecast:r2(actual+committed),margin:margin,marginPct:income?Math.round(1000*margin/income)/10:null,hasJob:!!jr};\nreturn [{json:{ok:true,job:job,site:S(jr&&jr.site),client:S(jr&&jr.client),rows:rows,pos:pos,byCat:Object.keys(byCat).map(k=>byCat[k]),totals:totals,cats:cats,catsCustom:custom,sync:sync,suppliers:Object.keys(names).sort()}}];\n"
+      }
+    },
+    {
+      "id": "8a0e3d7a-bf92-4436-82ea-925742990489",
+      "name": "Send Data",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        224
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "523afe05-b711-4bc8-a57c-6c56e4f7c285",
+      "name": "Act Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        528
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-cost-act",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "7a39d99a-cbef-44c4-b48c-e8d93e1b707d"
+    },
+    {
+      "id": "a9ae0688-3a47-4dc3-98f9-0befb0c984a9",
+      "name": "Cost Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        528
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* Job costs act, step 1: check the request. Deletes and category options finish here; saves carry on to the\n   SharePoint upload (when a bill file is attached) and Cost Save. */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();\nconst b=$input.first().json.body||{};const a=S(b.a),job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by).slice(0,80);\nconst R=(ok,x)=>[{json:Object.assign({op:'done',reply:Object.assign({ok:ok},x||{})})}];\nif(!by)return R(false,{message:'Enter your name.'});\nconst list=async t=>{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);};\nconst save=(t,id,row,p)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t='+t+'&id='+(id||0)+'&k='+K+(p?'&partial=1':''),body:row,json:true,timeout:20000});\nconst del=(t,id)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=del&t='+t+'&id='+id+'&k='+K,body:{},json:true,timeout:20000});\nif(a==='opt'){const val=S(b.value).slice(0,60);if(!val)return R(false,{message:'Type the category first.'});\n let O=(await list('selectopts')).filter(o=>S(o.reg)==='jobcosts'&&S(o.field)==='category');\n if(!O.length){for(const d of ['Materials','Plant hire','Subcontractors','Labour','Other']){await save('selectopts',0,{reg:'jobcosts',field:'category',value:d,added_by:by});}O=(await list('selectopts')).filter(o=>S(o.reg)==='jobcosts'&&S(o.field)==='category');}\n if(S(b.op)==='del'){const o=O.find(x=>S(x.value).toLowerCase()===val.toLowerCase());if(o)await del('selectopts',o.id);return R(true);}\n if(!O.some(x=>S(x.value).toLowerCase()===val.toLowerCase()))await save('selectopts',0,{reg:'jobcosts',field:'category',value:val,added_by:by});return R(true);}\nif(!job)return R(false,{message:'No job number.'});\nconst C=(await list('jobcosts')).filter(r=>jk(r.job_no)===jk(job));\nif(a==='delete'){const r=C.find(x=>String(x.id)===S(b.id));if(!r)return R(false,{message:'That cost was not found. Refresh the page.'});\n if(S(r.source)==='QuickBooks')return R(false,{message:'This cost comes from QuickBooks. Change or delete it in QuickBooks and it updates on the next sync.'});\n await del('jobcosts',r.id);return R(true);}\nif(a!=='save')return R(false,{message:'Unknown action.'});\nconst isD=v=>/^\\d{4}-\\d{2}-\\d{2}$/.test(S(v));\nconst money=v=>{const x=S(v).replace(/[£,\\s]/g,'');return x===''?'':(isNaN(Number(x))?null:Math.round(Number(x)*100)/100);};\nconst id=Number(b.id)||0;const old=id?C.find(x=>String(x.id)===String(id)):null;if(id&&!old)return R(false,{message:'That cost was not found. Refresh the page.'});\nconst qb=old&&S(old.source)==='QuickBooks';\nlet row;\nif(qb){row={category:S(b.category).slice(0,60)||S(old.category),po_no:S(b.po_no).slice(0,40),notes:S(b.notes).slice(0,1000)};}\nelse{\n const net=money(b.net),vat=money(b.vat),gross=money(b.gross);\n if(net===null||vat===null||gross===null)return R(false,{message:'Check the amounts - numbers only.'});\n if(net==='')return R(false,{message:'Enter the amount before VAT.'});\n if(!S(b.supplier)&&!S(b.description))return R(false,{message:'Add the supplier or a description.'});\n if(!isD(b.cost_date))return R(false,{message:'Enter the date.'});\n row={job_no:job,cost_date:S(b.cost_date),supplier:S(b.supplier).slice(0,120),ref:S(b.ref).slice(0,60),category:S(b.category).slice(0,60)||'Other',description:S(b.description).slice(0,500),net:net,vat:vat===''?0:vat,gross:gross===''?Math.round((net+(vat===''?0:vat))*100)/100:gross,po_no:S(b.po_no).slice(0,40),notes:S(b.notes).slice(0,1000)};\n if(!id){row.source=S(b.file_name)?'PDF':'Manual';row.qbo_id='';row.file_url='';row.created_by=by;row.created_at=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);}\n if(S(row.ref)&&!b.force){const dup=C.find(x=>String(x.id)!==String(id)&&S(x.ref).toLowerCase()===S(row.ref).toLowerCase()&&S(x.supplier).toLowerCase()===S(row.supplier).toLowerCase());\n  if(dup)return R(false,{dup:true,message:'Invoice '+row.ref+' from '+(row.supplier||'this supplier')+' is already on this job ('+S(dup.cost_date)+', £'+Number(dup.net||0).toFixed(2)+'). Save anyway?'});}\n}\nconst data=S(b.file_data).replace(/^data:[^,]*,/,'');const fname=S(b.file_name).replace(/[\\\\/:*?\"<>|#%]+/g,' ').replace(/\\s+/g,' ').trim().slice(0,120);\nconst out={op:'save',id:id,row:row,by:by,job:job,old:old||null,hasFile:false};\nif(data&&fname&&!qb){const mime=/\\.png$/i.test(fname)?'image/png':(/\\.jpe?g$/i.test(fname)?'image/jpeg':'application/pdf');\n const bin=await h.prepareBinaryData(Buffer.from(data,'base64'),fname,mime);out.hasFile=true;\n out.path='CBS System/Operations/Jobs/Job '+job+'/Costs/'+((row.cost_date||'')+' '+(row.supplier||'')+' '+(row.ref||'')).replace(/[\\\\/:*?\"<>|#%]+/g,' ').replace(/\\s+/g,' ').trim().slice(0,90)+(/\\.[a-z0-9]+$/i.exec(fname)||['.pdf'])[0];\n return [{json:out,binary:{data:bin}}];}\nreturn [{json:out}];\n"
+      }
+    },
+    {
+      "id": "0ec86ed6-23a0-4055-97ac-008a9a994efa",
+      "name": "Has File",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        528
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.hasFile }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "f379dc5e-27f9-414b-8d53-2617c1da47cc",
+      "name": "Upload Bill",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        672,
+        448
+      ],
+      "parameters": {
+        "method": "PUT",
+        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.path }}:/content?@microsoft.graph.conflictBehavior=rename",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "3c3d3d00-c985-4728-95b0-b716b09f4f04",
+      "name": "Cost Save",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        528
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* Job costs act, step 2: save the cost row (with the SharePoint link when a file was uploaded). */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();\nconst p=$('Cost Prep').first().json;if(p.op==='done')return [{json:p.reply}];\nlet url='';if(p.hasFile){try{const u=$('Upload Bill').first().json||{};url=S(u.webUrl);}catch(e){}if(!url)return [{json:{ok:false,message:'Could not save the file to SharePoint. Try again, or save without the file.'}}];}\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst stamp=now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16);\nconst row=Object.assign({},p.row);if(url)row.file_url=url;\nconst fmt=v=>'£'+Number(v||0).toFixed(2);\nif(p.id){const o=p.old||{};let line='Edited by '+p.by;if(row.net!==undefined&&Number(o.net)!==Number(row.net))line+=' ('+fmt(o.net)+' to '+fmt(row.net)+')';if(row.category&&row.category!==S(o.category))line+=' (category '+(S(o.category)||'none')+' to '+row.category+')';\n row.history=[S(o.history),stamp+' - '+line].filter(Boolean).join(String.fromCharCode(10));\n await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=jobcosts&id='+p.id+'&k='+K+'&partial=1',body:row,json:true,timeout:20000});return [{json:{ok:true,id:p.id}}];}\nrow.history=stamp+' - Added by '+p.by+(url?' from an uploaded bill':'');\nconst res=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=jobcosts&id=0&k='+K,body:row,json:true,timeout:20000});\nreturn [{json:{ok:true,id:res&&res.id}}];\n"
+      }
+    },
+    {
+      "id": "1137c92e-366b-485a-83bf-f8c06625641a",
+      "name": "Send Act",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        528
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "37697271-4cb2-438b-b6cf-1cfd988466a8",
+      "name": "Read Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        752
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-cost-read",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "8ef8c6d3-1201-4be4-89bc-933e6fd9d038"
+    },
+    {
+      "id": "4b19235e-c291-4a92-ad2e-5051f4f07f8e",
+      "name": "Read Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        752
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const b=$input.first().json.body||{};\nconst data=String(b.data||'').replace(/^data:[^,]*,/,'').replace(/[^A-Za-z0-9+/=]/g,'');\nconst mime=String(b.mime||'application/pdf').toLowerCase();\nif(data.length<200) return [{json:{skip:true}}];\nconst part=/pdf/.test(mime)?{type:'file',file:{filename:'bill.pdf',file_data:'data:application/pdf;base64,'+data}}:{type:'image_url',image_url:{url:'data:'+(/png/.test(mime)?'image/png':'image/jpeg')+';base64,'+data}};\nconst prompt=['This is a supplier invoice, bill or receipt sent to Chelmsford Building Services Ltd (UK building contractor).',\n'Read it and reply with ONLY a JSON object, no other text, with these keys:',\n'supplier: the supplier company that issued it (not Chelmsford Building Services)',\n'invoice_no: the invoice / bill / receipt number exactly as printed, or \"\"',\n'date: the invoice date as YYYY-MM-DD (UK source dates are DD/MM/YYYY)',\n'po_ref: a purchase order number quoted on it (often \"PO\", \"Your ref\", \"Order no\"), or \"\"',\n'job_ref: a job number of 3 to 6 digits quoted in a job, site, project or reference field, or \"\"',\n'net: total before VAT as a number, or \"\"',\n'vat: VAT amount as a number, or \"\"',\n'gross: total including VAT as a number, or \"\"',\n'category_guess: one of \"Materials\", \"Plant hire\", \"Subcontractors\", \"Labour\", \"Other\"',\n'description: a short summary of what was supplied (max 12 words)',\n'Do not guess values that are not on the document; use \"\" instead.'].join('\\n');\nreturn [{json:{skip:false,req:{model:'anthropic/claude-haiku-4.5',max_tokens:800,temperature:0,messages:[{role:'user',content:[part,{type:'text',text:prompt}]}]}}}];\n"
+      }
+    },
+    {
+      "id": "2ae56ae6-b2d1-4cc8-81e7-4ef662fce903",
+      "name": "Read Bill",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        752
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openRouterApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.skip ? { model: \"anthropic/claude-haiku-4.5\", max_tokens: 5, messages: [{ role: \"user\", content: \"ok\" }] } : $json.req) }}",
+        "options": {
+          "timeout": 90000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "5509561a-f83a-481e-8feb-21d9208eabeb",
+      "name": "Read Parse",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        752
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const r=$input.first().json||{};\nif($('Read Prep').first().json.skip===true) return [{json:{ok:false,message:'No file received'}}];\nlet txt='';try{const c=r.choices&&r.choices[0]&&r.choices[0].message&&r.choices[0].message.content;txt=Array.isArray(c)?c.map(x=>x&&x.text||'').join('\\n'):String(c||'');}catch(e){}\nconst m=txt.match(/\\{[\\s\\S]*\\}/);if(!m) return [{json:{ok:false,message:'Could not read the bill'}}];\nlet o={};try{o=JSON.parse(m[0]);}catch(e){return [{json:{ok:false,message:'Could not read the bill'}}];}\nconst S=v=>v==null?'':String(v).trim();\nconst D=v=>{v=S(v);if(/^\\d{4}-\\d{2}-\\d{2}$/.test(v))return v;const x=v.match(/^(\\d{1,2})[\\/.\\-](\\d{1,2})[\\/.\\-](\\d{2,4})$/);if(x){const y=x[3].length===2?'20'+x[3]:x[3];return y+'-'+('0'+x[2]).slice(-2)+'-'+('0'+x[1]).slice(-2);}return '';};\nconst N=v=>{if(v===''||v==null)return '';const n=parseFloat(String(v).replace(/[^0-9.\\-]/g,''));return isNaN(n)?'':Math.round(n*100)/100;};\nconst job=S(o.job_ref).replace(/[^0-9]/g,'');\nreturn [{json:{ok:true,bill:{supplier:S(o.supplier).slice(0,120),invoice_no:S(o.invoice_no).slice(0,60),date:D(o.date),po_ref:S(o.po_ref).slice(0,40),job_ref:/^\\d{3,6}$/.test(job)?job:'',net:N(o.net),vat:N(o.vat),gross:N(o.gross),category_guess:['Materials','Plant hire','Subcontractors','Labour','Other'].indexOf(S(o.category_guess))>-1?S(o.category_guess):'',description:S(o.description).slice(0,200)}}}];\n"
+      }
+    },
+    {
+      "id": "d2cf0a80-e927-4cef-9d2a-6696a6e68afc",
+      "name": "Send Read",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        752
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "c26674a9-93c5-4f64-a58f-0dd3360412d9",
+      "name": "Sync Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        976
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-cost-qbo-sync",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "94290f7e-11b9-4b7b-ab24-31b265d6ced1"
+    },
+    {
+      "id": "e28f68c9-b1e9-4e3e-a34a-220df418a731",
+      "name": "QBO Sync",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        1072
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* Sync QuickBooks button: runs CBS - QuickBooks Sync (cbs-qbo-run). That workflow stays unpublished until a\n   QuickBooks Online login is connected in n8n, so until then this records and returns \"not connected yet\". */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();\nlet r=null,err='';\ntry{r=await h.httpRequest({method:'POST',url:H+'cbs-qbo-run',body:{},json:true,timeout:240000});}catch(e){err=String(e.message||e);}\nif(r&&typeof r==='object'&&r.ok!==undefined)return [{json:r}];\nconst msg=/404|not registered|not found/i.test(err)||!err?'QuickBooks is not connected yet.':'The QuickBooks sync did not finish: '+err.slice(0,160);\ntry{const now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\n const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=selectopts',body:{},json:true,timeout:30000});\n for(const x of (Array.isArray(L)?L:[]).filter(x=>S(x.reg)==='jobcosts'&&S(x.field)==='qbo_sync'))await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=del&t=selectopts&id='+x.id+'&k='+K,body:{},json:true,timeout:20000});\n await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=selectopts&id=0&k='+K,body:{reg:'jobcosts',field:'qbo_sync',value:JSON.stringify({at:now,ok:false,message:msg}),added_by:'QuickBooks sync'},json:true,timeout:20000});}catch(e){}\nreturn [{json:{ok:false,message:msg}}];\n"
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "b9dca8f3-9a27-4a5d-927e-66d65e9e9824",
+      "name": "Send Sync",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        1072
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      },
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "9e0c0dfd-0570-4ad1-964f-03bbff4fe384",
+        "name": "Page Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-costs",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "fe02b47a-0524-4b37-ae52-96a18261bc67"
+      },
+      {
+        "id": "bbce4a36-7dac-4021-a2b6-656825e0e171",
+        "name": "Costing Page",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* CBS job costing page (admin): cbs-costs?job=N. Data from cbs-costs-data, saves to cbs-cost-act, bills read by cbs-cost-read, QuickBooks via cbs-cost-qbo-sync. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v);const e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nlet info={};if(job){try{info=await h.httpRequest({url:H+'cbs-sm8-job?no='+encodeURIComponent(job),json:true,timeout:15000})||{};}catch(x){info={};}}\nconst D={job:job,site:S(info.site),client:S(info.client)};\nconst CSS='*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n+'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n+'.wrap{max-width:860px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}'\n+'.btn{background:#F47920;color:#fff;text-decoration:none;font-weight:600;border-radius:8px;padding:8px 14px;font-size:14px;border:0;font-family:inherit;cursor:pointer}.btn.ghost{background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}.btn.sm{padding:6px 10px;font-size:13px}.btn:disabled{opacity:.5}.btn.red{background:#fff;color:#b3261e;border:1px solid #e9b6b1}'\n+'.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}.pst{background:#fff;border:1px solid #d9d9d6;border-radius:10px;padding:8px 6px;text-align:center}.pst b{display:block;font-size:18px;line-height:1.2}.pst span{font-size:12px;color:#555}.pst.ed{cursor:pointer}.pst.ed:hover{border-color:#F47920}.pst.ok{border-color:#b9dfc1;background:#f1faf2}.pst.warn{border-color:#f2d398;background:#fff8ea}@media(max-width:560px){.strip{grid-template-columns:repeat(2,1fr)}}'\n+'.flt{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.flt button{border:1px solid #d9d9d6;background:#fff;border-radius:20px;padding:5px 11px;font:inherit;font-size:13px;cursor:pointer}.flt button.on{background:#F47920;color:#fff;border-color:#F47920}.srch{width:100%;font:inherit;padding:10px 12px;border:1px solid #ccc;border-radius:10px;margin-bottom:10px}'\n+'.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;margin-bottom:10px;padding:12px 14px}.t{font-weight:600}.m{color:#555;font-size:14px;margin-top:2px}.ds{white-space:pre-wrap;font-size:14px;margin-top:6px;color:#333}.b{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center}.amt{float:right;font-weight:700}'\n+'.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:20px;padding:1px 8px;margin-left:6px;background:#eee;color:#333;vertical-align:middle}.tag.Raised{background:#eee}.tag.Priced{background:#e6efff;color:#1f5fbf}.tag.Submitted{background:#fff1d6;color:#8a5a00}.tag.Approved{background:#e3f4e6;color:#1d6b2c}.tag.Rejected{background:#fde3e1;color:#b3261e}'\n+'select.st{font:inherit;font-size:13px;padding:5px 6px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}'\n+'.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}'\n+'.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;overflow:auto;z-index:20}.dlg{background:#fff;border-radius:14px;max-width:560px;width:100%;padding:16px}.dlg h2{margin:0 0 10px;font-size:18px}'\n+'label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}.dlg input[type=text],.dlg input[type=date],.dlg input[type=number],.dlg textarea,.dlg select{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}.dlg textarea{min-height:90px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}'\n+'.chk{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid #eee}.chk input{width:20px;height:20px;flex:0 0 auto}.note{font-size:13px;color:#6b6e70;margin-top:6px}.hist{white-space:pre-wrap;font-size:12px;color:#6b6e70;margin-top:8px}.msg{font-size:14px;color:#8a5a00;margin-top:8px;min-height:18px}'\n+'.opr{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid #eee}.opr span{flex:1}'\n+'table.ct{width:100%;border-collapse:collapse;background:#fff;border:1px solid #d9d9d6;border-radius:12px;overflow:hidden;font-size:14px;margin-bottom:12px}table.ct th,table.ct td{padding:8px 10px;border-bottom:1px solid #eee;text-align:left}table.ct th{font-size:12px;color:#555;background:#fafaf8}table.ct td.n,table.ct th.n{text-align:right;white-space:nowrap}table.ct tr.tot td{font-weight:700;background:#fafaf8}'\n+'.drop{border:2px dashed #ccc;border-radius:12px;padding:16px;text-align:center;background:#fafaf8;cursor:pointer;margin-bottom:6px}.drop.on{border-color:#F47920;background:#fff7f0}.ai{background:#fff7f0;border:1px solid #f7c9a3;border-radius:8px;padding:8px 10px;font-size:14px;margin:8px 0}.neg{color:#b3261e}.pos{color:#1d6b2c}.src{font-size:11px;font-weight:700;border-radius:20px;padding:1px 7px;margin-left:6px;background:#eef2f7;color:#3b4b63;vertical-align:middle}.wrapx{overflow-x:auto}';\nconst nav='<div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a>'+(job?'<a class=\"hub\" href=\"/webhook/cbs-job-file?job='+encodeURIComponent(job)+'\">Job File</a>':'')+'</div>';\nconst sub=e([D.site,D.client].filter(Boolean).join(' \\u00b7 ')||'Chelmsford Building Services');\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Job costing - Job '+e(job)+'</title><script src=\"/webhook/cbs-guard\"></script><style>'+CSS+'</style><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script></head><body><header>'+nav+'<h1>Job costing'+(job?' \\u00b7 Job '+e(job):'')+'</h1><p>'+sub+'</p></header><div class=\"wrap\" id=\"app\">'+(job?'<div class=\"empty\">Loading\\u2026</div>':'<div class=\"empty\">Open job costing from a job.</div>')+'</div><script>window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+';</script>'+(job?'<script>('+client.toString()+')();</script>':'')+'</body></html>';\nreturn [{json:{html:html}}];\n\nfunction client(){\nvar D=window.D,JOB=D.job,app=document.getElementById('app'),DATA=null,CAT='all',Q='',LOGO=null,BUSY=false;\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction n(v){var x=parseFloat(s(v).replace(/[^0-9.\\-]/g,''));return isNaN(x)?0:x;}\nfunction gbp(v){var neg=n(v)<0;return (neg?'-':'')+'\\u00a3'+Math.abs(n(v)).toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g,',');}\nfunction dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:s(d);}\nfunction today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction who(){var x='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)x=m.name;}catch(z){}if(!x){try{x=localStorage.getItem('cbs_name')||'';}catch(z){}}if(!x){x=(prompt('Your name:')||'').trim();if(x){try{localStorage.setItem('cbs_name',x);}catch(z){}}}return x;}\nfunction call(url,body){return fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw 0;return r.json();}).catch(function(){return {ok:false,message:'Could not reach the hub. Check your connection and try again.'};});}\nfunction post(body){var by=who();if(!by)return Promise.resolve({ok:false,cancel:true});body.job=JOB;body.by=by;return call('/webhook/cbs-cost-act',body);}\nfunction load(){return fetch('/webhook/cbs-costs-data?job='+encodeURIComponent(JOB),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){DATA=d;if(!D.site&&d.site){D.site=d.site;D.client=d.client;var hp=document.querySelector('header p');if(hp)hp.textContent=[d.site,d.client].filter(Boolean).join(' \\u00b7 ');}render();}).catch(function(){app.innerHTML='<div class=\"empty\">Could not load the job costs. Refresh to try again.</div>';});}\nfunction dlg(html){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg\">'+html+'</div>';document.body.appendChild(o);o.close=function(){o.remove();};return o;}\nfunction guard(o,isDirty){o.addEventListener('click',function(ev){if(ev.target!==o)return;if(isDirty&&isDirty()&&!confirm('Close without saving your changes?'))return;o.close();});}\nfunction rows(){return (DATA&&DATA.rows)||[];}\nfunction vis(){var q=Q.toLowerCase();return rows().filter(function(r){if(CAT!=='all'&&s(r.category)!==CAT)return false;if(!q)return true;return [r.supplier,r.ref,r.description,r.po_no,r.notes,r.category].join(' ').toLowerCase().indexOf(q)>-1;});}\nfunction syncLine(){var x=DATA.sync;if(!x)return 'QuickBooks has not been synced yet.';return (x.ok?'QuickBooks last synced ':'QuickBooks sync ')+dmy(x.at)+' '+s(x.at).slice(11,16)+' \\u2013 '+e(x.message||'');}\nfunction render(){var T=DATA.totals||{},h='';\n h+='<div class=\"strip\"><div class=\"pst\"><b>'+(T.income==null?'Set value':gbp(T.income))+'</b><span>Income'+(T.approved?' (incl. '+gbp(T.approved)+' variations)':'')+'</span></div><div class=\"pst\"><b>'+gbp(T.actual)+'</b><span>Costs to date</span></div><div class=\"pst\"><b>'+gbp(T.committed)+'</b><span>Committed (POs not billed)</span></div><div class=\"pst '+(T.margin==null?'':(T.margin<0?'warn':'ok'))+'\"><b class=\"'+(T.margin!=null&&T.margin<0?'neg':'')+'\">'+(T.margin==null?'\\u2013':gbp(T.margin))+'</b><span>Forecast margin'+(T.marginPct!=null?' ('+T.marginPct+'%)':'')+'</span></div></div>';\n if(T.income==null)h+='<p class=\"m\" style=\"margin:-4px 0 10px\">Set the contract value on the <a href=\"/webhook/cbs-variations?job='+encodeURIComponent(JOB)+'\">Variations</a> page to see the margin.</p>';\n if(T.pendingVar)h+='<p class=\"m\" style=\"margin:-4px 0 10px\">'+gbp(T.pendingVar)+' of variations are priced or with the client and not included in income yet.</p>';\n h+='<div class=\"tools\"><button class=\"btn\" id=\"add\">+ Add cost</button><button class=\"btn ghost\" id=\"qbo\">Sync QuickBooks</button><button class=\"btn ghost\" id=\"rep\">Costing report PDF</button><button class=\"btn ghost\" id=\"cats\">Categories</button></div><p class=\"m\" id=\"syncl\" style=\"margin:-4px 0 12px\">'+syncLine()+'</p>';\n var BC=(DATA.byCat||[]).filter(function(c){return c.actual||c.committed;});\n if(BC.length){h+='<div class=\"wrapx\"><table class=\"ct\"><tr><th>Category</th><th class=\"n\">Costs to date</th><th class=\"n\">Committed</th><th class=\"n\">Total</th></tr>'+BC.map(function(c){return '<tr><td>'+e(c.cat)+'</td><td class=\"n\">'+gbp(c.actual)+'</td><td class=\"n\">'+gbp(c.committed)+'</td><td class=\"n\">'+gbp(c.actual+c.committed)+'</td></tr>';}).join('')+'<tr class=\"tot\"><td>Total</td><td class=\"n\">'+gbp(T.actual)+'</td><td class=\"n\">'+gbp(T.committed)+'</td><td class=\"n\">'+gbp(T.forecast)+'</td></tr></table></div>';}\n var OP=(DATA.pos||[]).filter(function(p){return p.remaining>0;});\n if((DATA.pos||[]).length)h+='<details style=\"margin-bottom:12px\"><summary class=\"t\" style=\"cursor:pointer\">Purchase orders on this job ('+DATA.pos.length+(OP.length?', '+OP.length+' not fully billed':'')+')</summary><div class=\"wrapx\"><table class=\"ct\" style=\"margin-top:8px\"><tr><th>PO</th><th>Supplier</th><th>Status</th><th class=\"n\">PO value</th><th class=\"n\">Billed</th><th class=\"n\">Committed</th></tr>'+DATA.pos.map(function(p){return '<tr><td>'+e(p.po_no)+'</td><td>'+e(p.supplier)+'</td><td>'+e(p.status)+'</td><td class=\"n\">'+gbp(p.net)+'</td><td class=\"n\">'+gbp(p.billed)+'</td><td class=\"n\">'+gbp(p.remaining)+'</td></tr>';}).join('')+'</table></div><p class=\"m\">Committed is the part of each PO not yet matched by a bill. Link a bill to its PO so it is not counted twice.</p></details>';\n var CC={};rows().forEach(function(r){var c=s(r.category)||'Other';CC[c]=(CC[c]||0)+1;});\n h+='<div class=\"flt\">'+[['all','All',rows().length]].concat(Object.keys(CC).sort().map(function(k){return [k,k,CC[k]];})).map(function(f){return '<button data-f=\"'+e(f[0])+'\" class=\"'+(CAT===f[0]?'on':'')+'\">'+e(f[1])+' ('+f[2]+')</button>';}).join('')+'</div>';\n h+='<input class=\"srch\" id=\"q\" placeholder=\"Search costs\" value=\"'+e(Q)+'\">';\n var L=vis();\n if(!rows().length)h+='<div class=\"empty\">No costs on this job yet. Add a supplier bill, or sync QuickBooks.</div>';else if(!L.length)h+='<div class=\"empty\">Nothing matches.</div>';\n L.forEach(function(r){h+='<div class=\"card\" data-id=\"'+r.id+'\"><div class=\"t\">'+e(r.supplier||r.description||'Cost')+(r.ref?' \\u00b7 '+e(r.ref):'')+'<span class=\"src\">'+e(r.source||'Manual')+'</span><span class=\"amt\">'+gbp(r.net)+'</span></div>'\n  +'<div class=\"m\">'+[dmy(r.cost_date),e(r.category||'Other'),r.po_no?'PO '+e(r.po_no):'','VAT '+gbp(r.vat),'total '+gbp(r.gross)].filter(Boolean).join(' \\u00b7 ')+'</div>'\n  +(r.description&&r.supplier?'<div class=\"ds\">'+e(r.description)+'</div>':'')+(r.notes?'<div class=\"m\">'+e(r.notes)+'</div>':'')\n  +'<div class=\"b\"><button class=\"btn ghost sm\" data-a=\"edit\">Edit</button>'+(r.file_url?'<a class=\"btn ghost sm\" href=\"'+e(r.file_url)+'\" target=\"_blank\" rel=\"noopener\">View bill</a>':'')+(r.source!=='QuickBooks'?'<button class=\"btn red sm\" data-a=\"del\">Delete</button>':'')+'</div>'\n  +(r.history?'<details><summary class=\"m\" style=\"cursor:pointer\">History</summary><div class=\"hist\">'+e(r.history)+'</div></details>':'')+'</div>';});\n app.innerHTML=h;\n document.getElementById('add').onclick=function(){costDlg(null);};document.getElementById('qbo').onclick=sync;document.getElementById('rep').onclick=repDlg;document.getElementById('cats').onclick=catDlg;\n app.querySelectorAll('[data-f]').forEach(function(b){b.onclick=function(){CAT=b.getAttribute('data-f');render();};});\n var qi=document.getElementById('q');qi.oninput=function(){Q=qi.value;var p=qi.selectionStart;render();var x=document.getElementById('q');x.focus();try{x.setSelectionRange(p,p);}catch(z){}};\n app.querySelectorAll('[data-a]').forEach(function(el){var id=el.closest('.card').getAttribute('data-id');var r=rows().filter(function(x){return String(x.id)===id;})[0];var a=el.getAttribute('data-a');\n  el.onclick=function(){if(a==='edit')costDlg(r);else if(a==='del')delCost(r);};});}\nfunction sync(){if(BUSY)return;BUSY=true;var b=document.getElementById('qbo');b.disabled=true;b.textContent='Syncing\\u2026';\n call('/webhook/cbs-cost-qbo-sync',{}).then(function(x){BUSY=false;if(!x.ok)alert(x.message||'The QuickBooks sync did not finish.');load();});}\nfunction catOpts(cur){var O=(DATA.cats||[]).slice();if(cur&&O.indexOf(cur)<0)O.push(cur);return O.map(function(x){return '<option'+(x===cur?' selected':'')+'>'+e(x)+'</option>';}).join('');}\nfunction poOpts(cur){var P=DATA.pos||[];var h='<option value=\"\">Not linked to a PO</option>'+P.map(function(p){return '<option value=\"'+e(p.po_no)+'\"'+(p.po_no===cur?' selected':'')+'>'+e(p.po_no+' \\u2013 '+p.supplier+' ('+gbp(p.remaining)+' left)')+'</option>';}).join('');if(cur&&!P.some(function(p){return p.po_no===cur;}))h+='<option selected>'+e(cur)+'</option>';return h;}\nfunction costDlg(r){r=r||{};var qb=r.source==='QuickBooks',FILE=null;\n var o=dlg('<h2>'+(r.id?'Edit cost':'Add cost')+'</h2>'\n +(qb?'<div class=\"ai\">This cost comes from QuickBooks. The amounts update on each sync; you can change the category, PO link and notes here.</div>':(r.id?'':'<div class=\"drop\" id=\"dz\"><b>Upload the supplier bill</b><br><span class=\"m\">PDF or photo. The details are read for you to check. Or fill it in yourself below.</span></div><input type=\"file\" id=\"ff\" accept=\"application/pdf,image/jpeg,image/png\" style=\"display:none\"><div id=\"ain\"></div>'))\n +'<div class=\"row2\"><div><label class=\"f\">Date</label><input type=\"date\" id=\"cd\" value=\"'+e(r.cost_date||today())+'\"'+(qb?' disabled':'')+'></div><div><label class=\"f\">Category</label><select id=\"cc\">'+catOpts(s(r.category)||'Materials')+'</select></div></div>'\n +'<label class=\"f\">Supplier</label><input type=\"text\" id=\"cs\" list=\"supl\" value=\"'+e(r.supplier)+'\"'+(qb?' disabled':'')+'><datalist id=\"supl\">'+(DATA.suppliers||[]).map(function(x){return '<option value=\"'+e(x)+'\">';}).join('')+'</datalist>'\n +'<div class=\"row2\"><div><label class=\"f\">Invoice / ref</label><input type=\"text\" id=\"cr\" value=\"'+e(r.ref)+'\"'+(qb?' disabled':'')+'></div><div><label class=\"f\">Purchase order</label><select id=\"cp\">'+poOpts(s(r.po_no))+'</select></div></div>'\n +'<label class=\"f\">Description</label><input type=\"text\" id=\"cx\" value=\"'+e(r.description)+'\" placeholder=\"What it was for\"'+(qb?' disabled':'')+'>'\n +'<div class=\"row2\" style=\"grid-template-columns:1fr 1fr 1fr\"><div><label class=\"f\">Net (\\u00a3)</label><input type=\"number\" step=\"0.01\" id=\"cn\" value=\"'+e(r.net)+'\"'+(qb?' disabled':'')+'></div><div><label class=\"f\">VAT (\\u00a3)</label><input type=\"number\" step=\"0.01\" id=\"cv\" value=\"'+e(r.vat)+'\"'+(qb?' disabled':'')+'></div><div><label class=\"f\">Total (\\u00a3)</label><input type=\"number\" step=\"0.01\" id=\"cg\" value=\"'+e(r.gross)+'\"'+(qb?' disabled':'')+'></div></div>'\n +'<label class=\"f\">Notes</label><input type=\"text\" id=\"co\" value=\"'+e(r.notes)+'\">'\n +'<div class=\"msg\" id=\"cm\"></div><div class=\"b\"><button class=\"btn\" id=\"csv\">Save</button><button class=\"btn ghost\" id=\"cxl\">Cancel</button></div>');\n var ids=['cd','cc','cs','cr','cp','cx','cn','cv','cg','co'];function snap(){return ids.map(function(i){return o.querySelector('#'+i).value;}).join('|');}var st=snap();\n function dirty(){return !!FILE||snap()!==st;}\n guard(o,dirty);o.querySelector('#cxl').onclick=function(){if(dirty()&&!confirm('Close without saving your changes?'))return;o.close();};\n function calc(){var nv=o.querySelector('#cn').value,vv=o.querySelector('#cv').value;if(nv!=='')o.querySelector('#cg').value=(n(nv)+n(vv)).toFixed(2);}\n o.querySelector('#cn').oninput=calc;o.querySelector('#cv').oninput=calc;\n var dz=o.querySelector('#dz'),ff=o.querySelector('#ff');\n if(dz){dz.onclick=function(){ff.click();};dz.ondragover=function(ev){ev.preventDefault();dz.classList.add('on');};dz.ondragleave=function(){dz.classList.remove('on');};dz.ondrop=function(ev){ev.preventDefault();dz.classList.remove('on');if(ev.dataTransfer.files[0])take(ev.dataTransfer.files[0]);};ff.onchange=function(){if(ff.files[0])take(ff.files[0]);ff.value='';};}\n function put(id,v){var el=o.querySelector('#'+id);if(v!==''&&v!=null&&!el.value)el.value=v;}\n function take(f){if(!/pdf|jpe?g|png/i.test(f.type)){alert('Choose a PDF, JPG or PNG file.');return;}if(f.size>15*1024*1024){alert('That file is too big (15 MB max).');return;}\n  var rd=new FileReader();rd.onload=function(){FILE={name:f.name,mime:f.type,data:String(rd.result).split(',')[1]};dz.innerHTML='<b>'+e(f.name)+'</b><br><span class=\"m\">Saved to SharePoint with the cost. Tap to choose a different file.</span>';\n   var ai=o.querySelector('#ain');ai.innerHTML='<div class=\"ai\">Reading the bill\\u2026</div>';\n   call('/webhook/cbs-cost-read',{data:FILE.data,mime:FILE.mime}).then(function(x){if(!x||!x.ok){ai.innerHTML='<div class=\"ai\">Could not read the details from this file. Fill them in below.</div>';return;}\n    var b=x.bill||{};put('cd',b.date);put('cs',b.supplier);put('cr',b.invoice_no);put('cx',b.description);put('cn',b.net===''?'':Number(b.net).toFixed(2));put('cv',b.vat===''?'':Number(b.vat).toFixed(2));put('cg',b.gross===''?'':Number(b.gross).toFixed(2));\n    if(b.date)o.querySelector('#cd').value=b.date;if(b.category_guess)o.querySelector('#cc').value=b.category_guess;\n    if(b.po_ref){var sel=o.querySelector('#cp'),m=[].filter.call(sel.options,function(op){return op.value&&op.value.toLowerCase().replace(/[^a-z0-9]/g,'')===b.po_ref.toLowerCase().replace(/[^a-z0-9]/g,'');})[0];if(m)sel.value=m.value;}\n    var warn=b.job_ref&&b.job_ref!==String(JOB).replace(/[^0-9]/g,'')?' <b class=\"neg\">This bill mentions job '+e(b.job_ref)+', not job '+e(JOB)+'.</b>':'';\n    ai.innerHTML='<div class=\"ai\">Details read from the bill. <b>Check them before saving.</b>'+(b.po_ref&&!o.querySelector('#cp').value?' It quotes PO '+e(b.po_ref)+', which is not on this job.':'')+warn+'</div>';});};rd.readAsDataURL(f);}\n function go(force){var b=o.querySelector('#csv');b.disabled=true;o.querySelector('#cm').textContent='Saving\\u2026';\n  var body={a:'save',id:r.id||0,cost_date:o.querySelector('#cd').value,category:o.querySelector('#cc').value,supplier:o.querySelector('#cs').value,ref:o.querySelector('#cr').value,po_no:o.querySelector('#cp').value,description:o.querySelector('#cx').value,net:o.querySelector('#cn').value,vat:o.querySelector('#cv').value,gross:o.querySelector('#cg').value,notes:o.querySelector('#co').value,force:!!force};\n  if(FILE){body.file_name=FILE.name;body.file_data=FILE.data;}\n  post(body).then(function(x){if(x.ok){o.close();load();return;}b.disabled=false;o.querySelector('#cm').textContent='';if(x.cancel)return;if(x.dup){if(confirm(x.message))go(true);return;}o.querySelector('#cm').textContent=x.message||'Could not save.';});}\n o.querySelector('#csv').onclick=function(){go(false);};}\nfunction delCost(r){if(!confirm('Delete this cost ('+(r.supplier||r.description||'cost')+', '+gbp(r.net)+')?'))return;if(!confirm('Are you sure? This removes it from the job costs. Any bill file stays in SharePoint.'))return;\n post({a:'delete',id:r.id}).then(function(x){if(!x.ok&&!x.cancel)alert(x.message||'Could not delete.');load();});}\nfunction catDlg(){var o=dlg('<h2>Cost categories</h2><div id=\"ol\"></div><div class=\"row2\" style=\"margin-top:10px\"><input type=\"text\" id=\"on\" placeholder=\"Add a category\"><button class=\"btn ghost\" id=\"oa\">Add</button></div><div class=\"msg\" id=\"om\"></div><div class=\"b\"><button class=\"btn ghost\" id=\"ox\">Close</button></div>');\n function draw(){o.querySelector('#ol').innerHTML=(DATA.cats||[]).map(function(x){return '<div class=\"opr\"><span>'+e(x)+'</span><button class=\"btn red sm\" data-v=\"'+e(x)+'\">Remove</button></div>';}).join('');\n  o.querySelectorAll('[data-v]').forEach(function(b){b.onclick=function(){var v=b.getAttribute('data-v');if(!confirm('Are you sure you want to remove \\u201c'+v+'\\u201d? Costs already in it keep it.'))return;b.disabled=true;post({a:'opt',op:'del',value:v}).then(function(){refresh();});};});}\n function refresh(){fetch('/webhook/cbs-costs-data?job='+encodeURIComponent(JOB),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){DATA=d;draw();render();});}\n draw();o.querySelector('#ox').onclick=o.close;guard(o);\n o.querySelector('#oa').onclick=function(){var v=o.querySelector('#on').value.trim();if(!v)return;var b=this;b.disabled=true;post({a:'opt',op:'add',value:v}).then(function(x){b.disabled=false;if(x.ok){o.querySelector('#on').value='';refresh();}else if(!x.cancel)o.querySelector('#om').textContent=x.message||'Could not add.';});};}\nfunction getLogo(){if(LOGO!==null)return Promise.resolve(LOGO);return fetch('/webhook/cbs-programme-logo').then(function(r){return r.json();}).then(function(d){LOGO=(d&&d.lg)||'';return LOGO;}).catch(function(){LOGO='';return '';});}\nfunction head(doc,lg,title,W){doc.setFillColor(244,121,32);doc.rect(0,0,W,3,'F');var lx=14;if(lg){try{var pr=doc.getImageProperties(lg),hh=13,ww=pr.width*hh/pr.height;if(ww>48){ww=48;hh=pr.height*ww/pr.width;}doc.addImage(lg,'PNG',14,7,ww,hh);lx=14+ww+5;}catch(z){}}\n doc.setTextColor(30);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text(title,lx,12);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text(([D.site,D.client].filter(Boolean).join('  |  ')||'Chelmsford Building Services').slice(0,110),lx,17.5);doc.text('Chelmsford Building Services Ltd  |  '+new Date().toLocaleDateString('en-GB'),W-14,12,{align:'right'});return 28;}\nfunction foot(doc,W,HH){var np=doc.getNumberOfPages();for(var i=1;i<=np;i++){doc.setPage(i);doc.setFontSize(7.5);doc.setTextColor(120);doc.text('Job '+JOB+'  |  Page '+i+' of '+np,W-14,HH-8,{align:'right'});}}\nfunction table(doc,y,W,HH,cols,data){var tw=cols.reduce(function(m,c){return m+c.w;},0),sc=(W-28)/tw;cols.forEach(function(c){c.w*=sc;});\n function hdr(){var x=14;doc.setFillColor(244,121,32);doc.rect(14,y-4.5,W-28,7,'F');doc.setTextColor(255);doc.setFont('helvetica','bold');doc.setFontSize(8.5);cols.forEach(function(c){doc.text(c.l,c.r?x+c.w-1.5:x+1.5,y,c.r?{align:'right'}:undefined);x+=c.w;});y+=6;doc.setFont('helvetica','normal');}\n hdr();data.forEach(function(row,ri){doc.setFontSize(8.5);var L={},hg=1;cols.forEach(function(c){L[c.k]=doc.splitTextToSize(s(row[c.k]),c.w-3).slice(0,6);hg=Math.max(hg,L[c.k].length);});var rh=hg*3.8+2.5;\n  if(y+rh>HH-18){doc.addPage();y=20;hdr();}var x=14;doc.setTextColor(25);if(row._b)doc.setFont('helvetica','bold');cols.forEach(function(c){doc.text(L[c.k],c.r?x+c.w-1.5:x+1.5,y,c.r?{align:'right'}:undefined);x+=c.w;});doc.setFont('helvetica','normal');y+=rh;doc.setDrawColor(225);doc.line(14,y-3.2,W-14,y-3.2);});return y+4;}\nfunction repDlg(){var cats=Object.keys(rows().reduce(function(m,r){m[s(r.category)||'Other']=1;return m;},{})).sort();\n var o=dlg('<h2>Costing report PDF</h2><div class=\"m\">Choose what goes in the report.</div><label class=\"f\">Sections</label>'+[['sum','Summary (income, costs, committed, margin)'],['cat','Costs by category'],['pos','Purchase orders'],['list','Cost list']].map(function(c){return '<label class=\"chk\"><input type=\"checkbox\" class=\"rs\" value=\"'+c[0]+'\" checked><span>'+c[1]+'</span></label>';}).join('')\n +(cats.length?'<label class=\"f\">Categories in the cost list</label>'+cats.map(function(c){return '<label class=\"chk\"><input type=\"checkbox\" class=\"rc\" value=\"'+e(c)+'\" checked><span>'+e(c)+'</span></label>';}).join(''):'')\n +'<div class=\"b\"><button class=\"btn\" id=\"rg\">Download PDF</button><button class=\"btn ghost\" id=\"rx\">Cancel</button></div>');\n guard(o);o.querySelector('#rx').onclick=o.close;\n o.querySelector('#rg').onclick=function(){var S={};[].forEach.call(o.querySelectorAll('.rs'),function(x){S[x.value]=x.checked;});var CS=[].filter.call(o.querySelectorAll('.rc'),function(x){return x.checked;}).map(function(x){return x.value;});\n  if(!S.sum&&!S.cat&&!S.pos&&!S.list){alert('Tick at least one section.');return;}if(!window.jspdf){alert('The PDF tool did not load. Refresh and try again.');return;}\n  getLogo().then(function(lg){var doc=new window.jspdf.jsPDF({orientation:'landscape',unit:'mm',format:'a4'}),W=297,HH=210,y=head(doc,lg,'Job costing - Job '+JOB,W),T=DATA.totals||{};\n   function sec(t){if(y>HH-35){doc.addPage();y=20;}doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(30);doc.text(t,14,y);y+=7;}\n   if(S.sum){sec('Summary');y=table(doc,y,W,HH,[{k:'a',l:'',w:80},{k:'b',l:'Amount (ex VAT)',w:40,r:1}],[{a:'Contract value',b:T.contract==null?'Not set':gbp(T.contract)},{a:'Approved variations',b:gbp(T.approved)},{a:'Income',b:T.income==null?'-':gbp(T.income),_b:1},{a:'Costs to date',b:gbp(T.actual)},{a:'Committed (POs not yet billed)',b:gbp(T.committed)},{a:'Forecast cost',b:gbp(T.forecast),_b:1},{a:'Forecast margin',b:T.margin==null?'-':gbp(T.margin)+(T.marginPct!=null?' ('+T.marginPct+'%)':''),_b:1}].concat(T.pendingVar?[{a:'Variations priced or with the client (not in income)',b:gbp(T.pendingVar)}]:[]));}\n   if(S.cat){var BC=(DATA.byCat||[]).filter(function(c){return c.actual||c.committed;});if(BC.length){sec('Costs by category');y=table(doc,y,W,HH,[{k:'c',l:'Category',w:80},{k:'a',l:'Costs to date',w:40,r:1},{k:'m',l:'Committed',w:40,r:1},{k:'t',l:'Total',w:40,r:1}],BC.map(function(c){return {c:c.cat,a:gbp(c.actual),m:gbp(c.committed),t:gbp(c.actual+c.committed)};}).concat([{c:'Total',a:gbp(T.actual),m:gbp(T.committed),t:gbp(T.forecast),_b:1}]));}}\n   if(S.pos&&(DATA.pos||[]).length){sec('Purchase orders');y=table(doc,y,W,HH,[{k:'p',l:'PO',w:25},{k:'s',l:'Supplier',w:70},{k:'d',l:'Date',w:22},{k:'st',l:'Status',w:28},{k:'n',l:'PO value',w:28,r:1},{k:'b',l:'Billed',w:28,r:1},{k:'r',l:'Committed',w:28,r:1}],DATA.pos.map(function(p){return {p:p.po_no,s:p.supplier,d:dmy(p.date),st:p.status,n:gbp(p.net),b:gbp(p.billed),r:gbp(p.remaining)};}));}\n   if(S.list){var L=rows().filter(function(r){return CS.indexOf(s(r.category)||'Other')>-1;}).slice().sort(function(a,b){return s(a.cost_date).localeCompare(s(b.cost_date));});if(L.length){sec('Cost list');y=table(doc,y,W,HH,[{k:'d',l:'Date',w:20},{k:'s',l:'Supplier',w:50},{k:'r',l:'Ref',w:25},{k:'c',l:'Category',w:28},{k:'x',l:'Description',w:70},{k:'p',l:'PO',w:20},{k:'o',l:'Source',w:20},{k:'n',l:'Net',w:24,r:1}],L.map(function(r){return {d:dmy(r.cost_date),s:r.supplier,r:r.ref,c:r.category,x:r.description,p:r.po_no,o:r.source,n:gbp(r.net)};}).concat([{d:'',s:'Total',r:'',c:'',x:'',p:'',o:'',n:gbp(L.reduce(function(m,r){return m+n(r.net);},0)),_b:1}]));}}\n   foot(doc,W,HH);doc.save('Job '+JOB+' - Job costing - '+today()+'.pdf');o.close();});};}\nload();\n}\n"
+        }
+      },
+      {
+        "id": "096cdf73-0964-4612-b96d-56d2c94ec5a2",
+        "name": "Send Page",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "06b3336f-6ced-423f-9d67-1f23adb9d176",
+        "name": "Data Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          224
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-costs-data",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "a05e28a4-57ce-43a6-93c4-e737009ab702"
+      },
+      {
+        "id": "e45ca217-ad67-462c-a474-036b799f2abf",
+        "name": "Costing Data",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          224
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* Job costing data for one job: income (contract + approved variations), costs (bills / manual / QuickBooks),\n   committed (open POs not yet billed), totals by category, categories and the QuickBooks sync status. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>{const x=parseFloat(S(v).replace(/[^0-9.\\-]/g,''));return isNaN(x)?0:x;};\nconst r2=v=>Math.round(v*100)/100;\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nconst list=async t=>{try{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);}catch(e){return [];}};\nconst [C,P,V,J,O,SU,SB]=await Promise.all([list('jobcosts'),list('pos'),list('variations'),list('jobrows'),list('selectopts'),list('suppliers'),list('subbies')]);\nconst DEF=['Materials','Plant hire','Subcontractors','Labour','Other'];\nlet cats=O.filter(o=>S(o.reg)==='jobcosts'&&S(o.field)==='category').map(o=>S(o.value)).filter(Boolean);const custom=cats.length>0;if(!custom)cats=DEF.slice();\nlet sync=null;const so=O.filter(o=>S(o.reg)==='jobcosts'&&S(o.field)==='qbo_sync').sort((a,b)=>num(b.id)-num(a.id))[0];if(so){try{sync=JSON.parse(S(so.value));}catch(e){}}\nconst names={};SU.forEach(s=>{if(S(s.name))names[S(s.name)]=1;});SB.forEach(s=>{if(S(s.company))names[S(s.company)]=1;});\nif(!job)return [{json:{ok:true,job:'',cats:cats,catsCustom:custom,sync:sync,suppliers:Object.keys(names).sort()}}];\nconst rows=C.filter(r=>jk(r.job_no)===jk(job)).sort((a,b)=>S(b.cost_date).localeCompare(S(a.cost_date))||num(b.id)-num(a.id));\nconst jr=J.filter(r=>jk(r.ref)===jk(job)).sort((a,b)=>num(b.id)-num(a.id))[0]||null;\nconst vs=V.filter(r=>jk(r.job_no)===jk(job));\nconst contract=jr&&S(jr.contract_value)!==''?num(jr.contract_value):null;\nconst approved=r2(vs.filter(r=>S(r.status)==='Approved').reduce((m,r)=>m+num(r.cost),0));\nconst pendingVar=r2(vs.filter(r=>S(r.status)==='Submitted'||S(r.status)==='Priced').reduce((m,r)=>m+num(r.cost),0));\nconst billed={};rows.forEach(r=>{const k=S(r.po_no).toLowerCase();if(k)billed[k]=(billed[k]||0)+num(r.net);});\nconst poCat=p=>{const t=S(p.po_type);return t==='Plant'?'Plant hire':(t==='Subcontract'||/^sub:/i.test(S(p.supplier_id))?'Subcontractors':'Materials');};\nconst pos=P.filter(p=>jk(p.job_no)===jk(job)&&['Draft','Cancelled'].indexOf(S(p.status)||'Draft')<0).map(p=>{\n let net=num(p.subtotal);if(!net&&num(p.total))net=num(p.total)-num(p.vat);\n if(!net){try{net=(JSON.parse(p.lines_json||'[]')||[]).reduce((m,l)=>m+num(l.qty||1)*num(l.cost),0);}catch(e){}}\n net=r2(net);const b=r2(billed[S(p.po_no).toLowerCase()]||0);\n return {id:p.id,po_no:S(p.po_no),supplier:S(p.supplier),status:S(p.status),cat:poCat(p),net:net,billed:b,remaining:r2(Math.max(0,net-b)),date:S(p.ordered_on).slice(0,10)};});\nconst actual=r2(rows.reduce((m,r)=>m+num(r.net),0));const committed=r2(pos.reduce((m,p)=>m+p.remaining,0));\nconst income=contract==null?null:r2(contract+approved);\nconst byCat={};cats.forEach(c=>byCat[c]={cat:c,actual:0,committed:0});\nrows.forEach(r=>{const c=S(r.category)||'Other';byCat[c]=byCat[c]||{cat:c,actual:0,committed:0};byCat[c].actual=r2(byCat[c].actual+num(r.net));});\npos.forEach(p=>{const c=p.cat;byCat[c]=byCat[c]||{cat:c,actual:0,committed:0};byCat[c].committed=r2(byCat[c].committed+p.remaining);});\nconst margin=income==null?null:r2(income-actual-committed);\nconst totals={contract:contract,approved:approved,pendingVar:pendingVar,income:income,actual:actual,committed:committed,forecast:r2(actual+committed),margin:margin,marginPct:income?Math.round(1000*margin/income)/10:null,hasJob:!!jr};\nreturn [{json:{ok:true,job:job,site:S(jr&&jr.site),client:S(jr&&jr.client),rows:rows,pos:pos,byCat:Object.keys(byCat).map(k=>byCat[k]),totals:totals,cats:cats,catsCustom:custom,sync:sync,suppliers:Object.keys(names).sort()}}];\n"
+        }
+      },
+      {
+        "id": "8a0e3d7a-bf92-4436-82ea-925742990489",
+        "name": "Send Data",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          224
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "523afe05-b711-4bc8-a57c-6c56e4f7c285",
+        "name": "Act Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          528
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-cost-act",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "7a39d99a-cbef-44c4-b48c-e8d93e1b707d"
+      },
+      {
+        "id": "a9ae0688-3a47-4dc3-98f9-0befb0c984a9",
+        "name": "Cost Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          528
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* Job costs act, step 1: check the request. Deletes and category options finish here; saves carry on to the\n   SharePoint upload (when a bill file is attached) and Cost Save. */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();\nconst b=$input.first().json.body||{};const a=S(b.a),job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by).slice(0,80);\nconst R=(ok,x)=>[{json:Object.assign({op:'done',reply:Object.assign({ok:ok},x||{})})}];\nif(!by)return R(false,{message:'Enter your name.'});\nconst list=async t=>{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);};\nconst save=(t,id,row,p)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t='+t+'&id='+(id||0)+'&k='+K+(p?'&partial=1':''),body:row,json:true,timeout:20000});\nconst del=(t,id)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=del&t='+t+'&id='+id+'&k='+K,body:{},json:true,timeout:20000});\nif(a==='opt'){const val=S(b.value).slice(0,60);if(!val)return R(false,{message:'Type the category first.'});\n let O=(await list('selectopts')).filter(o=>S(o.reg)==='jobcosts'&&S(o.field)==='category');\n if(!O.length){for(const d of ['Materials','Plant hire','Subcontractors','Labour','Other']){await save('selectopts',0,{reg:'jobcosts',field:'category',value:d,added_by:by});}O=(await list('selectopts')).filter(o=>S(o.reg)==='jobcosts'&&S(o.field)==='category');}\n if(S(b.op)==='del'){const o=O.find(x=>S(x.value).toLowerCase()===val.toLowerCase());if(o)await del('selectopts',o.id);return R(true);}\n if(!O.some(x=>S(x.value).toLowerCase()===val.toLowerCase()))await save('selectopts',0,{reg:'jobcosts',field:'category',value:val,added_by:by});return R(true);}\nif(!job)return R(false,{message:'No job number.'});\nconst C=(await list('jobcosts')).filter(r=>jk(r.job_no)===jk(job));\nif(a==='delete'){const r=C.find(x=>String(x.id)===S(b.id));if(!r)return R(false,{message:'That cost was not found. Refresh the page.'});\n if(S(r.source)==='QuickBooks')return R(false,{message:'This cost comes from QuickBooks. Change or delete it in QuickBooks and it updates on the next sync.'});\n await del('jobcosts',r.id);return R(true);}\nif(a!=='save')return R(false,{message:'Unknown action.'});\nconst isD=v=>/^\\d{4}-\\d{2}-\\d{2}$/.test(S(v));\nconst money=v=>{const x=S(v).replace(/[£,\\s]/g,'');return x===''?'':(isNaN(Number(x))?null:Math.round(Number(x)*100)/100);};\nconst id=Number(b.id)||0;const old=id?C.find(x=>String(x.id)===String(id)):null;if(id&&!old)return R(false,{message:'That cost was not found. Refresh the page.'});\nconst qb=old&&S(old.source)==='QuickBooks';\nlet row;\nif(qb){row={category:S(b.category).slice(0,60)||S(old.category),po_no:S(b.po_no).slice(0,40),notes:S(b.notes).slice(0,1000)};}\nelse{\n const net=money(b.net),vat=money(b.vat),gross=money(b.gross);\n if(net===null||vat===null||gross===null)return R(false,{message:'Check the amounts - numbers only.'});\n if(net==='')return R(false,{message:'Enter the amount before VAT.'});\n if(!S(b.supplier)&&!S(b.description))return R(false,{message:'Add the supplier or a description.'});\n if(!isD(b.cost_date))return R(false,{message:'Enter the date.'});\n row={job_no:job,cost_date:S(b.cost_date),supplier:S(b.supplier).slice(0,120),ref:S(b.ref).slice(0,60),category:S(b.category).slice(0,60)||'Other',description:S(b.description).slice(0,500),net:net,vat:vat===''?0:vat,gross:gross===''?Math.round((net+(vat===''?0:vat))*100)/100:gross,po_no:S(b.po_no).slice(0,40),notes:S(b.notes).slice(0,1000)};\n if(!id){row.source=S(b.file_name)?'PDF':'Manual';row.qbo_id='';row.file_url='';row.created_by=by;row.created_at=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);}\n if(S(row.ref)&&!b.force){const dup=C.find(x=>String(x.id)!==String(id)&&S(x.ref).toLowerCase()===S(row.ref).toLowerCase()&&S(x.supplier).toLowerCase()===S(row.supplier).toLowerCase());\n  if(dup)return R(false,{dup:true,message:'Invoice '+row.ref+' from '+(row.supplier||'this supplier')+' is already on this job ('+S(dup.cost_date)+', £'+Number(dup.net||0).toFixed(2)+'). Save anyway?'});}\n}\nconst data=S(b.file_data).replace(/^data:[^,]*,/,'');const fname=S(b.file_name).replace(/[\\\\/:*?\"<>|#%]+/g,' ').replace(/\\s+/g,' ').trim().slice(0,120);\nconst out={op:'save',id:id,row:row,by:by,job:job,old:old||null,hasFile:false};\nif(data&&fname&&!qb){const mime=/\\.png$/i.test(fname)?'image/png':(/\\.jpe?g$/i.test(fname)?'image/jpeg':'application/pdf');\n const bin=await h.prepareBinaryData(Buffer.from(data,'base64'),fname,mime);out.hasFile=true;\n out.path='CBS System/Operations/Jobs/Job '+job+'/Costs/'+((row.cost_date||'')+' '+(row.supplier||'')+' '+(row.ref||'')).replace(/[\\\\/:*?\"<>|#%]+/g,' ').replace(/\\s+/g,' ').trim().slice(0,90)+(/\\.[a-z0-9]+$/i.exec(fname)||['.pdf'])[0];\n return [{json:out,binary:{data:bin}}];}\nreturn [{json:out}];\n"
+        }
+      },
+      {
+        "id": "0ec86ed6-23a0-4055-97ac-008a9a994efa",
+        "name": "Has File",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          448,
+          528
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.hasFile }}",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "f379dc5e-27f9-414b-8d53-2617c1da47cc",
+        "name": "Upload Bill",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          672,
+          448
+        ],
+        "parameters": {
+          "method": "PUT",
+          "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.path }}:/content?@microsoft.graph.conflictBehavior=rename",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "sendBody": true,
+          "contentType": "binaryData",
+          "inputDataFieldName": "data",
+          "options": {
+            "timeout": 120000
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "3c3d3d00-c985-4728-95b0-b716b09f4f04",
+        "name": "Cost Save",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          896,
+          528
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* Job costs act, step 2: save the cost row (with the SharePoint link when a file was uploaded). */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();\nconst p=$('Cost Prep').first().json;if(p.op==='done')return [{json:p.reply}];\nlet url='';if(p.hasFile){try{const u=$('Upload Bill').first().json||{};url=S(u.webUrl);}catch(e){}if(!url)return [{json:{ok:false,message:'Could not save the file to SharePoint. Try again, or save without the file.'}}];}\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst stamp=now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16);\nconst row=Object.assign({},p.row);if(url)row.file_url=url;\nconst fmt=v=>'£'+Number(v||0).toFixed(2);\nif(p.id){const o=p.old||{};let line='Edited by '+p.by;if(row.net!==undefined&&Number(o.net)!==Number(row.net))line+=' ('+fmt(o.net)+' to '+fmt(row.net)+')';if(row.category&&row.category!==S(o.category))line+=' (category '+(S(o.category)||'none')+' to '+row.category+')';\n row.history=[S(o.history),stamp+' - '+line].filter(Boolean).join(String.fromCharCode(10));\n await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=jobcosts&id='+p.id+'&k='+K+'&partial=1',body:row,json:true,timeout:20000});return [{json:{ok:true,id:p.id}}];}\nrow.history=stamp+' - Added by '+p.by+(url?' from an uploaded bill':'');\nconst res=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=jobcosts&id=0&k='+K,body:row,json:true,timeout:20000});\nreturn [{json:{ok:true,id:res&&res.id}}];\n"
+        }
+      },
+      {
+        "id": "1137c92e-366b-485a-83bf-f8c06625641a",
+        "name": "Send Act",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1120,
+          528
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "37697271-4cb2-438b-b6cf-1cfd988466a8",
+        "name": "Read Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          752
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-cost-read",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "8ef8c6d3-1201-4be4-89bc-933e6fd9d038"
+      },
+      {
+        "id": "4b19235e-c291-4a92-ad2e-5051f4f07f8e",
+        "name": "Read Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          752
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const b=$input.first().json.body||{};\nconst data=String(b.data||'').replace(/^data:[^,]*,/,'').replace(/[^A-Za-z0-9+/=]/g,'');\nconst mime=String(b.mime||'application/pdf').toLowerCase();\nif(data.length<200) return [{json:{skip:true}}];\nconst part=/pdf/.test(mime)?{type:'file',file:{filename:'bill.pdf',file_data:'data:application/pdf;base64,'+data}}:{type:'image_url',image_url:{url:'data:'+(/png/.test(mime)?'image/png':'image/jpeg')+';base64,'+data}};\nconst prompt=['This is a supplier invoice, bill or receipt sent to Chelmsford Building Services Ltd (UK building contractor).',\n'Read it and reply with ONLY a JSON object, no other text, with these keys:',\n'supplier: the supplier company that issued it (not Chelmsford Building Services)',\n'invoice_no: the invoice / bill / receipt number exactly as printed, or \"\"',\n'date: the invoice date as YYYY-MM-DD (UK source dates are DD/MM/YYYY)',\n'po_ref: a purchase order number quoted on it (often \"PO\", \"Your ref\", \"Order no\"), or \"\"',\n'job_ref: a job number of 3 to 6 digits quoted in a job, site, project or reference field, or \"\"',\n'net: total before VAT as a number, or \"\"',\n'vat: VAT amount as a number, or \"\"',\n'gross: total including VAT as a number, or \"\"',\n'category_guess: one of \"Materials\", \"Plant hire\", \"Subcontractors\", \"Labour\", \"Other\"',\n'description: a short summary of what was supplied (max 12 words)',\n'Do not guess values that are not on the document; use \"\" instead.'].join('\\n');\nreturn [{json:{skip:false,req:{model:'anthropic/claude-haiku-4.5',max_tokens:800,temperature:0,messages:[{role:'user',content:[part,{type:'text',text:prompt}]}]}}}];\n"
+        }
+      },
+      {
+        "id": "2ae56ae6-b2d1-4cc8-81e7-4ef662fce903",
+        "name": "Read Bill",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          448,
+          752
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://openrouter.ai/api/v1/chat/completions",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "openRouterApi",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify($json.skip ? { model: \"anthropic/claude-haiku-4.5\", max_tokens: 5, messages: [{ role: \"user\", content: \"ok\" }] } : $json.req) }}",
+          "options": {
+            "timeout": 90000,
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "5509561a-f83a-481e-8feb-21d9208eabeb",
+        "name": "Read Parse",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          752
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const r=$input.first().json||{};\nif($('Read Prep').first().json.skip===true) return [{json:{ok:false,message:'No file received'}}];\nlet txt='';try{const c=r.choices&&r.choices[0]&&r.choices[0].message&&r.choices[0].message.content;txt=Array.isArray(c)?c.map(x=>x&&x.text||'').join('\\n'):String(c||'');}catch(e){}\nconst m=txt.match(/\\{[\\s\\S]*\\}/);if(!m) return [{json:{ok:false,message:'Could not read the bill'}}];\nlet o={};try{o=JSON.parse(m[0]);}catch(e){return [{json:{ok:false,message:'Could not read the bill'}}];}\nconst S=v=>v==null?'':String(v).trim();\nconst D=v=>{v=S(v);if(/^\\d{4}-\\d{2}-\\d{2}$/.test(v))return v;const x=v.match(/^(\\d{1,2})[\\/.\\-](\\d{1,2})[\\/.\\-](\\d{2,4})$/);if(x){const y=x[3].length===2?'20'+x[3]:x[3];return y+'-'+('0'+x[2]).slice(-2)+'-'+('0'+x[1]).slice(-2);}return '';};\nconst N=v=>{if(v===''||v==null)return '';const n=parseFloat(String(v).replace(/[^0-9.\\-]/g,''));return isNaN(n)?'':Math.round(n*100)/100;};\nconst job=S(o.job_ref).replace(/[^0-9]/g,'');\nreturn [{json:{ok:true,bill:{supplier:S(o.supplier).slice(0,120),invoice_no:S(o.invoice_no).slice(0,60),date:D(o.date),po_ref:S(o.po_ref).slice(0,40),job_ref:/^\\d{3,6}$/.test(job)?job:'',net:N(o.net),vat:N(o.vat),gross:N(o.gross),category_guess:['Materials','Plant hire','Subcontractors','Labour','Other'].indexOf(S(o.category_guess))>-1?S(o.category_guess):'',description:S(o.description).slice(0,200)}}}];\n"
+        }
+      },
+      {
+        "id": "d2cf0a80-e927-4cef-9d2a-6696a6e68afc",
+        "name": "Send Read",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          752
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "c26674a9-93c5-4f64-a58f-0dd3360412d9",
+        "name": "Sync Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          976
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-cost-qbo-sync",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "94290f7e-11b9-4b7b-ab24-31b265d6ced1"
+      },
+      {
+        "id": "e28f68c9-b1e9-4e3e-a34a-220df418a731",
+        "name": "QBO Sync",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          1072
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* Sync QuickBooks button: runs CBS - QuickBooks Sync (cbs-qbo-run). That workflow stays unpublished until a\n   QuickBooks Online login is connected in n8n, so until then this records and returns \"not connected yet\". */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();\nlet r=null,err='';\ntry{r=await h.httpRequest({method:'POST',url:H+'cbs-qbo-run',body:{},json:true,timeout:240000});}catch(e){err=String(e.message||e);}\nif(r&&typeof r==='object'&&r.ok!==undefined)return [{json:r}];\nconst msg=/404|not registered|not found/i.test(err)||!err?'QuickBooks is not connected yet.':'The QuickBooks sync did not finish: '+err.slice(0,160);\ntry{const now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\n const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=selectopts',body:{},json:true,timeout:30000});\n for(const x of (Array.isArray(L)?L:[]).filter(x=>S(x.reg)==='jobcosts'&&S(x.field)==='qbo_sync'))await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=del&t=selectopts&id='+x.id+'&k='+K,body:{},json:true,timeout:20000});\n await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=selectopts&id=0&k='+K,body:{reg:'jobcosts',field:'qbo_sync',value:JSON.stringify({at:now,ok:false,message:msg}),added_by:'QuickBooks sync'},json:true,timeout:20000});}catch(e){}\nreturn [{json:{ok:false,message:msg}}];\n"
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "b9dca8f3-9a27-4a5d-927e-66d65e9e9824",
+        "name": "Send Sync",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          1072
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        },
+        "onError": "continueRegularOutput"
+      }
+    ],
+    "connections": {
+      "Page Hook": {
+        "main": [
+          [
+            {
+              "node": "Costing Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Costing Page": {
+        "main": [
+          [
+            {
+              "node": "Send Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data Hook": {
+        "main": [
+          [
+            {
+              "node": "Costing Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Costing Data": {
+        "main": [
+          [
+            {
+              "node": "Send Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Act Hook": {
+        "main": [
+          [
+            {
+              "node": "Cost Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Cost Prep": {
+        "main": [
+          [
+            {
+              "node": "Has File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Has File": {
+        "main": [
+          [
+            {
+              "node": "Upload Bill",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Cost Save",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upload Bill": {
+        "main": [
+          [
+            {
+              "node": "Cost Save",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Cost Save": {
+        "main": [
+          [
+            {
+              "node": "Send Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Read Hook": {
+        "main": [
+          [
+            {
+              "node": "Read Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Read Prep": {
+        "main": [
+          [
+            {
+              "node": "Read Bill",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Read Bill": {
+        "main": [
+          [
+            {
+              "node": "Read Parse",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Read Parse": {
+        "main": [
+          [
+            {
+              "node": "Send Read",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "QBO Sync": {
+        "main": [
+          [
+            {
+              "node": "Send Sync",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Sync Hook": {
+        "main": [
+          [
+            {
+              "node": "QBO Sync",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS job costing per job: GET cbs-costs?job=N (admin page), GET cbs-costs-data, POST cbs-cost-act (save / delete / categories, bill files to SharePoint), POST cbs-cost-read (reads a supplier bill PDF/photo), POST cbs-cost-qbo-sync + daily 06:30 QuickBooks ",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

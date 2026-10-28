@@ -1,0 +1,52 @@
+{
+  "table": "cbs_inspections",
+  "n8n_id": "DPgv7Nm5Q4Vx8uVv",
+  "columns": [
+    {
+      "name": "actions_open",
+      "type": "number"
+    },
+    {
+      "name": "cphsp_id",
+      "type": "string"
+    },
+    {
+      "name": "dated",
+      "type": "string"
+    },
+    {
+      "name": "insp_no",
+      "type": "string"
+    },
+    {
+      "name": "inspector",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "no_count",
+      "type": "number"
+    },
+    {
+      "name": "pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "site",
+      "type": "string"
+    },
+    {
+      "name": "state_json",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [],
+  "note": "no sample found (read by CBS - Job File, which saves no successful executions, and CBS - Pages only when serving cbs-site-inspection)"
+}

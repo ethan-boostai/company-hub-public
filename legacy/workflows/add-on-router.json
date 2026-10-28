@@ -1,0 +1,422 @@
+{
+  "id": "yEms4MHYfohGEinm",
+  "name": "CBS - Add-on Router",
+  "active": true,
+  "isArchived": false,
+  "versionId": "e2b5f115-42e3-4dff-bf6d-094f76fb2d51",
+  "activeVersionId": "e2b5f115-42e3-4dff-bf6d-094f76fb2d51",
+  "triggerCount": 1,
+  "createdAt": "2026-10-12T08:34:52.497Z",
+  "updatedAt": "2026-10-21T15:09:45.321Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "GET cbs-addon": {
+      "main": [
+        [
+          {
+            "node": "AD Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AD Job": {
+      "main": [
+        [
+          {
+            "node": "AD Queues",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AD Queues": {
+      "main": [
+        [
+          {
+            "node": "AD Hub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AD Hub": {
+      "main": [
+        [
+          {
+            "node": "AD Route",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AD Route": {
+      "main": [
+        [
+          {
+            "node": "AD Serve",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "27a1b9e8-c1f2-40a6-ae41-652ebd6ce250",
+      "name": "GET cbs-addon",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-addon",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "f4ed3151-b6f3-4613-a229-77354713f344"
+    },
+    {
+      "id": "e2587194-c553-451b-bb8d-4441b74cbb96",
+      "name": "AD Job",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "method": "GET",
+        "url": "={{ 'https://api.servicem8.com/api_1.0/job/' + encodeURIComponent(String($json.query.uuid || '').replace(/[^A-Za-z0-9-]/g,'')) + '.json' }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        }
+      }
+    },
+    {
+      "id": "f8fd086b-d862-4539-a27b-bc72ccdf2234",
+      "name": "AD Queues",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        0
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "method": "GET",
+        "url": "https://api.servicem8.com/api_1.0/queue.json",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        }
+      }
+    },
+    {
+      "id": "1ff4a473-15f0-47d2-a5a1-418edc92e6ba",
+      "name": "AD Hub",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        660,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "5dgWt9kYzCb49m5h"
+        },
+        "returnAll": true
+      }
+    },
+    {
+      "id": "7e808c93-fd28-4da4-ad36-4e7c7d280f63",
+      "name": "AD Route",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "function S(v){return v==null?'':String(v).trim();}\nfunction esc(s){return S(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\n\nvar BASE='https://old-hub.example/webhook';\nvar HUB=BASE+'/cbs-admin';\n\n/* ------------------------------------------------------------------\n   FOLDER BUCKETS - the ONE place to change how a folder routes.\n   Compared lower case against the ServiceM8 queue (folder) name.\n   ------------------------------------------------------------------ */\nvar ENQUIRY = ['enquiry','estimated'];\nvar JOBFILE = ['reactive (call-out)','maintenance','approved','part approved','awaiting client','works completed','part invoiced'];\nvar BLOCKED = ['on hold','ss rsd inv qb'];\n\nfunction head(title){\n  return '<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\">'\n  +'<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">'\n  +'<title>'+esc(title)+'<'+'/title><style>'\n  +':root{color-scheme:light}*{box-sizing:border-box}'\n  +'body{margin:0;background:#f3f2ef;color:#161616;font:15px/1.45 -apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif}'\n  +'header{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:14px 18px;background:#3d4043;color:#fff}'\n  +'header h1{margin:0;font-size:19px;font-weight:700}'\n  +'header .sub{display:block;margin-top:2px;font-size:13px;font-weight:400;opacity:.82}'\n  +'.hbtns{display:flex;gap:8px;flex-wrap:wrap}'\n  +'.hbtn{padding:9px 14px;border-radius:9px;border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;font:inherit;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer}'\n  +'.hbtn.primary{background:#F47920;border-color:#F47920;color:#161616}'\n  +'main{max-width:620px;margin:0 auto;padding:22px 18px 40px}'\n  +'.card{background:#fff;border:1px solid #e0ddd7;border-radius:12px;padding:20px}'\n  +'.big{display:block;width:100%;min-height:62px;padding:17px 20px;margin:0 0 8px;background:#F47920;color:#161616;font:inherit;font-size:18px;font-weight:700;text-align:left;border:0;border-radius:13px;cursor:pointer}'\n  +'.big:disabled{opacity:.55;cursor:default}'\n  +'.hint{margin:0 0 18px;padding:0 4px;font-size:14px;line-height:1.4;color:#6c6a66}'\n  +'.note{padding:16px 18px;background:#fff;border-left:4px solid #F47920;border-radius:10px;font-size:16px;line-height:1.5}'\n  +'<'+'/style><'+'/head><body>';\n}\n\nfunction hdr(h,sub,extra){\n  return '<header><h1>'+esc(h)+(sub?'<span class=\"sub\">'+esc(sub)+'<'+'/span>':'')+'<'+'/h1>'\n  +'<div class=\"hbtns\">'+(extra||'')+'<a class=\"hbtn\" href=\"'+esc(HUB)+'\">Back to hub<'+'/a><'+'/div><'+'/header>';\n}\n\nfunction page(body){ return [{json:{b:body+'<'+'/body><'+'/html>'}}]; }\n\nfunction go(url){\n  return [{json:{b:'<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\">'\n  +'<meta http-equiv=\"refresh\" content=\"0;url='+esc(url)+'\">'\n  +'<'+'/head><body><'+'script>location.replace('+JSON.stringify(url)+')<'+'/script><'+'/body><'+'/html>'}}];\n}\n\nfunction notFound(){\n  return page(head('Job not found')+hdr('Job not found','','')\n  +'<main><div class=\"note\">Could not find this job in ServiceM8. Refresh to try again.<'+'/div><'+'/main>');\n}\n\n/* The Job File page deep links itself: its script runs\n   show(hash===\"#enquiry\"||(mode===\"none\"&&...)?\"enquiry\":\"file\")\n   so #enquiry forces the Enquiry tab and no hash lands on the Job File tab\n   once a job file exists. Nothing in CBS - Job File needs changing. */\nfunction jobFile(no,tab){\n  return BASE+'/cbs-job-file?job='+encodeURIComponent(no)+(tab==='enquiry'?'#enquiry':'');\n}\n\nfunction blocked(no,where,hasRow){\n  var extra=hasRow?('<a class=\"hbtn primary\" href=\"'+esc(BASE+'/cbs-job-file?job='+encodeURIComponent(no))+'\">Open job record<'+'/a>'):'';\n  return page(head('Job '+no)+hdr('Job '+no,where,extra)\n  +'<main><div class=\"note\">This job is in <strong>'+esc(where||'no folder')+'<'+'/strong>, so there is nothing to prepare here. '\n  +'Enquiry prep is for jobs in Enquiry or Estimated, and the job file opens once a job is approved, reactive or maintenance.'\n  +(hasRow?' Use <strong>Open job record<'+'/strong> above to look at it.':'')\n  +'<'+'/div><'+'/main>');\n}\n\n/* ---------------- route ---------------- */\nvar J=null;\ntry{J=$('AD Job').all().map(function(i){return i.json;}).filter(function(x){return x&&x.uuid;})[0]||null;}catch(e){}\nvar no=J?S(J.generated_job_id).replace(/^#/,''):'';\nif(!no) return notFound();\n\nvar Q={};\ntry{$('AD Queues').all().forEach(function(i){var x=i.json;if(x&&x.uuid)Q[S(x.uuid)]=S(x.name);});}catch(e){}\nvar folder=Q[S(J.queue_uuid)]||'';\nvar status=S(J.status);\n/* ServiceM8 shows some jobs by status rather than folder; the hub labels those\n   \"Booked / on site\". Use whichever we have when naming the job's position. */\nvar where=folder||status;\n\nvar H=null;\ntry{H=$('AD Hub').all().map(function(i){return i.json;})\n  .filter(function(x){return x&&S(x.ref).replace(/^#/,'').toLowerCase()===no.toLowerCase();})[0]||null;}catch(e){}\nvar mode=S(H&&H.mode).toLowerCase();\nvar hasFile=(mode==='project'||mode==='cdm'||mode==='closed');\n\nvar f=folder.toLowerCase();\nvar bucket = ENQUIRY.indexOf(f)>=0 ? 'enquiry'\n           : (JOBFILE.indexOf(f)>=0 ? 'file'\n           : (BLOCKED.indexOf(f)>=0 ? 'blocked' : 'unknown'));\n\nif(bucket==='enquiry') return go(jobFile(no,'enquiry'));\n\n/* No Create Project / Create CDM screen any more: a job with no Job File opens the job page (Enquiry tab),\n   where Create Job File (or Approved) asks for the type. */\nif(bucket==='file'){\n  if(hasFile) return go(jobFile(no,'file'));\n  return go(jobFile(no,'enquiry'));\n}\n\n/* Unrecognised or missing folder: never block real work. If the hub already\n   holds a job file, open it. Folders listed in BLOCKED still block. */\nif(bucket==='unknown' && hasFile) return go(jobFile(no,'file'));\n\nreturn blocked(no,where,!!H);"
+      }
+    },
+    {
+      "id": "b21699bb-37a5-4d3d-8ed7-38328bf8d22e",
+      "name": "AD Serve",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.b }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "27a1b9e8-c1f2-40a6-ae41-652ebd6ce250",
+        "name": "GET cbs-addon",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-addon",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "f4ed3151-b6f3-4613-a229-77354713f344"
+      },
+      {
+        "id": "e2587194-c553-451b-bb8d-4441b74cbb96",
+        "name": "AD Job",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          220,
+          0
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "method": "GET",
+          "url": "={{ 'https://api.servicem8.com/api_1.0/job/' + encodeURIComponent(String($json.query.uuid || '').replace(/[^A-Za-z0-9-]/g,'')) + '.json' }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            },
+            "timeout": 30000
+          }
+        }
+      },
+      {
+        "id": "f8fd086b-d862-4539-a27b-bc72ccdf2234",
+        "name": "AD Queues",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          440,
+          0
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "method": "GET",
+          "url": "https://api.servicem8.com/api_1.0/queue.json",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            },
+            "timeout": 30000
+          }
+        }
+      },
+      {
+        "id": "1ff4a473-15f0-47d2-a5a1-418edc92e6ba",
+        "name": "AD Hub",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          660,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "5dgWt9kYzCb49m5h"
+          },
+          "returnAll": true
+        }
+      },
+      {
+        "id": "7e808c93-fd28-4da4-ad36-4e7c7d280f63",
+        "name": "AD Route",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "function S(v){return v==null?'':String(v).trim();}\nfunction esc(s){return S(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\n\nvar BASE='https://old-hub.example/webhook';\nvar HUB=BASE+'/cbs-admin';\n\n/* ------------------------------------------------------------------\n   FOLDER BUCKETS - the ONE place to change how a folder routes.\n   Compared lower case against the ServiceM8 queue (folder) name.\n   ------------------------------------------------------------------ */\nvar ENQUIRY = ['enquiry','estimated'];\nvar JOBFILE = ['reactive (call-out)','maintenance','approved','part approved','awaiting client','works completed','part invoiced'];\nvar BLOCKED = ['on hold','ss rsd inv qb'];\n\nfunction head(title){\n  return '<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\">'\n  +'<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">'\n  +'<title>'+esc(title)+'<'+'/title><style>'\n  +':root{color-scheme:light}*{box-sizing:border-box}'\n  +'body{margin:0;background:#f3f2ef;color:#161616;font:15px/1.45 -apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif}'\n  +'header{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:14px 18px;background:#3d4043;color:#fff}'\n  +'header h1{margin:0;font-size:19px;font-weight:700}'\n  +'header .sub{display:block;margin-top:2px;font-size:13px;font-weight:400;opacity:.82}'\n  +'.hbtns{display:flex;gap:8px;flex-wrap:wrap}'\n  +'.hbtn{padding:9px 14px;border-radius:9px;border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;font:inherit;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer}'\n  +'.hbtn.primary{background:#F47920;border-color:#F47920;color:#161616}'\n  +'main{max-width:620px;margin:0 auto;padding:22px 18px 40px}'\n  +'.card{background:#fff;border:1px solid #e0ddd7;border-radius:12px;padding:20px}'\n  +'.big{display:block;width:100%;min-height:62px;padding:17px 20px;margin:0 0 8px;background:#F47920;color:#161616;font:inherit;font-size:18px;font-weight:700;text-align:left;border:0;border-radius:13px;cursor:pointer}'\n  +'.big:disabled{opacity:.55;cursor:default}'\n  +'.hint{margin:0 0 18px;padding:0 4px;font-size:14px;line-height:1.4;color:#6c6a66}'\n  +'.note{padding:16px 18px;background:#fff;border-left:4px solid #F47920;border-radius:10px;font-size:16px;line-height:1.5}'\n  +'<'+'/style><'+'/head><body>';\n}\n\nfunction hdr(h,sub,extra){\n  return '<header><h1>'+esc(h)+(sub?'<span class=\"sub\">'+esc(sub)+'<'+'/span>':'')+'<'+'/h1>'\n  +'<div class=\"hbtns\">'+(extra||'')+'<a class=\"hbtn\" href=\"'+esc(HUB)+'\">Back to hub<'+'/a><'+'/div><'+'/header>';\n}\n\nfunction page(body){ return [{json:{b:body+'<'+'/body><'+'/html>'}}]; }\n\nfunction go(url){\n  return [{json:{b:'<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\">'\n  +'<meta http-equiv=\"refresh\" content=\"0;url='+esc(url)+'\">'\n  +'<'+'/head><body><'+'script>location.replace('+JSON.stringify(url)+')<'+'/script><'+'/body><'+'/html>'}}];\n}\n\nfunction notFound(){\n  return page(head('Job not found')+hdr('Job not found','','')\n  +'<main><div class=\"note\">Could not find this job in ServiceM8. Refresh to try again.<'+'/div><'+'/main>');\n}\n\n/* The Job File page deep links itself: its script runs\n   show(hash===\"#enquiry\"||(mode===\"none\"&&...)?\"enquiry\":\"file\")\n   so #enquiry forces the Enquiry tab and no hash lands on the Job File tab\n   once a job file exists. Nothing in CBS - Job File needs changing. */\nfunction jobFile(no,tab){\n  return BASE+'/cbs-job-file?job='+encodeURIComponent(no)+(tab==='enquiry'?'#enquiry':'');\n}\n\nfunction blocked(no,where,hasRow){\n  var extra=hasRow?('<a class=\"hbtn primary\" href=\"'+esc(BASE+'/cbs-job-file?job='+encodeURIComponent(no))+'\">Open job record<'+'/a>'):'';\n  return page(head('Job '+no)+hdr('Job '+no,where,extra)\n  +'<main><div class=\"note\">This job is in <strong>'+esc(where||'no folder')+'<'+'/strong>, so there is nothing to prepare here. '\n  +'Enquiry prep is for jobs in Enquiry or Estimated, and the job file opens once a job is approved, reactive or maintenance.'\n  +(hasRow?' Use <strong>Open job record<'+'/strong> above to look at it.':'')\n  +'<'+'/div><'+'/main>');\n}\n\n/* ---------------- route ---------------- */\nvar J=null;\ntry{J=$('AD Job').all().map(function(i){return i.json;}).filter(function(x){return x&&x.uuid;})[0]||null;}catch(e){}\nvar no=J?S(J.generated_job_id).replace(/^#/,''):'';\nif(!no) return notFound();\n\nvar Q={};\ntry{$('AD Queues').all().forEach(function(i){var x=i.json;if(x&&x.uuid)Q[S(x.uuid)]=S(x.name);});}catch(e){}\nvar folder=Q[S(J.queue_uuid)]||'';\nvar status=S(J.status);\n/* ServiceM8 shows some jobs by status rather than folder; the hub labels those\n   \"Booked / on site\". Use whichever we have when naming the job's position. */\nvar where=folder||status;\n\nvar H=null;\ntry{H=$('AD Hub').all().map(function(i){return i.json;})\n  .filter(function(x){return x&&S(x.ref).replace(/^#/,'').toLowerCase()===no.toLowerCase();})[0]||null;}catch(e){}\nvar mode=S(H&&H.mode).toLowerCase();\nvar hasFile=(mode==='project'||mode==='cdm'||mode==='closed');\n\nvar f=folder.toLowerCase();\nvar bucket = ENQUIRY.indexOf(f)>=0 ? 'enquiry'\n           : (JOBFILE.indexOf(f)>=0 ? 'file'\n           : (BLOCKED.indexOf(f)>=0 ? 'blocked' : 'unknown'));\n\nif(bucket==='enquiry') return go(jobFile(no,'enquiry'));\n\n/* No Create Project / Create CDM screen any more: a job with no Job File opens the job page (Enquiry tab),\n   where Create Job File (or Approved) asks for the type. */\nif(bucket==='file'){\n  if(hasFile) return go(jobFile(no,'file'));\n  return go(jobFile(no,'enquiry'));\n}\n\n/* Unrecognised or missing folder: never block real work. If the hub already\n   holds a job file, open it. Folders listed in BLOCKED still block. */\nif(bucket==='unknown' && hasFile) return go(jobFile(no,'file'));\n\nreturn blocked(no,where,!!H);"
+        }
+      },
+      {
+        "id": "b21699bb-37a5-4d3d-8ed7-38328bf8d22e",
+        "name": "AD Serve",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1100,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.b }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "connections": {
+      "GET cbs-addon": {
+        "main": [
+          [
+            {
+              "node": "AD Job",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AD Job": {
+        "main": [
+          [
+            {
+              "node": "AD Queues",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AD Queues": {
+        "main": [
+          [
+            {
+              "node": "AD Hub",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AD Hub": {
+        "main": [
+          [
+            {
+              "node": "AD Route",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AD Route": {
+        "main": [
+          [
+            {
+              "node": "AD Serve",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "One ServiceM8 add-on entry point. GET cbs-addon?uuid=JOB_UUID reads the CBS ServiceM8 job and its folder, then opens the single hub job record at the right stage: Enquiry tab, Job File tab, the Create Project/CDM picker, or a blocked message naming the fo",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

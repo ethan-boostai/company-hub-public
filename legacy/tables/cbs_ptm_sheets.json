@@ -1,0 +1,126 @@
+{
+  "table": "cbs_ptm_sheets",
+  "n8n_id": "9HztIXJq3gqHZMFK",
+  "columns": [
+    {
+      "name": "client",
+      "type": "string"
+    },
+    {
+      "name": "crew",
+      "type": "string"
+    },
+    {
+      "name": "items_json",
+      "type": "string"
+    },
+    {
+      "name": "job_desc",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "load_issues",
+      "type": "string"
+    },
+    {
+      "name": "loaded_at",
+      "type": "string"
+    },
+    {
+      "name": "loaded_by",
+      "type": "string"
+    },
+    {
+      "name": "loaded_json",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "order_task_id",
+      "type": "string"
+    },
+    {
+      "name": "pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "prepared_by",
+      "type": "string"
+    },
+    {
+      "name": "sheet_date",
+      "type": "string"
+    },
+    {
+      "name": "shortages",
+      "type": "string"
+    },
+    {
+      "name": "site",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "vehicle",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "sheet_date": "2026-10-20",
+      "job_no": "10148",
+      "site": "ZZ Client B - Site 1",
+      "client": "ZZ Client B - Site 1",
+      "job_desc": "ZZ-ORD-1 Site Entrance Barrier and Walkway Alterations\n\nArea: External\nRaised by: ZZ Client Contact B",
+      "crew": "",
+      "vehicle": "ZZ01ZZA",
+      "status": "Loaded",
+      "shortages": "",
+      "items_json": "{\"date\":\"2026-10-20\",\"job_no\":\"10148\",\"site\":\"ZZ Client B - Site 1\",\"client\":\"ZZ Client B - Site 1\",\"desc\":\"ZZ-ORD-1 Site Entrance Barrier and Walkway Alterations\\n\\nArea: External\\nRaised by: ZZ Client Contact B\",\"crew\":[],\"vehicle\":\"ZZ01ZZA\",\"plant\":[\"73\",\"134\",\"77\",\"21\",\"23\",\"116\",\"117\",\"22\",\"35\",\"115\",\"1\"],\"plantExtra\":\"\",\"custom\":[{\"kind\":\"mat\",\"name\":\"16mm Dowls - 600mm\",\"qty\":\"30\",\"unit\":\"each\",\"order\":false,\"reviewed\":true},{\"kind\":\"mat\",\"name\":\"Concrete Chairs - Any Size\",\"qty\":\"15\",\"unit\":\"each\",\"order\":false,\"reviewed\":true},{\"kind\":\"mat\",\"name\":\"Concrete Plastic Spacers\",\"qty\":\"All\",\"unit\":\"each\",\"order\":false,\"reviewed\":true},{\"kind\":\"mat\",\"name\":\"K-Form K135\",\"qty\":\"4\",\"unit\":\"Lengths\",\"order\":false,\"reviewed\":true},{\"kind\":\"mat\",\"name\":\"DPM \",\"qty\":\"1\",\"unit\":\"Roll\",\"order\":false,\"reviewed\":true},{\"kind\":\"plant\",\"name\":\"CAT Scanner\",\"qty\":\"1\",\"unit\":\"\",\"order\":false,\"reviewed\":true}],\"mats\":[{\"id\":\"\",\"qty\":\"\"}],\"ppe\":[\"Safety boots\",\"Hi-vis\",\"Gloves\",\"Safety glasses\",\"Hearing protection\",\"Hard hat\",\"Coveralls\"],\"notes\":\"Concrete Overalls and Welly Boots\",\"prepared_by\":\"ZZ Person B\",\"status\":\"Loaded\",\"due_back\":\"2026-10-26\",\"loaded_by\":\"ZZ Person C\",\"loaded_at\":\"2026-10-20T12:39\"}",
+      "notes": "Concrete Overalls and Welly Boots\nAlso loaded: 16mm Dowls - 600mm x 30 each, Concrete Chairs - Any Size x 15 each, Concrete Plastic Spacers x All each, K-Form K135 x 4 Lengths, DPM x 1 Roll, CAT Scanner x 1\nAlso loaded: 16mm Dowls - 600mm x 30 each, Concrete Chairs - Any Size x 15 each, Concrete Plastic Spacers x All each, K-Form K135 x 4 Lengths, DPM x 1 Roll, CAT Scanner x 1",
+      "pdf_url": "https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-13.pdf",
+      "prepared_by": "ZZ Person B",
+      "loaded_by": "ZZ Person G",
+      "loaded_at": "2026-10-20T14:47",
+      "load_issues": "20/10/2026 14:48 ZZ Person G (when loading): Can't find it: Excavator E27z (Plant and machinery); Can't find it: Concrete poker (Cordless power tool); Can't find it: Breaker TE 1000-AVR (110V power tool); Can't find it: Cut off saw (Cordless power tool)",
+      "order_task_id": null,
+      "loaded_json": "{\"plant\":[\"77\",\"23\",\"116\",\"117\",\"22\",\"35\",\"1\"],\"extra\":[\"16mm Dowls - 600mm x 30 each\",\"Concrete Chairs - Any Size x 15 each\",\"Concrete Plastic Spacers x All each\",\"K-Form K135 x 4 Lengths\",\"DPM x 1 Roll\",\"CAT Scanner x 1\"],\"mats\":[],\"by\":\"ZZ Person G\",\"note\":\"Rebuilt from the problem report at sign-out\"}",
+      "id": 1,
+      "createdAt": "2026-10-20T09:12:09.330Z",
+      "updatedAt": "2026-10-20T13:51:08.750Z"
+    },
+    {
+      "sheet_date": "2026-10-21",
+      "job_no": "10236",
+      "site": "ZZ Client C, Sample Avenue, Sampletown B, Ashford, Kent, ZZ99 2ZZ",
+      "client": "ZZ Client C",
+      "job_desc": "ZZ-ORD-2 New ZZ Barriers Barrier with FLT Stop\n\nArea: Mixer 10\nRaised by: ZZ Client Contact C",
+      "crew": "",
+      "vehicle": "",
+      "status": "Issued",
+      "shortages": "",
+      "items_json": "{\"date\":\"2026-10-21\",\"job_no\":\"10236\",\"site\":\"ZZ Client C, Sample Avenue, Sampletown B, Ashford, Kent, ZZ99 2ZZ\",\"client\":\"ZZ Client C\",\"desc\":\"ZZ-ORD-2 New ZZ Barriers Barrier with FLT Stop\\n\\nArea: Mixer 10\\nRaised by: ZZ Client Contact C\",\"crew\":[],\"vehicle\":\"\",\"plant\":[\"64\",\"138\",\"116\"],\"plantExtra\":\"\",\"custom\":[],\"mats\":[{\"id\":\"\",\"qty\":\"\"}],\"ppe\":[\"Safety boots\",\"Hi-vis\",\"Gloves\",\"Safety glasses\",\"Hearing protection\"],\"notes\":\"\",\"prepared_by\":\"ZZ Person B\",\"status\":\"Issued\"}",
+      "notes": "",
+      "pdf_url": "https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-14.pdf",
+      "prepared_by": "ZZ Person B",
+      "loaded_by": "",
+      "loaded_at": "",
+      "load_issues": null,
+      "order_task_id": null,
+      "loaded_json": null,
+      "id": 2,
+      "createdAt": "2026-10-21T12:36:57.721Z",
+      "updatedAt": "2026-10-21T12:36:59.415Z"
+    }
+  ]
+}

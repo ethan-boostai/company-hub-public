@@ -1,0 +1,78 @@
+{
+  "table": "cbs_signons",
+  "n8n_id": "7mnxJyfK2DSbq7J4",
+  "columns": [
+    {
+      "name": "company",
+      "type": "string"
+    },
+    {
+      "name": "doc_id",
+      "type": "string"
+    },
+    {
+      "name": "doc_label",
+      "type": "string"
+    },
+    {
+      "name": "doc_rev",
+      "type": "string"
+    },
+    {
+      "name": "doc_type",
+      "type": "string"
+    },
+    {
+      "name": "inducted_by",
+      "type": "string"
+    },
+    {
+      "name": "is_worker",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "record_pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "reviewed",
+      "type": "string"
+    },
+    {
+      "name": "signature",
+      "type": "string"
+    },
+    {
+      "name": "signed_at",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "doc_type": "sitein",
+      "doc_id": "2026-10-19",
+      "doc_rev": "",
+      "doc_label": "Site sign-in 19/10/2026",
+      "job_no": "12",
+      "name": "ZZ Person B",
+      "company": "Chelmsford Building Services",
+      "is_worker": "Yes",
+      "signed_at": "2026-10-19T13:20",
+      "signature": "",
+      "reviewed": "Yes",
+      "record_pdf_url": "",
+      "inducted_by": "",
+      "id": 1,
+      "createdAt": "2026-10-19T12:20:35.939Z",
+      "updatedAt": "2026-10-19T15:35:33.019Z"
+    }
+  ]
+}

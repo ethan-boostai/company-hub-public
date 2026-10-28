@@ -1,0 +1,47 @@
+{
+  "table": "cbs_vehicle_services",
+  "n8n_id": "A3l5dkWTSqdlFZjZ",
+  "columns": [
+    {
+      "name": "cost",
+      "type": "string"
+    },
+    {
+      "name": "next_due",
+      "type": "string"
+    },
+    {
+      "name": "next_due_km",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "odometer",
+      "type": "string"
+    },
+    {
+      "name": "receipt_url",
+      "type": "string"
+    },
+    {
+      "name": "serviced_on",
+      "type": "string"
+    },
+    {
+      "name": "vehicle",
+      "type": "string"
+    },
+    {
+      "name": "work_done",
+      "type": "string"
+    },
+    {
+      "name": "workshop",
+      "type": "string"
+    }
+  ],
+  "sample_rows": []
+}

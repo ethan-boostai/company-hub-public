@@ -1,0 +1,42 @@
+{
+  "table": "cbs_select_options",
+  "n8n_id": "SOCTgaewpkOd5CHP",
+  "columns": [
+    {
+      "name": "added_by",
+      "type": "string"
+    },
+    {
+      "name": "field",
+      "type": "string"
+    },
+    {
+      "name": "reg",
+      "type": "string"
+    },
+    {
+      "name": "value",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "reg": "companycerts",
+      "field": "name",
+      "value": "Company Reg",
+      "added_by": "blake",
+      "id": 1,
+      "createdAt": "2026-10-06T13:26:27.494Z",
+      "updatedAt": "2026-10-06T13:26:27.494Z"
+    },
+    {
+      "reg": "jobcosts",
+      "field": "qbo_sync",
+      "value": "{\"at\":\"2026-10-10T18:36\",\"ok\":false,\"message\":\"QuickBooks is not connected yet.\"}",
+      "added_by": "QuickBooks sync",
+      "id": 2,
+      "createdAt": "2026-10-10T17:36:13.582Z",
+      "updatedAt": "2026-10-10T17:36:13.582Z"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "table": "cbs_requests",
+  "n8n_id": "iTWIDSrGauy7iKM9",
+  "columns": [
+    {
+      "name": "category",
+      "type": "string"
+    },
+    {
+      "name": "closed_at",
+      "type": "string"
+    },
+    {
+      "name": "details",
+      "type": "string"
+    },
+    {
+      "name": "requested_at",
+      "type": "string"
+    },
+    {
+      "name": "requested_by",
+      "type": "string"
+    },
+    {
+      "name": "response",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "urgency",
+      "type": "string"
+    }
+  ],
+  "sample_rows": []
+}

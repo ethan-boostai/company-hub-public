@@ -1,0 +1,248 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CBS - CoSHH assessment</title><style>
+:root{--bg:#f3f2ef;--panel:#fff;--text:#161616;--muted:#6c6a66;--border:#dddad4;--brand:#FFBE59;--brand-deep:#e0982a;}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;font-size:15px;padding-bottom:24px;}
+.wrap{max-width:640px;margin:0 auto;padding:12px;}
+body.wide .wrap{max-width:none;display:grid;grid-template-columns:560px 1fr;gap:18px;align-items:start;}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px;}
+.card h3{margin:0 0 10px;font-size:15px;}
+.card h3 small{font-weight:400;color:var(--muted);font-size:12px;margin-left:6px;}
+.f{display:block;margin-bottom:10px;} .f span,.lbl{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px;}
+.f span em{color:#b3261e;font-style:normal;}
+input,select,textarea{width:100%;font:inherit;padding:10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:inherit;}
+textarea{resize:vertical;min-height:64px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px;} .g2 .w{grid-column:1/-1;}
+.g3{display:grid;grid-template-columns:1fr;gap:0 10px;}
+@media(min-width:520px){.g3{grid-template-columns:1fr 1fr 1fr;}}
+@media(max-width:520px){.g2{grid-template-columns:1fr;}}
+.rowbox{border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:8px;background:#faf9f7;}
+.rowbox b{display:block;font-size:13px;margin-bottom:6px;}
+.cks{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;}
+.ck{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--border);border-radius:8px;cursor:pointer;background:#fff;}
+.ck input{width:22px;height:22px;flex:0 0 auto;margin:0;} .ck.on{background:#fff4e0;border-color:var(--brand-deep);}
+.muted{color:var(--muted);font-size:13px;}
+.hint{color:var(--muted);font-size:12.5px;margin:0 0 10px;}
+.drop{border:2px dashed var(--border);border-radius:10px;padding:16px;text-align:center;cursor:pointer;background:#faf9f7;}
+.drop.on{border-color:var(--brand-deep);background:#fff4e0;} .drop b{display:block;margin-bottom:2px;}
+.file{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px;font-size:13.5px;}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;border-radius:20px;padding:1px 9px;background:#ececea;color:#333;margin-left:6px;vertical-align:middle;}
+.tag.ok{background:#dcfce7;color:#166534;} .tag.warn{background:#fef3c7;color:#92400e;} .tag.bad{background:#fee2e2;color:#991b1b;}
+.done{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px;margin-bottom:12px;font-size:14px;}
+.done .acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.note{background:#fff4e0;border:1px solid #f0d7a6;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:13px;color:#5a4a2a;}
+.hide{display:none!important;}
+#prev{display:none;} body.wide #prev{display:block;position:sticky;top:60px;max-height:calc(100vh - 150px);overflow:auto;}
+body.show-preview #prev{display:block;overflow:auto;} body.show-preview:not(.wide) #form{display:none;}
+body.wide #doc{zoom:.82;} body:not(.wide).show-preview #doc{zoom:.46;}
+body.rendering #prev{display:block;position:absolute;left:-10000px;top:0;max-height:none;overflow:visible;} body.rendering #doc{zoom:1 !important;}
+#doc{width:210mm;margin:0 auto;}
+.page{width:210mm;height:297mm;background:#fff;color:#000;padding:10mm 10mm 8mm;margin:0 auto 18px;box-shadow:0 1px 3px rgba(0,0,0,.1),0 8px 24px rgba(0,0,0,.06);display:flex;flex-direction:column;overflow:hidden;font-family:Calibri,Carlito,"Segoe UI",Arial,sans-serif;}
+.page *{box-sizing:border-box;}
+.page.sds{padding:0;position:relative;} .page.sds canvas,.page.sds img{display:block;width:100%;height:auto;}
+.page.sds .sdsTag{position:absolute;top:3mm;right:3mm;background:#000;color:#FFBE59;font-size:8pt;font-weight:700;padding:1mm 2.5mm;border-radius:1mm;}
+.page.sdsMsg{height:auto;min-height:60mm;align-items:center;justify-content:center;text-align:center;color:#666;font-size:11pt;border:0.4mm dashed #bbb;box-shadow:none;}
+.phead{flex:0 0 auto;} .pbody{flex:1 1 auto;min-height:0;overflow:hidden;}
+.pfoot{flex:0 0 auto;font-size:7.4pt;color:#555;border-top:0.4mm solid #000;padding-top:1.2mm;margin-top:2mm;}
+.pfoot .pf2{display:flex;justify-content:space-between;margin-top:0.8mm;}
+table.hd{width:100%;border-collapse:collapse;} table.hd td{border:none;padding:0;vertical-align:middle;}
+.hd .lg img{height:10.5mm;width:auto;display:block;} .hd .ttl{text-align:right;}
+.hd .ttl b{display:block;font-size:17pt;letter-spacing:-.01em;line-height:1.05;} .hd .ttl span{font-size:8.4pt;color:#444;}
+.rule{height:1.4mm;background:#FFBE59;margin:2.5mm 0 2mm;}
+.intro{font-size:8pt;color:#444;margin:0 0 2.5mm;}
+table.meta{width:100%;border-collapse:collapse;margin-bottom:3mm;table-layout:fixed;}
+table.meta td{border:0.25mm solid #000;padding:1mm 1.6mm;font-size:8.6pt;vertical-align:top;word-wrap:break-word;}
+table.meta td.k{font-weight:700;background:#f2f2f2;width:30mm;}
+.blk{margin-bottom:3mm;}
+.secT{background:#000;color:#fff;font-weight:700;font-size:10.5pt;padding:1.1mm 2mm;display:flex;justify-content:space-between;align-items:baseline;}
+.secT i{font-style:normal;font-weight:400;font-size:8pt;color:#FFBE59;}
+.bx{border:0.25mm solid #000;border-top:none;padding:1.6mm 2mm;font-size:9pt;line-height:1.35;white-space:pre-wrap;word-wrap:break-word;}
+table.t{width:100%;border-collapse:collapse;table-layout:fixed;}
+table.t td,table.t th{border:0.25mm solid #000;padding:1mm 1.5mm;vertical-align:top;font-size:8.5pt;text-align:left;word-wrap:break-word;white-space:pre-wrap;}
+table.t th{background:#FFBE59;font-weight:700;font-size:8pt;} table.t td.k{font-weight:700;background:#f4f4f4;}
+.cb{display:inline-block;width:3.6mm;height:3.6mm;border:0.3mm solid #000;vertical-align:-0.7mm;margin-right:1.5mm;text-align:center;line-height:3.2mm;font-size:8pt;font-weight:700;}
+.cb.on{background:#FFBE59;}
+.secT,table.t th,.rule,.cb.on{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 14px;background:#fff;border-bottom:3px solid var(--brand);position:sticky;top:0;z-index:30;}
+.topbar .logo{height:22px;width:auto;}
+.topbar h1{font-size:15px;margin:0;font-weight:600;}
+.topbar .sub{color:var(--muted);font-size:11.5px;}
+.topbar .spacer{flex:1;}
+.btn{background:#faf9f7;border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;font-family:inherit;text-decoration:none;display:inline-block;}
+.btn:hover{border-color:var(--brand-deep);}
+.btn:disabled{opacity:.55;cursor:default;}
+.btn.primary{background:#000;border-color:#000;color:var(--brand);font-weight:600;}
+.tabs{display:none;gap:8px;padding:8px 12px 0;}
+.tabs .btn{flex:1;}
+.tabs .btn[aria-selected="true"]{background:#000;border-color:#000;color:var(--brand);font-weight:600;}
+body:not(.wide) .tabs{display:flex;}
+#statusLine{max-width:1400px;margin:0 auto;padding:6px 14px 0;font-size:13px;color:var(--muted);min-height:6px;}
+#statusLine .err{color:#b3261e;font-weight:600;}
+@media(max-width:560px){.topbar .sub{display:none}.topbar .btn{padding:6px 9px;font-size:12.5px}}
+.sdsTxt span::selection{background:rgba(244,121,32,.35);color:transparent;}
+.sdsTxt .eoc{position:absolute;left:0;right:0;top:100%;bottom:0;z-index:-1;-webkit-user-select:none;user-select:none;cursor:default;}
+.sdsTxt.selecting .eoc{top:0;}
+</style></head><body>
+<div class="topbar"><img class="logo" id="topLogo" alt="Chelmsford Building Services"><div><h1 id="ttl">CoSHH assessment</h1><div class="sub">Part 1 cover sheet with the manufacturer's safety data sheet attached as Part 2</div></div><div class="spacer"></div><a class="btn" id="backOps" href="/webhook/cbs-admin?open=substances">&#8249; Operations Hub</a><button class="btn" id="saveBtn">Save to CoSHH register</button><button class="btn primary" id="pdfBtn">Download PDF</button></div>
+<div class="tabs"><button class="btn" id="tabEdit" aria-selected="true">Edit</button><button class="btn" id="tabPrev" aria-selected="false">Preview</button></div>
+<div id="statusLine"><span id="status"></span></div>
+<main class="wrap"><section id="form"><p class="muted" style="padding:12px">Loading&hellip;</p></section><section id="prev"><div id="doc"></div></section></main>
+<input type="file" id="fi" accept="application/pdf,image/jpeg,image/png" class="hide">
+<script>
+(function(){
+var Q=new URLSearchParams(location.search),ID=(Q.get("id")||"").replace(/[^0-9]/g,""),JOB=(Q.get("job")||"").replace(/[^0-9A-Za-z-]/g,"");
+var HZ=[["vt","Very toxic"],["ir","Irritant"],["co","Corrosive"],["ot","Other"]];
+var RT=[["inh","Inhalation"],["ing","Ingestion"],["skin","Skin contact"],["eye","Eye contact"]];
+var LOC=["Van 1","Van 2","Workshop","Store","Site"];
+var LOGO="";
+function $(s){return document.querySelector(s);} function $all(s){return Array.prototype.slice.call(document.querySelectorAll(s));}
+function e(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");}
+function today(){var d=new Date();return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);}
+function plusYear(s){var p=String(s||today()).split("-");if(p.length!==3)return "";return (Number(p[0])+1)+"-"+p[1]+"-"+p[2];}
+function uk(s){s=String(s||"");return /^\d{4}-\d{2}-\d{2}/.test(s)?s.slice(8,10)+"/"+s.slice(5,7)+"/"+s.slice(0,4):s;}
+function me(){try{var m=JSON.parse(localStorage.getItem("cbs_me")||"null");if(m&&m.name)return m.name;}catch(x){}try{return localStorage.getItem("cbs_name")||"";}catch(x){return "";}}
+function px(u){return window.__cbsPx?window.__cbsPx(u):(/sharepoint\.com/i.test(String(u||""))?"/webhook/cbs-file?u="+encodeURIComponent(u):u);}
+function status(t,bad){var s=$("#status");if(s){s.textContent=t||"";s.className=bad?"err":"";}}
+function blank(){return {product:"",supplier:"",supplier_addr:"",process:"",location:"",quantity:"",hz:{},hz_other:"",ingredients:"",risk:{inh:{e:"",c:""},ing:{e:"",c:""},skin:{e:"",c:""},eye:{e:"",c:""}},who_emp:true,who_oth:false,frequency:"",duration:"",fa:{inh:"",ing:"",skin:"",eye:""},controls:"",ppe:"",other:"",assessed_by:me(),assessed_on:today(),review_on:plusYear(today()),sds_date:"",notes:""};}
+var TEAM=[];var S=blank(),ROW=null,SDS=null,OLD=null,BUSY=false,DONE=null;
+function get(p){var a=p.split("."),x=S;for(var i=0;i<a.length;i++){if(x==null)return "";x=x[a[i]];}return x==null?"":x;}
+function set(p,v){var a=p.split("."),x=S;for(var i=0;i<a.length-1;i++){if(x[a[i]]==null||typeof x[a[i]]!=="object")x[a[i]]={};x=x[a[i]];}x[a[a.length-1]]=v;}
+function merge(b,o){Object.keys(o||{}).forEach(function(k){if(o[k]&&typeof o[k]==="object"&&!Array.isArray(o[k])&&b[k]&&typeof b[k]==="object")merge(b[k],o[k]);else if(o[k]!=null)b[k]=o[k];});return b;}
+/* ---------- form ---------- */
+function tx(p,l,req,ph){return "<label class='f'><span>"+l+(req?" <em>*</em>":"")+"</span><input type='text' data-b='"+p+"' value='"+e(get(p))+"'"+(ph?" placeholder='"+e(ph)+"'":"")+"></label>";}
+function ta(p,l,req,ph){return "<label class='f'><span>"+l+(req?" <em>*</em>":"")+"</span><textarea data-b='"+p+"'"+(ph?" placeholder='"+e(ph)+"'":"")+">"+e(get(p))+"</textarea></label>";}
+function dt(p,l,req){return "<label class='f'><span>"+l+(req?" <em>*</em>":"")+"</span><input type='date' data-b='"+p+"' value='"+e(get(p))+"'></label>";}
+function sel(p,l,o,req){var v=get(p);if(v&&o.indexOf(v)<0)o=o.concat([v]);return "<label class='f'><span>"+l+(req?" <em>*</em>":"")+"</span><select data-b='"+p+"'><option value=''>Choose&hellip;</option>"+o.map(function(x){return "<option"+(x===v?" selected":"")+">"+e(x)+"</option>";}).join("")+"</select></label>";}
+function ck(p,l){var on=!!get(p);return "<label class='ck"+(on?" on":"")+"'><input type='checkbox' data-c='"+p+"'"+(on?" checked":"")+">"+e(l)+"</label>";}
+function statusTag(){if(!ROW)return "";if(ROW.pack_url)return "<span class='tag ok'>Pack built"+(ROW.version&&ROW.version!=="0"?" v"+e(ROW.version):"")+"</span>";return "<span class='tag warn'>Draft</span>";}
+function drawForm(){
+ var h="";
+ if(DONE)h+="<div class='done'><b>CoSHH pack saved</b><div class='muted'>Cover sheet and safety data sheet are filed in SharePoint and on the CoSHH register.</div><div class='acts'><a class='btn primary' target='_blank' rel='noopener' href='"+e(px(DONE))+"'>Open pack</a>"+(JOB?"<a class='btn' href='/webhook/cbs-coshh?job="+encodeURIComponent(JOB)+"'>Back to job "+e(JOB)+" CoSHH</a>":"")+"<a class='btn' href='/webhook/cbs-coshh-builder'>New assessment</a></div></div>";
+ if(ROW&&ROW.notes&&/Imported from the old CoSHH PDF/.test(ROW.notes)&&!ROW.pack_url)h+="<div class='note'><b>Imported draft.</b> "+e(ROW.notes.replace(/^Imported from the old CoSHH PDF \([^)]*\)\.\s*/,""))+"</div>";
+ h+="<div class='card'><h3>1. Safety data sheet <small>Part 2</small>"+statusTag()+"</h3><div class='drop' id='dz'><b>Upload the manufacturer's safety data sheet</b><span class='muted'>PDF, or a photo (JPG / PNG). Tap or drop the file here.</span></div><div id='sf'></div><div class='g2' style='margin-top:10px'>"+dt("sds_date","SDS issue / revision date")+"</div></div>";
+ h+="<div class='card'><h3>2. Substance</h3>"+tx("product","Substance / trade name",1)+tx("supplier","Supplier / manufacturer",1)+ta("supplier_addr","Supplier address and phone")+ta("process","Process / what it is used for",1,"e.g. Self-levelling compound mixed with a paddle mixer and applied to the prepared floor")+"</div>";
+ h+="<div class='card'><h3>3. Hazards and ingredients</h3><div class='cks'>"+HZ.map(function(x){return ck("hz."+x[0],x[1]);}).join("")+"</div><div id='hzo' class='"+(get("hz.ot")?"":"hide")+"'>"+tx("hz_other","Other hazard (say what)",0,"e.g. Highly flammable, sensitiser")+"</div>"+ta("ingredients","Toxic / hazardous ingredients",0,"Names, CAS numbers and hazard statements from sections 2 and 3 of the SDS")+"</div>";
+ h+="<div class='card'><h3>4. Assessment of risks</h3>"+RT.map(function(r){return "<div class='rowbox'><b>"+r[1]+"</b>"+ta("risk."+r[0]+".e","Effect / risk")+ta("risk."+r[0]+".c","Control / preventive measure")+"</div>";}).join("")+"</div>";
+ h+="<div class='card'><h3>5. Who is at risk</h3><div class='cks'>"+ck("who_emp","Employees")+ck("who_oth","Others on site")+"</div><div class='g2'>"+tx("frequency","Frequency",0,"e.g. 1 day")+tx("duration","Duration",0,"e.g. 8 hours per day")+"</div></div>";
+ h+="<div class='card'><h3>6. First aid</h3>"+RT.map(function(r){return ta("fa."+r[0],r[1]);}).join("")+"</div>";
+ h+="<div class='card'><h3>7. Control measures</h3>"+ta("controls","Recommended control measures",1,"Ventilation, storage, handling, hygiene, spill and disposal")+tx("ppe","PPE required",0,"e.g. Nitrile gloves to EN 374, goggles to EN 166")+ta("other","Other recommendations")+"</div>";
+ h+="<div class='card'><h3>8. Assessment and review</h3><div class='g3'>"+(TEAM.length?sel("assessed_by","Assessed by",TEAM.slice(),1):tx("assessed_by","Assessed by",1))+dt("assessed_on","Date",1)+dt("review_on","Review date",1)+"</div>"+ta("notes","Internal notes (not printed)")+"</div>";
+ $("#form").innerHTML=h;wire();showSds();$all("#form textarea").forEach(grow);}
+function grow(t){t.style.height="auto";t.style.height=Math.min(400,Math.max(64,t.scrollHeight+2))+"px";}
+function wire(){
+ $all("[data-b]").forEach(function(el){el.addEventListener("input",function(){set(el.getAttribute("data-b"),el.value);if(el.tagName==="TEXTAREA")grow(el);
+  if(el.getAttribute("data-b")==="assessed_on"&&!(ROW&&ROW.pack_url)){var r=$("[data-b='review_on']");if(r){r.value=plusYear(el.value);set("review_on",r.value);}}queue();});});
+ $all("[data-c]").forEach(function(el){el.addEventListener("change",function(){set(el.getAttribute("data-c"),el.checked);el.parentNode.classList.toggle("on",el.checked);if(el.getAttribute("data-c")==="hz.ot")$("#hzo").classList.toggle("hide",!el.checked);queue();});});
+ var dz=$("#dz"),fi=$("#fi");dz.onclick=function(){fi.value="";fi.click();};
+ dz.ondragover=function(ev){ev.preventDefault();dz.classList.add("on");};dz.ondragleave=function(){dz.classList.remove("on");};
+ dz.ondrop=function(ev){ev.preventDefault();dz.classList.remove("on");var f=ev.dataTransfer.files&&ev.dataTransfer.files[0];if(f)pick(f);};}
+$("#fi").onchange=function(){var f=this.files&&this.files[0];if(f)pick(f);};
+function pick(f){if(!/pdf|jpe?g|png/i.test((f.type||"")+" "+f.name)){status("Upload a PDF, JPG or PNG.",1);return;}if(f.size>12*1024*1024){status(f.name+" is over 12 MB. Ask the supplier for a smaller copy.",1);return;}
+ var rd=new FileReader();rd.onload=function(){SDS={name:f.name,type:f.type||(/\.pdf$/i.test(f.name)?"application/pdf":"image/jpeg"),buf:rd.result};SDSPV=null;showSds();queue(true);status("");};rd.readAsArrayBuffer(f);}
+function showSds(){var el=$("#sf");if(!el)return;
+ if(SDS){el.innerHTML="<div class='file'>&#128206; <b>"+e(SDS.name)+"</b><span class='muted'>"+Math.round(SDS.buf.byteLength/1024)+" KB, new upload</span></div>";return;}
+ el.innerHTML=ROW&&ROW.sds_file_url?"<div class='file'>&#128206; <a target='_blank' rel='noopener' href='"+e(px(ROW.sds_file_url))+"'>Current safety data sheet</a><span class='muted'>Upload a new one above to replace it.</span></div>":"<div class='file muted'>No safety data sheet yet. The pack can't be built without one.</div>";}
+/* ---------- libraries ---------- */
+function loadScript(src){return new Promise(function(res,rej){var s=document.createElement("script");s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s);});}
+function ensureLib(g,urls){if(window[g])return Promise.resolve(window[g]);var i=0;function next(){if(i>=urls.length)return Promise.resolve(null);return loadScript(urls[i++]).then(function(){return window[g]||next();},function(){return next();});}return next();}
+var L={jspdf:["https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js","https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"],
+ html2canvas:["https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js","https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"],
+ PDFLib:["https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js","https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"],
+ pdfjsLib:["https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"]};
+function lib(g){return ensureLib(g,L[g]).then(function(x){if(!x)throw new Error("Could not load the PDF tools. Check your connection.");if(g==="pdfjsLib"&&!x.GlobalWorkerOptions.workerSrc)x.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";return x;});}
+/* ---------- SDS bytes and preview ---------- */
+function sdsBytes(){if(SDS)return Promise.resolve(SDS);if(OLD)return Promise.resolve(OLD);if(!(ROW&&ROW.sds_file_url))return Promise.resolve(null);
+ return fetch(px(ROW.sds_file_url)).then(function(r){if(!r.ok)throw new Error("Could not fetch the current safety data sheet from SharePoint.");var t=r.headers.get("content-type")||"";return r.arrayBuffer().then(function(b){var u=new Uint8Array(b.slice(0,4));var isPdf=u[0]===0x25&&u[1]===0x50;OLD={name:"sds",type:isPdf?"application/pdf":(/png/.test(t)?"image/png":"image/jpeg"),buf:b,old:1};return OLD;});});}
+function txtLayer(tc,vp,W,H){var U=window.pdfjsLib&&window.pdfjsLib.Util;if(!U||!tc||!tc.items)return "";var cv=txtLayer.c||(txtLayer.c=document.createElement("canvas")),g=cv.getContext("2d"),out=[],L0=[];
+ tc.items.forEach(function(it){if(!it||!it.str||!/\S/.test(it.str))return;var t=U.transform(vp.transform,it.transform),fh=Math.sqrt(t[2]*t[2]+t[3]*t[3]);if(!fh||(Math.abs(t[1])>0.01*fh&&Math.abs(t[0])<0.01*fh))return;L0.push({it:it,t:t,fh:fh});});
+ L0.forEach(function(o,k){var it=o.it,t=o.t,fh=o.fh,nx=L0[k+1];var st=(tc.styles&&tc.styles[it.fontName])||{},fam=String(st.fontFamily||"sans-serif").replace(/["';<>]/g,""),asc=st.ascent||0.8;g.font=fh+"px "+fam;var mw=g.measureText(it.str).width,tw=(it.width||0)*vp.scale,sx=(mw>0&&tw>0)?tw/mw:1;
+  var sep=!nx?"\n":(Math.abs(nx.t[5]-t[5])>fh*0.5?"\n":(/\s$/.test(it.str)?"":" "));
+  var L=t[4]/W*100,T=(t[5]-fh*asc)/H*100,F=fh/W*100;
+  out.push("<span style='position:absolute;left:"+L.toFixed(3)+"%;top:"+T.toFixed(3)+"%;font-size:"+F.toFixed(3)+"cqw;font-family:"+fam+";white-space:pre;color:transparent;transform:scaleX("+sx.toFixed(4)+");transform-origin:0 0;line-height:1;cursor:text'>"+e(it.str)+sep+"</span>");});return out.join("");}
+document.addEventListener("mousedown",function(ev){var l=ev.target&&ev.target.closest&&ev.target.closest(".sdsTxt");if(l)l.classList.add("selecting");},true);
+document.addEventListener("mouseup",function(){$all(".sdsTxt.selecting").forEach(function(l){l.classList.remove("selecting");});},true);
+var SDSPV=null,SDSKEY=null;
+function sdsPreview(){var sd=SDS||OLD;var key=sd?(sd.name+":"+sd.buf.byteLength):null;if(key&&key===SDSKEY&&SDSPV)return Promise.resolve(SDSPV);
+ return sdsBytes().then(function(sd){if(!sd)return null;SDSKEY=sd.name+":"+sd.buf.byteLength;
+  if(/image/.test(sd.type)){var url=URL.createObjectURL(new Blob([sd.buf],{type:sd.type}));SDSPV=[{img:url}];return SDSPV;}
+  return lib("pdfjsLib").then(function(pj){return pj.getDocument({data:new Uint8Array(sd.buf.slice(0))}).promise;}).then(function(doc){var n=Math.min(doc.numPages,40),jobs=[];
+   for(var i=1;i<=n;i++)jobs.push(doc.getPage(i).then(function(pg){var v=pg.getViewport({scale:1}),sc=1000/v.width,vp=pg.getViewport({scale:sc}),c=document.createElement("canvas");c.width=Math.round(vp.width);c.height=Math.round(vp.height);return pg.render({canvasContext:c.getContext("2d"),viewport:vp}).promise.then(function(){var u=c.toDataURL("image/jpeg",0.8);return pg.getTextContent().then(function(tc){return {canvas:c,url:u,tl:txtLayer(tc,vp,c.width,c.height)};},function(){return {canvas:c,url:u};});});}));
+   return Promise.all(jobs).then(function(a){SDSPV=a;SDSPV.total=doc.numPages;return SDSPV;});});});}
+/* ---------- document ---------- */
+function cbx(on,l){return "<span class='cb"+(on?" on":"")+"'>"+(on?"&#10003;":"")+"</span>"+e(l);}
+function blocks(){var b=[],fa=S.fa||{},rk=S.risk||{};
+ b.push("<table class='meta'><tr><td class='k'>Substance / trade name</td><td colspan='3'><b style='font-size:10.5pt'>"+e(S.product||"\u2014")+"</b></td></tr><tr><td class='k'>Supplier</td><td colspan='3'>"+e([S.supplier,S.supplier_addr].filter(function(x){return String(x||"").trim();}).join("\n")||"\u2014").replace(/\n/g,"<br>")+"</td></tr><tr><td class='k'>Process</td><td colspan='3'>"+e(S.process||"\u2014").replace(/\n/g,"<br>")+"</td></tr><tr><td class='k'>Assessed by</td><td>"+e(S.assessed_by||"")+"</td><td class='k' style='width:24mm'>Date</td><td>"+e(uk(S.assessed_on))+"</td></tr><tr><td class='k'>SDS dated</td><td>"+e(uk(S.sds_date)||"\u2014")+"</td><td class='k'>Review date</td><td><b>"+e(uk(S.review_on))+"</b></td></tr></table>");
+ b.push("<div class='blk'><div class='secT'>Identified hazard</div><table class='t'><tr>"+HZ.map(function(z){return "<td>"+cbx(!!(S.hz&&S.hz[z[0]]),z[1]+(z[0]==="ot"&&S.hz&&S.hz.ot&&S.hz_other?": "+S.hz_other:""))+"</td>";}).join("")+"</tr></table></div>");
+ b.push("<div class='blk'><div class='secT'>Toxic / hazardous ingredients</div><div class='bx'>"+e(S.ingredients||"See safety data sheet sections 2 and 3.")+"</div></div>");
+ b.push("<div class='blk'><div class='secT'>Assessment of risks</div><table class='t'><tr><th style='width:26mm'>Route</th><th>Effect / risk</th><th>Control / preventive measure</th></tr>"+RT.map(function(r){var k=rk[r[0]]||{};return "<tr><td class='k'>"+r[1]+"</td><td>"+e(k.e||"\u2014")+"</td><td>"+e(k.c||"\u2014")+"</td></tr>";}).join("")+"</table></div>");
+ b.push("<div class='blk'><div class='secT'>Who is at risk</div><table class='t'><tr><td>"+cbx(!!S.who_emp,"Employees")+"</td><td>"+cbx(!!S.who_oth,"Others on site")+"</td><td><b>Frequency:</b> "+e(S.frequency||"\u2014")+"</td><td><b>Duration:</b> "+e(S.duration||"\u2014")+"</td></tr></table></div>");
+ b.push("<div class='blk'><div class='secT'>First aid <i>In all cases of doubt, or if symptoms persist, seek medical attention</i></div><table class='t'>"+RT.map(function(r){return "<tr><td class='k' style='width:26mm'>"+r[1]+"</td><td>"+e(fa[r[0]]||"\u2014")+"</td></tr>";}).join("")+"</table></div>");
+ b.push("<div class='blk'><div class='secT'>Recommended control measures</div><div class='bx'>"+e(S.controls||"\u2014")+(S.ppe?"\n\n<b>PPE required:</b> "+e(S.ppe):"")+"</div></div>");
+ b.push("<div class='blk'><div class='secT'>Other recommendations</div><div class='bx'>"+e(S.other||"Read the safety data sheet before use.")+"</div></div>");
+ b.push("<table class='meta' style='margin-top:1mm'><tr><td class='k'>Assessment carried out by</td><td>"+e(S.assessed_by||"")+"<div style='font-size:7.6pt;color:#555'>For Chelmsford Building Services Ltd</div></td></tr></table>");
+ return b;}
+function pageShell(i){return "<div class='page cover'><div class='phead'><table class='hd'><tr><td class='lg'>"+(LOGO?"<img src='"+LOGO+"' alt=''>":"")+"</td><td class='ttl'><b>COSHH ASSESSMENT"+(i?" (continued)":"")+"</b><span>Part 1 &middot; to be read with the manufacturer's safety data sheet (Part 2)</span></td></tr></table><div class='rule'></div>"+(i?"":"<p class='intro'>In compliance with the COSHH Regulations, materials and products are assessed using the manufacturer's safety data sheet. This assessment is then completed and users of the product are informed of the controls.</p>")+"</div><div class='pbody'></div><div class='pfoot'><div>This Part 1 sheet must be accompanied by Part 2 (supplier / manufacturer safety data sheet) at all times, from the completed assessment through to the use of the material on site. All COSHH documentation must be referenced in the Health and Safety Plan.</div><div class='pf2'><span>Chelmsford Building Services Ltd &middot; "+e(S.product||"")+"</span><span class='pn'></span></div></div></div>";}
+var pvT=null;function queue(sdsToo){clearTimeout(pvT);pvT=setTimeout(function(){if(visible())renderDoc(sdsToo);},350);}
+function visible(){return document.body.classList.contains("wide")||document.body.classList.contains("show-preview")||document.body.classList.contains("rendering");}
+function renderDoc(){var doc=$("#doc");var bl=blocks();var html="",pages=[];
+ doc.innerHTML=pageShell(0);var cur=doc.lastChild,body=cur.querySelector(".pbody"),measurable=body.clientHeight>0;
+ bl.forEach(function(b){var t=document.createElement("div");t.innerHTML=b;var node=t.firstChild;body.appendChild(node);
+  if(measurable&&body.scrollHeight>body.clientHeight+1&&body.children.length>1){body.removeChild(node);doc.insertAdjacentHTML("beforeend",pageShell(1));cur=doc.lastChild;body=cur.querySelector(".pbody");body.appendChild(node);}});
+ var cv=$all("#doc .page.cover");cv.forEach(function(p,i){p.querySelector(".pn").textContent="Part 1 \u00b7 page "+(i+1)+" of "+cv.length;});
+ var hold=document.createElement("div");hold.id="sdsHold";doc.appendChild(hold);
+ var sd=SDS||OLD||(ROW&&ROW.sds_file_url);
+ if(!sd){hold.innerHTML="<div class='page sdsMsg'>Part 2: upload the manufacturer's safety data sheet to attach it here.</div>";return;}
+ hold.innerHTML="<div class='page sdsMsg'>Loading the safety data sheet&hellip;</div>";
+ sdsPreview().then(function(a){var h2=document.getElementById("sdsHold");if(!h2)return;h2.innerHTML="";if(!a){h2.innerHTML="<div class='page sdsMsg'>Part 2: upload the manufacturer's safety data sheet to attach it here.</div>";return;}
+  a.forEach(function(p,i){var d=document.createElement("div");d.className="page sds";d.style.height="auto";var w=document.createElement("div");w.style.cssText="position:relative;width:100%;container-type:inline-size;";var im=document.createElement("img");im.src=p.img||p.url;im.style.cssText="display:block;width:100%;max-width:100%;height:auto;-webkit-user-select:none;user-select:none;pointer-events:none;";w.appendChild(im);if(p.tl){var tl=document.createElement("div");tl.className="sdsTxt";tl.style.cssText="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;line-height:1;z-index:1;";tl.innerHTML=p.tl+"<div class='eoc'></div>";w.appendChild(tl);}var tg=document.createElement("div");tg.className="sdsTag";tg.style.cssText="position:absolute;top:3mm;right:3mm;background:#3d4043;color:#fff;font-size:8pt;font-weight:700;padding:1mm 2.5mm;border-radius:1mm;-webkit-user-select:none;user-select:none;";tg.textContent="Part 2 \u00b7 SDS page "+(i+1)+(a.total?" of "+a.total:"");w.appendChild(tg);d.appendChild(w);h2.appendChild(d);});
+  if(a.total&&a.total>a.length)h2.insertAdjacentHTML("beforeend","<div class='page sdsMsg'>"+(a.total-a.length)+" more SDS pages are included in the PDF.</div>");})
+ ["catch"](function(err){var h2=document.getElementById("sdsHold");if(h2)h2.innerHTML="<div class='page sdsMsg'>"+e(err.message||"Could not show the safety data sheet.")+"</div>";});}
+/* ---------- PDF ---------- */
+function coverPdf(){document.body.classList.add("rendering");renderDoc();status("Loading PDF engine\u2026");
+ return Promise.all([lib("jspdf"),lib("html2canvas")]).then(function(l){var ns=l[0],h2c=l[1];var pdf=new (ns.jsPDF||ns)({unit:"mm",format:"a4",orientation:"portrait",compress:true});var pages=$all("#doc .page.cover"),ch=Promise.resolve();
+  pages.forEach(function(p,i){ch=ch.then(function(){status("Rendering cover sheet page "+(i+1)+" of "+pages.length+"\u2026");return h2c(p,{scale:3,backgroundColor:"#ffffff",logging:false,useCORS:true});}).then(function(c){if(i)pdf.addPage();pdf.addImage(c.toDataURL("image/png"),"PNG",0,0,210,297,undefined,"FAST");});});
+  return ch.then(function(){document.body.classList.remove("rendering");renderDoc();return pdf.output("arraybuffer");});})["catch"](function(err){document.body.classList.remove("rendering");throw err;});}
+function packPdf(needSds){return coverPdf().then(function(cov){return sdsBytes().then(function(sd){if(!sd&&needSds)throw new Error("Upload the safety data sheet first.");
+ return lib("PDFLib").then(function(PL){status("Attaching the safety data sheet\u2026");return PL.PDFDocument.create().then(function(out){return PL.PDFDocument.load(cov).then(function(c){return out.copyPages(c,c.getPageIndices());}).then(function(ps){ps.forEach(function(p){out.addPage(p);});
+  if(!sd)return;
+  if(/image/.test(sd.type)){var em=/png/i.test(sd.type)?out.embedPng(sd.buf):out.embedJpg(sd.buf);return em.then(function(img){var pw=595.28,ph=841.89,m=28,sc=Math.min((pw-2*m)/img.width,(ph-2*m)/img.height),p=out.addPage([pw,ph]);p.drawImage(img,{x:(pw-img.width*sc)/2,y:(ph-img.height*sc)/2,width:img.width*sc,height:img.height*sc});});}
+  return PL.PDFDocument.load(sd.buf.slice(0),{ignoreEncryption:true}).then(function(src){return out.copyPages(src,src.getPageIndices()).then(function(sp){sp.forEach(function(p){out.addPage(p);});});});
+ }).then(function(){out.setTitle("CoSHH Assessment - "+(S.product||""));out.setAuthor("Chelmsford Building Services Ltd");return out.save();}).then(function(bytes){return {bytes:bytes,sd:sd};});});});});});}
+function fileBase(){return ("CoSHH Assessment - "+(S.product||"draft")).replace(/[\\\/:*?"<>|]+/g," ").replace(/\s+/g," ").trim().slice(0,140);}
+function b64(buf){var u=new Uint8Array(buf),s="",k=0x8000;for(var i=0;i<u.length;i+=k)s+=String.fromCharCode.apply(null,u.subarray(i,i+k));return btoa(s);}
+$("#pdfBtn").onclick=function(){var b=this;if(BUSY)return;BUSY=true;b.disabled=true;
+ packPdf(false).then(function(r){var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([r.bytes],{type:"application/pdf"}));a.download=fileBase()+".pdf";document.body.appendChild(a);a.click();setTimeout(function(){a.remove();},3000);status(r.sd?"PDF ready.":"PDF ready (cover sheet only, no safety data sheet attached yet).");})
+ ["catch"](function(err){status(err.message||"Could not build the PDF.",1);}).then(function(){BUSY=false;b.disabled=false;});};
+/* ---------- save ---------- */
+function missing(){var m=[];if(!String(S.supplier).trim())m.push("supplier");if(!String(S.process).trim())m.push("process");if(!String(S.controls).trim())m.push("control measures");if(!String(S.assessed_by).trim())m.push("assessed by");if(!S.assessed_on)m.push("date");if(!S.review_on)m.push("review date");if(!SDS&&!(ROW&&ROW.sds_file_url))m.push("safety data sheet");return m;}
+function rowFields(){var hz=HZ.filter(function(x){return S.hz&&S.hz[x[0]];}).map(function(x){return x[0]==="ot"&&S.hz_other?S.hz_other:x[1];}).join(", ");
+ return {product:S.product,supplier:S.supplier,location:S.location,coshh_class:hz,quantity:S.quantity,use_for:S.process,sds_date:S.sds_date,controls:S.controls,ppe:S.ppe,review_on:S.review_on,notes:S.notes,assessed_by:S.assessed_by,assessed_on:S.assessed_on};}
+$("#saveBtn").onclick=function(){var b=this;if(BUSY)return;if(!String(S.product).trim()){status("Add the substance / trade name first.",1);return;}
+ var miss=missing(),full=!miss.length;
+ if(!full&&!confirm("This can't be built into a pack yet. Still needed: "+miss.join(", ")+".\n\nSave it as a draft for now?"))return;
+ BUSY=true;b.disabled=true;try{localStorage.setItem("cbs_name",S.assessed_by||"");}catch(x){}
+ var body={id:ID||"",version:(ROW&&ROW.version)||"0",fields:rowFields(),state:S,by:me()||S.assessed_by,prev:{pack_url:(ROW&&ROW.pack_url)||"",sds_file_url:(ROW&&ROW.sds_file_url)||""}};
+ var p=Promise.resolve();
+ if(full)p=packPdf(true).then(function(r){body.pack={name:"pack.pdf",data:b64(r.bytes)};if(SDS)body.sds={name:SDS.name,mime:SDS.type,data:b64(SDS.buf)};});
+ else if(SDS)body.sds={name:SDS.name,mime:SDS.type,data:b64(SDS.buf)};
+ p.then(function(){status("Saving to SharePoint\u2026");return fetch("/webhook/cbs-coshh-save",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}).then(function(r){return r.json();});})
+ .then(function(d){if(!d||!d.ok)throw new Error((d&&d.error)||"Could not save.");var fresh=!ID;ID=String(d.id);ROW=Object.assign({},ROW||{},d.row||{});if(SDS){OLD=SDS;OLD.old=1;}SDS=null;
+  try{history.replaceState(null,"","?id="+ID+(JOB?"&job="+encodeURIComponent(JOB):""));}catch(x){}
+  var after=JOB&&fresh&&full?fetch("/webhook/cbs-coshh-job",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"add",job_no:JOB,ids:[ID],by:body.by})}).then(function(r){return r.json();})["catch"](function(){return {};}):Promise.resolve(null);
+  return after.then(function(){DONE=full?d.pack_url:null;drawForm();renderDoc();window.scrollTo(0,0);status(full?"Saved. The pack is built and on the CoSHH register"+(JOB&&fresh?" and job "+JOB:"")+".":"Draft saved to the CoSHH register.");});})
+ ["catch"](function(err){status(err.message||"Could not save.",1);}).then(function(){BUSY=false;b.disabled=false;});};
+/* ---------- layout / tabs ---------- */
+var mq=window.matchMedia("(min-width:1100px)");function lay(){document.body.classList.toggle("wide",mq.matches);if(mq.matches)queue();}
+if(mq.addEventListener)mq.addEventListener("change",lay);else mq.addListener(lay);lay();
+function tab(pv){document.body.classList.toggle("show-preview",pv);$("#tabEdit").setAttribute("aria-selected",pv?"false":"true");$("#tabPrev").setAttribute("aria-selected",pv?"true":"false");if(pv)renderDoc();window.scrollTo(0,0);}
+$("#tabEdit").onclick=function(){tab(false);};$("#tabPrev").onclick=function(){tab(true);};
+if(JOB){var bo=$("#backOps");bo.href="/webhook/cbs-coshh?job="+encodeURIComponent(JOB);bo.innerHTML="&#8249; Job "+e(JOB)+" CoSHH";}
+/* ---------- start ---------- */
+fetch("/webhook/cbs-logo").then(function(r){return r.text();}).then(function(t){var m=String(t).match(/iVBORw0KGgo[A-Za-z0-9+\/=]+/);LOGO=m?"data:image/png;base64,"+m[0]:"/webhook/cbs-logo";})["catch"](function(){LOGO="/webhook/cbs-logo";}).then(function(){$("#topLogo").src=LOGO;if(visible())renderDoc();});
+function start(){if(!ID){drawForm();renderDoc();return;}
+ fetch("/webhook/cbs-coshh-data?id="+ID,{cache:"no-store"}).then(function(r){return r.json();}).then(function(d){if(!d.ok||!d.row)throw new Error(d.error||"Could not find this CoSHH assessment.");ROW=d.row;var st={};try{st=JSON.parse(ROW.assessment_json||"{}")||{};}catch(x){}
+  S=merge(blank(),st);if(!st.product){S.product=ROW.product||"";S.supplier=ROW.supplier||"";S.location=ROW.location||"";S.quantity=ROW.quantity||"";S.process=ROW.use_for||"";S.controls=ROW.controls||"";S.ppe=ROW.ppe||"";S.review_on=ROW.review_on||S.review_on;S.sds_date=ROW.sds_date||"";S.notes=ROW.notes||"";}
+  $("#ttl").textContent="CoSHH assessment \u2013 "+(ROW.product||"");drawForm();renderDoc();})
+ ["catch"](function(err){$("#form").innerHTML="<div class='card'><b>"+e(err.message||"Could not load.")+"</b><p class='muted'>Check your connection and refresh the page.</p></div>";});}
+fetch("/webhook/cbs-admin?a=list&t=workers",{cache:"no-store"}).then(function(r){return r.json();}).then(function(rows){TEAM=(Array.isArray(rows)?rows:[]).filter(function(w){return w&&w.name&&w.active!==false;}).map(function(w){return String(w.name).trim();}).filter(Boolean).sort();})["catch"](function(){}).then(start);
+})();
+</script><script>window.__CBS_PV={"label":"CoSHH assessment","preview":false,"sheet":true};</script><script src="/webhook/cbs-builder-kit"></script></body></html>

@@ -1,0 +1,72 @@
+{
+  "table": "cbs_suppliers",
+  "n8n_id": "iFTLTgEAxiTHNTgA",
+  "columns": [
+    {
+      "name": "account_no",
+      "type": "string"
+    },
+    {
+      "name": "address",
+      "type": "string"
+    },
+    {
+      "name": "contact",
+      "type": "string"
+    },
+    {
+      "name": "email",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "phone",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "name": "ZZ Cabins",
+      "contact": "",
+      "email": "contact5@example.com",
+      "phone": "0117 496 0005",
+      "account_no": "",
+      "address": "3 Sample Court, Sample Business Park, Sampletown C, ZZ99 8ZZ",
+      "notes": "Legal name: ZZ Cabins Ltd",
+      "id": 1,
+      "createdAt": "2026-10-06T08:47:39.335Z",
+      "updatedAt": "2026-10-06T08:47:39.335Z"
+    },
+    {
+      "name": "ZZ Drainage",
+      "contact": "",
+      "email": "contact6@example.com",
+      "phone": "0117 496 0006",
+      "account_no": "",
+      "address": "ZZ Drainage Ltd, Sample Close, Sampletown D, Leicestershire, ZZ99 9ZZ",
+      "notes": "Legal name: ZZ Drainage Ltd",
+      "id": 2,
+      "createdAt": "2026-10-06T08:47:39.335Z",
+      "updatedAt": "2026-10-06T08:47:39.335Z"
+    },
+    {
+      "name": "ZZ Barriers",
+      "contact": "",
+      "email": "contact7@example.com",
+      "phone": "ZZ Contact P - 0117 496 0007",
+      "account_no": "",
+      "address": "ZZ Barriers, Sample Works, Sample Industrial Estate, Sampletown G, Halifax, ZZ99 10ZZ",
+      "notes": "Legal name: ZZ Barriers Ltd",
+      "id": 3,
+      "createdAt": "2026-10-06T08:47:39.335Z",
+      "updatedAt": "2026-10-06T08:47:39.335Z"
+    }
+  ]
+}

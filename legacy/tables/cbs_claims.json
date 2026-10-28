@@ -1,0 +1,111 @@
+{
+  "table": "cbs_claims",
+  "n8n_id": "WvaoWW7AaE8P8rkc",
+  "columns": [
+    {
+      "name": "amount_claimed",
+      "type": "string"
+    },
+    {
+      "name": "amount_settled",
+      "type": "string"
+    },
+    {
+      "name": "asset",
+      "type": "string"
+    },
+    {
+      "name": "claim_no",
+      "type": "string"
+    },
+    {
+      "name": "claim_type",
+      "type": "string"
+    },
+    {
+      "name": "client",
+      "type": "string"
+    },
+    {
+      "name": "closed_on",
+      "type": "string"
+    },
+    {
+      "name": "description",
+      "type": "string"
+    },
+    {
+      "name": "direction",
+      "type": "string"
+    },
+    {
+      "name": "doc_url",
+      "type": "string"
+    },
+    {
+      "name": "excess",
+      "type": "string"
+    },
+    {
+      "name": "incident_date",
+      "type": "string"
+    },
+    {
+      "name": "incident_ref",
+      "type": "string"
+    },
+    {
+      "name": "insurer",
+      "type": "string"
+    },
+    {
+      "name": "insurer_claim_no",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "lodged_on",
+      "type": "string"
+    },
+    {
+      "name": "next_action",
+      "type": "string"
+    },
+    {
+      "name": "next_action_due",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "other_contact",
+      "type": "string"
+    },
+    {
+      "name": "other_party",
+      "type": "string"
+    },
+    {
+      "name": "policy",
+      "type": "string"
+    },
+    {
+      "name": "site",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "vehicle",
+      "type": "string"
+    }
+  ],
+  "sample_rows": []
+}

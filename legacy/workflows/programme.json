@@ -1,0 +1,919 @@
+{
+  "id": "KaXapjCytuAglb1B",
+  "name": "CBS - Programme",
+  "active": true,
+  "isArchived": false,
+  "versionId": "49041795-d39b-40d4-acdf-bdf61dcf26e8",
+  "activeVersionId": "49041795-d39b-40d4-acdf-bdf61dcf26e8",
+  "triggerCount": 3,
+  "createdAt": "2026-10-06T21:11:15.132Z",
+  "updatedAt": "2026-10-27T10:26:55.887Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none"
+  },
+  "connections": {
+    "Act Hook": {
+      "main": [
+        [
+          {
+            "node": "Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data": {
+      "main": [
+        [
+          {
+            "node": "Checklist Roll-up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Act": {
+      "main": [
+        [
+          {
+            "node": "Start Sync",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start Sync": {
+      "main": [
+        [
+          {
+            "node": "Respond Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Checklist Roll-up": {
+      "main": [
+        [
+          {
+            "node": "Start Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start Info": {
+      "main": [
+        [
+          {
+            "node": "Respond Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start UI Hook": {
+      "main": [
+        [
+          {
+            "node": "Start UI Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start UI Script": {
+      "main": [
+        [
+          {
+            "node": "Send Start UI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Hook": {
+      "main": [
+        [
+          {
+            "node": "Get Programmes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Programmes": {
+      "main": [
+        [
+          {
+            "node": "Get Prog Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Prog Items": {
+      "main": [
+        [
+          {
+            "node": "Get Job Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Job Rows": {
+      "main": [
+        [
+          {
+            "node": "Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "232be520-2ea6-41b3-bbb1-600b74992873",
+      "name": "Data Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        224
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-programme-data",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "e825edc3-ed86-49cc-84ee-a995d94da15f"
+    },
+    {
+      "id": "428dce0a-0c85-4e46-8905-560e053517e4",
+      "name": "Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        224
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/';const S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;const q=$('Data Hook').first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');const rows=n=>{try{return $(n).all().map(i=>i.json).filter(r=>r&&r.id!=null);}catch(e){return [];}};const P=rows('Get Programmes'),I=rows('Get Prog Items');const today=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).slice(0,10);const ord=(a,b)=>num(a.sort)-num(b.sort)||num(a.id)-num(b.id);const KD=k=>{k=S(k);return k==='task'||k==='sub'?k:'phase';};function build(j){const prog=P.filter(p=>jk(p.job_no)===jk(j)).sort((a,b)=>num(b.id)-num(a.id))[0]||null;const items=I.filter(r=>jk(r.job_no)===jk(j));const byId={};items.forEach(r=>{byId[String(r.id)]=r;});const kidsOf=(id,kind)=>items.filter(t=>KD(t.kind)===kind&&S(t.parent_id)===String(id)).sort(ord);const isDone=x=>{if(!x)return true;const k=KD(x.kind);if(k==='sub')return S(x.status)==='Done';const ch=kidsOf(x.id,k==='task'?'sub':'task');return ch.length?ch.every(isDone):S(x.status)==='Done';};const blk=r=>{const b=S(r.blocked_by);if(!b||!byId[b])return null;return isDone(byId[b])?null:(S(byId[b].name)||'another item');};const leaf=t=>{const st=S(t.status)||'Not started',en=S(t.end_on)||S(t.start_on);const bn=blk(t);return Object.assign({},t,{kind:KD(t.kind),start_eff:S(t.start_on),end_eff:en,status_eff:st,pct:st==='Done'?100:0,overdue:!!en&&en<today&&st!=='Done',blocked:!!bn,blocked_name:bn||''});};const roll=(p,kids)=>{let start=S(p.start_on),end=S(p.end_on)||S(p.start_on);let pct,st;if(kids.length){const ds=kids.map(t=>t.start_eff).filter(Boolean).sort(),de=kids.map(t=>t.end_eff).filter(Boolean).sort();if(ds.length)start=ds[0];if(de.length){const oe=S(p.end_on);end=de[de.length-1];if(oe&&oe>end)end=oe;}pct=Math.round(kids.reduce((m,t)=>m+t.pct,0)/kids.length);st=kids.every(t=>t.status_eff==='Done')?'Done':((pct>0||kids.some(t=>t.status_eff!=='Not started'))?'In progress':'Not started');}else{st=S(p.status)||'Not started';pct=st==='Done'?100:(st==='In progress'?50:0);}const bn=blk(p);return Object.assign({},p,{kind:KD(p.kind),start_eff:start,end_eff:end,pct:pct,status_eff:st,overdue:!!end&&end<today&&pct<100&&st!=='Done',blocked:!!bn,blocked_name:bn||''});};const phases=items.filter(r=>KD(r.kind)==='phase').sort(ord).map(p=>{const tasks=kidsOf(p.id,'task').map(t=>{const subs=kidsOf(t.id,'sub').map(leaf);const tt=subs.length?roll(t,subs):leaf(t);tt.subs=subs;return tt;});const pp=roll(p,tasks);pp.tasks=tasks;return pp;});const leaves=[];phases.forEach(p=>{if(p.tasks.length)p.tasks.forEach(t=>{if(t.subs.length)t.subs.forEach(s=>leaves.push(s));else leaves.push(t);});else leaves.push(p);});const done=leaves.filter(x=>x.status_eff==='Done').length;const cur=phases.find(p=>p.pct<100&&p.start_eff&&p.start_eff<=today)||phases.find(p=>p.pct<100)||null;const sts=phases.map(p=>p.start_eff).filter(Boolean).sort(),ens=phases.map(p=>p.end_eff).filter(Boolean).sort();const wk=new Date(today+'T00:00:00Z');wk.setUTCDate(wk.getUTCDate()+7);const wkEnd=wk.toISOString().slice(0,10);const week=leaves.filter(x=>(x.status_eff!=='Done'&&x.start_eff&&x.start_eff<=wkEnd&&(x.end_eff||x.start_eff)>=today)||x.overdue).map(x=>({id:x.id,name:S(x.name),kind:x.kind,start:x.start_eff,end:x.end_eff,status:x.status_eff,assigned_to:S(x.assigned_to),overdue:x.overdue,blocked:x.blocked,blocked_name:x.blocked_name}));const summary={status:prog?S(prog.status):'',draft:!!prog&&S(prog.status)==='Draft',pct:leaves.length?Math.round(100*done/leaves.length):0,current:cur?S(cur.name):'',overdue:leaves.filter(x=>x.overdue).length,overdue_phases:phases.filter(p=>p.overdue).map(p=>S(p.name)),blocked:leaves.filter(x=>x.blocked).length,start:sts[0]||'',end:ens.length?ens[ens.length-1]:'',phases:phases.length,items:leaves.length};return {job:j,today:today,programme:prog,phases:phases,summary:summary,week:week};}if(job)return [{json:build(job)}];const seen={},jobs=[];P.slice().sort((a,b)=>num(b.id)-num(a.id)).forEach(p=>{const k=jk(p.job_no);if(!k||seen[k])return;seen[k]=1;if(S(p.status)!=='Open')return;const b=build(p.job_no);jobs.push(Object.assign({job:S(p.job_no)},b.summary));});return [{json:{today:today,jobs:jobs}}];"
+      }
+    },
+    {
+      "id": "1ca48967-0de7-468e-bf36-a03a56e596ee",
+      "name": "Respond Data",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        224
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "16e35c89-c2d2-4c1e-97aa-e79f90cc283b",
+      "name": "Act Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        448
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-programme-act",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "74d8f246-07a6-4b1e-b48b-d69c6af05551"
+    },
+    {
+      "id": "19fa0740-898f-4453-901a-30f7350c9546",
+      "name": "Act",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        448
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';const NL=String.fromCharCode(10),Q=String.fromCharCode(34);const S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;const b=$input.first().json.body||{};const a=S(b.a),job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by).slice(0,80);const R=(ok,x)=>[{json:Object.assign({ok:ok},x||{})}];if(!job)return R(false,{message:'No job number.'});if(!by)return R(false,{message:'Enter your name.'});const now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);const stamp=now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16);const list=async t=>{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:20000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null&&jk(r.job_no)===jk(job));};const save=(t,id,row,p)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t='+t+'&id='+(id||0)+'&k='+K+(p?'&partial=1':''),body:row,json:true,timeout:20000});const del=(t,id)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=del&t='+t+'&id='+id+'&k='+K,body:{},json:true,timeout:20000});const isD=v=>/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(S(v));const toD=s=>new Date(s+'T00:00:00Z');const fmt=d=>d.toISOString().slice(0,10);const wkend=d=>{const x=d.getUTCDay();return x===0||x===6;};const addDays=(s,n,sw)=>{if(!isD(s))return S(s);const d=toD(s);if(!sw){d.setUTCDate(d.getUTCDate()+n);return fmt(d);}const step=n<0?-1:1;let c=Math.abs(n);while(c>0){d.setUTCDate(d.getUTCDate()+step);if(!wkend(d))c--;}while(wkend(d))d.setUTCDate(d.getUTCDate()+1);return fmt(d);};const diff=(x,y)=>Math.round((toD(y)-toD(x))/86400000);const uk=s=>S(s).slice(8,10)+'/'+S(s).slice(5,7)+'/'+S(s).slice(0,4);const STS=['Not started','In progress','Done'];const KD=k=>{k=S(k);return k==='task'||k==='sub'?k:'phase';};const PARENT={task:'phase',sub:'task'};const MW={none:'',overlap:' (shifted overlapping items)',keep:' (kept the gaps to later items)'};const RULEW={overlap:'shift only items that overlap',keep:'shift everything after and keep the gaps',none:'do not shift anything else'};const P=(await list('programmes')).sort((x,y)=>num(y.id)-num(x.id));const prog=P[0]||null;const PSET=(()=>{try{return JSON.parse(S(prog&&prog.notes)||'{}')||{};}catch(e){return {};}})();const MODE=(()=>{const m=S(b.mode);if(m==='none'||m==='overlap'||m==='keep')return m;if(b.cascade===true||b.cascade==='true')return 'keep';if(b.cascade===false||b.cascade==='false')return 'none';const r=S(PSET.shift);return (r==='none'||r==='keep')?r:'overlap';})();const hist=line=>[S(prog&&prog.history),stamp+' - '+line].filter(Boolean).join(NL);const draft=b.draft===true||b.draft==='true'||b.draft==='1';if(a==='create'){const st=draft?'Draft':'Open';if(prog){if(S(prog.status)==='Open'||S(prog.status)==='Draft')return R(true);await save('programmes',prog.id,{status:'Open',closed_by:'',closed_at:'',history:hist('Reopened by '+by)},true);return R(true);}const res=await save('programmes',0,{job_no:job,status:st,created_by:by,created_at:now,closed_by:'',closed_at:'',skip_weekends:'No',undo_json:'',history:stamp+' - '+(draft?'Draft programme (quote) created by ':'Programme created by ')+by,notes:''},false);return R(true,{id:num(res&&res.id)});}if(!prog)return R(false,{message:'This job has no programme yet.'});const pst=S(prog.status);if(a==='close'){await save('programmes',prog.id,{status:'Closed',closed_by:by,closed_at:now,history:hist('Programme closed by '+by)},true);return R(true);}if(a==='reopen'){await save('programmes',prog.id,{status:'Open',closed_by:'',closed_at:'',history:hist('Programme reopened by '+by)},true);return R(true);}if(pst!=='Open'&&pst!=='Draft')return R(false,{message:'This programme is closed. Reopen it first.'});if(a==='settings'){if(b.shift_mode!==undefined&&b.shift_mode!==null){const m=S(b.shift_mode);if(!RULEW[m])return R(false,{message:'Unknown rule.'});await save('programmes',prog.id,{notes:JSON.stringify(Object.assign({},PSET,{shift:m})),history:hist('Rule for later items set to '+RULEW[m]+' by '+by)},true);return R(true);}const sw=(b.skip_weekends===true||b.skip_weekends==='true'||b.skip_weekends==='Yes')?'Yes':'No';await save('programmes',prog.id,{skip_weekends:sw,history:hist('Skip weekends turned '+(sw==='Yes'?'on':'off')+' by '+by)},true);return R(true);}const items=await list('progitems');const byId={};items.forEach(r=>{byId[String(r.id)]=r;});const F=['kind','parent_id','sort','name','start_on','end_on','status','assigned_to','blocked_by','notes'];const pick=r=>{const o={};F.forEach(k=>{o[k]=S(r[k]);});return o;};const kidsAll=id=>items.filter(r=>KD(r.kind)!=='phase'&&S(r.parent_id)===String(id));const desc=id=>{const out=[];kidsAll(id).forEach(c=>{out.push(c);desc(c.id).forEach(x=>out.push(x));});return out;};const kinds=id=>items.filter(r=>S(r.parent_id)===String(id));const anc=r=>{const out=[];let p=byId[S(r.parent_id)];while(p){out.push(p);p=byId[S(p.parent_id)];}return out;};const WORD={phase:'phase',task:'task',sub:'sub-task'};const lab=r=>WORD[KD(r.kind)]+' '+Q+S(r.name)+Q;const setUndo=(label,ops,line)=>save('programmes',prog.id,{undo_json:ops&&ops.length?JSON.stringify({label:label,ops:ops,by:by,at:now}):'',history:hist(line)},true);const sw=S(prog.skip_weekends)==='Yes';function cascadeRun(r,o0,n1,ids,plan,val,shiftDelta){let n=0;if(MODE==='none'||!o0.s||!o0.e||!n1.e)return 0;anc(r).forEach(x=>{ids[String(x.id)]=1;});const cands=items.filter(x=>!ids[String(x.id)]&&isD(x.start_on)&&!desc(x.id).some(y=>isD(y.start_on)));if(MODE==='keep'){if(shiftDelta){cands.forEach(x=>{if(S(x.start_on)<o0.s)return;plan(x,{start_on:addDays(x.start_on,shiftDelta,sw),end_on:addDays(x.end_on,shiftDelta,sw)});n++;});}else{const dS=diff(o0.s,n1.s),dE=diff(o0.e,n1.e);cands.forEach(x=>{const xs=S(x.start_on);let d=0;if(xs>o0.e)d=dE;else if(xs>=o0.s&&dS===dE)d=dS;if(!d)return;plan(x,{start_on:addDays(x.start_on,d,false),end_on:addDays(x.end_on,d,false)});n++;});}}else{let fr=n1.e;cands.filter(x=>S(x.start_on)>o0.e).sort((p,q)=>S(p.start_on)<S(q.start_on)?-1:(S(p.start_on)>S(q.start_on)?1:0)).forEach(x=>{const xs=S(x.start_on);if(xs<=fr){const tgt=addDays(fr,1,sw);const d=diff(xs,tgt);plan(x,{start_on:addDays(x.start_on,d,false),end_on:addDays(x.end_on,d,false)});n++;const xe=val(x,'e')||val(x,'s');if(xe>fr)fr=xe;}});}return n;}function planner(){const nd={},ops=[],writes=[];const plan=(x,row)=>{ops.push({t:'set',id:x.id,row:{start_on:S(x.start_on),end_on:S(x.end_on)}});writes.push([x.id,Object.assign({},row,{updated_by:by,updated_at:now})]);nd[String(x.id)]={s:S(row.start_on),e:S(row.end_on)};};const val=(x,k)=>{const n=nd[String(x.id)];return n?S(n[k]):S(k==='s'?x.start_on:x.end_on);};const span=x=>{const arr=[x].concat(desc(x.id));const ss=arr.map(y=>val(y,'s')).filter(isD).sort();const ee=arr.map(y=>val(y,'e')||val(y,'s')).filter(isD).sort();return {s:ss[0]||'',e:ee.length?ee[ee.length-1]:''};};return {nd:nd,ops:ops,writes:writes,plan:plan,val:val,span:span};}if(a==='golive'){if(pst!=='Draft')return R(false,{message:'This programme is already live.'});const ns=S(b.start_on);if(!isD(ns))return R(false,{message:'Pick the real start date.'});const st0=items.map(x=>S(x.start_on)).filter(isD).sort()[0]||'';const delta=st0?diff(st0,ns):0;const ops=[];if(delta){for(const x of items){if(!isD(x.start_on)&&!isD(x.end_on))continue;ops.push({t:'set',id:x.id,row:{start_on:S(x.start_on),end_on:S(x.end_on)}});await save('progitems',x.id,{start_on:addDays(x.start_on,delta,false),end_on:addDays(x.end_on,delta,false),updated_by:by,updated_at:now},true);}}ops.push({t:'prog',row:{status:'Draft'}});await save('programmes',prog.id,{status:'Open',undo_json:JSON.stringify({label:'Go live',ops:ops,by:by,at:now}),history:hist('Programme went live with start '+uk(ns)+(delta?' (everything moved '+Math.abs(delta)+' day'+(Math.abs(delta)===1?'':'s')+' '+(delta>0?'later':'earlier')+')':'')+' by '+by)},true);return R(true);}if(a==='save_item'){const id=num(b.id),kind=KD(b.kind);const name=S(b.name).slice(0,160);if(!name)return R(false,{message:'Give it a name.'});const st=S(b.start_on),en=S(b.end_on);if((st&&!isD(st))||(en&&!isD(en)))return R(false,{message:'Check the dates.'});if(st&&en&&en<st)return R(false,{message:'The end date is before the start date.'});const status=STS.indexOf(S(b.status))>-1?S(b.status):'Not started';let parent='';if(kind!=='phase'){parent=S(b.parent_id);const pp=byId[parent];if(!pp||KD(pp.kind)!==PARENT[kind])return R(false,{message:kind==='task'?'Pick the phase this task belongs to.':'Pick the task this sub-task belongs to.'});}const blk=S(b.blocked_by);if(blk&&(!byId[blk]||blk===String(id)))return R(false,{message:'Pick a valid item for blocked by.'});const row={kind:kind,parent_id:parent,name:name,start_on:st,end_on:en||st,status:status,assigned_to:S(b.assigned_to).slice(0,120),blocked_by:blk,notes:S(b.notes).slice(0,1000),updated_by:by,updated_at:now};if(id){const r=byId[String(id)];if(!r)return R(false,{message:'That item was not found. Refresh the page.'});if(KD(r.kind)!==kind)return R(false,{message:'An item cannot change level.'});if(kind!=='phase'&&S(r.parent_id)!==parent){row.sort=String(kinds(parent).reduce((m,x)=>Math.max(m,num(x.sort)),0)+1);}const pl=planner();let n=0;const hasDK=desc(r.id).some(y=>isD(y.start_on));if(!hasDK&&MODE!=='none'&&isD(r.start_on)&&isD(st)&&(S(r.start_on)!==st||(S(r.end_on)||S(r.start_on))!==(en||st))){const ids={};ids[String(r.id)]=1;pl.nd[String(r.id)]={s:st,e:en||st};n=cascadeRun(r,{s:S(r.start_on),e:S(r.end_on)||S(r.start_on)},{s:st,e:en||st},ids,pl.plan,pl.val,0);}await save('progitems',id,row,true);for(const w of pl.writes)await save('progitems',w[0],w[1],true);await setUndo('Edit '+lab(r),[{t:'set',id:id,row:pick(r)}].concat(pl.ops),'Edited '+lab(row)+(n?' and moved '+n+' later item'+(n===1?'':'s')+MW[MODE]:'')+' by '+by);return R(true,{id:id});}const sib=kind==='phase'?items.filter(x=>KD(x.kind)==='phase'):kinds(parent);row.sort=String(sib.reduce((m,x)=>Math.max(m,num(x.sort)),0)+1);row.job_no=job;const res=await save('progitems',0,row,false);const nid=num(res&&res.id);await setUndo('Add '+lab(row),nid?[{t:'del',id:nid}]:[],'Added '+lab(row)+' by '+by);return R(true,{id:nid});}if(a==='status'){const r=byId[S(b.id)];if(!r)return R(false,{message:'That item was not found. Refresh the page.'});const st=S(b.status);if(STS.indexOf(st)<0)return R(false,{message:'Unknown status.'});await save('progitems',r.id,{status:st,updated_by:by,updated_at:now},true);await setUndo('Status of '+lab(r),[{t:'set',id:r.id,row:{status:S(r.status)}}],lab(r)+' set to '+st+' by '+by);return R(true);}if(a==='move'){const r=byId[S(b.id)];if(!r)return R(false,{message:'That item was not found. Refresh the page.'});const rk=KD(r.kind);const sib=items.filter(x=>KD(x.kind)===rk&&(rk==='phase'||S(x.parent_id)===S(r.parent_id))).sort((x,y)=>num(x.sort)-num(y.sort)||num(x.id)-num(y.id));const i=sib.indexOf(r),up=S(b.dir)==='up',j=i+(up?-1:1);if(j<0||j>=sib.length)return R(true);const order=sib.slice();order.splice(i,1);order.splice(j,0,r);const ops=[];for(let k=0;k<order.length;k++){const x=order[k];if(num(x.sort)!==k+1){ops.push({t:'set',id:x.id,row:{sort:S(x.sort)}});await save('progitems',x.id,{sort:String(k+1)},true);}}await setUndo('Reorder '+lab(r),ops,'Moved '+lab(r)+' '+(up?'up':'down')+' by '+by);return R(true);}if(a==='shift'||a==='set_dates'){const r=byId[S(b.id)];if(!r)return R(false,{message:'That item was not found. Refresh the page.'});const ks=desc(r.id);const moved=[r].concat(ks);const ids={};moved.forEach(x=>{ids[String(x.id)]=1;});const pl=planner();const o0=pl.span(r);const dk=ks.some(x=>isD(x.start_on));let line='',sd=0;if(a==='shift'){sd=Math.round(Number(b.days)||0);if(!sd)return R(false,{message:'Enter how many days to move it.'});moved.forEach(x=>pl.plan(x,{start_on:addDays(x.start_on,sd,sw),end_on:addDays(x.end_on,sd,sw)}));line='Moved '+lab(r)+' '+(sd>0?'later':'earlier')+' by '+Math.abs(sd)+(sw?' working':'')+' day'+(Math.abs(sd)===1?'':'s');}else{const ns=S(b.start_on),ne=S(b.end_on);if(!isD(ns)||!isD(ne)||ne<ns)return R(false,{message:'Check the dates.'});if(!dk){pl.plan(r,{start_on:ns,end_on:ne});}else{const dS=o0.s?diff(o0.s,ns):0;if(dS)moved.forEach(x=>pl.plan(x,{start_on:addDays(x.start_on,dS,false),end_on:addDays(x.end_on,dS,false)}));const cur=pl.span(r);if(ne!==cur.e){pl.plan(r,{start_on:pl.val(r,'s')||ns,end_on:ne});}}line='Rescheduled '+lab(r)+' to '+ns.slice(8,10)+'/'+ns.slice(5,7)+' - '+ne.slice(8,10)+'/'+ne.slice(5,7);}const n1=pl.span(r);const n=cascadeRun(r,o0,n1,ids,pl.plan,pl.val,a==='shift'?sd:0);for(const w of pl.writes)await save('progitems',w[0],w[1],true);await setUndo((a==='shift'?'Shift ':'Reschedule ')+lab(r),pl.ops,line+(n?' and '+n+' later item'+(n===1?'':'s')+MW[MODE]:'')+' by '+by);return R(true,{moved:pl.writes.length,later:n});}if(a==='delete_item'){const r=byId[S(b.id)];if(!r)return R(true);const ks=desc(r.id);const gone={};[r].concat(ks).forEach(x=>{gone[String(x.id)]=1;});const ops=[{t:'add',key:String(r.id),row:pick(r)}].concat(ks.map(k=>({t:'add',key:String(k.id),parentKey:S(k.parent_id),row:pick(k)})));const refs=items.filter(x=>!gone[String(x.id)]&&gone[S(x.blocked_by)]);refs.forEach(x=>ops.push({t:'set',id:x.id,row:{blocked_by:S(x.blocked_by)}}));for(const x of refs)await save('progitems',x.id,{blocked_by:'',updated_by:by,updated_at:now},true);for(const k of ks.slice().reverse())await del('progitems',k.id);await del('progitems',r.id);await setUndo('Delete '+lab(r),ops,'Deleted '+lab(r)+(ks.length?' and '+ks.length+' item'+(ks.length===1?'':'s')+' under it':'')+' by '+by);return R(true);}if(a==='undo'){let u=null;try{u=JSON.parse(S(prog.undo_json)||'null');}catch(e){u=null;}if(!u||!Array.isArray(u.ops)||!u.ops.length)return R(false,{message:'Nothing to undo.'});const map={},added=[];for(const o of u.ops){if(o.t!=='add')continue;const row=Object.assign({},o.row,{job_no:job,updated_by:by,updated_at:now});if(o.parentKey&&map[o.parentKey])row.parent_id=map[o.parentKey];const res=await save('progitems',0,row,false);const nid=String(num(res&&res.id)||'');if(nid){map[o.key]=nid;added.push([nid,S(o.row.blocked_by)]);}}for(const x of added){if(x[1]&&map[x[1]])await save('progitems',x[0],{blocked_by:map[x[1]]},true);}let progRow={};const setOps=u.ops.filter(o=>o.t==='set');const seenSet={};for(let i=setOps.length-1;i>=0;i--){const o=setOps[i];seenSet[String(o.id)]=o;}for(const o of u.ops){if(o.t==='set'){if(seenSet[String(o.id)]!==o)continue;if(byId[String(o.id)]){const row=Object.assign({},o.row,{updated_by:by,updated_at:now});if(row.blocked_by&&map[row.blocked_by])row.blocked_by=map[row.blocked_by];await save('progitems',o.id,row,true);}}else if(o.t==='del'){if(byId[String(o.id)]){for(const k of desc(o.id).reverse())await del('progitems',k.id);await del('progitems',o.id);}}else if(o.t==='prog'){progRow=Object.assign(progRow,o.row||{});}}await save('programmes',prog.id,Object.assign({undo_json:'',history:hist('Undid '+Q+S(u.label)+Q+' by '+by)},progRow),true);return R(true);}return R(false,{message:'Unknown action.'});"
+      }
+    },
+    {
+      "id": "43acfaf0-002d-4207-b90a-9f6889f84a20",
+      "name": "Respond Act",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        448
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "db1a3fa6-def0-4fa6-9fc0-ee09e1fe687d",
+      "name": "Checklist Roll-up",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        336
+      ],
+      "parameters": {
+        "jsCode": "/* Checklist roll-up: a task's % comes from its checklist (or a % set by hand when it has none), then rolls up into tasks, phases and the programme summary. Programme items come from the Get Prog Items data table node. */\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();\nconst j=Object.assign({},$input.first().json);\nconst ckl=t=>{try{const a=JSON.parse(S(t.checklist_json)||'[]');return Array.isArray(a)?a.filter(i=>i&&S(i.t)):[];}catch(e){return [];}};\nconst man=t=>{const p=S(t.pct);if(p===''||isNaN(Number(p))||Number(p)===0)return null;return Math.max(0,Math.min(100,Math.round(Number(p))));};\nfunction leafPct(t,base){const ck=ckl(t);if(ck.length){const d=ck.filter(i=>i.done).length;const st=d===ck.length?'Done':(d>0||S(t.status)==='In progress'?'In progress':'Not started');return {pct:Math.round(100*d/ck.length),st:st,ck:ck,d:d};}\n const st=S(t.status)||'Not started';if(st==='Done')return {pct:100,st:st,ck:[],d:0};const m=man(t);return {pct:m!=null?m:base(st),st:st,ck:[],d:0};}\nif(Array.isArray(j.phases)){\n const today=S(j.today);\n const fix=(t,base)=>{const r=leafPct(t,base);t.pct=r.pct;t.status_eff=r.st;t.checklist=r.ck;t.ck_done=r.d;t.ck_total=r.ck.length;t.overdue=!!t.end_eff&&t.end_eff<today&&t.status_eff!=='Done';};\n const roll=(p,kids)=>{p.pct=Math.round(kids.reduce((m,x)=>m+x.pct,0)/kids.length);p.status_eff=kids.every(x=>x.status_eff==='Done')?'Done':((p.pct>0||kids.some(x=>x.status_eff!=='Not started'))?'In progress':'Not started');p.overdue=!!p.end_eff&&p.end_eff<today&&p.pct<100&&p.status_eff!=='Done';};\n const leaves=[];\n j.phases.forEach(p=>{(p.tasks||[]).forEach(t=>{if((t.subs||[]).length){t.subs.forEach(x=>{fix(x,()=>0);leaves.push(x);});roll(t,t.subs);}else{fix(t,()=>0);leaves.push(t);}});\n  if((p.tasks||[]).length)roll(p,p.tasks);else{fix(p,st=>st==='In progress'?50:0);leaves.push(p);}});\n if(j.summary){j.summary=Object.assign({},j.summary,{pct:leaves.length?Math.round(leaves.reduce((m,x)=>m+x.pct,0)/leaves.length):0,overdue:leaves.filter(x=>x.overdue).length,overdue_phases:j.phases.filter(p=>p.overdue).map(p=>S(p.name))});\n  const cur=j.phases.find(p=>p.pct<100&&p.start_eff&&p.start_eff<=today)||j.phases.find(p=>p.pct<100)||null;j.summary.current=cur?S(cur.name):'';}\n if(Array.isArray(j.week)){const by={};leaves.forEach(x=>{by[String(x.id)]=x;});j.week=j.week.map(w=>{const x=by[String(w.id)];return x?Object.assign({},w,{status:x.status_eff,pct:x.pct}):w;}).filter(w=>w.status!=='Done'||w.overdue);}\n return [{json:j}];\n}\nif(Array.isArray(j.jobs)&&j.jobs.length){\n let I=[];try{I=$('Get Prog Items').all().map(i=>i.json).filter(r=>r&&r.id!=null);}catch(e){return [{json:j}];}\n const KD=k=>{k=S(k);return k==='task'||k==='sub'?k:'phase';};\n j.jobs=j.jobs.map(x=>{const items=I.filter(r=>jk(r.job_no)===jk(x.job));const hasKid=id=>items.some(r=>KD(r.kind)!=='phase'&&S(r.parent_id)===String(id));\n  const leaves=items.filter(r=>!hasKid(r.id));if(!leaves.length)return x;\n  const pct=Math.round(leaves.reduce((m,r)=>m+leafPct(r,st=>KD(r.kind)==='phase'&&st==='In progress'?50:0).pct,0)/leaves.length);return Object.assign({},x,{pct:pct});});\n return [{json:j}];\n}\nreturn [{json:j}];\n",
+        "language": "javaScript",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "9b713cc4-e717-455d-853b-f01e58a3e3bd",
+      "name": "Start Sync",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        560
+      ],
+      "parameters": {
+        "jsCode": "/* Start date: handles set_start (planned start, works before a programme exists) and, after any programme change, keeps the job's start (cbs_jobs.starts_on) equal to the earliest task date while the programme is live. A ServiceM8 booking still takes priority wherever the start is shown. */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst isD=v=>/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(S(v));\nconst res=$input.first().json||{};const b=$('Act Hook').first().json.body||{};\nconst a=S(b.a),job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by);\nconst list=async t=>{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:20000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);};\nconst save=(t,id,row)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t='+t+'&id='+id+'&k='+K+'&partial=1',body:row,json:true,timeout:20000});\nconst jobRow=async()=>(await list('jobrows')).filter(r=>jk(r.ref)===jk(job)).sort((x,y)=>num(y.id)-num(x.id))[0]||null;\nif(a==='set_start'){\n if(!job)return [{json:{ok:false,message:'No job number.'}}];if(!by)return [{json:{ok:false,message:'Enter your name.'}}];\n const st=S(b.start_on);if(st&&!isD(st))return [{json:{ok:false,message:'Check the date.'}}];\n const jr=await jobRow();if(!jr)return [{json:{ok:false,message:'This job has no Job File yet, so there is nowhere to save the start date.'}}];\n await save('jobrows',jr.id,{starts_on:st});return [{json:{ok:true,start:st}}];}\nif(res.ok!==true||!job||['save_item','shift','set_dates','delete_item','undo','golive','create','reopen'].indexOf(a)<0)return [{json:res}];\ntry{const P=(await list('programmes')).filter(p=>jk(p.job_no)===jk(job)).sort((x,y)=>num(y.id)-num(x.id))[0];\n if(P&&S(P.status)==='Open'){const st=(await list('progitems')).filter(r=>jk(r.job_no)===jk(job)).map(r=>S(r.start_on)).filter(isD).sort()[0]||'';\n  if(st){const jr=await jobRow();if(jr&&S(jr.starts_on).slice(0,10)!==st)await save('jobrows',jr.id,{starts_on:st});}}}catch(e){}\nreturn [{json:res}];\n",
+        "language": "javaScript",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "17d7cd95-0c41-4ec4-9faf-a4be847f1fa1",
+      "name": "Start Info",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        120
+      ],
+      "parameters": {
+        "jsCode": "/* Adds the job's planned start (cbs_jobs.starts_on) to the single-job programme data. Job rows come from the Get Job Rows data table node (only read when a job is asked for). */\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst j=Object.assign({},$input.first().json);if(!j.job||Array.isArray(j.jobs))return [{json:j}];\ntry{const L=$('Get Job Rows').all().map(i=>i.json);\n const jr=(Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null&&jk(r.ref)===jk(j.job)).sort((x,y)=>num(y.id)-num(x.id))[0]||null;\n j.planned_start=S(jr&&jr.starts_on).slice(0,10);j.has_jobfile=!!jr;}catch(e){}\nreturn [{json:j}];\n",
+        "language": "javaScript",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "a9939b09-a4ee-4049-8c41-2ee51a72291e",
+      "name": "Start UI Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        700
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-prog-start-ui",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "b88f2840-c210-4b72-9cdd-c2d8e102c9f6"
+    },
+    {
+      "id": "0f69ae81-a56b-40c9-a773-5e75bc8210d3",
+      "name": "Start UI Script",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        700
+      ],
+      "parameters": {
+        "jsCode": "/* Programme page: Planned start box at the top (CBS - Programme, cbs-prog-start-ui). Editable until the live programme has dates, then shows the start set by the earliest task. */\nfunction cbsProgStart(){\n if(window.__progStart)return;window.__progStart=1;\n var app=document.getElementById('app'),D=window.D;if(!app||!D||!D.job)return;\n function s(v){return v==null?'':String(v);}\n function dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:'';}\n function e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\n function me(){try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)return m.name;}catch(x){}try{return localStorage.getItem('cbs_name')||'';}catch(x){return '';}}\n var st=document.createElement('style');st.textContent='#psBox{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;background:#fff;border:1px solid #d9d9d6;border-radius:12px;padding:10px 14px;margin-bottom:10px;font-size:14px}#psBox b{font-weight:600}#psBox input{font:inherit;font-size:14px;padding:6px 8px;border:1px solid #c4c6c8;border-radius:8px}#psBox .m{margin:0;font-size:13px;flex:1;min-width:200px}#psMsg{font-size:13px;color:#1d6b2c;font-weight:600}';document.head.appendChild(st);\n var BUSY=false;\n function html(){var P=D.p||{},pg=P.programme,SM=P.summary||{},pl=s(P.planned_start).slice(0,10);\n  if(pg&&pg.status==='Open'&&SM.start)return '<b>Start</b><span>'+dmy(SM.start)+'</span><span class=\"m\">Set by the earliest task in the programme. A ServiceM8 booking takes priority once the job is booked.</span>';\n  if(P.has_jobfile===false)return '<b>Planned start</b><span class=\"m\">Set up the Job File first to record a planned start.</span>';\n  return '<b>Planned start</b><input type=\"date\" id=\"psIn\" value=\"'+e(pl)+'\"><span id=\"psMsg\"></span><span class=\"m\">'+(pg&&pg.status==='Draft'?'Used until the programme goes live. ':'Used until the programme has dates. ')+'A ServiceM8 booking takes priority once the job is booked.</span>';}\n function place(){if(document.getElementById('psBox'))return;if(!(D.p||{}).job&&!D.job)return;var d=document.createElement('div');d.id='psBox';d.innerHTML=html();app.insertBefore(d,app.firstChild);\n  var i=d.querySelector('#psIn');if(i)i.onchange=function(){save(i);};}\n function save(i){if(BUSY)return;var by=me()||(prompt('Your name:')||'').trim();if(!by){i.value=s((D.p||{}).planned_start);return;}try{localStorage.setItem('cbs_name',by);}catch(x){}\n  BUSY=true;i.disabled=true;var m=document.getElementById('psMsg');if(m)m.textContent='Saving\\u2026';\n  fetch('/webhook/cbs-programme-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({a:'set_start',job:D.job,by:by,start_on:i.value})}).then(function(r){if(!r.ok)throw 0;return r.json();})\n  .then(function(res){BUSY=false;i.disabled=false;if(!res||!res.ok){if(m)m.textContent='';alert((res&&res.message)||'Could not save. Try again.');i.value=s((D.p||{}).planned_start);return;}\n   D.p=D.p||{};D.p.planned_start=i.value;if(m){m.textContent='Saved';setTimeout(function(){if(m)m.textContent='';},1600);}})\n  .catch(function(){BUSY=false;i.disabled=false;if(m)m.textContent='';alert('Could not save. Check your connection and try again.');i.value=s((D.p||{}).planned_start);});}\n new MutationObserver(function(){if(!document.getElementById('psBox'))place();}).observe(app,{childList:true});\n place();\n}\nreturn [{ json: { js: '(function(){var f=' + cbsProgStart.toString() + ';if(document.readyState===\"loading\")document.addEventListener(\"DOMContentLoaded\",f);else f();})();' } }];\n",
+        "language": "javaScript",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "b1120789-a3d0-439c-8b4e-8ebde3000d95",
+      "name": "Send Start UI",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        700
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/javascript; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-cache"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ $json.js }}"
+      }
+    },
+    {
+      "id": "3865b03b-ebc8-4fe4-8166-691a7cc2d764",
+      "name": "Get Programmes",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        112,
+        40
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "cbs_programmes"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "14dd3a99-d5b5-4cd1-867b-c905d1e9f888",
+      "name": "Get Prog Items",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        40
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "cbs_prog_items"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "214bc115-8d36-4b64-8a42-d8bb0afbed57",
+      "name": "Get Job Rows",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        368,
+        40
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "cbs_jobs"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ String(($('Data Hook').first().json.query || {}).job || '').trim() ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "232be520-2ea6-41b3-bbb1-600b74992873",
+        "name": "Data Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          224
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-programme-data",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "e825edc3-ed86-49cc-84ee-a995d94da15f"
+      },
+      {
+        "id": "428dce0a-0c85-4e46-8905-560e053517e4",
+        "name": "Data",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          224
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/';const S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;const q=$('Data Hook').first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');const rows=n=>{try{return $(n).all().map(i=>i.json).filter(r=>r&&r.id!=null);}catch(e){return [];}};const P=rows('Get Programmes'),I=rows('Get Prog Items');const today=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).slice(0,10);const ord=(a,b)=>num(a.sort)-num(b.sort)||num(a.id)-num(b.id);const KD=k=>{k=S(k);return k==='task'||k==='sub'?k:'phase';};function build(j){const prog=P.filter(p=>jk(p.job_no)===jk(j)).sort((a,b)=>num(b.id)-num(a.id))[0]||null;const items=I.filter(r=>jk(r.job_no)===jk(j));const byId={};items.forEach(r=>{byId[String(r.id)]=r;});const kidsOf=(id,kind)=>items.filter(t=>KD(t.kind)===kind&&S(t.parent_id)===String(id)).sort(ord);const isDone=x=>{if(!x)return true;const k=KD(x.kind);if(k==='sub')return S(x.status)==='Done';const ch=kidsOf(x.id,k==='task'?'sub':'task');return ch.length?ch.every(isDone):S(x.status)==='Done';};const blk=r=>{const b=S(r.blocked_by);if(!b||!byId[b])return null;return isDone(byId[b])?null:(S(byId[b].name)||'another item');};const leaf=t=>{const st=S(t.status)||'Not started',en=S(t.end_on)||S(t.start_on);const bn=blk(t);return Object.assign({},t,{kind:KD(t.kind),start_eff:S(t.start_on),end_eff:en,status_eff:st,pct:st==='Done'?100:0,overdue:!!en&&en<today&&st!=='Done',blocked:!!bn,blocked_name:bn||''});};const roll=(p,kids)=>{let start=S(p.start_on),end=S(p.end_on)||S(p.start_on);let pct,st;if(kids.length){const ds=kids.map(t=>t.start_eff).filter(Boolean).sort(),de=kids.map(t=>t.end_eff).filter(Boolean).sort();if(ds.length)start=ds[0];if(de.length){const oe=S(p.end_on);end=de[de.length-1];if(oe&&oe>end)end=oe;}pct=Math.round(kids.reduce((m,t)=>m+t.pct,0)/kids.length);st=kids.every(t=>t.status_eff==='Done')?'Done':((pct>0||kids.some(t=>t.status_eff!=='Not started'))?'In progress':'Not started');}else{st=S(p.status)||'Not started';pct=st==='Done'?100:(st==='In progress'?50:0);}const bn=blk(p);return Object.assign({},p,{kind:KD(p.kind),start_eff:start,end_eff:end,pct:pct,status_eff:st,overdue:!!end&&end<today&&pct<100&&st!=='Done',blocked:!!bn,blocked_name:bn||''});};const phases=items.filter(r=>KD(r.kind)==='phase').sort(ord).map(p=>{const tasks=kidsOf(p.id,'task').map(t=>{const subs=kidsOf(t.id,'sub').map(leaf);const tt=subs.length?roll(t,subs):leaf(t);tt.subs=subs;return tt;});const pp=roll(p,tasks);pp.tasks=tasks;return pp;});const leaves=[];phases.forEach(p=>{if(p.tasks.length)p.tasks.forEach(t=>{if(t.subs.length)t.subs.forEach(s=>leaves.push(s));else leaves.push(t);});else leaves.push(p);});const done=leaves.filter(x=>x.status_eff==='Done').length;const cur=phases.find(p=>p.pct<100&&p.start_eff&&p.start_eff<=today)||phases.find(p=>p.pct<100)||null;const sts=phases.map(p=>p.start_eff).filter(Boolean).sort(),ens=phases.map(p=>p.end_eff).filter(Boolean).sort();const wk=new Date(today+'T00:00:00Z');wk.setUTCDate(wk.getUTCDate()+7);const wkEnd=wk.toISOString().slice(0,10);const week=leaves.filter(x=>(x.status_eff!=='Done'&&x.start_eff&&x.start_eff<=wkEnd&&(x.end_eff||x.start_eff)>=today)||x.overdue).map(x=>({id:x.id,name:S(x.name),kind:x.kind,start:x.start_eff,end:x.end_eff,status:x.status_eff,assigned_to:S(x.assigned_to),overdue:x.overdue,blocked:x.blocked,blocked_name:x.blocked_name}));const summary={status:prog?S(prog.status):'',draft:!!prog&&S(prog.status)==='Draft',pct:leaves.length?Math.round(100*done/leaves.length):0,current:cur?S(cur.name):'',overdue:leaves.filter(x=>x.overdue).length,overdue_phases:phases.filter(p=>p.overdue).map(p=>S(p.name)),blocked:leaves.filter(x=>x.blocked).length,start:sts[0]||'',end:ens.length?ens[ens.length-1]:'',phases:phases.length,items:leaves.length};return {job:j,today:today,programme:prog,phases:phases,summary:summary,week:week};}if(job)return [{json:build(job)}];const seen={},jobs=[];P.slice().sort((a,b)=>num(b.id)-num(a.id)).forEach(p=>{const k=jk(p.job_no);if(!k||seen[k])return;seen[k]=1;if(S(p.status)!=='Open')return;const b=build(p.job_no);jobs.push(Object.assign({job:S(p.job_no)},b.summary));});return [{json:{today:today,jobs:jobs}}];"
+        }
+      },
+      {
+        "id": "1ca48967-0de7-468e-bf36-a03a56e596ee",
+        "name": "Respond Data",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          224
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "16e35c89-c2d2-4c1e-97aa-e79f90cc283b",
+        "name": "Act Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          448
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-programme-act",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "74d8f246-07a6-4b1e-b48b-d69c6af05551"
+      },
+      {
+        "id": "19fa0740-898f-4453-901a-30f7350c9546",
+        "name": "Act",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          448
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';const NL=String.fromCharCode(10),Q=String.fromCharCode(34);const S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;const b=$input.first().json.body||{};const a=S(b.a),job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by).slice(0,80);const R=(ok,x)=>[{json:Object.assign({ok:ok},x||{})}];if(!job)return R(false,{message:'No job number.'});if(!by)return R(false,{message:'Enter your name.'});const now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);const stamp=now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16);const list=async t=>{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:20000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null&&jk(r.job_no)===jk(job));};const save=(t,id,row,p)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t='+t+'&id='+(id||0)+'&k='+K+(p?'&partial=1':''),body:row,json:true,timeout:20000});const del=(t,id)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=del&t='+t+'&id='+id+'&k='+K,body:{},json:true,timeout:20000});const isD=v=>/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(S(v));const toD=s=>new Date(s+'T00:00:00Z');const fmt=d=>d.toISOString().slice(0,10);const wkend=d=>{const x=d.getUTCDay();return x===0||x===6;};const addDays=(s,n,sw)=>{if(!isD(s))return S(s);const d=toD(s);if(!sw){d.setUTCDate(d.getUTCDate()+n);return fmt(d);}const step=n<0?-1:1;let c=Math.abs(n);while(c>0){d.setUTCDate(d.getUTCDate()+step);if(!wkend(d))c--;}while(wkend(d))d.setUTCDate(d.getUTCDate()+1);return fmt(d);};const diff=(x,y)=>Math.round((toD(y)-toD(x))/86400000);const uk=s=>S(s).slice(8,10)+'/'+S(s).slice(5,7)+'/'+S(s).slice(0,4);const STS=['Not started','In progress','Done'];const KD=k=>{k=S(k);return k==='task'||k==='sub'?k:'phase';};const PARENT={task:'phase',sub:'task'};const MW={none:'',overlap:' (shifted overlapping items)',keep:' (kept the gaps to later items)'};const RULEW={overlap:'shift only items that overlap',keep:'shift everything after and keep the gaps',none:'do not shift anything else'};const P=(await list('programmes')).sort((x,y)=>num(y.id)-num(x.id));const prog=P[0]||null;const PSET=(()=>{try{return JSON.parse(S(prog&&prog.notes)||'{}')||{};}catch(e){return {};}})();const MODE=(()=>{const m=S(b.mode);if(m==='none'||m==='overlap'||m==='keep')return m;if(b.cascade===true||b.cascade==='true')return 'keep';if(b.cascade===false||b.cascade==='false')return 'none';const r=S(PSET.shift);return (r==='none'||r==='keep')?r:'overlap';})();const hist=line=>[S(prog&&prog.history),stamp+' - '+line].filter(Boolean).join(NL);const draft=b.draft===true||b.draft==='true'||b.draft==='1';if(a==='create'){const st=draft?'Draft':'Open';if(prog){if(S(prog.status)==='Open'||S(prog.status)==='Draft')return R(true);await save('programmes',prog.id,{status:'Open',closed_by:'',closed_at:'',history:hist('Reopened by '+by)},true);return R(true);}const res=await save('programmes',0,{job_no:job,status:st,created_by:by,created_at:now,closed_by:'',closed_at:'',skip_weekends:'No',undo_json:'',history:stamp+' - '+(draft?'Draft programme (quote) created by ':'Programme created by ')+by,notes:''},false);return R(true,{id:num(res&&res.id)});}if(!prog)return R(false,{message:'This job has no programme yet.'});const pst=S(prog.status);if(a==='close'){await save('programmes',prog.id,{status:'Closed',closed_by:by,closed_at:now,history:hist('Programme closed by '+by)},true);return R(true);}if(a==='reopen'){await save('programmes',prog.id,{status:'Open',closed_by:'',closed_at:'',history:hist('Programme reopened by '+by)},true);return R(true);}if(pst!=='Open'&&pst!=='Draft')return R(false,{message:'This programme is closed. Reopen it first.'});if(a==='settings'){if(b.shift_mode!==undefined&&b.shift_mode!==null){const m=S(b.shift_mode);if(!RULEW[m])return R(false,{message:'Unknown rule.'});await save('programmes',prog.id,{notes:JSON.stringify(Object.assign({},PSET,{shift:m})),history:hist('Rule for later items set to '+RULEW[m]+' by '+by)},true);return R(true);}const sw=(b.skip_weekends===true||b.skip_weekends==='true'||b.skip_weekends==='Yes')?'Yes':'No';await save('programmes',prog.id,{skip_weekends:sw,history:hist('Skip weekends turned '+(sw==='Yes'?'on':'off')+' by '+by)},true);return R(true);}const items=await list('progitems');const byId={};items.forEach(r=>{byId[String(r.id)]=r;});const F=['kind','parent_id','sort','name','start_on','end_on','status','assigned_to','blocked_by','notes'];const pick=r=>{const o={};F.forEach(k=>{o[k]=S(r[k]);});return o;};const kidsAll=id=>items.filter(r=>KD(r.kind)!=='phase'&&S(r.parent_id)===String(id));const desc=id=>{const out=[];kidsAll(id).forEach(c=>{out.push(c);desc(c.id).forEach(x=>out.push(x));});return out;};const kinds=id=>items.filter(r=>S(r.parent_id)===String(id));const anc=r=>{const out=[];let p=byId[S(r.parent_id)];while(p){out.push(p);p=byId[S(p.parent_id)];}return out;};const WORD={phase:'phase',task:'task',sub:'sub-task'};const lab=r=>WORD[KD(r.kind)]+' '+Q+S(r.name)+Q;const setUndo=(label,ops,line)=>save('programmes',prog.id,{undo_json:ops&&ops.length?JSON.stringify({label:label,ops:ops,by:by,at:now}):'',history:hist(line)},true);const sw=S(prog.skip_weekends)==='Yes';function cascadeRun(r,o0,n1,ids,plan,val,shiftDelta){let n=0;if(MODE==='none'||!o0.s||!o0.e||!n1.e)return 0;anc(r).forEach(x=>{ids[String(x.id)]=1;});const cands=items.filter(x=>!ids[String(x.id)]&&isD(x.start_on)&&!desc(x.id).some(y=>isD(y.start_on)));if(MODE==='keep'){if(shiftDelta){cands.forEach(x=>{if(S(x.start_on)<o0.s)return;plan(x,{start_on:addDays(x.start_on,shiftDelta,sw),end_on:addDays(x.end_on,shiftDelta,sw)});n++;});}else{const dS=diff(o0.s,n1.s),dE=diff(o0.e,n1.e);cands.forEach(x=>{const xs=S(x.start_on);let d=0;if(xs>o0.e)d=dE;else if(xs>=o0.s&&dS===dE)d=dS;if(!d)return;plan(x,{start_on:addDays(x.start_on,d,false),end_on:addDays(x.end_on,d,false)});n++;});}}else{let fr=n1.e;cands.filter(x=>S(x.start_on)>o0.e).sort((p,q)=>S(p.start_on)<S(q.start_on)?-1:(S(p.start_on)>S(q.start_on)?1:0)).forEach(x=>{const xs=S(x.start_on);if(xs<=fr){const tgt=addDays(fr,1,sw);const d=diff(xs,tgt);plan(x,{start_on:addDays(x.start_on,d,false),end_on:addDays(x.end_on,d,false)});n++;const xe=val(x,'e')||val(x,'s');if(xe>fr)fr=xe;}});}return n;}function planner(){const nd={},ops=[],writes=[];const plan=(x,row)=>{ops.push({t:'set',id:x.id,row:{start_on:S(x.start_on),end_on:S(x.end_on)}});writes.push([x.id,Object.assign({},row,{updated_by:by,updated_at:now})]);nd[String(x.id)]={s:S(row.start_on),e:S(row.end_on)};};const val=(x,k)=>{const n=nd[String(x.id)];return n?S(n[k]):S(k==='s'?x.start_on:x.end_on);};const span=x=>{const arr=[x].concat(desc(x.id));const ss=arr.map(y=>val(y,'s')).filter(isD).sort();const ee=arr.map(y=>val(y,'e')||val(y,'s')).filter(isD).sort();return {s:ss[0]||'',e:ee.length?ee[ee.length-1]:''};};return {nd:nd,ops:ops,writes:writes,plan:plan,val:val,span:span};}if(a==='golive'){if(pst!=='Draft')return R(false,{message:'This programme is already live.'});const ns=S(b.start_on);if(!isD(ns))return R(false,{message:'Pick the real start date.'});const st0=items.map(x=>S(x.start_on)).filter(isD).sort()[0]||'';const delta=st0?diff(st0,ns):0;const ops=[];if(delta){for(const x of items){if(!isD(x.start_on)&&!isD(x.end_on))continue;ops.push({t:'set',id:x.id,row:{start_on:S(x.start_on),end_on:S(x.end_on)}});await save('progitems',x.id,{start_on:addDays(x.start_on,delta,false),end_on:addDays(x.end_on,delta,false),updated_by:by,updated_at:now},true);}}ops.push({t:'prog',row:{status:'Draft'}});await save('programmes',prog.id,{status:'Open',undo_json:JSON.stringify({label:'Go live',ops:ops,by:by,at:now}),history:hist('Programme went live with start '+uk(ns)+(delta?' (everything moved '+Math.abs(delta)+' day'+(Math.abs(delta)===1?'':'s')+' '+(delta>0?'later':'earlier')+')':'')+' by '+by)},true);return R(true);}if(a==='save_item'){const id=num(b.id),kind=KD(b.kind);const name=S(b.name).slice(0,160);if(!name)return R(false,{message:'Give it a name.'});const st=S(b.start_on),en=S(b.end_on);if((st&&!isD(st))||(en&&!isD(en)))return R(false,{message:'Check the dates.'});if(st&&en&&en<st)return R(false,{message:'The end date is before the start date.'});const status=STS.indexOf(S(b.status))>-1?S(b.status):'Not started';let parent='';if(kind!=='phase'){parent=S(b.parent_id);const pp=byId[parent];if(!pp||KD(pp.kind)!==PARENT[kind])return R(false,{message:kind==='task'?'Pick the phase this task belongs to.':'Pick the task this sub-task belongs to.'});}const blk=S(b.blocked_by);if(blk&&(!byId[blk]||blk===String(id)))return R(false,{message:'Pick a valid item for blocked by.'});const row={kind:kind,parent_id:parent,name:name,start_on:st,end_on:en||st,status:status,assigned_to:S(b.assigned_to).slice(0,120),blocked_by:blk,notes:S(b.notes).slice(0,1000),updated_by:by,updated_at:now};if(id){const r=byId[String(id)];if(!r)return R(false,{message:'That item was not found. Refresh the page.'});if(KD(r.kind)!==kind)return R(false,{message:'An item cannot change level.'});if(kind!=='phase'&&S(r.parent_id)!==parent){row.sort=String(kinds(parent).reduce((m,x)=>Math.max(m,num(x.sort)),0)+1);}const pl=planner();let n=0;const hasDK=desc(r.id).some(y=>isD(y.start_on));if(!hasDK&&MODE!=='none'&&isD(r.start_on)&&isD(st)&&(S(r.start_on)!==st||(S(r.end_on)||S(r.start_on))!==(en||st))){const ids={};ids[String(r.id)]=1;pl.nd[String(r.id)]={s:st,e:en||st};n=cascadeRun(r,{s:S(r.start_on),e:S(r.end_on)||S(r.start_on)},{s:st,e:en||st},ids,pl.plan,pl.val,0);}await save('progitems',id,row,true);for(const w of pl.writes)await save('progitems',w[0],w[1],true);await setUndo('Edit '+lab(r),[{t:'set',id:id,row:pick(r)}].concat(pl.ops),'Edited '+lab(row)+(n?' and moved '+n+' later item'+(n===1?'':'s')+MW[MODE]:'')+' by '+by);return R(true,{id:id});}const sib=kind==='phase'?items.filter(x=>KD(x.kind)==='phase'):kinds(parent);row.sort=String(sib.reduce((m,x)=>Math.max(m,num(x.sort)),0)+1);row.job_no=job;const res=await save('progitems',0,row,false);const nid=num(res&&res.id);await setUndo('Add '+lab(row),nid?[{t:'del',id:nid}]:[],'Added '+lab(row)+' by '+by);return R(true,{id:nid});}if(a==='status'){const r=byId[S(b.id)];if(!r)return R(false,{message:'That item was not found. Refresh the page.'});const st=S(b.status);if(STS.indexOf(st)<0)return R(false,{message:'Unknown status.'});await save('progitems',r.id,{status:st,updated_by:by,updated_at:now},true);await setUndo('Status of '+lab(r),[{t:'set',id:r.id,row:{status:S(r.status)}}],lab(r)+' set to '+st+' by '+by);return R(true);}if(a==='move'){const r=byId[S(b.id)];if(!r)return R(false,{message:'That item was not found. Refresh the page.'});const rk=KD(r.kind);const sib=items.filter(x=>KD(x.kind)===rk&&(rk==='phase'||S(x.parent_id)===S(r.parent_id))).sort((x,y)=>num(x.sort)-num(y.sort)||num(x.id)-num(y.id));const i=sib.indexOf(r),up=S(b.dir)==='up',j=i+(up?-1:1);if(j<0||j>=sib.length)return R(true);const order=sib.slice();order.splice(i,1);order.splice(j,0,r);const ops=[];for(let k=0;k<order.length;k++){const x=order[k];if(num(x.sort)!==k+1){ops.push({t:'set',id:x.id,row:{sort:S(x.sort)}});await save('progitems',x.id,{sort:String(k+1)},true);}}await setUndo('Reorder '+lab(r),ops,'Moved '+lab(r)+' '+(up?'up':'down')+' by '+by);return R(true);}if(a==='shift'||a==='set_dates'){const r=byId[S(b.id)];if(!r)return R(false,{message:'That item was not found. Refresh the page.'});const ks=desc(r.id);const moved=[r].concat(ks);const ids={};moved.forEach(x=>{ids[String(x.id)]=1;});const pl=planner();const o0=pl.span(r);const dk=ks.some(x=>isD(x.start_on));let line='',sd=0;if(a==='shift'){sd=Math.round(Number(b.days)||0);if(!sd)return R(false,{message:'Enter how many days to move it.'});moved.forEach(x=>pl.plan(x,{start_on:addDays(x.start_on,sd,sw),end_on:addDays(x.end_on,sd,sw)}));line='Moved '+lab(r)+' '+(sd>0?'later':'earlier')+' by '+Math.abs(sd)+(sw?' working':'')+' day'+(Math.abs(sd)===1?'':'s');}else{const ns=S(b.start_on),ne=S(b.end_on);if(!isD(ns)||!isD(ne)||ne<ns)return R(false,{message:'Check the dates.'});if(!dk){pl.plan(r,{start_on:ns,end_on:ne});}else{const dS=o0.s?diff(o0.s,ns):0;if(dS)moved.forEach(x=>pl.plan(x,{start_on:addDays(x.start_on,dS,false),end_on:addDays(x.end_on,dS,false)}));const cur=pl.span(r);if(ne!==cur.e){pl.plan(r,{start_on:pl.val(r,'s')||ns,end_on:ne});}}line='Rescheduled '+lab(r)+' to '+ns.slice(8,10)+'/'+ns.slice(5,7)+' - '+ne.slice(8,10)+'/'+ne.slice(5,7);}const n1=pl.span(r);const n=cascadeRun(r,o0,n1,ids,pl.plan,pl.val,a==='shift'?sd:0);for(const w of pl.writes)await save('progitems',w[0],w[1],true);await setUndo((a==='shift'?'Shift ':'Reschedule ')+lab(r),pl.ops,line+(n?' and '+n+' later item'+(n===1?'':'s')+MW[MODE]:'')+' by '+by);return R(true,{moved:pl.writes.length,later:n});}if(a==='delete_item'){const r=byId[S(b.id)];if(!r)return R(true);const ks=desc(r.id);const gone={};[r].concat(ks).forEach(x=>{gone[String(x.id)]=1;});const ops=[{t:'add',key:String(r.id),row:pick(r)}].concat(ks.map(k=>({t:'add',key:String(k.id),parentKey:S(k.parent_id),row:pick(k)})));const refs=items.filter(x=>!gone[String(x.id)]&&gone[S(x.blocked_by)]);refs.forEach(x=>ops.push({t:'set',id:x.id,row:{blocked_by:S(x.blocked_by)}}));for(const x of refs)await save('progitems',x.id,{blocked_by:'',updated_by:by,updated_at:now},true);for(const k of ks.slice().reverse())await del('progitems',k.id);await del('progitems',r.id);await setUndo('Delete '+lab(r),ops,'Deleted '+lab(r)+(ks.length?' and '+ks.length+' item'+(ks.length===1?'':'s')+' under it':'')+' by '+by);return R(true);}if(a==='undo'){let u=null;try{u=JSON.parse(S(prog.undo_json)||'null');}catch(e){u=null;}if(!u||!Array.isArray(u.ops)||!u.ops.length)return R(false,{message:'Nothing to undo.'});const map={},added=[];for(const o of u.ops){if(o.t!=='add')continue;const row=Object.assign({},o.row,{job_no:job,updated_by:by,updated_at:now});if(o.parentKey&&map[o.parentKey])row.parent_id=map[o.parentKey];const res=await save('progitems',0,row,false);const nid=String(num(res&&res.id)||'');if(nid){map[o.key]=nid;added.push([nid,S(o.row.blocked_by)]);}}for(const x of added){if(x[1]&&map[x[1]])await save('progitems',x[0],{blocked_by:map[x[1]]},true);}let progRow={};const setOps=u.ops.filter(o=>o.t==='set');const seenSet={};for(let i=setOps.length-1;i>=0;i--){const o=setOps[i];seenSet[String(o.id)]=o;}for(const o of u.ops){if(o.t==='set'){if(seenSet[String(o.id)]!==o)continue;if(byId[String(o.id)]){const row=Object.assign({},o.row,{updated_by:by,updated_at:now});if(row.blocked_by&&map[row.blocked_by])row.blocked_by=map[row.blocked_by];await save('progitems',o.id,row,true);}}else if(o.t==='del'){if(byId[String(o.id)]){for(const k of desc(o.id).reverse())await del('progitems',k.id);await del('progitems',o.id);}}else if(o.t==='prog'){progRow=Object.assign(progRow,o.row||{});}}await save('programmes',prog.id,Object.assign({undo_json:'',history:hist('Undid '+Q+S(u.label)+Q+' by '+by)},progRow),true);return R(true);}return R(false,{message:'Unknown action.'});"
+        }
+      },
+      {
+        "id": "43acfaf0-002d-4207-b90a-9f6889f84a20",
+        "name": "Respond Act",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          448
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "db1a3fa6-def0-4fa6-9fc0-ee09e1fe687d",
+        "name": "Checklist Roll-up",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          336,
+          336
+        ],
+        "parameters": {
+          "jsCode": "/* Checklist roll-up: a task's % comes from its checklist (or a % set by hand when it has none), then rolls up into tasks, phases and the programme summary. Programme items come from the Get Prog Items data table node. */\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();\nconst j=Object.assign({},$input.first().json);\nconst ckl=t=>{try{const a=JSON.parse(S(t.checklist_json)||'[]');return Array.isArray(a)?a.filter(i=>i&&S(i.t)):[];}catch(e){return [];}};\nconst man=t=>{const p=S(t.pct);if(p===''||isNaN(Number(p))||Number(p)===0)return null;return Math.max(0,Math.min(100,Math.round(Number(p))));};\nfunction leafPct(t,base){const ck=ckl(t);if(ck.length){const d=ck.filter(i=>i.done).length;const st=d===ck.length?'Done':(d>0||S(t.status)==='In progress'?'In progress':'Not started');return {pct:Math.round(100*d/ck.length),st:st,ck:ck,d:d};}\n const st=S(t.status)||'Not started';if(st==='Done')return {pct:100,st:st,ck:[],d:0};const m=man(t);return {pct:m!=null?m:base(st),st:st,ck:[],d:0};}\nif(Array.isArray(j.phases)){\n const today=S(j.today);\n const fix=(t,base)=>{const r=leafPct(t,base);t.pct=r.pct;t.status_eff=r.st;t.checklist=r.ck;t.ck_done=r.d;t.ck_total=r.ck.length;t.overdue=!!t.end_eff&&t.end_eff<today&&t.status_eff!=='Done';};\n const roll=(p,kids)=>{p.pct=Math.round(kids.reduce((m,x)=>m+x.pct,0)/kids.length);p.status_eff=kids.every(x=>x.status_eff==='Done')?'Done':((p.pct>0||kids.some(x=>x.status_eff!=='Not started'))?'In progress':'Not started');p.overdue=!!p.end_eff&&p.end_eff<today&&p.pct<100&&p.status_eff!=='Done';};\n const leaves=[];\n j.phases.forEach(p=>{(p.tasks||[]).forEach(t=>{if((t.subs||[]).length){t.subs.forEach(x=>{fix(x,()=>0);leaves.push(x);});roll(t,t.subs);}else{fix(t,()=>0);leaves.push(t);}});\n  if((p.tasks||[]).length)roll(p,p.tasks);else{fix(p,st=>st==='In progress'?50:0);leaves.push(p);}});\n if(j.summary){j.summary=Object.assign({},j.summary,{pct:leaves.length?Math.round(leaves.reduce((m,x)=>m+x.pct,0)/leaves.length):0,overdue:leaves.filter(x=>x.overdue).length,overdue_phases:j.phases.filter(p=>p.overdue).map(p=>S(p.name))});\n  const cur=j.phases.find(p=>p.pct<100&&p.start_eff&&p.start_eff<=today)||j.phases.find(p=>p.pct<100)||null;j.summary.current=cur?S(cur.name):'';}\n if(Array.isArray(j.week)){const by={};leaves.forEach(x=>{by[String(x.id)]=x;});j.week=j.week.map(w=>{const x=by[String(w.id)];return x?Object.assign({},w,{status:x.status_eff,pct:x.pct}):w;}).filter(w=>w.status!=='Done'||w.overdue);}\n return [{json:j}];\n}\nif(Array.isArray(j.jobs)&&j.jobs.length){\n let I=[];try{I=$('Get Prog Items').all().map(i=>i.json).filter(r=>r&&r.id!=null);}catch(e){return [{json:j}];}\n const KD=k=>{k=S(k);return k==='task'||k==='sub'?k:'phase';};\n j.jobs=j.jobs.map(x=>{const items=I.filter(r=>jk(r.job_no)===jk(x.job));const hasKid=id=>items.some(r=>KD(r.kind)!=='phase'&&S(r.parent_id)===String(id));\n  const leaves=items.filter(r=>!hasKid(r.id));if(!leaves.length)return x;\n  const pct=Math.round(leaves.reduce((m,r)=>m+leafPct(r,st=>KD(r.kind)==='phase'&&st==='In progress'?50:0).pct,0)/leaves.length);return Object.assign({},x,{pct:pct});});\n return [{json:j}];\n}\nreturn [{json:j}];\n",
+          "language": "javaScript",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "9b713cc4-e717-455d-853b-f01e58a3e3bd",
+        "name": "Start Sync",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          336,
+          560
+        ],
+        "parameters": {
+          "jsCode": "/* Start date: handles set_start (planned start, works before a programme exists) and, after any programme change, keeps the job's start (cbs_jobs.starts_on) equal to the earliest task date while the programme is live. A ServiceM8 booking still takes priority wherever the start is shown. */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst isD=v=>/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(S(v));\nconst res=$input.first().json||{};const b=$('Act Hook').first().json.body||{};\nconst a=S(b.a),job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by);\nconst list=async t=>{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:20000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);};\nconst save=(t,id,row)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t='+t+'&id='+id+'&k='+K+'&partial=1',body:row,json:true,timeout:20000});\nconst jobRow=async()=>(await list('jobrows')).filter(r=>jk(r.ref)===jk(job)).sort((x,y)=>num(y.id)-num(x.id))[0]||null;\nif(a==='set_start'){\n if(!job)return [{json:{ok:false,message:'No job number.'}}];if(!by)return [{json:{ok:false,message:'Enter your name.'}}];\n const st=S(b.start_on);if(st&&!isD(st))return [{json:{ok:false,message:'Check the date.'}}];\n const jr=await jobRow();if(!jr)return [{json:{ok:false,message:'This job has no Job File yet, so there is nowhere to save the start date.'}}];\n await save('jobrows',jr.id,{starts_on:st});return [{json:{ok:true,start:st}}];}\nif(res.ok!==true||!job||['save_item','shift','set_dates','delete_item','undo','golive','create','reopen'].indexOf(a)<0)return [{json:res}];\ntry{const P=(await list('programmes')).filter(p=>jk(p.job_no)===jk(job)).sort((x,y)=>num(y.id)-num(x.id))[0];\n if(P&&S(P.status)==='Open'){const st=(await list('progitems')).filter(r=>jk(r.job_no)===jk(job)).map(r=>S(r.start_on)).filter(isD).sort()[0]||'';\n  if(st){const jr=await jobRow();if(jr&&S(jr.starts_on).slice(0,10)!==st)await save('jobrows',jr.id,{starts_on:st});}}}catch(e){}\nreturn [{json:res}];\n",
+          "language": "javaScript",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "17d7cd95-0c41-4ec4-9faf-a4be847f1fa1",
+        "name": "Start Info",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          120
+        ],
+        "parameters": {
+          "jsCode": "/* Adds the job's planned start (cbs_jobs.starts_on) to the single-job programme data. Job rows come from the Get Job Rows data table node (only read when a job is asked for). */\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst j=Object.assign({},$input.first().json);if(!j.job||Array.isArray(j.jobs))return [{json:j}];\ntry{const L=$('Get Job Rows').all().map(i=>i.json);\n const jr=(Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null&&jk(r.ref)===jk(j.job)).sort((x,y)=>num(y.id)-num(x.id))[0]||null;\n j.planned_start=S(jr&&jr.starts_on).slice(0,10);j.has_jobfile=!!jr;}catch(e){}\nreturn [{json:j}];\n",
+          "language": "javaScript",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "a9939b09-a4ee-4049-8c41-2ee51a72291e",
+        "name": "Start UI Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          700
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-prog-start-ui",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "b88f2840-c210-4b72-9cdd-c2d8e102c9f6"
+      },
+      {
+        "id": "0f69ae81-a56b-40c9-a773-5e75bc8210d3",
+        "name": "Start UI Script",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          700
+        ],
+        "parameters": {
+          "jsCode": "/* Programme page: Planned start box at the top (CBS - Programme, cbs-prog-start-ui). Editable until the live programme has dates, then shows the start set by the earliest task. */\nfunction cbsProgStart(){\n if(window.__progStart)return;window.__progStart=1;\n var app=document.getElementById('app'),D=window.D;if(!app||!D||!D.job)return;\n function s(v){return v==null?'':String(v);}\n function dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:'';}\n function e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\n function me(){try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)return m.name;}catch(x){}try{return localStorage.getItem('cbs_name')||'';}catch(x){return '';}}\n var st=document.createElement('style');st.textContent='#psBox{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;background:#fff;border:1px solid #d9d9d6;border-radius:12px;padding:10px 14px;margin-bottom:10px;font-size:14px}#psBox b{font-weight:600}#psBox input{font:inherit;font-size:14px;padding:6px 8px;border:1px solid #c4c6c8;border-radius:8px}#psBox .m{margin:0;font-size:13px;flex:1;min-width:200px}#psMsg{font-size:13px;color:#1d6b2c;font-weight:600}';document.head.appendChild(st);\n var BUSY=false;\n function html(){var P=D.p||{},pg=P.programme,SM=P.summary||{},pl=s(P.planned_start).slice(0,10);\n  if(pg&&pg.status==='Open'&&SM.start)return '<b>Start</b><span>'+dmy(SM.start)+'</span><span class=\"m\">Set by the earliest task in the programme. A ServiceM8 booking takes priority once the job is booked.</span>';\n  if(P.has_jobfile===false)return '<b>Planned start</b><span class=\"m\">Set up the Job File first to record a planned start.</span>';\n  return '<b>Planned start</b><input type=\"date\" id=\"psIn\" value=\"'+e(pl)+'\"><span id=\"psMsg\"></span><span class=\"m\">'+(pg&&pg.status==='Draft'?'Used until the programme goes live. ':'Used until the programme has dates. ')+'A ServiceM8 booking takes priority once the job is booked.</span>';}\n function place(){if(document.getElementById('psBox'))return;if(!(D.p||{}).job&&!D.job)return;var d=document.createElement('div');d.id='psBox';d.innerHTML=html();app.insertBefore(d,app.firstChild);\n  var i=d.querySelector('#psIn');if(i)i.onchange=function(){save(i);};}\n function save(i){if(BUSY)return;var by=me()||(prompt('Your name:')||'').trim();if(!by){i.value=s((D.p||{}).planned_start);return;}try{localStorage.setItem('cbs_name',by);}catch(x){}\n  BUSY=true;i.disabled=true;var m=document.getElementById('psMsg');if(m)m.textContent='Saving\\u2026';\n  fetch('/webhook/cbs-programme-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({a:'set_start',job:D.job,by:by,start_on:i.value})}).then(function(r){if(!r.ok)throw 0;return r.json();})\n  .then(function(res){BUSY=false;i.disabled=false;if(!res||!res.ok){if(m)m.textContent='';alert((res&&res.message)||'Could not save. Try again.');i.value=s((D.p||{}).planned_start);return;}\n   D.p=D.p||{};D.p.planned_start=i.value;if(m){m.textContent='Saved';setTimeout(function(){if(m)m.textContent='';},1600);}})\n  .catch(function(){BUSY=false;i.disabled=false;if(m)m.textContent='';alert('Could not save. Check your connection and try again.');i.value=s((D.p||{}).planned_start);});}\n new MutationObserver(function(){if(!document.getElementById('psBox'))place();}).observe(app,{childList:true});\n place();\n}\nreturn [{ json: { js: '(function(){var f=' + cbsProgStart.toString() + ';if(document.readyState===\"loading\")document.addEventListener(\"DOMContentLoaded\",f);else f();})();' } }];\n",
+          "language": "javaScript",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "b1120789-a3d0-439c-8b4e-8ebde3000d95",
+        "name": "Send Start UI",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          700
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/javascript; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-cache"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ $json.js }}"
+        }
+      },
+      {
+        "id": "3865b03b-ebc8-4fe4-8166-691a7cc2d764",
+        "name": "Get Programmes",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          112,
+          40
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "name",
+            "value": "cbs_programmes"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "14dd3a99-d5b5-4cd1-867b-c905d1e9f888",
+        "name": "Get Prog Items",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          240,
+          40
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "name",
+            "value": "cbs_prog_items"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "214bc115-8d36-4b64-8a42-d8bb0afbed57",
+        "name": "Get Job Rows",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          368,
+          40
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "name",
+            "value": "cbs_jobs"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ String(($('Data Hook').first().json.query || {}).job || '').trim() ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      }
+    ],
+    "connections": {
+      "Act Hook": {
+        "main": [
+          [
+            {
+              "node": "Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data": {
+        "main": [
+          [
+            {
+              "node": "Checklist Roll-up",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Act": {
+        "main": [
+          [
+            {
+              "node": "Start Sync",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Start Sync": {
+        "main": [
+          [
+            {
+              "node": "Respond Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Checklist Roll-up": {
+        "main": [
+          [
+            {
+              "node": "Start Info",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Start Info": {
+        "main": [
+          [
+            {
+              "node": "Respond Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Start UI Hook": {
+        "main": [
+          [
+            {
+              "node": "Start UI Script",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Start UI Script": {
+        "main": [
+          [
+            {
+              "node": "Send Start UI",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data Hook": {
+        "main": [
+          [
+            {
+              "node": "Get Programmes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Programmes": {
+        "main": [
+          [
+            {
+              "node": "Get Prog Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Prog Items": {
+        "main": [
+          [
+            {
+              "node": "Get Job Rows",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Job Rows": {
+        "main": [
+          [
+            {
+              "node": "Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS programme back end: data cbs-programme-data?job=N (no job = open programme summaries for dashboard/TV), actions cbs-programme-act. The page itself lives in CBS - Programme Page.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

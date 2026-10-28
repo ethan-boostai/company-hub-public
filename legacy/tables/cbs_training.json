@@ -1,0 +1,43 @@
+{
+  "table": "cbs_training",
+  "n8n_id": "ezLk4vRfMEVGhY8I",
+  "columns": [
+    {
+      "name": "docs_json",
+      "type": "string"
+    },
+    {
+      "name": "expires_on",
+      "type": "string"
+    },
+    {
+      "name": "issued_on",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "person",
+      "type": "string"
+    },
+    {
+      "name": "provider",
+      "type": "string"
+    },
+    {
+      "name": "qual_other",
+      "type": "string"
+    },
+    {
+      "name": "qualification",
+      "type": "string"
+    },
+    {
+      "name": "reference",
+      "type": "string"
+    }
+  ],
+  "sample_rows": []
+}

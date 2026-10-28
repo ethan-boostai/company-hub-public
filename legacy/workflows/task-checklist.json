@@ -1,0 +1,596 @@
+{
+  "id": "RpNYYkhlSJel3Uwr",
+  "name": "CBS - Task Checklist",
+  "active": true,
+  "isArchived": false,
+  "versionId": "a9d4bfdb-c05c-4fdb-807d-6bad757c93d8",
+  "activeVersionId": "a9d4bfdb-c05c-4fdb-807d-6bad757c93d8",
+  "triggerCount": 3,
+  "createdAt": "2026-10-10T16:49:17.506Z",
+  "updatedAt": "2026-10-19T15:26:03.534Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Task Page Hook": {
+      "main": [
+        [
+          {
+            "node": "Build Task Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Task Act Hook": {
+      "main": [
+        [
+          {
+            "node": "Task Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Task Act": {
+      "main": [
+        [
+          {
+            "node": "Serve Task Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UI Hook": {
+      "main": [
+        [
+          {
+            "node": "UI Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UI Script": {
+      "main": [
+        [
+          {
+            "node": "Serve UI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Task Page": {
+      "main": [
+        [
+          {
+            "node": "Scope Link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scope Link": {
+      "main": [
+        [
+          {
+            "node": "Serve Task Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "c0cca9a8-34ca-4972-af48-0a3872e059aa",
+      "name": "Task Page Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-task",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "24e7a8c5-dda4-486c-a0c1-9122436420c2"
+    },
+    {
+      "id": "473d5909-f9cf-4dd3-888a-63f506949be4",
+      "name": "Build Task Page",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* Crew checklist page: one task only, opened from the link in the ServiceM8 job. No hub links. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v).trim();const e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst q=$input.first().json.query||{};const t=S(q.t).replace(/[^0-9a-z]/g,'');\nlet items=[];try{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=progitems',body:{},json:true,timeout:20000});items=Array.isArray(L)?L:[];}catch(x){}\nconst r=t.length>=16?items.find(x=>x&&S(x.check_token)===t):null;\nlet D=null;\nif(r){const par=items.find(x=>String(x.id)===S(r.parent_id));const gp=par?items.find(x=>String(x.id)===S(par.parent_id)):null;\n let ck=[];try{ck=JSON.parse(S(r.checklist_json)||'[]');if(!Array.isArray(ck))ck=[];}catch(x){ck=[];}\n D={t:t,job:S(r.job_no),name:S(r.name),path:[gp&&S(gp.name),par&&S(par.name)].filter(Boolean).join(' › '),start:S(r.start_on),end:S(r.end_on),notes:S(r.notes),assigned:S(r.assigned_to),ck:ck.filter(i=>i&&S(i.t))};}\nconst CSS='*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n+'header{background:#3d4043;color:#fff;padding:14px 16px;border-bottom:4px solid #F47920}header .k{color:#ffb37a;font-size:13px}header h1{margin:3px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n+'.wrap{max-width:640px;margin:0 auto;padding:14px}.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;padding:12px 14px;margin-bottom:12px}.m{color:#555;font-size:14px;margin-top:2px}'\n+'.bar{height:10px;background:#ececea;border-radius:6px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:#5fae6e;transition:width .2s}'\n+'.it{display:flex;gap:12px;align-items:flex-start;padding:14px 4px;border-top:1px solid #eee;cursor:pointer;-webkit-tap-highlight-color:transparent}.it:first-child{border-top:0}'\n+'.it input{width:26px;height:26px;margin:0;flex:0 0 auto;accent-color:#F47920}.it .tx{flex:1;font-size:16px}.it.done .tx{color:#6b6e70;text-decoration:line-through}.it .w{display:block;font-size:12px;color:#6b6e70;text-decoration:none;margin-top:2px}.it.busy{opacity:.5}'\n+'.who{font-size:13px;color:#6b6e70;margin-top:10px}.who a{color:#F47920}.msg{font-size:14px;color:#b3261e;min-height:18px;margin-top:8px}.empty{color:#6b6e70;text-align:center;padding:18px}';\nlet body;\nif(!D)body='<header><div class=\"k\">Chelmsford Building Services</div><h1>Checklist</h1></header><div class=\"wrap\"><div class=\"card empty\">This link is not valid, or the task has been removed from the programme. Ask the office for a new link.</div></div>';\nelse body='<header><div class=\"k\">Job '+e(D.job)+'</div><h1>'+e(D.name)+'</h1>'+(D.path?'<p>'+e(D.path)+'</p>':'')+'</header><div class=\"wrap\" id=\"app\"></div><script>window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+';</script><script>('+client.toString()+')();</script>';\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"robots\" content=\"noindex\"><title>Checklist'+(D?' - '+e(D.name):'')+'</title><style>'+CSS+'</style></head><body>'+body+'</body></html>';\nreturn [{json:{html:html}}];\n\nfunction client(){\nvar D=window.D,app=document.getElementById('app'),BUSY={};\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})(?:T(\\d{2}:\\d{2}))?/);return m?m[3]+'/'+m[2]+'/'+m[1].slice(2)+(m[4]?' '+m[4]:''):s(d);}\nfunction me(){try{return localStorage.getItem('cbs_name')||'';}catch(x){return '';}}\nfunction who(force){var n=force?'':me();if(!n){n=(prompt('Your name (saved on this phone):',me())||'').trim();if(n){try{localStorage.setItem('cbs_name',n);}catch(x){}}}return n;}\nfunction render(msg){var ck=D.ck,d=ck.filter(function(i){return i.done;}).length,p=ck.length?Math.round(100*d/ck.length):0;\n var h='<div class=\"card\"><b>'+(ck.length?d+' of '+ck.length+' done':'No checklist yet')+'</b>'+(ck.length?' · '+p+'%':'')+'<div class=\"bar\"><i style=\"width:'+p+'%\"></i></div>'\n  +'<div class=\"m\">'+[D.start?(D.end&&D.end!==D.start?dmy(D.start)+' – '+dmy(D.end):dmy(D.start)):'',D.assigned?'Assigned to '+e(D.assigned):''].filter(Boolean).join(' · ')+'</div>'\n  +(D.notes?'<div class=\"m\" style=\"margin-top:6px\">'+e(D.notes)+'</div>':'')+'</div>';\n h+='<div class=\"card\">'+(ck.length?ck.map(function(i,ix){return '<label class=\"it'+(i.done?' done':'')+(BUSY[ix]?' busy':'')+'\" data-i=\"'+ix+'\"><input type=\"checkbox\"'+(i.done?' checked':'')+(BUSY[ix]?' disabled':'')+'><span class=\"tx\">'+e(i.t)+(i.done&&i.by?'<span class=\"w\">'+e(i.by)+(i.at?' · '+dmy(i.at):'')+'</span>':'')+'</span></label>';}).join(''):'<div class=\"empty\">The office has not added any checklist items to this task yet.</div>')+'</div>';\n h+='<div class=\"msg\" id=\"msg\">'+e(msg||'')+'</div><div class=\"who\">'+(me()?'Ticking as <b>'+e(me())+'</b> · <a href=\"#\" id=\"chg\">change</a>':'')+'</div>';\n app.innerHTML=h;\n var c=document.getElementById('chg');if(c)c.onclick=function(ev){ev.preventDefault();who(true);render();};\n app.querySelectorAll('.it input').forEach(function(x){x.onchange=function(){var ix=Number(x.closest('.it').getAttribute('data-i'));tick(ix,x.checked);};});}\nfunction tick(ix,done){var by=who();if(!by){render();return;}var it=D.ck[ix];BUSY[ix]=1;it.done=done;render();\n fetch('/webhook/cbs-task-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({a:'tick',t:D.t,i:ix,text:it.t,done:done,by:by})})\n .then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(res){delete BUSY[ix];if(res.checklist)D.ck=res.checklist;render(res.ok?'':(res.message||'Not saved. Try again.'));})\n .catch(function(){delete BUSY[ix];it.done=!done;render('Not saved. Check your signal and tap again.');});}\nrender();\n}\n"
+      }
+    },
+    {
+      "id": "8468a66b-7e5b-4793-96c4-56dfbc15ec24",
+      "name": "Serve Task Page",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "dab80718-f955-4c57-9603-ffaf5abd05a7",
+      "name": "Task Act Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        224
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-task-act",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "37657bc9-27a9-48b3-98a2-1038d7ee8ad9"
+    },
+    {
+      "id": "b12250c5-de63-4bbe-9841-e4517922791c",
+      "name": "Task Act",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        224
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* CBS task checklists: admin save + crew link (from the programme page), crew ticks (from the crew page). */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst b=$input.first().json.body||{};const a=S(b.a),by=S(b.by).slice(0,80);\nconst R=(ok,x)=>[{json:Object.assign({ok:ok},x||{})}];\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst stamp=now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16);\nconst list=async t=>{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:20000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);};\nconst save=(t,id,row)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t='+t+'&id='+id+'&k='+K+'&partial=1',body:row,json:true,timeout:20000});\nconst ckl=r=>{try{const x=JSON.parse(S(r.checklist_json)||'[]');return Array.isArray(x)?x.filter(i=>i&&S(i.t)).map(i=>({t:S(i.t).slice(0,200),done:!!i.done,by:S(i.by).slice(0,80),at:S(i.at).slice(0,16)})):[];}catch(e){return [];}};\nconst statusFor=(ck,old)=>{if(!ck.length)return S(old)||'Not started';const d=ck.filter(i=>i.done).length;return d===ck.length?'Done':(d>0||S(old)==='In progress'?'In progress':'Not started');};\nconst KD=k=>{k=S(k);return k==='task'||k==='sub'?k:'phase';};\nconst tok=()=>(Date.now().toString(36)+Math.random().toString(36).slice(2,10)+Math.random().toString(36).slice(2,10)).slice(0,26);\nconst items=await list('progitems');\nif(a==='tick'){\n const t=S(b.t);if(t.length<16)return R(false,{message:'This link is not valid.'});\n if(!by)return R(false,{message:'Enter your name.'});\n const r=items.find(x=>S(x.check_token)===t);if(!r)return R(false,{message:'This task is no longer on the programme.'});\n const ck=ckl(r);const i=num(b.i);if(i<0||i>=ck.length||ck[i].t!==S(b.text).slice(0,200))return R(false,{message:'The checklist has changed. Refresh the page.',checklist:ck});\n const done=b.done===true||b.done==='true';ck[i].done=done;ck[i].by=done?by:'';ck[i].at=done?now:'';\n const st=statusFor(ck,r.status);\n await save('progitems',r.id,{checklist_json:JSON.stringify(ck),status:st,updated_by:by,updated_at:now});\n return R(true,{checklist:ck,status:st});\n}\nconst job=S(b.job).replace(/[^0-9A-Za-z-]/g,'');\nif(!job)return R(false,{message:'No job number.'});if(!by)return R(false,{message:'Enter your name.'});\nconst r=items.find(x=>String(x.id)===S(b.id)&&jk(x.job_no)===jk(job));\nif(!r)return R(false,{message:'That task was not found. Refresh the page.'});\nif(items.some(x=>KD(x.kind)!=='phase'&&S(x.parent_id)===String(r.id)))return R(false,{message:'This has items under it. Add the checklist to those instead.'});\nconst progs=(await list('programmes')).filter(p=>jk(p.job_no)===jk(job)).sort((x,y)=>num(y.id)-num(x.id));const prog=progs[0];\nconst histLine=async line=>{if(prog)await save('programmes',prog.id,{history:[S(prog.history),stamp+' - '+line].filter(Boolean).join(String.fromCharCode(10))});};\nif(a==='link'){\n let t=S(r.check_token);if(t.length<16){t=tok();await save('progitems',r.id,{check_token:t});await histLine('Crew checklist link made for '+S(r.name)+' by '+by);}\n return R(true,{token:t,url:H+'cbs-task?t='+t});\n}\nif(a==='save'){\n const old=ckl(r);const inc=(Array.isArray(b.items)?b.items:[]).slice(0,60).map(i=>({t:S(i&&i.t).slice(0,200),done:!!(i&&i.done)})).filter(i=>i.t);\n const ck=inc.map((i,ix)=>{const o=old.find(x=>x.t===i.t)||null;if(i.done&&o&&o.done)return {t:i.t,done:true,by:o.by,at:o.at};return {t:i.t,done:i.done,by:i.done?by:'',at:i.done?now:''};});\n const row={checklist_json:JSON.stringify(ck),updated_by:by,updated_at:now};\n if(!ck.length&&b.pct!==undefined){const p=S(b.pct);row.pct=p===''?null:Math.max(0,Math.min(100,Math.round(Number(p)||0)));}\n if(ck.length){row.status=statusFor(ck,r.status);row.pct=null;}\n await save('progitems',r.id,row);\n const d=ck.filter(i=>i.done).length;\n await histLine('Checklist for '+S(r.name)+' saved by '+by+(ck.length?' ('+d+' of '+ck.length+' done)':(row.pct!=null?' ('+row.pct+'% complete)':'')));\n return R(true,{checklist:ck,status:row.status||S(r.status)});\n}\nreturn R(false,{message:'Unknown action.'});\n"
+      }
+    },
+    {
+      "id": "ecdbcba4-eb53-4d5f-88b2-ea0dd2a1699b",
+      "name": "Serve Task Act",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        224
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "c038d751-a832-40be-937d-b550379d942a",
+      "name": "UI Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        500
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-task-ui",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "28bae23c-55c4-4296-b7d5-b64f3c7ad050"
+    },
+    {
+      "id": "0983c763-965d-43b4-830a-2eb6d715ca25",
+      "name": "UI Script",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        500
+      ],
+      "parameters": {
+        "jsCode": "function ckUi(){\nif(window.__ckUi||!window.D||!window.D.job)return;window.__ckUi=1;\nvar JOB=window.D.job,app=document.getElementById('app');if(!app)return;\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})(?:T(\\d{2}:\\d{2}))?/);return m?m[3]+'/'+m[2]+'/'+m[1].slice(2)+(m[4]?' '+m[4]:''):s(d);}\nfunction who(){var n='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)n=m.name;}catch(x){}if(!n){try{n=localStorage.getItem('cbs_name')||'';}catch(x){}}if(!n){n=(prompt('Your name:')||'').trim();if(n){try{localStorage.setItem('cbs_name',n);}catch(x){}}}return n;}\nvar st=document.createElement('style');st.textContent='.ckr{display:flex;gap:6px;align-items:center;padding:6px 0;border-top:1px solid #eee}.ckr input[type=checkbox]{width:22px;height:22px;flex:0 0 auto;accent-color:#F47920}.ckr input[type=text]{flex:1;min-width:0;font:inherit;padding:8px;border:1px solid #c4c6c8;border-radius:8px}.ckr .ib{border:1px solid #d9d9d6;background:#fff;border-radius:6px;font:inherit;font-size:13px;padding:5px 8px;cursor:pointer;flex:0 0 auto}.ckr .ib.x{color:#b3261e;border-color:#e9b6b1}.ckw{font-size:12px;color:#6b6e70;padding:0 0 4px 28px}.cka{display:flex;gap:6px;margin-top:10px}.cka input{flex:1;font:inherit;padding:9px;border:1px solid #c4c6c8;border-radius:8px}.ckl{background:#f7f7f6;border:1px solid #e4e4e1;border-radius:10px;padding:10px;margin-top:12px;font-size:13px}.ckl code{display:block;word-break:break-all;font-size:12px;margin:6px 0;color:#3d4043}.ckbar{height:8px;background:#ececea;border-radius:6px;overflow:hidden;margin:6px 0 4px}.ckbar i{display:block;height:100%;background:#5fae6e}';document.head.appendChild(st);\nfunction all(){var out=[];((window.D.p||{}).phases||[]).forEach(function(p){out.push(p);(p.tasks||[]).forEach(function(t){out.push(t);(t.subs||[]).forEach(function(x){out.push(x);});});});return out;}\nfunction find(id){return all().filter(function(r){return String(r.id)===String(id);})[0]||null;}\nfunction leaf(r){return r.kind==='sub'||(r.kind==='task'&&!(r.subs||[]).length)||(r.kind==='phase'&&!(r.tasks||[]).length);}\nfunction lab(r){var n=r.ck_total||0;return '\\u2611 Checklist'+(n?' '+(r.ck_done||0)+'/'+n:'')+(r.pct?' \\u00b7 '+r.pct+'%':'');}\nfunction deco(){var pg=(window.D.p||{}).programme;if(!pg||(pg.status!=='Open'&&pg.status!=='Draft'))return;\n app.querySelectorAll('[data-id]').forEach(function(el){var r=find(el.getAttribute('data-id'));if(!r||!leaf(r))return;\n  var b=el.querySelector(':scope > .b');\n  if(b){if(b.querySelector('.ckb'))return;var x=document.createElement('button');x.type='button';x.className='btn ghost sm ckb';x.textContent=lab(r);x.onclick=function(ev){ev.stopPropagation();openDlg(r);};b.insertBefore(x,b.children[1]||null);return;}\n  if(el.classList.contains('gl')&&!el.querySelector('.ckg')){var g=document.createElement('button');g.type='button';g.className='gib ckg';g.title='Checklist';g.textContent='\\u2611'+(r.ck_total?' '+(r.ck_done||0)+'/'+r.ck_total:'');g.onclick=function(ev){ev.stopPropagation();openDlg(r);};var mb=el.querySelector('[data-a=menu]');el.insertBefore(g,mb||null);}});}\nvar T=0;new MutationObserver(function(){clearTimeout(T);T=setTimeout(deco,60);}).observe(app,{childList:true,subtree:true});deco();\nfunction openDlg(r){\n var L=(r.checklist||[]).map(function(i){return {t:s(i.t),done:!!i.done,by:s(i.by),at:s(i.at),saved:true};}),orig=JSON.stringify(L.map(function(i){return [i.t,i.done];})),pct=r.ck_total?'':(r.pct||'');\n var o=document.createElement('div');o.className='ov';document.body.appendChild(o);\n function dirty(){return JSON.stringify(L.map(function(i){return [i.t,i.done];}))!==orig||(!L.length&&String(o.querySelector('#ckPct')?o.querySelector('#ckPct').value:pct)!==String(pct));}\n function close(force){if(!force&&dirty()&&!confirm('Close without saving your changes?'))return;o.remove();}\n o.addEventListener('click',function(ev){if(ev.target===o)close();});\n function draw(msg){var d=L.filter(function(i){return i.done;}).length,p=L.length?Math.round(100*d/L.length):0;\n  var h='<div class=\"dlg\"><h2>Checklist: '+e(r.name)+'</h2><div class=\"m\">The crew tick these from their link. The task\\u2019s % complete follows the ticks.</div>';\n  if(L.length)h+='<div class=\"ckbar\"><i style=\"width:'+p+'%\"></i></div><div class=\"m\">'+d+' of '+L.length+' done \\u00b7 '+p+'%</div>';\n  h+='<div id=\"ckL\">'+L.map(function(i,ix){return '<div class=\"ckr\" data-i=\"'+ix+'\"><input type=\"checkbox\"'+(i.done?' checked':'')+' data-k=\"tick\"><input type=\"text\" value=\"'+e(i.t)+'\" data-k=\"txt\"><button type=\"button\" class=\"ib\" data-k=\"up\"'+(ix===0?' disabled':'')+'>\\u2191</button><button type=\"button\" class=\"ib\" data-k=\"dn\"'+(ix===L.length-1?' disabled':'')+'>\\u2193</button><button type=\"button\" class=\"ib x\" data-k=\"del\">\\u2715</button></div>'+(i.done&&i.by?'<div class=\"ckw\">Ticked by '+e(i.by)+(i.at?' '+dmy(i.at):'')+'</div>':'');}).join('')+'</div>';\n  h+='<div class=\"cka\"><input type=\"text\" id=\"ckN\" placeholder=\"Add an item, e.g. Back boxes fixed\"><button type=\"button\" class=\"btn ghost sm\" id=\"ckA\">Add</button></div>';\n  if(!L.length)h+='<label class=\"f\">% complete (used when there is no checklist)</label><input type=\"number\" id=\"ckPct\" min=\"0\" max=\"100\" step=\"5\" value=\"'+e(pct)+'\" placeholder=\"0\" style=\"width:120px;font:inherit;padding:9px;border:1px solid #c4c6c8;border-radius:8px\">';\n  h+='<div class=\"ckl\"><b>Crew link</b><div id=\"ckLk\">'+(r.check_token?'<code>'+e(location.origin+'/webhook/cbs-task?t='+r.check_token)+'</code><button type=\"button\" class=\"btn ghost sm\" id=\"ckCp\">Copy link</button>':'<div class=\"m\">Opens this one task\\u2019s checklist and nothing else. Paste it into the ServiceM8 job.</div><button type=\"button\" class=\"btn ghost sm\" id=\"ckGl\" style=\"margin-top:6px\">Get crew link</button>')+'</div></div>';\n  h+='<div class=\"note\" id=\"ckM\">'+e(msg||'')+'</div><div class=\"b\"><button type=\"button\" class=\"btn\" id=\"ckS\">Save</button><button type=\"button\" class=\"btn ghost\" id=\"ckX\">Cancel</button></div></div>';\n  var keepPct=o.querySelector('#ckPct');if(keepPct)pct=keepPct.value;\n  o.innerHTML=h;wire();}\n function readTxt(){o.querySelectorAll('.ckr').forEach(function(row){var i=Number(row.getAttribute('data-i'));var t=row.querySelector('[data-k=txt]');if(L[i]&&t)L[i].t=t.value;});}\n function wire(){\n  o.querySelectorAll('.ckr').forEach(function(row){var i=Number(row.getAttribute('data-i'));\n   row.querySelector('[data-k=tick]').onchange=function(){readTxt();L[i].done=this.checked;if(!this.checked){L[i].by='';L[i].at='';}draw();};\n   row.querySelector('[data-k=up]').onclick=function(){readTxt();if(i>0){var x=L[i];L[i]=L[i-1];L[i-1]=x;draw();}};\n   row.querySelector('[data-k=dn]').onclick=function(){readTxt();if(i<L.length-1){var x=L[i];L[i]=L[i+1];L[i+1]=x;draw();}};\n   row.querySelector('[data-k=del]').onclick=function(){readTxt();var it=L[i];if(it.saved&&!confirm('Are you sure you want to remove \\u201c'+it.t+'\\u201d from the checklist?'+(it.done?' It has been ticked off.':'')))return;L.splice(i,1);draw();};});\n  var n=o.querySelector('#ckN');function add(){var v=n.value.trim();if(!v)return;readTxt();L.push({t:v.slice(0,200),done:false,by:'',at:'',saved:false});draw();setTimeout(function(){var m=o.querySelector('#ckN');if(m)m.focus();},20);}\n  o.querySelector('#ckA').onclick=add;n.onkeydown=function(ev){if(ev.key==='Enter'){ev.preventDefault();add();}};\n  o.querySelector('#ckX').onclick=function(){close();};\n  var gl=o.querySelector('#ckGl');if(gl)gl.onclick=function(){var by=who();if(!by)return;gl.disabled=true;\n   fetch('/webhook/cbs-task-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({a:'link',job:JOB,id:r.id,by:by})}).then(function(x){return x.json();})\n   .then(function(res){if(!res.ok)throw new Error(res.message||'');r.check_token=res.token;readTxt();draw();}).catch(function(err){gl.disabled=false;alert(err&&err.message?err.message:'Could not make the link. Try again.');});};\n  var cp=o.querySelector('#ckCp');if(cp)cp.onclick=function(){var u=location.origin+'/webhook/cbs-task?t='+r.check_token;function fb(){prompt('Copy this link for the crew:',u);}\n   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(u).then(function(){cp.textContent='Copied';setTimeout(function(){cp.textContent='Copy link';},2000);},fb);else fb();};\n  o.querySelector('#ckS').onclick=function(){readTxt();var bad=L.some(function(i){return !i.t.trim();});if(bad){alert('One of the items is blank. Fill it in or remove it.');return;}\n   var by=who();if(!by)return;var b=this;b.disabled=true;var pe=o.querySelector('#ckPct');\n   var body={a:'save',job:JOB,id:r.id,by:by,items:L.map(function(i){return {t:i.t.trim(),done:i.done};})};if(pe)body.pct=pe.value;\n   fetch('/webhook/cbs-task-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(x){if(!x.ok)throw 0;return x.json();})\n   .then(function(res){if(!res.ok){b.disabled=false;alert(res.message||'Could not save. Try again.');return;}close(true);if(window.__progReload)window.__progReload();else location.reload();})\n   .catch(function(){b.disabled=false;alert('Could not save. Check your connection and try again.');});};}\n draw();\n}\n}\n\nreturn [{ json: { js: '(' + ckUi.toString() + ')();' } }];\n",
+        "language": "javaScript",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "9505287a-6f26-40a2-a25b-fda4b3ab3176",
+      "name": "Serve UI",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        500
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/javascript; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-cache"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ $json.js }}"
+      }
+    },
+    {
+      "id": "4e12ea7f-00b4-4a21-bde5-d9c392bddd69",
+      "name": "Scope Link",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        120
+      ],
+      "parameters": {
+        "jsCode": "/* \"Scope for this task\" on the crew checklist page (19/10/2026). When the programme task was built from the scope of works,\n   shows the scope item(s) it covers: what is being done, crew notes, supplier delivery, photos and the section's plans, plus a link\n   to the crew scope page. Read only, no prices, no hub links. Any failure leaves the page exactly as it was. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v).trim();const e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst j=$input.first().json;let html=String(j.html||'');\nconst ANCH='<div class=\"wrap\" id=\"app\"></div>';\nif(html.indexOf(ANCH)<0)return [{json:j}];\ntry{\n const t=S(($('Task Page Hook').first().json.query||{}).t).replace(/[^0-9a-z]/g,'');\n if(t.length<16)return [{json:j}];\n const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=progitems',body:{},json:true,timeout:20000});\n const r=(Array.isArray(L)?L:[]).find(x=>x&&S(x.check_token)===t);if(!r)return [{json:j}];\n const job=S(r.job_no);const id=String(r.id),par=S(r.parent_id);\n const d=await h.httpRequest({url:H+'cbs-scope-data?job='+encodeURIComponent(job),json:true,timeout:25000});\n const secs=(d&&d.ok&&d.scope&&Array.isArray(d.scope.sections))?d.scope.sections:[];\n let M=[];\n secs.forEach((sc,si)=>(sc.items||[]).forEach((it,ii)=>{if(S(it.prog_id)===id||(par&&S(it.prog_id)===par))M.push({sc,si,it,ref:(si+1)+'.'+(ii+1)});}));\n if(!M.length){const si=secs.findIndex(sc=>S(sc.prog_id)===id);if(si>-1)(secs[si].items||[]).forEach((it,ii)=>M.push({sc:secs[si],si,it,ref:(si+1)+'.'+(ii+1)}));}\n if(!M.length)return [{json:j}];\n const ph=p=>S(p.k)==='sm8'?'/webhook/cbs-job-photo?u='+encodeURIComponent(S(p.u)):'/webhook/cbs-file?u='+encodeURIComponent(S(p.u));\n const docs={};M.forEach(m=>(m.sc.docs||[]).forEach(x=>{if(S(x.u))docs[S(x.u)]=S(x.n)||'Document';}));((d.scope&&d.scope.docs)||[]).forEach(x=>{if(S(x.u))docs[S(x.u)]=S(x.n)||'Document';});\n let c='<div class=\"wrap\" style=\"padding-top:0\"><div class=\"card sc\"><b>Scope for this task</b>';\n M.forEach(m=>{const it=m.it,P=Array.isArray(it.photos)?it.photos:[];\n  c+='<div class=\"si\"><div><span class=\"r\">'+e(m.ref)+'</span>'+e(it.text)+(S(it.var)?'<span class=\"v\">'+e(it.var)+'</span>':'')+'</div>'\n   +(S(it.notes)?'<div class=\"nt\">'+e(it.notes)+'</div>':'')\n   +(S(it.who)&&S(it.who)!=='CBS'?'<div class=\"nt\">By '+e(it.who)+'</div>':'')\n   +(S(it.supplier)?'<div class=\"dl\"><b>Delivery: '+e(it.supplier)+'</b>'+(S(it.sup_notes)?'<br>'+e(it.sup_notes):'')+'</div>':'')\n   +(P.length?'<div class=\"th\">'+P.map(p=>'<img loading=\"lazy\" alt=\"Photo\" src=\"'+e(ph(p))+'\">').join('')+'</div>':'')+'</div>';});\n const dk=Object.keys(docs);if(dk.length)c+='<div class=\"dc\">'+dk.map(u=>'<a target=\"_blank\" rel=\"noopener\" href=\"/webhook/cbs-file?u='+encodeURIComponent(u)+'\">\\ud83d\\udcc4 '+e(docs[u])+'</a>').join('')+'</div>';\n c+='<a class=\"sl\" href=\"/webhook/cbs-scope-crew?job='+encodeURIComponent(job)+'\">See the full scope for job '+e(job)+'</a></div></div>';\n c+='<script>document.querySelectorAll(\".sc .th img\").forEach(function(im){im.onclick=function(){var o=document.createElement(\"div\");o.className=\"lb\";o.innerHTML=\"<img alt=\\\\\"Photo\\\\\" src=\\\\\"\"+im.src+\"\\\\\">\";o.onclick=function(){o.remove();};document.body.appendChild(o);};});</script>';\n const css='.sc .si{padding:10px 0;border-top:1px solid #eee}.sc .si:first-of-type{margin-top:6px}.sc .r{color:#6b6e70;margin-right:8px;font-variant-numeric:tabular-nums}.sc .v{font-size:11.5px;font-weight:700;border:1px solid #b45309;color:#8a3f07;border-radius:20px;padding:1px 7px;margin-left:6px}.sc .nt{font-size:14px;color:#444;margin-top:4px;white-space:pre-wrap}.sc .dl{font-size:14px;color:#1f4e79;margin-top:6px;white-space:pre-wrap}.sc .th{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.sc .th img{width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid #ddd;cursor:zoom-in}.sc .dc{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.sc .dc a{font-size:14px;border:1px solid #d9d9d6;border-radius:8px;padding:8px 11px;color:#161616;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}.sc .sl{display:block;margin-top:12px;color:#F47920;font-weight:600;text-decoration:none;min-height:44px;line-height:44px}.lb{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:40;display:flex;align-items:center;justify-content:center}.lb img{max-width:98vw;max-height:94vh}';\n html=html.replace(ANCH,()=>ANCH+c).replace('</style>',()=>css+'</style>');\n return [{json:{html:html,scopeLink:M.length}}];\n}catch(x){return [{json:j}];}\n",
+        "mode": "runOnceForAllItems"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "c0cca9a8-34ca-4972-af48-0a3872e059aa",
+        "name": "Task Page Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-task",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "24e7a8c5-dda4-486c-a0c1-9122436420c2"
+      },
+      {
+        "id": "473d5909-f9cf-4dd3-888a-63f506949be4",
+        "name": "Build Task Page",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* Crew checklist page: one task only, opened from the link in the ServiceM8 job. No hub links. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v).trim();const e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst q=$input.first().json.query||{};const t=S(q.t).replace(/[^0-9a-z]/g,'');\nlet items=[];try{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=progitems',body:{},json:true,timeout:20000});items=Array.isArray(L)?L:[];}catch(x){}\nconst r=t.length>=16?items.find(x=>x&&S(x.check_token)===t):null;\nlet D=null;\nif(r){const par=items.find(x=>String(x.id)===S(r.parent_id));const gp=par?items.find(x=>String(x.id)===S(par.parent_id)):null;\n let ck=[];try{ck=JSON.parse(S(r.checklist_json)||'[]');if(!Array.isArray(ck))ck=[];}catch(x){ck=[];}\n D={t:t,job:S(r.job_no),name:S(r.name),path:[gp&&S(gp.name),par&&S(par.name)].filter(Boolean).join(' › '),start:S(r.start_on),end:S(r.end_on),notes:S(r.notes),assigned:S(r.assigned_to),ck:ck.filter(i=>i&&S(i.t))};}\nconst CSS='*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n+'header{background:#3d4043;color:#fff;padding:14px 16px;border-bottom:4px solid #F47920}header .k{color:#ffb37a;font-size:13px}header h1{margin:3px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n+'.wrap{max-width:640px;margin:0 auto;padding:14px}.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;padding:12px 14px;margin-bottom:12px}.m{color:#555;font-size:14px;margin-top:2px}'\n+'.bar{height:10px;background:#ececea;border-radius:6px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:#5fae6e;transition:width .2s}'\n+'.it{display:flex;gap:12px;align-items:flex-start;padding:14px 4px;border-top:1px solid #eee;cursor:pointer;-webkit-tap-highlight-color:transparent}.it:first-child{border-top:0}'\n+'.it input{width:26px;height:26px;margin:0;flex:0 0 auto;accent-color:#F47920}.it .tx{flex:1;font-size:16px}.it.done .tx{color:#6b6e70;text-decoration:line-through}.it .w{display:block;font-size:12px;color:#6b6e70;text-decoration:none;margin-top:2px}.it.busy{opacity:.5}'\n+'.who{font-size:13px;color:#6b6e70;margin-top:10px}.who a{color:#F47920}.msg{font-size:14px;color:#b3261e;min-height:18px;margin-top:8px}.empty{color:#6b6e70;text-align:center;padding:18px}';\nlet body;\nif(!D)body='<header><div class=\"k\">Chelmsford Building Services</div><h1>Checklist</h1></header><div class=\"wrap\"><div class=\"card empty\">This link is not valid, or the task has been removed from the programme. Ask the office for a new link.</div></div>';\nelse body='<header><div class=\"k\">Job '+e(D.job)+'</div><h1>'+e(D.name)+'</h1>'+(D.path?'<p>'+e(D.path)+'</p>':'')+'</header><div class=\"wrap\" id=\"app\"></div><script>window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+';</script><script>('+client.toString()+')();</script>';\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"robots\" content=\"noindex\"><title>Checklist'+(D?' - '+e(D.name):'')+'</title><style>'+CSS+'</style></head><body>'+body+'</body></html>';\nreturn [{json:{html:html}}];\n\nfunction client(){\nvar D=window.D,app=document.getElementById('app'),BUSY={};\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})(?:T(\\d{2}:\\d{2}))?/);return m?m[3]+'/'+m[2]+'/'+m[1].slice(2)+(m[4]?' '+m[4]:''):s(d);}\nfunction me(){try{return localStorage.getItem('cbs_name')||'';}catch(x){return '';}}\nfunction who(force){var n=force?'':me();if(!n){n=(prompt('Your name (saved on this phone):',me())||'').trim();if(n){try{localStorage.setItem('cbs_name',n);}catch(x){}}}return n;}\nfunction render(msg){var ck=D.ck,d=ck.filter(function(i){return i.done;}).length,p=ck.length?Math.round(100*d/ck.length):0;\n var h='<div class=\"card\"><b>'+(ck.length?d+' of '+ck.length+' done':'No checklist yet')+'</b>'+(ck.length?' · '+p+'%':'')+'<div class=\"bar\"><i style=\"width:'+p+'%\"></i></div>'\n  +'<div class=\"m\">'+[D.start?(D.end&&D.end!==D.start?dmy(D.start)+' – '+dmy(D.end):dmy(D.start)):'',D.assigned?'Assigned to '+e(D.assigned):''].filter(Boolean).join(' · ')+'</div>'\n  +(D.notes?'<div class=\"m\" style=\"margin-top:6px\">'+e(D.notes)+'</div>':'')+'</div>';\n h+='<div class=\"card\">'+(ck.length?ck.map(function(i,ix){return '<label class=\"it'+(i.done?' done':'')+(BUSY[ix]?' busy':'')+'\" data-i=\"'+ix+'\"><input type=\"checkbox\"'+(i.done?' checked':'')+(BUSY[ix]?' disabled':'')+'><span class=\"tx\">'+e(i.t)+(i.done&&i.by?'<span class=\"w\">'+e(i.by)+(i.at?' · '+dmy(i.at):'')+'</span>':'')+'</span></label>';}).join(''):'<div class=\"empty\">The office has not added any checklist items to this task yet.</div>')+'</div>';\n h+='<div class=\"msg\" id=\"msg\">'+e(msg||'')+'</div><div class=\"who\">'+(me()?'Ticking as <b>'+e(me())+'</b> · <a href=\"#\" id=\"chg\">change</a>':'')+'</div>';\n app.innerHTML=h;\n var c=document.getElementById('chg');if(c)c.onclick=function(ev){ev.preventDefault();who(true);render();};\n app.querySelectorAll('.it input').forEach(function(x){x.onchange=function(){var ix=Number(x.closest('.it').getAttribute('data-i'));tick(ix,x.checked);};});}\nfunction tick(ix,done){var by=who();if(!by){render();return;}var it=D.ck[ix];BUSY[ix]=1;it.done=done;render();\n fetch('/webhook/cbs-task-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({a:'tick',t:D.t,i:ix,text:it.t,done:done,by:by})})\n .then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(res){delete BUSY[ix];if(res.checklist)D.ck=res.checklist;render(res.ok?'':(res.message||'Not saved. Try again.'));})\n .catch(function(){delete BUSY[ix];it.done=!done;render('Not saved. Check your signal and tap again.');});}\nrender();\n}\n"
+        }
+      },
+      {
+        "id": "8468a66b-7e5b-4793-96c4-56dfbc15ec24",
+        "name": "Serve Task Page",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "dab80718-f955-4c57-9603-ffaf5abd05a7",
+        "name": "Task Act Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          224
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-task-act",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "37657bc9-27a9-48b3-98a2-1038d7ee8ad9"
+      },
+      {
+        "id": "b12250c5-de63-4bbe-9841-e4517922791c",
+        "name": "Task Act",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          224
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* CBS task checklists: admin save + crew link (from the programme page), crew ticks (from the crew page). */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst b=$input.first().json.body||{};const a=S(b.a),by=S(b.by).slice(0,80);\nconst R=(ok,x)=>[{json:Object.assign({ok:ok},x||{})}];\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst stamp=now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16);\nconst list=async t=>{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:20000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);};\nconst save=(t,id,row)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t='+t+'&id='+id+'&k='+K+'&partial=1',body:row,json:true,timeout:20000});\nconst ckl=r=>{try{const x=JSON.parse(S(r.checklist_json)||'[]');return Array.isArray(x)?x.filter(i=>i&&S(i.t)).map(i=>({t:S(i.t).slice(0,200),done:!!i.done,by:S(i.by).slice(0,80),at:S(i.at).slice(0,16)})):[];}catch(e){return [];}};\nconst statusFor=(ck,old)=>{if(!ck.length)return S(old)||'Not started';const d=ck.filter(i=>i.done).length;return d===ck.length?'Done':(d>0||S(old)==='In progress'?'In progress':'Not started');};\nconst KD=k=>{k=S(k);return k==='task'||k==='sub'?k:'phase';};\nconst tok=()=>(Date.now().toString(36)+Math.random().toString(36).slice(2,10)+Math.random().toString(36).slice(2,10)).slice(0,26);\nconst items=await list('progitems');\nif(a==='tick'){\n const t=S(b.t);if(t.length<16)return R(false,{message:'This link is not valid.'});\n if(!by)return R(false,{message:'Enter your name.'});\n const r=items.find(x=>S(x.check_token)===t);if(!r)return R(false,{message:'This task is no longer on the programme.'});\n const ck=ckl(r);const i=num(b.i);if(i<0||i>=ck.length||ck[i].t!==S(b.text).slice(0,200))return R(false,{message:'The checklist has changed. Refresh the page.',checklist:ck});\n const done=b.done===true||b.done==='true';ck[i].done=done;ck[i].by=done?by:'';ck[i].at=done?now:'';\n const st=statusFor(ck,r.status);\n await save('progitems',r.id,{checklist_json:JSON.stringify(ck),status:st,updated_by:by,updated_at:now});\n return R(true,{checklist:ck,status:st});\n}\nconst job=S(b.job).replace(/[^0-9A-Za-z-]/g,'');\nif(!job)return R(false,{message:'No job number.'});if(!by)return R(false,{message:'Enter your name.'});\nconst r=items.find(x=>String(x.id)===S(b.id)&&jk(x.job_no)===jk(job));\nif(!r)return R(false,{message:'That task was not found. Refresh the page.'});\nif(items.some(x=>KD(x.kind)!=='phase'&&S(x.parent_id)===String(r.id)))return R(false,{message:'This has items under it. Add the checklist to those instead.'});\nconst progs=(await list('programmes')).filter(p=>jk(p.job_no)===jk(job)).sort((x,y)=>num(y.id)-num(x.id));const prog=progs[0];\nconst histLine=async line=>{if(prog)await save('programmes',prog.id,{history:[S(prog.history),stamp+' - '+line].filter(Boolean).join(String.fromCharCode(10))});};\nif(a==='link'){\n let t=S(r.check_token);if(t.length<16){t=tok();await save('progitems',r.id,{check_token:t});await histLine('Crew checklist link made for '+S(r.name)+' by '+by);}\n return R(true,{token:t,url:H+'cbs-task?t='+t});\n}\nif(a==='save'){\n const old=ckl(r);const inc=(Array.isArray(b.items)?b.items:[]).slice(0,60).map(i=>({t:S(i&&i.t).slice(0,200),done:!!(i&&i.done)})).filter(i=>i.t);\n const ck=inc.map((i,ix)=>{const o=old.find(x=>x.t===i.t)||null;if(i.done&&o&&o.done)return {t:i.t,done:true,by:o.by,at:o.at};return {t:i.t,done:i.done,by:i.done?by:'',at:i.done?now:''};});\n const row={checklist_json:JSON.stringify(ck),updated_by:by,updated_at:now};\n if(!ck.length&&b.pct!==undefined){const p=S(b.pct);row.pct=p===''?null:Math.max(0,Math.min(100,Math.round(Number(p)||0)));}\n if(ck.length){row.status=statusFor(ck,r.status);row.pct=null;}\n await save('progitems',r.id,row);\n const d=ck.filter(i=>i.done).length;\n await histLine('Checklist for '+S(r.name)+' saved by '+by+(ck.length?' ('+d+' of '+ck.length+' done)':(row.pct!=null?' ('+row.pct+'% complete)':'')));\n return R(true,{checklist:ck,status:row.status||S(r.status)});\n}\nreturn R(false,{message:'Unknown action.'});\n"
+        }
+      },
+      {
+        "id": "ecdbcba4-eb53-4d5f-88b2-ea0dd2a1699b",
+        "name": "Serve Task Act",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          224
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "c038d751-a832-40be-937d-b550379d942a",
+        "name": "UI Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          500
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-task-ui",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "28bae23c-55c4-4296-b7d5-b64f3c7ad050"
+      },
+      {
+        "id": "0983c763-965d-43b4-830a-2eb6d715ca25",
+        "name": "UI Script",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          500
+        ],
+        "parameters": {
+          "jsCode": "function ckUi(){\nif(window.__ckUi||!window.D||!window.D.job)return;window.__ckUi=1;\nvar JOB=window.D.job,app=document.getElementById('app');if(!app)return;\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})(?:T(\\d{2}:\\d{2}))?/);return m?m[3]+'/'+m[2]+'/'+m[1].slice(2)+(m[4]?' '+m[4]:''):s(d);}\nfunction who(){var n='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)n=m.name;}catch(x){}if(!n){try{n=localStorage.getItem('cbs_name')||'';}catch(x){}}if(!n){n=(prompt('Your name:')||'').trim();if(n){try{localStorage.setItem('cbs_name',n);}catch(x){}}}return n;}\nvar st=document.createElement('style');st.textContent='.ckr{display:flex;gap:6px;align-items:center;padding:6px 0;border-top:1px solid #eee}.ckr input[type=checkbox]{width:22px;height:22px;flex:0 0 auto;accent-color:#F47920}.ckr input[type=text]{flex:1;min-width:0;font:inherit;padding:8px;border:1px solid #c4c6c8;border-radius:8px}.ckr .ib{border:1px solid #d9d9d6;background:#fff;border-radius:6px;font:inherit;font-size:13px;padding:5px 8px;cursor:pointer;flex:0 0 auto}.ckr .ib.x{color:#b3261e;border-color:#e9b6b1}.ckw{font-size:12px;color:#6b6e70;padding:0 0 4px 28px}.cka{display:flex;gap:6px;margin-top:10px}.cka input{flex:1;font:inherit;padding:9px;border:1px solid #c4c6c8;border-radius:8px}.ckl{background:#f7f7f6;border:1px solid #e4e4e1;border-radius:10px;padding:10px;margin-top:12px;font-size:13px}.ckl code{display:block;word-break:break-all;font-size:12px;margin:6px 0;color:#3d4043}.ckbar{height:8px;background:#ececea;border-radius:6px;overflow:hidden;margin:6px 0 4px}.ckbar i{display:block;height:100%;background:#5fae6e}';document.head.appendChild(st);\nfunction all(){var out=[];((window.D.p||{}).phases||[]).forEach(function(p){out.push(p);(p.tasks||[]).forEach(function(t){out.push(t);(t.subs||[]).forEach(function(x){out.push(x);});});});return out;}\nfunction find(id){return all().filter(function(r){return String(r.id)===String(id);})[0]||null;}\nfunction leaf(r){return r.kind==='sub'||(r.kind==='task'&&!(r.subs||[]).length)||(r.kind==='phase'&&!(r.tasks||[]).length);}\nfunction lab(r){var n=r.ck_total||0;return '\\u2611 Checklist'+(n?' '+(r.ck_done||0)+'/'+n:'')+(r.pct?' \\u00b7 '+r.pct+'%':'');}\nfunction deco(){var pg=(window.D.p||{}).programme;if(!pg||(pg.status!=='Open'&&pg.status!=='Draft'))return;\n app.querySelectorAll('[data-id]').forEach(function(el){var r=find(el.getAttribute('data-id'));if(!r||!leaf(r))return;\n  var b=el.querySelector(':scope > .b');\n  if(b){if(b.querySelector('.ckb'))return;var x=document.createElement('button');x.type='button';x.className='btn ghost sm ckb';x.textContent=lab(r);x.onclick=function(ev){ev.stopPropagation();openDlg(r);};b.insertBefore(x,b.children[1]||null);return;}\n  if(el.classList.contains('gl')&&!el.querySelector('.ckg')){var g=document.createElement('button');g.type='button';g.className='gib ckg';g.title='Checklist';g.textContent='\\u2611'+(r.ck_total?' '+(r.ck_done||0)+'/'+r.ck_total:'');g.onclick=function(ev){ev.stopPropagation();openDlg(r);};var mb=el.querySelector('[data-a=menu]');el.insertBefore(g,mb||null);}});}\nvar T=0;new MutationObserver(function(){clearTimeout(T);T=setTimeout(deco,60);}).observe(app,{childList:true,subtree:true});deco();\nfunction openDlg(r){\n var L=(r.checklist||[]).map(function(i){return {t:s(i.t),done:!!i.done,by:s(i.by),at:s(i.at),saved:true};}),orig=JSON.stringify(L.map(function(i){return [i.t,i.done];})),pct=r.ck_total?'':(r.pct||'');\n var o=document.createElement('div');o.className='ov';document.body.appendChild(o);\n function dirty(){return JSON.stringify(L.map(function(i){return [i.t,i.done];}))!==orig||(!L.length&&String(o.querySelector('#ckPct')?o.querySelector('#ckPct').value:pct)!==String(pct));}\n function close(force){if(!force&&dirty()&&!confirm('Close without saving your changes?'))return;o.remove();}\n o.addEventListener('click',function(ev){if(ev.target===o)close();});\n function draw(msg){var d=L.filter(function(i){return i.done;}).length,p=L.length?Math.round(100*d/L.length):0;\n  var h='<div class=\"dlg\"><h2>Checklist: '+e(r.name)+'</h2><div class=\"m\">The crew tick these from their link. The task\\u2019s % complete follows the ticks.</div>';\n  if(L.length)h+='<div class=\"ckbar\"><i style=\"width:'+p+'%\"></i></div><div class=\"m\">'+d+' of '+L.length+' done \\u00b7 '+p+'%</div>';\n  h+='<div id=\"ckL\">'+L.map(function(i,ix){return '<div class=\"ckr\" data-i=\"'+ix+'\"><input type=\"checkbox\"'+(i.done?' checked':'')+' data-k=\"tick\"><input type=\"text\" value=\"'+e(i.t)+'\" data-k=\"txt\"><button type=\"button\" class=\"ib\" data-k=\"up\"'+(ix===0?' disabled':'')+'>\\u2191</button><button type=\"button\" class=\"ib\" data-k=\"dn\"'+(ix===L.length-1?' disabled':'')+'>\\u2193</button><button type=\"button\" class=\"ib x\" data-k=\"del\">\\u2715</button></div>'+(i.done&&i.by?'<div class=\"ckw\">Ticked by '+e(i.by)+(i.at?' '+dmy(i.at):'')+'</div>':'');}).join('')+'</div>';\n  h+='<div class=\"cka\"><input type=\"text\" id=\"ckN\" placeholder=\"Add an item, e.g. Back boxes fixed\"><button type=\"button\" class=\"btn ghost sm\" id=\"ckA\">Add</button></div>';\n  if(!L.length)h+='<label class=\"f\">% complete (used when there is no checklist)</label><input type=\"number\" id=\"ckPct\" min=\"0\" max=\"100\" step=\"5\" value=\"'+e(pct)+'\" placeholder=\"0\" style=\"width:120px;font:inherit;padding:9px;border:1px solid #c4c6c8;border-radius:8px\">';\n  h+='<div class=\"ckl\"><b>Crew link</b><div id=\"ckLk\">'+(r.check_token?'<code>'+e(location.origin+'/webhook/cbs-task?t='+r.check_token)+'</code><button type=\"button\" class=\"btn ghost sm\" id=\"ckCp\">Copy link</button>':'<div class=\"m\">Opens this one task\\u2019s checklist and nothing else. Paste it into the ServiceM8 job.</div><button type=\"button\" class=\"btn ghost sm\" id=\"ckGl\" style=\"margin-top:6px\">Get crew link</button>')+'</div></div>';\n  h+='<div class=\"note\" id=\"ckM\">'+e(msg||'')+'</div><div class=\"b\"><button type=\"button\" class=\"btn\" id=\"ckS\">Save</button><button type=\"button\" class=\"btn ghost\" id=\"ckX\">Cancel</button></div></div>';\n  var keepPct=o.querySelector('#ckPct');if(keepPct)pct=keepPct.value;\n  o.innerHTML=h;wire();}\n function readTxt(){o.querySelectorAll('.ckr').forEach(function(row){var i=Number(row.getAttribute('data-i'));var t=row.querySelector('[data-k=txt]');if(L[i]&&t)L[i].t=t.value;});}\n function wire(){\n  o.querySelectorAll('.ckr').forEach(function(row){var i=Number(row.getAttribute('data-i'));\n   row.querySelector('[data-k=tick]').onchange=function(){readTxt();L[i].done=this.checked;if(!this.checked){L[i].by='';L[i].at='';}draw();};\n   row.querySelector('[data-k=up]').onclick=function(){readTxt();if(i>0){var x=L[i];L[i]=L[i-1];L[i-1]=x;draw();}};\n   row.querySelector('[data-k=dn]').onclick=function(){readTxt();if(i<L.length-1){var x=L[i];L[i]=L[i+1];L[i+1]=x;draw();}};\n   row.querySelector('[data-k=del]').onclick=function(){readTxt();var it=L[i];if(it.saved&&!confirm('Are you sure you want to remove \\u201c'+it.t+'\\u201d from the checklist?'+(it.done?' It has been ticked off.':'')))return;L.splice(i,1);draw();};});\n  var n=o.querySelector('#ckN');function add(){var v=n.value.trim();if(!v)return;readTxt();L.push({t:v.slice(0,200),done:false,by:'',at:'',saved:false});draw();setTimeout(function(){var m=o.querySelector('#ckN');if(m)m.focus();},20);}\n  o.querySelector('#ckA').onclick=add;n.onkeydown=function(ev){if(ev.key==='Enter'){ev.preventDefault();add();}};\n  o.querySelector('#ckX').onclick=function(){close();};\n  var gl=o.querySelector('#ckGl');if(gl)gl.onclick=function(){var by=who();if(!by)return;gl.disabled=true;\n   fetch('/webhook/cbs-task-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({a:'link',job:JOB,id:r.id,by:by})}).then(function(x){return x.json();})\n   .then(function(res){if(!res.ok)throw new Error(res.message||'');r.check_token=res.token;readTxt();draw();}).catch(function(err){gl.disabled=false;alert(err&&err.message?err.message:'Could not make the link. Try again.');});};\n  var cp=o.querySelector('#ckCp');if(cp)cp.onclick=function(){var u=location.origin+'/webhook/cbs-task?t='+r.check_token;function fb(){prompt('Copy this link for the crew:',u);}\n   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(u).then(function(){cp.textContent='Copied';setTimeout(function(){cp.textContent='Copy link';},2000);},fb);else fb();};\n  o.querySelector('#ckS').onclick=function(){readTxt();var bad=L.some(function(i){return !i.t.trim();});if(bad){alert('One of the items is blank. Fill it in or remove it.');return;}\n   var by=who();if(!by)return;var b=this;b.disabled=true;var pe=o.querySelector('#ckPct');\n   var body={a:'save',job:JOB,id:r.id,by:by,items:L.map(function(i){return {t:i.t.trim(),done:i.done};})};if(pe)body.pct=pe.value;\n   fetch('/webhook/cbs-task-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(x){if(!x.ok)throw 0;return x.json();})\n   .then(function(res){if(!res.ok){b.disabled=false;alert(res.message||'Could not save. Try again.');return;}close(true);if(window.__progReload)window.__progReload();else location.reload();})\n   .catch(function(){b.disabled=false;alert('Could not save. Check your connection and try again.');});};}\n draw();\n}\n}\n\nreturn [{ json: { js: '(' + ckUi.toString() + ')();' } }];\n",
+          "language": "javaScript",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "9505287a-6f26-40a2-a25b-fda4b3ab3176",
+        "name": "Serve UI",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          500
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/javascript; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-cache"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ $json.js }}"
+        }
+      },
+      {
+        "id": "4e12ea7f-00b4-4a21-bde5-d9c392bddd69",
+        "name": "Scope Link",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          336,
+          120
+        ],
+        "parameters": {
+          "jsCode": "/* \"Scope for this task\" on the crew checklist page (19/10/2026). When the programme task was built from the scope of works,\n   shows the scope item(s) it covers: what is being done, crew notes, supplier delivery, photos and the section's plans, plus a link\n   to the crew scope page. Read only, no prices, no hub links. Any failure leaves the page exactly as it was. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v).trim();const e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst j=$input.first().json;let html=String(j.html||'');\nconst ANCH='<div class=\"wrap\" id=\"app\"></div>';\nif(html.indexOf(ANCH)<0)return [{json:j}];\ntry{\n const t=S(($('Task Page Hook').first().json.query||{}).t).replace(/[^0-9a-z]/g,'');\n if(t.length<16)return [{json:j}];\n const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=progitems',body:{},json:true,timeout:20000});\n const r=(Array.isArray(L)?L:[]).find(x=>x&&S(x.check_token)===t);if(!r)return [{json:j}];\n const job=S(r.job_no);const id=String(r.id),par=S(r.parent_id);\n const d=await h.httpRequest({url:H+'cbs-scope-data?job='+encodeURIComponent(job),json:true,timeout:25000});\n const secs=(d&&d.ok&&d.scope&&Array.isArray(d.scope.sections))?d.scope.sections:[];\n let M=[];\n secs.forEach((sc,si)=>(sc.items||[]).forEach((it,ii)=>{if(S(it.prog_id)===id||(par&&S(it.prog_id)===par))M.push({sc,si,it,ref:(si+1)+'.'+(ii+1)});}));\n if(!M.length){const si=secs.findIndex(sc=>S(sc.prog_id)===id);if(si>-1)(secs[si].items||[]).forEach((it,ii)=>M.push({sc:secs[si],si,it,ref:(si+1)+'.'+(ii+1)}));}\n if(!M.length)return [{json:j}];\n const ph=p=>S(p.k)==='sm8'?'/webhook/cbs-job-photo?u='+encodeURIComponent(S(p.u)):'/webhook/cbs-file?u='+encodeURIComponent(S(p.u));\n const docs={};M.forEach(m=>(m.sc.docs||[]).forEach(x=>{if(S(x.u))docs[S(x.u)]=S(x.n)||'Document';}));((d.scope&&d.scope.docs)||[]).forEach(x=>{if(S(x.u))docs[S(x.u)]=S(x.n)||'Document';});\n let c='<div class=\"wrap\" style=\"padding-top:0\"><div class=\"card sc\"><b>Scope for this task</b>';\n M.forEach(m=>{const it=m.it,P=Array.isArray(it.photos)?it.photos:[];\n  c+='<div class=\"si\"><div><span class=\"r\">'+e(m.ref)+'</span>'+e(it.text)+(S(it.var)?'<span class=\"v\">'+e(it.var)+'</span>':'')+'</div>'\n   +(S(it.notes)?'<div class=\"nt\">'+e(it.notes)+'</div>':'')\n   +(S(it.who)&&S(it.who)!=='CBS'?'<div class=\"nt\">By '+e(it.who)+'</div>':'')\n   +(S(it.supplier)?'<div class=\"dl\"><b>Delivery: '+e(it.supplier)+'</b>'+(S(it.sup_notes)?'<br>'+e(it.sup_notes):'')+'</div>':'')\n   +(P.length?'<div class=\"th\">'+P.map(p=>'<img loading=\"lazy\" alt=\"Photo\" src=\"'+e(ph(p))+'\">').join('')+'</div>':'')+'</div>';});\n const dk=Object.keys(docs);if(dk.length)c+='<div class=\"dc\">'+dk.map(u=>'<a target=\"_blank\" rel=\"noopener\" href=\"/webhook/cbs-file?u='+encodeURIComponent(u)+'\">\\ud83d\\udcc4 '+e(docs[u])+'</a>').join('')+'</div>';\n c+='<a class=\"sl\" href=\"/webhook/cbs-scope-crew?job='+encodeURIComponent(job)+'\">See the full scope for job '+e(job)+'</a></div></div>';\n c+='<script>document.querySelectorAll(\".sc .th img\").forEach(function(im){im.onclick=function(){var o=document.createElement(\"div\");o.className=\"lb\";o.innerHTML=\"<img alt=\\\\\"Photo\\\\\" src=\\\\\"\"+im.src+\"\\\\\">\";o.onclick=function(){o.remove();};document.body.appendChild(o);};});</script>';\n const css='.sc .si{padding:10px 0;border-top:1px solid #eee}.sc .si:first-of-type{margin-top:6px}.sc .r{color:#6b6e70;margin-right:8px;font-variant-numeric:tabular-nums}.sc .v{font-size:11.5px;font-weight:700;border:1px solid #b45309;color:#8a3f07;border-radius:20px;padding:1px 7px;margin-left:6px}.sc .nt{font-size:14px;color:#444;margin-top:4px;white-space:pre-wrap}.sc .dl{font-size:14px;color:#1f4e79;margin-top:6px;white-space:pre-wrap}.sc .th{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.sc .th img{width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid #ddd;cursor:zoom-in}.sc .dc{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.sc .dc a{font-size:14px;border:1px solid #d9d9d6;border-radius:8px;padding:8px 11px;color:#161616;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}.sc .sl{display:block;margin-top:12px;color:#F47920;font-weight:600;text-decoration:none;min-height:44px;line-height:44px}.lb{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:40;display:flex;align-items:center;justify-content:center}.lb img{max-width:98vw;max-height:94vh}';\n html=html.replace(ANCH,()=>ANCH+c).replace('</style>',()=>css+'</style>');\n return [{json:{html:html,scopeLink:M.length}}];\n}catch(x){return [{json:j}];}\n",
+          "mode": "runOnceForAllItems"
+        }
+      }
+    ],
+    "connections": {
+      "Task Page Hook": {
+        "main": [
+          [
+            {
+              "node": "Build Task Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Task Act Hook": {
+        "main": [
+          [
+            {
+              "node": "Task Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Task Act": {
+        "main": [
+          [
+            {
+              "node": "Serve Task Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "UI Hook": {
+        "main": [
+          [
+            {
+              "node": "UI Script",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "UI Script": {
+        "main": [
+          [
+            {
+              "node": "Serve UI",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Build Task Page": {
+        "main": [
+          [
+            {
+              "node": "Scope Link",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Scope Link": {
+        "main": [
+          [
+            {
+              "node": "Serve Task Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS task checklists. GET cbs-task?t=TOKEN is the crew page (one task only, no hub links). POST cbs-task-act: a=save (admin checklist edit / % by hand), a=link (makes the crew link token), a=tick (crew ticks an item). Writes cbs_prog_items checklist_json, ",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

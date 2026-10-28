@@ -1,0 +1,75 @@
+{
+  "table": "cbs_cphsp",
+  "n8n_id": "VrPaSgrY1W6zm3HN",
+  "columns": [
+    {
+      "name": "approved_by",
+      "type": "string"
+    },
+    {
+      "name": "approved_on",
+      "type": "string"
+    },
+    {
+      "name": "client",
+      "type": "string"
+    },
+    {
+      "name": "cphsp_no",
+      "type": "string"
+    },
+    {
+      "name": "dated",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "prepared_by",
+      "type": "string"
+    },
+    {
+      "name": "project",
+      "type": "string"
+    },
+    {
+      "name": "register_pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "revision",
+      "type": "string"
+    },
+    {
+      "name": "site",
+      "type": "string"
+    },
+    {
+      "name": "state_json",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "subs",
+      "type": "string"
+    },
+    {
+      "name": "subs_not_approved",
+      "type": "string"
+    }
+  ],
+  "sample_rows": []
+}

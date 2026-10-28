@@ -1,0 +1,24 @@
+{
+  "table": "cbs_load_log",
+  "n8n_id": "vCNiQeywNmW1qIOD",
+  "columns": [
+    {
+      "name": "at",
+      "type": "string"
+    },
+    {
+      "name": "job",
+      "type": "string"
+    },
+    {
+      "name": "mode",
+      "type": "string"
+    },
+    {
+      "name": "ms",
+      "type": "number"
+    }
+  ],
+  "sample_rows": [],
+  "note": "no sample found (only written by CBS - Job File, which saves no successful executions)"
+}

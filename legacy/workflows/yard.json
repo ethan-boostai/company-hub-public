@@ -1,0 +1,1644 @@
+{
+  "id": "djecOV96hfoWcyWA",
+  "name": "CBS - Yard",
+  "active": true,
+  "isArchived": false,
+  "versionId": "4223a50c-529c-409c-b373-b070bb0a108c",
+  "activeVersionId": "4223a50c-529c-409c-b373-b070bb0a108c",
+  "triggerCount": 5,
+  "createdAt": "2026-10-09T13:36:38.398Z",
+  "updatedAt": "2026-10-20T14:12:16.473Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Approve Page Hook": {
+      "main": [
+        [
+          {
+            "node": "Respond Approve Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Hook": {
+      "main": [
+        [
+          {
+            "node": "Get Stocktakes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Stocktakes": {
+      "main": [
+        [
+          {
+            "node": "Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data": {
+      "main": [
+        [
+          {
+            "node": "Respond Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Act Hook": {
+      "main": [
+        [
+          {
+            "node": "Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Act": {
+      "main": [
+        [
+          {
+            "node": "Is Stock Take?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Stock Take?": {
+      "main": [
+        [
+          {
+            "node": "Stock Take Row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Stock Take Row": {
+      "main": [
+        [
+          {
+            "node": "Insert Stock Take",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Stock Take": {
+      "main": [
+        [
+          {
+            "node": "Stock Take Done",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Stock Take Done": {
+      "main": [
+        [
+          {
+            "node": "Respond Stock Take",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approve Hook": {
+      "main": [
+        [
+          {
+            "node": "Get Stocktake Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Stocktake Rows": {
+      "main": [
+        [
+          {
+            "node": "Approve",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approve": {
+      "main": [
+        [
+          {
+            "node": "Approve OK?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approve OK?": {
+      "main": [
+        [
+          {
+            "node": "Update Row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Approve Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Row": {
+      "main": [
+        [
+          {
+            "node": "Update Stock Take",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Stock Take": {
+      "main": [
+        [
+          {
+            "node": "Respond Approved",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Yard Hook": {
+      "main": [
+        [
+          {
+            "node": "Get Yard Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Yard Page": {
+      "main": [
+        [
+          {
+            "node": "Yard Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Yard Page": {
+      "main": [
+        [
+          {
+            "node": "Respond Yard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "9015082c-578c-4357-b3c7-b6397ad1f403",
+      "name": "Yard Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-yard",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "d4d35fd8-93ac-4699-a883-1e28e6a619c9"
+    },
+    {
+      "id": "06e35781-d075-4fee-9337-975d113b8057",
+      "name": "Respond Yard",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        },
+        "responseBody": "={{ $json.html }}"
+      }
+    },
+    {
+      "id": "dbd633e5-ce01-4595-9089-1cc70329dc12",
+      "name": "Approve Page Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        224
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-yard-approve",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "ae114e59-9a79-4a09-a243-650033994921"
+    },
+    {
+      "id": "f0aecc50-a044-4b86-b564-aa08c5ad6ab4",
+      "name": "Respond Approve Page",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        224
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        },
+        "responseBody": "<!doctype html><html lang=\"en-GB\"><head><script src=\"/webhook/cbs-guard\"></script><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>CBS - Stock take approval</title>\n<style>\n*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:15px;line-height:1.45}\n.top{background:#3d4043;color:#fff;border-bottom:4px solid #F47920;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:5}\n.top h1{margin:0;font-size:18px;flex:1;min-width:160px}.top a{font:inherit;font-size:14px;font-weight:600;border-radius:8px;padding:8px 12px;text-decoration:none;background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}\n.wrap{max-width:980px;margin:0 auto;padding:16px}.card{background:#fff;border:1px solid #e2e0dc;border-radius:12px;padding:16px;margin:0 0 14px}.card h2{margin:0 0 10px;font-size:16px}\n.muted{color:#6b6e70;font-size:13px}#status{padding:8px 16px;font-size:13px;color:#555;max-width:980px;margin:0 auto}\ntable{width:100%;border-collapse:collapse}th{text-align:left;font-size:12px;color:#555;font-weight:600;padding:6px 4px;border-bottom:1px solid #ddd}td{padding:6px 4px;border-bottom:1px solid #eee;vertical-align:middle}\n.num{text-align:right}td input{width:90px;font:inherit;padding:6px 8px;border:1px solid #ccc;border-radius:8px;text-align:right}\n.up{color:#1a7f37;font-weight:700}.dn{color:#b3261e;font-weight:700}.chg{background:#fff4e0}\n.btn{font:inherit;font-size:14px;font-weight:600;border:1px solid #ccc;background:#fff;border-radius:8px;padding:9px 14px;cursor:pointer}.btn.p{background:#F47920;border-color:#F47920;color:#fff}.btn.r{color:#b3261e;border-color:#e3b5b0}.btn:disabled{opacity:.6;cursor:default}\n.acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}select,textarea{font:inherit;padding:8px 10px;border:1px solid #ccc;border-radius:8px}textarea{width:100%;min-height:56px}\n.pill{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px;background:#eee}.pill.o{background:#fff1d6;color:#7a4b00}.pill.g{background:#dff3e4;color:#1a7f37}.pill.r{background:#fbdedb;color:#b3261e}\nlabel.chk{font-size:13px;display:inline-flex;gap:6px;align-items:center}\n</style></head><body>\n<div class=\"top\"><h1 id=\"ttl\">Stock take approval</h1><a href=\"/webhook/cbs-admin\">&#8249; Operations Hub</a><a href=\"/webhook/cbs-yard#stock\">Yard</a></div>\n<div id=\"status\">Loading&#8230;</div><main class=\"wrap\" id=\"app\"></main>\n<script>\n(function(){\nvar H=\"/webhook/\",ID=Number(new URLSearchParams(location.search).get(\"id\")||0),S=null,M={},W=[],BUSY=false,ONLY=true;\nfunction el(i){return document.getElementById(i);}\nfunction esc(s){return String(s==null?\"\":s).replace(/&/g,\"&amp;\").replace(/</g,\"&lt;\").replace(/>/g,\"&gt;\").replace(/\"/g,\"&quot;\").replace(/'/g,\"&#39;\");}\nfunction num(v){var x=parseFloat(String(v==null?\"\":v).replace(/[^0-9.-]/g,\"\"));return isNaN(x)?0:x;}\nfunction f2(x){return String(Math.round(x*100)/100);}\nfunction uk(d){d=String(d||\"\");var p=d.slice(0,10).split(\"-\");return p.length===3?p[2]+\"/\"+p[1]+\"/\"+p[0]+(d.length>11?\" \"+d.slice(11,16):\"\"):d;}\nfunction status(t,bad){el(\"status\").textContent=t||\"\";el(\"status\").style.color=bad?\"#b3261e\":\"#555\";}\nfunction list(){if(!ID){status(\"No stock take given.\",1);return;}\n Promise.all([fetch(H+\"cbs-yard-data?id=\"+ID).then(function(r){return r.json();}),fetch(H+\"cbs-admin-data?t=materials,workers\").then(function(r){return r.json();})]).then(function(a){\n  S=(a[0].stocktakes||[])[0]||null;if(!S){status(\"Stock take #\"+ID+\" wasn't found.\",1);return;}\n  (a[1].materials||[]).forEach(function(m){M[String(m.id)]=m;});W=(a[1].workers||[]).filter(function(w){return w.name&&w.active!==false;}).map(function(w){return String(w.name).trim();}).sort();\n  status(\"\");draw();}).catch(function(){status(\"Couldn't load. Refresh to try again.\",1);});}\nfunction draw(){var pend=S.status===\"Pending\",L=S.lines||[];\n el(\"ttl\").innerHTML=\"Stock take #\"+S.id+\" <span class='pill \"+(pend?\"o\":(S.status===\"Approved\"?\"g\":\"r\"))+\"'>\"+esc(S.status)+\"</span>\";\n var h=\"<div class='card'><h2>Counted by \"+esc(S.counted_by)+\"</h2><div class='muted'>\"+esc(S.location)+\" • \"+uk(S.created_at)+\" • \"+L.length+\" lines counted, \"+S.diff_count+\" different from the system</div>\"+(S.decided_by?\"<div class='muted' style='margin-top:4px'>\"+esc(S.status)+\" by \"+esc(S.decided_by)+\" on \"+uk(S.decided_at)+(S.notes?\": \"+esc(S.notes):\"\")+\"</div>\":\"\")+\"</div>\";\n h+=\"<div class='card'><h2>Counts</h2>\"+(pend?\"<div class='acts' style='margin:0 0 8px'><label class='chk'><input type='checkbox' id='only'\"+(ONLY?\" checked\":\"\")+\"> Only show lines that differ</label></div><p class='muted' style='margin:0 0 8px'>You can change a count before approving. Approving sets the stock to the counted figure; anything used or received since the count is kept.</p>\":\"\");\n h+=\"<table><thead><tr><th>Material</th><th class='num'>System at count</th><th class='num'>Counted</th><th class='num'>Difference</th>\"+(pend?\"<th class='num'>Stock now</th>\":\"\")+\"</tr></thead><tbody>\";\n var shown=0;L.forEach(function(l,i){var d=num(l.counted)-num(l.system);if(pend&&ONLY&&Math.abs(d)<1e-9)return;shown++;var m=M[String(l.id)]||{};\n  h+=\"<tr class='\"+(Math.abs(d)>1e-9?\"chg\":\"\")+\"'><td>\"+esc(l.name)+\"<div class='muted'>\"+esc(l.location||\"\")+\"</div></td><td class='num'>\"+f2(num(l.system))+\" \"+esc(l.unit||\"\")+\"</td><td class='num'>\"+(pend?\"<input data-i='\"+i+\"' inputmode='decimal' value='\"+esc(l.counted)+\"'>\":f2(num(l.counted)))+\"</td><td class='num \"+(d>0?\"up\":(d<0?\"dn\":\"\"))+\"' id='d\"+i+\"'>\"+(d>0?\"+\":\"\")+f2(d)+\"</td>\"+(pend?\"<td class='num'>\"+f2(num(m.qty_on_hand))+\"</td>\":\"\")+\"</tr>\";});\n if(!shown)h+=\"<tr><td colspan='5' class='muted'>Every counted line matches the system.</td></tr>\";\n h+=\"</tbody></table></div>\";\n if(pend)h+=\"<div class='card'><h2>Decision</h2><div class='acts'><select id='by'><option value=''>Your name…</option>\"+W.map(function(w){return \"<option>\"+esc(w)+\"</option>\";}).join(\"\")+\"</select></div><textarea id='nt' placeholder='Note (optional)' style='margin-top:10px'></textarea><div class='acts'><button class='btn p' id='ok'>Approve and update stock</button><button class='btn r' id='no'>Reject</button><span class='muted' id='msg'></span></div></div>\";\n el(\"app\").innerHTML=h;\n var o=el(\"only\");if(o)o.onchange=function(){ONLY=o.checked;draw();};\n Array.prototype.forEach.call(document.querySelectorAll(\"[data-i]\"),function(x){x.oninput=function(){var i=Number(x.getAttribute(\"data-i\"));S.lines[i].counted=x.value;var d=num(x.value)-num(S.lines[i].system),c=el(\"d\"+i);c.textContent=(d>0?\"+\":\"\")+f2(d);c.className=\"num \"+(d>0?\"up\":(d<0?\"dn\":\"\"));};});\n if(pend){el(\"ok\").onclick=function(){act(\"approve\");};el(\"no\").onclick=function(){act(\"reject\");};}}\nfunction act(a){if(BUSY)return;var by=el(\"by\").value;if(!by){el(\"msg\").textContent=\"Choose your name.\";return;}\n if(a===\"approve\"&&!confirm(\"Approve stock take #\"+S.id+\"? Stock levels will be updated.\"))return;\n if(a===\"reject\"&&!confirm(\"Reject stock take #\"+S.id+\"? Stock won't change.\"))return;\n BUSY=true;el(\"ok\").disabled=el(\"no\").disabled=true;el(\"msg\").textContent=\"Saving…\";\n fetch(H+\"cbs-yard-approve-act\",{method:\"POST\",headers:{\"Content-Type\":\"application/json\"},body:JSON.stringify({id:S.id,action:a,by:by,notes:el(\"nt\").value,lines:S.lines.map(function(l){return {id:l.id,counted:num(l.counted)};})})}).then(function(r){return r.json();}).then(function(d){BUSY=false;if(!d||!d.ok)throw new Error(d&&d.message||\"\");status(d.message||\"Saved.\");list();})\n .catch(function(e){BUSY=false;el(\"ok\").disabled=el(\"no\").disabled=false;el(\"msg\").textContent=(e&&e.message)||\"Couldn't save. Try again.\";});}\nlist();\n})();\n</script></body></html>\n"
+      }
+    },
+    {
+      "id": "d112c9ea-1277-433c-ba46-1f8b76ed2e8e",
+      "name": "Data Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        448
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-yard-data",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "797ce28d-a2ce-4180-869c-c16273f3d889"
+    },
+    {
+      "id": "ab36668b-2264-4342-90cc-fa4d77b15b14",
+      "name": "Get Stocktakes",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        448
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "JXOdwpye7BjXzjB9"
+        },
+        "returnAll": true
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "ab152471-7db7-4a8e-bcd4-b29fb9628f56",
+      "name": "Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        448
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const q=$('Data Hook').first().json.query||{};const id=Number(q.id||0);\nlet rows=$input.all().map(i=>i.json).filter(r=>r&&r.id);\nif(id) rows=rows.filter(r=>Number(r.id)===id);\nrows.sort((a,b)=>Number(b.id)-Number(a.id));\nrows=rows.slice(0,id?1:30).map(r=>{let L=[];try{L=JSON.parse(r.lines_json||'[]');}catch(e){}const o={id:r.id,created_at:r.created_at,counted_by:r.counted_by,location:r.location,status:r.status,line_count:r.line_count,diff_count:r.diff_count,decided_by:r.decided_by,decided_at:r.decided_at,notes:r.notes};if(id)o.lines=L;return o;});\nreturn [{json:{stocktakes:rows}}];"
+      }
+    },
+    {
+      "id": "799814bc-e6c9-4686-8bf5-245b6a940f66",
+      "name": "Respond Data",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        448
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "a2da7fdc-bee2-48b1-a970-edb5f014e539",
+      "name": "Act Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        768
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-yard-act",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "97ce3b8c-5a52-4cf7-90e3-88be822dca7a"
+    },
+    {
+      "id": "98825698-a1e1-403c-820e-eccde0d51fca",
+      "name": "Act",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        768
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const b=$input.first().json.body||{};\nconst S=v=>v==null?'':String(v).trim();\nconst num=v=>{const n=parseFloat(String(v==null?'':v).replace(/[^0-9.-]/g,''));return isNaN(n)?0:n;};\nconst f3=n=>String(Math.round(n*1000)/1000);\nconst H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst NL=String.fromCharCode(10);\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst stamp=now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16);\nconst by=S(b.by).slice(0,80);\nif(!by) return [{json:{ok:false,kind:'err',message:'Choose your name at the top first.'}}];\nconst notify=async(o)=>{try{await this.helpers.httpRequest({method:'POST',url:H+'cbs-notify',body:o,json:true,timeout:15000});}catch(e){}};\nif(b.action==='plant'){\n  const R=await this.helpers.httpRequest({method:'GET',url:H+'cbs-admin-data?t=assets',json:true,timeout:30000});\n  const a=(R.assets||[]).find(x=>String(x.id)===S(b.id));\n  if(!a) return [{json:{ok:false,kind:'err',message:'That item was not found. Refresh and try again.'}}];\n  const flag=S(b.flag),note=S(b.note).slice(0,500);let ch={},msg='',ev='',label='';\n  if(flag==='faulty'){if(!note)return [{json:{ok:false,kind:'err',message:'Add a note saying what is wrong.'}}];ch.status='Needs repair';label='Faulty';ev='plant_faulty';\n    msg=a.name+(a.asset_tag?' ('+a.asset_tag+')':'')+' reported faulty by '+by+': '+note;}\n  else if(flag==='missing'){if(!note)return [{json:{ok:false,kind:'err',message:'Add a note saying where it was last seen.'}}];ch.status='Lost';label='Missing';ev='plant_missing';\n    msg=a.name+(a.asset_tag?' ('+a.asset_tag+')':'')+' reported missing by '+by+'. Last recorded at '+(S(a.location)||'unknown')+'. '+note;}\n  else if(flag==='found'){const loc=S(b.location)||S(a.location)||'CBS Warehouse';ch.status='In service';ch.location=loc;label=a.status==='Needs repair'?'Back in use':'Found';ev='plant_found';\n    msg=a.name+(a.asset_tag?' ('+a.asset_tag+')':'')+(a.status==='Needs repair'?' marked back in use':' found')+' by '+by+', now at '+loc+'.'+(note?' '+note:'');}\n  else return [{json:{ok:false,kind:'err',message:'Choose what has happened.'}}];\n  ch.notes=(S(a.notes)?S(a.notes)+NL:'')+stamp+' '+label+' ('+by+', Yard page)'+(note?': '+note:'');\n  await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=assets&id='+a.id+'&partial=1',body:ch,json:true,timeout:20000});\n  await notify({event:ev,job_no:'',message:msg,link:H+'cbs-admin?open=assets'});\n  return [{json:{ok:true,kind:'plant',message:a.name+': '+label.toLowerCase()+'. The office has been told.'}}];\n}\nif(b.action==='matreturn'){\n  const q=num(b.qty);if(!(q>0)) return [{json:{ok:false,kind:'err',message:'Enter how much came back.'}}];\n  const job=S(b.job).replace(/[^0-9A-Za-z-]/g,'');\n  if(S(b.id)==='__other'){\n    const nm=S(b.name).slice(0,120),un=S(b.unit).slice(0,30);if(!nm) return [{json:{ok:false,kind:'err',message:'Say what came back.'}}];\n    await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=stockmoves',body:{material_id:'',material:nm,change:f3(q),qty_after:'',reason:'Returned from job (not in register)',ref:job?'Job '+job:'Yard return',by:by,at:now,notes:un?'Unit: '+un:'',location:'CBS Warehouse'},json:true,timeout:20000});\n    await notify({event:'stock_return',job_no:'',message:by+' brought back '+f3(q)+(un?' '+un:'')+' '+nm+(job?' from job '+job:'')+'. It is not in Equipment and Materials. Add it to the register if we are keeping it in stock.',link:H+'cbs-admin?open=kit'});\n    return [{json:{ok:true,kind:'matreturn',message:f3(q)+(un?' '+un:'')+' '+nm+' logged as back in the yard. The office has been asked to add it to the register.'}}];\n  }\n  const R=await this.helpers.httpRequest({method:'GET',url:H+'cbs-admin-data?t=materials',json:true,timeout:30000});\n  const m=(R.materials||[]).find(x=>String(x.id)===S(b.id));\n  if(!m) return [{json:{ok:false,kind:'err',message:'That material was not found. Refresh and try again.'}}];\n  const nq=num(m.qty_on_hand)+q;\n  await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=materials&id='+m.id+'&partial=1',body:{qty_on_hand:f3(nq)},json:true,timeout:20000});\n  await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=stockmoves',body:{material_id:String(m.id),material:S(m.name),change:f3(q),qty_after:f3(nq),reason:'Returned from job',ref:job?'Job '+job:'Yard return',by:by,at:now,notes:'',location:S(m.location)},json:true,timeout:20000});\n  return [{json:{ok:true,kind:'matreturn',message:f3(q)+' '+S(m.unit)+' '+S(m.name)+' back in stock (now '+f3(nq)+').'}}];\n}\nif(b.action==='loadissue'){\n  const R=await this.helpers.httpRequest({method:'GET',url:H+'cbs-admin-data?t=ptmsheets,notices',json:true,timeout:30000});\n  const s=(R.ptmsheets||[]).find(x=>String(x.id)===S(b.id));\n  if(!s) return [{json:{ok:false,kind:'err',message:'That load-up sheet was not found.'}}];\n  const RS={out:'Out of stock',faulty:'Faulty',missing:\"Can't find it\",nobuy:\"Couldn't buy it\"};\n  const items=(Array.isArray(b.items)?b.items:[]).slice(0,100).map(i=>({name:S(i.name).slice(0,120),detail:S(i.detail).slice(0,60),reason:S(i.reason),note:S(i.note).slice(0,300)})).filter(i=>i.name&&RS[i.reason]);\n  const gen=S(b.note).slice(0,500);\n  if(!items.length&&!gen) return [{json:{ok:true,kind:'loadissue',message:'Nothing to report.'}}];\n  /* quantities only (e.g. 2 of 6 bags); plant categories are left out */\n  const nm=i=>i.name+(/[0-9]/.test(i.detail)?' ('+i.detail.replace(/^buy on the way,?\\s*/i,'')+')':'')+(i.note?' - '+i.note:'');\n  const groups=[];Object.keys(RS).forEach(k=>{const L=items.filter(i=>i.reason===k);if(L.length)groups.push(RS[k]+': '+L.map(nm).join(', '));});\n  const n=items.length,job=S(s.job_no),where=job?'Job '+job:'Load-up #'+s.id;\n  const title=where+' load-up: '+(n?n+' item'+(n===1?'':'s')+(b.loaded?' not loaded':' with a problem'):'problem reported')+'.';\n  const body=[[S(s.site),'Load-up #'+s.id,by+', '+stamp.slice(0,5)+' '+stamp.slice(11)].filter(Boolean).join(' \\u00b7 ')].concat(groups).concat(gen?['Note: '+gen]:[]).concat(['Find them or arrange replacements, then mark this done.']);\n  const rec=stamp+' '+by+(b.loaded?' (when loading)':'')+': '+groups.concat(gen?['Note: '+gen]:[]).join('; ');\n  await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=ptmsheets&id='+s.id+'&partial=1',body:{load_issues:(S(s.load_issues)?S(s.load_issues)+NL:'')+rec},json:true,timeout:20000});\n  /* one open card per sheet: older open problem cards for this sheet are closed. The card opens the sign-out sheet (everything in one place). */\n  const link=H+'cbs-ptm-crew?id='+s.id,oldLink=H+'cbs-ptm-sheet?id='+s.id;\n  for(const o of (R.notices||[]).filter(x=>S(x.event)==='ptm_short'&&(S(x.link)===link||S(x.link)===oldLink)&&S(x.status)!=='Done')){try{await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=notices&id='+o.id+'&partial=1&k='+K,body:{status:'Done',notes:[S(o.notes),'Replaced by a newer report '+stamp].filter(Boolean).join(NL)},json:true,timeout:15000});}catch(e){}}\n  await notify({event:'ptm_short',job_no:'',message:title+NL+body.join(NL),link:link});\n  return [{json:{ok:true,kind:'loadissue',message:'The office has been told.'}}];\n}\nif(b.action==='stocktake'){\n  const R=await this.helpers.httpRequest({method:'GET',url:H+'cbs-admin-data?t=materials',json:true,timeout:30000});\n  const M={};(R.materials||[]).forEach(m=>{M[String(m.id)]=m;});\n  const lines=[];let diff=0;\n  (Array.isArray(b.lines)?b.lines:[]).slice(0,500).forEach(l=>{const m=M[S(l.id)];if(!m)return;const c=num(l.counted);if(c<0)return;const sys=num(m.qty_on_hand);if(Math.abs(c-sys)>1e-9)diff++;\n    lines.push({id:String(m.id),name:S(m.name),unit:S(m.unit),location:S(m.location),system:f3(sys),counted:f3(c)});});\n  if(!lines.length) return [{json:{ok:false,kind:'err',message:'Nothing was counted.'}}];\n  return [{json:{ok:true,kind:'stocktake',row:{created_at:now,counted_by:by,location:S(b.location).slice(0,120)||'All locations',status:'Pending',lines_json:JSON.stringify(lines),line_count:lines.length,diff_count:diff,decided_by:'',decided_at:'',notes:''}}}];\n}\nreturn [{json:{ok:false,kind:'err',message:'Unknown action.'}}];"
+      }
+    },
+    {
+      "id": "c77a203a-8c7a-45df-9825-f3e18a1e83c9",
+      "name": "Is Stock Take?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        768
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.kind }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "rightValue": "stocktake"
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "3e576b16-26b9-4b5b-ab52-925a13116743",
+      "name": "Stock Take Row",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        672
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{json:$json.row}];"
+      }
+    },
+    {
+      "id": "74b380f1-0159-424c-a68d-bdabf030e43a",
+      "name": "Insert Stock Take",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        672
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "JXOdwpye7BjXzjB9"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null,
+          "matchingColumns": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "725d6957-daaa-4ce1-8bb3-3d4549953355",
+      "name": "Stock Take Done",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        672
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const p=$('Act').first().json.row,id=$input.first().json.id;\nconst H='https://old-hub.example/webhook/';\ntry{await this.helpers.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:'stocktake_submitted',job_no:'',message:'Stock take #'+id+' ('+p.location+') sent by '+p.counted_by+': '+p.line_count+' line'+(p.line_count===1?'':'s')+' counted, '+p.diff_count+' different from the system. Needs approving before stock changes.',link:H+'cbs-yard-approve?id='+id},json:true,timeout:15000});}catch(e){}\nreturn [{json:{ok:true,id:id,message:'Stock take #'+id+' sent to the office. Stock will update once they approve it.'}}];"
+      }
+    },
+    {
+      "id": "214c6558-2b8b-4671-956e-5157b82b7bc3",
+      "name": "Respond Stock Take",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        672
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "3d8cc6b4-5856-4b22-bc71-19e15883a96e",
+      "name": "Respond Act",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        864
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ ok: $json.ok, message: $json.message }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "e5775df9-05cb-4cce-a616-36a24f0ad5ec",
+      "name": "Approve Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        1184
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-yard-approve-act",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "967bb6f1-9af1-4b3f-b83d-71ddf99a2838"
+    },
+    {
+      "id": "52cf36b5-0c11-4c3d-93f1-09149ca6b3fa",
+      "name": "Get Stocktake Rows",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        1184
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "JXOdwpye7BjXzjB9"
+        },
+        "returnAll": true
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "13c395ff-ea85-4443-b8d7-13370d0bf39d",
+      "name": "Approve",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        1184
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const b=$('Approve Hook').first().json.body||{};\nconst S=v=>v==null?'':String(v).trim();\nconst num=v=>{const n=parseFloat(String(v==null?'':v).replace(/[^0-9.-]/g,''));return isNaN(n)?0:n;};\nconst f3=n=>String(Math.round(n*1000)/1000);\nconst H='https://old-hub.example/webhook/';\nconst st=$input.all().map(i=>i.json).find(r=>r&&Number(r.id)===Number(b.id));\nif(!st) return [{json:{ok:false,message:'Stock take not found.'}}];\nif(st.status!=='Pending') return [{json:{ok:false,message:'Stock take #'+st.id+' has already been '+String(st.status).toLowerCase()+'.'}}];\nconst by=S(b.by);if(!by) return [{json:{ok:false,message:'Choose your name.'}}];\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nlet L=[];try{L=JSON.parse(st.lines_json||'[]');}catch(e){}\nconst notes=S(b.notes).slice(0,500);\nif(b.action==='reject'){\n  return [{json:{ok:true,id:st.id,upd:{status:'Rejected',decided_by:by,decided_at:now,notes:notes},message:'Stock take #'+st.id+' rejected. Stock has not changed.'}}];\n}\nif(b.action!=='approve') return [{json:{ok:false,message:'Unknown action.'}}];\nconst edits={};(Array.isArray(b.lines)?b.lines:[]).forEach(l=>{edits[S(l.id)]=num(l.counted);});\nconst R=await this.helpers.httpRequest({method:'GET',url:H+'cbs-admin-data?t=materials',json:true,timeout:30000});\nconst M={};(R.materials||[]).forEach(m=>{M[String(m.id)]=m;});\nlet changed=0;\nfor(const l of L){\n  const m=M[String(l.id)];if(!m)continue;\n  if(edits[String(l.id)]!==undefined)l.counted=f3(edits[String(l.id)]);\n  const counted=num(l.counted),sys=num(l.system),cur=num(m.qty_on_hand);\n  /* keep anything used or received since the count: new = counted + (stock now - stock at count) */\n  const nq=Math.max(0,counted+(cur-sys)),delta=nq-cur;\n  const ch={last_counted_on:now.slice(0,10),last_counted_by:S(st.counted_by)};\n  if(Math.abs(delta)>1e-9){ch.qty_on_hand=f3(nq);changed++;\n    await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=stockmoves',body:{material_id:String(m.id),material:S(m.name),change:f3(delta),qty_after:f3(nq),reason:'Stock take adjustment',ref:'Stock take #'+st.id,by:by,at:now,notes:'Counted '+f3(counted)+' by '+S(st.counted_by)+' (system '+f3(sys)+')',location:S(m.location)},json:true,timeout:20000});}\n  await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=materials&id='+m.id+'&partial=1',body:ch,json:true,timeout:20000});\n}\nreturn [{json:{ok:true,id:st.id,upd:{status:'Approved',decided_by:by,decided_at:now,notes:notes,lines_json:JSON.stringify(L)},message:'Stock take #'+st.id+' approved. '+changed+' stock level'+(changed===1?'':'s')+' updated.'}}];"
+      }
+    },
+    {
+      "id": "cc472dc6-9542-49f0-b60a-aa9801fd2a69",
+      "name": "Approve OK?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        1184
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.ok }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "5307c446-4b5b-4863-96ca-6d122687c5e4",
+      "name": "Update Row",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        1088
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{json:$json.upd}];"
+      }
+    },
+    {
+      "id": "cc1e3bdb-3495-45b7-91aa-2be0c527db8d",
+      "name": "Update Stock Take",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        1088
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "JXOdwpye7BjXzjB9"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Approve').first().json.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null,
+          "matchingColumns": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "6188f046-cbb3-4efd-86df-65070fb83c4a",
+      "name": "Respond Approved",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        1088
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ ok: true, message: $('Approve').first().json.message }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "11433e29-9634-416d-8080-3495aa566e56",
+      "name": "Respond Approve Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        1280
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ ok: false, message: $json.message || 'Could not save' }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "431e6816-4be6-48b9-a155-53b053f5d66c",
+      "name": "Get Yard Page",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        -160
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HOHWTBOJHrHF0TvB"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "name",
+              "keyValue": "page:cbs-yard"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      }
+    },
+    {
+      "id": "0d4e2e5b-fa4e-4ab3-bbc0-f829a3f5dff8",
+      "name": "Yard Page",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        -160
+      ],
+      "parameters": {
+        "jsCode": "const r=$input.all().map(i=>i.json).find(x=>x&&x.name==='page:cbs-yard');\nif(!r) return [{json:{html:'<p>Yard page not found.</p>'}}];\nlet h=r.content;try{const o=JSON.parse(r.content);if(o&&o.b)h=o.b;}catch(e){}\nreturn [{json:{html:h}}];",
+        "mode": "runOnceForAllItems"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "9015082c-578c-4357-b3c7-b6397ad1f403",
+        "name": "Yard Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-yard",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "d4d35fd8-93ac-4699-a883-1e28e6a619c9"
+      },
+      {
+        "id": "06e35781-d075-4fee-9337-975d113b8057",
+        "name": "Respond Yard",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          },
+          "responseBody": "={{ $json.html }}"
+        }
+      },
+      {
+        "id": "dbd633e5-ce01-4595-9089-1cc70329dc12",
+        "name": "Approve Page Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          224
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-yard-approve",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "ae114e59-9a79-4a09-a243-650033994921"
+      },
+      {
+        "id": "f0aecc50-a044-4b86-b564-aa08c5ad6ab4",
+        "name": "Respond Approve Page",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          224
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          },
+          "responseBody": "<!doctype html><html lang=\"en-GB\"><head><script src=\"/webhook/cbs-guard\"></script><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>CBS - Stock take approval</title>\n<style>\n*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:15px;line-height:1.45}\n.top{background:#3d4043;color:#fff;border-bottom:4px solid #F47920;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:5}\n.top h1{margin:0;font-size:18px;flex:1;min-width:160px}.top a{font:inherit;font-size:14px;font-weight:600;border-radius:8px;padding:8px 12px;text-decoration:none;background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}\n.wrap{max-width:980px;margin:0 auto;padding:16px}.card{background:#fff;border:1px solid #e2e0dc;border-radius:12px;padding:16px;margin:0 0 14px}.card h2{margin:0 0 10px;font-size:16px}\n.muted{color:#6b6e70;font-size:13px}#status{padding:8px 16px;font-size:13px;color:#555;max-width:980px;margin:0 auto}\ntable{width:100%;border-collapse:collapse}th{text-align:left;font-size:12px;color:#555;font-weight:600;padding:6px 4px;border-bottom:1px solid #ddd}td{padding:6px 4px;border-bottom:1px solid #eee;vertical-align:middle}\n.num{text-align:right}td input{width:90px;font:inherit;padding:6px 8px;border:1px solid #ccc;border-radius:8px;text-align:right}\n.up{color:#1a7f37;font-weight:700}.dn{color:#b3261e;font-weight:700}.chg{background:#fff4e0}\n.btn{font:inherit;font-size:14px;font-weight:600;border:1px solid #ccc;background:#fff;border-radius:8px;padding:9px 14px;cursor:pointer}.btn.p{background:#F47920;border-color:#F47920;color:#fff}.btn.r{color:#b3261e;border-color:#e3b5b0}.btn:disabled{opacity:.6;cursor:default}\n.acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}select,textarea{font:inherit;padding:8px 10px;border:1px solid #ccc;border-radius:8px}textarea{width:100%;min-height:56px}\n.pill{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px;background:#eee}.pill.o{background:#fff1d6;color:#7a4b00}.pill.g{background:#dff3e4;color:#1a7f37}.pill.r{background:#fbdedb;color:#b3261e}\nlabel.chk{font-size:13px;display:inline-flex;gap:6px;align-items:center}\n</style></head><body>\n<div class=\"top\"><h1 id=\"ttl\">Stock take approval</h1><a href=\"/webhook/cbs-admin\">&#8249; Operations Hub</a><a href=\"/webhook/cbs-yard#stock\">Yard</a></div>\n<div id=\"status\">Loading&#8230;</div><main class=\"wrap\" id=\"app\"></main>\n<script>\n(function(){\nvar H=\"/webhook/\",ID=Number(new URLSearchParams(location.search).get(\"id\")||0),S=null,M={},W=[],BUSY=false,ONLY=true;\nfunction el(i){return document.getElementById(i);}\nfunction esc(s){return String(s==null?\"\":s).replace(/&/g,\"&amp;\").replace(/</g,\"&lt;\").replace(/>/g,\"&gt;\").replace(/\"/g,\"&quot;\").replace(/'/g,\"&#39;\");}\nfunction num(v){var x=parseFloat(String(v==null?\"\":v).replace(/[^0-9.-]/g,\"\"));return isNaN(x)?0:x;}\nfunction f2(x){return String(Math.round(x*100)/100);}\nfunction uk(d){d=String(d||\"\");var p=d.slice(0,10).split(\"-\");return p.length===3?p[2]+\"/\"+p[1]+\"/\"+p[0]+(d.length>11?\" \"+d.slice(11,16):\"\"):d;}\nfunction status(t,bad){el(\"status\").textContent=t||\"\";el(\"status\").style.color=bad?\"#b3261e\":\"#555\";}\nfunction list(){if(!ID){status(\"No stock take given.\",1);return;}\n Promise.all([fetch(H+\"cbs-yard-data?id=\"+ID).then(function(r){return r.json();}),fetch(H+\"cbs-admin-data?t=materials,workers\").then(function(r){return r.json();})]).then(function(a){\n  S=(a[0].stocktakes||[])[0]||null;if(!S){status(\"Stock take #\"+ID+\" wasn't found.\",1);return;}\n  (a[1].materials||[]).forEach(function(m){M[String(m.id)]=m;});W=(a[1].workers||[]).filter(function(w){return w.name&&w.active!==false;}).map(function(w){return String(w.name).trim();}).sort();\n  status(\"\");draw();}).catch(function(){status(\"Couldn't load. Refresh to try again.\",1);});}\nfunction draw(){var pend=S.status===\"Pending\",L=S.lines||[];\n el(\"ttl\").innerHTML=\"Stock take #\"+S.id+\" <span class='pill \"+(pend?\"o\":(S.status===\"Approved\"?\"g\":\"r\"))+\"'>\"+esc(S.status)+\"</span>\";\n var h=\"<div class='card'><h2>Counted by \"+esc(S.counted_by)+\"</h2><div class='muted'>\"+esc(S.location)+\" • \"+uk(S.created_at)+\" • \"+L.length+\" lines counted, \"+S.diff_count+\" different from the system</div>\"+(S.decided_by?\"<div class='muted' style='margin-top:4px'>\"+esc(S.status)+\" by \"+esc(S.decided_by)+\" on \"+uk(S.decided_at)+(S.notes?\": \"+esc(S.notes):\"\")+\"</div>\":\"\")+\"</div>\";\n h+=\"<div class='card'><h2>Counts</h2>\"+(pend?\"<div class='acts' style='margin:0 0 8px'><label class='chk'><input type='checkbox' id='only'\"+(ONLY?\" checked\":\"\")+\"> Only show lines that differ</label></div><p class='muted' style='margin:0 0 8px'>You can change a count before approving. Approving sets the stock to the counted figure; anything used or received since the count is kept.</p>\":\"\");\n h+=\"<table><thead><tr><th>Material</th><th class='num'>System at count</th><th class='num'>Counted</th><th class='num'>Difference</th>\"+(pend?\"<th class='num'>Stock now</th>\":\"\")+\"</tr></thead><tbody>\";\n var shown=0;L.forEach(function(l,i){var d=num(l.counted)-num(l.system);if(pend&&ONLY&&Math.abs(d)<1e-9)return;shown++;var m=M[String(l.id)]||{};\n  h+=\"<tr class='\"+(Math.abs(d)>1e-9?\"chg\":\"\")+\"'><td>\"+esc(l.name)+\"<div class='muted'>\"+esc(l.location||\"\")+\"</div></td><td class='num'>\"+f2(num(l.system))+\" \"+esc(l.unit||\"\")+\"</td><td class='num'>\"+(pend?\"<input data-i='\"+i+\"' inputmode='decimal' value='\"+esc(l.counted)+\"'>\":f2(num(l.counted)))+\"</td><td class='num \"+(d>0?\"up\":(d<0?\"dn\":\"\"))+\"' id='d\"+i+\"'>\"+(d>0?\"+\":\"\")+f2(d)+\"</td>\"+(pend?\"<td class='num'>\"+f2(num(m.qty_on_hand))+\"</td>\":\"\")+\"</tr>\";});\n if(!shown)h+=\"<tr><td colspan='5' class='muted'>Every counted line matches the system.</td></tr>\";\n h+=\"</tbody></table></div>\";\n if(pend)h+=\"<div class='card'><h2>Decision</h2><div class='acts'><select id='by'><option value=''>Your name…</option>\"+W.map(function(w){return \"<option>\"+esc(w)+\"</option>\";}).join(\"\")+\"</select></div><textarea id='nt' placeholder='Note (optional)' style='margin-top:10px'></textarea><div class='acts'><button class='btn p' id='ok'>Approve and update stock</button><button class='btn r' id='no'>Reject</button><span class='muted' id='msg'></span></div></div>\";\n el(\"app\").innerHTML=h;\n var o=el(\"only\");if(o)o.onchange=function(){ONLY=o.checked;draw();};\n Array.prototype.forEach.call(document.querySelectorAll(\"[data-i]\"),function(x){x.oninput=function(){var i=Number(x.getAttribute(\"data-i\"));S.lines[i].counted=x.value;var d=num(x.value)-num(S.lines[i].system),c=el(\"d\"+i);c.textContent=(d>0?\"+\":\"\")+f2(d);c.className=\"num \"+(d>0?\"up\":(d<0?\"dn\":\"\"));};});\n if(pend){el(\"ok\").onclick=function(){act(\"approve\");};el(\"no\").onclick=function(){act(\"reject\");};}}\nfunction act(a){if(BUSY)return;var by=el(\"by\").value;if(!by){el(\"msg\").textContent=\"Choose your name.\";return;}\n if(a===\"approve\"&&!confirm(\"Approve stock take #\"+S.id+\"? Stock levels will be updated.\"))return;\n if(a===\"reject\"&&!confirm(\"Reject stock take #\"+S.id+\"? Stock won't change.\"))return;\n BUSY=true;el(\"ok\").disabled=el(\"no\").disabled=true;el(\"msg\").textContent=\"Saving…\";\n fetch(H+\"cbs-yard-approve-act\",{method:\"POST\",headers:{\"Content-Type\":\"application/json\"},body:JSON.stringify({id:S.id,action:a,by:by,notes:el(\"nt\").value,lines:S.lines.map(function(l){return {id:l.id,counted:num(l.counted)};})})}).then(function(r){return r.json();}).then(function(d){BUSY=false;if(!d||!d.ok)throw new Error(d&&d.message||\"\");status(d.message||\"Saved.\");list();})\n .catch(function(e){BUSY=false;el(\"ok\").disabled=el(\"no\").disabled=false;el(\"msg\").textContent=(e&&e.message)||\"Couldn't save. Try again.\";});}\nlist();\n})();\n</script></body></html>\n"
+        }
+      },
+      {
+        "id": "d112c9ea-1277-433c-ba46-1f8b76ed2e8e",
+        "name": "Data Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          448
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-yard-data",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "797ce28d-a2ce-4180-869c-c16273f3d889"
+      },
+      {
+        "id": "ab36668b-2264-4342-90cc-fa4d77b15b14",
+        "name": "Get Stocktakes",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          448
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "JXOdwpye7BjXzjB9"
+          },
+          "returnAll": true
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "ab152471-7db7-4a8e-bcd4-b29fb9628f56",
+        "name": "Data",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          448
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const q=$('Data Hook').first().json.query||{};const id=Number(q.id||0);\nlet rows=$input.all().map(i=>i.json).filter(r=>r&&r.id);\nif(id) rows=rows.filter(r=>Number(r.id)===id);\nrows.sort((a,b)=>Number(b.id)-Number(a.id));\nrows=rows.slice(0,id?1:30).map(r=>{let L=[];try{L=JSON.parse(r.lines_json||'[]');}catch(e){}const o={id:r.id,created_at:r.created_at,counted_by:r.counted_by,location:r.location,status:r.status,line_count:r.line_count,diff_count:r.diff_count,decided_by:r.decided_by,decided_at:r.decided_at,notes:r.notes};if(id)o.lines=L;return o;});\nreturn [{json:{stocktakes:rows}}];"
+        }
+      },
+      {
+        "id": "799814bc-e6c9-4686-8bf5-245b6a940f66",
+        "name": "Respond Data",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          448
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "a2da7fdc-bee2-48b1-a970-edb5f014e539",
+        "name": "Act Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          768
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-yard-act",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "97ce3b8c-5a52-4cf7-90e3-88be822dca7a"
+      },
+      {
+        "id": "98825698-a1e1-403c-820e-eccde0d51fca",
+        "name": "Act",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          768
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const b=$input.first().json.body||{};\nconst S=v=>v==null?'':String(v).trim();\nconst num=v=>{const n=parseFloat(String(v==null?'':v).replace(/[^0-9.-]/g,''));return isNaN(n)?0:n;};\nconst f3=n=>String(Math.round(n*1000)/1000);\nconst H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst NL=String.fromCharCode(10);\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst stamp=now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16);\nconst by=S(b.by).slice(0,80);\nif(!by) return [{json:{ok:false,kind:'err',message:'Choose your name at the top first.'}}];\nconst notify=async(o)=>{try{await this.helpers.httpRequest({method:'POST',url:H+'cbs-notify',body:o,json:true,timeout:15000});}catch(e){}};\nif(b.action==='plant'){\n  const R=await this.helpers.httpRequest({method:'GET',url:H+'cbs-admin-data?t=assets',json:true,timeout:30000});\n  const a=(R.assets||[]).find(x=>String(x.id)===S(b.id));\n  if(!a) return [{json:{ok:false,kind:'err',message:'That item was not found. Refresh and try again.'}}];\n  const flag=S(b.flag),note=S(b.note).slice(0,500);let ch={},msg='',ev='',label='';\n  if(flag==='faulty'){if(!note)return [{json:{ok:false,kind:'err',message:'Add a note saying what is wrong.'}}];ch.status='Needs repair';label='Faulty';ev='plant_faulty';\n    msg=a.name+(a.asset_tag?' ('+a.asset_tag+')':'')+' reported faulty by '+by+': '+note;}\n  else if(flag==='missing'){if(!note)return [{json:{ok:false,kind:'err',message:'Add a note saying where it was last seen.'}}];ch.status='Lost';label='Missing';ev='plant_missing';\n    msg=a.name+(a.asset_tag?' ('+a.asset_tag+')':'')+' reported missing by '+by+'. Last recorded at '+(S(a.location)||'unknown')+'. '+note;}\n  else if(flag==='found'){const loc=S(b.location)||S(a.location)||'CBS Warehouse';ch.status='In service';ch.location=loc;label=a.status==='Needs repair'?'Back in use':'Found';ev='plant_found';\n    msg=a.name+(a.asset_tag?' ('+a.asset_tag+')':'')+(a.status==='Needs repair'?' marked back in use':' found')+' by '+by+', now at '+loc+'.'+(note?' '+note:'');}\n  else return [{json:{ok:false,kind:'err',message:'Choose what has happened.'}}];\n  ch.notes=(S(a.notes)?S(a.notes)+NL:'')+stamp+' '+label+' ('+by+', Yard page)'+(note?': '+note:'');\n  await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=assets&id='+a.id+'&partial=1',body:ch,json:true,timeout:20000});\n  await notify({event:ev,job_no:'',message:msg,link:H+'cbs-admin?open=assets'});\n  return [{json:{ok:true,kind:'plant',message:a.name+': '+label.toLowerCase()+'. The office has been told.'}}];\n}\nif(b.action==='matreturn'){\n  const q=num(b.qty);if(!(q>0)) return [{json:{ok:false,kind:'err',message:'Enter how much came back.'}}];\n  const job=S(b.job).replace(/[^0-9A-Za-z-]/g,'');\n  if(S(b.id)==='__other'){\n    const nm=S(b.name).slice(0,120),un=S(b.unit).slice(0,30);if(!nm) return [{json:{ok:false,kind:'err',message:'Say what came back.'}}];\n    await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=stockmoves',body:{material_id:'',material:nm,change:f3(q),qty_after:'',reason:'Returned from job (not in register)',ref:job?'Job '+job:'Yard return',by:by,at:now,notes:un?'Unit: '+un:'',location:'CBS Warehouse'},json:true,timeout:20000});\n    await notify({event:'stock_return',job_no:'',message:by+' brought back '+f3(q)+(un?' '+un:'')+' '+nm+(job?' from job '+job:'')+'. It is not in Equipment and Materials. Add it to the register if we are keeping it in stock.',link:H+'cbs-admin?open=kit'});\n    return [{json:{ok:true,kind:'matreturn',message:f3(q)+(un?' '+un:'')+' '+nm+' logged as back in the yard. The office has been asked to add it to the register.'}}];\n  }\n  const R=await this.helpers.httpRequest({method:'GET',url:H+'cbs-admin-data?t=materials',json:true,timeout:30000});\n  const m=(R.materials||[]).find(x=>String(x.id)===S(b.id));\n  if(!m) return [{json:{ok:false,kind:'err',message:'That material was not found. Refresh and try again.'}}];\n  const nq=num(m.qty_on_hand)+q;\n  await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=materials&id='+m.id+'&partial=1',body:{qty_on_hand:f3(nq)},json:true,timeout:20000});\n  await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=stockmoves',body:{material_id:String(m.id),material:S(m.name),change:f3(q),qty_after:f3(nq),reason:'Returned from job',ref:job?'Job '+job:'Yard return',by:by,at:now,notes:'',location:S(m.location)},json:true,timeout:20000});\n  return [{json:{ok:true,kind:'matreturn',message:f3(q)+' '+S(m.unit)+' '+S(m.name)+' back in stock (now '+f3(nq)+').'}}];\n}\nif(b.action==='loadissue'){\n  const R=await this.helpers.httpRequest({method:'GET',url:H+'cbs-admin-data?t=ptmsheets,notices',json:true,timeout:30000});\n  const s=(R.ptmsheets||[]).find(x=>String(x.id)===S(b.id));\n  if(!s) return [{json:{ok:false,kind:'err',message:'That load-up sheet was not found.'}}];\n  const RS={out:'Out of stock',faulty:'Faulty',missing:\"Can't find it\",nobuy:\"Couldn't buy it\"};\n  const items=(Array.isArray(b.items)?b.items:[]).slice(0,100).map(i=>({name:S(i.name).slice(0,120),detail:S(i.detail).slice(0,60),reason:S(i.reason),note:S(i.note).slice(0,300)})).filter(i=>i.name&&RS[i.reason]);\n  const gen=S(b.note).slice(0,500);\n  if(!items.length&&!gen) return [{json:{ok:true,kind:'loadissue',message:'Nothing to report.'}}];\n  /* quantities only (e.g. 2 of 6 bags); plant categories are left out */\n  const nm=i=>i.name+(/[0-9]/.test(i.detail)?' ('+i.detail.replace(/^buy on the way,?\\s*/i,'')+')':'')+(i.note?' - '+i.note:'');\n  const groups=[];Object.keys(RS).forEach(k=>{const L=items.filter(i=>i.reason===k);if(L.length)groups.push(RS[k]+': '+L.map(nm).join(', '));});\n  const n=items.length,job=S(s.job_no),where=job?'Job '+job:'Load-up #'+s.id;\n  const title=where+' load-up: '+(n?n+' item'+(n===1?'':'s')+(b.loaded?' not loaded':' with a problem'):'problem reported')+'.';\n  const body=[[S(s.site),'Load-up #'+s.id,by+', '+stamp.slice(0,5)+' '+stamp.slice(11)].filter(Boolean).join(' \\u00b7 ')].concat(groups).concat(gen?['Note: '+gen]:[]).concat(['Find them or arrange replacements, then mark this done.']);\n  const rec=stamp+' '+by+(b.loaded?' (when loading)':'')+': '+groups.concat(gen?['Note: '+gen]:[]).join('; ');\n  await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=ptmsheets&id='+s.id+'&partial=1',body:{load_issues:(S(s.load_issues)?S(s.load_issues)+NL:'')+rec},json:true,timeout:20000});\n  /* one open card per sheet: older open problem cards for this sheet are closed. The card opens the sign-out sheet (everything in one place). */\n  const link=H+'cbs-ptm-crew?id='+s.id,oldLink=H+'cbs-ptm-sheet?id='+s.id;\n  for(const o of (R.notices||[]).filter(x=>S(x.event)==='ptm_short'&&(S(x.link)===link||S(x.link)===oldLink)&&S(x.status)!=='Done')){try{await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=notices&id='+o.id+'&partial=1&k='+K,body:{status:'Done',notes:[S(o.notes),'Replaced by a newer report '+stamp].filter(Boolean).join(NL)},json:true,timeout:15000});}catch(e){}}\n  await notify({event:'ptm_short',job_no:'',message:title+NL+body.join(NL),link:link});\n  return [{json:{ok:true,kind:'loadissue',message:'The office has been told.'}}];\n}\nif(b.action==='stocktake'){\n  const R=await this.helpers.httpRequest({method:'GET',url:H+'cbs-admin-data?t=materials',json:true,timeout:30000});\n  const M={};(R.materials||[]).forEach(m=>{M[String(m.id)]=m;});\n  const lines=[];let diff=0;\n  (Array.isArray(b.lines)?b.lines:[]).slice(0,500).forEach(l=>{const m=M[S(l.id)];if(!m)return;const c=num(l.counted);if(c<0)return;const sys=num(m.qty_on_hand);if(Math.abs(c-sys)>1e-9)diff++;\n    lines.push({id:String(m.id),name:S(m.name),unit:S(m.unit),location:S(m.location),system:f3(sys),counted:f3(c)});});\n  if(!lines.length) return [{json:{ok:false,kind:'err',message:'Nothing was counted.'}}];\n  return [{json:{ok:true,kind:'stocktake',row:{created_at:now,counted_by:by,location:S(b.location).slice(0,120)||'All locations',status:'Pending',lines_json:JSON.stringify(lines),line_count:lines.length,diff_count:diff,decided_by:'',decided_at:'',notes:''}}}];\n}\nreturn [{json:{ok:false,kind:'err',message:'Unknown action.'}}];"
+        }
+      },
+      {
+        "id": "c77a203a-8c7a-45df-9825-f3e18a1e83c9",
+        "name": "Is Stock Take?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          448,
+          768
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.kind }}",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                },
+                "rightValue": "stocktake"
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "3e576b16-26b9-4b5b-ab52-925a13116743",
+        "name": "Stock Take Row",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          672
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "return [{json:$json.row}];"
+        }
+      },
+      {
+        "id": "74b380f1-0159-424c-a68d-bdabf030e43a",
+        "name": "Insert Stock Take",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          672
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "insert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "JXOdwpye7BjXzjB9"
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null,
+            "matchingColumns": []
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "725d6957-daaa-4ce1-8bb3-3d4549953355",
+        "name": "Stock Take Done",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          672
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const p=$('Act').first().json.row,id=$input.first().json.id;\nconst H='https://old-hub.example/webhook/';\ntry{await this.helpers.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:'stocktake_submitted',job_no:'',message:'Stock take #'+id+' ('+p.location+') sent by '+p.counted_by+': '+p.line_count+' line'+(p.line_count===1?'':'s')+' counted, '+p.diff_count+' different from the system. Needs approving before stock changes.',link:H+'cbs-yard-approve?id='+id},json:true,timeout:15000});}catch(e){}\nreturn [{json:{ok:true,id:id,message:'Stock take #'+id+' sent to the office. Stock will update once they approve it.'}}];"
+        }
+      },
+      {
+        "id": "214c6558-2b8b-4671-956e-5157b82b7bc3",
+        "name": "Respond Stock Take",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1344,
+          672
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "3d8cc6b4-5856-4b22-bc71-19e15883a96e",
+        "name": "Respond Act",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          864
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify({ ok: $json.ok, message: $json.message }) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "e5775df9-05cb-4cce-a616-36a24f0ad5ec",
+        "name": "Approve Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          1184
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-yard-approve-act",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "967bb6f1-9af1-4b3f-b83d-71ddf99a2838"
+      },
+      {
+        "id": "52cf36b5-0c11-4c3d-93f1-09149ca6b3fa",
+        "name": "Get Stocktake Rows",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          1184
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "JXOdwpye7BjXzjB9"
+          },
+          "returnAll": true
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "13c395ff-ea85-4443-b8d7-13370d0bf39d",
+        "name": "Approve",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          1184
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const b=$('Approve Hook').first().json.body||{};\nconst S=v=>v==null?'':String(v).trim();\nconst num=v=>{const n=parseFloat(String(v==null?'':v).replace(/[^0-9.-]/g,''));return isNaN(n)?0:n;};\nconst f3=n=>String(Math.round(n*1000)/1000);\nconst H='https://old-hub.example/webhook/';\nconst st=$input.all().map(i=>i.json).find(r=>r&&Number(r.id)===Number(b.id));\nif(!st) return [{json:{ok:false,message:'Stock take not found.'}}];\nif(st.status!=='Pending') return [{json:{ok:false,message:'Stock take #'+st.id+' has already been '+String(st.status).toLowerCase()+'.'}}];\nconst by=S(b.by);if(!by) return [{json:{ok:false,message:'Choose your name.'}}];\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nlet L=[];try{L=JSON.parse(st.lines_json||'[]');}catch(e){}\nconst notes=S(b.notes).slice(0,500);\nif(b.action==='reject'){\n  return [{json:{ok:true,id:st.id,upd:{status:'Rejected',decided_by:by,decided_at:now,notes:notes},message:'Stock take #'+st.id+' rejected. Stock has not changed.'}}];\n}\nif(b.action!=='approve') return [{json:{ok:false,message:'Unknown action.'}}];\nconst edits={};(Array.isArray(b.lines)?b.lines:[]).forEach(l=>{edits[S(l.id)]=num(l.counted);});\nconst R=await this.helpers.httpRequest({method:'GET',url:H+'cbs-admin-data?t=materials',json:true,timeout:30000});\nconst M={};(R.materials||[]).forEach(m=>{M[String(m.id)]=m;});\nlet changed=0;\nfor(const l of L){\n  const m=M[String(l.id)];if(!m)continue;\n  if(edits[String(l.id)]!==undefined)l.counted=f3(edits[String(l.id)]);\n  const counted=num(l.counted),sys=num(l.system),cur=num(m.qty_on_hand);\n  /* keep anything used or received since the count: new = counted + (stock now - stock at count) */\n  const nq=Math.max(0,counted+(cur-sys)),delta=nq-cur;\n  const ch={last_counted_on:now.slice(0,10),last_counted_by:S(st.counted_by)};\n  if(Math.abs(delta)>1e-9){ch.qty_on_hand=f3(nq);changed++;\n    await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=stockmoves',body:{material_id:String(m.id),material:S(m.name),change:f3(delta),qty_after:f3(nq),reason:'Stock take adjustment',ref:'Stock take #'+st.id,by:by,at:now,notes:'Counted '+f3(counted)+' by '+S(st.counted_by)+' (system '+f3(sys)+')',location:S(m.location)},json:true,timeout:20000});}\n  await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=materials&id='+m.id+'&partial=1',body:ch,json:true,timeout:20000});\n}\nreturn [{json:{ok:true,id:st.id,upd:{status:'Approved',decided_by:by,decided_at:now,notes:notes,lines_json:JSON.stringify(L)},message:'Stock take #'+st.id+' approved. '+changed+' stock level'+(changed===1?'':'s')+' updated.'}}];"
+        }
+      },
+      {
+        "id": "cc472dc6-9542-49f0-b60a-aa9801fd2a69",
+        "name": "Approve OK?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          672,
+          1184
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.ok }}",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                },
+                "rightValue": ""
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "5307c446-4b5b-4863-96ca-6d122687c5e4",
+        "name": "Update Row",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          896,
+          1088
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "return [{json:$json.upd}];"
+        }
+      },
+      {
+        "id": "cc1e3bdb-3495-45b7-91aa-2be0c527db8d",
+        "name": "Update Stock Take",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1120,
+          1088
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "JXOdwpye7BjXzjB9"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $('Approve').first().json.id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null,
+            "matchingColumns": []
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "6188f046-cbb3-4efd-86df-65070fb83c4a",
+        "name": "Respond Approved",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1344,
+          1088
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify({ ok: true, message: $('Approve').first().json.message }) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "11433e29-9634-416d-8080-3495aa566e56",
+        "name": "Respond Approve Error",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          1280
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify({ ok: false, message: $json.message || 'Could not save' }) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "431e6816-4be6-48b9-a155-53b053f5d66c",
+        "name": "Get Yard Page",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          -160
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "HOHWTBOJHrHF0TvB"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "name",
+                "keyValue": "page:cbs-yard"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        }
+      },
+      {
+        "id": "0d4e2e5b-fa4e-4ab3-bbc0-f829a3f5dff8",
+        "name": "Yard Page",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          -160
+        ],
+        "parameters": {
+          "jsCode": "const r=$input.all().map(i=>i.json).find(x=>x&&x.name==='page:cbs-yard');\nif(!r) return [{json:{html:'<p>Yard page not found.</p>'}}];\nlet h=r.content;try{const o=JSON.parse(r.content);if(o&&o.b)h=o.b;}catch(e){}\nreturn [{json:{html:h}}];",
+          "mode": "runOnceForAllItems"
+        }
+      }
+    ],
+    "connections": {
+      "Approve Page Hook": {
+        "main": [
+          [
+            {
+              "node": "Respond Approve Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data Hook": {
+        "main": [
+          [
+            {
+              "node": "Get Stocktakes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Stocktakes": {
+        "main": [
+          [
+            {
+              "node": "Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data": {
+        "main": [
+          [
+            {
+              "node": "Respond Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Act Hook": {
+        "main": [
+          [
+            {
+              "node": "Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Act": {
+        "main": [
+          [
+            {
+              "node": "Is Stock Take?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Is Stock Take?": {
+        "main": [
+          [
+            {
+              "node": "Stock Take Row",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Respond Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Stock Take Row": {
+        "main": [
+          [
+            {
+              "node": "Insert Stock Take",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert Stock Take": {
+        "main": [
+          [
+            {
+              "node": "Stock Take Done",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Stock Take Done": {
+        "main": [
+          [
+            {
+              "node": "Respond Stock Take",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Approve Hook": {
+        "main": [
+          [
+            {
+              "node": "Get Stocktake Rows",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Stocktake Rows": {
+        "main": [
+          [
+            {
+              "node": "Approve",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Approve": {
+        "main": [
+          [
+            {
+              "node": "Approve OK?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Approve OK?": {
+        "main": [
+          [
+            {
+              "node": "Update Row",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Respond Approve Error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update Row": {
+        "main": [
+          [
+            {
+              "node": "Update Stock Take",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update Stock Take": {
+        "main": [
+          [
+            {
+              "node": "Respond Approved",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Yard Hook": {
+        "main": [
+          [
+            {
+              "node": "Get Yard Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Yard Page": {
+        "main": [
+          [
+            {
+              "node": "Yard Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Yard Page": {
+        "main": [
+          [
+            {
+              "node": "Respond Yard",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS Yard page for the team: load-ups to sign out, yard deliveries to receive, plant (faulty/missing/found) and stock with stock takes that go to the office for approval. GET cbs-yard, GET cbs-yard-approve?id=N, GET cbs-yard-data, POST cbs-yard-act, POST c",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

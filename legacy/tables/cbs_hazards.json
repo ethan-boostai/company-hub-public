@@ -1,0 +1,163 @@
+{
+  "table": "cbs_hazards",
+  "n8n_id": "54zh8DQCjiJzj31U",
+  "columns": [
+    {
+      "name": "activity",
+      "type": "string"
+    },
+    {
+      "name": "consequence",
+      "type": "string"
+    },
+    {
+      "name": "control_level",
+      "type": "string"
+    },
+    {
+      "name": "controls",
+      "type": "string"
+    },
+    {
+      "name": "ctrl_codes",
+      "type": "string"
+    },
+    {
+      "name": "harm",
+      "type": "string"
+    },
+    {
+      "name": "hazard",
+      "type": "string"
+    },
+    {
+      "name": "last_reviewed",
+      "type": "string"
+    },
+    {
+      "name": "likelihood",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "owner",
+      "type": "string"
+    },
+    {
+      "name": "plant_categories",
+      "type": "string"
+    },
+    {
+      "name": "rams_key",
+      "type": "string"
+    },
+    {
+      "name": "residual_consequence",
+      "type": "string"
+    },
+    {
+      "name": "residual_likelihood",
+      "type": "string"
+    },
+    {
+      "name": "residual_risk",
+      "type": "string"
+    },
+    {
+      "name": "review_on",
+      "type": "string"
+    },
+    {
+      "name": "risk_rating",
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "hazard": "Asbestos-containing materials (unexpected discovery)",
+      "activity": "Strip-out, drilling, cutting or fixing into existing building fabric built before 2000",
+      "harm": "Mesothelioma, asbestosis and lung cancer to operatives, site staff and others nearby from disturbed fibres",
+      "likelihood": "Possible",
+      "consequence": "Catastrophic",
+      "risk_rating": "High",
+      "controls": "Check the client's asbestos register and refurbishment and demolition survey before any intrusive work. All operatives hold asbestos awareness (Category A) training. Do not drill, cut or break suspect materials. If suspect material is found: stop work, leave the area, prevent access and report to the supervisor and client. Removal by a licensed contractor only.",
+      "control_level": "Isolate",
+      "residual_risk": "Medium",
+      "owner": "Supervisor",
+      "last_reviewed": "2026-10-07",
+      "review_on": "2027-10-07",
+      "status": "Active",
+      "source": "CBS starter hazard library (Oct 2026)",
+      "notes": "Reference: Control of Asbestos Regulations 2012. Starter entry: check against how CBS actually works and adjust before relying on it.",
+      "rams_key": "",
+      "residual_likelihood": "Rare",
+      "residual_consequence": "Catastrophic",
+      "ctrl_codes": "IAP",
+      "plant_categories": "",
+      "id": 1,
+      "createdAt": "2026-10-07T10:34:02.811Z",
+      "updatedAt": "2026-10-07T10:34:02.811Z"
+    },
+    {
+      "hazard": "Hot works (cutting, brazing, propane torch, hot air welding)",
+      "activity": "Any work producing flame, sparks or heat, including roofing and resin floor detailing",
+      "harm": "Fire, burns and smoke inhalation to operatives and building occupants; damage to the building",
+      "likelihood": "Possible",
+      "consequence": "Major",
+      "risk_rating": "High",
+      "controls": "Client hot works permit in place before starting. Remove or protect combustibles within 10 m (fire blankets, spark screens). Suitable extinguisher at the point of work. Fire watch during the work and for at least 60 minutes after. Gas bottles upright, secured and stored outside; hoses with flashback arrestors, checked before use. Check smoke detection isolation is agreed and reinstated.",
+      "control_level": "Isolate",
+      "residual_risk": "Medium",
+      "owner": "Supervisor",
+      "last_reviewed": "2026-10-07",
+      "review_on": "2027-10-07",
+      "status": "Active",
+      "source": "CBS starter hazard library (Oct 2026)",
+      "notes": "Starter entry: check against how CBS actually works and adjust before relying on it.",
+      "rams_key": "",
+      "residual_likelihood": "Unlikely",
+      "residual_consequence": "Major",
+      "ctrl_codes": "IGAP",
+      "plant_categories": "Other, 240V power tool",
+      "id": 2,
+      "createdAt": "2026-10-07T10:34:02.811Z",
+      "updatedAt": "2026-10-07T10:34:02.811Z"
+    },
+    {
+      "hazard": "Confined spaces",
+      "activity": "Entry into tanks, pits, chambers, ducts, voids or poorly ventilated rooms",
+      "harm": "Asphyxiation, toxic gas exposure, drowning or entrapment; fatal to the entrant and to untrained rescuers",
+      "likelihood": "Possible",
+      "consequence": "Catastrophic",
+      "risk_rating": "High",
+      "controls": "Avoid entry wherever the work can be done from outside. Where entry is unavoidable: confined space permit and specific risk assessment, trained operatives (City & Guilds 6150 or equivalent), calibrated 4-gas monitor in use throughout, top person in constant contact, ventilation, and a rescue plan with equipment on site before entry.",
+      "control_level": "Eliminate",
+      "residual_risk": "Medium",
+      "owner": "Supervisor",
+      "last_reviewed": "2026-10-07",
+      "review_on": "2027-10-07",
+      "status": "Active",
+      "source": "CBS starter hazard library (Oct 2026)",
+      "notes": "Reference: Confined Spaces Regulations 1997. Starter entry: check against how CBS actually works and adjust before relying on it.",
+      "rams_key": "",
+      "residual_likelihood": "Rare",
+      "residual_consequence": "Catastrophic",
+      "ctrl_codes": "EGAP",
+      "plant_categories": "",
+      "id": 3,
+      "createdAt": "2026-10-07T10:34:02.811Z",
+      "updatedAt": "2026-10-07T10:34:02.811Z"
+    }
+  ]
+}

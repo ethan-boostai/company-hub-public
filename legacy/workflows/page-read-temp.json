@@ -1,0 +1,121 @@
+{
+  "id": "i3WbYiE5vjQhWp1h",
+  "name": "CBS - Page Read (temp)",
+  "active": false,
+  "isArchived": false,
+  "versionId": "98b383d5-286f-4fd8-a41a-94439df9c2a3",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "createdAt": "2026-10-06T15:18:52.284Z",
+  "updatedAt": "2026-10-27T15:44:52.541Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Inspect Hook": {
+      "main": [
+        [
+          {
+            "node": "Get Pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Pages": {
+      "main": [
+        [
+          {
+            "node": "Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "b0828671-c6f4-4119-8f84-9fbb15ce6982",
+      "name": "Inspect Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-page-read-temp",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "webhookId": "5bd9d169-049d-4ef7-b317-440aec0116d1"
+    },
+    {
+      "id": "0cb15ecd-fdfe-4282-9d8c-c01499678d40",
+      "name": "Get Pages",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HOHWTBOJHrHF0TvB"
+        },
+        "returnAll": true
+      }
+    },
+    {
+      "id": "579736d3-3037-45e1-92a5-b9eeb1543d58",
+      "name": "Read",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const b=$('Inspect Hook').first().json.body||{};\nconst rows=$input.all().map(i=>i.json);\nfunction body(row){let h=row.content;try{const o=JSON.parse(row.content);if(o&&o.b)h=o.b;}catch(e){}return String(h||'').replace(/data:image\\/[a-z]+;base64,[A-Za-z0-9+\\/=]+/g,'[IMG]');}\nif(b.list){return [{json:{pages:rows.filter(r=>!String(r.name).startsWith('_bak')).map(r=>({name:r.name,len:String(r.content||'').length}))}}];}\nif(b.scanAll){const out={};const r=b.radius||150;for(const row of rows){if(String(row.name).startsWith('_bak'))continue;const h=body(row);for(const t of b.terms){let i=h.indexOf(t);const a=[];while(i>-1&&a.length<(b.maxHits||3)){a.push({at:i,s:h.slice(Math.max(0,i-r),i+t.length+r)});i=h.indexOf(t,i+1);}if(a.length){out[row.name]=out[row.name]||{};out[row.name][t]=a;}}}return [{json:{hits:out}}];}\nconst row=rows.find(r=>r.name===(b.page||'page:cbs-admin'));\nif(!row)return [{json:{err:'no page'}}];\nconst h=body(row);\nconst out={len:h.length};\nif(b.scriptId){const m=h.match(new RegExp('<script id=\"'+b.scriptId+'\">([\\\\s\\\\S]*?)<\\\\/script>'));out.script=m?m[1].slice(b.from||0,(b.from||0)+(b.max||20000)):null;out.scriptLen=m?m[1].length:0;}\nif(b.slice){out.slice=h.slice(b.slice[0],b.slice[1]);}\nif(b.terms){const r=b.radius||300;out.hits={};for(const t of b.terms){const a=[];let i=h.indexOf(t);while(i>-1&&a.length<(b.maxHits||5)){a.push({at:i,s:h.slice(Math.max(0,i-r),i+t.length+r)});i=h.indexOf(t,i+1);}out.hits[t]=a;}}\nif(b.ids){const m=h.match(/<script id=\"[^\"]+\">/g)||[];out.scriptIds=m;}\nreturn [{json:out}];"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": null,
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Temporary read-only helper: returns page list, script blocks, or snippets from cbs_page_parts (images stripped).",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

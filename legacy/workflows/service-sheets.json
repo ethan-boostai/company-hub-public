@@ -1,0 +1,2036 @@
+{
+  "id": "sov4PuqmRM3mt2QD",
+  "name": "CBS - Service Sheets",
+  "active": true,
+  "isArchived": false,
+  "versionId": "5b053041-94d0-40f2-a416-4cefc2f6efe3",
+  "activeVersionId": "5b053041-94d0-40f2-a416-4cefc2f6efe3",
+  "triggerCount": 5,
+  "createdAt": "2026-10-27T11:41:20.056Z",
+  "updatedAt": "2026-10-27T16:23:25.604Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Page Hook": {
+      "main": [
+        [
+          {
+            "node": "Page Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Hook": {
+      "main": [
+        [
+          {
+            "node": "D Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "D Job": {
+      "main": [
+        [
+          {
+            "node": "SM8 Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SM8 Job": {
+      "main": [
+        [
+          {
+            "node": "D Uuid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "D Uuid": {
+      "main": [
+        [
+          {
+            "node": "SM8 Photos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SM8 Photos": {
+      "main": [
+        [
+          {
+            "node": "Sheets Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sheets Read": {
+      "main": [
+        [
+          {
+            "node": "D Build",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "D Build": {
+      "main": [
+        [
+          {
+            "node": "Data Send",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Hook": {
+      "main": [
+        [
+          {
+            "node": "Save Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Read": {
+      "main": [
+        [
+          {
+            "node": "Save Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Prep": {
+      "main": [
+        [
+          {
+            "node": "Save Row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Row": {
+      "main": [
+        [
+          {
+            "node": "Save Upsert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Upsert": {
+      "main": [
+        [
+          {
+            "node": "Save Send",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Del Hook": {
+      "main": [
+        [
+          {
+            "node": "Del Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Del Read": {
+      "main": [
+        [
+          {
+            "node": "Del Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Del Prep": {
+      "main": [
+        [
+          {
+            "node": "Del Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Del Rows": {
+      "main": [
+        [
+          {
+            "node": "Del Send",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF Hook": {
+      "main": [
+        [
+          {
+            "node": "PDF Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF Read": {
+      "main": [
+        [
+          {
+            "node": "PDF Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF Prep": {
+      "main": [
+        [
+          {
+            "node": "Upload PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload PDF": {
+      "main": [
+        [
+          {
+            "node": "PDF Link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF Link": {
+      "main": [
+        [
+          {
+            "node": "PDF Upsert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF Upsert": {
+      "main": [
+        [
+          {
+            "node": "PDF Send",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Page Code": {
+      "main": [
+        [
+          {
+            "node": "Footer Logos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Footer Logos": {
+      "main": [
+        [
+          {
+            "node": "Buttons Photos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buttons Photos": {
+      "main": [
+        [
+          {
+            "node": "Sig Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sig Text": {
+      "main": [
+        [
+          {
+            "node": "Standard Layout",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Standard Layout": {
+      "main": [
+        [
+          {
+            "node": "Page Send",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "9fc87bd2-8283-49b6-9f63-5e43e89ee40a",
+      "name": "Page Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-service-sheet",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "79ef40d7-7c1a-49a3-9554-fe2262219da2"
+    },
+    {
+      "id": "7a161812-23db-47af-883a-b379a3f85ee8",
+      "name": "Page Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* CBS Service sheets (job builder): cbs-service-sheet?job=N. Office-only. List of the job's service sheets, editor (header, any number of\n   sections, each with Description, Details and Before / Work in progress / After photos picked from the job's ServiceM8 photos), sign-off\n   with a saved signature (Settings > Signatures), PDF in the CBS service sheet layout saved to SharePoint Jobs/Job N/Service Sheets.\n   Data cbs-service-data, saves cbs-service-save, delete cbs-service-del, PDF cbs-service-pdf. Built 27/10/2026. */\nconst S=v=>v==null?'':String(v);const e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nconst D={job:job,open:S(q.id).replace(/[^0-9]/g,''),isNew:S(q.new)==='1'};\nconst CSS='*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n+'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header h1{margin:0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n+'.wrap{max-width:900px;margin:0 auto;padding:14px 14px 30px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;align-items:center}'\n+'.btn{background:#F47920;color:#fff;text-decoration:none;font-weight:600;border-radius:8px;padding:8px 14px;font-size:14px;border:0;font-family:inherit;cursor:pointer;display:inline-block}.btn.ghost{background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}.btn.sm{padding:6px 10px;font-size:13px}.btn.red{background:#fff;color:#b3261e;border:1px solid #e9b6b1}.btn:disabled{opacity:.5;cursor:default}'\n+'.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;margin-bottom:10px;padding:12px 14px}.card h3{margin:0 0 8px;font-size:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.card h3 .sp{flex:1}'\n+'.t{font-weight:600}.m{color:#555;font-size:14px;margin-top:2px}.b{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center}'\n+'.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:20px;padding:1px 8px;margin-left:6px;vertical-align:middle}.tag.ok{background:#e3f4e6;color:#1d6b2c}.tag.dr{background:#fff1d6;color:#8a5a00}'\n+'.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}'\n+'label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}input.i,select.i,textarea.i{width:100%;font:inherit;font-size:15px;padding:9px 10px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}textarea.i{min-height:110px;resize:vertical}'\n+'.g3{display:grid;grid-template-columns:1fr 1.4fr 1.6fr;gap:0 10px}@media(max-width:640px){.g3{grid-template-columns:1fr}}'\n+'.sec{border-left:5px solid #F47920}.pg{margin-top:12px;border-top:1px solid #eee;padding-top:10px}.pg .pgh{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#3d4043}.pg .pgh span{color:#6b6e70;font-weight:400}'\n+'.th{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:8px}.tc{position:relative;background:#fafaf8;border:1px solid #e3e3e0;border-radius:8px;overflow:hidden}.tc img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#eee;cursor:zoom-in}'\n+'.tc .x{position:absolute;top:4px;right:4px;width:28px;height:28px;border-radius:50%;border:0;background:rgba(0,0,0,.65);color:#fff;font-size:16px;line-height:28px;cursor:pointer}.tc .mv{position:absolute;top:4px;left:4px;display:flex;gap:3px}.tc .mv button{width:26px;height:26px;border-radius:6px;border:0;background:rgba(255,255,255,.9);cursor:pointer;font-size:13px}'\n+'.tc input{width:100%;border:0;border-top:1px solid #e3e3e0;padding:6px 8px;font:inherit;font-size:13px}'\n+'.bar{position:sticky;bottom:0;background:#fff;border-top:3px solid #F47920;border-radius:12px 12px 0 0;box-shadow:0 -4px 12px rgba(0,0,0,.08);padding:10px 14px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;z-index:6;margin-top:6px}'\n+'.sig{margin-top:8px;min-height:60px;display:flex;align-items:center;gap:10px}.sig img{max-height:60px;max-width:220px;border:1px solid #eee;border-radius:6px;background:#fff}'\n+'.note{font-size:13px;color:#6b6e70;margin-top:6px}.msg{font-size:14px;color:#8a5a00;margin-top:8px;min-height:18px}'\n+'.ov{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;z-index:7000}.dlg{background:#fff;border-radius:14px;max-width:560px;width:100%;padding:16px;max-height:calc(100vh - 40px);overflow:auto}.dlg.wide{max-width:980px;display:flex;flex-direction:column}.dlg h2{margin:0 0 10px;font-size:18px}'\n+'.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.chip{border:1px solid #d9d9d6;background:#fff;border-radius:20px;padding:5px 11px;font:inherit;font-size:13px;cursor:pointer}.chip span{color:#6c6a66}.chip.on{background:#000;color:#FFBE59;border-color:#000}.chip.on span{color:#FFBE59}'\n+'.pk{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;overflow:auto;padding:2px}.pk .pt{position:relative;border-radius:8px;overflow:hidden;cursor:pointer;background:#eee;aspect-ratio:1}.pk .pt img{width:100%;height:100%;object-fit:cover;display:block}.pk .pt.on{outline:4px solid #F47920;outline-offset:-4px}.pk .pt.used{opacity:.45}'\n+'.pk .pt .ck{position:absolute;top:5px;left:5px;width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;font-weight:700;color:#F47920}.pk .pt .cs{position:absolute;left:4px;right:4px;bottom:4px;display:flex;flex-wrap:wrap;gap:3px}.pk .pt .cs span{background:rgba(0,0,0,.72);color:#fff;font-size:10.5px;border-radius:10px;padding:1px 6px}'\n+'.lb{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:7100;display:flex;align-items:center;justify-content:center;padding:14px}.lb img{max-width:100%;max-height:100%;object-fit:contain}.lb button{position:absolute;top:12px;right:12px}';\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Service sheets - Job '+e(job)+'</title><script src=\"/webhook/cbs-guard\"></script><style>'+CSS+'</style><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script></head><body><header><h1>Service sheets'+(job?' \\u00b7 Job '+e(job):'')+'</h1><p id=\"sub\">Chelmsford Building Services</p></header><div class=\"wrap\" id=\"app\">'+(job?'<div class=\"empty\">Loading the job\\u2026</div>':'<div class=\"empty\">Open service sheets from a job.</div>')+'</div><script>window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+';</script>'+(job?'<script>('+client.toString()+')();</script>':'')+'</body></html>';\nreturn [{json:{html:html}}];\n\nfunction client(){\nvar D=window.D,JOB=D.job,app=document.getElementById('app'),X=null,CUR=null,DIRTY=false,BUSY=false,LOGO=null;\nvar GROUPS=[['before','Before','Before'],['progress','Work in progress','Progress'],['after','After','After']];\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:s(d);}\nfunction longDate(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);if(!m)return s(d);var M=['January','February','March','April','May','June','July','August','September','October','November','December'];return m[3]+' '+M[+m[2]-1]+' '+m[1];}\nfunction today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction img(u){return '/webhook/cbs-job-photo?u='+encodeURIComponent(u);}\nfunction me(){var x='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)x=m.name;}catch(z){}if(!x){try{x=localStorage.getItem('cbs_name')||'';}catch(z){}}return x;}\nfunction lock(on){document.body.style.overflow=on?'hidden':'';}\nfunction dlg(h,wide){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg'+(wide?' wide':'')+'\">'+h+'</div>';document.body.appendChild(o);lock(true);o.close=function(){o.remove();if(!document.querySelector('.ov,.lb'))lock(false);};return o;}\n/* in-app confirm: resolves true/false */\nfunction ask(title,msg,ok,danger){return new Promise(function(res){var o=dlg('<h2>'+e(title)+'</h2><div class=\"m\">'+msg+'</div><div class=\"b\"><button class=\"btn'+(danger?' red':'')+'\" id=\"aY\">'+e(ok||'OK')+'</button><button class=\"btn ghost\" id=\"aN\">Cancel</button></div>');\n o.querySelector('#aY').onclick=function(){o.close();res(true);};o.querySelector('#aN').onclick=function(){o.close();res(false);};o.addEventListener('click',function(ev){if(ev.target===o){o.close();res(false);}});});}\nfunction tell(title,msg){var o=dlg('<h2>'+e(title)+'</h2><div class=\"m\">'+msg+'</div><div class=\"b\"><button class=\"btn\" id=\"tk\">OK</button></div>');o.querySelector('#tk').onclick=o.close;}\nfunction view(u){var o=document.createElement('div');o.className='lb';o.innerHTML='<img src=\"'+img(u)+'\" alt=\"\"><button class=\"btn ghost\">Close</button>';document.body.appendChild(o);lock(true);o.onclick=function(ev){if(ev.target.tagName!=='IMG'){o.remove();if(!document.querySelector('.ov,.lb'))lock(false);}};}\nfunction load(){return fetch('/webhook/cbs-service-data?job='+encodeURIComponent(JOB),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){if(!d||!d.ok)throw 0;X=d;\n document.getElementById('sub').textContent=[X.name,X.site,X.client].filter(Boolean).join(' \\u00b7 ')||'Chelmsford Building Services';}).catch(function(){X=null;app.innerHTML='<div class=\"empty\">Could not load the job. Refresh to try again.</div>';throw 0;});}\nfunction nPhotos(sh){var n=0;(sh.sections||[]).forEach(function(c){GROUPS.forEach(function(g){n+=((c.photos||{})[g[0]]||[]).length;});});return n;}\n/* ---------- list ---------- */\nfunction list(){CUR=null;DIRTY=false;var L=X.sheets||[],h='';\n h+='<div class=\"tools\"><button class=\"btn\" id=\"nw\">+ New service sheet</button></div>';\n if(!L.length)h+='<div class=\"empty\">No service sheets on this job yet.<br>A service sheet records the completed works with before, work in progress and after photos, signed off by CBS.</div>';\n L.forEach(function(sh){var secs=(sh.sections||[]).map(function(c){return c.title;}).filter(Boolean);\n  h+='<div class=\"card\"><div class=\"t\">'+e(sh.sheet_no)+' \\u00b7 '+e(dmy(sh.sheet_date))+'<span class=\"tag '+(sh.pdf_url?'ok':'dr')+'\">'+(sh.pdf_url?'PDF saved':'Draft')+'</span></div>'\n  +'<div class=\"m\">'+(secs.length?e(secs.join(' \\u00b7 ')):'No description yet')+'</div>'\n  +'<div class=\"m\">'+(sh.sections||[]).length+' section'+((sh.sections||[]).length===1?'':'s')+' \\u00b7 '+nPhotos(sh)+' photo'+(nPhotos(sh)===1?'':'s')+(sh.signed_by?' \\u00b7 Signed by '+e(sh.signed_by):'')+(sh.updated_at?' \\u00b7 Updated '+e(dmy(sh.updated_at))+(sh.updated_by?' by '+e(sh.updated_by):''):'')+'</div>'\n  +'<div class=\"b\"><button class=\"btn sm\" data-ed=\"'+sh.id+'\">Open</button>'+(sh.pdf_url?'<a class=\"btn ghost sm\" href=\"/webhook/cbs-file?u='+encodeURIComponent(sh.pdf_url)+'\" target=\"_blank\" rel=\"noopener\">View PDF</a>':'')+'<button class=\"btn red sm\" data-dl=\"'+sh.id+'\">Delete</button></div></div>';});\n app.innerHTML=h;\n document.getElementById('nw').onclick=function(){edit(null);};\n [].forEach.call(app.querySelectorAll('[data-ed]'),function(b){b.onclick=function(){edit(+b.getAttribute('data-ed'));};});\n [].forEach.call(app.querySelectorAll('[data-dl]'),function(b){b.onclick=function(){del(+b.getAttribute('data-dl'),b);};});}\nfunction del(id,btn){var sh=(X.sheets||[]).filter(function(x){return x.id===id;})[0];if(!sh)return;\n ask('Delete '+sh.sheet_no+'?','This deletes the service sheet record from the hub.'+(sh.pdf_url?' The saved PDF stays in the job\\u2019s files.':''),'Delete','1').then(function(ok){if(!ok)return;\n  return ask('Are you sure?','Delete service sheet '+e(sh.sheet_no)+' on job '+e(JOB)+'. This cannot be undone.','Yes, delete it','1').then(function(ok2){if(!ok2||BUSY)return;BUSY=true;btn.disabled=true;btn.textContent='Deleting\\u2026';\n   return fetch('/webhook/cbs-service-del',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({job:JOB,id:id,by:me()})}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(d){if(!d||!d.ok)throw 0;BUSY=false;return load().then(list);})\n   .catch(function(){BUSY=false;btn.disabled=false;btn.textContent='Delete';tell('Not deleted','Could not delete the service sheet. Check your connection and try again.');});});});}\n/* ---------- editor ---------- */\nfunction blankSec(){return {title:'',details:'',photos:{before:[],progress:[],after:[]}};}\nfunction edit(id){var sh=id?(X.sheets||[]).filter(function(x){return x.id===id;})[0]:null;\n if(sh)CUR=JSON.parse(JSON.stringify(sh));\n else{var sig=(X.sigs||[]).filter(function(x){return x.name.toLowerCase()===me().toLowerCase();})[0];\n  CUR={id:0,tok:'t'+Date.now()+Math.random().toString(36).slice(2,8),sheet_no:'',sheet_date:today(),location:X.address||X.site||'',job_title:JOB+(X.name?' - '+X.name:''),sections:[blankSec()],signed_by:sig?sig.name:''};}\n CUR.sections=(CUR.sections&&CUR.sections.length?CUR.sections:[blankSec()]).map(function(c){c.photos=c.photos||{};GROUPS.forEach(function(g){c.photos[g[0]]=c.photos[g[0]]||[];});return c;});\n DIRTY=!id;draw();window.scrollTo(0,0);}\nfunction draw(){var C=CUR,h='';\n h+='<div class=\"card\"><h3>'+(C.sheet_no?e(C.sheet_no):'New service sheet')+(C.pdf_url?'<span class=\"tag ok\">PDF saved</span>':'<span class=\"tag dr\">Draft</span>')+'</h3>'\n +'<div class=\"g3\"><div><label class=\"f\">Date</label><input class=\"i\" type=\"date\" id=\"fDate\" value=\"'+e(C.sheet_date)+'\"></div><div><label class=\"f\">Location</label><input class=\"i\" id=\"fLoc\" spellcheck=\"true\" value=\"'+e(C.location)+'\"></div><div><label class=\"f\">Job</label><input class=\"i\" id=\"fJob\" spellcheck=\"true\" value=\"'+e(C.job_title)+'\"></div></div></div>';\n C.sections.forEach(function(c,i){\n  h+='<div class=\"card sec\" data-i=\"'+i+'\"><h3>Section '+(i+1)+'<span class=\"sp\"></span>'+(i?'<button class=\"btn ghost sm\" data-up=\"'+i+'\" title=\"Move up\">\\u2191</button>':'')+(i<C.sections.length-1?'<button class=\"btn ghost sm\" data-dn=\"'+i+'\" title=\"Move down\">\\u2193</button>':'')+(C.sections.length>1?'<button class=\"btn red sm\" data-rm=\"'+i+'\">Remove section</button>':'')+'</h3>'\n  +'<label class=\"f\">Description</label><input class=\"i\" data-k=\"title\" data-i=\"'+i+'\" spellcheck=\"true\" placeholder=\"e.g. Replace damaged fire door to plant room\" value=\"'+e(c.title)+'\">'\n  +'<label class=\"f\">Details</label><textarea class=\"i\" data-k=\"details\" data-i=\"'+i+'\" spellcheck=\"true\" placeholder=\"What was done, materials used, anything the client should know\">'+e(c.details)+'</textarea>';\n  GROUPS.forEach(function(g){var L=c.photos[g[0]];\n   h+='<div class=\"pg\"><div class=\"pgh\">'+g[1]+' photos <span>'+(L.length?L.length:'none')+'</span><span style=\"flex:1\"></span><button class=\"btn ghost sm\" data-add=\"'+i+'\" data-g=\"'+g[0]+'\">+ Add photos</button></div>';\n   if(L.length)h+='<div class=\"th\">'+L.map(function(p,pi){return '<div class=\"tc\"><img loading=\"lazy\" src=\"'+img(p.u)+'\" data-vw=\"'+e(p.u)+'\" alt=\"\"><div class=\"mv\">'+(pi?'<button data-pl=\"'+i+'|'+g[0]+'|'+pi+'\" title=\"Move left\">\\u2190</button>':'')+(pi<L.length-1?'<button data-pr=\"'+i+'|'+g[0]+'|'+pi+'\" title=\"Move right\">\\u2192</button>':'')+'</div><button class=\"x\" data-px=\"'+i+'|'+g[0]+'|'+pi+'\" title=\"Remove from this sheet\">\\u00d7</button><input data-cap=\"'+i+'|'+g[0]+'|'+pi+'\" placeholder=\"Caption (optional)\" spellcheck=\"true\" value=\"'+e(p.cap)+'\"></div>';}).join('')+'</div>';\n   h+='</div>';});\n  h+='</div>';});\n h+='<div class=\"tools\"><button class=\"btn ghost\" id=\"addSec\">+ Add section</button></div>';\n var SG=X.sigs||[];\n h+='<div class=\"card\"><h3>Signed / serviced</h3>'+(SG.length?'<select class=\"i\" id=\"fSig\"><option value=\"\">Choose who signs this sheet</option>'+SG.map(function(x){return '<option'+(x.name===C.signed_by?' selected':'')+'>'+e(x.name)+'</option>';}).join('')+(C.signed_by&&!SG.some(function(x){return x.name===C.signed_by;})?'<option selected>'+e(C.signed_by)+'</option>':'')+'</select><div class=\"sig\" id=\"sigP\"></div>'\n  :'<div class=\"m\">No saved signatures yet. Add one in the Operations Hub under Settings \\u203a Signatures, then refresh this page.</div>')\n  +'<div class=\"note\">Signatures come from Settings \\u203a Signatures in the Operations Hub.</div></div>';\n h+='<div class=\"bar\"><button class=\"btn ghost\" id=\"bk\">Back to service sheets</button><button class=\"btn ghost\" id=\"sv\">Save draft</button><button class=\"btn\" id=\"pdf\">Save and create PDF</button></div>';\n app.innerHTML=h;\n sigPrev();wire();}\nfunction sigPrev(){var p=document.getElementById('sigP');if(!p)return;var x=(X.sigs||[]).filter(function(z){return z.name===CUR.signed_by;})[0];p.innerHTML=x&&x.img?'<img src=\"'+e(x.img)+'\" alt=\"Signature\"><span class=\"m\">'+e(x.name)+(x.role?' \\u00b7 '+e(x.role):'')+'</span>':(CUR.signed_by?'<span class=\"m\">No signature image saved for '+e(CUR.signed_by)+'.</span>':'');}\nfunction pk(v){var a=s(v).split('|');return {i:+a[0],g:a[1],p:+a[2]};}\nfunction wire(){\n document.getElementById('fDate').onchange=function(){CUR.sheet_date=this.value;DIRTY=true;};\n document.getElementById('fLoc').oninput=function(){CUR.location=this.value;DIRTY=true;};\n document.getElementById('fJob').oninput=function(){CUR.job_title=this.value;DIRTY=true;};\n [].forEach.call(app.querySelectorAll('[data-k]'),function(el){el.oninput=function(){CUR.sections[+el.getAttribute('data-i')][el.getAttribute('data-k')]=el.value;DIRTY=true;};});\n [].forEach.call(app.querySelectorAll('[data-cap]'),function(el){el.oninput=function(){var x=pk(el.getAttribute('data-cap'));CUR.sections[x.i].photos[x.g][x.p].cap=el.value;DIRTY=true;};});\n [].forEach.call(app.querySelectorAll('[data-vw]'),function(el){el.onclick=function(){view(el.getAttribute('data-vw'));};});\n [].forEach.call(app.querySelectorAll('[data-px]'),function(el){el.onclick=function(){var x=pk(el.getAttribute('data-px'));CUR.sections[x.i].photos[x.g].splice(x.p,1);DIRTY=true;keep(draw);};});\n [].forEach.call(app.querySelectorAll('[data-pl],[data-pr]'),function(el){el.onclick=function(){var l=el.hasAttribute('data-pl'),x=pk(el.getAttribute(l?'data-pl':'data-pr')),L=CUR.sections[x.i].photos[x.g],t=x.p+(l?-1:1),m=L[x.p];L[x.p]=L[t];L[t]=m;DIRTY=true;keep(draw);};});\n [].forEach.call(app.querySelectorAll('[data-up],[data-dn]'),function(el){el.onclick=function(){var u=el.hasAttribute('data-up'),i=+el.getAttribute(u?'data-up':'data-dn'),t=i+(u?-1:1),L=CUR.sections,m=L[i];L[i]=L[t];L[t]=m;DIRTY=true;draw();};});\n [].forEach.call(app.querySelectorAll('[data-rm]'),function(el){el.onclick=function(){var i=+el.getAttribute('data-rm'),c=CUR.sections[i],n=0;GROUPS.forEach(function(g){n+=c.photos[g[0]].length;});\n  if(!c.title&&!c.details&&!n){CUR.sections.splice(i,1);DIRTY=true;draw();return;}\n  ask('Remove section '+(i+1)+'?','Its description, details and '+n+' photo'+(n===1?'':'s')+' come off this sheet. The photos stay on the ServiceM8 job.','Remove section','1').then(function(ok){if(!ok)return;CUR.sections.splice(i,1);DIRTY=true;draw();});};});\n [].forEach.call(app.querySelectorAll('[data-add]'),function(el){el.onclick=function(){picker(+el.getAttribute('data-add'),el.getAttribute('data-g'));};});\n document.getElementById('addSec').onclick=function(){CUR.sections.push(blankSec());DIRTY=true;draw();var L=app.querySelectorAll('.sec');if(L.length)L[L.length-1].scrollIntoView({behavior:'smooth',block:'start'});};\n var sg=document.getElementById('fSig');if(sg)sg.onchange=function(){CUR.signed_by=this.value;DIRTY=true;sigPrev();};\n document.getElementById('bk').onclick=function(){if(!DIRTY){list();return;}ask('Leave without saving?','Your changes to this service sheet have not been saved.','Leave without saving','1').then(function(ok){if(ok)list();});};\n document.getElementById('sv').onclick=function(){save(false);};\n document.getElementById('pdf').onclick=function(){save(true);};}\nfunction keep(fn){var y=window.pageYOffset;fn();window.scrollTo(0,y);}\n/* ---------- photo picker (job's ServiceM8 photos, filtered by category) ---------- */\nfunction picker(si,gk){var g=GROUPS.filter(function(x){return x[0]===gk;})[0],P=X.photos||[],sel={},flt=P.some(function(p){return p.cats.indexOf(g[2])>-1;})?g[2]:'all';\n var used={};GROUPS.forEach(function(x){CUR.sections[si].photos[x[0]].forEach(function(p){used[p.u]=x[1];});});\n if(!P.length){tell('No photos yet','There are no photos on the ServiceM8 job yet. Photos the team take on the job in ServiceM8 show here.');return;}\n var o=dlg('<h2>Add '+e(g[1].toLowerCase())+' photos \\u00b7 Section '+(si+1)+'</h2><div class=\"chips\" id=\"pc\"></div><div class=\"pk\" id=\"pg\"></div><div class=\"note\">Categories are set on the job page photo sorter. Faded photos are already in this section.</div><div class=\"b\"><button class=\"btn\" id=\"pa\" disabled>Add photos</button><button class=\"btn ghost\" id=\"px\">Cancel</button><span class=\"m\" id=\"pn\"></span></div>',true);\n function shown(p){if(flt==='all')return true;if(flt==='unsorted')return !p.cats.length;return p.cats.indexOf(flt)>-1;}\n function chip(k,l,n){return '<button class=\"chip'+(flt===k?' on':'')+'\" data-f=\"'+e(k)+'\">'+e(l)+' <span>'+n+'</span></button>';}\n function rd(){var h=chip('all','All',P.length);['Before','Progress','After'].forEach(function(c){h+=chip(c,c==='Progress'?'Work in progress':c,P.filter(function(p){return p.cats.indexOf(c)>-1;}).length);});\n  var oth={};P.forEach(function(p){p.cats.forEach(function(c){if(['Before','Progress','After'].indexOf(c)<0)oth[c]=(oth[c]||0)+1;});});Object.keys(oth).forEach(function(c){h+=chip(c,c,oth[c]);});\n  h+=chip('unsorted','Unsorted',P.filter(function(p){return !p.cats.length;}).length);o.querySelector('#pc').innerHTML=h;\n  var L=P.filter(shown);o.querySelector('#pg').innerHTML=L.length?L.map(function(p){return '<div class=\"pt'+(sel[p.u]?' on':'')+(used[p.u]?' used':'')+'\" data-u=\"'+e(p.u)+'\"><img loading=\"lazy\" src=\"'+img(p.u)+'\" alt=\"\"><div class=\"ck\">'+(sel[p.u]?'\\u2713':'')+'</div><div class=\"cs\">'+(p.ts?'<span>'+e(dmy(p.ts))+'</span>':'')+p.cats.map(function(c){return '<span>'+e(c)+'</span>';}).join('')+(used[p.u]?'<span>In '+e(used[p.u]).toLowerCase()+'</span>':'')+'</div></div>';}).join(''):'<div class=\"m\">No photos in this category.</div>';\n  var n=Object.keys(sel).length;o.querySelector('#pa').disabled=!n;o.querySelector('#pa').textContent=n?'Add '+n+' photo'+(n===1?'':'s'):'Add photos';o.querySelector('#pn').textContent=n?n+' selected':'';\n  [].forEach.call(o.querySelectorAll('[data-f]'),function(b){b.onclick=function(){flt=b.getAttribute('data-f');rd();};});\n  [].forEach.call(o.querySelectorAll('[data-u]'),function(t){t.onclick=function(){var u=t.getAttribute('data-u');if(sel[u])delete sel[u];else sel[u]=1;rd();};});}\n rd();o.querySelector('#px').onclick=o.close;o.addEventListener('click',function(ev){if(ev.target===o)o.close();});\n o.querySelector('#pa').onclick=function(){var L=CUR.sections[si].photos[gk],have={};L.forEach(function(p){have[p.u]=1;});\n  P.forEach(function(p){if(sel[p.u]&&!have[p.u])L.push({u:p.u,cap:p.cap||''});});DIRTY=true;o.close();keep(draw);};}\n/* ---------- save ---------- */\nfunction payload(){return {sheet_date:CUR.sheet_date,location:CUR.location,job_title:CUR.job_title,signed_by:CUR.signed_by,\n sections:CUR.sections.map(function(c){var o={title:s(c.title).trim(),details:s(c.details).trim(),photos:{}};GROUPS.forEach(function(g){o.photos[g[0]]=c.photos[g[0]].map(function(p){return {u:p.u,cap:s(p.cap).trim()};});});return o;})};}\nfunction setBar(t){var a=document.getElementById('sv'),b=document.getElementById('pdf'),k=document.getElementById('bk');[a,b,k].forEach(function(x){if(x)x.disabled=!!t;});if(t&&b)b.textContent=t;else if(b)b.textContent='Save and create PDF';}\nfunction save(withPdf){if(BUSY)return;var P=payload(),by=me();\n if(!by){tell('Sign in first','Sign in to the Operations Hub so the service sheet is saved under your name.');return;}\n if(withPdf){var hasAny=P.sections.some(function(c){return c.title||c.details;});\n  if(!hasAny){tell('Nothing to put on the sheet','Add a description or details to at least one section first.');return;}\n  if(!P.signed_by){tell('Choose who signs','Choose who signs the sheet under Signed / serviced.');return;}\n  if(!window.jspdf){tell('PDF tool not loaded','The PDF tool did not load. Refresh the page and try again.');return;}}\n BUSY=true;setBar(withPdf?'Saving\\u2026':'Saving');\n fetch('/webhook/cbs-service-save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({job:JOB,id:CUR.id||0,tok:CUR.tok||'',by:by,sheet:P})}).then(function(r){if(!r.ok)throw 0;return r.json();})\n .then(function(d){if(!d||!d.ok)throw new Error(d&&d.message||'');CUR.id=d.id;CUR.sheet_no=d.sheet_no;DIRTY=false;\n  if(!withPdf){BUSY=false;return load().then(function(){edit(CUR.id);});}\n  setBar('Building the PDF\\u2026');\n  return build(P,function(t){setBar(t);}).then(function(doc){setBar('Saving the PDF to the job\\u2026');var name=fname();\n   return fetch('/webhook/cbs-service-pdf',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({job:JOB,id:CUR.id,by:by,b64:doc.output('datauristring')})}).then(function(r){if(!r.ok)throw 0;return r.json();})\n    .then(function(x){if(!x||!x.ok)throw 0;doc.save(name);BUSY=false;return load().then(function(){list();tell('Service sheet saved',e(CUR.sheet_no||'The service sheet')+' is saved to the job\\u2019s files (Service Sheets) and has downloaded to this device.');});})\n    .catch(function(){doc.save(name);BUSY=false;setBar('');tell('PDF not saved to the job','The PDF downloaded, but it could not be saved to the job\\u2019s files. Press Save and create PDF again.');});});})\n .catch(function(err){BUSY=false;setBar('');tell('Not saved','Could not save the service sheet'+(err&&err.message?': '+e(err.message):'')+'. Check your connection and try again.');});}\nfunction fname(){return 'Job '+JOB+' - Service sheet '+(CUR.sheet_no||'')+' - '+s(CUR.sheet_date||today())+'.pdf';}\n/* ---------- PDF (CBS service sheet layout) ---------- */\nfunction getLogo(){if(LOGO!==null)return Promise.resolve(LOGO);return fetch('/webhook/cbs-programme-logo').then(function(r){return r.json();}).then(function(d){LOGO=(d&&d.lg)||'';return LOGO;}).catch(function(){LOGO='';return '';});}\nfunction imgData(u){return fetch(img(u)).then(function(r){if(!r.ok)throw 0;return r.blob();}).then(function(bl){return new Promise(function(res){var url=URL.createObjectURL(bl),im=new Image();\n im.onload=function(){var mx=1400,sc=Math.min(1,mx/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*sc));c.height=Math.max(1,Math.round(im.height*sc));var g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(url);res({d:c.toDataURL('image/jpeg',0.78),w:c.width,h:c.height});};\n im.onerror=function(){URL.revokeObjectURL(url);res(null);};im.src=url;});}).catch(function(){return null;});}\nfunction build(P,say){return getLogo().then(function(lg){var U=[];P.sections.forEach(function(c){GROUPS.forEach(function(g){c.photos[g[0]].forEach(function(p){if(U.indexOf(p.u)<0)U.push(p.u);});});});\n var IM={},done=0;say(U.length?'Loading photos (0 of '+U.length+')\\u2026':'Building the PDF\\u2026');\n return U.reduce(function(pr,u){return pr.then(function(){return imgData(u).then(function(d){IM[u]=d;done++;say('Loading photos ('+done+' of '+U.length+')\\u2026');});});},Promise.resolve()).then(function(){say('Building the PDF\\u2026');return make(P,lg,IM);});});}\nfunction make(P,lg,IM){var jsPDF=window.jspdf.jsPDF,doc=new jsPDF({unit:'mm',format:'a4'}),W=210,HH=297,M=13,CW=W-2*M,y=0,FOOT=HH-27,LBL=27,OR=[255,199,128];\n var sig=(X.sigs||[]).filter(function(z){return z.name===P.signed_by;})[0];\n function head(first){if(lg){try{var pr=doc.getImageProperties(lg),hh=first?17:11,ww=pr.width*hh/pr.height;if(ww>62){ww=62;hh=pr.height*ww/pr.width;}doc.addImage(lg,'PNG',M,first?9:7,ww,hh);}catch(z){}}\n  if(first){doc.setTextColor(70);doc.setFont('helvetica','bold');doc.setFontSize(10.5);doc.text('Industrial & Commercial Contractors',M,32);doc.text('Property Renovation & Maintenance',M,37);\n   var tw=doc.getTextWidth('Property Renovation & Maintenance');doc.setDrawColor(70);doc.setLineWidth(0.25);doc.line(M,37.8,M+tw,37.8);\n   doc.setLineDashPattern([2.2,0.8,0.5,0.8],0);doc.line(M+tw+1,37.8,W-M,37.8);doc.setLineDashPattern([],0);\n   doc.setFontSize(8.5);doc.text('Unit 1 - Example Business Park - Bishop\\u2019s Stortford - Hertfordshire \\u2013 ZZ99 1ZZ',M,42);\n   doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(40);doc.text('*Service Sheet to be completed by CBS on completion of works',W/2,51,{align:'center'});y=56;}\n  else{doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text('Service sheet '+(CUR.sheet_no||'')+'  |  Job '+JOB+'  |  continued',W-M,13,{align:'right'});y=24;}}\n function np(){doc.addPage();head(false);}\n function need(h){if(y+h>FOOT){np();return true;}return false;}\n function box(x,yy,w,h,fill){doc.setDrawColor(0);doc.setLineWidth(0.3);if(fill){doc.setFillColor(fill[0],fill[1],fill[2]);doc.rect(x,yy,w,h,'FD');}else doc.rect(x,yy,w,h);}\n function ctext(t,x,yy,w,h,o){o=o||{};doc.setFont('helvetica',o.b?'bold':'normal');doc.setFontSize(o.sz||10);doc.setTextColor(o.c==null?30:o.c);var L=doc.splitTextToSize(s(t),w-4).slice(0,o.max||6),lh=(o.sz||10)*0.42;var ty=yy+h/2-(L.length-1)*lh/2+(o.sz||10)*0.14;\n  L.forEach(function(l,k){doc.text(l,x+w/2,ty+k*lh,{align:'center'});if(o.u){var tw=doc.getTextWidth(l);doc.setLineWidth(0.25);doc.setDrawColor(30);doc.line(x+w/2-tw/2,ty+k*lh+0.7,x+w/2+tw/2,ty+k*lh+0.7);}});}\n head(true);\n /* date / location / job */\n var c1=44,c2=66,c3=CW-c1-c2;box(M,y,c1,9,OR);box(M+c1,y,c2,9,OR);box(M+c1+c2,y,c3,9,OR);\n ctext('Date',M,y,c1,9,{b:1,u:1});ctext('Location',M+c1,y,c2,9,{b:1,u:1});ctext('Job',M+c1+c2,y,c3,9,{b:1,u:1});y+=9;\n doc.setFontSize(10);var lh=Math.max(doc.splitTextToSize(s(P.location),c2-4).length,doc.splitTextToSize(s(P.job_title),c3-4).length),rh=Math.max(16,lh*4.4+6);\n box(M,y,c1,rh);box(M+c1,y,c2,rh);box(M+c1+c2,y,c3,rh);ctext(longDate(P.sheet_date),M,y,c1,rh,{b:1});ctext(P.location,M+c1,y,c2,rh,{max:8});ctext(P.job_title,M+c1+c2,y,c3,rh,{max:8});y+=rh;\n /* sections */\n P.sections.forEach(function(c,ci){\n  /* description */\n  doc.setFontSize(11);var dl=doc.splitTextToSize(c.title||'Section '+(ci+1),CW-8),dh=Math.max(13,dl.length*4.8+7);\n  need(dh+22);box(M,y,CW,dh);ctext(c.title||'Section '+(ci+1),M,y,CW,dh,{sz:11,b:1,max:10});y+=dh;\n  /* details (splits over pages) */\n  doc.setFont('helvetica','normal');doc.setFontSize(9.5);var DL=c.details?doc.splitTextToSize(c.details,CW-8):[];var first=true;\n  if(!DL.length){box(M,y,CW,12);doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(90);doc.text('Details',M+3,y+4.5);doc.setFont('helvetica','normal');doc.setTextColor(140);doc.setFontSize(9);doc.text('No further details.',M+3,y+9);y+=12;}\n  while(DL.length){var room=Math.floor((FOOT-y-9)/4.4);if(room<3){np();continue;}var chunk=DL.splice(0,room),bh=chunk.length*4.4+(first?9:5);\n   box(M,y,CW,bh);if(first){doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(90);doc.text('Details',M+3,y+4.5);}\n   doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(25);doc.text(chunk,M+3,y+(first?9:4.5));y+=bh;first=false;if(DL.length)np();}\n  /* photo groups: rows of up to 3 */\n  GROUPS.forEach(function(g){var L=c.photos[g[0]];if(!L.length)return;var per=3,cw=(CW-LBL)/per,ih=50;\n   for(var r=0;r<L.length;r+=per){var row=L.slice(r,r+per),hasCap=row.some(function(p){return p.cap;}),hgt=ih+6+(hasCap?6:0);\n    need(hgt);box(M,y,LBL,hgt);box(M+LBL,y,CW-LBL,hgt);ctext(g[1]+' photo'+(L.length===1?'':'s')+(L.length>per?' ('+(Math.floor(r/per)+1)+' of '+Math.ceil(L.length/per)+')':''),M,y,LBL,hgt,{b:1,sz:8.5});\n    row.forEach(function(p,k){var x0=M+LBL+k*cw+3,bw=cw-6,im=IM[p.u];\n     if(im){var sc=Math.min(bw/im.w,ih/im.h),w2=im.w*sc,h2=im.h*sc;try{doc.addImage(im.d,'JPEG',x0+(bw-w2)/2,y+3+(ih-h2)/2,w2,h2);}catch(z){}}\n     else{doc.setDrawColor(200);doc.rect(x0,y+3,bw,ih);doc.setFontSize(8);doc.setTextColor(120);doc.text('Photo not available',x0+bw/2,y+3+ih/2,{align:'center'});}\n     if(p.cap){doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(60);doc.text(doc.splitTextToSize(p.cap,bw)[0],x0+bw/2,y+ih+7,{align:'center'});}});\n    y+=hgt;}});\n  y+=3;});\n /* sign-off */\n need(22);var sh=20,half=(CW-LBL)/2;box(M,y,LBL,sh);box(M+LBL,y,half,sh);box(M+LBL+half,y,half,sh);ctext('Signed/\\nServiced',M,y,LBL,sh,{b:1,sz:8.5});\n if(sig&&sig.img){try{var sp=doc.getImageProperties(sig.img),sw=half-8,shh=sh-4,k=Math.min(sw/sp.width,shh/sp.height);doc.addImage(sig.img,/png/i.test(sig.img.slice(0,30))?'PNG':'JPEG',M+LBL+(half-sp.width*k)/2,y+(sh-sp.height*k)/2,sp.width*k,sp.height*k);}catch(z){}}\n ctext(P.signed_by,M+LBL+half,y,half,sh,{sz:10.5});y+=sh;\n /* footer on every page */\n var n=doc.getNumberOfPages();for(var i=1;i<=n;i++){doc.setPage(i);doc.setDrawColor(190,190,220);doc.setLineWidth(0.3);doc.line(M,HH-22,W-M-40,HH-22);doc.setFont('helvetica','bold');doc.setFontSize(6.8);doc.setTextColor(150);\n  doc.text('Vat Reg. No.: 425 1034 96',M,HH-18);doc.text('Chelmsford Maintenance is a trading name of Chelmsford Building Services Ltd',M,HH-15);doc.text('Registered in England & Wales: 4639742 \\u2013 Registered Office: Reeds, Bacon End, Dunmow, Essex, ZZ99 7ZZ',M,HH-12);\n  doc.setFont('helvetica','normal');doc.text('Page '+i+' of '+n,W-M,HH-12,{align:'right'});}\n return doc;}\nload().then(function(){if(D.isNew)edit(null);else if(D.open&&(X.sheets||[]).some(function(x){return String(x.id)===D.open;}))edit(+D.open);else list();}).catch(function(){});\n}"
+      }
+    },
+    {
+      "id": "baa99afe-0050-4a94-8fed-47e73f70dbdb",
+      "name": "Page Send",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ad0cdde6-1df2-42da-adfd-648fa347b30c",
+      "name": "Data Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        224
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-service-data",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "4d46b218-f2ef-4407-99fd-21a1ec1227bd"
+    },
+    {
+      "id": "f3eb253e-dc16-47cd-b828-4f4246b5eeac",
+      "name": "D Job",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        224
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* Job number from ?job=N */\nconst q=$input.first().json.query||{};return [{json:{job:String(q.job||'').replace(/[^0-9A-Za-z-]/g,'')}}];"
+      }
+    },
+    {
+      "id": "ffbab8b5-e91b-4f6e-89a8-48e4bb036556",
+      "name": "SM8 Job",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        224
+      ],
+      "parameters": {
+        "method": "GET",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "url": "={{ 'https://api.servicem8.com/api_1.0/job.json?%24filter=' + encodeURIComponent(\"generated_job_id eq '\" + $json.job + \"'\") }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          },
+          "timeout": 20000
+        }
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "d8afb9b8-57bd-4d63-874f-17583dc3b80f",
+      "name": "D Uuid",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        224
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* The ServiceM8 job for this number: the active one when there is one (same rule as the Job File). */\nconst L=$('SM8 Job').all().map(i=>i.json).filter(j=>j&&j.uuid);\nconst A=L.filter(j=>Number(j.active)===1);const j=(A.length?A:L)[0];\nreturn [{json:j?{uuid:j.uuid,job_address:j.job_address||'',job_description:j.job_description||''}:{uuid:'none'}}];"
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "3a68187c-755b-4bb6-9d33-bf192292a27c",
+      "name": "SM8 Photos",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        896,
+        224
+      ],
+      "parameters": {
+        "method": "GET",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "url": "={{ 'https://api.servicem8.com/api_1.0/attachment.json?%24filter=' + encodeURIComponent(\"related_object_uuid eq '\" + ($json.uuid || 'none') + \"' and active eq 1\") }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          },
+          "timeout": 20000
+        }
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "4166a2de-9f47-4afc-bd90-46d2032db1a6",
+      "name": "Sheets Read",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        224
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "G3mYDjQqWyYiCx0W"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "93710f3e-27c2-4684-a30f-7104759f1d67",
+      "name": "D Build",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        224
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* Service sheet data for one job: job details, the ServiceM8 job photos with their Job File categories/captions (cbs_photo_tags),\n   signers (Team records ticked Appears in: Service sheets with a saved signature, cbs_workers.in_service + signature, 27/10/2026)\n   and this job's service sheets (cbs_service_sheets). */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst job=S($('D Job').first().json.job);if(!job)return [{json:{ok:false,message:'No job number.'}}];const J=jk(job);\nconst list=async t=>{try{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t+'&k='+K,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);}catch(e){return [];}};\nconst [JR,PT,WK]=await Promise.all(['jobrows','phototags','workers'].map(list));\nconst jr=JR.filter(r=>jk(r.ref)===J).sort((a,b)=>num(b.id)-num(a.id))[0]||{};\nconst sm=$('D Uuid').first().json||{};\nconst IMG=/\\.(jpe?g|png|gif|webp|heic)$/i;\nconst tags={};PT.filter(r=>jk(r.job_no)===J&&S(r.photo_uuid)).forEach(r=>{tags[S(r.photo_uuid)]={cats:S(r.categories).split('|').map(S).filter(Boolean),cap:S(r.caption)};});\nconst seen={};const photos=[];\n$('SM8 Photos').all().map(i=>i.json).forEach(a=>{if(!a||!a.uuid||seen[a.uuid]||String(a.active)==='0')return;if(!(IMG.test(S(a.file_type))||IMG.test(S(a.attachment_name))))return;seen[a.uuid]=1;\n const t=tags[a.uuid]||{cats:[],cap:''};photos.push({u:S(a.uuid),ts:S(a.timestamp),cats:t.cats,cap:t.cap});});\nphotos.sort((a,b)=>a.ts.localeCompare(b.ts));\nconst sigs=WK.filter(r=>S(r.name)&&S(r.signature)&&r.active!==false&&(r.in_service===true||r.in_service==='true')).map(r=>({name:S(r.name),role:S(r.role),img:S(r.signature)})).sort((a,b)=>a.name.localeCompare(b.name));\nconst pj=v=>{try{const a=JSON.parse(S(v)||'[]');return Array.isArray(a)?a:[];}catch(e){return [];}};\nconst sheets=$('Sheets Read').all().map(i=>i.json).filter(r=>r&&r.id!=null&&jk(r.job_no)===J).map(r=>({id:num(r.id),sheet_no:S(r.sheet_no),sheet_date:S(r.sheet_date),location:S(r.location),job_title:S(r.job_title),sections:pj(r.sections_json),signed_by:S(r.signed_by),status:S(r.status),pdf_url:S(r.pdf_url),file_name:S(r.file_name),updated_by:S(r.updated_by),updated_at:S(r.updated_at),created_by:S(r.created_by),created_at:S(r.created_at)}))\n .sort((a,b)=>num(S(b.sheet_no).replace(/\\D/g,''))-num(S(a.sheet_no).replace(/\\D/g,''))||b.id-a.id);\nconst has8=!!(sm.uuid&&sm.uuid!=='none');const addr=has8?S(sm.job_address).replace(/\\s*\\n\\s*/g,', '):'';\nreturn [{json:{ok:true,job:job,name:S(jr.name)||(has8?S(sm.job_description).split('\\n')[0].slice(0,120):''),site:S(jr.site),client:S(jr.client),address:addr,sm8:has8,photos:photos,sigs:sigs,sheets:sheets}}];"
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "ca57c4e4-c0f6-42f2-b377-78c7b3c68f8f",
+      "name": "Data Send",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1568,
+        224
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "115953be-2975-4b5a-96e5-c1e5c67dc9e3",
+      "name": "Save Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        448
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-service-save",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "5863020d-8b9d-44af-a031-7804f8f00b49"
+    },
+    {
+      "id": "1a01b074-5aea-44a6-878f-59fdf9d75e43",
+      "name": "Save Read",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        448
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "G3mYDjQqWyYiCx0W"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "72f564dc-47a8-49bf-b0be-f654954841c2",
+      "name": "Save Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        448
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* Service sheet save: validates, numbers new sheets SS-01, SS-02... per job, and guards against double saves (same tok = same sheet). */\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst b=$('Save Hook').first().json.body||{};const job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by).slice(0,80),tok=S(b.tok).slice(0,60);\nif(!job)throw new Error('No job number');if(!by)throw new Error('Sign in to the hub first');\nconst sh=b.sheet||{};const G=['before','progress','after'];\nconst secs=(Array.isArray(sh.sections)?sh.sections:[]).slice(0,40).map(c=>{const o={title:S(c&&c.title).slice(0,300),details:S(c&&c.details).slice(0,8000),photos:{}};\n G.forEach(g=>{o.photos[g]=(Array.isArray(c&&c.photos&&c.photos[g])?c.photos[g]:[]).slice(0,60).map(p=>({u:S(p&&p.u).replace(/[^0-9a-fA-F-]/g,''),cap:S(p&&p.cap).slice(0,200)})).filter(p=>p.u);});return o;});\nconst rows=$input.all().map(i=>i.json).filter(r=>r&&r.id!=null);const mine=rows.filter(r=>jk(r.job_no)===jk(job));\nlet cur=null;const id=num(b.id);\nif(id)cur=rows.find(r=>num(r.id)===id)||null;\nif(id&&!cur)throw new Error('This service sheet no longer exists');\nif(cur&&jk(cur.job_no)!==jk(job))throw new Error('This service sheet belongs to another job');\nif(!cur&&tok)cur=mine.find(r=>S(r.tok)===tok)||null;\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nlet no=cur?S(cur.sheet_no):'';\nif(!no){const mx=mine.reduce((m,r)=>Math.max(m,num(S(r.sheet_no).replace(/\\D/g,''))),0);no='SS-'+String(mx+1).padStart(2,'0');}\nlet hist=[];try{hist=JSON.parse(S(cur&&cur.history)||'[]');if(!Array.isArray(hist))hist=[];}catch(e){hist=[];}\nhist=hist.concat([{at:now,by:by,ev:cur?'Saved':'Created'}]).slice(-30);\nconst d=S(sh.sheet_date);\nconst row={job_no:job,sheet_no:no,sheet_date:/^\\d{4}-\\d{2}-\\d{2}$/.test(d)?d:now.slice(0,10),location:S(sh.location).slice(0,300),job_title:S(sh.job_title).slice(0,300),sections_json:JSON.stringify(secs),signed_by:S(sh.signed_by).slice(0,80),\n status:cur&&S(cur.pdf_url)?'Issued':'Draft',tok:cur?S(cur.tok)||tok:tok,updated_by:by,updated_at:now,history:JSON.stringify(hist)};\nif(!cur){row.created_by=by;row.created_at=now;row.pdf_url='';row.file_name='';}\nreturn [{json:{rid:cur?num(cur.id):0,no:no,row:row}}];"
+      }
+    },
+    {
+      "id": "afddd7f7-cbb4-47b2-83ba-3ab04ed645e9",
+      "name": "Save Row",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        448
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "return [{ json: $('Save Prep').first().json.row }];"
+      }
+    },
+    {
+      "id": "05f39e5d-67d5-45cf-a161-ee0afe626e71",
+      "name": "Save Upsert",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        448
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "G3mYDjQqWyYiCx0W"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Save Prep').first().json.rid }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null,
+          "matchingColumns": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "cba305db-5d80-4fa7-90e3-5889efbb29fc",
+      "name": "Save Send",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        448
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ ok: true, id: $json.id || $('Save Prep').first().json.rid, sheet_no: $('Save Prep').first().json.no }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "c6a9a7eb-9964-43e7-a904-7e5cc5ae0815",
+      "name": "Del Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        672
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-service-del",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "b50f6c48-ce29-4e5a-ba4c-da6b42733360"
+    },
+    {
+      "id": "ccde174d-706d-495f-b546-86be90054b15",
+      "name": "Del Read",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        672
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "G3mYDjQqWyYiCx0W"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "af92d55c-d1de-4e17-8e3d-de4e105da2cd",
+      "name": "Del Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        672
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* Service sheet delete (second confirmation is on the page). The PDF already saved in SharePoint is left in the job's files. */\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();\nconst b=$('Del Hook').first().json.body||{};const id=Number(b.id)||0,job=S(b.job);\nif(!id||!job)throw new Error('Missing service sheet');\nconst r=$input.all().map(i=>i.json).find(x=>x&&Number(x.id)===id);\nif(!r)throw new Error('This service sheet no longer exists');if(jk(r.job_no)!==jk(job))throw new Error('This service sheet belongs to another job');\nreturn [{json:{rid:id}}];"
+      }
+    },
+    {
+      "id": "5391b77b-9c15-40c7-a624-aabd25103ed8",
+      "name": "Del Rows",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        672
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "G3mYDjQqWyYiCx0W"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.rid }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "options": {}
+      }
+    },
+    {
+      "id": "c7e19511-d970-444e-b8c0-0cad5646e9ae",
+      "name": "Del Send",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        672
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ ok: true }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ac8995a3-c1be-4cb4-b07d-01e97b81990c",
+      "name": "PDF Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        896
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-service-pdf",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "78574795-1d5c-49b2-8b50-6ee6eee94ee1"
+    },
+    {
+      "id": "7ae28076-1d5c-49d1-a4d1-154f832284f5",
+      "name": "PDF Read",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        896
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "G3mYDjQqWyYiCx0W"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "cb1804bc-4b5c-4012-8fb1-6d53f4bf1918",
+      "name": "PDF Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        896
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* Service sheet PDF from the page: file for SharePoint CBS System/Operations/Jobs/Job N/Service Sheets. */\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();\nconst b=$('PDF Hook').first().json.body||{};const job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by).slice(0,80),id=Number(b.id)||0;\nlet b64=S(b.b64).replace(/^data:[^,]*,/,'');\nif(!job||!id)throw new Error('Missing service sheet');if(!by)throw new Error('Sign in to the hub first');\nif(!b64||b64.length>45000000)throw new Error('The PDF is missing or too large');\nconst r=$input.all().map(i=>i.json).find(x=>x&&Number(x.id)===id);\nif(!r||jk(r.job_no)!==jk(job))throw new Error('Service sheet not found on this job');\nconst fname=('Job '+job+' - Service sheet '+S(r.sheet_no)+' - '+(S(r.sheet_date)||new Date().toISOString().slice(0,10))+'.pdf').replace(/[\\\\/:*?\"<>|#%]+/g,' ');\nconst path=['CBS System','Operations','Jobs','Job '+job,'Service Sheets',fname].map(encodeURIComponent).join('/');\nconst bin=await this.helpers.prepareBinaryData(Buffer.from(b64,'base64'),fname,'application/pdf');\nreturn [{json:{job:job,by:by,id:id,fname:fname,path:path,history:S(r.history)},binary:{data:bin}}];"
+      }
+    },
+    {
+      "id": "6f36b940-9581-4773-8078-eb76cb1cb311",
+      "name": "Upload PDF",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        672,
+        896
+      ],
+      "parameters": {
+        "method": "PUT",
+        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.path }}:/content?@microsoft.graph.conflictBehavior=replace",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {
+          "timeout": 120000
+        }
+      }
+    },
+    {
+      "id": "e9eefca8-a2ec-4706-9e92-ee6cf930cfca",
+      "name": "PDF Link",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        896
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* Stores the saved PDF link on the service sheet. */\nconst S=v=>v==null?'':String(v).trim();\nconst u=$input.first().json||{};const p=$('PDF Prep').first().json;\nif(!S(u.webUrl))throw new Error('SharePoint did not return a link for the PDF');\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nlet hist=[];try{hist=JSON.parse(p.history||'[]');if(!Array.isArray(hist))hist=[];}catch(e){hist=[];}\nhist=hist.concat([{at:now,by:p.by,ev:'PDF saved to the job files',file:p.fname}]).slice(-30);\nreturn [{json:{pdf_url:S(u.webUrl),file_name:p.fname,status:'Issued',updated_by:p.by,updated_at:now,history:JSON.stringify(hist)}}];"
+      }
+    },
+    {
+      "id": "61909b75-3469-4fac-b9fd-a26821560aff",
+      "name": "PDF Upsert",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        896
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "G3mYDjQqWyYiCx0W"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('PDF Prep').first().json.id }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null,
+          "matchingColumns": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "ad69cb46-d535-4dc6-a5fc-920d10550171",
+      "name": "PDF Send",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        896
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ ok: true, url: $('Upload PDF').first().json.webUrl }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ae84a95e-d365-4bb3-b633-0bccf72f77d9",
+      "name": "Footer Logos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        120
+      ],
+      "parameters": {
+        "jsCode": "/* Service sheet PDF footer: SafeContractor + CHAS accreditation logos (taken from CBS's own service sheet, 27/10/2026) bottom right of\n   every page, page number moved below them; list button named Create service sheet (button naming rule). Exact-once anchors; a miss\n   leaves the page as it was and is reported in footerLogos. */\nlet html=String($input.first().json.html||'');const rep=[];\nfunction one(a,b,tag){const c=html.split(a).length-1;if(c===1){html=html.split(a).join(b);rep.push(tag+':ok');}else rep.push(tag+':missing('+c+')');}\nconst ACC='data:image/jpeg;base64,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';\none(\"var GROUPS=[['before'\",\"var ACC='\"+ACC+\"';var GROUPS=[['before'\",'logo');\none(\"doc.setFont('helvetica','normal');doc.text('Page '+i+' of '+n,W-M,HH-12,{align:'right'});}\",\"try{doc.addImage(ACC,'JPEG',W-M-36,HH-23.5,36,15.4);}catch(z){}doc.setFont('helvetica','normal');doc.text('Page '+i+' of '+n,W-M,HH-5,{align:'right'});}\",'footer');\none('id=\"nw\">+ New service sheet</button>','id=\"nw\">Create service sheet</button>','button');\nreturn [{json:{html:html,footerLogos:rep.join(' ')}}];",
+        "language": "javaScript",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "c986d32f-226b-4003-a55b-aab19c1f8c5e",
+      "name": "Buttons Photos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        120
+      ],
+      "parameters": {
+        "jsCode": "/* Service sheet: separate Save and Download PDF buttons, bigger photos on the PDF (27/10/2026).\n   Save: saves the sheet; when it has a description/details and a signer, also saves its PDF to the job's files (no download).\n   Download PDF: builds the PDF from the sheet as shown and downloads it; saves nothing. Photos 2 per row, about 105 mm tall.\n   Exact-once anchors; a miss leaves that part as it was and is reported in buttonsPhotos. */\nlet html=String($input.first().json.html||'');const rep=[];const prev=$input.first().json.footerLogos||'';\nfunction one(a,b,tag){const c=html.split(a).length-1;if(c===1){html=html.split(a).join(b);rep.push(tag+':ok');}else rep.push(tag+':missing('+c+')');}\none('<button class=\"btn ghost\" id=\"sv\">Save draft</button><button class=\"btn\" id=\"pdf\">Save and create PDF</button></div>',\n '<button class=\"btn\" id=\"sv\">Save</button><button class=\"btn ghost\" id=\"pdf\">Download PDF</button><span class=\"m\" id=\"bst\" style=\"align-self:center\"></span></div>','bar');\none(\"document.getElementById('sv').onclick=function(){save(false);};\",\"document.getElementById('sv').onclick=function(){save('save');};\",'wireSave');\none(\"document.getElementById('pdf').onclick=function(){save(true);};\",\"document.getElementById('pdf').onclick=function(){save('dl');};\",'wireDl');\none(\"var per=3,cw=(CW-LBL)/per,ih=50;\",\"var per=2,cw=(CW-LBL)/per,ih=105;\",'photos');\nconst a=html.indexOf('function setBar(t){'),b=html.indexOf('function fname(){');\nif(a>-1&&b>a&&html.indexOf('function setBar(t){',a+1)<0){\n const NEW=String.raw`function setBar(t){['sv','pdf','bk'].forEach(function(i){var x=document.getElementById(i);if(x)x.disabled=!!t;});var m=document.getElementById('bst');if(m)m.textContent=t||'';}\nfunction hasContent(P){return P.sections.some(function(c){return c.title||c.details;});}\nfunction save(mode){if(BUSY)return;var P=payload(),by=me();\n if(mode==='dl'){if(!hasContent(P)){tell('Nothing to put on the sheet','Add a description or details to at least one section first.');return;}\n  if(!window.jspdf){tell('PDF tool not loaded','The PDF tool did not load. Refresh the page and try again.');return;}\n  BUSY=true;setBar('Building the PDF\\u2026');\n  build(P,setBar).then(function(doc){doc.save(fname());BUSY=false;setBar('');}).catch(function(){BUSY=false;setBar('');tell('PDF not made','Could not build the PDF. Check your connection and try again.');});return;}\n if(!by){tell('Sign in first','Sign in to the Operations Hub so the service sheet is saved under your name.');return;}\n var ready=hasContent(P)&&!!P.signed_by&&!!window.jspdf;\n BUSY=true;setBar('Saving\\u2026');\n fetch('/webhook/cbs-service-save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({job:JOB,id:CUR.id||0,tok:CUR.tok||'',by:by,sheet:P})}).then(function(r){if(!r.ok)throw 0;return r.json();})\n .then(function(d){if(!d||!d.ok)throw new Error(d&&d.message||'');CUR.id=d.id;CUR.sheet_no=d.sheet_no;DIRTY=false;\n  if(!ready){BUSY=false;setBar('');return load().then(function(){edit(CUR.id);tell('Saved',e(CUR.sheet_no)+' is saved. Its PDF goes into the job\\u2019s files once a section has a description or details and someone is chosen under Signed / serviced.');});}\n  setBar('Building the PDF\\u2026');\n  return build(P,setBar).then(function(doc){setBar('Saving the PDF to the job\\u2026');\n   return fetch('/webhook/cbs-service-pdf',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({job:JOB,id:CUR.id,by:by,b64:doc.output('datauristring')})}).then(function(r){if(!r.ok)throw 0;return r.json();})\n    .then(function(x){if(!x||!x.ok)throw 0;BUSY=false;setBar('');return load().then(function(){edit(CUR.id);tell('Saved',e(CUR.sheet_no)+' is saved and its PDF is in the job\\u2019s files (Service Sheets).');});})\n    .catch(function(){BUSY=false;setBar('');tell('PDF not added to the job','The service sheet is saved, but its PDF could not be added to the job\\u2019s files. Press Save again.');});});})\n .catch(function(err){BUSY=false;setBar('');tell('Not saved','Could not save the service sheet'+(err&&err.message?': '+e(err.message):'')+'. Check your connection and try again.');});}\n`;\n html=html.slice(0,a)+NEW+html.slice(b);rep.push('save:ok');}else rep.push('save:missing');\nreturn [{json:{html:html,footerLogos:prev,buttonsPhotos:rep.join(' ')}}];",
+        "language": "javaScript",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "67f3d155-8781-4ef6-8d36-04a0307b4350",
+      "name": "Sig Text",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        120
+      ],
+      "parameters": {
+        "jsCode": "/* Signers come from Team (27/10/2026): ticked Appears in: Service sheets, with a saved signature. Page wording follows. */\nlet html=String($input.first().json.html||'');const j=Object.assign({},$input.first().json);\nconst A='No saved signatures yet. Add one in the Operations Hub under Settings \\\\u203a Signatures, then refresh this page.';\nconst B='Signatures come from Settings \\\\u203a Signatures in the Operations Hub.';\nconst rep=[];\nif(html.split(A).length===2){html=html.split(A).join('Nobody can sign service sheets yet. In the Operations Hub under People and companies \\\\u203a Team, open the person, tick Service sheets under Appears in, draw their signature and save, then refresh this page.');rep.push('none:ok');}else rep.push('none:missing');\nif(html.split(B).length===2){html=html.split(B).join('Shows people in Team ticked for Service sheets who have a saved signature.');rep.push('note:ok');}else rep.push('note:missing');\nj.html=html;j.sigText=rep.join(' ');return [{json:j}];",
+        "language": "javaScript",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "5ac2c431-f27e-40f3-8631-2f40928b0c06",
+      "name": "Standard Layout",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        120
+      ],
+      "parameters": {
+        "jsCode": "/* Service sheet PDF in the hub's standard layout (as the Close-out report), approved 27/10/2026: orange top bar, logo + title, Service details,\n   each section as a heading with its details, photos in one 2-column grid labelled Before / Work in progress / After (about 100 mm tall),\n   sign-off row (signature, name, date), standard footer with SafeContractor / CHAS logos. No registered office line.\n   Replaces make() in the page (from \"function make(P,lg,IM){\" to the page's start-up line). A miss leaves the page as it was. */\nlet html=String($input.first().json.html||'');const j=Object.assign({},$input.first().json);\nconst A='function make(P,lg,IM){',B='\\nload().then(function(){if(D.isNew)';\nconst a=html.indexOf(A),b=html.indexOf(B,a);\nconst NEW=String.raw`function make(P,lg,IM){var jsPDF=window.jspdf.jsPDF,doc=new jsPDF({unit:'mm',format:'a4'}),W=210,HH=297,M=14,y=0,NO=CUR.sheet_no||'';\n var sig=(X.sigs||[]).filter(function(z){return z.name===P.signed_by;})[0],LD=longDate(P.sheet_date);\n function head(){doc.setFillColor(244,121,32);doc.rect(0,0,W,3,'F');var lx=M;if(lg){try{var pr=doc.getImageProperties(lg),hh=13,ww=pr.width*hh/pr.height;if(ww>48){ww=48;hh=pr.height*ww/pr.width;}doc.addImage(lg,'PNG',M,7,ww,hh);lx=M+ww+5;}catch(z){}}\n  doc.setTextColor(30);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text('Service sheet'+(NO?' '+NO:'')+' - Job '+JOB,lx,12);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text(([X.site,X.client].filter(Boolean).join('  |  ')||'Chelmsford Building Services').slice(0,100),lx,17.5);y=28;}\n function np(){doc.addPage();y=18;}\n function need(h){if(y+h>HH-28)np();}\n function h2(t){need(16);y+=4;doc.setFont('helvetica','bold');doc.setFontSize(12.5);doc.setTextColor(30);doc.splitTextToSize(s(t),W-2*M).forEach(function(l,i){if(i)y+=5.5;doc.text(l,M,y);});doc.setDrawColor(244,121,32);doc.setLineWidth(0.6);doc.line(M,y+1.6,W-M,y+1.6);doc.setLineWidth(0.2);y+=8;}\n function para(t,sz,col){doc.setFont('helvetica','normal');doc.setFontSize(sz||9.5);doc.setTextColor(col==null?30:col);doc.splitTextToSize(s(t),W-2*M).forEach(function(l){need(5);doc.text(l,M,y);y+=4.6;});}\n function kv(k,v){if(!s(v))return;doc.setFontSize(9.5);var L=doc.splitTextToSize(s(v),W-2*M-52);need(L.length*4.6+1.5);doc.setFont('helvetica','bold');doc.setTextColor(80);doc.text(k,M,y);doc.setFont('helvetica','normal');doc.setTextColor(20);doc.text(L,M+52,y);y+=Math.max(5.6,L.length*4.6+1.2);}\n head();\n h2('Service details');kv('Date',LD);kv('Location',P.location);kv('Job',P.job_title);kv('Signed / serviced by',P.signed_by);\n var many=P.sections.length>1;\n P.sections.forEach(function(c,ci){var t=c.title||'Section '+(ci+1);h2(many?(ci+1)+'. '+t:t);\n  if(c.details){para(c.details,10);y+=2;}\n  var ALL=[];GROUPS.forEach(function(g){(c.photos[g[0]]||[]).forEach(function(p){ALL.push({u:p.u,cap:p.cap,g:g[1]});});});\n  if(!ALL.length)return;\n  need(14);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(80);doc.text('Photos',M,y);y+=4;\n  var cw=(W-2*M-6)/2,ih=100;\n  for(var r=0;r<ALL.length;r+=2){var row=ALL.slice(r,r+2),cap=row.some(function(p){return p.cap;});need(ih+(cap?13:8));\n   row.forEach(function(p,k){var im=IM[p.u],x0=M+k*(cw+6),top=y+5;doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(244,121,32);doc.text(p.g.toUpperCase(),x0,y+3);\n    doc.setDrawColor(225);doc.setFillColor(248,248,246);doc.rect(x0,top,cw,ih,'FD');\n    if(im){var sc=Math.min(cw/im.w,ih/im.h),w2=im.w*sc,h2=im.h*sc;try{doc.addImage(im.d,'JPEG',x0+(cw-w2)/2,top+(ih-h2)/2,w2,h2);}catch(z){}}\n    else{doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(120);doc.text('Photo not available',x0+cw/2,top+ih/2,{align:'center'});}\n    if(p.cap){doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(70);doc.text(doc.splitTextToSize(p.cap,cw)[0],x0,top+ih+4.5);}});\n   y+=ih+(cap?13:8);}\n  y+=1;});\n need(46);h2('Sign-off');para('Chelmsford Building Services confirm the works above have been completed.',9.5,60);y+=2;\n var c3=(W-2*M-12)/3;\n if(sig&&sig.img){try{var sp=doc.getImageProperties(sig.img),k=Math.min((c3-4)/sp.width,16/sp.height);doc.addImage(sig.img,/png/i.test(sig.img.slice(0,30))?'PNG':'JPEG',M,y,sp.width*k,sp.height*k);}catch(z){}}\n doc.setFont('helvetica','normal');doc.setFontSize(10.5);doc.setTextColor(20);doc.text(s(P.signed_by),M+c3+6,y+14);doc.text(LD,M+2*(c3+6),y+14);\n doc.setDrawColor(150);[0,1,2].forEach(function(i){var x=M+i*(c3+6);doc.line(x,y+17,x+c3,y+17);doc.setFontSize(8.5);doc.setTextColor(90);doc.text(['Signed','Name','Date'][i],x,y+21);});y+=24;\n var n=doc.getNumberOfPages();for(var i=1;i<=n;i++){doc.setPage(i);if(typeof ACC!=='undefined'){try{doc.addImage(ACC,'JPEG',W-M-26,HH-24,26,11.1);}catch(z){}}\n  doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(120);doc.text('Chelmsford Building Services Ltd  |  Job '+JOB+' service sheet'+(NO?' '+NO:'')+'  |  '+LD,M,HH-8);doc.text('Page '+i+' of '+n,W-M,HH-8,{align:'right'});}\n return doc;}`;\nif(a>-1&&b>a&&html.indexOf(A,a+1)<0){html=html.slice(0,a)+NEW+html.slice(b);j.standardLayout='ok';}else j.standardLayout='missing';\nj.html=html;return [{json:j}];",
+        "language": "javaScript",
+        "mode": "runOnceForAllItems"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "9fc87bd2-8283-49b6-9f63-5e43e89ee40a",
+        "name": "Page Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-service-sheet",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "79ef40d7-7c1a-49a3-9554-fe2262219da2"
+      },
+      {
+        "id": "7a161812-23db-47af-883a-b379a3f85ee8",
+        "name": "Page Code",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* CBS Service sheets (job builder): cbs-service-sheet?job=N. Office-only. List of the job's service sheets, editor (header, any number of\n   sections, each with Description, Details and Before / Work in progress / After photos picked from the job's ServiceM8 photos), sign-off\n   with a saved signature (Settings > Signatures), PDF in the CBS service sheet layout saved to SharePoint Jobs/Job N/Service Sheets.\n   Data cbs-service-data, saves cbs-service-save, delete cbs-service-del, PDF cbs-service-pdf. Built 27/10/2026. */\nconst S=v=>v==null?'':String(v);const e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nconst D={job:job,open:S(q.id).replace(/[^0-9]/g,''),isNew:S(q.new)==='1'};\nconst CSS='*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n+'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header h1{margin:0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n+'.wrap{max-width:900px;margin:0 auto;padding:14px 14px 30px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;align-items:center}'\n+'.btn{background:#F47920;color:#fff;text-decoration:none;font-weight:600;border-radius:8px;padding:8px 14px;font-size:14px;border:0;font-family:inherit;cursor:pointer;display:inline-block}.btn.ghost{background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}.btn.sm{padding:6px 10px;font-size:13px}.btn.red{background:#fff;color:#b3261e;border:1px solid #e9b6b1}.btn:disabled{opacity:.5;cursor:default}'\n+'.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;margin-bottom:10px;padding:12px 14px}.card h3{margin:0 0 8px;font-size:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.card h3 .sp{flex:1}'\n+'.t{font-weight:600}.m{color:#555;font-size:14px;margin-top:2px}.b{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center}'\n+'.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:20px;padding:1px 8px;margin-left:6px;vertical-align:middle}.tag.ok{background:#e3f4e6;color:#1d6b2c}.tag.dr{background:#fff1d6;color:#8a5a00}'\n+'.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}'\n+'label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}input.i,select.i,textarea.i{width:100%;font:inherit;font-size:15px;padding:9px 10px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}textarea.i{min-height:110px;resize:vertical}'\n+'.g3{display:grid;grid-template-columns:1fr 1.4fr 1.6fr;gap:0 10px}@media(max-width:640px){.g3{grid-template-columns:1fr}}'\n+'.sec{border-left:5px solid #F47920}.pg{margin-top:12px;border-top:1px solid #eee;padding-top:10px}.pg .pgh{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#3d4043}.pg .pgh span{color:#6b6e70;font-weight:400}'\n+'.th{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:8px}.tc{position:relative;background:#fafaf8;border:1px solid #e3e3e0;border-radius:8px;overflow:hidden}.tc img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#eee;cursor:zoom-in}'\n+'.tc .x{position:absolute;top:4px;right:4px;width:28px;height:28px;border-radius:50%;border:0;background:rgba(0,0,0,.65);color:#fff;font-size:16px;line-height:28px;cursor:pointer}.tc .mv{position:absolute;top:4px;left:4px;display:flex;gap:3px}.tc .mv button{width:26px;height:26px;border-radius:6px;border:0;background:rgba(255,255,255,.9);cursor:pointer;font-size:13px}'\n+'.tc input{width:100%;border:0;border-top:1px solid #e3e3e0;padding:6px 8px;font:inherit;font-size:13px}'\n+'.bar{position:sticky;bottom:0;background:#fff;border-top:3px solid #F47920;border-radius:12px 12px 0 0;box-shadow:0 -4px 12px rgba(0,0,0,.08);padding:10px 14px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;z-index:6;margin-top:6px}'\n+'.sig{margin-top:8px;min-height:60px;display:flex;align-items:center;gap:10px}.sig img{max-height:60px;max-width:220px;border:1px solid #eee;border-radius:6px;background:#fff}'\n+'.note{font-size:13px;color:#6b6e70;margin-top:6px}.msg{font-size:14px;color:#8a5a00;margin-top:8px;min-height:18px}'\n+'.ov{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;z-index:7000}.dlg{background:#fff;border-radius:14px;max-width:560px;width:100%;padding:16px;max-height:calc(100vh - 40px);overflow:auto}.dlg.wide{max-width:980px;display:flex;flex-direction:column}.dlg h2{margin:0 0 10px;font-size:18px}'\n+'.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.chip{border:1px solid #d9d9d6;background:#fff;border-radius:20px;padding:5px 11px;font:inherit;font-size:13px;cursor:pointer}.chip span{color:#6c6a66}.chip.on{background:#000;color:#FFBE59;border-color:#000}.chip.on span{color:#FFBE59}'\n+'.pk{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;overflow:auto;padding:2px}.pk .pt{position:relative;border-radius:8px;overflow:hidden;cursor:pointer;background:#eee;aspect-ratio:1}.pk .pt img{width:100%;height:100%;object-fit:cover;display:block}.pk .pt.on{outline:4px solid #F47920;outline-offset:-4px}.pk .pt.used{opacity:.45}'\n+'.pk .pt .ck{position:absolute;top:5px;left:5px;width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;font-weight:700;color:#F47920}.pk .pt .cs{position:absolute;left:4px;right:4px;bottom:4px;display:flex;flex-wrap:wrap;gap:3px}.pk .pt .cs span{background:rgba(0,0,0,.72);color:#fff;font-size:10.5px;border-radius:10px;padding:1px 6px}'\n+'.lb{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:7100;display:flex;align-items:center;justify-content:center;padding:14px}.lb img{max-width:100%;max-height:100%;object-fit:contain}.lb button{position:absolute;top:12px;right:12px}';\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Service sheets - Job '+e(job)+'</title><script src=\"/webhook/cbs-guard\"></script><style>'+CSS+'</style><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script></head><body><header><h1>Service sheets'+(job?' \\u00b7 Job '+e(job):'')+'</h1><p id=\"sub\">Chelmsford Building Services</p></header><div class=\"wrap\" id=\"app\">'+(job?'<div class=\"empty\">Loading the job\\u2026</div>':'<div class=\"empty\">Open service sheets from a job.</div>')+'</div><script>window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+';</script>'+(job?'<script>('+client.toString()+')();</script>':'')+'</body></html>';\nreturn [{json:{html:html}}];\n\nfunction client(){\nvar D=window.D,JOB=D.job,app=document.getElementById('app'),X=null,CUR=null,DIRTY=false,BUSY=false,LOGO=null;\nvar GROUPS=[['before','Before','Before'],['progress','Work in progress','Progress'],['after','After','After']];\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:s(d);}\nfunction longDate(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);if(!m)return s(d);var M=['January','February','March','April','May','June','July','August','September','October','November','December'];return m[3]+' '+M[+m[2]-1]+' '+m[1];}\nfunction today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction img(u){return '/webhook/cbs-job-photo?u='+encodeURIComponent(u);}\nfunction me(){var x='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)x=m.name;}catch(z){}if(!x){try{x=localStorage.getItem('cbs_name')||'';}catch(z){}}return x;}\nfunction lock(on){document.body.style.overflow=on?'hidden':'';}\nfunction dlg(h,wide){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg'+(wide?' wide':'')+'\">'+h+'</div>';document.body.appendChild(o);lock(true);o.close=function(){o.remove();if(!document.querySelector('.ov,.lb'))lock(false);};return o;}\n/* in-app confirm: resolves true/false */\nfunction ask(title,msg,ok,danger){return new Promise(function(res){var o=dlg('<h2>'+e(title)+'</h2><div class=\"m\">'+msg+'</div><div class=\"b\"><button class=\"btn'+(danger?' red':'')+'\" id=\"aY\">'+e(ok||'OK')+'</button><button class=\"btn ghost\" id=\"aN\">Cancel</button></div>');\n o.querySelector('#aY').onclick=function(){o.close();res(true);};o.querySelector('#aN').onclick=function(){o.close();res(false);};o.addEventListener('click',function(ev){if(ev.target===o){o.close();res(false);}});});}\nfunction tell(title,msg){var o=dlg('<h2>'+e(title)+'</h2><div class=\"m\">'+msg+'</div><div class=\"b\"><button class=\"btn\" id=\"tk\">OK</button></div>');o.querySelector('#tk').onclick=o.close;}\nfunction view(u){var o=document.createElement('div');o.className='lb';o.innerHTML='<img src=\"'+img(u)+'\" alt=\"\"><button class=\"btn ghost\">Close</button>';document.body.appendChild(o);lock(true);o.onclick=function(ev){if(ev.target.tagName!=='IMG'){o.remove();if(!document.querySelector('.ov,.lb'))lock(false);}};}\nfunction load(){return fetch('/webhook/cbs-service-data?job='+encodeURIComponent(JOB),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){if(!d||!d.ok)throw 0;X=d;\n document.getElementById('sub').textContent=[X.name,X.site,X.client].filter(Boolean).join(' \\u00b7 ')||'Chelmsford Building Services';}).catch(function(){X=null;app.innerHTML='<div class=\"empty\">Could not load the job. Refresh to try again.</div>';throw 0;});}\nfunction nPhotos(sh){var n=0;(sh.sections||[]).forEach(function(c){GROUPS.forEach(function(g){n+=((c.photos||{})[g[0]]||[]).length;});});return n;}\n/* ---------- list ---------- */\nfunction list(){CUR=null;DIRTY=false;var L=X.sheets||[],h='';\n h+='<div class=\"tools\"><button class=\"btn\" id=\"nw\">+ New service sheet</button></div>';\n if(!L.length)h+='<div class=\"empty\">No service sheets on this job yet.<br>A service sheet records the completed works with before, work in progress and after photos, signed off by CBS.</div>';\n L.forEach(function(sh){var secs=(sh.sections||[]).map(function(c){return c.title;}).filter(Boolean);\n  h+='<div class=\"card\"><div class=\"t\">'+e(sh.sheet_no)+' \\u00b7 '+e(dmy(sh.sheet_date))+'<span class=\"tag '+(sh.pdf_url?'ok':'dr')+'\">'+(sh.pdf_url?'PDF saved':'Draft')+'</span></div>'\n  +'<div class=\"m\">'+(secs.length?e(secs.join(' \\u00b7 ')):'No description yet')+'</div>'\n  +'<div class=\"m\">'+(sh.sections||[]).length+' section'+((sh.sections||[]).length===1?'':'s')+' \\u00b7 '+nPhotos(sh)+' photo'+(nPhotos(sh)===1?'':'s')+(sh.signed_by?' \\u00b7 Signed by '+e(sh.signed_by):'')+(sh.updated_at?' \\u00b7 Updated '+e(dmy(sh.updated_at))+(sh.updated_by?' by '+e(sh.updated_by):''):'')+'</div>'\n  +'<div class=\"b\"><button class=\"btn sm\" data-ed=\"'+sh.id+'\">Open</button>'+(sh.pdf_url?'<a class=\"btn ghost sm\" href=\"/webhook/cbs-file?u='+encodeURIComponent(sh.pdf_url)+'\" target=\"_blank\" rel=\"noopener\">View PDF</a>':'')+'<button class=\"btn red sm\" data-dl=\"'+sh.id+'\">Delete</button></div></div>';});\n app.innerHTML=h;\n document.getElementById('nw').onclick=function(){edit(null);};\n [].forEach.call(app.querySelectorAll('[data-ed]'),function(b){b.onclick=function(){edit(+b.getAttribute('data-ed'));};});\n [].forEach.call(app.querySelectorAll('[data-dl]'),function(b){b.onclick=function(){del(+b.getAttribute('data-dl'),b);};});}\nfunction del(id,btn){var sh=(X.sheets||[]).filter(function(x){return x.id===id;})[0];if(!sh)return;\n ask('Delete '+sh.sheet_no+'?','This deletes the service sheet record from the hub.'+(sh.pdf_url?' The saved PDF stays in the job\\u2019s files.':''),'Delete','1').then(function(ok){if(!ok)return;\n  return ask('Are you sure?','Delete service sheet '+e(sh.sheet_no)+' on job '+e(JOB)+'. This cannot be undone.','Yes, delete it','1').then(function(ok2){if(!ok2||BUSY)return;BUSY=true;btn.disabled=true;btn.textContent='Deleting\\u2026';\n   return fetch('/webhook/cbs-service-del',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({job:JOB,id:id,by:me()})}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(d){if(!d||!d.ok)throw 0;BUSY=false;return load().then(list);})\n   .catch(function(){BUSY=false;btn.disabled=false;btn.textContent='Delete';tell('Not deleted','Could not delete the service sheet. Check your connection and try again.');});});});}\n/* ---------- editor ---------- */\nfunction blankSec(){return {title:'',details:'',photos:{before:[],progress:[],after:[]}};}\nfunction edit(id){var sh=id?(X.sheets||[]).filter(function(x){return x.id===id;})[0]:null;\n if(sh)CUR=JSON.parse(JSON.stringify(sh));\n else{var sig=(X.sigs||[]).filter(function(x){return x.name.toLowerCase()===me().toLowerCase();})[0];\n  CUR={id:0,tok:'t'+Date.now()+Math.random().toString(36).slice(2,8),sheet_no:'',sheet_date:today(),location:X.address||X.site||'',job_title:JOB+(X.name?' - '+X.name:''),sections:[blankSec()],signed_by:sig?sig.name:''};}\n CUR.sections=(CUR.sections&&CUR.sections.length?CUR.sections:[blankSec()]).map(function(c){c.photos=c.photos||{};GROUPS.forEach(function(g){c.photos[g[0]]=c.photos[g[0]]||[];});return c;});\n DIRTY=!id;draw();window.scrollTo(0,0);}\nfunction draw(){var C=CUR,h='';\n h+='<div class=\"card\"><h3>'+(C.sheet_no?e(C.sheet_no):'New service sheet')+(C.pdf_url?'<span class=\"tag ok\">PDF saved</span>':'<span class=\"tag dr\">Draft</span>')+'</h3>'\n +'<div class=\"g3\"><div><label class=\"f\">Date</label><input class=\"i\" type=\"date\" id=\"fDate\" value=\"'+e(C.sheet_date)+'\"></div><div><label class=\"f\">Location</label><input class=\"i\" id=\"fLoc\" spellcheck=\"true\" value=\"'+e(C.location)+'\"></div><div><label class=\"f\">Job</label><input class=\"i\" id=\"fJob\" spellcheck=\"true\" value=\"'+e(C.job_title)+'\"></div></div></div>';\n C.sections.forEach(function(c,i){\n  h+='<div class=\"card sec\" data-i=\"'+i+'\"><h3>Section '+(i+1)+'<span class=\"sp\"></span>'+(i?'<button class=\"btn ghost sm\" data-up=\"'+i+'\" title=\"Move up\">\\u2191</button>':'')+(i<C.sections.length-1?'<button class=\"btn ghost sm\" data-dn=\"'+i+'\" title=\"Move down\">\\u2193</button>':'')+(C.sections.length>1?'<button class=\"btn red sm\" data-rm=\"'+i+'\">Remove section</button>':'')+'</h3>'\n  +'<label class=\"f\">Description</label><input class=\"i\" data-k=\"title\" data-i=\"'+i+'\" spellcheck=\"true\" placeholder=\"e.g. Replace damaged fire door to plant room\" value=\"'+e(c.title)+'\">'\n  +'<label class=\"f\">Details</label><textarea class=\"i\" data-k=\"details\" data-i=\"'+i+'\" spellcheck=\"true\" placeholder=\"What was done, materials used, anything the client should know\">'+e(c.details)+'</textarea>';\n  GROUPS.forEach(function(g){var L=c.photos[g[0]];\n   h+='<div class=\"pg\"><div class=\"pgh\">'+g[1]+' photos <span>'+(L.length?L.length:'none')+'</span><span style=\"flex:1\"></span><button class=\"btn ghost sm\" data-add=\"'+i+'\" data-g=\"'+g[0]+'\">+ Add photos</button></div>';\n   if(L.length)h+='<div class=\"th\">'+L.map(function(p,pi){return '<div class=\"tc\"><img loading=\"lazy\" src=\"'+img(p.u)+'\" data-vw=\"'+e(p.u)+'\" alt=\"\"><div class=\"mv\">'+(pi?'<button data-pl=\"'+i+'|'+g[0]+'|'+pi+'\" title=\"Move left\">\\u2190</button>':'')+(pi<L.length-1?'<button data-pr=\"'+i+'|'+g[0]+'|'+pi+'\" title=\"Move right\">\\u2192</button>':'')+'</div><button class=\"x\" data-px=\"'+i+'|'+g[0]+'|'+pi+'\" title=\"Remove from this sheet\">\\u00d7</button><input data-cap=\"'+i+'|'+g[0]+'|'+pi+'\" placeholder=\"Caption (optional)\" spellcheck=\"true\" value=\"'+e(p.cap)+'\"></div>';}).join('')+'</div>';\n   h+='</div>';});\n  h+='</div>';});\n h+='<div class=\"tools\"><button class=\"btn ghost\" id=\"addSec\">+ Add section</button></div>';\n var SG=X.sigs||[];\n h+='<div class=\"card\"><h3>Signed / serviced</h3>'+(SG.length?'<select class=\"i\" id=\"fSig\"><option value=\"\">Choose who signs this sheet</option>'+SG.map(function(x){return '<option'+(x.name===C.signed_by?' selected':'')+'>'+e(x.name)+'</option>';}).join('')+(C.signed_by&&!SG.some(function(x){return x.name===C.signed_by;})?'<option selected>'+e(C.signed_by)+'</option>':'')+'</select><div class=\"sig\" id=\"sigP\"></div>'\n  :'<div class=\"m\">No saved signatures yet. Add one in the Operations Hub under Settings \\u203a Signatures, then refresh this page.</div>')\n  +'<div class=\"note\">Signatures come from Settings \\u203a Signatures in the Operations Hub.</div></div>';\n h+='<div class=\"bar\"><button class=\"btn ghost\" id=\"bk\">Back to service sheets</button><button class=\"btn ghost\" id=\"sv\">Save draft</button><button class=\"btn\" id=\"pdf\">Save and create PDF</button></div>';\n app.innerHTML=h;\n sigPrev();wire();}\nfunction sigPrev(){var p=document.getElementById('sigP');if(!p)return;var x=(X.sigs||[]).filter(function(z){return z.name===CUR.signed_by;})[0];p.innerHTML=x&&x.img?'<img src=\"'+e(x.img)+'\" alt=\"Signature\"><span class=\"m\">'+e(x.name)+(x.role?' \\u00b7 '+e(x.role):'')+'</span>':(CUR.signed_by?'<span class=\"m\">No signature image saved for '+e(CUR.signed_by)+'.</span>':'');}\nfunction pk(v){var a=s(v).split('|');return {i:+a[0],g:a[1],p:+a[2]};}\nfunction wire(){\n document.getElementById('fDate').onchange=function(){CUR.sheet_date=this.value;DIRTY=true;};\n document.getElementById('fLoc').oninput=function(){CUR.location=this.value;DIRTY=true;};\n document.getElementById('fJob').oninput=function(){CUR.job_title=this.value;DIRTY=true;};\n [].forEach.call(app.querySelectorAll('[data-k]'),function(el){el.oninput=function(){CUR.sections[+el.getAttribute('data-i')][el.getAttribute('data-k')]=el.value;DIRTY=true;};});\n [].forEach.call(app.querySelectorAll('[data-cap]'),function(el){el.oninput=function(){var x=pk(el.getAttribute('data-cap'));CUR.sections[x.i].photos[x.g][x.p].cap=el.value;DIRTY=true;};});\n [].forEach.call(app.querySelectorAll('[data-vw]'),function(el){el.onclick=function(){view(el.getAttribute('data-vw'));};});\n [].forEach.call(app.querySelectorAll('[data-px]'),function(el){el.onclick=function(){var x=pk(el.getAttribute('data-px'));CUR.sections[x.i].photos[x.g].splice(x.p,1);DIRTY=true;keep(draw);};});\n [].forEach.call(app.querySelectorAll('[data-pl],[data-pr]'),function(el){el.onclick=function(){var l=el.hasAttribute('data-pl'),x=pk(el.getAttribute(l?'data-pl':'data-pr')),L=CUR.sections[x.i].photos[x.g],t=x.p+(l?-1:1),m=L[x.p];L[x.p]=L[t];L[t]=m;DIRTY=true;keep(draw);};});\n [].forEach.call(app.querySelectorAll('[data-up],[data-dn]'),function(el){el.onclick=function(){var u=el.hasAttribute('data-up'),i=+el.getAttribute(u?'data-up':'data-dn'),t=i+(u?-1:1),L=CUR.sections,m=L[i];L[i]=L[t];L[t]=m;DIRTY=true;draw();};});\n [].forEach.call(app.querySelectorAll('[data-rm]'),function(el){el.onclick=function(){var i=+el.getAttribute('data-rm'),c=CUR.sections[i],n=0;GROUPS.forEach(function(g){n+=c.photos[g[0]].length;});\n  if(!c.title&&!c.details&&!n){CUR.sections.splice(i,1);DIRTY=true;draw();return;}\n  ask('Remove section '+(i+1)+'?','Its description, details and '+n+' photo'+(n===1?'':'s')+' come off this sheet. The photos stay on the ServiceM8 job.','Remove section','1').then(function(ok){if(!ok)return;CUR.sections.splice(i,1);DIRTY=true;draw();});};});\n [].forEach.call(app.querySelectorAll('[data-add]'),function(el){el.onclick=function(){picker(+el.getAttribute('data-add'),el.getAttribute('data-g'));};});\n document.getElementById('addSec').onclick=function(){CUR.sections.push(blankSec());DIRTY=true;draw();var L=app.querySelectorAll('.sec');if(L.length)L[L.length-1].scrollIntoView({behavior:'smooth',block:'start'});};\n var sg=document.getElementById('fSig');if(sg)sg.onchange=function(){CUR.signed_by=this.value;DIRTY=true;sigPrev();};\n document.getElementById('bk').onclick=function(){if(!DIRTY){list();return;}ask('Leave without saving?','Your changes to this service sheet have not been saved.','Leave without saving','1').then(function(ok){if(ok)list();});};\n document.getElementById('sv').onclick=function(){save(false);};\n document.getElementById('pdf').onclick=function(){save(true);};}\nfunction keep(fn){var y=window.pageYOffset;fn();window.scrollTo(0,y);}\n/* ---------- photo picker (job's ServiceM8 photos, filtered by category) ---------- */\nfunction picker(si,gk){var g=GROUPS.filter(function(x){return x[0]===gk;})[0],P=X.photos||[],sel={},flt=P.some(function(p){return p.cats.indexOf(g[2])>-1;})?g[2]:'all';\n var used={};GROUPS.forEach(function(x){CUR.sections[si].photos[x[0]].forEach(function(p){used[p.u]=x[1];});});\n if(!P.length){tell('No photos yet','There are no photos on the ServiceM8 job yet. Photos the team take on the job in ServiceM8 show here.');return;}\n var o=dlg('<h2>Add '+e(g[1].toLowerCase())+' photos \\u00b7 Section '+(si+1)+'</h2><div class=\"chips\" id=\"pc\"></div><div class=\"pk\" id=\"pg\"></div><div class=\"note\">Categories are set on the job page photo sorter. Faded photos are already in this section.</div><div class=\"b\"><button class=\"btn\" id=\"pa\" disabled>Add photos</button><button class=\"btn ghost\" id=\"px\">Cancel</button><span class=\"m\" id=\"pn\"></span></div>',true);\n function shown(p){if(flt==='all')return true;if(flt==='unsorted')return !p.cats.length;return p.cats.indexOf(flt)>-1;}\n function chip(k,l,n){return '<button class=\"chip'+(flt===k?' on':'')+'\" data-f=\"'+e(k)+'\">'+e(l)+' <span>'+n+'</span></button>';}\n function rd(){var h=chip('all','All',P.length);['Before','Progress','After'].forEach(function(c){h+=chip(c,c==='Progress'?'Work in progress':c,P.filter(function(p){return p.cats.indexOf(c)>-1;}).length);});\n  var oth={};P.forEach(function(p){p.cats.forEach(function(c){if(['Before','Progress','After'].indexOf(c)<0)oth[c]=(oth[c]||0)+1;});});Object.keys(oth).forEach(function(c){h+=chip(c,c,oth[c]);});\n  h+=chip('unsorted','Unsorted',P.filter(function(p){return !p.cats.length;}).length);o.querySelector('#pc').innerHTML=h;\n  var L=P.filter(shown);o.querySelector('#pg').innerHTML=L.length?L.map(function(p){return '<div class=\"pt'+(sel[p.u]?' on':'')+(used[p.u]?' used':'')+'\" data-u=\"'+e(p.u)+'\"><img loading=\"lazy\" src=\"'+img(p.u)+'\" alt=\"\"><div class=\"ck\">'+(sel[p.u]?'\\u2713':'')+'</div><div class=\"cs\">'+(p.ts?'<span>'+e(dmy(p.ts))+'</span>':'')+p.cats.map(function(c){return '<span>'+e(c)+'</span>';}).join('')+(used[p.u]?'<span>In '+e(used[p.u]).toLowerCase()+'</span>':'')+'</div></div>';}).join(''):'<div class=\"m\">No photos in this category.</div>';\n  var n=Object.keys(sel).length;o.querySelector('#pa').disabled=!n;o.querySelector('#pa').textContent=n?'Add '+n+' photo'+(n===1?'':'s'):'Add photos';o.querySelector('#pn').textContent=n?n+' selected':'';\n  [].forEach.call(o.querySelectorAll('[data-f]'),function(b){b.onclick=function(){flt=b.getAttribute('data-f');rd();};});\n  [].forEach.call(o.querySelectorAll('[data-u]'),function(t){t.onclick=function(){var u=t.getAttribute('data-u');if(sel[u])delete sel[u];else sel[u]=1;rd();};});}\n rd();o.querySelector('#px').onclick=o.close;o.addEventListener('click',function(ev){if(ev.target===o)o.close();});\n o.querySelector('#pa').onclick=function(){var L=CUR.sections[si].photos[gk],have={};L.forEach(function(p){have[p.u]=1;});\n  P.forEach(function(p){if(sel[p.u]&&!have[p.u])L.push({u:p.u,cap:p.cap||''});});DIRTY=true;o.close();keep(draw);};}\n/* ---------- save ---------- */\nfunction payload(){return {sheet_date:CUR.sheet_date,location:CUR.location,job_title:CUR.job_title,signed_by:CUR.signed_by,\n sections:CUR.sections.map(function(c){var o={title:s(c.title).trim(),details:s(c.details).trim(),photos:{}};GROUPS.forEach(function(g){o.photos[g[0]]=c.photos[g[0]].map(function(p){return {u:p.u,cap:s(p.cap).trim()};});});return o;})};}\nfunction setBar(t){var a=document.getElementById('sv'),b=document.getElementById('pdf'),k=document.getElementById('bk');[a,b,k].forEach(function(x){if(x)x.disabled=!!t;});if(t&&b)b.textContent=t;else if(b)b.textContent='Save and create PDF';}\nfunction save(withPdf){if(BUSY)return;var P=payload(),by=me();\n if(!by){tell('Sign in first','Sign in to the Operations Hub so the service sheet is saved under your name.');return;}\n if(withPdf){var hasAny=P.sections.some(function(c){return c.title||c.details;});\n  if(!hasAny){tell('Nothing to put on the sheet','Add a description or details to at least one section first.');return;}\n  if(!P.signed_by){tell('Choose who signs','Choose who signs the sheet under Signed / serviced.');return;}\n  if(!window.jspdf){tell('PDF tool not loaded','The PDF tool did not load. Refresh the page and try again.');return;}}\n BUSY=true;setBar(withPdf?'Saving\\u2026':'Saving');\n fetch('/webhook/cbs-service-save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({job:JOB,id:CUR.id||0,tok:CUR.tok||'',by:by,sheet:P})}).then(function(r){if(!r.ok)throw 0;return r.json();})\n .then(function(d){if(!d||!d.ok)throw new Error(d&&d.message||'');CUR.id=d.id;CUR.sheet_no=d.sheet_no;DIRTY=false;\n  if(!withPdf){BUSY=false;return load().then(function(){edit(CUR.id);});}\n  setBar('Building the PDF\\u2026');\n  return build(P,function(t){setBar(t);}).then(function(doc){setBar('Saving the PDF to the job\\u2026');var name=fname();\n   return fetch('/webhook/cbs-service-pdf',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({job:JOB,id:CUR.id,by:by,b64:doc.output('datauristring')})}).then(function(r){if(!r.ok)throw 0;return r.json();})\n    .then(function(x){if(!x||!x.ok)throw 0;doc.save(name);BUSY=false;return load().then(function(){list();tell('Service sheet saved',e(CUR.sheet_no||'The service sheet')+' is saved to the job\\u2019s files (Service Sheets) and has downloaded to this device.');});})\n    .catch(function(){doc.save(name);BUSY=false;setBar('');tell('PDF not saved to the job','The PDF downloaded, but it could not be saved to the job\\u2019s files. Press Save and create PDF again.');});});})\n .catch(function(err){BUSY=false;setBar('');tell('Not saved','Could not save the service sheet'+(err&&err.message?': '+e(err.message):'')+'. Check your connection and try again.');});}\nfunction fname(){return 'Job '+JOB+' - Service sheet '+(CUR.sheet_no||'')+' - '+s(CUR.sheet_date||today())+'.pdf';}\n/* ---------- PDF (CBS service sheet layout) ---------- */\nfunction getLogo(){if(LOGO!==null)return Promise.resolve(LOGO);return fetch('/webhook/cbs-programme-logo').then(function(r){return r.json();}).then(function(d){LOGO=(d&&d.lg)||'';return LOGO;}).catch(function(){LOGO='';return '';});}\nfunction imgData(u){return fetch(img(u)).then(function(r){if(!r.ok)throw 0;return r.blob();}).then(function(bl){return new Promise(function(res){var url=URL.createObjectURL(bl),im=new Image();\n im.onload=function(){var mx=1400,sc=Math.min(1,mx/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*sc));c.height=Math.max(1,Math.round(im.height*sc));var g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(url);res({d:c.toDataURL('image/jpeg',0.78),w:c.width,h:c.height});};\n im.onerror=function(){URL.revokeObjectURL(url);res(null);};im.src=url;});}).catch(function(){return null;});}\nfunction build(P,say){return getLogo().then(function(lg){var U=[];P.sections.forEach(function(c){GROUPS.forEach(function(g){c.photos[g[0]].forEach(function(p){if(U.indexOf(p.u)<0)U.push(p.u);});});});\n var IM={},done=0;say(U.length?'Loading photos (0 of '+U.length+')\\u2026':'Building the PDF\\u2026');\n return U.reduce(function(pr,u){return pr.then(function(){return imgData(u).then(function(d){IM[u]=d;done++;say('Loading photos ('+done+' of '+U.length+')\\u2026');});});},Promise.resolve()).then(function(){say('Building the PDF\\u2026');return make(P,lg,IM);});});}\nfunction make(P,lg,IM){var jsPDF=window.jspdf.jsPDF,doc=new jsPDF({unit:'mm',format:'a4'}),W=210,HH=297,M=13,CW=W-2*M,y=0,FOOT=HH-27,LBL=27,OR=[255,199,128];\n var sig=(X.sigs||[]).filter(function(z){return z.name===P.signed_by;})[0];\n function head(first){if(lg){try{var pr=doc.getImageProperties(lg),hh=first?17:11,ww=pr.width*hh/pr.height;if(ww>62){ww=62;hh=pr.height*ww/pr.width;}doc.addImage(lg,'PNG',M,first?9:7,ww,hh);}catch(z){}}\n  if(first){doc.setTextColor(70);doc.setFont('helvetica','bold');doc.setFontSize(10.5);doc.text('Industrial & Commercial Contractors',M,32);doc.text('Property Renovation & Maintenance',M,37);\n   var tw=doc.getTextWidth('Property Renovation & Maintenance');doc.setDrawColor(70);doc.setLineWidth(0.25);doc.line(M,37.8,M+tw,37.8);\n   doc.setLineDashPattern([2.2,0.8,0.5,0.8],0);doc.line(M+tw+1,37.8,W-M,37.8);doc.setLineDashPattern([],0);\n   doc.setFontSize(8.5);doc.text('Unit 1 - Example Business Park - Bishop\\u2019s Stortford - Hertfordshire \\u2013 ZZ99 1ZZ',M,42);\n   doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(40);doc.text('*Service Sheet to be completed by CBS on completion of works',W/2,51,{align:'center'});y=56;}\n  else{doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text('Service sheet '+(CUR.sheet_no||'')+'  |  Job '+JOB+'  |  continued',W-M,13,{align:'right'});y=24;}}\n function np(){doc.addPage();head(false);}\n function need(h){if(y+h>FOOT){np();return true;}return false;}\n function box(x,yy,w,h,fill){doc.setDrawColor(0);doc.setLineWidth(0.3);if(fill){doc.setFillColor(fill[0],fill[1],fill[2]);doc.rect(x,yy,w,h,'FD');}else doc.rect(x,yy,w,h);}\n function ctext(t,x,yy,w,h,o){o=o||{};doc.setFont('helvetica',o.b?'bold':'normal');doc.setFontSize(o.sz||10);doc.setTextColor(o.c==null?30:o.c);var L=doc.splitTextToSize(s(t),w-4).slice(0,o.max||6),lh=(o.sz||10)*0.42;var ty=yy+h/2-(L.length-1)*lh/2+(o.sz||10)*0.14;\n  L.forEach(function(l,k){doc.text(l,x+w/2,ty+k*lh,{align:'center'});if(o.u){var tw=doc.getTextWidth(l);doc.setLineWidth(0.25);doc.setDrawColor(30);doc.line(x+w/2-tw/2,ty+k*lh+0.7,x+w/2+tw/2,ty+k*lh+0.7);}});}\n head(true);\n /* date / location / job */\n var c1=44,c2=66,c3=CW-c1-c2;box(M,y,c1,9,OR);box(M+c1,y,c2,9,OR);box(M+c1+c2,y,c3,9,OR);\n ctext('Date',M,y,c1,9,{b:1,u:1});ctext('Location',M+c1,y,c2,9,{b:1,u:1});ctext('Job',M+c1+c2,y,c3,9,{b:1,u:1});y+=9;\n doc.setFontSize(10);var lh=Math.max(doc.splitTextToSize(s(P.location),c2-4).length,doc.splitTextToSize(s(P.job_title),c3-4).length),rh=Math.max(16,lh*4.4+6);\n box(M,y,c1,rh);box(M+c1,y,c2,rh);box(M+c1+c2,y,c3,rh);ctext(longDate(P.sheet_date),M,y,c1,rh,{b:1});ctext(P.location,M+c1,y,c2,rh,{max:8});ctext(P.job_title,M+c1+c2,y,c3,rh,{max:8});y+=rh;\n /* sections */\n P.sections.forEach(function(c,ci){\n  /* description */\n  doc.setFontSize(11);var dl=doc.splitTextToSize(c.title||'Section '+(ci+1),CW-8),dh=Math.max(13,dl.length*4.8+7);\n  need(dh+22);box(M,y,CW,dh);ctext(c.title||'Section '+(ci+1),M,y,CW,dh,{sz:11,b:1,max:10});y+=dh;\n  /* details (splits over pages) */\n  doc.setFont('helvetica','normal');doc.setFontSize(9.5);var DL=c.details?doc.splitTextToSize(c.details,CW-8):[];var first=true;\n  if(!DL.length){box(M,y,CW,12);doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(90);doc.text('Details',M+3,y+4.5);doc.setFont('helvetica','normal');doc.setTextColor(140);doc.setFontSize(9);doc.text('No further details.',M+3,y+9);y+=12;}\n  while(DL.length){var room=Math.floor((FOOT-y-9)/4.4);if(room<3){np();continue;}var chunk=DL.splice(0,room),bh=chunk.length*4.4+(first?9:5);\n   box(M,y,CW,bh);if(first){doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(90);doc.text('Details',M+3,y+4.5);}\n   doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(25);doc.text(chunk,M+3,y+(first?9:4.5));y+=bh;first=false;if(DL.length)np();}\n  /* photo groups: rows of up to 3 */\n  GROUPS.forEach(function(g){var L=c.photos[g[0]];if(!L.length)return;var per=3,cw=(CW-LBL)/per,ih=50;\n   for(var r=0;r<L.length;r+=per){var row=L.slice(r,r+per),hasCap=row.some(function(p){return p.cap;}),hgt=ih+6+(hasCap?6:0);\n    need(hgt);box(M,y,LBL,hgt);box(M+LBL,y,CW-LBL,hgt);ctext(g[1]+' photo'+(L.length===1?'':'s')+(L.length>per?' ('+(Math.floor(r/per)+1)+' of '+Math.ceil(L.length/per)+')':''),M,y,LBL,hgt,{b:1,sz:8.5});\n    row.forEach(function(p,k){var x0=M+LBL+k*cw+3,bw=cw-6,im=IM[p.u];\n     if(im){var sc=Math.min(bw/im.w,ih/im.h),w2=im.w*sc,h2=im.h*sc;try{doc.addImage(im.d,'JPEG',x0+(bw-w2)/2,y+3+(ih-h2)/2,w2,h2);}catch(z){}}\n     else{doc.setDrawColor(200);doc.rect(x0,y+3,bw,ih);doc.setFontSize(8);doc.setTextColor(120);doc.text('Photo not available',x0+bw/2,y+3+ih/2,{align:'center'});}\n     if(p.cap){doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(60);doc.text(doc.splitTextToSize(p.cap,bw)[0],x0+bw/2,y+ih+7,{align:'center'});}});\n    y+=hgt;}});\n  y+=3;});\n /* sign-off */\n need(22);var sh=20,half=(CW-LBL)/2;box(M,y,LBL,sh);box(M+LBL,y,half,sh);box(M+LBL+half,y,half,sh);ctext('Signed/\\nServiced',M,y,LBL,sh,{b:1,sz:8.5});\n if(sig&&sig.img){try{var sp=doc.getImageProperties(sig.img),sw=half-8,shh=sh-4,k=Math.min(sw/sp.width,shh/sp.height);doc.addImage(sig.img,/png/i.test(sig.img.slice(0,30))?'PNG':'JPEG',M+LBL+(half-sp.width*k)/2,y+(sh-sp.height*k)/2,sp.width*k,sp.height*k);}catch(z){}}\n ctext(P.signed_by,M+LBL+half,y,half,sh,{sz:10.5});y+=sh;\n /* footer on every page */\n var n=doc.getNumberOfPages();for(var i=1;i<=n;i++){doc.setPage(i);doc.setDrawColor(190,190,220);doc.setLineWidth(0.3);doc.line(M,HH-22,W-M-40,HH-22);doc.setFont('helvetica','bold');doc.setFontSize(6.8);doc.setTextColor(150);\n  doc.text('Vat Reg. No.: 425 1034 96',M,HH-18);doc.text('Chelmsford Maintenance is a trading name of Chelmsford Building Services Ltd',M,HH-15);doc.text('Registered in England & Wales: 4639742 \\u2013 Registered Office: Reeds, Bacon End, Dunmow, Essex, ZZ99 7ZZ',M,HH-12);\n  doc.setFont('helvetica','normal');doc.text('Page '+i+' of '+n,W-M,HH-12,{align:'right'});}\n return doc;}\nload().then(function(){if(D.isNew)edit(null);else if(D.open&&(X.sheets||[]).some(function(x){return String(x.id)===D.open;}))edit(+D.open);else list();}).catch(function(){});\n}"
+        }
+      },
+      {
+        "id": "baa99afe-0050-4a94-8fed-47e73f70dbdb",
+        "name": "Page Send",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "ad0cdde6-1df2-42da-adfd-648fa347b30c",
+        "name": "Data Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          224
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-service-data",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "4d46b218-f2ef-4407-99fd-21a1ec1227bd"
+      },
+      {
+        "id": "f3eb253e-dc16-47cd-b828-4f4246b5eeac",
+        "name": "D Job",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          224
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* Job number from ?job=N */\nconst q=$input.first().json.query||{};return [{json:{job:String(q.job||'').replace(/[^0-9A-Za-z-]/g,'')}}];"
+        }
+      },
+      {
+        "id": "ffbab8b5-e91b-4f6e-89a8-48e4bb036556",
+        "name": "SM8 Job",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          448,
+          224
+        ],
+        "parameters": {
+          "method": "GET",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "url": "={{ 'https://api.servicem8.com/api_1.0/job.json?%24filter=' + encodeURIComponent(\"generated_job_id eq '\" + $json.job + \"'\") }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            },
+            "timeout": 20000
+          }
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "d8afb9b8-57bd-4d63-874f-17583dc3b80f",
+        "name": "D Uuid",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          224
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* The ServiceM8 job for this number: the active one when there is one (same rule as the Job File). */\nconst L=$('SM8 Job').all().map(i=>i.json).filter(j=>j&&j.uuid);\nconst A=L.filter(j=>Number(j.active)===1);const j=(A.length?A:L)[0];\nreturn [{json:j?{uuid:j.uuid,job_address:j.job_address||'',job_description:j.job_description||''}:{uuid:'none'}}];"
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "3a68187c-755b-4bb6-9d33-bf192292a27c",
+        "name": "SM8 Photos",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          896,
+          224
+        ],
+        "parameters": {
+          "method": "GET",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "url": "={{ 'https://api.servicem8.com/api_1.0/attachment.json?%24filter=' + encodeURIComponent(\"related_object_uuid eq '\" + ($json.uuid || 'none') + \"' and active eq 1\") }}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            },
+            "timeout": 20000
+          }
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "4166a2de-9f47-4afc-bd90-46d2032db1a6",
+        "name": "Sheets Read",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1120,
+          224
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "G3mYDjQqWyYiCx0W"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "93710f3e-27c2-4684-a30f-7104759f1d67",
+        "name": "D Build",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1344,
+          224
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* Service sheet data for one job: job details, the ServiceM8 job photos with their Job File categories/captions (cbs_photo_tags),\n   signers (Team records ticked Appears in: Service sheets with a saved signature, cbs_workers.in_service + signature, 27/10/2026)\n   and this job's service sheets (cbs_service_sheets). */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst job=S($('D Job').first().json.job);if(!job)return [{json:{ok:false,message:'No job number.'}}];const J=jk(job);\nconst list=async t=>{try{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t+'&k='+K,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);}catch(e){return [];}};\nconst [JR,PT,WK]=await Promise.all(['jobrows','phototags','workers'].map(list));\nconst jr=JR.filter(r=>jk(r.ref)===J).sort((a,b)=>num(b.id)-num(a.id))[0]||{};\nconst sm=$('D Uuid').first().json||{};\nconst IMG=/\\.(jpe?g|png|gif|webp|heic)$/i;\nconst tags={};PT.filter(r=>jk(r.job_no)===J&&S(r.photo_uuid)).forEach(r=>{tags[S(r.photo_uuid)]={cats:S(r.categories).split('|').map(S).filter(Boolean),cap:S(r.caption)};});\nconst seen={};const photos=[];\n$('SM8 Photos').all().map(i=>i.json).forEach(a=>{if(!a||!a.uuid||seen[a.uuid]||String(a.active)==='0')return;if(!(IMG.test(S(a.file_type))||IMG.test(S(a.attachment_name))))return;seen[a.uuid]=1;\n const t=tags[a.uuid]||{cats:[],cap:''};photos.push({u:S(a.uuid),ts:S(a.timestamp),cats:t.cats,cap:t.cap});});\nphotos.sort((a,b)=>a.ts.localeCompare(b.ts));\nconst sigs=WK.filter(r=>S(r.name)&&S(r.signature)&&r.active!==false&&(r.in_service===true||r.in_service==='true')).map(r=>({name:S(r.name),role:S(r.role),img:S(r.signature)})).sort((a,b)=>a.name.localeCompare(b.name));\nconst pj=v=>{try{const a=JSON.parse(S(v)||'[]');return Array.isArray(a)?a:[];}catch(e){return [];}};\nconst sheets=$('Sheets Read').all().map(i=>i.json).filter(r=>r&&r.id!=null&&jk(r.job_no)===J).map(r=>({id:num(r.id),sheet_no:S(r.sheet_no),sheet_date:S(r.sheet_date),location:S(r.location),job_title:S(r.job_title),sections:pj(r.sections_json),signed_by:S(r.signed_by),status:S(r.status),pdf_url:S(r.pdf_url),file_name:S(r.file_name),updated_by:S(r.updated_by),updated_at:S(r.updated_at),created_by:S(r.created_by),created_at:S(r.created_at)}))\n .sort((a,b)=>num(S(b.sheet_no).replace(/\\D/g,''))-num(S(a.sheet_no).replace(/\\D/g,''))||b.id-a.id);\nconst has8=!!(sm.uuid&&sm.uuid!=='none');const addr=has8?S(sm.job_address).replace(/\\s*\\n\\s*/g,', '):'';\nreturn [{json:{ok:true,job:job,name:S(jr.name)||(has8?S(sm.job_description).split('\\n')[0].slice(0,120):''),site:S(jr.site),client:S(jr.client),address:addr,sm8:has8,photos:photos,sigs:sigs,sheets:sheets}}];"
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "ca57c4e4-c0f6-42f2-b377-78c7b3c68f8f",
+        "name": "Data Send",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1568,
+          224
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "115953be-2975-4b5a-96e5-c1e5c67dc9e3",
+        "name": "Save Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          448
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-service-save",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "5863020d-8b9d-44af-a031-7804f8f00b49"
+      },
+      {
+        "id": "1a01b074-5aea-44a6-878f-59fdf9d75e43",
+        "name": "Save Read",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          448
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "G3mYDjQqWyYiCx0W"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "72f564dc-47a8-49bf-b0be-f654954841c2",
+        "name": "Save Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          448
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* Service sheet save: validates, numbers new sheets SS-01, SS-02... per job, and guards against double saves (same tok = same sheet). */\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst b=$('Save Hook').first().json.body||{};const job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by).slice(0,80),tok=S(b.tok).slice(0,60);\nif(!job)throw new Error('No job number');if(!by)throw new Error('Sign in to the hub first');\nconst sh=b.sheet||{};const G=['before','progress','after'];\nconst secs=(Array.isArray(sh.sections)?sh.sections:[]).slice(0,40).map(c=>{const o={title:S(c&&c.title).slice(0,300),details:S(c&&c.details).slice(0,8000),photos:{}};\n G.forEach(g=>{o.photos[g]=(Array.isArray(c&&c.photos&&c.photos[g])?c.photos[g]:[]).slice(0,60).map(p=>({u:S(p&&p.u).replace(/[^0-9a-fA-F-]/g,''),cap:S(p&&p.cap).slice(0,200)})).filter(p=>p.u);});return o;});\nconst rows=$input.all().map(i=>i.json).filter(r=>r&&r.id!=null);const mine=rows.filter(r=>jk(r.job_no)===jk(job));\nlet cur=null;const id=num(b.id);\nif(id)cur=rows.find(r=>num(r.id)===id)||null;\nif(id&&!cur)throw new Error('This service sheet no longer exists');\nif(cur&&jk(cur.job_no)!==jk(job))throw new Error('This service sheet belongs to another job');\nif(!cur&&tok)cur=mine.find(r=>S(r.tok)===tok)||null;\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nlet no=cur?S(cur.sheet_no):'';\nif(!no){const mx=mine.reduce((m,r)=>Math.max(m,num(S(r.sheet_no).replace(/\\D/g,''))),0);no='SS-'+String(mx+1).padStart(2,'0');}\nlet hist=[];try{hist=JSON.parse(S(cur&&cur.history)||'[]');if(!Array.isArray(hist))hist=[];}catch(e){hist=[];}\nhist=hist.concat([{at:now,by:by,ev:cur?'Saved':'Created'}]).slice(-30);\nconst d=S(sh.sheet_date);\nconst row={job_no:job,sheet_no:no,sheet_date:/^\\d{4}-\\d{2}-\\d{2}$/.test(d)?d:now.slice(0,10),location:S(sh.location).slice(0,300),job_title:S(sh.job_title).slice(0,300),sections_json:JSON.stringify(secs),signed_by:S(sh.signed_by).slice(0,80),\n status:cur&&S(cur.pdf_url)?'Issued':'Draft',tok:cur?S(cur.tok)||tok:tok,updated_by:by,updated_at:now,history:JSON.stringify(hist)};\nif(!cur){row.created_by=by;row.created_at=now;row.pdf_url='';row.file_name='';}\nreturn [{json:{rid:cur?num(cur.id):0,no:no,row:row}}];"
+        }
+      },
+      {
+        "id": "afddd7f7-cbb4-47b2-83ba-3ab04ed645e9",
+        "name": "Save Row",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          448
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "return [{ json: $('Save Prep').first().json.row }];"
+        }
+      },
+      {
+        "id": "05f39e5d-67d5-45cf-a161-ee0afe626e71",
+        "name": "Save Upsert",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          448
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "G3mYDjQqWyYiCx0W"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $('Save Prep').first().json.rid }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null,
+            "matchingColumns": []
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "cba305db-5d80-4fa7-90e3-5889efbb29fc",
+        "name": "Save Send",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1120,
+          448
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify({ ok: true, id: $json.id || $('Save Prep').first().json.rid, sheet_no: $('Save Prep').first().json.no }) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "c6a9a7eb-9964-43e7-a904-7e5cc5ae0815",
+        "name": "Del Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          672
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-service-del",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "b50f6c48-ce29-4e5a-ba4c-da6b42733360"
+      },
+      {
+        "id": "ccde174d-706d-495f-b546-86be90054b15",
+        "name": "Del Read",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          672
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "G3mYDjQqWyYiCx0W"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "af92d55c-d1de-4e17-8e3d-de4e105da2cd",
+        "name": "Del Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          672
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* Service sheet delete (second confirmation is on the page). The PDF already saved in SharePoint is left in the job's files. */\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();\nconst b=$('Del Hook').first().json.body||{};const id=Number(b.id)||0,job=S(b.job);\nif(!id||!job)throw new Error('Missing service sheet');\nconst r=$input.all().map(i=>i.json).find(x=>x&&Number(x.id)===id);\nif(!r)throw new Error('This service sheet no longer exists');if(jk(r.job_no)!==jk(job))throw new Error('This service sheet belongs to another job');\nreturn [{json:{rid:id}}];"
+        }
+      },
+      {
+        "id": "5391b77b-9c15-40c7-a624-aabd25103ed8",
+        "name": "Del Rows",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          672
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "deleteRows",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "G3mYDjQqWyYiCx0W"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $json.rid }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "options": {}
+        }
+      },
+      {
+        "id": "c7e19511-d970-444e-b8c0-0cad5646e9ae",
+        "name": "Del Send",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          672
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify({ ok: true }) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "ac8995a3-c1be-4cb4-b07d-01e97b81990c",
+        "name": "PDF Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          896
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-service-pdf",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "78574795-1d5c-49b2-8b50-6ee6eee94ee1"
+      },
+      {
+        "id": "7ae28076-1d5c-49d1-a4d1-154f832284f5",
+        "name": "PDF Read",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          896
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "G3mYDjQqWyYiCx0W"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "cb1804bc-4b5c-4012-8fb1-6d53f4bf1918",
+        "name": "PDF Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          896
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* Service sheet PDF from the page: file for SharePoint CBS System/Operations/Jobs/Job N/Service Sheets. */\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();\nconst b=$('PDF Hook').first().json.body||{};const job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by).slice(0,80),id=Number(b.id)||0;\nlet b64=S(b.b64).replace(/^data:[^,]*,/,'');\nif(!job||!id)throw new Error('Missing service sheet');if(!by)throw new Error('Sign in to the hub first');\nif(!b64||b64.length>45000000)throw new Error('The PDF is missing or too large');\nconst r=$input.all().map(i=>i.json).find(x=>x&&Number(x.id)===id);\nif(!r||jk(r.job_no)!==jk(job))throw new Error('Service sheet not found on this job');\nconst fname=('Job '+job+' - Service sheet '+S(r.sheet_no)+' - '+(S(r.sheet_date)||new Date().toISOString().slice(0,10))+'.pdf').replace(/[\\\\/:*?\"<>|#%]+/g,' ');\nconst path=['CBS System','Operations','Jobs','Job '+job,'Service Sheets',fname].map(encodeURIComponent).join('/');\nconst bin=await this.helpers.prepareBinaryData(Buffer.from(b64,'base64'),fname,'application/pdf');\nreturn [{json:{job:job,by:by,id:id,fname:fname,path:path,history:S(r.history)},binary:{data:bin}}];"
+        }
+      },
+      {
+        "id": "6f36b940-9581-4773-8078-eb76cb1cb311",
+        "name": "Upload PDF",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          672,
+          896
+        ],
+        "parameters": {
+          "method": "PUT",
+          "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.path }}:/content?@microsoft.graph.conflictBehavior=replace",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "sendBody": true,
+          "contentType": "binaryData",
+          "inputDataFieldName": "data",
+          "options": {
+            "timeout": 120000
+          }
+        }
+      },
+      {
+        "id": "e9eefca8-a2ec-4706-9e92-ee6cf930cfca",
+        "name": "PDF Link",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          896,
+          896
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* Stores the saved PDF link on the service sheet. */\nconst S=v=>v==null?'':String(v).trim();\nconst u=$input.first().json||{};const p=$('PDF Prep').first().json;\nif(!S(u.webUrl))throw new Error('SharePoint did not return a link for the PDF');\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nlet hist=[];try{hist=JSON.parse(p.history||'[]');if(!Array.isArray(hist))hist=[];}catch(e){hist=[];}\nhist=hist.concat([{at:now,by:p.by,ev:'PDF saved to the job files',file:p.fname}]).slice(-30);\nreturn [{json:{pdf_url:S(u.webUrl),file_name:p.fname,status:'Issued',updated_by:p.by,updated_at:now,history:JSON.stringify(hist)}}];"
+        }
+      },
+      {
+        "id": "61909b75-3469-4fac-b9fd-a26821560aff",
+        "name": "PDF Upsert",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1120,
+          896
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "G3mYDjQqWyYiCx0W"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $('PDF Prep').first().json.id }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null,
+            "matchingColumns": []
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "ad69cb46-d535-4dc6-a5fc-920d10550171",
+        "name": "PDF Send",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1344,
+          896
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify({ ok: true, url: $('Upload PDF').first().json.webUrl }) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "ae84a95e-d365-4bb3-b633-0bccf72f77d9",
+        "name": "Footer Logos",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          336,
+          120
+        ],
+        "parameters": {
+          "jsCode": "/* Service sheet PDF footer: SafeContractor + CHAS accreditation logos (taken from CBS's own service sheet, 27/10/2026) bottom right of\n   every page, page number moved below them; list button named Create service sheet (button naming rule). Exact-once anchors; a miss\n   leaves the page as it was and is reported in footerLogos. */\nlet html=String($input.first().json.html||'');const rep=[];\nfunction one(a,b,tag){const c=html.split(a).length-1;if(c===1){html=html.split(a).join(b);rep.push(tag+':ok');}else rep.push(tag+':missing('+c+')');}\nconst ACC='data:image/jpeg;base64,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';\none(\"var GROUPS=[['before'\",\"var ACC='\"+ACC+\"';var GROUPS=[['before'\",'logo');\none(\"doc.setFont('helvetica','normal');doc.text('Page '+i+' of '+n,W-M,HH-12,{align:'right'});}\",\"try{doc.addImage(ACC,'JPEG',W-M-36,HH-23.5,36,15.4);}catch(z){}doc.setFont('helvetica','normal');doc.text('Page '+i+' of '+n,W-M,HH-5,{align:'right'});}\",'footer');\none('id=\"nw\">+ New service sheet</button>','id=\"nw\">Create service sheet</button>','button');\nreturn [{json:{html:html,footerLogos:rep.join(' ')}}];",
+          "language": "javaScript",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "c986d32f-226b-4003-a55b-aab19c1f8c5e",
+        "name": "Buttons Photos",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          560,
+          120
+        ],
+        "parameters": {
+          "jsCode": "/* Service sheet: separate Save and Download PDF buttons, bigger photos on the PDF (27/10/2026).\n   Save: saves the sheet; when it has a description/details and a signer, also saves its PDF to the job's files (no download).\n   Download PDF: builds the PDF from the sheet as shown and downloads it; saves nothing. Photos 2 per row, about 105 mm tall.\n   Exact-once anchors; a miss leaves that part as it was and is reported in buttonsPhotos. */\nlet html=String($input.first().json.html||'');const rep=[];const prev=$input.first().json.footerLogos||'';\nfunction one(a,b,tag){const c=html.split(a).length-1;if(c===1){html=html.split(a).join(b);rep.push(tag+':ok');}else rep.push(tag+':missing('+c+')');}\none('<button class=\"btn ghost\" id=\"sv\">Save draft</button><button class=\"btn\" id=\"pdf\">Save and create PDF</button></div>',\n '<button class=\"btn\" id=\"sv\">Save</button><button class=\"btn ghost\" id=\"pdf\">Download PDF</button><span class=\"m\" id=\"bst\" style=\"align-self:center\"></span></div>','bar');\none(\"document.getElementById('sv').onclick=function(){save(false);};\",\"document.getElementById('sv').onclick=function(){save('save');};\",'wireSave');\none(\"document.getElementById('pdf').onclick=function(){save(true);};\",\"document.getElementById('pdf').onclick=function(){save('dl');};\",'wireDl');\none(\"var per=3,cw=(CW-LBL)/per,ih=50;\",\"var per=2,cw=(CW-LBL)/per,ih=105;\",'photos');\nconst a=html.indexOf('function setBar(t){'),b=html.indexOf('function fname(){');\nif(a>-1&&b>a&&html.indexOf('function setBar(t){',a+1)<0){\n const NEW=String.raw`function setBar(t){['sv','pdf','bk'].forEach(function(i){var x=document.getElementById(i);if(x)x.disabled=!!t;});var m=document.getElementById('bst');if(m)m.textContent=t||'';}\nfunction hasContent(P){return P.sections.some(function(c){return c.title||c.details;});}\nfunction save(mode){if(BUSY)return;var P=payload(),by=me();\n if(mode==='dl'){if(!hasContent(P)){tell('Nothing to put on the sheet','Add a description or details to at least one section first.');return;}\n  if(!window.jspdf){tell('PDF tool not loaded','The PDF tool did not load. Refresh the page and try again.');return;}\n  BUSY=true;setBar('Building the PDF\\u2026');\n  build(P,setBar).then(function(doc){doc.save(fname());BUSY=false;setBar('');}).catch(function(){BUSY=false;setBar('');tell('PDF not made','Could not build the PDF. Check your connection and try again.');});return;}\n if(!by){tell('Sign in first','Sign in to the Operations Hub so the service sheet is saved under your name.');return;}\n var ready=hasContent(P)&&!!P.signed_by&&!!window.jspdf;\n BUSY=true;setBar('Saving\\u2026');\n fetch('/webhook/cbs-service-save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({job:JOB,id:CUR.id||0,tok:CUR.tok||'',by:by,sheet:P})}).then(function(r){if(!r.ok)throw 0;return r.json();})\n .then(function(d){if(!d||!d.ok)throw new Error(d&&d.message||'');CUR.id=d.id;CUR.sheet_no=d.sheet_no;DIRTY=false;\n  if(!ready){BUSY=false;setBar('');return load().then(function(){edit(CUR.id);tell('Saved',e(CUR.sheet_no)+' is saved. Its PDF goes into the job\\u2019s files once a section has a description or details and someone is chosen under Signed / serviced.');});}\n  setBar('Building the PDF\\u2026');\n  return build(P,setBar).then(function(doc){setBar('Saving the PDF to the job\\u2026');\n   return fetch('/webhook/cbs-service-pdf',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({job:JOB,id:CUR.id,by:by,b64:doc.output('datauristring')})}).then(function(r){if(!r.ok)throw 0;return r.json();})\n    .then(function(x){if(!x||!x.ok)throw 0;BUSY=false;setBar('');return load().then(function(){edit(CUR.id);tell('Saved',e(CUR.sheet_no)+' is saved and its PDF is in the job\\u2019s files (Service Sheets).');});})\n    .catch(function(){BUSY=false;setBar('');tell('PDF not added to the job','The service sheet is saved, but its PDF could not be added to the job\\u2019s files. Press Save again.');});});})\n .catch(function(err){BUSY=false;setBar('');tell('Not saved','Could not save the service sheet'+(err&&err.message?': '+e(err.message):'')+'. Check your connection and try again.');});}\n`;\n html=html.slice(0,a)+NEW+html.slice(b);rep.push('save:ok');}else rep.push('save:missing');\nreturn [{json:{html:html,footerLogos:prev,buttonsPhotos:rep.join(' ')}}];",
+          "language": "javaScript",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "67f3d155-8781-4ef6-8d36-04a0307b4350",
+        "name": "Sig Text",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          120
+        ],
+        "parameters": {
+          "jsCode": "/* Signers come from Team (27/10/2026): ticked Appears in: Service sheets, with a saved signature. Page wording follows. */\nlet html=String($input.first().json.html||'');const j=Object.assign({},$input.first().json);\nconst A='No saved signatures yet. Add one in the Operations Hub under Settings \\\\u203a Signatures, then refresh this page.';\nconst B='Signatures come from Settings \\\\u203a Signatures in the Operations Hub.';\nconst rep=[];\nif(html.split(A).length===2){html=html.split(A).join('Nobody can sign service sheets yet. In the Operations Hub under People and companies \\\\u203a Team, open the person, tick Service sheets under Appears in, draw their signature and save, then refresh this page.');rep.push('none:ok');}else rep.push('none:missing');\nif(html.split(B).length===2){html=html.split(B).join('Shows people in Team ticked for Service sheets who have a saved signature.');rep.push('note:ok');}else rep.push('note:missing');\nj.html=html;j.sigText=rep.join(' ');return [{json:j}];",
+          "language": "javaScript",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "5ac2c431-f27e-40f3-8631-2f40928b0c06",
+        "name": "Standard Layout",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          120
+        ],
+        "parameters": {
+          "jsCode": "/* Service sheet PDF in the hub's standard layout (as the Close-out report), approved 27/10/2026: orange top bar, logo + title, Service details,\n   each section as a heading with its details, photos in one 2-column grid labelled Before / Work in progress / After (about 100 mm tall),\n   sign-off row (signature, name, date), standard footer with SafeContractor / CHAS logos. No registered office line.\n   Replaces make() in the page (from \"function make(P,lg,IM){\" to the page's start-up line). A miss leaves the page as it was. */\nlet html=String($input.first().json.html||'');const j=Object.assign({},$input.first().json);\nconst A='function make(P,lg,IM){',B='\\nload().then(function(){if(D.isNew)';\nconst a=html.indexOf(A),b=html.indexOf(B,a);\nconst NEW=String.raw`function make(P,lg,IM){var jsPDF=window.jspdf.jsPDF,doc=new jsPDF({unit:'mm',format:'a4'}),W=210,HH=297,M=14,y=0,NO=CUR.sheet_no||'';\n var sig=(X.sigs||[]).filter(function(z){return z.name===P.signed_by;})[0],LD=longDate(P.sheet_date);\n function head(){doc.setFillColor(244,121,32);doc.rect(0,0,W,3,'F');var lx=M;if(lg){try{var pr=doc.getImageProperties(lg),hh=13,ww=pr.width*hh/pr.height;if(ww>48){ww=48;hh=pr.height*ww/pr.width;}doc.addImage(lg,'PNG',M,7,ww,hh);lx=M+ww+5;}catch(z){}}\n  doc.setTextColor(30);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text('Service sheet'+(NO?' '+NO:'')+' - Job '+JOB,lx,12);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text(([X.site,X.client].filter(Boolean).join('  |  ')||'Chelmsford Building Services').slice(0,100),lx,17.5);y=28;}\n function np(){doc.addPage();y=18;}\n function need(h){if(y+h>HH-28)np();}\n function h2(t){need(16);y+=4;doc.setFont('helvetica','bold');doc.setFontSize(12.5);doc.setTextColor(30);doc.splitTextToSize(s(t),W-2*M).forEach(function(l,i){if(i)y+=5.5;doc.text(l,M,y);});doc.setDrawColor(244,121,32);doc.setLineWidth(0.6);doc.line(M,y+1.6,W-M,y+1.6);doc.setLineWidth(0.2);y+=8;}\n function para(t,sz,col){doc.setFont('helvetica','normal');doc.setFontSize(sz||9.5);doc.setTextColor(col==null?30:col);doc.splitTextToSize(s(t),W-2*M).forEach(function(l){need(5);doc.text(l,M,y);y+=4.6;});}\n function kv(k,v){if(!s(v))return;doc.setFontSize(9.5);var L=doc.splitTextToSize(s(v),W-2*M-52);need(L.length*4.6+1.5);doc.setFont('helvetica','bold');doc.setTextColor(80);doc.text(k,M,y);doc.setFont('helvetica','normal');doc.setTextColor(20);doc.text(L,M+52,y);y+=Math.max(5.6,L.length*4.6+1.2);}\n head();\n h2('Service details');kv('Date',LD);kv('Location',P.location);kv('Job',P.job_title);kv('Signed / serviced by',P.signed_by);\n var many=P.sections.length>1;\n P.sections.forEach(function(c,ci){var t=c.title||'Section '+(ci+1);h2(many?(ci+1)+'. '+t:t);\n  if(c.details){para(c.details,10);y+=2;}\n  var ALL=[];GROUPS.forEach(function(g){(c.photos[g[0]]||[]).forEach(function(p){ALL.push({u:p.u,cap:p.cap,g:g[1]});});});\n  if(!ALL.length)return;\n  need(14);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(80);doc.text('Photos',M,y);y+=4;\n  var cw=(W-2*M-6)/2,ih=100;\n  for(var r=0;r<ALL.length;r+=2){var row=ALL.slice(r,r+2),cap=row.some(function(p){return p.cap;});need(ih+(cap?13:8));\n   row.forEach(function(p,k){var im=IM[p.u],x0=M+k*(cw+6),top=y+5;doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(244,121,32);doc.text(p.g.toUpperCase(),x0,y+3);\n    doc.setDrawColor(225);doc.setFillColor(248,248,246);doc.rect(x0,top,cw,ih,'FD');\n    if(im){var sc=Math.min(cw/im.w,ih/im.h),w2=im.w*sc,h2=im.h*sc;try{doc.addImage(im.d,'JPEG',x0+(cw-w2)/2,top+(ih-h2)/2,w2,h2);}catch(z){}}\n    else{doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(120);doc.text('Photo not available',x0+cw/2,top+ih/2,{align:'center'});}\n    if(p.cap){doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(70);doc.text(doc.splitTextToSize(p.cap,cw)[0],x0,top+ih+4.5);}});\n   y+=ih+(cap?13:8);}\n  y+=1;});\n need(46);h2('Sign-off');para('Chelmsford Building Services confirm the works above have been completed.',9.5,60);y+=2;\n var c3=(W-2*M-12)/3;\n if(sig&&sig.img){try{var sp=doc.getImageProperties(sig.img),k=Math.min((c3-4)/sp.width,16/sp.height);doc.addImage(sig.img,/png/i.test(sig.img.slice(0,30))?'PNG':'JPEG',M,y,sp.width*k,sp.height*k);}catch(z){}}\n doc.setFont('helvetica','normal');doc.setFontSize(10.5);doc.setTextColor(20);doc.text(s(P.signed_by),M+c3+6,y+14);doc.text(LD,M+2*(c3+6),y+14);\n doc.setDrawColor(150);[0,1,2].forEach(function(i){var x=M+i*(c3+6);doc.line(x,y+17,x+c3,y+17);doc.setFontSize(8.5);doc.setTextColor(90);doc.text(['Signed','Name','Date'][i],x,y+21);});y+=24;\n var n=doc.getNumberOfPages();for(var i=1;i<=n;i++){doc.setPage(i);if(typeof ACC!=='undefined'){try{doc.addImage(ACC,'JPEG',W-M-26,HH-24,26,11.1);}catch(z){}}\n  doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(120);doc.text('Chelmsford Building Services Ltd  |  Job '+JOB+' service sheet'+(NO?' '+NO:'')+'  |  '+LD,M,HH-8);doc.text('Page '+i+' of '+n,W-M,HH-8,{align:'right'});}\n return doc;}`;\nif(a>-1&&b>a&&html.indexOf(A,a+1)<0){html=html.slice(0,a)+NEW+html.slice(b);j.standardLayout='ok';}else j.standardLayout='missing';\nj.html=html;return [{json:j}];",
+          "language": "javaScript",
+          "mode": "runOnceForAllItems"
+        }
+      }
+    ],
+    "connections": {
+      "Page Hook": {
+        "main": [
+          [
+            {
+              "node": "Page Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data Hook": {
+        "main": [
+          [
+            {
+              "node": "D Job",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "D Job": {
+        "main": [
+          [
+            {
+              "node": "SM8 Job",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SM8 Job": {
+        "main": [
+          [
+            {
+              "node": "D Uuid",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "D Uuid": {
+        "main": [
+          [
+            {
+              "node": "SM8 Photos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SM8 Photos": {
+        "main": [
+          [
+            {
+              "node": "Sheets Read",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Sheets Read": {
+        "main": [
+          [
+            {
+              "node": "D Build",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "D Build": {
+        "main": [
+          [
+            {
+              "node": "Data Send",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Save Hook": {
+        "main": [
+          [
+            {
+              "node": "Save Read",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Save Read": {
+        "main": [
+          [
+            {
+              "node": "Save Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Save Prep": {
+        "main": [
+          [
+            {
+              "node": "Save Row",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Save Row": {
+        "main": [
+          [
+            {
+              "node": "Save Upsert",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Save Upsert": {
+        "main": [
+          [
+            {
+              "node": "Save Send",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Del Hook": {
+        "main": [
+          [
+            {
+              "node": "Del Read",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Del Read": {
+        "main": [
+          [
+            {
+              "node": "Del Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Del Prep": {
+        "main": [
+          [
+            {
+              "node": "Del Rows",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Del Rows": {
+        "main": [
+          [
+            {
+              "node": "Del Send",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PDF Hook": {
+        "main": [
+          [
+            {
+              "node": "PDF Read",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PDF Read": {
+        "main": [
+          [
+            {
+              "node": "PDF Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PDF Prep": {
+        "main": [
+          [
+            {
+              "node": "Upload PDF",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upload PDF": {
+        "main": [
+          [
+            {
+              "node": "PDF Link",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PDF Link": {
+        "main": [
+          [
+            {
+              "node": "PDF Upsert",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PDF Upsert": {
+        "main": [
+          [
+            {
+              "node": "PDF Send",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Page Code": {
+        "main": [
+          [
+            {
+              "node": "Footer Logos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Footer Logos": {
+        "main": [
+          [
+            {
+              "node": "Buttons Photos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buttons Photos": {
+        "main": [
+          [
+            {
+              "node": "Sig Text",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Sig Text": {
+        "main": [
+          [
+            {
+              "node": "Standard Layout",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Standard Layout": {
+        "main": [
+          [
+            {
+              "node": "Page Send",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS service sheets builder (job file): GET cbs-service-sheet?job=N page, GET cbs-service-data, POST cbs-service-save / cbs-service-del / cbs-service-pdf (PDF to SharePoint Jobs/Job N/Service Sheets). Register cbs_service_sheets.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

@@ -1,0 +1,84 @@
+{
+  "table": "cbs_rams",
+  "n8n_id": "b2FkFIy27taH73i9",
+  "columns": [
+    {
+      "name": "activity",
+      "type": "string"
+    },
+    {
+      "name": "dated",
+      "type": "string"
+    },
+    {
+      "name": "job_json",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "prepared_by",
+      "type": "string"
+    },
+    {
+      "name": "revision",
+      "type": "string"
+    },
+    {
+      "name": "site",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "task",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "site": "ZZ Client A - Site 1 ",
+      "activity": "Resin Floors ",
+      "task": "General building works (start blank)",
+      "revision": "0",
+      "prepared_by": "ZZ Person B",
+      "dated": "19/10/2026",
+      "status": "Issued",
+      "job_json": "{\"templateId\":\"general\",\"meta\":{\"site\":\"ZZ Client A - Site 1 \",\"jobNo\":\"12\",\"activity\":\"Resin Floors \",\"ramsNo\":\"001\",\"rev\":\"0\",\"date\":\"19/10/2026\",\"preparedBy\":\"ZZ Person B\",\"pcbu\":\"Chelmsford Building Services\",\"pcbuAddress\":\"Unit 1, Example Business Park, Example Road, Bishop's Stortford, ZZ99 1ZZ\",\"pcbuContact\":\"0117 496 0004 / contact4@example.com\",\"responsible\":\"ZZ Person A\",\"client\":\"ZZ Client A - Site 1 \",\"clientContact\":\"Joana Moiara \",\"mainContractor\":\"Chelmsford Building Services Ltd\",\"startDate\":\"21/10/26\",\"duration\":\"10 Days\",\"taskShort\":\"Floor Saw Perimeter\",\"approvedBy\":\"\",\"approverRole\":\"Director\"},\"scope\":\"\",\"steps\":[{\"id\":\"u26_mvfgb1v8\",\"g\":\"open\",\"task\":\"Contractor induction, site sign-in and permits: complete the client's contractor induction, sign in at the gatehouse or reception and report to the engineering office / site contact to obtain all relevant permits under the site's permit to work system.\",\"hazards\":\"Unfamiliar site, live production areas, site vehicles and FLTs, client permit requirements not met.\",\"controls\":\"No operative works on site without the site-specific induction. Work carried out to approved RAMS only; the site engineering team issues all permits. Supervisor briefs all operatives on this RAMS before starting and all sign section 10.\",\"il\":3,\"ic\":4,\"rl\":1,\"rc\":3,\"who\":\"Supervisor\",\"ctrl\":[\"A\"]},{\"id\":\"u27_mvfgb1v8\",\"g\":\"open\",\"task\":\"Standard PPE and care-ware: hi-vis, safety boots and overalls worn at all times; additional task PPE as listed i...[truncated]",
+      "notes": "",
+      "pdf_url": "https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-15.pdf",
+      "job_no": "12",
+      "id": 1,
+      "createdAt": "2026-10-20T09:48:24.357Z",
+      "updatedAt": "2026-10-20T09:48:28.984Z"
+    },
+    {
+      "site": "1 Sample Road, Sampletown E, London, ZZ99 3ZZ",
+      "activity": "",
+      "task": "General building works (start blank)",
+      "revision": "0",
+      "prepared_by": "",
+      "dated": "23/10/2026",
+      "status": "Issued",
+      "job_json": "{\"templateId\":\"general\",\"meta\":{\"site\":\"1 Sample Road, Sampletown E, London, ZZ99 3ZZ\",\"jobNo\":\"10092\",\"activity\":\"\",\"ramsNo\":\"10092\",\"rev\":\"0\",\"date\":\"23/10/2026\",\"preparedBy\":\"\",\"pcbu\":\"Chelmsford Building Services\",\"pcbuAddress\":\"Unit 1, Example Business Park, Example Road, Bishop's Stortford, ZZ99 1ZZ\",\"pcbuContact\":\"07700 900001\",\"responsible\":\"ZZ Person A\",\"client\":\"ZZ Client A - Sampletown E\",\"clientContact\":\"\",\"mainContractor\":\"Chelmsford Building Services Ltd\",\"startDate\":\"\",\"duration\":\"\",\"taskShort\":\"\",\"approvedBy\":\"\",\"approverRole\":\"Director\"},\"scope\":\"\",\"steps\":[{\"id\":\"u1_mvkzt0c0\",\"g\":\"open\",\"task\":\"Contractor induction, site sign-in and permits: complete the client's contractor induction, sign in at the gatehouse or reception and report to the engineering office / site contact to obtain all relevant permits under the site's permit to work system.\",\"hazards\":\"Unfamiliar site, live production areas, site vehicles and FLTs, client permit requirements not met.\",\"controls\":\"No operative works on site without the site-specific induction. Work carried out to approved RAMS only; the site engineering team issues all permits. Supervisor briefs all operatives on this RAMS before starting and all sign section 10.\",\"il\":3,\"ic\":4,\"rl\":1,\"rc\":3,\"who\":\"Personnel\",\"ctrl\":[\"A\"]},{\"id\":\"u2_mvkzt0c0\",\"g\":\"open\",\"task\":\"Standard PPE and care-ware: hi-vis, safety boots and overalls worn at all times; additional task PPE as listed in this RAMS. Medium and standard care work-ware used when entering ...[truncated]",
+      "notes": "",
+      "pdf_url": "https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-16.pdf",
+      "job_no": "10092",
+      "id": 2,
+      "createdAt": "2026-10-23T13:15:40.777Z",
+      "updatedAt": "2026-10-23T13:15:44.478Z"
+    }
+  ]
+}

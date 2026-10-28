@@ -1,0 +1,535 @@
+{
+  "id": "25frWJqGh9NTyHkQ",
+  "name": "CBS - Actions Feed",
+  "active": true,
+  "isArchived": false,
+  "versionId": "569535b0-7789-46b4-9659-0bb4fa97b558",
+  "activeVersionId": "569535b0-7789-46b4-9659-0bb4fa97b558",
+  "triggerCount": 1,
+  "createdAt": "2026-10-08T15:29:07.538Z",
+  "updatedAt": "2026-10-27T17:29:39.486Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none"
+  },
+  "connections": {
+    "Feed Hook": {
+      "main": [
+        [
+          {
+            "node": "Build Board",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Board": {
+      "main": [
+        [
+          {
+            "node": "Fleet Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fleet Rows": {
+      "main": [
+        [
+          {
+            "node": "Fleet Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Status Tags": {
+      "main": [
+        [
+          {
+            "node": "Task System",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Task System": {
+      "main": [
+        [
+          {
+            "node": "Respond Feed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fleet Filter": {
+      "main": [
+        [
+          {
+            "node": "Claim Keys",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claim Keys": {
+      "main": [
+        [
+          {
+            "node": "Claim Cards",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claim Cards": {
+      "main": [
+        [
+          {
+            "node": "Status Tags",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "62ad3fd3-a706-4f63-b3a6-ef1eae926de4",
+      "name": "Feed Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-actions-data",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "664914a7-dd25-40d9-9273-f9454e51747c"
+    },
+    {
+      "id": "cc68087f-9570-41dc-a44a-0ed78c8efa88",
+      "name": "Build Board",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* CBS ACTIONS FEED (server copy of the hub Actions board). Same rules as the hub page:\n   notes() + cbsPurchNotes/cbsPolicyNotes wrappers + taskOf (+ wrappers) -> auto tasks; team items (requests, incidents,\n   accidents, time off, vehicle checks) by stage(); job requirements + job tasks from cbs-job-reqs-data; in-hand notes from\n   cbs_task_status. Returns only New and In progress cards. KEEP IN STEP with the hub page when board rules change. */\nvar H='https://old-hub.example/webhook/';var h=this.helpers;\nvar DATA={},JRQ=[];\n/* Speed: the task list (cbs-tasks-data?all=1) is fetched at the same time as the hub data and handed to Task System as _tasks.\n   Job cards come from the task list, so the requirements feed is only fetched if the task list fails (same fallback as before). */\nvar TP=h.httpRequest({url:H+'cbs-tasks-data?all=1',json:true,timeout:60000}).then(function(r){return r&&r.ok&&Array.isArray(r.tasks)?r.tasks:null;}).catch(function(){return null;});\ntry{DATA=await h.httpRequest({url:H+'cbs-admin-data',json:true,timeout:30000})||{};if(typeof DATA==='string')DATA=JSON.parse(DATA);}catch(e){return [{json:{ok:false,error:'data: '+String(e.message||e)}}];}\nvar TASKS=await TP;\nif(!TASKS){try{var jr=await h.httpRequest({method:'POST',url:H+'cbs-job-reqs-data',body:{},json:true,timeout:45000});JRQ=(jr&&Array.isArray(jr.items))?jr.items:[];}catch(e){JRQ=[];}}\nvar window={};\n/* ---- helpers (as in the hub) ---- */\nfunction S(v){return v==null?'':String(v).trim();}\nfunction today(){return new Date().toISOString().slice(0,10);}\nfunction days(d){if(!d)return null;var x=new Date(d);if(isNaN(x))return null;return Math.round((x-new Date())/86400000);}\nfunction dd(v){return days(v);}\nfunction nzDate(d){if(!d)return '';var s=String(d).slice(0,10);var p=s.split('-');return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:String(d);}\nfunction nz(d){d=String(d||'').slice(0,10);var p=d.split('-');return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:d;}\nfunction iso(d){d=new Date(d);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction T(){return iso(new Date());}\nfunction num(v){var x=parseFloat(String(v==null?'':v).replace(/[^0-9.\\-]/g,''));return isNaN(x)?0:x;}\nfunction money(v){var x=parseFloat(v);return isNaN(x)?'':'\\u00a3'+x.toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g,',');}\nfunction nzt(v){var d=new Date(v);if(!v||isNaN(d.getTime()))return String(v||'');try{return new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(d).replace(',','');}catch(e){return d.toISOString().slice(0,16).replace('T',' ');}}\nfunction alabel(a){return (a.name||'')+(a.serial_no?' ('+a.serial_no+')':'');}\nfunction svcFor(a){var lb=alabel(a);return (DATA.services||[]).filter(function(s){return s.asset===lb;}).sort(function(x,y){return String(y.serviced_on||'').localeCompare(String(x.serviced_on||''));});}\nwindow.nextSvc=function(a){var s=svcFor(a);if(s.length&&s[0].next_due)return s[0].next_due;return a.next_service||'';};var nextSvc=window.nextSvc;\nfunction openPOs(){return (DATA.pos||[]).filter(function(p){return ['Draft','Ordered','Part received'].indexOf(p.status||'Draft')>-1;});}\nfunction onOrder(){var M={};openPOs().forEach(function(p){var L=[],R={};try{L=JSON.parse(p.lines_json||'[]');}catch(x){}try{R=JSON.parse(p.received_json||'{}')||{};}catch(x){}\n L.forEach(function(l,i){if(!l||!l.material_id)return;var left=num(l.qty)-num(R[i]);if(left<=0)return;(M[l.material_id]=M[l.material_id]||[]).push({po:p,qty:left});});});return M;}\nvar OO=onOrder();window.cbsOnOrder=function(id){return !!OO[id];};\n/* ---- H&S policy notes ---- */\n(function(){function D0(){return (DATA.hspolicy||[]);}\n function dleft(v){v=String(v||'').slice(0,10);if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(v))return null;return Math.round((new Date(v+'T00:00:00')-new Date(today()+'T00:00:00'))/864e5);}\n function cur(){var L=D0().filter(function(p){return p.status==='Current'&&p.approved_by&&p.approved_on;});L.sort(function(a,b){return String(b.effective_on||'').localeCompare(String(a.effective_on||''))||(b.id-a.id);});return L[0]||null;}\n window.cbsPolicyNotes=function(o){var c=cur();\n  if(!c){var dr=D0().filter(function(p){return p.status!=='Superseded';}).sort(function(a,b){return b.id-a.id;})[0];o.push({s:'Health and safety',t:'hspolicy',id:dr?dr.id:0,bad:1,x:dr?'H&S policy '+(dr.version||'')+' needs Director approval':'No current H&S policy',y:'CPHSPs use the standard wording until a policy is approved'});}\n  else{var d=dleft(c.review_due);if(d!==null&&d<=30)o.push({s:'Health and safety',t:'hspolicy',id:c.id,bad:d<0?1:0,x:d<0?'H&S policy review overdue':'H&S policy review due',y:'Version '+(c.version||'')+', due '+nzDate(c.review_due)});\n   if(D0().filter(function(p){return p.status==='Current';}).length>1)o.push({s:'Health and safety',t:'hspolicy',id:0,bad:0,x:'More than one H&S policy marked Current',y:'Set the older versions to Superseded'});}};})();\n/* ---- purchasing / contractors / load-up / sign-on / notification notes (wrapper chain, same order as the hub) ---- */\nwindow.cbsPurchNotes=function(o){(DATA.pos||[]).forEach(function(r){var s=r.status||'';if((s==='Ordered'||s==='Part received')&&r.needed_by&&String(r.needed_by).slice(0,10)<today())o.push({s:'Purchasing',t:'pos',id:r.id,bad:0,x:(r.po_no||'PO')+' overdue from '+(r.supplier||'supplier'),y:'Needed '+nzDate(r.needed_by)+(s==='Part received'?' | part received':'')+(r.job_no?' | job '+r.job_no:'')});if(r.po_type==='Plant'&&r.hire_end&&!r.offhired_on&&s!=='Cancelled'){var hd=String(r.hire_end).slice(0,10),lim=new Date();lim.setMinutes(lim.getMinutes()-lim.getTimezoneOffset());lim.setDate(lim.getDate()+2);if(hd<=lim.toISOString().slice(0,10))o.push({s:'Purchasing',t:'pos',id:r.id,bad:0,x:'Off-hire '+(hd<today()?'overdue':'due')+': '+(r.po_no||'PO')+' from '+(r.supplier||'supplier'),y:'Off-hire '+nzDate(r.hire_end)+(r.job_no?' | job '+r.job_no:'')});}});};\n(function(){var _pn=window.cbsPurchNotes;window.cbsPurchNotes=function(o){try{if(_pn)_pn(o);}catch(x){}var t=T();\n (DATA.pos||[]).forEach(function(p){if((p.status||'Draft')==='Draft')o.push({s:'Purchasing',t:'pos',id:p.id,bad:0,x:'Issue PO '+(p.po_no||'')+(p.supplier?' - '+p.supplier:''),y:[money(p.total),p.job_no?'job '+p.job_no:'stock order'].filter(Boolean).join(' | ')});});\n (DATA.subjobs||[]).forEach(function(r){var st=r.status||'Requested',dt=r.doc_type||'RAMS',co=r.company||'subcontractor',job=r.job_no?' - job '+r.job_no:'';\n  var x=st==='Received'?'Review '+dt+' - '+co+job:st==='Reviewed'?'Approve '+dt+' - '+co+job:st==='Rejected - resubmit'?'Chase resubmitted '+dt+' - '+co+job:'';\n  if(x)o.push({s:'Contractors',t:'subjobs',id:r.id,bad:0,x:x,y:st+(r.start_date?' | on site '+nz(r.start_date):'')});});\n (DATA.ptmsheets||[]).forEach(function(s){var sd=String(s.sheet_date||'').slice(0,10),job=s.job_no?'job '+s.job_no:(s.site||'sheet');\n  if(s.status==='Issued'&&(!sd||sd>=t))o.push({s:'Plant and tools',t:'ptmsheets',id:s.id,bad:0,x:'Send load-up sheet to crew - '+job,y:[sd?'for '+nz(sd):'',s.site||''].filter(Boolean).join(' | ')});\n  if(s.status==='Ready to load'&&sd&&sd<t)o.push({s:'Plant and tools',t:'ptmsheets',id:s.id,bad:0,x:'Not marked loaded - '+job,y:(s.site||'')+' | '+sd});});};})();\n(function(){var _pn=window.cbsPurchNotes;window.cbsPurchNotes=function(o){try{if(_pn)_pn(o);}catch(x){}try{\n function lc(s){return String(s==null?'':s).trim().toLowerCase();}\n var A={},M={};(DATA.assets||[]).forEach(function(a){A[lc(a.name)]=1;});(DATA.materials||[]).forEach(function(m){M[lc(m.name)]=1;});\n (DATA.ptmsheets||[]).forEach(function(s){var Sx={};try{Sx=JSON.parse(s.items_json||'{}');}catch(e){}\n  var L=(Sx.custom||[]).filter(function(c){var n=lc(c&&c.name);return n&&!c.reviewed&&!(c.kind==='mat'?M:A)[n];});if(!L.length)return;\n  var job=s.job_no?'job '+s.job_no:(s.site||'sheet');\n  o.push({s:'Plant and tools',t:'ptmsheets',id:s.id,bad:0,x:'Review custom items - '+job,y:L.slice(0,3).map(function(c){return String(c.name).trim()+(c.kind==='mat'?' (material)':'');}).join(', ')+(L.length>3?' (+'+(L.length-3)+' more)':'')});});\n }catch(e){}};})();\n(function(){var _pn=window.cbsPurchNotes;window.cbsPurchNotes=function(o){try{if(_pn)_pn(o);}catch(x){}(DATA.signons||[]).forEach(function(r){if(String(r.reviewed)==='Yes')return;o.push({s:'Health and safety',t:'signons',id:r.id,bad:0,x:(r.name||'Someone')+' signed '+(r.doc_label||'a document')+' rev '+(r.doc_rev||'0'),y:[r.company,nzt(r.signed_at),r.job_no?'job '+r.job_no:''].filter(Boolean).join(' | ')});});};})();\n(function(){function isOpen(r){return r&&r.id&&S(r.status)!=='Done';}function when(r){var c=S(r.created_at);return c?(nzDate(c.slice(0,10))+(c.length>10?' '+c.slice(11,16):'')):'';}\n var _pn=window.cbsPurchNotes;window.cbsPurchNotes=function(o){try{if(_pn)_pn(o);}catch(x){}(DATA.notices||[]).forEach(function(r){if(!isOpen(r))return;o.push({s:'Notifications',t:'notices',id:r.id,bad:0,x:S(r.title)||'Notification',y:[when(r),S(r.message).slice(0,140)].filter(Boolean).join(' | ')});});};})();\n/* ---- notes() verbatim from the hub ---- */\nfunction notes(){var o=[];try{if(window.cbsPurchNotes)window.cbsPurchNotes(o);}catch(e){}try{if(window.cbsPolicyNotes)window.cbsPolicyNotes(o);}catch(e){}\n(DATA.incidents||[]).forEach(function(r){\nif(r.status==='Open'&&r.reported_by)o.push({s:'Health and safety',t:'incidents',id:r.id,bad:0,x:(r.kind||'Incident')+' reported by '+r.reported_by,y:(r.ref||'')+' '+nzDate(r.occurred_at)});\nif(r.notifiable===true&&!r.riddor_notified_at)o.push({s:'Health and safety',t:'incidents',id:r.id,bad:1,x:'HSE not recorded as notified',y:(r.ref||'')+' '+(r.kind||'')});\nvar d=dd(r.action_due);if(d!==null&&d<0&&r.status!=='Closed')o.push({s:'Health and safety',t:'incidents',id:r.id,bad:1,x:'Corrective action overdue',y:(r.ref||'')+' '+(r.action_owner||'')});});\n(DATA.substances||[]).forEach(function(r){var d=dd(r.review_on);if(d!==null&&d<0)o.push({s:'Health and safety',t:'substances',id:r.id,bad:0,x:(r.product||'')+' review overdue',y:'SDS review'});});\n(DATA.rams||[]).forEach(function(r){if(r.status==='Draft')o.push({s:'Health and safety',t:'rams',id:r.id,bad:0,x:(r.activity||'RAMS')+' still draft',y:r.site||''});});\n(DATA.vehicles||[]).forEach(function(r){var a=dd(r.tax_due),b=dd(r.mot_expiry);\nif(a!==null&&a<30)o.push({s:'Fleet',t:'vehicles',id:r.id,bad:a<0?1:0,x:(r.reg||'')+' vehicle tax '+(a<0?'expired':'due in '+a+' days'),y:r.make_model||''});\nif(b!==null&&b<30)o.push({s:'Fleet',t:'vehicles',id:r.id,bad:b<0?1:0,x:(r.reg||'')+' MOT '+(b<0?'expired':'due in '+b+' days'),y:r.make_model||''});});\n(DATA.vehicles||[]).forEach(function(r){var sd=dd(r.service_due);if(sd!==null&&sd<30)o.push({s:'Fleet',t:'vehicles',id:r.id,bad:sd<0?1:0,x:(r.reg||'')+' service '+(sd<0?'overdue':'due in '+sd+' days'),y:r.make_model||''});});\n(function(){var M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];function up(a){return String(a||'').toUpperCase().trim();}var now=new Date();var ym=now.getFullYear()+'-'+('0'+(now.getMonth()+1)).slice(-2);var fm=new Date(now.getFullYear(),now.getMonth(),1);while(fm.getDay()!==1)fm.setDate(fm.getDate()+1);var t0=new Date(now.getFullYear(),now.getMonth(),now.getDate());var since=Math.round((t0-fm)/864e5);(DATA.vehicles||[]).forEach(function(r){var R=up(r.reg);if(!R)return;if(since>=0){var done=(DATA.checks||[]).some(function(c){return up(c.vehicle)===R&&String(c.checked_on||'').slice(0,7)===ym;});if(!done)o.push({s:'Fleet',t:'vehicles',id:r.id,bad:since>7?1:0,x:R+' monthly vehicle report due',y:'Due '+fm.getDate()+' '+M[fm.getMonth()]+' | no vehicle check yet this month'});}});})();\n(DATA.checks||[]).forEach(function(r){if(r.reviewed!==true){o.push({s:'Fleet',t:'checks',id:r.id,bad:(r.status==='Off road'||r.status==='Defects logged')?1:0,x:'Vehicle check: '+(r.vehicle||'')+' - '+(r.status||''),y:nzDate(r.checked_on)+' by '+(r.checked_by||'')+' | not yet reviewed'});}else if(r.status==='Off road'){o.push({s:'Fleet',t:'checks',id:r.id,bad:1,x:(r.vehicle||'')+' is off road',y:nzDate(r.checked_on)});}});\n(DATA.crashes||[]).forEach(function(r){if(r.status!=='Closed')o.push({s:'Fleet',t:'crashes',id:r.id,bad:0,x:(r.vehicle||'')+' accident open',y:(r.status||'')+' '+nzDate(r.occurred_at)});});\n(DATA.assets||[]).forEach(function(r){if(r.status==='Retired'||r.status==='Lost')return;\nvar n=dd(nextSvc(r));if(n!==null&&n<30)o.push({s:'Plant and tools',t:'assets',id:r.id,bad:n<0?1:0,x:(r.name||'')+' service '+(n<0?'overdue':'due in '+n+' days'),y:r.serial_no?'S/N '+r.serial_no:''});\nvar tt=dd(r.test_tag_due);if(tt!==null&&tt<30)o.push({s:'Plant and tools',t:'assets',id:r.id,bad:tt<0?1:0,x:(r.name||'')+' PAT test '+(tt<0?'overdue':'due in '+tt+' days'),y:r.serial_no?'S/N '+r.serial_no:''});\nif(r.status==='Needs repair')o.push({s:'Plant and tools',t:'assets',id:r.id,bad:1,x:(r.name||'')+' needs repair',y:r.location||''});});\n(DATA.subdocs||[]).forEach(function(r){var d=dd(r.expires_on);if(d!==null&&d<60)o.push({s:'Contractors',t:'subbies',id:(((DATA.subbies||[]).filter(function(q){return String(q.company||'').toLowerCase().replace(/\\s+/g,'')===String(r.company||'').toLowerCase().replace(/\\s+/g,'');})[0])||{}).id,bad:d<0?1:0,x:(r.company||'')+' - '+(r.custom_name||r.item||''),y:d<0?'expired':'expires in '+d+' days'});});\n(DATA.insurance||[]).forEach(function(r){var d=dd(r.expires_on);if(d!==null&&d<60)o.push({s:'Contractors',t:'insurance',id:r.id,bad:d<0?1:0,x:(r.custom_name||r.item||''),y:d<0?'expired':'expires in '+d+' days'});});\n(DATA.requests||[]).forEach(function(r){if(r.status==='New')o.push({s:'People',t:'requests',id:r.id,bad:r.urgency==='Today'?1:0,x:(r.category||'Request')+' from '+(r.requested_by||''),y:(r.urgency||'')+' | '+String(r.details||'').slice(0,50)});});\n(DATA.leave||[]).forEach(function(r){if(!r.status||r.status==='Pending')o.push({s:'People',t:'leave',id:r.id,bad:0,x:'Time off request from '+(r.worker||''),y:nzDate(r.from_date)});});\n(DATA.training||[]).forEach(function(r){var d=dd(r.expires_on);if(d!==null&&d<60)o.push({s:'People',t:'training',id:r.id,bad:d<0?1:0,x:(r.person||'')+' - '+(r.qualification||''),y:d<0?'expired':'expires in '+d+' days'});});\n(DATA.hazards||[]).forEach(function(r){if(r.status==='Archived')return;var d=days(r.review_on);if(d!==null&&d<=30)o.push({s:'Health and safety',t:'hazards',id:r.id,bad:d<0,x:(r.hazard||'Hazard')+' review '+(d<0?'overdue':'due in '+d+' days'),y:r.risk_rating?('Risk: '+r.risk_rating):''});});\n(DATA.rams||[]).forEach(function(sw){if(sw.status==='Superseded'||sw.status==='Draft')return;var j={};try{j=JSON.parse(sw.job_json||'{}');}catch(e){}var ids=(j.register||[]).map(function(x){return x&&x.id;});if(!ids.length)return;var su=String(sw.updatedAt||'');var ch=(DATA.hazards||[]).filter(function(hz){return hz.rams_key&&ids.indexOf(hz.rams_key)>-1&&String(hz.updatedAt||'')>su;});if(ch.length)o.push({s:'Health and safety',t:'rams',id:sw.id,bad:false,x:'Hazard register updated since issued',y:(sw.site||'RAMS')+' - '+ch.map(function(z){return z.hazard;}).slice(0,3).join(', ')});});\n(DATA.incidents||[]).forEach(function(inc){if(inc.requires_investigation!=='Yes')return;var rp=(DATA.increports||[]).filter(function(z){return String(z.incident_id)===String(inc.id);})[0];if(rp&&rp.status==='Signed off')return;var ref='Incident #'+inc.id+(inc.kind?' ('+inc.kind+')':'');var age=days(String(inc.occurred_at||'').slice(0,10));o.push({s:'Health and safety',t:'incidents',id:inc.id,bad:age!==null&&age<-7,x:rp?'Finish investigation report':'Investigation required',y:ref});});\n(DATA.increports||[]).forEach(function(r){var inc=(DATA.incidents||[]).filter(function(z){return String(z.id)===String(r.incident_id);})[0];if(!inc)return;var ref='Incident #'+inc.id+(inc.kind?' ('+inc.kind+')':'');if((r.update_hazard_register==='Yes'||r.review_hazard_register==='Yes')&&!r.hazard_register_done_on&&!(DATA.hazards||[]).some(function(hz){return new RegExp('Incident #'+inc.id+'(?![0-9])').test(String(hz.source||''))&&String(hz.updatedAt||'')>=String(r.createdAt||'');}))o.push({s:'Health and safety',t:'incidents',id:inc.id,bad:false,x:'Update hazard register',y:ref});var j={};try{j=JSON.parse(r.report_json||'{}');}catch(e){}(j.actions||[]).forEach(function(a){if(!a||!a.what||a.done)return;var d=days(a.due);o.push({s:'Health and safety',t:'incidents',id:inc.id,bad:d!==null&&d<0,x:'Corrective action: '+String(a.what).slice(0,70),y:[ref,a.who||'',a.due?('due '+nzDate(a.due)):''].filter(Boolean).join(' | ')});});});\n(DATA.materials||[]).forEach(function(m){if(m.status==='Discontinued')return;if(m.min_level===''||m.min_level==null)return;var q=Number(m.qty_on_hand||0),mn=Number(m.min_level);if(isNaN(mn))return;if(q<=mn&&!window.cbsOnOrder(m.id))o.push({s:'Plant and tools',t:'materials',id:m.id,bad:q<=0,x:'Reorder - '+(m.name||'material'),y:'On hand '+q+' '+(m.unit||'')+' (min '+mn+')'});});\n(DATA.ptmsheets||[]).forEach(function(s){if(s.status!=='Issued')return;var job=s.job_no?'job '+s.job_no:(s.site||'sheet');if(String(s.shortages||'').trim())o.push({s:'Plant and tools',t:'ptmsheets',id:s.id,bad:true,x:'Order for '+job,y:String(s.shortages).split('\\n')[0]});var d2=String(s.sheet_date||'').slice(0,10),tt=new Date();tt.setMinutes(tt.getMinutes()-tt.getTimezoneOffset());if(d2&&d2<tt.toISOString().slice(0,10))o.push({s:'Plant and tools',t:'ptmsheets',id:s.id,bad:false,x:'Not marked loaded - '+job,y:(s.site||'')+' | '+d2});});\no.forEach(function(n){if(n.t==='insurance')n.s='Insurance';});\n(DATA.claims||[]).forEach(function(c){if(['Settled','Closed','Withdrawn','Declined'].indexOf(c.status)>-1)return;if(!c.next_action_due)return;var d=dd(c.next_action_due);if(d===null||d>7)return;o.push({s:'Insurance',t:'claims',id:c.id,bad:d<0?1:0,x:'Claim '+(c.claim_no||'')+': '+(c.next_action||'next step'),y:(d<0?'overdue ':'due ')+c.next_action_due});});\n(DATA.companycerts||[]).forEach(function(r){var d=dd(r.expires_on);if(d===null||d>=60)return;var n=r.name==='Other'?(r.other_name||'Other'):(r.name||'Accreditation');o.push({s:'Insurance',t:'companycerts',id:r.id,bad:d<0?1:0,x:'Renew - '+n,y:d<0?'expired':'renews in '+d+' days'});});\n(DATA.subjobs||[]).forEach(function(r){if(r.status==='Approved'||!r.start_date)return;var d=dd(r.start_date);if(d===null||d>7)return;o.push({s:'Contractors',t:'subjobs',id:r.id,bad:d<=1?1:0,x:(r.doc_type||'RAMS')+' needed - '+(r.company||'subcontractor')+' - job '+(r.job_no||'-'),y:(r.status||'Requested')+' | '+(d<0?'on site since '+r.start_date:d===0?'starts today':'starts in '+d+' days')});});\n(function(){var t=today();(DATA.assets||[]).forEach(function(a){if(a.yard_status!=='Out'||!a.due_back)return;var due=String(a.due_back).slice(0,10);if(due>=t)return;o.push({s:'Plant and tools',t:'assets',id:a.id,bad:true,x:'Not back in the yard - '+(a.name||'item'),y:[a.out_job?'Job '+a.out_job:'',a.out_with||'','due back '+nz(due)].filter(Boolean).join(' | ')});});})();\nreturn o;}\n/* ---- taskOf + wrappers, as in the hub ---- */\nfunction taskOf0(n){var x=String(n.x||''),t=n.t,m,r=x.split(' ')[0];if(t==='materials'||t==='ptmsheets'||t==='claims'||t==='covertasks'||t==='companycerts'||t==='subjobs')return x;if(t==='incidents'){if(/^HSE/.test(x))return 'Notify HSE'+(String(n.y||'').trim()?' - '+String(n.y).trim():'');if(x==='Investigation required')return 'Investigate - '+String(n.y||'').trim();if(x==='Finish investigation report')return 'Finish investigation report - '+String(n.y||'').trim();if(/^Corrective action: /.test(x))return 'Complete corrective action - '+x.slice(19);if(x==='Update hazard register')return 'Update hazard register'+(String(n.y||'').trim()?' - '+String(n.y).trim():'');if(/^Corrective action/.test(x))return 'Complete corrective action'+(String(n.y||'').trim()?' - '+String(n.y).trim():'');return null;}if(t==='substances')return 'Review SDS - '+x.replace(/ review overdue$/,'');if(t==='rams'){if(/^Hazard register updated/.test(x))return 'Review RAMS - '+String(n.y||'').split(' - ')[0];return 'Finalise RAMS - '+x.replace(/ still draft$/,'');}if(t==='vehicles'){var vv=(DATA.vehicles||[]).filter(function(z){return z.id===n.id;})[0];if(vv&&vv.reg)r=vv.reg;if(/ Insurance /.test(x))return 'Renew insurance - '+r;if(/ (reg|vehicle tax) /.test(x))return 'Renew vehicle tax - '+r;if(/ MOT /.test(x))return 'Book MOT - '+r;if(/ service /.test(x))return 'Book service - '+r;if(/monthly vehicle report/.test(x))return 'Monthly vehicle check - '+r;return null;}if(t==='assets'){if((m=x.match(/^(.*) service (overdue|due)/)))return 'Service - '+m[1];if((m=x.match(/^(.*) PAT test /)))return 'PAT test - '+m[1];if((m=x.match(/^(.*) needs repair$/)))return 'Repair - '+m[1];return null;}if(t==='hazards')return 'Review hazard - '+x.split(' review ')[0];if(t==='subbies'||t==='insurance'||t==='training')return 'Renew - '+x;return null;}\nfunction ymd(off){var d=new Date();d.setDate(d.getDate()+off);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction taskOf(n){if(!n)return null;\n if(n.t==='notices'||n.t==='signons'||n.t==='pos')return n.x;\n if(n.t==='ptmsheets'&&String(n.x||'').indexOf('Send load-up sheet to crew')===0){var s=(DATA.ptmsheets||[]).filter(function(z){return z.id===n.id;})[0];var sd=s?String(s.sheet_date||'').slice(0,10):'';if(sd!==ymd(0)&&sd!==ymd(1))return null;}\n return taskOf0(n);}\nfunction keyOf(n,tk){return n.t+'|'+n.id+'|'+(n.t==='vehicles'?String(tk).split(' - ')[0]:tk);}\nfunction stage(t,r){var s=r.status||'';\n if(t==='requests')return s==='Done'||s==='Declined'?'done':(s==='In progress'?'prog':'new');\n if(t==='incidents')return s==='Closed'?'done':((s==='Under investigation'||s==='Actions pending')?'prog':'new');\n if(t==='crashes')return s==='Closed'?'done':((s==='Claim lodged'||s==='Repairs booked')?'prog':'new');\n if(t==='leave')return (s==='Approved'||s==='Declined')?'done':(s==='Under review'?'prog':'new');\n if(t==='checks'){if(r.reviewed!==true)return 'new';if(s==='Defects logged'||s==='Off road')return 'prog';return 'done';}\n return 'new';}\n/* ---- in-hand notes ---- */\nvar TS={};(DATA.taskstat||[]).forEach(function(r){if(r&&r.task_key)TS[r.task_key]=r;});\nfunction fd(v){var s=S(v).slice(0,10);if(!/^\\d{4}-\\d\\d-\\d\\d$/.test(s))return '';try{return new Date(s+'T12:00:00Z').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'});}catch(e){return nz(s);}}\nfunction chip(k){var r=TS[k];if(!r||r.status!=='In progress')return '';var a=[S(r.note)||'In hand'];if(fd(r.note_date))a.push(fd(r.note_date));if(S(r.note_by))a.push(S(r.note_by));return a.join(' \\u00b7 ');}\nfunction prog(k){var r=TS[k];return !!(r&&r.status==='In progress');}\n/* ---- build the board ---- */\nvar out=[];\nvar TEAM=[['requests','Request',function(r){return {ti:r.category||'Request',who:r.requested_by,when:r.requested_at,urg:r.urgency==='Today'};}],\n ['incidents','Incident',function(r){return {ti:((r.ref||'')+' '+(r.location||'')).trim()||'Incident',who:r.reported_by||r.person,when:r.occurred_at,urg:r.notifiable===true||r.kind==='Injury',ty:r.kind};}],\n ['crashes','Vehicle accident',function(r){return {ti:r.vehicle||'',who:r.driver,when:r.occurred_at,urg:true};}],\n ['leave','Time off',function(r){return {ti:(r.worker||'')+': '+nzDate(r.from_date)+(r.to_date&&r.to_date!==r.from_date?' to '+nzDate(r.to_date):''),who:r.kind,when:r.requested_at,urg:false};}],\n ['checks','Vehicle check',function(r){return {ti:(r.vehicle||'')+' - '+(r.status||''),who:r.checked_by,when:r.checked_on,urg:r.status==='Off road'};}]];\nTEAM.forEach(function(T2){(DATA[T2[0]]||[]).forEach(function(r){var st=stage(T2[0],r);if(st==='done')return;var m=T2[2](r);var k='team|'+T2[0]+'|'+r.id;\n out.push({key:k,kind:'team',t:T2[0],id:r.id,grp:'Team',type:m.ty||T2[1],title:(m.ty||T2[1])+': '+m.ti,sub:[m.who||'',m.when?nzDate(m.when):''].filter(Boolean).join(' | '),urg:!!m.urg,col:st,chip:st==='prog'?chip(k):''});});});\nvar seenK={};\nnotes().forEach(function(n){var tk=taskOf(n);if(!tk)return;var rr=(DATA[n.t]||[]).filter(function(z){return z.id===n.id;})[0];if(!rr)return;var k=keyOf(n,tk);if(seenK[k])return;seenK[k]=1;\n out.push({key:k,kind:'auto',t:n.t,id:n.id,grp:n.s,type:'Auto',title:tk,sub:S(n.y),urg:!!n.bad,col:prog(k)?'prog':'new',chip:chip(k)});});\nJRQ.forEach(function(x){var k='jobreq:'+x.job+':'+x.k;var p=x.st==='pending'||prog(k);\n out.push({key:k,kind:'job',t:'jobreq',job:x.job,grp:'Job '+x.job,type:'Job',title:x.l+' - Job '+x.job,sub:[x.site,x.note].filter(Boolean).join(' \\u00b7 '),urg:!!x.urg,col:p?'prog':'new',chip:chip(k),link:x.link||''});});\nvar counts={new:out.filter(function(i){return i.col==='new';}).length,prog:out.filter(function(i){return i.col==='prog';}).length};\nreturn [{json:{ok:true,at:new Date().toISOString(),counts:counts,items:out,_tasks:TASKS}}];\n"
+      }
+    },
+    {
+      "id": "43de3988-2ce3-457c-853c-cd1186f8c077",
+      "name": "Respond Feed",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "0ab1e938-8b2c-41d5-9a6a-d6fe3124505a",
+      "name": "Status Tags",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "jsCode": "/* STATUS FOR EVERY CARD (keep): same rules as cbsStatusTag on the hub Actions board. Sets i.status and i.dtitle (display title:\n   opening verb dropped when the status already says it, e.g. 'Approve RAMS - Acme' -> 'RAMS - Acme'). i.title stays plain\n   (the TV's Board Actions node matches on plain titles, then shows dtitle + ' \\u00b7 ' + status).\n   Job cards (job tasks, requirements, enquiry tasks) use the one task status set: To do, In progress, In hand, Overdue.\n   In hand = started with a note; a chip with no note starts with the default words 'In hand' and counts as In progress.\n   Sign-on records are not board cards (they belong in the Job File), same as the hub. */\nfunction cbsStTag(o){var c=o.col,n=String(o.note||''),T=String(o.title||''),t=o.t||'',m;\n if(c==='done')return 'Done';\n if(o.kind==='team'){if(c==='prog')return 'In progress';return {requests:'New request',incidents:'Needs review',crashes:'Needs review',leave:'Needs approval',checks:'Needs review'}[t]||'New';}\n if(o.kind==='job'){if(c==='prog')return o.chip&&!/^in (hand|progress)\\b/i.test(o.chip)?'In hand':'In progress';return (o.urg||/overdue|expired|was due|late\\b/i.test(n))?'Overdue':'To do';}\n if(c==='prog')return 'In progress';\n if(/overdue|expired|was due|late\\b/i.test(n))return 'Overdue';\n if((m=n.match(/(?:due|renews|expires) in (\\d+) days?/i)))return 'Due in '+m[1]+(m[1]==='1'?' day':' days');\n if((m=n.match(/starts in (\\d+) days?/i)))return 'Starts in '+m[1]+(m[1]==='1'?' day':' days');\n if(/starts today/i.test(n))return 'Starts today';\n if(/^Approve /.test(T))return 'Needs approval';\n if(/^Review /.test(T)||/ signed /.test(T)||t==='checks')return 'Needs review';\n if(/^Chase /.test(T))return 'Awaiting reply';\n if(/^(Issue PO|Send load-up)/.test(T))return 'Ready to send';\n if(/^Finalise /.test(T))return 'Draft';\n if(/^Reorder /.test(T))return o.urg?'Out of stock':'Low stock';\n if(/^Not marked loaded/.test(T))return 'Overdue';\n if(/^Repair /.test(T))return 'Needs repair';\n if(t==='notices')return 'New';\n if(/^(Weekly|Monthly|Quarterly) vehicle check/.test(T))return o.urg?'Overdue':'Due';\n if(/^(vehicles|assets|subbies|insurance|training|companycerts|hazards|substances|hspolicy)$/.test(t))return o.urg?'Overdue':'Due soon';\n return o.urg?'Urgent':'Required';}\nfunction stTidy(T,tag){var r=T;if(tag==='Needs approval')r=r.replace(/^Approve\\s+/,'');else if(tag==='Needs review')r=r.replace(/^Review\\s+/,'');else if(tag==='Needs repair')r=r.replace(/^Repair\\s+-\\s+/,'');return r.charAt(0).toUpperCase()+r.slice(1);}\nvar d=$input.first().json;if(!d||!d.ok||!Array.isArray(d.items))return [{json:d}];\nd.items=d.items.filter(function(i){return i.t!=='signons';});\nd.items.forEach(function(i){var title=String(i.title||'').replace(/ - Job $/,'');\n var note=i.kind==='job'?String(i.sub||'').split(' \\u00b7 ').pop():i.sub;\n i.status=cbsStTag({kind:i.kind,t:i.t,col:i.col,title:title,note:note,urg:!!i.urg,chip:i.chip});i.dtitle=stTidy(title,i.status);});\nd.counts={new:d.items.filter(function(i){return i.col==='new';}).length,prog:d.items.filter(function(i){return i.col==='prog';}).length};\nreturn [{json:d}];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "c7652aa2-f211-4f5a-ac32-46388bf2b55f",
+      "name": "Fleet Rows",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        200
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "chFjXqeuWU1vB1l6"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "42b0644b-0575-44cf-8a68-333f12dd3259",
+      "name": "Fleet Filter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        200
+      ],
+      "parameters": {
+        "jsCode": "/* Fleet Filter: vehicle inspection cards, same rules as the hub (cbsFleet + notes()).\n   Removes the Build Board's old first-Monday 'Monthly vehicle check' cards and rebuilds them per vehicle from\n   cbs_vehicles: insp_freq (Weekly / Monthly / Quarterly / Not required; blank = Monthly, or Not required if no_monthly = Yes)\n   and insp_next (next inspection due; moves on by the frequency for each inspection logged within the lead window).\n   Vehicles with no insp_next use the old rule (first Monday of the week/month/quarter). In-hand notes come from cbs_task_status. */\nconst d=$('Build Board').first().json;const S=v=>v==null?'':String(v).trim();\nif(!d||!d.ok||!Array.isArray(d.items))return [{json:d}];\nconst H='https://old-hub.example/webhook/';const h=this.helpers;\nconst V=$input.all().map(i=>i.json).filter(r=>r&&r.reg);\nconst U=s=>S(s).toUpperCase().replace(/\\s+/g,'');\nconst fq=v=>S(v.insp_freq)||(/^yes$/i.test(S(v.no_monthly))?'Not required':'Monthly');\nlet C=null,TS=[];\nconst L=async t=>{const r=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:20000});if(r==null||(typeof r==='string'&&!r.trim()))return [];/* an empty register comes back as an empty body */const x=typeof r==='string'?JSON.parse(r):r;return Array.isArray(x)?x:((x&&x.rows)||null);};\nlet CE='';try{C=await L('checks');}catch(e){C=null;CE=String(e.message||e);}\nconst RE=/^(Weekly|Monthly|Quarterly) vehicle check - /;\nif(!C){/* checks could not be read: keep the board's cards but drop vehicles that need no inspection */\n const NR={};V.forEach(v=>{if(fq(v)==='Not required')NR[U(v.reg)]=1;});\n d.items=d.items.filter(i=>{const m=S(i.title).match(/^Monthly vehicle check - (.+)$/);return !(m&&NR[U(m[1])]);});\n}else{\n try{TS=(await L('taskstat'))||[];}catch(e){TS=[];}\n const TSm={};TS.forEach(r=>{if(r&&r.task_key)TSm[S(r.task_key)]=r;});\n d.items=d.items.filter(i=>!(i.kind==='auto'&&i.t==='vehicles'&&RE.test(S(i.title))));\n const ISO=/^\\d{4}-\\d{2}-\\d{2}$/;const D=s=>new Date(s+'T12:00:00Z');const I=x=>x.toISOString().slice(0,10);\n const add=(s,n)=>{const x=D(s);x.setUTCDate(x.getUTCDate()+n);return I(x);};\n const step=(s,f)=>{if(f==='Weekly')return add(s,7);const x=D(s),m=f==='Quarterly'?3:1,day=x.getUTCDate();x.setUTCDate(1);x.setUTCMonth(x.getUTCMonth()+m);const last=new Date(Date.UTC(x.getUTCFullYear(),x.getUTCMonth()+1,0)).getUTCDate();x.setUTCDate(Math.min(day,last));return I(x);};\n const lead=f=>f==='Weekly'?3:f==='Quarterly'?21:10;\n const firstMon=s=>{const x=D(s);while(x.getUTCDay()!==1)x.setUTCDate(x.getUTCDate()+1);return I(x);};\n const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];\n const dm=s=>{const x=D(s);return x.getUTCDate()+' '+MO[x.getUTCMonth()];};\n const fdt=v=>{v=S(v).slice(0,10);if(!ISO.test(v))return '';try{return D(v).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'});}catch(e){return v;}};\n const match=(c,v)=>{const a=U(c.vehicle),r=U(v.reg);return !!r&&(a===r||a.indexOf('('+r+')')>-1);};\n const today=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).slice(0,10);\n V.forEach(v=>{const f=fq(v);if(f==='Not required')return;\n  const ds=C.filter(c=>c&&match(c,v)).map(c=>S(c.checked_on).slice(0,10)).filter(x=>ISO.test(x)).sort();\n  let due,y,done=false;const nx=S(v.insp_next).slice(0,10);\n  if(ISO.test(nx)){let n=nx;ds.forEach(x=>{if(x>=add(n,-lead(f))){let g=0;do{n=step(n,f);g++;}while(n<=x&&g<500);}});due=n;y='Due '+dm(due)+' '+due.slice(0,4)+' | no vehicle check logged for it yet';}\n  else{let p0;if(f==='Weekly'){p0=add(today,-((D(today).getUTCDay()+6)%7));due=p0;}else if(f==='Quarterly'){const x=D(today);p0=I(new Date(Date.UTC(x.getUTCFullYear(),Math.floor(x.getUTCMonth()/3)*3,1)));due=firstMon(p0);}else{p0=today.slice(0,8)+'01';due=firstMon(p0);}\n   done=ds.some(x=>x>=p0);y='Due '+dm(due)+' | no vehicle check yet '+(f==='Weekly'?'this week':f==='Quarterly'?'this quarter':'this month');}\n  if(done)return;const sn=Math.round((D(today)-D(due))/864e5);if(sn<0)return;\n  const title=f+' vehicle check - '+S(v.reg),key='vehicles|'+v.id+'|'+f+' vehicle check',st=TSm[key],prog=!!(st&&S(st.status)==='In progress');\n  d.items.push({key,kind:'auto',t:'vehicles',id:v.id,grp:'Fleet',type:'Auto',title,sub:y,urg:sn>(f==='Weekly'?2:7),col:prog?'prog':'new',chip:prog?[S(st.note)||'In hand',fdt(st.note_date),S(st.note_by)].filter(Boolean).join(' \\u00b7 '):''});});\n}\nd._fleet=C?'ok':('checks unavailable '+CE);\nif(d.counts){d.counts.new=d.items.filter(i=>i.col!=='prog').length;d.counts.prog=d.items.filter(i=>i.col==='prog').length;}\nreturn [{json:d}];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "3e886173-31b0-4655-8991-79dcaeb78ab9",
+      "name": "Task System",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        0
+      ],
+      "parameters": {
+        "jsCode": "/* JOB + OFFICE TASKS FROM THE TASK SYSTEM (keep): the Actions board shows job tasks from CBS - Tasks (GET cbs-tasks-data?all=1);\n   the old job requirements feed (cbs-job-reqs-data) no longer returns them. Old job items are replaced with the open tasks from the\n   task system so the TV's Needs attention matches the board. The board itself ignores kind 'job' items from this feed.\n   Done / Verified are left out, and snags fixed awaiting sign-off. In hand = In progress with its note as the chip.\n   Speed: Build Board fetches the task list alongside the hub data and passes it here as _tasks; fetched here only if that failed.\n   people = who is assigned on the task's open lines (e.g. a PO line or load-up line), for tasks assigned per line rather than as a whole (TV 'With ...'). */\nconst d=$input.first().json;if(!d||!d.ok||!Array.isArray(d.items))return [{json:d}];\nconst S=v=>v==null?'':String(v).trim();\nlet T=Array.isArray(d._tasks)?d._tasks:null;delete d._tasks;\nif(!T){try{const r=await this.helpers.httpRequest({url:'https://old-hub.example/webhook/cbs-tasks-data?all=1',json:true,timeout:60000});if(r&&r.ok&&Array.isArray(r.tasks))T=r.tasks;}catch(e){}}\nif(!T)return [{json:d}];\nconst dmy=v=>{v=S(v).slice(0,10);const p=v.split('-');return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:v;};\nconst fd=v=>{v=S(v).slice(0,10);if(!/^\\d{4}-\\d\\d-\\d\\d$/.test(v))return '';try{return new Date(v+'T12:00:00Z').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'});}catch(e){return dmy(v);}};\nconst ppl=t=>{const o=[];(Array.isArray(t.items)?t.items:[]).forEach(x=>{const st=S(x&&x.status);if(st==='Done'||st==='Verified')return;const a=S(x&&x.assignee);if(a&&o.indexOf(a)<0)o.push(a);});return o;};\nd.items=d.items.filter(i=>i.kind!=='job');\nT.forEach(t=>{const st=S(t.status);if(st==='Done'||st==='Verified')return;if(t.src==='snag'&&st==='In hand')return;\n const prog=st==='In progress'||st==='In hand',ih=st==='In hand'&&!!S(t.note);\n const job=S(t.job),due=S(t.due).slice(0,10);\n const chip=ih?[S(t.note),fd(t.note_date),S(t.note_by)].filter(Boolean).join(' \\u00b7 '):'';\n const title=S(t.title)+(job?' - Job '+job:'');\n d.items.push({key:S(t.key),kind:'job',t:S(t.src)||'task',id:t.id,job:job,grp:job?'Job '+job:(S(t.category)||'Office'),type:'Job',title:title,dtitle:title,\n  sub:[S(t.site).split(',')[0],due?((t.overdue?'Overdue, due ':'Due ')+dmy(due)):''].filter(Boolean).join(' \\u00b7 '),urg:!!t.overdue,col:prog?'prog':'new',chip:chip,\n  assignee:S(t.assignee),people:ppl(t),status:prog?'In progress':(t.overdue?'Overdue':'To do'),link:S(t.link)});});\nd.counts={new:d.items.filter(i=>i.col==='new').length,prog:d.items.filter(i=>i.col==='prog').length};\nreturn [{json:d}];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "9e14514a-f195-45d0-8723-9472e714c94f",
+      "name": "Claim Keys",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        200
+      ],
+      "parameters": {
+        "jsCode": "/* CLAIM KEYS (keep): an insurance claim's task is keyed on the claim itself ('claims|<id>'), not on its next-action wording, so who has it,\n   its note and In progress survive when the next action is reworded. The first time, the latest saved row under an old wording-based key\n   ('claims|<id>|...') is carried over. Runs before Status Tags so the card status uses it. */\nconst d=$input.first().json;if(!d||!d.ok||!Array.isArray(d.items))return [{json:d}];\nconst S=v=>v==null?'':String(v).trim();\nconst C=d.items.filter(i=>i&&i.t==='claims'&&i.kind==='auto');if(!C.length)return [{json:d}];\nlet TS=[];try{const r=await this.helpers.httpRequest({url:'https://old-hub.example/webhook/cbs-admin?a=list&t=taskstat',json:true,timeout:20000});TS=Array.isArray(r)?r:[];}catch(e){TS=[];}\nconst ts=r=>S(r.changed_at||r.updatedAt||r.createdAt);\nC.forEach(i=>{const nk='claims|'+i.id;if(i.key===nk)return;\n const rows=TS.filter(r=>r&&(S(r.task_key)===nk||S(r.task_key).indexOf(nk+'|')===0)).sort((a,b)=>ts(b).localeCompare(ts(a)));\n const r=rows.filter(x=>S(x.task_key)===nk)[0]||rows[0];i.key=nk;\n if(r&&S(r.status)==='In progress'){i.col='prog';i.chip=[S(r.note)||'In hand',S(r.note_by)].filter(Boolean).join(' \\u00b7 ');}else{i.col='new';i.chip='';}});\nd.counts={new:d.items.filter(i=>i.col==='new').length,prog:d.items.filter(i=>i.col==='prog').length};\nreturn [{json:d}];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "0c9f239e-84c4-4cfb-9be3-dd5f914a3359",
+      "name": "Claim Cards",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        400
+      ],
+      "parameters": {
+        "jsCode": "/* CLAIM CARDS (keep, Phase 3): after Claim Keys. One task per open insurance claim, the whole time it is open (not only 7 days before its\n   next action). Replaces the claim cards from Build Board. Key 'claims|<id>' (who has it, its note and In progress are kept from\n   cbs_task_status). Title: the next action (or 'Update the claim'); due: the claim's next action date (i.due); urgent once overdue.\n   A claim goes when it is Settled, Closed, Withdrawn or Declined. */\nconst d=$input.first().json;if(!d||!d.ok||!Array.isArray(d.items))return [{json:d}];\nconst S=v=>v==null?'':String(v).trim();const H='https://old-hub.example/webhook/';\nlet C=null;try{const r=await this.helpers.httpRequest({url:H+'cbs-admin-data?t=claims',json:true,timeout:30000});C=(r&&Array.isArray(r.claims))?r.claims:null;}catch(e){C=null;}\nif(!C){d._claims='unavailable';return [{json:d}];}\nlet TS=[];try{const r=await this.helpers.httpRequest({url:H+'cbs-admin?a=list&t=taskstat',json:true,timeout:20000});TS=Array.isArray(r)?r:[];}catch(e){TS=[];}\nconst TSm={};TS.forEach(r=>{if(r&&r.task_key)TSm[S(r.task_key)]=r;});\nconst T0=new Date().toLocaleDateString('en-CA',{timeZone:'Europe/London'});\nconst dmy=v=>{const m=S(v).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:'';};\nconst days=v=>Math.round((Date.parse(v+'T12:00:00Z')-Date.parse(T0+'T12:00:00Z'))/864e5);\nconst fd=v=>{v=S(v).slice(0,10);if(!/^\\d{4}-\\d\\d-\\d\\d$/.test(v))return '';try{return new Date(v+'T12:00:00Z').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'});}catch(e){return dmy(v);}};\nconst CLOSED=/^(settled|closed|withdrawn|declined)$/i;\nd.items=d.items.filter(i=>!(i&&i.t==='claims'&&i.kind==='auto'));\nC.forEach(c=>{if(!c||!c.id||CLOSED.test(S(c.status)))return;\n const no=S(c.claim_no)||('Claim '+c.id),due=S(c.next_action_due).slice(0,10),ok=/^\\d{4}-\\d\\d-\\d\\d$/.test(due),dl=ok?days(due):null;\n const what=[S(c.claim_type),S(c.vehicle)||S(c.asset)||S(c.site),S(c.insurer)].filter(Boolean).join(' \\u00b7 ');\n const sub=[S(c.status)||'Open',!ok?'No next action date set':(dl<0?'Overdue: next action was due '+dmy(due):(dl===0?'Next action due today':'Next action due in '+dl+(dl===1?' day':' days')+' ('+dmy(due)+')')),what].filter(Boolean).join(' | ');\n const key='claims|'+c.id,st=TSm[key],prog=!!(st&&S(st.status)==='In progress');\n d.items.push({key,kind:'auto',t:'claims',id:c.id,grp:'Insurance',type:'Auto',title:'Claim '+no+': '+(S(c.next_action)||'Update the claim'),sub,urg:ok&&dl<0,due:ok?due:'',\n  col:prog?'prog':'new',chip:prog?[S(st.note)||'In hand',fd(st.note_date),S(st.note_by)].filter(Boolean).join(' \\u00b7 '):''});});\nd._claims='ok';d.counts={new:d.items.filter(i=>i.col==='new').length,prog:d.items.filter(i=>i.col==='prog').length};\nreturn [{json:d}];\n",
+        "mode": "runOnceForAllItems"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "62ad3fd3-a706-4f63-b3a6-ef1eae926de4",
+        "name": "Feed Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-actions-data",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "664914a7-dd25-40d9-9273-f9454e51747c"
+      },
+      {
+        "id": "cc68087f-9570-41dc-a44a-0ed78c8efa88",
+        "name": "Build Board",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* CBS ACTIONS FEED (server copy of the hub Actions board). Same rules as the hub page:\n   notes() + cbsPurchNotes/cbsPolicyNotes wrappers + taskOf (+ wrappers) -> auto tasks; team items (requests, incidents,\n   accidents, time off, vehicle checks) by stage(); job requirements + job tasks from cbs-job-reqs-data; in-hand notes from\n   cbs_task_status. Returns only New and In progress cards. KEEP IN STEP with the hub page when board rules change. */\nvar H='https://old-hub.example/webhook/';var h=this.helpers;\nvar DATA={},JRQ=[];\n/* Speed: the task list (cbs-tasks-data?all=1) is fetched at the same time as the hub data and handed to Task System as _tasks.\n   Job cards come from the task list, so the requirements feed is only fetched if the task list fails (same fallback as before). */\nvar TP=h.httpRequest({url:H+'cbs-tasks-data?all=1',json:true,timeout:60000}).then(function(r){return r&&r.ok&&Array.isArray(r.tasks)?r.tasks:null;}).catch(function(){return null;});\ntry{DATA=await h.httpRequest({url:H+'cbs-admin-data',json:true,timeout:30000})||{};if(typeof DATA==='string')DATA=JSON.parse(DATA);}catch(e){return [{json:{ok:false,error:'data: '+String(e.message||e)}}];}\nvar TASKS=await TP;\nif(!TASKS){try{var jr=await h.httpRequest({method:'POST',url:H+'cbs-job-reqs-data',body:{},json:true,timeout:45000});JRQ=(jr&&Array.isArray(jr.items))?jr.items:[];}catch(e){JRQ=[];}}\nvar window={};\n/* ---- helpers (as in the hub) ---- */\nfunction S(v){return v==null?'':String(v).trim();}\nfunction today(){return new Date().toISOString().slice(0,10);}\nfunction days(d){if(!d)return null;var x=new Date(d);if(isNaN(x))return null;return Math.round((x-new Date())/86400000);}\nfunction dd(v){return days(v);}\nfunction nzDate(d){if(!d)return '';var s=String(d).slice(0,10);var p=s.split('-');return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:String(d);}\nfunction nz(d){d=String(d||'').slice(0,10);var p=d.split('-');return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:d;}\nfunction iso(d){d=new Date(d);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction T(){return iso(new Date());}\nfunction num(v){var x=parseFloat(String(v==null?'':v).replace(/[^0-9.\\-]/g,''));return isNaN(x)?0:x;}\nfunction money(v){var x=parseFloat(v);return isNaN(x)?'':'\\u00a3'+x.toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g,',');}\nfunction nzt(v){var d=new Date(v);if(!v||isNaN(d.getTime()))return String(v||'');try{return new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(d).replace(',','');}catch(e){return d.toISOString().slice(0,16).replace('T',' ');}}\nfunction alabel(a){return (a.name||'')+(a.serial_no?' ('+a.serial_no+')':'');}\nfunction svcFor(a){var lb=alabel(a);return (DATA.services||[]).filter(function(s){return s.asset===lb;}).sort(function(x,y){return String(y.serviced_on||'').localeCompare(String(x.serviced_on||''));});}\nwindow.nextSvc=function(a){var s=svcFor(a);if(s.length&&s[0].next_due)return s[0].next_due;return a.next_service||'';};var nextSvc=window.nextSvc;\nfunction openPOs(){return (DATA.pos||[]).filter(function(p){return ['Draft','Ordered','Part received'].indexOf(p.status||'Draft')>-1;});}\nfunction onOrder(){var M={};openPOs().forEach(function(p){var L=[],R={};try{L=JSON.parse(p.lines_json||'[]');}catch(x){}try{R=JSON.parse(p.received_json||'{}')||{};}catch(x){}\n L.forEach(function(l,i){if(!l||!l.material_id)return;var left=num(l.qty)-num(R[i]);if(left<=0)return;(M[l.material_id]=M[l.material_id]||[]).push({po:p,qty:left});});});return M;}\nvar OO=onOrder();window.cbsOnOrder=function(id){return !!OO[id];};\n/* ---- H&S policy notes ---- */\n(function(){function D0(){return (DATA.hspolicy||[]);}\n function dleft(v){v=String(v||'').slice(0,10);if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(v))return null;return Math.round((new Date(v+'T00:00:00')-new Date(today()+'T00:00:00'))/864e5);}\n function cur(){var L=D0().filter(function(p){return p.status==='Current'&&p.approved_by&&p.approved_on;});L.sort(function(a,b){return String(b.effective_on||'').localeCompare(String(a.effective_on||''))||(b.id-a.id);});return L[0]||null;}\n window.cbsPolicyNotes=function(o){var c=cur();\n  if(!c){var dr=D0().filter(function(p){return p.status!=='Superseded';}).sort(function(a,b){return b.id-a.id;})[0];o.push({s:'Health and safety',t:'hspolicy',id:dr?dr.id:0,bad:1,x:dr?'H&S policy '+(dr.version||'')+' needs Director approval':'No current H&S policy',y:'CPHSPs use the standard wording until a policy is approved'});}\n  else{var d=dleft(c.review_due);if(d!==null&&d<=30)o.push({s:'Health and safety',t:'hspolicy',id:c.id,bad:d<0?1:0,x:d<0?'H&S policy review overdue':'H&S policy review due',y:'Version '+(c.version||'')+', due '+nzDate(c.review_due)});\n   if(D0().filter(function(p){return p.status==='Current';}).length>1)o.push({s:'Health and safety',t:'hspolicy',id:0,bad:0,x:'More than one H&S policy marked Current',y:'Set the older versions to Superseded'});}};})();\n/* ---- purchasing / contractors / load-up / sign-on / notification notes (wrapper chain, same order as the hub) ---- */\nwindow.cbsPurchNotes=function(o){(DATA.pos||[]).forEach(function(r){var s=r.status||'';if((s==='Ordered'||s==='Part received')&&r.needed_by&&String(r.needed_by).slice(0,10)<today())o.push({s:'Purchasing',t:'pos',id:r.id,bad:0,x:(r.po_no||'PO')+' overdue from '+(r.supplier||'supplier'),y:'Needed '+nzDate(r.needed_by)+(s==='Part received'?' | part received':'')+(r.job_no?' | job '+r.job_no:'')});if(r.po_type==='Plant'&&r.hire_end&&!r.offhired_on&&s!=='Cancelled'){var hd=String(r.hire_end).slice(0,10),lim=new Date();lim.setMinutes(lim.getMinutes()-lim.getTimezoneOffset());lim.setDate(lim.getDate()+2);if(hd<=lim.toISOString().slice(0,10))o.push({s:'Purchasing',t:'pos',id:r.id,bad:0,x:'Off-hire '+(hd<today()?'overdue':'due')+': '+(r.po_no||'PO')+' from '+(r.supplier||'supplier'),y:'Off-hire '+nzDate(r.hire_end)+(r.job_no?' | job '+r.job_no:'')});}});};\n(function(){var _pn=window.cbsPurchNotes;window.cbsPurchNotes=function(o){try{if(_pn)_pn(o);}catch(x){}var t=T();\n (DATA.pos||[]).forEach(function(p){if((p.status||'Draft')==='Draft')o.push({s:'Purchasing',t:'pos',id:p.id,bad:0,x:'Issue PO '+(p.po_no||'')+(p.supplier?' - '+p.supplier:''),y:[money(p.total),p.job_no?'job '+p.job_no:'stock order'].filter(Boolean).join(' | ')});});\n (DATA.subjobs||[]).forEach(function(r){var st=r.status||'Requested',dt=r.doc_type||'RAMS',co=r.company||'subcontractor',job=r.job_no?' - job '+r.job_no:'';\n  var x=st==='Received'?'Review '+dt+' - '+co+job:st==='Reviewed'?'Approve '+dt+' - '+co+job:st==='Rejected - resubmit'?'Chase resubmitted '+dt+' - '+co+job:'';\n  if(x)o.push({s:'Contractors',t:'subjobs',id:r.id,bad:0,x:x,y:st+(r.start_date?' | on site '+nz(r.start_date):'')});});\n (DATA.ptmsheets||[]).forEach(function(s){var sd=String(s.sheet_date||'').slice(0,10),job=s.job_no?'job '+s.job_no:(s.site||'sheet');\n  if(s.status==='Issued'&&(!sd||sd>=t))o.push({s:'Plant and tools',t:'ptmsheets',id:s.id,bad:0,x:'Send load-up sheet to crew - '+job,y:[sd?'for '+nz(sd):'',s.site||''].filter(Boolean).join(' | ')});\n  if(s.status==='Ready to load'&&sd&&sd<t)o.push({s:'Plant and tools',t:'ptmsheets',id:s.id,bad:0,x:'Not marked loaded - '+job,y:(s.site||'')+' | '+sd});});};})();\n(function(){var _pn=window.cbsPurchNotes;window.cbsPurchNotes=function(o){try{if(_pn)_pn(o);}catch(x){}try{\n function lc(s){return String(s==null?'':s).trim().toLowerCase();}\n var A={},M={};(DATA.assets||[]).forEach(function(a){A[lc(a.name)]=1;});(DATA.materials||[]).forEach(function(m){M[lc(m.name)]=1;});\n (DATA.ptmsheets||[]).forEach(function(s){var Sx={};try{Sx=JSON.parse(s.items_json||'{}');}catch(e){}\n  var L=(Sx.custom||[]).filter(function(c){var n=lc(c&&c.name);return n&&!c.reviewed&&!(c.kind==='mat'?M:A)[n];});if(!L.length)return;\n  var job=s.job_no?'job '+s.job_no:(s.site||'sheet');\n  o.push({s:'Plant and tools',t:'ptmsheets',id:s.id,bad:0,x:'Review custom items - '+job,y:L.slice(0,3).map(function(c){return String(c.name).trim()+(c.kind==='mat'?' (material)':'');}).join(', ')+(L.length>3?' (+'+(L.length-3)+' more)':'')});});\n }catch(e){}};})();\n(function(){var _pn=window.cbsPurchNotes;window.cbsPurchNotes=function(o){try{if(_pn)_pn(o);}catch(x){}(DATA.signons||[]).forEach(function(r){if(String(r.reviewed)==='Yes')return;o.push({s:'Health and safety',t:'signons',id:r.id,bad:0,x:(r.name||'Someone')+' signed '+(r.doc_label||'a document')+' rev '+(r.doc_rev||'0'),y:[r.company,nzt(r.signed_at),r.job_no?'job '+r.job_no:''].filter(Boolean).join(' | ')});});};})();\n(function(){function isOpen(r){return r&&r.id&&S(r.status)!=='Done';}function when(r){var c=S(r.created_at);return c?(nzDate(c.slice(0,10))+(c.length>10?' '+c.slice(11,16):'')):'';}\n var _pn=window.cbsPurchNotes;window.cbsPurchNotes=function(o){try{if(_pn)_pn(o);}catch(x){}(DATA.notices||[]).forEach(function(r){if(!isOpen(r))return;o.push({s:'Notifications',t:'notices',id:r.id,bad:0,x:S(r.title)||'Notification',y:[when(r),S(r.message).slice(0,140)].filter(Boolean).join(' | ')});});};})();\n/* ---- notes() verbatim from the hub ---- */\nfunction notes(){var o=[];try{if(window.cbsPurchNotes)window.cbsPurchNotes(o);}catch(e){}try{if(window.cbsPolicyNotes)window.cbsPolicyNotes(o);}catch(e){}\n(DATA.incidents||[]).forEach(function(r){\nif(r.status==='Open'&&r.reported_by)o.push({s:'Health and safety',t:'incidents',id:r.id,bad:0,x:(r.kind||'Incident')+' reported by '+r.reported_by,y:(r.ref||'')+' '+nzDate(r.occurred_at)});\nif(r.notifiable===true&&!r.riddor_notified_at)o.push({s:'Health and safety',t:'incidents',id:r.id,bad:1,x:'HSE not recorded as notified',y:(r.ref||'')+' '+(r.kind||'')});\nvar d=dd(r.action_due);if(d!==null&&d<0&&r.status!=='Closed')o.push({s:'Health and safety',t:'incidents',id:r.id,bad:1,x:'Corrective action overdue',y:(r.ref||'')+' '+(r.action_owner||'')});});\n(DATA.substances||[]).forEach(function(r){var d=dd(r.review_on);if(d!==null&&d<0)o.push({s:'Health and safety',t:'substances',id:r.id,bad:0,x:(r.product||'')+' review overdue',y:'SDS review'});});\n(DATA.rams||[]).forEach(function(r){if(r.status==='Draft')o.push({s:'Health and safety',t:'rams',id:r.id,bad:0,x:(r.activity||'RAMS')+' still draft',y:r.site||''});});\n(DATA.vehicles||[]).forEach(function(r){var a=dd(r.tax_due),b=dd(r.mot_expiry);\nif(a!==null&&a<30)o.push({s:'Fleet',t:'vehicles',id:r.id,bad:a<0?1:0,x:(r.reg||'')+' vehicle tax '+(a<0?'expired':'due in '+a+' days'),y:r.make_model||''});\nif(b!==null&&b<30)o.push({s:'Fleet',t:'vehicles',id:r.id,bad:b<0?1:0,x:(r.reg||'')+' MOT '+(b<0?'expired':'due in '+b+' days'),y:r.make_model||''});});\n(DATA.vehicles||[]).forEach(function(r){var sd=dd(r.service_due);if(sd!==null&&sd<30)o.push({s:'Fleet',t:'vehicles',id:r.id,bad:sd<0?1:0,x:(r.reg||'')+' service '+(sd<0?'overdue':'due in '+sd+' days'),y:r.make_model||''});});\n(function(){var M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];function up(a){return String(a||'').toUpperCase().trim();}var now=new Date();var ym=now.getFullYear()+'-'+('0'+(now.getMonth()+1)).slice(-2);var fm=new Date(now.getFullYear(),now.getMonth(),1);while(fm.getDay()!==1)fm.setDate(fm.getDate()+1);var t0=new Date(now.getFullYear(),now.getMonth(),now.getDate());var since=Math.round((t0-fm)/864e5);(DATA.vehicles||[]).forEach(function(r){var R=up(r.reg);if(!R)return;if(since>=0){var done=(DATA.checks||[]).some(function(c){return up(c.vehicle)===R&&String(c.checked_on||'').slice(0,7)===ym;});if(!done)o.push({s:'Fleet',t:'vehicles',id:r.id,bad:since>7?1:0,x:R+' monthly vehicle report due',y:'Due '+fm.getDate()+' '+M[fm.getMonth()]+' | no vehicle check yet this month'});}});})();\n(DATA.checks||[]).forEach(function(r){if(r.reviewed!==true){o.push({s:'Fleet',t:'checks',id:r.id,bad:(r.status==='Off road'||r.status==='Defects logged')?1:0,x:'Vehicle check: '+(r.vehicle||'')+' - '+(r.status||''),y:nzDate(r.checked_on)+' by '+(r.checked_by||'')+' | not yet reviewed'});}else if(r.status==='Off road'){o.push({s:'Fleet',t:'checks',id:r.id,bad:1,x:(r.vehicle||'')+' is off road',y:nzDate(r.checked_on)});}});\n(DATA.crashes||[]).forEach(function(r){if(r.status!=='Closed')o.push({s:'Fleet',t:'crashes',id:r.id,bad:0,x:(r.vehicle||'')+' accident open',y:(r.status||'')+' '+nzDate(r.occurred_at)});});\n(DATA.assets||[]).forEach(function(r){if(r.status==='Retired'||r.status==='Lost')return;\nvar n=dd(nextSvc(r));if(n!==null&&n<30)o.push({s:'Plant and tools',t:'assets',id:r.id,bad:n<0?1:0,x:(r.name||'')+' service '+(n<0?'overdue':'due in '+n+' days'),y:r.serial_no?'S/N '+r.serial_no:''});\nvar tt=dd(r.test_tag_due);if(tt!==null&&tt<30)o.push({s:'Plant and tools',t:'assets',id:r.id,bad:tt<0?1:0,x:(r.name||'')+' PAT test '+(tt<0?'overdue':'due in '+tt+' days'),y:r.serial_no?'S/N '+r.serial_no:''});\nif(r.status==='Needs repair')o.push({s:'Plant and tools',t:'assets',id:r.id,bad:1,x:(r.name||'')+' needs repair',y:r.location||''});});\n(DATA.subdocs||[]).forEach(function(r){var d=dd(r.expires_on);if(d!==null&&d<60)o.push({s:'Contractors',t:'subbies',id:(((DATA.subbies||[]).filter(function(q){return String(q.company||'').toLowerCase().replace(/\\s+/g,'')===String(r.company||'').toLowerCase().replace(/\\s+/g,'');})[0])||{}).id,bad:d<0?1:0,x:(r.company||'')+' - '+(r.custom_name||r.item||''),y:d<0?'expired':'expires in '+d+' days'});});\n(DATA.insurance||[]).forEach(function(r){var d=dd(r.expires_on);if(d!==null&&d<60)o.push({s:'Contractors',t:'insurance',id:r.id,bad:d<0?1:0,x:(r.custom_name||r.item||''),y:d<0?'expired':'expires in '+d+' days'});});\n(DATA.requests||[]).forEach(function(r){if(r.status==='New')o.push({s:'People',t:'requests',id:r.id,bad:r.urgency==='Today'?1:0,x:(r.category||'Request')+' from '+(r.requested_by||''),y:(r.urgency||'')+' | '+String(r.details||'').slice(0,50)});});\n(DATA.leave||[]).forEach(function(r){if(!r.status||r.status==='Pending')o.push({s:'People',t:'leave',id:r.id,bad:0,x:'Time off request from '+(r.worker||''),y:nzDate(r.from_date)});});\n(DATA.training||[]).forEach(function(r){var d=dd(r.expires_on);if(d!==null&&d<60)o.push({s:'People',t:'training',id:r.id,bad:d<0?1:0,x:(r.person||'')+' - '+(r.qualification||''),y:d<0?'expired':'expires in '+d+' days'});});\n(DATA.hazards||[]).forEach(function(r){if(r.status==='Archived')return;var d=days(r.review_on);if(d!==null&&d<=30)o.push({s:'Health and safety',t:'hazards',id:r.id,bad:d<0,x:(r.hazard||'Hazard')+' review '+(d<0?'overdue':'due in '+d+' days'),y:r.risk_rating?('Risk: '+r.risk_rating):''});});\n(DATA.rams||[]).forEach(function(sw){if(sw.status==='Superseded'||sw.status==='Draft')return;var j={};try{j=JSON.parse(sw.job_json||'{}');}catch(e){}var ids=(j.register||[]).map(function(x){return x&&x.id;});if(!ids.length)return;var su=String(sw.updatedAt||'');var ch=(DATA.hazards||[]).filter(function(hz){return hz.rams_key&&ids.indexOf(hz.rams_key)>-1&&String(hz.updatedAt||'')>su;});if(ch.length)o.push({s:'Health and safety',t:'rams',id:sw.id,bad:false,x:'Hazard register updated since issued',y:(sw.site||'RAMS')+' - '+ch.map(function(z){return z.hazard;}).slice(0,3).join(', ')});});\n(DATA.incidents||[]).forEach(function(inc){if(inc.requires_investigation!=='Yes')return;var rp=(DATA.increports||[]).filter(function(z){return String(z.incident_id)===String(inc.id);})[0];if(rp&&rp.status==='Signed off')return;var ref='Incident #'+inc.id+(inc.kind?' ('+inc.kind+')':'');var age=days(String(inc.occurred_at||'').slice(0,10));o.push({s:'Health and safety',t:'incidents',id:inc.id,bad:age!==null&&age<-7,x:rp?'Finish investigation report':'Investigation required',y:ref});});\n(DATA.increports||[]).forEach(function(r){var inc=(DATA.incidents||[]).filter(function(z){return String(z.id)===String(r.incident_id);})[0];if(!inc)return;var ref='Incident #'+inc.id+(inc.kind?' ('+inc.kind+')':'');if((r.update_hazard_register==='Yes'||r.review_hazard_register==='Yes')&&!r.hazard_register_done_on&&!(DATA.hazards||[]).some(function(hz){return new RegExp('Incident #'+inc.id+'(?![0-9])').test(String(hz.source||''))&&String(hz.updatedAt||'')>=String(r.createdAt||'');}))o.push({s:'Health and safety',t:'incidents',id:inc.id,bad:false,x:'Update hazard register',y:ref});var j={};try{j=JSON.parse(r.report_json||'{}');}catch(e){}(j.actions||[]).forEach(function(a){if(!a||!a.what||a.done)return;var d=days(a.due);o.push({s:'Health and safety',t:'incidents',id:inc.id,bad:d!==null&&d<0,x:'Corrective action: '+String(a.what).slice(0,70),y:[ref,a.who||'',a.due?('due '+nzDate(a.due)):''].filter(Boolean).join(' | ')});});});\n(DATA.materials||[]).forEach(function(m){if(m.status==='Discontinued')return;if(m.min_level===''||m.min_level==null)return;var q=Number(m.qty_on_hand||0),mn=Number(m.min_level);if(isNaN(mn))return;if(q<=mn&&!window.cbsOnOrder(m.id))o.push({s:'Plant and tools',t:'materials',id:m.id,bad:q<=0,x:'Reorder - '+(m.name||'material'),y:'On hand '+q+' '+(m.unit||'')+' (min '+mn+')'});});\n(DATA.ptmsheets||[]).forEach(function(s){if(s.status!=='Issued')return;var job=s.job_no?'job '+s.job_no:(s.site||'sheet');if(String(s.shortages||'').trim())o.push({s:'Plant and tools',t:'ptmsheets',id:s.id,bad:true,x:'Order for '+job,y:String(s.shortages).split('\\n')[0]});var d2=String(s.sheet_date||'').slice(0,10),tt=new Date();tt.setMinutes(tt.getMinutes()-tt.getTimezoneOffset());if(d2&&d2<tt.toISOString().slice(0,10))o.push({s:'Plant and tools',t:'ptmsheets',id:s.id,bad:false,x:'Not marked loaded - '+job,y:(s.site||'')+' | '+d2});});\no.forEach(function(n){if(n.t==='insurance')n.s='Insurance';});\n(DATA.claims||[]).forEach(function(c){if(['Settled','Closed','Withdrawn','Declined'].indexOf(c.status)>-1)return;if(!c.next_action_due)return;var d=dd(c.next_action_due);if(d===null||d>7)return;o.push({s:'Insurance',t:'claims',id:c.id,bad:d<0?1:0,x:'Claim '+(c.claim_no||'')+': '+(c.next_action||'next step'),y:(d<0?'overdue ':'due ')+c.next_action_due});});\n(DATA.companycerts||[]).forEach(function(r){var d=dd(r.expires_on);if(d===null||d>=60)return;var n=r.name==='Other'?(r.other_name||'Other'):(r.name||'Accreditation');o.push({s:'Insurance',t:'companycerts',id:r.id,bad:d<0?1:0,x:'Renew - '+n,y:d<0?'expired':'renews in '+d+' days'});});\n(DATA.subjobs||[]).forEach(function(r){if(r.status==='Approved'||!r.start_date)return;var d=dd(r.start_date);if(d===null||d>7)return;o.push({s:'Contractors',t:'subjobs',id:r.id,bad:d<=1?1:0,x:(r.doc_type||'RAMS')+' needed - '+(r.company||'subcontractor')+' - job '+(r.job_no||'-'),y:(r.status||'Requested')+' | '+(d<0?'on site since '+r.start_date:d===0?'starts today':'starts in '+d+' days')});});\n(function(){var t=today();(DATA.assets||[]).forEach(function(a){if(a.yard_status!=='Out'||!a.due_back)return;var due=String(a.due_back).slice(0,10);if(due>=t)return;o.push({s:'Plant and tools',t:'assets',id:a.id,bad:true,x:'Not back in the yard - '+(a.name||'item'),y:[a.out_job?'Job '+a.out_job:'',a.out_with||'','due back '+nz(due)].filter(Boolean).join(' | ')});});})();\nreturn o;}\n/* ---- taskOf + wrappers, as in the hub ---- */\nfunction taskOf0(n){var x=String(n.x||''),t=n.t,m,r=x.split(' ')[0];if(t==='materials'||t==='ptmsheets'||t==='claims'||t==='covertasks'||t==='companycerts'||t==='subjobs')return x;if(t==='incidents'){if(/^HSE/.test(x))return 'Notify HSE'+(String(n.y||'').trim()?' - '+String(n.y).trim():'');if(x==='Investigation required')return 'Investigate - '+String(n.y||'').trim();if(x==='Finish investigation report')return 'Finish investigation report - '+String(n.y||'').trim();if(/^Corrective action: /.test(x))return 'Complete corrective action - '+x.slice(19);if(x==='Update hazard register')return 'Update hazard register'+(String(n.y||'').trim()?' - '+String(n.y).trim():'');if(/^Corrective action/.test(x))return 'Complete corrective action'+(String(n.y||'').trim()?' - '+String(n.y).trim():'');return null;}if(t==='substances')return 'Review SDS - '+x.replace(/ review overdue$/,'');if(t==='rams'){if(/^Hazard register updated/.test(x))return 'Review RAMS - '+String(n.y||'').split(' - ')[0];return 'Finalise RAMS - '+x.replace(/ still draft$/,'');}if(t==='vehicles'){var vv=(DATA.vehicles||[]).filter(function(z){return z.id===n.id;})[0];if(vv&&vv.reg)r=vv.reg;if(/ Insurance /.test(x))return 'Renew insurance - '+r;if(/ (reg|vehicle tax) /.test(x))return 'Renew vehicle tax - '+r;if(/ MOT /.test(x))return 'Book MOT - '+r;if(/ service /.test(x))return 'Book service - '+r;if(/monthly vehicle report/.test(x))return 'Monthly vehicle check - '+r;return null;}if(t==='assets'){if((m=x.match(/^(.*) service (overdue|due)/)))return 'Service - '+m[1];if((m=x.match(/^(.*) PAT test /)))return 'PAT test - '+m[1];if((m=x.match(/^(.*) needs repair$/)))return 'Repair - '+m[1];return null;}if(t==='hazards')return 'Review hazard - '+x.split(' review ')[0];if(t==='subbies'||t==='insurance'||t==='training')return 'Renew - '+x;return null;}\nfunction ymd(off){var d=new Date();d.setDate(d.getDate()+off);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction taskOf(n){if(!n)return null;\n if(n.t==='notices'||n.t==='signons'||n.t==='pos')return n.x;\n if(n.t==='ptmsheets'&&String(n.x||'').indexOf('Send load-up sheet to crew')===0){var s=(DATA.ptmsheets||[]).filter(function(z){return z.id===n.id;})[0];var sd=s?String(s.sheet_date||'').slice(0,10):'';if(sd!==ymd(0)&&sd!==ymd(1))return null;}\n return taskOf0(n);}\nfunction keyOf(n,tk){return n.t+'|'+n.id+'|'+(n.t==='vehicles'?String(tk).split(' - ')[0]:tk);}\nfunction stage(t,r){var s=r.status||'';\n if(t==='requests')return s==='Done'||s==='Declined'?'done':(s==='In progress'?'prog':'new');\n if(t==='incidents')return s==='Closed'?'done':((s==='Under investigation'||s==='Actions pending')?'prog':'new');\n if(t==='crashes')return s==='Closed'?'done':((s==='Claim lodged'||s==='Repairs booked')?'prog':'new');\n if(t==='leave')return (s==='Approved'||s==='Declined')?'done':(s==='Under review'?'prog':'new');\n if(t==='checks'){if(r.reviewed!==true)return 'new';if(s==='Defects logged'||s==='Off road')return 'prog';return 'done';}\n return 'new';}\n/* ---- in-hand notes ---- */\nvar TS={};(DATA.taskstat||[]).forEach(function(r){if(r&&r.task_key)TS[r.task_key]=r;});\nfunction fd(v){var s=S(v).slice(0,10);if(!/^\\d{4}-\\d\\d-\\d\\d$/.test(s))return '';try{return new Date(s+'T12:00:00Z').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'});}catch(e){return nz(s);}}\nfunction chip(k){var r=TS[k];if(!r||r.status!=='In progress')return '';var a=[S(r.note)||'In hand'];if(fd(r.note_date))a.push(fd(r.note_date));if(S(r.note_by))a.push(S(r.note_by));return a.join(' \\u00b7 ');}\nfunction prog(k){var r=TS[k];return !!(r&&r.status==='In progress');}\n/* ---- build the board ---- */\nvar out=[];\nvar TEAM=[['requests','Request',function(r){return {ti:r.category||'Request',who:r.requested_by,when:r.requested_at,urg:r.urgency==='Today'};}],\n ['incidents','Incident',function(r){return {ti:((r.ref||'')+' '+(r.location||'')).trim()||'Incident',who:r.reported_by||r.person,when:r.occurred_at,urg:r.notifiable===true||r.kind==='Injury',ty:r.kind};}],\n ['crashes','Vehicle accident',function(r){return {ti:r.vehicle||'',who:r.driver,when:r.occurred_at,urg:true};}],\n ['leave','Time off',function(r){return {ti:(r.worker||'')+': '+nzDate(r.from_date)+(r.to_date&&r.to_date!==r.from_date?' to '+nzDate(r.to_date):''),who:r.kind,when:r.requested_at,urg:false};}],\n ['checks','Vehicle check',function(r){return {ti:(r.vehicle||'')+' - '+(r.status||''),who:r.checked_by,when:r.checked_on,urg:r.status==='Off road'};}]];\nTEAM.forEach(function(T2){(DATA[T2[0]]||[]).forEach(function(r){var st=stage(T2[0],r);if(st==='done')return;var m=T2[2](r);var k='team|'+T2[0]+'|'+r.id;\n out.push({key:k,kind:'team',t:T2[0],id:r.id,grp:'Team',type:m.ty||T2[1],title:(m.ty||T2[1])+': '+m.ti,sub:[m.who||'',m.when?nzDate(m.when):''].filter(Boolean).join(' | '),urg:!!m.urg,col:st,chip:st==='prog'?chip(k):''});});});\nvar seenK={};\nnotes().forEach(function(n){var tk=taskOf(n);if(!tk)return;var rr=(DATA[n.t]||[]).filter(function(z){return z.id===n.id;})[0];if(!rr)return;var k=keyOf(n,tk);if(seenK[k])return;seenK[k]=1;\n out.push({key:k,kind:'auto',t:n.t,id:n.id,grp:n.s,type:'Auto',title:tk,sub:S(n.y),urg:!!n.bad,col:prog(k)?'prog':'new',chip:chip(k)});});\nJRQ.forEach(function(x){var k='jobreq:'+x.job+':'+x.k;var p=x.st==='pending'||prog(k);\n out.push({key:k,kind:'job',t:'jobreq',job:x.job,grp:'Job '+x.job,type:'Job',title:x.l+' - Job '+x.job,sub:[x.site,x.note].filter(Boolean).join(' \\u00b7 '),urg:!!x.urg,col:p?'prog':'new',chip:chip(k),link:x.link||''});});\nvar counts={new:out.filter(function(i){return i.col==='new';}).length,prog:out.filter(function(i){return i.col==='prog';}).length};\nreturn [{json:{ok:true,at:new Date().toISOString(),counts:counts,items:out,_tasks:TASKS}}];\n"
+        }
+      },
+      {
+        "id": "43de3988-2ce3-457c-853c-cd1186f8c077",
+        "name": "Respond Feed",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "0ab1e938-8b2c-41d5-9a6a-d6fe3124505a",
+        "name": "Status Tags",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          480,
+          0
+        ],
+        "parameters": {
+          "jsCode": "/* STATUS FOR EVERY CARD (keep): same rules as cbsStatusTag on the hub Actions board. Sets i.status and i.dtitle (display title:\n   opening verb dropped when the status already says it, e.g. 'Approve RAMS - Acme' -> 'RAMS - Acme'). i.title stays plain\n   (the TV's Board Actions node matches on plain titles, then shows dtitle + ' \\u00b7 ' + status).\n   Job cards (job tasks, requirements, enquiry tasks) use the one task status set: To do, In progress, In hand, Overdue.\n   In hand = started with a note; a chip with no note starts with the default words 'In hand' and counts as In progress.\n   Sign-on records are not board cards (they belong in the Job File), same as the hub. */\nfunction cbsStTag(o){var c=o.col,n=String(o.note||''),T=String(o.title||''),t=o.t||'',m;\n if(c==='done')return 'Done';\n if(o.kind==='team'){if(c==='prog')return 'In progress';return {requests:'New request',incidents:'Needs review',crashes:'Needs review',leave:'Needs approval',checks:'Needs review'}[t]||'New';}\n if(o.kind==='job'){if(c==='prog')return o.chip&&!/^in (hand|progress)\\b/i.test(o.chip)?'In hand':'In progress';return (o.urg||/overdue|expired|was due|late\\b/i.test(n))?'Overdue':'To do';}\n if(c==='prog')return 'In progress';\n if(/overdue|expired|was due|late\\b/i.test(n))return 'Overdue';\n if((m=n.match(/(?:due|renews|expires) in (\\d+) days?/i)))return 'Due in '+m[1]+(m[1]==='1'?' day':' days');\n if((m=n.match(/starts in (\\d+) days?/i)))return 'Starts in '+m[1]+(m[1]==='1'?' day':' days');\n if(/starts today/i.test(n))return 'Starts today';\n if(/^Approve /.test(T))return 'Needs approval';\n if(/^Review /.test(T)||/ signed /.test(T)||t==='checks')return 'Needs review';\n if(/^Chase /.test(T))return 'Awaiting reply';\n if(/^(Issue PO|Send load-up)/.test(T))return 'Ready to send';\n if(/^Finalise /.test(T))return 'Draft';\n if(/^Reorder /.test(T))return o.urg?'Out of stock':'Low stock';\n if(/^Not marked loaded/.test(T))return 'Overdue';\n if(/^Repair /.test(T))return 'Needs repair';\n if(t==='notices')return 'New';\n if(/^(Weekly|Monthly|Quarterly) vehicle check/.test(T))return o.urg?'Overdue':'Due';\n if(/^(vehicles|assets|subbies|insurance|training|companycerts|hazards|substances|hspolicy)$/.test(t))return o.urg?'Overdue':'Due soon';\n return o.urg?'Urgent':'Required';}\nfunction stTidy(T,tag){var r=T;if(tag==='Needs approval')r=r.replace(/^Approve\\s+/,'');else if(tag==='Needs review')r=r.replace(/^Review\\s+/,'');else if(tag==='Needs repair')r=r.replace(/^Repair\\s+-\\s+/,'');return r.charAt(0).toUpperCase()+r.slice(1);}\nvar d=$input.first().json;if(!d||!d.ok||!Array.isArray(d.items))return [{json:d}];\nd.items=d.items.filter(function(i){return i.t!=='signons';});\nd.items.forEach(function(i){var title=String(i.title||'').replace(/ - Job $/,'');\n var note=i.kind==='job'?String(i.sub||'').split(' \\u00b7 ').pop():i.sub;\n i.status=cbsStTag({kind:i.kind,t:i.t,col:i.col,title:title,note:note,urg:!!i.urg,chip:i.chip});i.dtitle=stTidy(title,i.status);});\nd.counts={new:d.items.filter(function(i){return i.col==='new';}).length,prog:d.items.filter(function(i){return i.col==='prog';}).length};\nreturn [{json:d}];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "c7652aa2-f211-4f5a-ac32-46388bf2b55f",
+        "name": "Fleet Rows",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          200
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "chFjXqeuWU1vB1l6"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "42b0644b-0575-44cf-8a68-333f12dd3259",
+        "name": "Fleet Filter",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          200
+        ],
+        "parameters": {
+          "jsCode": "/* Fleet Filter: vehicle inspection cards, same rules as the hub (cbsFleet + notes()).\n   Removes the Build Board's old first-Monday 'Monthly vehicle check' cards and rebuilds them per vehicle from\n   cbs_vehicles: insp_freq (Weekly / Monthly / Quarterly / Not required; blank = Monthly, or Not required if no_monthly = Yes)\n   and insp_next (next inspection due; moves on by the frequency for each inspection logged within the lead window).\n   Vehicles with no insp_next use the old rule (first Monday of the week/month/quarter). In-hand notes come from cbs_task_status. */\nconst d=$('Build Board').first().json;const S=v=>v==null?'':String(v).trim();\nif(!d||!d.ok||!Array.isArray(d.items))return [{json:d}];\nconst H='https://old-hub.example/webhook/';const h=this.helpers;\nconst V=$input.all().map(i=>i.json).filter(r=>r&&r.reg);\nconst U=s=>S(s).toUpperCase().replace(/\\s+/g,'');\nconst fq=v=>S(v.insp_freq)||(/^yes$/i.test(S(v.no_monthly))?'Not required':'Monthly');\nlet C=null,TS=[];\nconst L=async t=>{const r=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:20000});if(r==null||(typeof r==='string'&&!r.trim()))return [];/* an empty register comes back as an empty body */const x=typeof r==='string'?JSON.parse(r):r;return Array.isArray(x)?x:((x&&x.rows)||null);};\nlet CE='';try{C=await L('checks');}catch(e){C=null;CE=String(e.message||e);}\nconst RE=/^(Weekly|Monthly|Quarterly) vehicle check - /;\nif(!C){/* checks could not be read: keep the board's cards but drop vehicles that need no inspection */\n const NR={};V.forEach(v=>{if(fq(v)==='Not required')NR[U(v.reg)]=1;});\n d.items=d.items.filter(i=>{const m=S(i.title).match(/^Monthly vehicle check - (.+)$/);return !(m&&NR[U(m[1])]);});\n}else{\n try{TS=(await L('taskstat'))||[];}catch(e){TS=[];}\n const TSm={};TS.forEach(r=>{if(r&&r.task_key)TSm[S(r.task_key)]=r;});\n d.items=d.items.filter(i=>!(i.kind==='auto'&&i.t==='vehicles'&&RE.test(S(i.title))));\n const ISO=/^\\d{4}-\\d{2}-\\d{2}$/;const D=s=>new Date(s+'T12:00:00Z');const I=x=>x.toISOString().slice(0,10);\n const add=(s,n)=>{const x=D(s);x.setUTCDate(x.getUTCDate()+n);return I(x);};\n const step=(s,f)=>{if(f==='Weekly')return add(s,7);const x=D(s),m=f==='Quarterly'?3:1,day=x.getUTCDate();x.setUTCDate(1);x.setUTCMonth(x.getUTCMonth()+m);const last=new Date(Date.UTC(x.getUTCFullYear(),x.getUTCMonth()+1,0)).getUTCDate();x.setUTCDate(Math.min(day,last));return I(x);};\n const lead=f=>f==='Weekly'?3:f==='Quarterly'?21:10;\n const firstMon=s=>{const x=D(s);while(x.getUTCDay()!==1)x.setUTCDate(x.getUTCDate()+1);return I(x);};\n const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];\n const dm=s=>{const x=D(s);return x.getUTCDate()+' '+MO[x.getUTCMonth()];};\n const fdt=v=>{v=S(v).slice(0,10);if(!ISO.test(v))return '';try{return D(v).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'});}catch(e){return v;}};\n const match=(c,v)=>{const a=U(c.vehicle),r=U(v.reg);return !!r&&(a===r||a.indexOf('('+r+')')>-1);};\n const today=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).slice(0,10);\n V.forEach(v=>{const f=fq(v);if(f==='Not required')return;\n  const ds=C.filter(c=>c&&match(c,v)).map(c=>S(c.checked_on).slice(0,10)).filter(x=>ISO.test(x)).sort();\n  let due,y,done=false;const nx=S(v.insp_next).slice(0,10);\n  if(ISO.test(nx)){let n=nx;ds.forEach(x=>{if(x>=add(n,-lead(f))){let g=0;do{n=step(n,f);g++;}while(n<=x&&g<500);}});due=n;y='Due '+dm(due)+' '+due.slice(0,4)+' | no vehicle check logged for it yet';}\n  else{let p0;if(f==='Weekly'){p0=add(today,-((D(today).getUTCDay()+6)%7));due=p0;}else if(f==='Quarterly'){const x=D(today);p0=I(new Date(Date.UTC(x.getUTCFullYear(),Math.floor(x.getUTCMonth()/3)*3,1)));due=firstMon(p0);}else{p0=today.slice(0,8)+'01';due=firstMon(p0);}\n   done=ds.some(x=>x>=p0);y='Due '+dm(due)+' | no vehicle check yet '+(f==='Weekly'?'this week':f==='Quarterly'?'this quarter':'this month');}\n  if(done)return;const sn=Math.round((D(today)-D(due))/864e5);if(sn<0)return;\n  const title=f+' vehicle check - '+S(v.reg),key='vehicles|'+v.id+'|'+f+' vehicle check',st=TSm[key],prog=!!(st&&S(st.status)==='In progress');\n  d.items.push({key,kind:'auto',t:'vehicles',id:v.id,grp:'Fleet',type:'Auto',title,sub:y,urg:sn>(f==='Weekly'?2:7),col:prog?'prog':'new',chip:prog?[S(st.note)||'In hand',fdt(st.note_date),S(st.note_by)].filter(Boolean).join(' \\u00b7 '):''});});\n}\nd._fleet=C?'ok':('checks unavailable '+CE);\nif(d.counts){d.counts.new=d.items.filter(i=>i.col!=='prog').length;d.counts.prog=d.items.filter(i=>i.col==='prog').length;}\nreturn [{json:d}];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "3e886173-31b0-4655-8991-79dcaeb78ab9",
+        "name": "Task System",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          700,
+          0
+        ],
+        "parameters": {
+          "jsCode": "/* JOB + OFFICE TASKS FROM THE TASK SYSTEM (keep): the Actions board shows job tasks from CBS - Tasks (GET cbs-tasks-data?all=1);\n   the old job requirements feed (cbs-job-reqs-data) no longer returns them. Old job items are replaced with the open tasks from the\n   task system so the TV's Needs attention matches the board. The board itself ignores kind 'job' items from this feed.\n   Done / Verified are left out, and snags fixed awaiting sign-off. In hand = In progress with its note as the chip.\n   Speed: Build Board fetches the task list alongside the hub data and passes it here as _tasks; fetched here only if that failed.\n   people = who is assigned on the task's open lines (e.g. a PO line or load-up line), for tasks assigned per line rather than as a whole (TV 'With ...'). */\nconst d=$input.first().json;if(!d||!d.ok||!Array.isArray(d.items))return [{json:d}];\nconst S=v=>v==null?'':String(v).trim();\nlet T=Array.isArray(d._tasks)?d._tasks:null;delete d._tasks;\nif(!T){try{const r=await this.helpers.httpRequest({url:'https://old-hub.example/webhook/cbs-tasks-data?all=1',json:true,timeout:60000});if(r&&r.ok&&Array.isArray(r.tasks))T=r.tasks;}catch(e){}}\nif(!T)return [{json:d}];\nconst dmy=v=>{v=S(v).slice(0,10);const p=v.split('-');return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:v;};\nconst fd=v=>{v=S(v).slice(0,10);if(!/^\\d{4}-\\d\\d-\\d\\d$/.test(v))return '';try{return new Date(v+'T12:00:00Z').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'});}catch(e){return dmy(v);}};\nconst ppl=t=>{const o=[];(Array.isArray(t.items)?t.items:[]).forEach(x=>{const st=S(x&&x.status);if(st==='Done'||st==='Verified')return;const a=S(x&&x.assignee);if(a&&o.indexOf(a)<0)o.push(a);});return o;};\nd.items=d.items.filter(i=>i.kind!=='job');\nT.forEach(t=>{const st=S(t.status);if(st==='Done'||st==='Verified')return;if(t.src==='snag'&&st==='In hand')return;\n const prog=st==='In progress'||st==='In hand',ih=st==='In hand'&&!!S(t.note);\n const job=S(t.job),due=S(t.due).slice(0,10);\n const chip=ih?[S(t.note),fd(t.note_date),S(t.note_by)].filter(Boolean).join(' \\u00b7 '):'';\n const title=S(t.title)+(job?' - Job '+job:'');\n d.items.push({key:S(t.key),kind:'job',t:S(t.src)||'task',id:t.id,job:job,grp:job?'Job '+job:(S(t.category)||'Office'),type:'Job',title:title,dtitle:title,\n  sub:[S(t.site).split(',')[0],due?((t.overdue?'Overdue, due ':'Due ')+dmy(due)):''].filter(Boolean).join(' \\u00b7 '),urg:!!t.overdue,col:prog?'prog':'new',chip:chip,\n  assignee:S(t.assignee),people:ppl(t),status:prog?'In progress':(t.overdue?'Overdue':'To do'),link:S(t.link)});});\nd.counts={new:d.items.filter(i=>i.col==='new').length,prog:d.items.filter(i=>i.col==='prog').length};\nreturn [{json:d}];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "9e14514a-f195-45d0-8723-9472e714c94f",
+        "name": "Claim Keys",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          560,
+          200
+        ],
+        "parameters": {
+          "jsCode": "/* CLAIM KEYS (keep): an insurance claim's task is keyed on the claim itself ('claims|<id>'), not on its next-action wording, so who has it,\n   its note and In progress survive when the next action is reworded. The first time, the latest saved row under an old wording-based key\n   ('claims|<id>|...') is carried over. Runs before Status Tags so the card status uses it. */\nconst d=$input.first().json;if(!d||!d.ok||!Array.isArray(d.items))return [{json:d}];\nconst S=v=>v==null?'':String(v).trim();\nconst C=d.items.filter(i=>i&&i.t==='claims'&&i.kind==='auto');if(!C.length)return [{json:d}];\nlet TS=[];try{const r=await this.helpers.httpRequest({url:'https://old-hub.example/webhook/cbs-admin?a=list&t=taskstat',json:true,timeout:20000});TS=Array.isArray(r)?r:[];}catch(e){TS=[];}\nconst ts=r=>S(r.changed_at||r.updatedAt||r.createdAt);\nC.forEach(i=>{const nk='claims|'+i.id;if(i.key===nk)return;\n const rows=TS.filter(r=>r&&(S(r.task_key)===nk||S(r.task_key).indexOf(nk+'|')===0)).sort((a,b)=>ts(b).localeCompare(ts(a)));\n const r=rows.filter(x=>S(x.task_key)===nk)[0]||rows[0];i.key=nk;\n if(r&&S(r.status)==='In progress'){i.col='prog';i.chip=[S(r.note)||'In hand',S(r.note_by)].filter(Boolean).join(' \\u00b7 ');}else{i.col='new';i.chip='';}});\nd.counts={new:d.items.filter(i=>i.col==='new').length,prog:d.items.filter(i=>i.col==='prog').length};\nreturn [{json:d}];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "0c9f239e-84c4-4cfb-9be3-dd5f914a3359",
+        "name": "Claim Cards",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          560,
+          400
+        ],
+        "parameters": {
+          "jsCode": "/* CLAIM CARDS (keep, Phase 3): after Claim Keys. One task per open insurance claim, the whole time it is open (not only 7 days before its\n   next action). Replaces the claim cards from Build Board. Key 'claims|<id>' (who has it, its note and In progress are kept from\n   cbs_task_status). Title: the next action (or 'Update the claim'); due: the claim's next action date (i.due); urgent once overdue.\n   A claim goes when it is Settled, Closed, Withdrawn or Declined. */\nconst d=$input.first().json;if(!d||!d.ok||!Array.isArray(d.items))return [{json:d}];\nconst S=v=>v==null?'':String(v).trim();const H='https://old-hub.example/webhook/';\nlet C=null;try{const r=await this.helpers.httpRequest({url:H+'cbs-admin-data?t=claims',json:true,timeout:30000});C=(r&&Array.isArray(r.claims))?r.claims:null;}catch(e){C=null;}\nif(!C){d._claims='unavailable';return [{json:d}];}\nlet TS=[];try{const r=await this.helpers.httpRequest({url:H+'cbs-admin?a=list&t=taskstat',json:true,timeout:20000});TS=Array.isArray(r)?r:[];}catch(e){TS=[];}\nconst TSm={};TS.forEach(r=>{if(r&&r.task_key)TSm[S(r.task_key)]=r;});\nconst T0=new Date().toLocaleDateString('en-CA',{timeZone:'Europe/London'});\nconst dmy=v=>{const m=S(v).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:'';};\nconst days=v=>Math.round((Date.parse(v+'T12:00:00Z')-Date.parse(T0+'T12:00:00Z'))/864e5);\nconst fd=v=>{v=S(v).slice(0,10);if(!/^\\d{4}-\\d\\d-\\d\\d$/.test(v))return '';try{return new Date(v+'T12:00:00Z').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'});}catch(e){return dmy(v);}};\nconst CLOSED=/^(settled|closed|withdrawn|declined)$/i;\nd.items=d.items.filter(i=>!(i&&i.t==='claims'&&i.kind==='auto'));\nC.forEach(c=>{if(!c||!c.id||CLOSED.test(S(c.status)))return;\n const no=S(c.claim_no)||('Claim '+c.id),due=S(c.next_action_due).slice(0,10),ok=/^\\d{4}-\\d\\d-\\d\\d$/.test(due),dl=ok?days(due):null;\n const what=[S(c.claim_type),S(c.vehicle)||S(c.asset)||S(c.site),S(c.insurer)].filter(Boolean).join(' \\u00b7 ');\n const sub=[S(c.status)||'Open',!ok?'No next action date set':(dl<0?'Overdue: next action was due '+dmy(due):(dl===0?'Next action due today':'Next action due in '+dl+(dl===1?' day':' days')+' ('+dmy(due)+')')),what].filter(Boolean).join(' | ');\n const key='claims|'+c.id,st=TSm[key],prog=!!(st&&S(st.status)==='In progress');\n d.items.push({key,kind:'auto',t:'claims',id:c.id,grp:'Insurance',type:'Auto',title:'Claim '+no+': '+(S(c.next_action)||'Update the claim'),sub,urg:ok&&dl<0,due:ok?due:'',\n  col:prog?'prog':'new',chip:prog?[S(st.note)||'In hand',fd(st.note_date),S(st.note_by)].filter(Boolean).join(' \\u00b7 '):''});});\nd._claims='ok';d.counts={new:d.items.filter(i=>i.col==='new').length,prog:d.items.filter(i=>i.col==='prog').length};\nreturn [{json:d}];\n",
+          "mode": "runOnceForAllItems"
+        }
+      }
+    ],
+    "connections": {
+      "Feed Hook": {
+        "main": [
+          [
+            {
+              "node": "Build Board",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Build Board": {
+        "main": [
+          [
+            {
+              "node": "Fleet Rows",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Fleet Rows": {
+        "main": [
+          [
+            {
+              "node": "Fleet Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Status Tags": {
+        "main": [
+          [
+            {
+              "node": "Task System",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Task System": {
+        "main": [
+          [
+            {
+              "node": "Respond Feed",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Fleet Filter": {
+        "main": [
+          [
+            {
+              "node": "Claim Keys",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Claim Keys": {
+        "main": [
+          [
+            {
+              "node": "Claim Cards",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Claim Cards": {
+        "main": [
+          [
+            {
+              "node": "Status Tags",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS Actions board built on the server: GET cbs-actions-data returns every New and In progress card (auto tasks, team items, job requirements and job tasks) with in-hand notes. Same rules as the hub's Actions board; used by the TV dashboard.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

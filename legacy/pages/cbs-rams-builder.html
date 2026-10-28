@@ -1,0 +1,1728 @@
+<!--cbs-baked--><!DOCTYPE html>
+<html lang="en-GB">
+<head><script id="cbsDl">(function(){if(window.__cbsDl)return;window.__cbsDl=1;
+var ua=navigator.userAgent||'',fr=false;try{fr=window.top!==window.self;}catch(e){fr=true;}
+var ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+var wv=(ios&&ua.indexOf('Safari/')<0)||ua.indexOf('; wv)')>-1||/ServiceM8/i.test(ua);
+window.__cbsDlPost=fr||wv;
+var oc=HTMLAnchorElement.prototype.click,od=HTMLAnchorElement.prototype.dispatchEvent;
+function want(a){if(!window.__cbsDlPost||!a||!a.download)return false;var h=String(a.href||'');return (h.indexOf('blob:')===0||h.indexOf('data:application/pdf')===0)&&(/[.]pdf$/i.test(a.download)||h.indexOf('data:application/pdf')===0);}
+function b64(href){return fetch(href).then(function(r){return r.blob();}).then(function(b){return new Promise(function(res,rej){var f=new FileReader();f.onload=function(){res(String(f.result).split(',')[1]);};f.onerror=rej;f.readAsDataURL(b);});});}
+function css(){if(document.getElementById('cbsDlCss'))return;var s=document.createElement('style');s.id='cbsDlCss';s.textContent='#cbsDlOv{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px;font-family:inherit}#cbsDlOv .bx{background:#fff;border-radius:12px;padding:20px;max-width:360px;width:100%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.25)}#cbsDlOv b{display:block;font-size:18px;margin-bottom:6px}#cbsDlOv p{margin:0 0 14px;color:#555;font-size:14px;word-break:break-word}#cbsDlOv button{display:block;width:100%;border:0;border-radius:8px;padding:13px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;margin-top:8px}#cbsDlGo{background:#F47920;color:#fff}#cbsDlX{background:#eef0f2;color:#1f2328}';document.head.appendChild(s);}
+function show(name,data){css();var o=document.getElementById('cbsDlOv');if(o)o.remove();o=document.createElement('div');o.id='cbsDlOv';
+ var bx=document.createElement('div');bx.className='bx';var t=document.createElement('b');t.textContent='Your PDF is ready';var p=document.createElement('p');p.textContent=name;
+ var f=document.createElement('form');f.method='POST';f.action='/webhook/cbs-pdf-out';f.target='_blank';f.style.margin='0';
+ [['name',name],['data',data]].forEach(function(x){var i=document.createElement('input');i.type='hidden';i.name=x[0];i.value=x[1];f.appendChild(i);});
+ var g=document.createElement('button');g.type='submit';g.id='cbsDlGo';g.textContent='Open PDF';f.appendChild(g);
+ var x=document.createElement('button');x.type='button';x.id='cbsDlX';x.textContent='Close';x.onclick=function(){o.remove();};
+ f.onsubmit=function(){setTimeout(function(){o.remove();},1500);};
+ bx.appendChild(t);bx.appendChild(p);bx.appendChild(f);bx.appendChild(x);o.appendChild(bx);document.body.appendChild(o);}
+function go(a){var n=a.download||'document.pdf';b64(a.href).then(function(d){show(n,d);})['catch'](function(){try{window.open(a.href,'_blank');}catch(e){}});}
+HTMLAnchorElement.prototype.click=function(){if(want(this)){go(this);return;}return oc.apply(this,arguments);};
+HTMLAnchorElement.prototype.dispatchEvent=function(e){if(e&&e.type==='click'&&want(this)){go(this);return true;}return od.apply(this,arguments);};
+})();</script><script id="cbsSp">(function(){if(window.__cbsSP)return;window.__cbsSP=1;var R=/^https:\/\/chelmsfordbuildingservices(-my)?\.sharepoint\.com\//i;function px(u){u=String(u||"");return R.test(u)?"/webhook/cbs-file?u="+encodeURIComponent(u):u;}window.__cbsPx=px;document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(!a)return;var h=a.getAttribute("href"),v=px(h);if(v!==h){a.setAttribute("href",v);a.setAttribute("target","_blank");a.setAttribute("rel","noopener");}},true);var wo=window.open;window.open=function(u){var a=[].slice.call(arguments);a[0]=px(u);return wo.apply(window,a);};})();</script><script id="cbsSaveGuard">(function(){if(window.__cbsSG)return;window.__cbsSG=1;var F=window.fetch.bind(window),P={},R={},IDS={};
+function isSave(u){return /\/webhook\/cbs-[a-z0-9-]*(save|record|upload|receive|loaded|pdf)(\?|$)/.test(u)&&!/[?&]a=del/.test(u);}
+function isDoc(u){return /\/webhook\/cbs-[a-z0-9-]*-save(\?|$)/.test(u)&&!/cbs-admin-save/.test(u);}
+window.fetch=function(u,o){o=o||{};var url=String(u&&u.url||u),m=String(o.method||'GET').toUpperCase();
+ if(m!=='POST'||!isSave(url))return F(u,o);
+ var body=o.body,key=url.split('?')[0]+location.pathname;
+ if(isDoc(url)&&typeof body==='string'&&IDS[key]){try{var j=JSON.parse(body);if(!Number(j.id)){j.id=IDS[key];body=JSON.stringify(j);o=Object.assign({},o,{body:body});}}catch(e){}}
+ var k=url+'|'+(typeof body==='string'?body:Math.random());
+ if(P[k])return P[k].then(function(r){return r.clone();});
+ if(R[k]&&Date.now()-R[k].t<15000)return Promise.resolve(R[k].r.clone());
+ var p=F(u,o).then(function(r){var c=r.clone();R[k]={t:Date.now(),r:r.clone()};delete P[k];
+   if(isDoc(url)&&r.ok)c.json().then(function(d){if(d&&Number(d.id))IDS[key]=Number(d.id);}).catch(function(){});return r;},
+  function(e){delete P[k];throw e;});
+ P[k]=p.then(function(r){return r.clone();});return p;};
+document.addEventListener('click',function(e){var b=e.target&&e.target.closest&&e.target.closest('button');if(!b||!/save|submit|issue/i.test(b.textContent||''))return;if(b.__cbsLock){e.stopImmediatePropagation();e.preventDefault();return;}b.__cbsLock=1;setTimeout(function(){b.__cbsLock=0;},1500);},true);
+})();</script><script id="cbsRoute">(function(){if(window.__cbsRT)return;window.__cbsRT=1;var M={"swms-save":"cbs-rams-save","sssp-save":"cbs-cphsp-save","swms-builder":"cbs-rams-builder","sssp-builder":"cbs-cphsp-builder","embr-builder-kit":"cbs-builder-kit","site-form-save":"cbs-site-inspection-save","embr-logo":"cbs-logo"},T=[["Embr Operations","Operations Hub"],["Embr Projects","Chelmsford Building Services"],["Embr - ","CBS - "],["embr-ops","cbs-ops"],["embr-toolbox-saved","cbs-toolbox-saved"],["embr_","cbs_"],["embr-","cbs-"],["Google Drive","SharePoint"],["WorkSafe","HSE"],["lang=\"en-NZ\"","lang=\"en-GB\""],["\"en-NZ\"","\"en-GB\""],["Pacific/Auckland","Europe/London"],["($\"+","(£\"+"]],TK={"swms":"rams","sssp":"cphsp"};function nm(n){return n.indexOf('cbs-')===0?n:(M[n]||('cbs-'+n));}function fx(u){try{var s=String(u);var x=new URL(s,location.href);if(x.origin!==location.origin)return u;var p=x.pathname.split('/');if(p.length!==3||p[1]!=='webhook'||!p[2])return u;var n=nm(p[2]);if(n===p[2])return u;return '/webhook/'+n+x.search+x.hash;}catch(e){return u;}}function lst(u){try{var x=new URL(String(u),location.href);if(x.origin!==location.origin)return null;if(x.pathname!=='/webhook/admin'&&x.pathname!=='/webhook/cbs-admin')return null;if(x.searchParams.get('a')!=='list')return null;return x.searchParams.get('t')||'';}catch(e){return null;}}window.__cbsUrl=fx;window.__cbsFix=function(h){h=String(h).replace(new RegExp('/webhook/(?!cbs-)([A-Za-z0-9-]+)','g'),function(a,n){return '/webhook/'+nm(n);});T.forEach(function(r){h=h.split(r[0]).join(r[1]);});return h;};var F=window.fetch;window.fetch=function(u,o){var q=u&&typeof u==='object'&&u.url;var t=lst(q?u.url:u);if(t!==null){var k=TK[t]||t;return F.call(window,'/webhook/cbs-admin-data?t='+encodeURIComponent(k)).then(function(r){return r.json();}).then(function(d){var a=(d&&Array.isArray(d[k]))?d[k]:[];return new Response(JSON.stringify(a),{status:200,headers:{'Content-Type':'application/json'}});});}if(q){var v=fx(u.url);if(v!==u.url)u=new Request(v,u);}else{u=fx(u);}return F.call(window,u,o);};var XO=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(m,u){var t=lst(u);if(t!==null){arguments[1]='/webhook/cbs-admin-data?t='+encodeURIComponent(TK[t]||t);}else{arguments[1]=fx(u);}return XO.apply(this,arguments);};document.addEventListener('click',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href]');if(a){var h=a.getAttribute('href'),v=fx(h);if(v!==h)a.setAttribute('href',v);}},true);})();</script><style id="cbsLogoFix">.topbar .logo,.topbar img,#topLogo,#cbsLogo,header img,img.logo{background:transparent!important;box-shadow:none!important;border:0!important;padding:0!important;border-radius:0!important;filter:none!important}</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chelmsford Building Services RAMS Builder</title>
+<style>
+:root{
+--bg:#f2f2f0; --panel:#ffffff; --panel-2:#f7f7f6; --text:#161616; --muted:#6b6e70;
+--border:#d9d9d6; --brand:#F47920; --brand-deep:#d4650f; --ink:#000000;
+--shadow:0 1px 3px rgba(0,0,0,.10), 0 8px 24px rgba(0,0,0,.06); --radius:8px;
+box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+@media (prefers-color-scheme: dark){
+:root:not([data-theme="light"]){
+--bg:#151515; --panel:#1f1f1f; --panel-2:#252525; --text:#ecebe8; --muted:#a09d97;
+--border:#383735; --shadow:0 1px 3px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.35);
+}
+}
+:root[data-theme="dark"]{
+--bg:#151515; --panel:#1f1f1f; --panel-2:#252525; --text:#ecebe8; --muted:#a09d97;
+--border:#383735; --shadow:0 1px 3px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);
+font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.45;}
+
+.topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 14px;
+background:var(--panel);border-bottom:3px solid var(--brand);position:sticky;top:env(safe-area-inset-top,0px);z-index:30;}
+.topbar .logo{height:22px;width:auto;}
+.topbar h1{font-size:15px;margin:0;font-weight:600;}
+.topbar .sub{color:var(--muted);font-size:11.5px;}
+.spacer{flex:1 1 auto;}
+button,select,input,textarea{font:inherit;color:inherit;}
+.btn{background:var(--panel-2);border:1px solid var(--border);color:var(--text);
+padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;}
+.btn:hover{border-color:var(--brand-deep);}
+.btn:focus-visible{outline:2px solid var(--brand-deep);outline-offset:1px;}
+.btn:disabled{opacity:.55;cursor:default;}
+.btn.primary{background:#F47920;border-color:#F47920;color:#fff;font-weight:600;}
+.btn.primary:hover{background:#222;}
+.btn.tiny{padding:2px 7px;font-size:12px;line-height:1.4;}
+
+.layout{display:flex;align-items:flex-start;min-height:calc(100vh - 54px);}
+.panel{width:420px;flex:0 0 420px;background:var(--panel);border-right:1px solid var(--border);
+padding:14px;overflow-y:auto;max-height:calc(100vh - 54px);position:sticky;top:54px;}
+.previewWrap{flex:1 1 auto;padding:20px;overflow-x:auto;min-width:0;}
+
+.tabs{display:none;gap:6px;padding:8px 12px;background:var(--panel);
+border-bottom:1px solid var(--border);position:sticky;top:54px;z-index:25;}
+.tabs .btn{flex:1;}
+.tabs .btn[aria-selected="true"]{background:#F47920;border-color:#F47920;color:#fff;font-weight:600;}
+@media (max-width:1150px){
+.layout{display:block;}
+.tabs{display:flex;}
+.panel{width:auto;flex:none;max-height:none;position:static;border-right:none;border-bottom:1px solid var(--border);}
+.previewWrap{padding:12px;}
+body.show-preview .panel{display:none;}
+body:not(.show-preview) .previewWrap{display:none;}
+}
+
+details.group{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;background:var(--panel-2);}
+details.group>summary{cursor:pointer;padding:9px 11px;font-weight:600;font-size:13px;list-style:none;
+display:flex;align-items:center;gap:8px;border-radius:var(--radius);}
+details.group>summary::-webkit-details-marker{display:none;}
+details.group>summary::before{content:"\25B8";color:var(--brand-deep);font-size:11px;}
+details.group[open]>summary::before{content:"\25BE";}
+details.group>summary .count{margin-left:auto;color:var(--muted);font-weight:400;font-size:11px;}
+.groupBody{padding:0 11px 12px;}
+
+label.f{display:block;margin:9px 0 0;}
+label.f>span{display:block;font-size:12px;color:var(--muted);margin-bottom:3px;}
+input[type=text],select,textarea{width:100%;background:var(--panel);border:1px solid var(--border);
+border-radius:5px;padding:6px 8px;font-size:13px;}
+textarea{resize:vertical;min-height:54px;line-height:1.4;}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--brand);outline-offset:-1px;border-color:var(--brand-deep);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;}
+.hint{font-size:11.5px;color:var(--muted);margin:6px 0 0;}
+
+.blockTitle{font-size:12px;color:var(--text);font-weight:700;margin:14px 0 6px;display:flex;align-items:center;gap:6px;}
+.blockTitle .tag{background:#F47920;color:#fff;border-radius:3px;padding:1px 6px;font-size:10px;font-weight:700;}
+.blockTitle .tag.task{background:#F47920;color:#fff;}
+
+details.card{border:1px solid var(--border);border-radius:6px;margin-bottom:6px;background:var(--panel);}
+details.card>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:7px;padding:6px 8px;font-size:12.5px;}
+details.card>summary::-webkit-details-marker{display:none;}
+details.card[open]>summary{border-bottom:1px solid var(--border);}
+.card .n{flex:0 0 22px;height:22px;border-radius:4px;background:#F47920;color:#fff;
+display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;}
+.card .stxt{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.card .arrow{color:var(--muted);font-size:11px;}
+.cardBody{padding:4px 8px 9px;}
+.cardBody textarea{min-height:48px;font-size:12.5px;}
+.rateRow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+.rate{border:1px solid var(--border);border-radius:5px;padding:5px 6px;}
+.rate .rl{font-size:11.5px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;}
+.rate .sels{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px;}
+.rate select{padding:3px 4px;font-size:12px;}
+.cardCtrls{display:flex;gap:4px;margin-top:8px;}
+.warnTxt{color:#b3261e;font-size:11.5px;margin-top:4px;}
+
+.bd{display:inline-block;min-width:26px;text-align:center;border-radius:4px;padding:1px 5px;font-size:11px;font-weight:700;color:#000;}
+.b-L{background:#8fd18a;} .b-M{background:#ffe066;} .b-H{background:#ff9f43;} .b-E{background:#e5484d;color:#fff;}
+
+.chipwrap{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border);background:var(--panel);
+border-radius:14px;padding:3px 9px;font-size:12px;cursor:pointer;user-select:none;}
+.chip input{accent-color:#000;margin:0;}
+.chip.on{border-color:var(--brand-deep);background:rgba(244,121,32,.22);}
+
+.hz{border:1px solid var(--border);border-radius:6px;padding:7px 8px;margin-bottom:6px;background:var(--panel);}
+.hz .hzhead{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;}
+.hz .hzhead input{accent-color:#000;width:15px;height:15px;flex:0 0 auto;}
+.hz .hzhead .bds{margin-left:auto;display:flex;gap:4px;align-items:center;}
+
+.zoombar{display:flex;align-items:center;gap:10px;margin-bottom:12px;color:var(--muted);font-size:12px;flex-wrap:wrap;}
+.warn{color:#b3261e;font-weight:600;}
+#doc{width:max-content;margin:0 auto;}
+#measure{position:absolute;left:-20000px;top:0;visibility:hidden;pointer-events:none;}
+
+/* ================= printed document ================= */
+.page{
+width:210mm;height:297mm;background:#fff;color:#000;padding:10mm 10mm 8mm;
+margin:0 auto 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;
+font-family:Calibri,Carlito,"Segoe UI",Arial,sans-serif;font-size:9.4pt;line-height:1.26;
+}
+.page *{box-sizing:border-box;}
+.pbody{flex:1 1 auto;min-height:0;overflow:hidden;}
+.phead{flex:0 0 auto;}
+.pfoot{flex:0 0 auto;display:flex;justify-content:space-between;font-size:7.6pt;color:#555;border-top:0.4mm solid #000;padding-top:1.2mm;margin-top:2mm;}
+table.hd{width:100%;border-collapse:collapse;}
+table.hd td{border:none;padding:0;vertical-align:middle;}
+.hd .lg img{height:10.5mm;width:auto;display:block;}
+.hd .ttl{text-align:right;}
+.hd .ttl b{display:block;font-size:17pt;letter-spacing:-.01em;line-height:1.05;}
+.hd .ttl span{font-size:8.4pt;color:#444;}
+.rule{height:1.4mm;background:#F47920;margin:2.5mm 0 2mm;}
+table.meta{width:100%;border-collapse:collapse;margin-bottom:3mm;}
+table.meta td{border:0.25mm solid #000;padding:1mm 1.6mm;font-size:8.6pt;vertical-align:top;}
+table.meta td.k{font-weight:700;background:#f2f2f2;white-space:nowrap;width:1%;}
+
+.sec{margin-bottom:3mm;}
+.secT{background:#3d4043;color:#fff;font-weight:700;font-size:10.5pt;padding:1.1mm 2mm;display:flex;justify-content:space-between;align-items:baseline;}
+.secT i{font-style:normal;font-weight:400;font-size:8pt;color:#ffb37a;}
+table.t{width:100%;border-collapse:collapse;table-layout:fixed;}
+table.t td,table.t th{border:0.25mm solid #000;padding:1mm 1.5mm;vertical-align:top;font-size:8.5pt;text-align:left;word-wrap:break-word;}
+table.t th{background:#fde4d0;font-weight:700;font-size:8pt;}
+table.t td.k{font-weight:700;background:#f4f4f4;font-size:8.2pt;}
+table.t td.c,table.t th.c{text-align:center;}
+table.t tr.grp td{background:#efefef;font-weight:700;font-size:8.2pt;padding:0.8mm 1.5mm;}
+.ml{white-space:pre-wrap;}
+td.ct{text-align:center !important;vertical-align:middle !important;font-size:7.2pt !important;line-height:1.25;padding:0.6mm !important;background:#fbfbfb;}
+td.rk{text-align:center !important;vertical-align:middle !important;padding:0.6mm !important;}
+td.rk b{display:block;font-size:10pt;line-height:1.05;}
+td.rk span{display:block;font-size:6.6pt;text-transform:uppercase;letter-spacing:.02em;}
+td.rk small{display:block;font-size:6.4pt;color:#222;}
+.r-L{background:#b8e6b4 !important;} .r-M{background:#fff09a !important;} .r-H{background:#ffbd7a !important;} .r-E{background:#f07d80 !important;}
+.box{border:0.25mm solid #000;border-top:none;padding:1.4mm 2mm;font-size:8.6pt;white-space:pre-wrap;}
+
+table.mx{border-collapse:collapse;table-layout:fixed;}
+table.mx td,table.mx th{border:0.25mm solid #000;font-size:7.6pt;padding:0.8mm 1mm;text-align:center;vertical-align:middle;}
+table.mx th{background:#f2f2f2;font-weight:700;}
+table.mx td.sc{font-weight:700;font-size:8.6pt;}
+.mxwrap{display:flex;gap:3mm;border:0.25mm solid #000;border-top:none;padding:2mm;}
+.legend{flex:1 1 auto;}
+.legend table{width:100%;border-collapse:collapse;}
+.legend td{border:0.25mm solid #000;font-size:7.8pt;padding:0.9mm 1.4mm;vertical-align:top;}
+.legend td.lb{width:17mm;font-weight:700;text-align:center;vertical-align:middle;}
+.hier{font-size:7.8pt;margin-top:1.6mm;}
+.sigRow td{height:8.5mm;}
+
+@page{size:A4;margin:0;}
+@media print{
+body{background:#fff;}
+.topbar,.panel,.tabs,.zoombar,.noprint{display:none !important;}
+.layout{display:block;}
+.previewWrap{padding:0;overflow:visible;display:block !important;}
+#doc{width:auto;zoom:1 !important;}
+.page{box-shadow:none;margin:0;page-break-after:always;break-after:page;}
+.page:last-child{page-break-after:auto;break-after:auto;}
+.r-L,.r-M,.r-H,.r-E,.secT,table.t th,.rule{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+.hzt{display:inline-block;margin:6px 0 4px 28px;background:#fff;border:1px solid #d6d3cd;border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:#333}.hzt:hover{border-color:#d4650f}.hzb{margin-left:28px}</style>
+<style id="cbsTidy">.topbar{background:#3d4043!important;color:#fff!important;position:sticky!important;top:0!important;z-index:5000!important;border-bottom:3px solid #F47920!important}.topbar h1{color:#fff!important}.topbar .sub{color:#c9c6c0!important}.topbar .logo,.topbar img{height:24px!important;width:auto!important}.topbar .btn{background:#fff!important;color:#1d1d1d!important;border:1px solid #d9d9d6!important;text-decoration:none!important}.topbar .btn.primary{background:#F47920!important;color:#fff!important;border-color:#F47920!important;font-weight:600}.topbar .btn:disabled{opacity:.6}@media(max-width:900px){.topbar{flex-wrap:wrap!important;justify-content:flex-start!important;align-items:center!important;gap:8px!important;padding:12px 14px!important}.topbar .spacer{display:none!important}.topbar>*{order:0!important}.topbar>div:not(.spacer){flex:0 0 100%!important;min-width:0!important;text-align:left!important}.topbar .sub{display:block!important}.topbar>a.btn,.topbar>button.btn{flex:0 0 auto!important;padding:9px 14px!important;white-space:nowrap!important;text-align:center}.topbar::after{content:none!important;display:none!important}}input[type=date],input[type=time],input[type=datetime-local]{-webkit-appearance:none;appearance:none;min-width:0!important;max-width:100%!important;width:100%!important;box-sizing:border-box!important;display:block;text-align:left;min-height:2.6em;background:#fff}input::-webkit-date-and-time-value{text-align:left}label,.f,.field,.fld{min-width:0}.tabs{max-width:760px;margin:8px auto 0!important;padding:0 12px!important;background:transparent!important;border:0!important;position:static!important;gap:8px}.tabs .btn{flex:1;padding:9px!important}#cbsTabs button{border:1px solid #d9d9d6!important;border-radius:6px!important;background:#f7f7f6!important;font-size:13px!important;padding:9px!important}#cbsTabs button[aria-selected=true]{background:#F47920!important;border-color:#F47920!important;color:#fff!important;font-weight:600}:root,:root:not([data-theme="light"]),:root[data-theme="dark"]{--bg:#f2f2f0!important;--panel:#fff!important;--panel-2:#f7f7f6!important;--text:#161616!important;--muted:#6b6e70!important;--border:#d9d9d6!important}body{font-size:15px!important;background:#f2f2f0!important}.panel{background:transparent!important;border:0!important;padding:12px!important}@media(min-width:1151px){.panel{width:620px!important;flex:0 0 620px!important}}details.group{background:#fff!important;border-radius:10px!important;padding:14px!important;margin-bottom:12px!important}details.group>summary{padding:0!important;font-size:15px!important;font-weight:700!important}details.group>summary::before{display:none!important}details.group>summary::after{content:'\25BE';margin-left:auto;color:#6b6e70;font-size:13px}details.group[open]>summary::after{content:'\25B4'}details.group>summary .count{margin-left:8px!important}.groupBody{padding:10px 0 0!important}label.f{margin:0 0 10px!important}label.f>span{font-size:12px!important;font-weight:600!important;margin-bottom:4px!important}input[type=text],input[type=number],select,textarea{padding:10px!important;border-radius:8px!important;font-size:15px!important;background:#fff!important}.rate select{padding:4px!important;font-size:12px!important}.cardBody textarea{font-size:14px!important}.row2,.row3{gap:0 10px!important}@media(max-width:520px){.row2,.row3{grid-template-columns:1fr!important}}.hint{font-size:12.5px!important}.previewWrap{background:#f2f2f0}</style><script src="/webhook/cbs-hz-icons"></script></head>
+<body>
+
+<div class="topbar">
+<img class="logo" id="topLogo" src="" alt="Chelmsford Building Services">
+<div>
+<h1>RAMS builder</h1>
+<div class="sub">Risk assessment and method statement with task risk ratings and hazard register</div>
+</div>
+<div class="spacer"></div>
+<a class="btn" id="backOps" href="/webhook/cbs-admin?open=rams">&#8249; Operations Hub</a><a class="btn" id="cbsJf" href="/webhook/cbs-job-file" style="display:none">Job File</a>
+<button class="btn" id="newJob" style="display:none">New</button>
+<button class="btn" id="saveOps">Save to Operations Hub</button>
+<button class="btn primary" id="pdfBtn">Download PDF</button>
+</div>
+
+<div class="tabs">
+<button class="btn" id="tabEdit" aria-selected="true">Edit</button>
+<button class="btn" id="tabPrev" aria-selected="false">Preview</button>
+</div>
+
+<div class="layout">
+<aside class="panel">
+
+<details class="group" open>
+<summary>Job type template</summary>
+<div class="groupBody">
+<label class="f"><span>Job type</span><select id="templateSelect"></select></label>
+<p class="hint">Sets the description of works, task steps with ratings, hazard register, plant, PPE and permits.</p>
+<button class="btn tiny" id="applyTemplate" style="margin-top:6px">Apply template</button>
+<span class="hint" style="display:inline-block;margin-left:6px">Job header and general details are kept.</span>
+</div>
+</details>
+
+<details class="group" open>
+<summary>Job header</summary>
+<div class="groupBody">
+<label class="f"><span>Site address</span><input type="text" data-bind="meta.site"></label>
+<label class="f"><span>ServiceM8 job number</span><input type="text" inputmode="numeric" data-bind="meta.jobNo"></label>
+<label class="f"><span>Task activity (page header)</span><input type="text" data-bind="meta.activity"></label>
+<div class="row3">
+<label class="f"><span>RAMS no (job number)</span><input type="text" data-bind="meta.ramsNo" readonly style="background:#f2f2f0"></label>
+<label class="f"><span>Revision (use Save as new revision to change)</span><input type="text" data-bind="meta.rev" readonly style="background:#f2f2f0"></label>
+<label class="f"><span>Date</span><input type="text" data-bind="meta.date" placeholder="dd/mm/yyyy"></label>
+</div>
+<label class="f"><span>Prepared by</span><input type="text" data-bind="meta.preparedBy"></label>
+</div>
+</details>
+
+<details class="group">
+<summary>1. General Details</summary>
+<div class="groupBody">
+<div class="row2">
+<label class="f"><span>Contractor</span><input type="text" data-bind="meta.pcbu"></label>
+<label class="f"><span>Responsible person (H&amp;S)</span><input type="text" data-bind="meta.responsible"></label>
+</div>
+<div class="row2">
+<label class="f"><span>Contractor address</span><input type="text" data-bind="meta.pcbuAddress"></label>
+<label class="f"><span>Responsible person’s mobile</span><input type="text" data-bind="meta.pcbuContact"></label>
+</div>
+<div class="row2">
+<label class="f"><span>Client</span><input type="text" data-bind="meta.client"></label>
+<label class="f"><span>Client contact</span><input type="text" data-bind="meta.clientContact"></label>
+</div>
+<div class="row2">
+<label class="f"><span>Principal contractor</span><input type="text" data-bind="meta.mainContractor"></label>
+
+</div>
+<div class="row2">
+<label class="f"><span>Start date</span><input type="text" data-bind="meta.startDate" placeholder="dd/mm/yyyy"></label>
+</div>
+</div>
+</details>
+
+<details class="group">
+<summary>2. Description of works</summary>
+<div class="groupBody">
+<label class="f"><span>Task / activity</span><input type="text" data-bind="meta.taskShort"></label>
+<label class="f"><span>Description</span><textarea data-bind="scope" style="min-height:90px"></textarea></label>
+</div>
+</details>
+
+<details class="group" open>
+<summary>4. Method statement <span class="count" id="stepCount"></span></summary>
+<div class="groupBody">
+<p class="hint">Each step carries a risk rating before and after controls. Likelihood × consequence, 1–5 each.</p>
+<div class="blockTitle"><span class="tag">FIXED</span> Site set-up</div>
+<div id="stepsOpen"></div>
+<button class="btn tiny" data-add="open">+ Add set-up step</button>
+<div class="blockTitle"><span class="tag task">TASK</span> Activities</div>
+<div id="stepsTask"></div>
+<div class="blockTitle"><span class="tag">FIXED</span> Close out</div>
+<div id="stepsClose"></div>
+<button class="btn tiny" data-add="close">+ Add close-out step</button>
+</div>
+</details>
+
+<details class="group">
+<summary>5. Hazard register <span class="count" id="hzCount"></span></summary>
+<div class="groupBody">
+<p class="hint">Tick what applies to this site. Wording and ratings are editable per job.</p>
+<div id="hazardList"></div>
+<button class="btn tiny" id="addHazard">+ Add custom hazard</button>
+</div>
+</details>
+
+<details class="group">
+<summary>6. Resources &amp; plant</summary>
+<div class="groupBody">
+<label class="f"><span>Site lead / supervisor</span><input type="text" data-bind="res.supervisor"></label>
+<label class="f"><span>Workers (one per line)</span><textarea data-bind="res.workers"></textarea></label>
+<label class="f"><span>Subcontractors</span><input type="text" data-bind="res.subcontractors"></label>
+<div id="plantPick" style="margin:4px 0 8px"></div><label class="f"><span>Plant, tools &amp; equipment</span><textarea data-bind="res.plant"></textarea></label>
+<label class="f" style="display:none"><span>Materials</span><textarea data-bind="res.materials"></textarea></label>
+</div>
+</details>
+
+<details class="group">
+<summary>7. PPE</summary>
+<div class="groupBody">
+<div class="chipwrap" id="ppeChips"></div>
+<label class="f"><span>Additional PPE note</span><input type="text" data-bind="ppeExtra"></label>
+</div>
+</details>
+
+<details class="group">
+<summary>8. Permits, licences &amp; competencies</summary>
+<div class="groupBody">
+<div class="chipwrap" id="permitChips"></div><div id="qualPick"></div>
+<label class="f"><span>Additional note</span><input type="text" data-bind="permitExtra"></label>
+</div>
+</details>
+
+<details class="group">
+<summary>9. Emergency &amp; welfare</summary>
+<div class="groupBody">
+<div class="row2">
+<label class="f"><span>Nearest hospital / A&amp;E</span><input type="text" data-bind="std.hospital"></label>
+<label class="f"><span>Assembly point</span><input type="text" data-bind="std.assembly"></label>
+</div>
+<label class="f"><span>Emergency procedure</span><textarea data-bind="std.emergency"></textarea></label>
+<label class="f"><span>First aid</span><textarea data-bind="std.firstAid"></textarea></label>
+<label class="f"><span>Fire</span><textarea data-bind="std.fire"></textarea></label>
+<label class="f"><span>Welfare facilities</span><textarea data-bind="std.welfare"></textarea></label>
+<label class="f"><span>Incidents &amp; RIDDOR reportable incidents</span><textarea data-bind="std.notifiable"></textarea></label>
+</div>
+</details>
+
+<details class="group">
+<summary>10. Consultation, monitoring &amp; review</summary>
+<div class="groupBody">
+<label class="f"><span>Worker engagement</span><textarea data-bind="std.consultation"></textarea></label>
+<label class="f"><span>Cooperation with others on site</span><textarea data-bind="std.overlap"></textarea></label>
+<label class="f"><span>Supervision &amp; monitoring</span><textarea data-bind="std.monitoring"></textarea></label>
+<label class="f"><span>Review</span><textarea data-bind="std.review"></textarea></label>
+</div>
+</details>
+
+<details class="group">
+<summary>11. Sign-off</summary>
+<div class="groupBody">
+<div class="row2">
+<label class="f"><span>Approved by</span><input type="text" data-bind="meta.approvedBy"></label>
+<label class="f"><span>Approver role</span><input type="text" data-bind="meta.approverRole"></label>
+</div>
+</div>
+</details>
+
+<details class="group" open>
+<summary>Operations Hub record</summary>
+<div class="groupBody">
+<p class="hint" id="recInfo">Not saved yet. Save to Operations Hub stores this RAMS, creates the PDF and files it in SharePoint.</p>
+</div>
+</details>
+</aside>
+
+<section class="previewWrap">
+<div class="zoombar noprint">
+<label>Zoom
+<select id="zoom" class="btn" style="padding:3px 6px">
+<option value="0.55">55%</option><option value="0.7">70%</option>
+<option value="0.85" selected>85%</option><option value="1">100%</option>
+</select>
+</label>
+<span id="pageInfo"></span>
+<span id="overflowWarn" class="warn"></span>
+<span id="pdfStatus"></span>
+</div>
+<div id="doc"></div>
+</section>
+</div>
+<div id="measure" aria-hidden="true"></div>
+<script>window.CBS_NEXT_RAMS="004";</script><script>window.CBS_PLANT=[];window.CBS_PHZ={"Ladder":["height","falling","ladders"],"Scaffold or platform":["height","falling","manual"],"Lifting equipment":["falling","manual"],"Plant and machinery":["manual","noise","havs","hand_tools"],"Machinery":["manual","electrical","hand_tools","noise"],"Cordless power tool":["dust","hand_tools","noise"],"110V power tool":["dust","electrical","hand_tools","noise"],"240V power tool":["dust","electrical","hand_tools","noise"],"Power tool":["dust","electrical","hand_tools","noise"],"Transformer or extension lead":["electrical","access"],"Battery or charger":["electrical","fire"],"Mixer":["dust","electrical","noise","wet_concrete"],"Vacuum or extraction":["dust","electrical"],"Generator":["electrical","fumes","fire","noise"],"Compressor":["electrical","noise"],"Survey and test equipment":["electrical"],"Test equipment":["electrical"],"Hand tool":["hand_tools"]};</script><script>
+(function(){
+"use strict";
+var LOGO_URI="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjAAAABrCAMAAABe+UhAAAAAwFBMVEX722773Kv758773o/5p2n5mlCkpaX5t4n7ynn76IK/wL+ur6/95ry/wMD7rn75wX/88MH+/v6HiYj0dib1hi32lzWPkZD5t0rybiP7xlT4pDymp6f5q0L701yys7L62WPa29qVl5bn5ub85GrCw8K6u7vU1dTKy8qanJv607b5zrKhoqH86sj71pP5x4b85tUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeDLbGAAAAMHRSTlPlUiKVoM6hbKjLU307UXt+QAD+/v7+/P7+/v6S/v5w+h3PDvtJWyc5uC8xqCx3exaGw9ACAAANBElEQVR42u3dbXujKBcAYPPadmefZ9cIGo3GGNOknaTT///v1ncFDgpo01yF82U+TGO94l04IBws24QJibDMV2BiajCzlfViWVZaRNxG5BdhzczXaMC0cVtijP204RJV4bdh3cwXacBUsQwyLwjlZMpmheGSx8J8kwZM0RuFuAyEAj+FWpcsPM/zfdMvGTD2+ypovGQRRjHMJQ/TL2kP5nNZc6nAIOQxfZHXiee5+T41BrMIWy81GAd7EY9LHh/mC9UVzMwLsqDBIMfBXC5hGHreu/lKdQRzW3lBCIHJyKCQxyWLwFt+mi9VOzCL/PEHMJiskcnJgFzCXFn4x3yreoH58GovYAuTB/J8gEv5mYyM6hD7eD697ndDcWk/MPzDndi/Xo7Ct3J+/SV63YveYGZ56zEEJktl2NalCRysFIbYh32ycYdj4ybtR1yRTxCxO4vA3YtfMLsDrcE8+5WBgN8lkWRoLsWHgmfJ+zgl2XcvFgQY6XCT0yCXjdR1E53BWL4nCiZLZYDWpflIKMXFdVUekAqYnMx5snvRHczN98TBFGTo3qiJUPz10iFR/ItWA5OReeXfzE76mjqDseTAbB0Mti5Fp2SJzvu+Kv9Fq4LZuGted5TIX1JjMDPfkwJTkoG4ZGDSF7E7kP6TngAMT8xR5YIag7GkwTjbLcIAF4yCVGxh1XVEF6AOZuP+NZUXjcF8+DCYLFnBPDB5I5ORwXQgnKapwO9/G9MFjACzcQ/AzWwMGBkwPggGZa1IhoIHZuvk/xsAYOJ08QXty1RggOe8dw0YGTCLiAaTdTYFl22HDNPAlP9LcUEIx3E8mPfux+UMo8C4l0k6JH3BzCOgham55CYcuIWpAlFrIXIw6cB6vvPInGEUGOZB7zYGjAyYZxZM3rx0yfDBOC2YqiXKwcRpb957HNsFjAPjnidpYHQFc4t9AkxYNC8dLjWZgRYGNWCiKBMz6YB6YjC7KTIYbcFYEQkGo7wX2tLhOL1g2twY56t/e/NexT9pdyowmw1xO8qTgHq+fJzFxKqoMOuNSBCdVAYE45CzNSWYTMxcMuN1N28DywlOPWAS8BPrBHydSIys4XzqTWB5w0lLMPU2xtILdrYsiU6/BIJBiATj52Aift7rwu+SxdesAGC4rdkZGMC7pwG+ycE2AYOpGpgSTIh4/U4hY/V7hgTAZBcrmpiZ8NPOHuFe6uaZS/SlExe397ddAS9H44MHptvAMFxaFnnD85T//JIFg1gwJRnxd47gfL0MGFdqUEZkvQBf44ULZpHWu0ey3ogTZcZbr/H+XPaDqXcXZGI4ee/b2PZFFox9on/82tE0/m50ApPWG9RC5PAj6406u0h+r0TAZGRSeL3mBONTSTBMK/LWN2RzDQ4umEVVuoPfvJTxRH72SQiMD3dKwBO6fDWYHR/M2e2fpTHRATPPd9n7kR+gXi5Lpk8v+6UhMH40E3otIP8nLQuGTpvWPd1V36o83cG8pPmUSZbsoh4xK3BCZb5yqtlgAky+fLOzozYWGbQo5AyyYOjfee1Jwd2TwcEBM88Lv/gYfrdYr97lDY7tmUODqT7he20TsxAYJLnnLwdDtWrdXoe9nYvBwQGTZj1SiPgrpLL4f98lnhxixUxNrKgBUou5CczzHu8OZm/AKICZWbFHzaHQycvAdukslWnAtG2S1xUTD4NJ7C8Hc5EBY7okDpjUp+ZoSTKI3xuRQ2x6C0pdaKhsYj4Gway/HgyV2XZNmKRXFMzCQ2DUz/1J7DpPdLuEmq20pZj5ABiVYawsGOp3drOmKXJwPcBghBGXjFDzUiW/lJgWjAfmvQyYX18PJuFnTewo/83ggMFQyxIoMsIFgn5zW5iSzMcQmP2Xg6HnCpP+eUTzKokLhkMmT2V/TwLGewgwu77fyL6pMFO9PWAAMuXbxhFgQkLMXcAkEikvNfGTjH53rhkYikw5HTcGTFHy7s5gelqYw67/h4EFxu71YrqlHjBE2aB6PaYwmHcATIfMfcBsdico/trv2E321Lj5Ai4AzNcAJm9UXHev+kqyMCCmfQU9FkxD5k5guBWpAAzkMz9KrfvOa1npicZid0U73R0CqmC2KAi6Yu4FRvyh0zO50hur3c1eQzJW2OtFAozDgCHIPBgY9zqUEwuR0W862KK20SNqB9I4MB0yfx4KjMuOp45K11kfNW9hUL28xZkGTCPmscBAL65+qVXMO+gGhiwGVIFxJgNTkXksMOB8zVHxYgf9wHRLTRX1XpxxYIrN+QHuinksMPBiLcXd1a6OYBoyaOsQ+6flwdQbmLIrdhqZB+uS4GYhmWJTvy5gKjKI2m4vDabZ8VaWRqzFPBoY8NWianmAg55gcjLBODDtEKuuSfWoYGAxahWOtFoJYVGnBFBgkDCYObkF22kKDFViHg0MT4xrmph+MB5ZypsG8y4BBuLSkHk4MJyhklKVo51uYFoyk4AhvZRiHg8MZxXxea3QyugEhjxgYgIwNJeSzAOC4a3zPuzh15USFTl/NBiCzGgw1XYTRsw/9wHTd7KRRMNwvOyvCXw5zUfWFnUE31gwzX42Gsx9WpjdKzeGl8SwbOiYny/7N70LI1rUuWr0qhYJMPQGaxLM0z3A9E+6soNmpecM5sVH7cBUZMaAcZgqVPcGMwCArUGlNh7eu/omMRZ52CdVrwyJg/lkuBBiHqGFYdsY1d1qa9nO7QeBoQ4UxhSYlegxWTN4a1MjZvkIYJjSh4pztEDypA2Yhc8HU+weWIp0z5/LcqMkV4x/ewgwTBqj+LW5YnM6PxEM1cZgggtCTd3M3nhC3c/QZBAK2Yrg3wPGnihZvWo7TLLsv6PuOfeY9FJuZ1v1ZzLvK0R9iq7AChxr8k1gkmnA7OR/848BYz93a8Zj6sE75avnnhIxn0tqYEVz8VLoNL9vAnOdZgP13tX15YBVHZTUFo0nn3qzYJPXLz0B9c264UVpDB3m901gdgbMaDD2R1sG3MfUI2+2QMIrHWZgTbz246Efc05mewwwql3Sq9Zg7PqgAb8EQ2/Jrxf5Mv3SfMmruVknL+WhSQuBv9F7FBSy2e1qpoVRATOLmoKX2GFrOLSrwsl+ackv0pqPx7FXnoADn7L1+g017oCk1zZgFMBUp2sNg+mWX83rrfaUgc56o97zTC7fUEWT3UqiOrhZazysLvqWWBCMg5ZlPlJWdOZzCeqzKXjH+B0mKFs5fuJO9TlrPNNb/rOIBMHkZI72celsHQc80q8I7DVnmcTpv2JTaAoPTx7MbprnfNK3hCJ9IhsFBrNgsh9YEut3IS4dMAvRyVL5L10azHGi55xo/La6zkiqE3ACATAOIjcI0MlLpzxvFHEPfTyNXyMgDeY6zXMGtkgedANjv2Qj4MiPAurFIQDGaUuaAWQwUc854h8rexRfZCsMJpF80GrrYaDdS7Z2YOYpAwZzwFRkWDFbB4dEAXCfe4CfDVeVkzojVOKQ0EIo8AuVvABLNK/6gbEX+alJcUitSyhPt4Fnciky27w3IsFE3CNCbc7GVHeTXCc/hriIt4HnfNqJRQKVP/ufhmDsNI47YNoCQw4PTJdMziXo1rQrwVgyQ5a7H3ROjOQ3U++7/fFgZmkHDFHCrOftYl2sIeuNysIeBJh4LjNmkd6xOBYMMVc45lraTNsRYOyXrI0J2QX/yOG2MKguiefguhIMcSLFQnq0cVcwV3saMDqdrdQFM0/jNGT3FAVFv8RpYUpPCAcQmFh6PuOuYMiyQq5pYGTBZHlvDgbY54rJRoYaSaFmx31bZZV7OOhw3ns3MG/2NGC0OryNzEpzMJjdSB9QZKBdAU1tshaMpTDHfkcwVKaqfq21rS2YmRUi0EtAbHETAxOJ7FBRSGMmAkPPErpmiCQPxn7xEMwlk9Aea90Dpk1hhjJeZTHTgGEqO09bYFEXMHMfcbzkFjAfDJvzxoJ3IC1mEjBsZWfFa+l2mCidZ9yWAeylu0ZcBMxwxlvH5RvAsJXjFcFod/gsm5jOwgBsXqpADlyigQbzIX4Px6t7ZzDQsgal4naa9UcgGNv+EwY4AJqXkkKW/Q6B8f2F3F1cEveOYNwEeswK13LXtm3A5PEcws1LmZ0EHTJQl+Q/36Tv47wTfpczDozrJnAv4k7jTk8wWSoTQs1L9YrIwz1gfOumdCfHyy7pqzhWVwwjXz66crFJ9rynvJG8WHKxbQOmjXfP43nJMtqaDGbAWLMRd3M8n/ZDywvWnQe130nE/vVy7pkyOUld66TrGX49s7EfRVEqgEuxlM6DUhjPm9kmdAVj2wvP43mJYj9kWhjvw3yhWoOxb8+Ql6ja0ehjIofxFubr1B2Mbf9d1RvyKS/5Hvs09XAtJgifP823acDkE3l5WQfISwYmjb3Ky+pmvksDpk5laC4FmLQIKw5zLu/mmzRgOqmMVUXcRFqHZfmhGRoZMCZMGDAmxsd/q2iHvQlA4hYAAAAASUVORK5CYII=";
+/* ============================ CONTENT ============================ */
+/* step: [task, hazards, controls, iL, iC, rL, rC, who] */
+/* CBS content: built from CBS RAMS 61539-61875 (ZZ Client A - Site 1 etc.) */
+
+var HEIGHT_CTRL = "Access equipment (podium, scaffold tower or step ladder) selected for the task and inspected before use; towers erected by PASMA-trained operatives and tagged. Ladders and stepladders only for short-duration light work, visually inspected before use, on firm level ground, three points of contact. Exclusion zone set up below the work. Tools and materials kept secure at height.";
+
+var OPEN_STEPS = [
+["Contractor induction, site sign-in and permits: complete the client's contractor induction, sign in at the gatehouse or reception and report to the engineering office / site contact to obtain all relevant permits under the site's permit to work system.",
+"Unfamiliar site, live production areas, site vehicles and FLTs, client permit requirements not met.",
+"No operative works on site without the site-specific induction. Work carried out to approved RAMS only; the site engineering team issues all permits. Supervisor briefs all operatives on this RAMS before starting and all sign section 10.",
+3,4,1,3,"Supervisor"],
+["Standard PPE and care-ware: hi-vis, safety boots and overalls worn at all times; additional task PPE as listed in this RAMS. Medium and standard care work-ware used when entering designated areas.",
+"Injury from site hazards where PPE is not worn; hygiene / food-safety breaches in designated care areas.",
+"PPE checked at the start of each shift. Site hygiene and care-area rules followed as briefed at induction. Correct gloves used for each task.",
+3,3,1,3,"All operatives"],
+["Agree the safe working area with site management and cordon it off with safety barriers (Chapter 8 barriers where vehicles may pass). Access only under supervision.",
+"Staff, visitors and site vehicles entering the work area; FLT and pedestrian conflict.",
+"Work area agreed with management before starting and fully barriered. Segregated vehicle and pedestrian routes maintained. Banksman for any vehicle or plant movement. Barriers checked through the day.",
+4,4,1,4,"Supervisor"],
+["Liaise with staff in and around the work area: inform them of the day's activities and the risks that may affect them, and put the agreed controls in place.",
+"Client staff unaware of the works and exposed to dust, noise, falling objects or moving plant.",
+"Daily briefing with the area manager / site contact. Signage at the barrier line. Work stopped if unauthorised people enter the area.",
+3,3,1,3,"Supervisor"]
+];
+
+var CLOSE_STEPS = [
+["Housekeeping and waste: keep the work area clean and tidy throughout; separate waste into the site skips (scrap metal to the site metal skip or removed by scrap metal merchant); remove all hazardous waste from site.",
+"Slips, trips and falls; sharp offcuts; manual handling of waste; incorrect waste disposal.",
+"Daily housekeeping. Waste bagged and taken to the skips as work proceeds. Cut-resistant gloves for offcuts. Hazardous waste segregated and removed by CBS.",
+3,2,1,2,"All operatives"],
+["Hand back: remove barriers, inspect the area with the site contact, hand back permits and sign out of site.",
+"Area returned to use with hazards left behind; permits left open.",
+"Joint inspection with the site contact before the area is reopened. Permits closed with the issuing engineer. Sign out at the gatehouse or reception.",
+2,3,1,2,"Supervisor"]
+];
+
+var TEMPLATES = [
+{ id:"general", name:"General building works (start blank)",
+activity:"", taskShort:"",
+scope:"",
+plant:"110v, cordless and hand tools.",
+materials:"",
+hazards:["client_site","slips","manual","hand_tools","electrical","flt"],
+ppe:["Safety boots","Hi-vis vest","Overalls","Safety gloves"],
+permits:["induction","ptw","cscs","first"],
+steps:[] },
+
+{ id:"resin", name:"Resin floor & concrete plinths (Ucrete)",
+activity:"Semi-Treated Water Tank Plinths", taskShort:"Concrete plinths and Ucrete UD200 resin top layer",
+scope:"Form reinforced concrete plinths within a fenced compound, then grind and apply a Ucrete UD200 resin top layer with Ucrete RG coving and sealed expansion joints. Work supervised by an SMSTS-trained supervisor.",
+plant:"Various hand, battery and 110v tools, petrol tamper and vibrating poker, floor grinder with extraction, 110v forced-action mixer, floor saw, automatic rebar tying tool. Ready-mix lorry and pump.",
+materials:"Portland cement / ready-mix concrete, DPM, reinforcement mesh and bent bars, timber shuttering, chamfer profile, Ucrete UD200, PRG and RG, Sikaflex CR460 mastic.",
+hazards:["flt","resin","dust","silica","electrical","manual","access","noise","lighting","buried","havs","wacker","wet_concrete","hand_tools","slips"],
+ppe:["Safety boots","Hi-vis vest","Hard hat","Safety gloves","Chemical-resistant gloves","Eye protection","Hearing protection","FFP3 / P3 respirator","Knee pads"],
+permits:["induction","ptw","cscs","smsts","coshh","manual","first"],
+steps:[
+["Set up a working compound around the area with Heras fencing covered in flame-retardant sheeting.","Manual handling of fence panels; vehicles and FLTs near the compound; panels blowing over.","Two-person handling of panels; fence blocks and clamps fitted, stabilised against wind. Banksman for deliveries. Segregated pedestrian route kept open.",3,3,1,3,"All operatives"],
+["Form timber shuttering around the marked-out area, fixed to the floor with plugs and screws (200 mm high), screwed together for easy dismantling.","Cuts from hand and power tools; drilling dust; buried services in the slab.","Services checked with the site engineer and scanned before drilling. Battery or 110v tools with dust extraction. Cut-resistant gloves and eye protection.",3,3,1,2,"All operatives"],
+["Lay DPM within the shuttering and cut to size with hand tools.","Cuts from knives; slips on sheeting.","Retractable safety knives, cut away from the body. Cut-resistant gloves. Keep offcuts cleared.",3,2,1,2,"All operatives"],
+["Construct and tie the reinforcement mesh and bent bars using the automatic tying tool; fix the chamfer profile to the shuttering.","Cuts and puncture wounds from bar ends; manual handling; eye injury.","Rebar caps on exposed ends. Gloves and eye protection. Mesh handled by two people.",3,3,1,2,"All operatives"],
+["Pour concrete from the ready-mix lorry and pump, then vibrate and tamp.","Wet concrete skin burns; reversing lorry; pump line whip; vibration and noise.","Banksman for the lorry, exclusion zone around the pump. Chemical-resistant gloves, boots and eye protection; barrier cream and wash station. Vibration exposure limited and rotated; hearing protection.",4,4,1,3,"Supervisor"],
+["Trowel and brush the concrete to the required finish; once cured, strike the shuttering and clean the area.","Wet concrete contact; manual handling; protruding screws in timber.","Gloves and knee pads. Shuttering de-nailed as it is struck and stacked tidily.",3,2,1,2,"All operatives"],
+["Mechanically grind the floor with a floor grinder to remove contamination and form anchoring grooves.","Respirable crystalline silica dust; noise; vibration; rotating disc.","Grinder with on-tool extraction to an M/H-class vacuum; FFP3 respirator. Hearing protection. Guards checked before use; competent operator only. Area screened from staff.",4,4,1,3,"Competent operator"],
+["Mix the Ucrete components with a 110v forced-action mixer and apply the UD200 with hand tools to the correct levels.","Resin and hardener fumes and skin contact (dermatitis); manual handling of tubs; slips on wet resin.","COSHH assessment and SDS on site and briefed. Chemical-resistant gloves, safety glasses, overalls. Good ventilation; area kept clear of non-essential people while resin cures. Spill kit available.",4,3,1,3,"All operatives"],
+["Mix and apply the Ucrete PRG and RG to form the floor coving against the plinths once the UD200 has cured.","Resin fumes and skin contact; awkward kneeling posture.","As above for resin. Knee pads and regular breaks. Area kept clear while curing.",3,3,1,2,"All operatives"],
+["Cut expansion joints with a floor saw and fill with Sikaflex CR460 mastic where required.","Silica dust; noise; saw blade contact; water and slurry slip hazard.","Water suppression or extraction on the saw; FFP3 respirator; hearing protection. Blade guard in place. Slurry cleaned up as work proceeds.",4,4,1,3,"Competent operator"]
+]},
+
+{ id:"cableduct", name:"Civil works - cable duct & concrete pad",
+activity:"Civil Works for Cable Duct Installation", taskShort:"Cable duct and concrete pad in block paving",
+scope:"Saw cut existing block paving, form a concrete pad for a bolt-fixed pedestal, excavate the sand bedding to install a 20 mm flexible duct for cable routing and reinstate the block paving.",
+plant:"110v, cordless and hand tools, floor / road saw with water suppression.",
+materials:"Sika Tecfast Parex concrete, 20 mm flexible duct, sharp sand.",
+hazards:["adverse_weather","hand_tools","manual","slips","excavation","buried","silica","noise","wet_concrete","flt"],
+ppe:["Safety boots","Hi-vis vest","Overalls","Hard hat","Safety gloves","Eye protection","Hearing protection","FFP3 / P3 respirator"],
+permits:["induction","ptw","cscs","dig","first"],
+steps:[
+["Cordon off the area with Chapter 8 barriers, keeping access to the front entrance door open for staff.","Pedestrians and vehicles entering the works; staff walking past open excavations.","Chapter 8 barriers and signage; a clear, defined walkway to the entrance door maintained at all times.",4,3,1,3,"Supervisor"],
+["Saw cut the existing block paving and form the concrete pad for the pedestal; hand mix Sika Tecfast Parex.","Silica dust; noise; saw contact; wet concrete skin contact; buried services.","Permit to dig and service drawings checked; CAT and Genny scan before cutting. Saw with water suppression; FFP3 respirator, hearing and eye protection. Chemical-resistant gloves for concrete.",4,4,1,3,"Competent operator"],
+["Excavate the sand bedding below the paving and install the 20 mm flexible duct for cable routing.","Striking buried services; open excavation trip and fall; manual handling.","Hand dig only near services. Excavation barriered at all times and covered when unattended. Spoil kept back from the edge.",4,4,1,3,"All operatives"],
+["Reinstate the block paving on sharp sand bedding on completion.","Manual handling; trapped fingers; kneeling.","Blocks handled in small loads; gloves and knee pads; regular breaks. Paving checked level before reopening.",3,2,1,2,"All operatives"]
+]},
+
+{ id:"ceiling_grid", name:"Suspended ceiling & MF plasterboard",
+activity:"Stairwell Ceiling Replacement", taskShort:"Suspended ceiling grid and MF plasterboard light tunnel",
+scope:"Strip out the existing suspended ceiling tiles and grid, install a new shadow batten, perimeter and grid with new tiles, and form a plasterboard light tunnel with MF ceiling trims, filled and painted. Subcontractor elements to their own RAMS.",
+plant:"Scaffold / access equipment, laser level, 110v and cordless tools, hand tools.",
+materials:"Ceiling grid, tiles, shadow batten and fixings, hanging wires, plasterboard, MF ceiling trims, filler, paint.",
+hazards:["height","ladders","falling","manual","slips","electrical","hand_tools","silica","dust","noise","lone","paint"],
+ppe:["Safety boots","Hi-vis vest","Overalls","Hard hat","Safety gloves","Eye protection","FFP3 / P3 respirator"],
+permits:["induction","ptw","cscs","pasma","asbestos","first"],
+steps:[
+["Access the suspended ceiling using access equipment (scaffold). Subcontractor elements to their own RAMS.","Falls from height; falling objects onto people below.",HEIGHT_CTRL,4,4,1,4,"Supervisor"],
+["Remove tiles and grid, checking carefully for materials and debris on top; bag the tiles and take to the skip.","Dust and debris falling from the void; unknown materials including suspect asbestos; manual handling of bags.","Asbestos register checked before starting; stop and report any suspect material. Eye protection and FFP3 respirator. Bags kept to a manageable weight.",4,4,1,3,"All operatives"],
+["Mark level lines with a laser level and fix the new shadow batten to the walls with a battery drill.","Laser in eyes; drilling into hidden services; dust.","Class 2 laser, never look into the beam. Services checked before drilling. Battery tools with dust extraction.",3,3,1,2,"All operatives"],
+["Install the perimeter and infill grid, hanging wires from the soffit where needed, and fit the new tiles.","Working overhead; sharp grid edges; falling items.","Work from the scaffold platform. Cut-resistant gloves. Exclusion zone below.",3,3,1,2,"All operatives"],
+["Form the light tunnel in plasterboard and MF trims; fill and paint with hand tools.","Manual handling of plasterboard at height; filler and paint skin and eye contact; plaster dust when sanding.","Two-person lifts of boards. Dust-free sanding or extraction, FFP3 respirator. COSHH for filler and paint; gloves; ventilation.",3,3,1,2,"All operatives"]
+]},
+
+{ id:"floor_alter", name:"Floor alterations - grind, ramp & line marking",
+activity:"FLT Charging Area Alterations", taskShort:"Floor grind, barrier relocation, concrete ramp and line marking",
+scope:"Surface grind the floor to remove paint, relocate A-SAFE barriers, form a 1:12 concrete ramp in Tecfast Parex and apply new acrylic line marking.",
+plant:"110v, cordless and hand tools, Hilti DCH 300 with vacuum extraction, concrete saw, breaker.",
+materials:"Sika Tecfast Parex concrete, timber shuttering, acrylic line-marking primer and paint (white).",
+hazards:["silica","dust","flt","hand_tools","manual","noise","paint","lighting","electrical","slips","wet_concrete"],
+ppe:["Safety boots","Hi-vis vest","Overalls","Hard hat","Safety gloves","Eye protection","Hearing protection","FFP3 / P3 respirator"],
+permits:["induction","ptw","cscs","coshh","first"],
+steps:[
+["Cordon off the area with Chapter 8 barriers.","FLTs and pedestrians entering the work area.","Barriers agreed with the site and FLT routes diverted. Banksman available.",4,4,1,3,"Supervisor"],
+["Surface grind the floor to remove paint and prepare for new line marking using a Hilti DCH 300 with vacuum to control dust.","Silica dust; noise; vibration; rotating disc.","On-tool extraction to an M/H-class vacuum; FFP3 respirator; hearing protection. Guards checked; competent operator.",4,4,1,3,"Competent operator"],
+["Relocate the A-SAFE barriers: unbolt and rebolt with battery tools; cut redundant fixings level with the floor.","Manual handling of barrier sections; trip hazards from fixings; cuts.","Two-person or trolley handling. Redundant fixings cut flush the same day. Gloves and eye protection.",3,3,1,2,"All operatives"],
+["Form the 1:12 concrete ramp: saw cut and break out to form the toe, timber shuttering for ramps and falls, infill with Tecfast Parex.","Silica dust; noise and vibration from saw and breaker; wet concrete contact.","Water suppression / extraction; FFP3 respirator; hearing protection; vibration time limited and rotated. Chemical-resistant gloves and eye protection for concrete.",4,4,1,3,"All operatives"],
+["Apply internal acrylic line-marking primer and paint (white).","Paint skin and eye contact; vapour; wet paint slips.","COSHH and SDS briefed. Gloves and eye protection; natural ventilation. Area kept barriered until dry.",3,2,1,2,"All operatives"]
+]},
+
+{ id:"breakout", name:"Bund wall / concrete removal & new footpath",
+activity:"Removal of Bund Wall", taskShort:"Break out bund wall and form new footpath",
+scope:"Remove the Key Clamp handrail, saw cut and break out the redundant concrete, set new kerbs, lay a reinforced C40 concrete footpath and refit the handrail to suit.",
+plant:"110v concrete floor saw, 110v Hilti breaker, battery paddle mixer, wacker plate, hand tools.",
+materials:"Kerb stones, fast-setting concrete, sub-base, reinforcement mesh, dowels and ties, C40 concrete.",
+hazards:["flt","dust","silica","electrical","manual","access","noise","havs","slips","wet_concrete","wacker","hand_tools","buried"],
+ppe:["Safety boots","Hi-vis vest","Overalls","Hard hat","Safety gloves","Eye protection","Hearing protection","FFP3 / P3 respirator"],
+permits:["induction","ptw","cscs","dig","first"],
+steps:[
+["Unbolt and remove the Key Clamp handrail with hand tools; set aside for reuse.","Manual handling; trapped fingers; open edge once the rail is removed.","Two-person handling. Temporary barrier in place wherever a rail is removed.",3,3,1,2,"All operatives"],
+["Saw cut the raised concrete and footpath with a 110v concrete floor saw.","Silica dust; noise; blade contact; buried services.","Services checked and scanned. Water suppression; FFP3 respirator; hearing protection. Blade guard in place.",4,4,1,3,"Competent operator"],
+["Break up and excavate the redundant area with a 110v Hilti breaker; remove waste in tonne bags on pallets.","Hand-arm vibration; noise; flying debris; manual handling of waste.","Vibration exposure recorded and limited, tasks rotated. Hearing and eye protection. Tonne bags moved by FLT or pallet truck, not by hand.",4,4,1,3,"All operatives"],
+["Set new kerbs in fast-setting concrete mixed with a battery paddle mixer.","Heavy kerb lifting; wet concrete contact.","Kerb lifter or two-person lift. Chemical-resistant gloves and eye protection.",3,3,1,2,"All operatives"],
+["Compact the sub-base, install two layers of mesh with dowels into the existing slab and tie together.","Wacker plate vibration and noise; cuts from mesh.","Wacker plate operated by a competent person to the manual; hearing protection; gloves.",3,3,1,2,"All operatives"],
+["Supply and lay C40 concrete with a brush and trowel finish; amend the Key Clamp handrail to suit the new layout.","Wet concrete contact; manual handling; open edges until the rail is refitted.","Gloves, boots, eye protection, wash station. Barriers kept in place until the handrail is complete.",3,3,1,2,"All operatives"]
+]},
+
+{ id:"pb_ceiling", name:"Plasterboard ceiling replacement & decoration",
+activity:"Staff Shop Ceiling Replacement Works", taskShort:"Cut out and replace mouldy plasterboard, joint and paint",
+scope:"Cut out plasterboard where mould is present, fix new plasterboard to the timber joists, tape and joint, stain-block and paint the whole ceiling. Lights removed and isolated by others.",
+plant:"Step ladders / podium, battery multi-tool, battery drill-driver, trowels, decorating tools.",
+materials:"Plasterboard, drywall screws 3.5 x 38 mm, Toupret Joint & Skim, Zinsser Bulls Eye 1-2-3 Plus, Zinsser Perma-White Matt.",
+hazards:["height","ladders","chemicals","dust","fire","hand_tools","manual","paint","slips","waste"],
+ppe:["Safety boots","Hi-vis vest","Overalls","Safety gloves","Eye protection","FFP3 / P3 respirator"],
+permits:["induction","ptw","cscs","isolation","coshh","first"],
+steps:[
+["Access the ceiling with step ladders / podium. Light fittings removed and supplies isolated by others before work starts.","Falls from ladders; contact with live cables.",HEIGHT_CTRL+" Isolation confirmed by the electrician and locked off before any cutting.",4,5,1,4,"Supervisor"],
+["Cut out the mouldy plasterboard with a battery multi-tool.","Mould spores and dust; debris falling into eyes; hidden cables and pipes.","FFP3 respirator and goggles; area screened; affected board bagged immediately. Check the void before cutting.",4,3,1,3,"All operatives"],
+["Cut new plasterboard to suit and fix to the joists with drywall screws.","Manual handling of boards overhead; cuts.","Two-person lift or board lifter. Gloves.",3,3,1,2,"All operatives"],
+["Tape and joint with Toupret Joint & Skim applied with a trowel.","Skin and eye contact with filler; sanding dust.","COSHH and SDS briefed. Gloves and eye protection; dust-free sanding.",3,2,1,2,"All operatives"],
+["Apply one coat of Zinsser Bulls Eye 1-2-3 Plus over stained areas and two coats of Zinsser Perma-White Matt over the whole ceiling.","Paint vapour; splashes in eyes; slips on drips.","Ventilation maintained; eye protection; dust sheets and drips cleaned up immediately. No naked flames.",3,2,1,2,"All operatives"]
+]},
+
+{ id:"linemark", name:"Car park line marking (MMA)",
+activity:"Car Park 1 and Dusmo Line Marking", taskShort:"Grind existing lines and apply MMA cold plastic line marking",
+scope:"Grind off existing line marking and apply MMA cold plastic paint: white zebra crossing, yellow disabled bays and black to cover existing lines.",
+plant:"Hilti DCH 300 grinder with vacuum extraction, line-marking applicators, hand tools.",
+materials:"Methyl methacrylate (MMA) cold plastic paint - white, yellow and black.",
+hazards:["flt","grinder","manual","paint","slips"],
+ppe:["Safety boots","Hi-vis vest","Overalls","Safety gloves","Chemical-resistant gloves","Eye protection","Hearing protection","FFP3 / P3 respirator"],
+permits:["induction","ptw","cscs","coshh","first"],
+steps:[
+["Cordon off the area with Chapter 8 barriers and divert vehicles and pedestrians.","Moving vehicles and HGVs in the car park.","Chapter 8 barriers and signs; works phased to keep routes open; banksman where vehicles pass close.",4,4,1,3,"Supervisor"],
+["Surface grind the existing lines with a Hilti DCH 300 and vacuum to control dust.","Dust; noise; abrasive wheel contact and disc burst.","Guards checked; on-tool extraction; hearing and eye protection; FFP3 respirator; competent operator.",4,3,1,3,"Competent operator"],
+["Apply MMA cold plastic paint: white zebra crossing, yellow disabled bays, black over existing lines.","MMA vapour (strong odour, flammable); skin and eye contact; wet paint slips.","COSHH and SDS on site; mixed and applied in open air; chemical-resistant gloves and eye protection; no ignition sources. Area kept closed until cured.",4,3,1,3,"All operatives"]
+]},
+
+{ id:"speedbump", name:"HGV speed bump installation",
+activity:"HGV Speed Bump Installation", taskShort:"Install 2 no. bolt-down HGV speed bumps",
+scope:"Mark out and drill the concrete for through-bolts and bolt down two HGV speed bumps, then clean the area and hand over to the client.",
+plant:"Battery SDS drill, hand and battery tools, 110v tools.",
+materials:"HGV speed bumps, concrete through-bolts.",
+hazards:["flt","silica","noise","manual","hand_tools","buried","slips"],
+ppe:["Safety boots","Hi-vis vest","Overalls","Hard hat","Safety gloves","Eye protection","Hearing protection","FFP3 / P3 respirator"],
+permits:["induction","ptw","cscs","first"],
+steps:[
+["Mark out the location and drill holes for the through-bolts with a battery SDS drill.","HGV and FLT movements; silica dust; noise; buried services.","Area closed to traffic with barriers and a banksman. Services checked before drilling. Drill with extraction; FFP3 respirator, eye and hearing protection.",4,4,1,3,"Supervisor"],
+["Bolt down the speed bumps with through-bolts using hand and battery tools; repeat for the second bump.","Manual handling of bump sections; trapped fingers.","Sections handled by two people; gloves; keep fingers clear when positioning.",3,3,1,2,"All operatives"],
+["Clean the area of waste and hand over to the client.","Debris left on the road; reopening before bolts are tight.","Torque check on all bolts; joint inspection with the client before barriers are removed.",2,3,1,2,"Supervisor"]
+]},
+
+{ id:"plumbing", name:"Plumbing repairs & alterations",
+activity:"Various Plumbing Works", taskShort:"Investigate and repair leaks, replace valves and pipework",
+scope:"Access the affected areas, trace leaks and repair pipework with crimp, solvent-weld or compression fittings (no hot works), then test and commission before handover.",
+plant:"Ladders / platform steps, battery crimping tool, hand and cordless tools.",
+materials:"Various plumbing sundries, pipe, fittings and valves.",
+hazards:["fire","lone","flt","noise","slips","client_site","dust","ladders","height","electrical"],
+ppe:["Safety boots","Hi-vis vest","Overalls","Safety gloves","Eye protection"],
+permits:["induction","ptw","cscs","isolation","first"],
+steps:[
+["Access the area by ladder or platform and investigate the source of the leak.","Falls from ladders; water near electrics; slips on wet floors.",HEIGHT_CTRL+" Electrical items near the leak isolated or protected. Wet floor signs and water cleared.",4,4,1,3,"All operatives"],
+["Repair pipework with hand and battery tools using crimp, solvent-weld or compression joints (no hot works).","Pressurised water; solvent cement vapour; cuts.","Supply isolated and drained before cutting. Solvent cement used with ventilation and gloves. No hot works.",3,3,1,2,"All operatives"],
+["Test and commission all new valves and pipework before handover.","Leaks causing slips or damage to equipment.","Pressure test before reinstating; checks made after 15 minutes; client signs off.",2,3,1,2,"Supervisor"]
+]},
+
+{ id:"kitchen", name:"Kitchen equipment / coffee machine install",
+activity:"Coffee Machine Installation", taskShort:"Remove and install catering coffee machines",
+scope:"Isolate and disconnect existing coffee machines, remove and store them as directed by the client, then position and connect the new machines.",
+plant:"Cordless and hand tools, sack truck / trolley.",
+materials:"Site-supplied coffee machines, fittings.",
+hazards:["hand_tools","manual","slips"],
+ppe:["Safety boots","Hi-vis vest","Overalls","Safety gloves","Eye protection"],
+permits:["induction","ptw","cscs","isolation","first"],
+steps:[
+["Isolate the water supply to each machine and carefully disconnect the inlet and waste.","Water spills near electrics; slips.","Machine unplugged and water isolated before disconnecting. Spills cleaned up immediately.",3,3,1,2,"All operatives"],
+["Remove drip trays and standing water and discard in an appropriate sink.","Slips; hot water.","Allow the machine to cool. Carry trays level; mop up spills.",2,2,1,2,"All operatives"],
+["Remove the old machine and set aside (client to confirm the storage location).","Manual handling of heavy, awkward items.","Two-person lift or trolley; route checked clear before moving.",3,3,1,2,"All operatives"],
+["Unpack the new machines and dispose of packaging in the site skips.","Cuts from banding and knives; trip hazards from packaging.","Safety knives; packaging cleared straight away.",2,2,1,1,"All operatives"],
+["Position the new machines and connect the water inlet pipes.","Manual handling; leaks.","Two-person lift; connections checked for leaks before handover.",3,3,1,2,"All operatives"]
+]},
+
+{ id:"fencing", name:"Fencing removal / relocation",
+activity:"Compressor Fencing Removal", taskShort:"Unbolt, remove and relocate fencing",
+scope:"Unbolt and dismantle the fencing with hand and battery tools, then palletise for relocation by FLT or pallet truck to a location confirmed by the client.",
+plant:"Hand and battery tools, pallet truck.",
+materials:"N/A",
+hazards:["flt","manual","hand_tools","noise","dust","slips"],
+ppe:["Safety boots","Hi-vis vest","Overalls","Hard hat","Safety gloves","Eye protection","Hearing protection","FFP3 / P3 respirator"],
+permits:["induction","ptw","cscs","first"],
+steps:[
+["Carefully unbolt the fencing with hand and battery tools and set aside.","Panels falling; manual handling; trapped fingers.","Panels supported by a second person while the last bolts are removed. Gloves.",3,3,1,2,"All operatives"],
+["Confirm the storage location with the client once dismantled.","Panels left loose in walkways.","Panels stacked flat and secured in the barriered area until moved.",2,2,1,1,"Supervisor"],
+["Lift panels onto a pallet for relocation by FLT or pallet truck.","Manual handling; FLT and pedestrian conflict.","Two-person lifts; FLT moved by a licensed site operator with a banksman.",3,4,1,3,"Supervisor"]
+]}
+];
+
+var HAZARD_LIB = [
+["client_site","Working on client sites","All staff and contractors: injury or ill health from lack of awareness on an unfamiliar site.","All employees receive the site induction. Controlled entry to authorised persons only. RAMS read and understood and signed by all operatives. Site warning and information signs displayed. Toolbox talks and site safety briefings given.",3,3,1,3,"Supervisor"],
+["flt","Vehicle, FLT and site traffic movement","All staff and others: injury caused by collision with FLTs, HGVs and site vehicles.","Hi-vis worn at all times. Segregated vehicle and pedestrian routes and pedestrian walkways used. Traffic barriers deployed. Vehicle and plant movements carried out with a banksman. Barriers in place to prevent unauthorised access. Aisles and gangways kept clear.",4,5,1,4,"Supervisor"],
+["slips","Slips, trips and falls (people movement)","All staff: injury from slips, trips and falls on wet floors, spillages, cables and poor housekeeping.","Areas kept clear to prevent slips, trips and falls. Good housekeeping observed during the task with daily inspections. Spillages cleaned up immediately; wet floor signs and spill kits available. Safety footwear to BS EN ISO 20345 worn. Waste disposed of in skips.",3,3,1,2,"All operatives"],
+["access","Access/egress obstructions and trailing cables","All staff: slips, trips and falls from obstructions and trailing leads.","Delivery and work areas kept clear of obstructions. Equipment sited so as not to obstruct routes when in use. Pedestrians segregated. Trailing cables avoided or routed overhead / covered.",3,3,1,2,"All operatives"],
+["manual","Manual handling","All staff: sprains, strains and musculoskeletal injury from lifting, carrying and repetitive handling.","Avoid unnecessary manual handling. Mechanical aids, trolleys and pallet trucks provided and used. Loads split; team lifts used. Manual handling training and good technique. Manual handling risk assessment for heavy or awkward items. Foot protection worn.",4,3,1,3,"All operatives"],
+["hand_tools","Hand tools","All staff: cuts and impact injuries while using hand tools.","Only competent persons use the equipment. Employees trained in the correct use of tools. Tools kept in good condition, cleaned, checked and stored after use, and carried correctly. Gloves to EN 388 (cut resistant) and eye protection worn.",3,2,1,2,"All operatives"],
+["electrical","Electrical equipment and power tools","All staff: electric shock, burns and injury from damaged or misused power tools.","Battery or 110v tools only. Pre-use checks by the user; regular PAT testing. Only competent, trained persons operate equipment. Routine maintenance and safety checks undertaken. Defective equipment taken out of use.",3,5,1,4,"All operatives"],
+["dust","Dust","All staff and others nearby: respiratory ill health from inhaling harmful dust.","On-tool extraction and M/H-class vacuums; shadow vacuuming; water suppression where possible. Protective screens or enclosure. RPE (FFP3) worn and face-fit tested. Good housekeeping and hygiene. Area kept clear of other staff.",4,4,1,3,"All operatives"],
+["silica","Brick, concrete and silica dust (RCS)","All staff: serious lung disease (silicosis) from respirable crystalline silica when cutting, grinding or breaking concrete, brick and stone.","Wet cutting or on-tool extraction on every cut. FFP3 respirator worn. Exposure time limited. Dry sweeping not permitted; vacuum clean.",4,5,1,3,"All operatives"],
+["noise","Noise at or above 85 dB(A)","All staff: hearing damage from excessive noise.","Noise assessed and tools selected for lower noise. Hearing protection provided and worn; hearing protection zones designated. Exposure time limited.",4,3,1,2,"All operatives"],
+["havs","Hand arm vibration","Operatives: hand-arm vibration syndrome from breakers, grinders, saws and compaction plant.","Low-vibration equipment selected. Trigger time recorded and kept below the exposure action value. Job rotation. HAV training given; operatives self-check for symptoms and report.",4,3,1,3,"Competent operator"],
+["wacker","Work equipment (wacker plate / compaction)","Operatives: injury from misuse or poorly maintained compaction plant.","Instruction manual read and understood. Only competent persons operate the equipment. Written safe system of work. Routine maintenance undertaken.",3,3,1,2,"Competent operator"],
+["grinder","Rotating and moving abrasive grinding wheel","Operatives: injury from contact with the wheel, disc burst, ejected debris and dust.","Guards checked before use. Only competent (abrasive wheel trained) persons operate. Eye and face protection, EN 388 gloves and hearing protection worn. On-tool extraction. 110v or battery tools.",4,4,1,3,"Competent operator"],
+["wet_concrete","Wet cement, concrete and mortar","All staff: skin burns, dermatitis and eye injury from contact with wet cement products.","COSHH assessments communicated. Gloves to EN 374, eye protection and foot protection worn. Barrier cream and hygiene / wash station provided; regular skin checks. Spillage prevented from entering drains.",4,3,1,2,"All operatives"],
+["resin","Use of resin","All staff: respiratory irritation from fumes and dermatitis from skin contact with resins.","COSHH assessment communicated and SDS on site. Area kept clear of non-essential persons while resin is applied and curing. Chemical-resistant gloves and safety glasses worn. Good ventilation.",4,3,1,2,"All operatives"],
+["paint","Paint, fillers and decorating materials","All staff: dermatitis, eye irritation and inhalation of solvents and VOCs.","COSHH assessments communicated; employees trained in COSHH. Gloves (EN 455 / EN 374) and eye protection worn; eye wash available. Natural ventilation. Containers labelled and stored correctly. Good hand washing; no solvents used to clean hands.",3,3,1,2,"All operatives"],
+["chemicals","Chemicals and hazardous substances","All staff: injury or ill health from uncontrolled hazardous substances.","COSHH assessments communicated. Chemicals correctly labelled and stored securely with lids on; flammables stored securely. Workers trained in COSHH. Appropriate gloves worn.",3,3,1,2,"All operatives"],
+["fire","Fire and flammable materials","All persons: injury from fire and smoke inhalation.","No naked flames or hot works without a permit. No smoking. Flammable materials stored correctly and containers labelled. All persons aware of the fire procedures from induction. Fire exits and signage kept clear. Extinguishers provided in higher-risk areas.",3,5,1,4,"All operatives"],
+["height","Working at height","All staff: serious injury from falls from height and falling objects.","Work at height planned and avoided where possible. Suitable access equipment (podium, tower, MEWP) used by trained operatives; edge protection where needed. Exclusion zone below. Equipment inspected before use.",4,5,1,4,"Supervisor"],
+["ladders","Ladders and stepladders","All staff: injury from falling from ladders or stepladders.","Correct type of ladder used; visually inspected before each use; defective ladders removed from use. Used on firm level ground for short-duration light work only, three points of contact. Employees trained in ladder use. Not used in extreme weather.",4,4,1,3,"All operatives"],
+["falling","Falling objects","Staff and others below: injury from tools, materials or debris falling from height.","Exclusion zone below overhead work. Tools and materials kept secure at height. Hard hats worn in the work area.",3,4,1,3,"All operatives"],
+["lighting","Poor lighting","All staff: injury from not being able to see hazards clearly.","Adequate lighting maintained at all times. Additional internal and external task lighting provided where needed.",3,3,1,2,"Supervisor"],
+["buried","Buried services","Operatives: electric shock, burns or gas release from striking buried services.","Service drawings obtained and permit to dig issued. Area scanned (CAT and Genny) before breaking ground. Hand dig near pipes and cables. Emergency procedure for a struck service; any damage reported immediately.",4,5,1,4,"Supervisor"],
+["excavation","Unprotected excavations","All persons: injury from falling into open excavations.","Excavations barriered and signed; no pedestrian access. Guard rails provided where needed. Excavations covered or backfilled before leaving site.",3,4,1,2,"Supervisor"],
+["adverse_weather","Adverse weather","Operatives: injury from high winds, heavy rain, snow, ice and lightning.","Weather forecast checked and work planned for it. Work postponed in adverse conditions. Protective clothing and footwear worn.",3,3,1,2,"Supervisor"],
+["lone","Lone working","Lone workers: delayed help after an accident or illness.","Lone working procedure followed. Mobile phone carried and check-in calls with the office. Higher-risk tasks not carried out alone.",3,4,1,3,"Supervisor"],
+["waste","Waste removal","All staff: injury or ill health while handling and removing waste.","Waste bagged to manageable weights and taken to skips as work proceeds. Gloves worn. Hazardous waste segregated and removed by CBS.",3,2,1,2,"All operatives"]
+];
+
+var PPE_LIB = ["Safety boots","Hi-vis vest","Overalls","Hard hat","Safety gloves","Cut-resistant gloves","Chemical-resistant gloves","Eye protection","Hearing protection","FFP3 / P3 respirator","Disposable coveralls","Knee pads","Harness & lanyard"];
+
+var PERMIT_LIB = [
+["induction","Client site induction completed (all operatives)"],
+["ptw","Client permit to work issued by the site engineering team"],
+["cscs","CSCS cards held by all operatives"],
+["smsts","SMSTS / SSSTS-trained supervisor on site"],
+["coshh","COSHH assessments and SDS on site"],
+["manual","Manufacturer's instructions / data sheets on site"],
+["asbestos","Asbestos register checked for the work area"],
+["dig","Permit to dig and service drawings (CAT and Genny scan)"],
+["isolation","Isolation / lock-out confirmed by the site engineer"],
+["hotwork","Hot works permit"],
+["pasma","PASMA / IPAF training for access equipment"],
+["loler","Lifting plan and LOLER certificates"],
+["first","Trained first aider on site"]
+];
+
+var STD = {
+hospital:"North Middlesex University Hospital Emergency Department, Sterling Way, London N18 1QX (confirm the nearest A&E for each site)",
+assembly:"As directed at the site induction",
+emergency:"In an emergency call 999. Stop work, make the area safe and follow the client's site emergency procedures as briefed at induction. Report to the site contact and the CBS office immediately.",
+firstAid:"First aid kits are carried in CBS vans. All operatives attend the site safety induction and are aware of the first aid arrangements on site. Any accident or first aid administered must be reported to the site contact and to the CBS office the same day.",
+fire:"All operatives attend the site safety induction and are aware of the fire safety arrangements on site. The works do not require the isolation of fire detection or prevention systems unless stated in this RAMS.",
+welfare:"All operatives attend the site safety induction and are aware of the welfare arrangements on site.",
+notifiable:"RIDDOR reportable incidents (deaths, specified injuries, over-7-day injuries, occupational diseases and dangerous occurrences) are reported to HSE at hse.gov.uk/riddor (or 0345 300 9923 for fatal and specified injuries). All incidents and near misses are reported to the site contact, recorded in the CBS incident register and investigated.",
+consultation:"Operatives are briefed on this RAMS and sign to confirm they have received and understood it (section 10). They can raise safety concerns at any time and must stop work and tell the supervisor if they believe there is a serious risk.",
+overlap:"CBS cooperates and coordinates with the client, the site engineering team and other contractors on site, and follows the client's permit to work system and site rules.",
+monitoring:"The site supervisor monitors the implementation of and compliance with the controls in this RAMS, the risk assessments and the site rules, and stops work if they are not in place. Any change to the method is added to this document and briefed to all operatives, who sign again.",
+review:"This RAMS is reviewed when the scope, method, site conditions or crew change, after any incident or near miss, and at least annually as a template."
+};
+
+var CTRL_LIB = [["E","Eliminate","Elim"],["S","Substitute","Sub"],["I","Isolate","Iso"],
+["G","Engineering","Eng"],["A","Administrative","Admin"],["P","PPE","PPE"]];
+
+var CTRL_ORDER = "ESIGAP";
+
+var CT_OPEN = ["A","AP","IA","A"];
+var CT_CLOSE = ["AP","A"];
+
+var CT_TASK = {
+general:[],
+resin:["IGA","GAP","AP","AP","IGAP","AP","GAP","SGAP","AP","GAP"],
+cableduct:["IA","GAP","IGA","AP"],
+ceiling_grid:["IGA","AP","GA","IGP","AP"],
+floor_alter:["IA","GAP","AP","GAP","AP"],
+breakout:["IA","GAP","GAP","GAP","GAP","IAP"],
+pb_ceiling:["IGA","GAP","GAP","AP","GAP"],
+linemark:["IA","GAP","SGAP"],
+speedbump:["IGAP","AP","A"],
+plumbing:["IGA","EGAP","A"],
+kitchen:["IA","AP","GA","AP","GA"],
+fencing:["AP","A","GA"]
+};
+
+var CT_HAZ = ["IA","IGAP","GAP","GA","GAP","AP","SGA","GAP","GAP","SGP","SGA","GA","GAP","GAP","IAP","SGAP","SAP","EIA","EGA","AP","IAP","G","IGA","IGA","EAP","A","AP"];
+
+
+/* ============================ RATINGS ============================ */
+var LIK = ["","Rare","Unlikely","Possible","Likely","Almost certain"];
+var CON = ["","Insignificant","Minor","Moderate","Major","Catastrophic"];
+function band(s){ return s>=20?"E":s>=10?"H":s>=5?"M":"L"; }
+var BAND_NAME={L:"Low",M:"Medium",H:"High",E:"Extreme"};
+
+/* ============================ STATE ============================ */
+var uidN=1; function uid(){ return "u"+(uidN++)+"_"+Date.now().toString(36); }
+function today(){ var d=new Date(),p=function(n){return (n<10?"0":"")+n;};
+return p(d.getDate())+"/"+p(d.getMonth()+1)+"/"+d.getFullYear(); }
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+function ct(code){ return String(code||"A").split("").filter(function(c){ return CTRL_ORDER.indexOf(c)>-1; }); }
+function ctSort(arr){ return arr.slice().sort(function(a,b){ return CTRL_ORDER.indexOf(a)-CTRL_ORDER.indexOf(b); }); }
+function ctName(c,short){ var r=""; CTRL_LIB.forEach(function(x){ if(x[0]===c) r=short?x[2]:x[1]; }); return r; }
+function mkStep(g,a,code){ return {id:uid(),g:g,task:a[0],hazards:a[1],controls:a[2],il:a[3],ic:a[4],rl:a[5],rc:a[6],who:mapWho(a[7]||""),ctrl:ct(code)}; }
+function mkHaz(a,code){ return {id:a[0],name:a[1],harm:a[2],controls:a[3],il:a[4],ic:a[5],rl:a[6],rc:a[7],who:a[8],ctrl:ct(code||CT_HAZ[libIndex(a[0])])}; }
+function libHaz(id){ var r=null; HAZARD_LIB.forEach(function(h){ if(h[0]===id) r=h; }); return r; }
+function libIndex(id){ for(var i=0;i<HAZARD_LIB.length;i++) if(HAZARD_LIB[i][0]===id) return i; return 999; }
+
+function blankState(){
+return {
+templateId:"general",
+meta:{ site:"", jobNo:"", activity:"", ramsNo:String(window.CBS_NEXT_RAMS||""), rev:"0", date:today(), preparedBy:"",
+pcbu:"Chelmsford Building Services", pcbuAddress:"Unit 1, Example Business Park, Example Road, Bishop's Stortford, ZZ99 1ZZ", pcbuContact:"", responsible:"ZZ Person A",
+client:"", clientContact:"", mainContractor:"Chelmsford Building Services Ltd", startDate:"", duration:"", taskShort:"",
+approvedBy:"", approverRole:"Director" },
+scope:"", steps:[], register:[],
+res:{ supervisor:"", workers:"", subcontractors:"N/A", plant:"", materials:"" },
+ppe:[], ppeExtra:"Task-specific PPE is listed against each step in the method statement.",
+permits:[], permitExtra:"",
+std:clone(STD)
+};
+}
+var state=blankState();
+
+function applyTemplate(id){
+var t=null; TEMPLATES.forEach(function(x){ if(x.id===id) t=x; });
+if(!t) return;
+state.templateId=id;
+var steps=[];
+OPEN_STEPS.forEach(function(s,i){ if(!t.openIdx || t.openIdx.indexOf(i)>-1) steps.push(mkStep("open",s,CT_OPEN[i])); });
+var tct=CT_TASK[t.id]||[];
+var A0=uid(); state.acts=[{id:A0,name:actName(t)}];
+t.steps.forEach(function(s,i){ var x=mkStep("task",s,tct[i]); x.a=A0; steps.push(x); });
+CLOSE_STEPS.forEach(function(s,i){ steps.push(mkStep("close",s,CT_CLOSE[i])); });
+state.steps=steps;
+state.meta.activity=t.activity; state.meta.taskShort=t.taskShort; state._autoT=t.activity; state._autoS=t.taskShort;
+state.scope=t.scope; state.res.plant=t.plant; state.res.materials=t.materials;
+state.register=t.hazards.map(function(h){ var a=libHaz(h); return a?mkHaz(a):null; }).filter(Boolean)
+.sort(function(a,b){ return libIndex(a.id)-libIndex(b.id); });
+state.ppe=t.ppe.slice(); state.permits=t.permits.slice();
+}
+
+/* ============================ HELPERS ============================ */
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function get(p){ var a=p.split("."),o=state; for(var i=0;i<a.length;i++){ o=o==null?o:o[a[i]]; } return o==null?"":o; }
+function set(p,v){ var a=p.split("."),o=state; for(var i=0;i<a.length-1;i++){o=o[a[i]];} o[a[a.length-1]]=v; }
+function $(s,r){ return (r||document).querySelector(s); }
+function $all(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
+function stepById(id){ for(var i=0;i<state.steps.length;i++) if(state.steps[i].id===id) return state.steps[i]; return null; }
+function hazById(id){ for(var i=0;i<state.register.length;i++) if(state.register[i].id===id) return state.register[i]; return null; }
+
+/* ============================ DOCUMENT BLOCKS ============================ */
+function rk(l,c){
+var s=(+l)*(+c), b=band(s);
+return '<td class="rk r-'+b+'"><b>'+s+'</b><span>'+BAND_NAME[b]+'</span><small>L'+l+' C'+c+'</small></td>';
+}
+function ctCell(arr){
+var a=ctSort(arr||[]);
+if(!a.length) return '<td class="ct">&nbsp;</td>';
+return '<td class="ct">'+a.map(function(c){ return esc(ctName(c,true)); }).join("<br>")+'</td>';
+}
+function pageHead(){
+var m=state.meta;
+return '<div class="phead"><table class="hd"><tr>'
++'<td class="lg"><img src="'+LOGO_URI+'" alt="Chelmsford Building Services"></td>'
++'<td class="ttl"><b>Risk and Method Statement</b><span class="pn"></span></td></tr></table>'
++'<div class="rule"></div>'
++'<table class="meta">'
++'<tr><td class="k">Site address</td><td colspan="3">'+esc(m.site)+'</td><td class="k">RAMS no</td><td>'+esc(m.ramsNo)+'</td></tr>'
++'<tr><td class="k">Task activity</td><td>'+esc(m.activity)+'</td><td class="k">Prepared by</td><td>'+esc(m.preparedBy)+'</td>'
++'<td class="k">Revision</td><td>'+esc(m.rev)+'</td></tr>'+'<tr><td class="k">Date</td><td colspan="5">'+esc(m.date)+'</td></tr>'
++'</table></div>';
+}
+function pageFoot(){
+return '<div class="pfoot"><span>Chelmsford Building Services &nbsp;|&nbsp; Risk and Method Statement'+(state.meta.ramsNo?' '+esc(state.meta.ramsNo):'')+'</span><span>Uncontrolled when printed. Check the current revision before use.</span></div>';
+}
+
+/* block = {title, cols:[widths%], head:html|null, rows:[{html,keep}]} or {atomic:html} */
+function kv(rows){ return rows.map(function(r){ return {html:r}; }); }
+function blocks(){
+var m=state.meta, s=state.std, out=[];
+
+out.push({title:"1. General Details", cols:[19,31,19,31], head:null, rows:kv([
+'<tr><td class="k">Contractor</td><td>'+esc(m.pcbu)+'</td><td class="k">Responsible person (H&amp;S)</td><td>'+esc(m.responsible)+'</td></tr>',
+'<tr><td class="k">Contractor address</td><td>'+esc(m.pcbuAddress)+'</td><td class="k">Mobile</td><td>'+esc(m.pcbuContact)+'</td></tr>',
+'<tr><td class="k">Client</td><td>'+esc(m.client)+'</td><td class="k">Client contact</td><td>'+esc(m.clientContact)+'</td></tr>',
+'<tr><td class="k">Principal contractor</td><td colspan="3">'+esc(m.mainContractor)+'</td></tr>',
+'<tr><td class="k">Start date</td><td colspan="3">'+esc(m.startDate)+'</td></tr>'
+])});
+
+out.push({title:"2. Description of works", cols:[19,81], head:null, rows:kv([
+'<tr><td class="k">Task / activity</td><td>'+esc(m.taskShort)+'</td></tr>',
+'<tr><td class="k">Description</td><td class="ml">'+esc(state.scope)+'</td></tr>'
+])});
+
+out.push({atomic:matrixBlock()});
+
+var rows=[], n=1, lastG=null, gName={open:"Site set-up",task:"Task method",close:"Close out"};
+sortSteps(); var AN={}, MA=state.acts.length>1; state.acts.forEach(function(a,i){ AN[a.id]="Activity "+(i+1)+": "+(a.name||""); });
+state.steps.forEach(function(st){
+var gk=st.g==="task"?"task:"+st.a:st.g;
+if(gk!==lastG){ rows.push({html:'<tr class="grp"><td colspan="8">'+esc(st.g==="task"&&MA?AN[st.a]:gName[st.g])+'</td></tr>',keep:true}); lastG=gk; }
+rows.push({html:'<tr><td class="c">'+(n++)+'</td><td class="ml">'+esc(st.task)+'</td><td class="ml">'+esc(st.hazards)+'</td>'
++rk(st.il,st.ic)+'<td class="ml">'+esc(st.controls)+'</td>'+ctCell(st.ctrl)+rk(st.rl,st.rc)+'<td>'+esc(st.who)+'</td></tr>'});
+});
+out.push({title:"4. Method statement", note:"Risk rated before and after controls", cols:[3.5,17,15,7,34,7.5,7.5,8.5],
+head:'<tr><th class="c">#</th><th>Task step</th><th>Hazards</th><th class="c">Risk</th><th>Controls</th><th class="c">Control type</th><th class="c">Residual</th><th>Who</th></tr>',
+rows:rows});
+
+out.push({title:"5. Hazard register", note:"Site-wide hazards for this job", cols:[14,14,7,39,8.5,7.5,10],
+head:'<tr><th>Hazard</th><th>Potential harm</th><th class="c">Risk</th><th>Controls</th><th class="c">Control type</th><th class="c">Residual</th><th>Who</th></tr>',
+rows:state.register.map(function(h){
+return {html:'<tr><td>'+window.cbsHz.nameCell(h.name)+'</td><td class="ml">'+esc(h.harm)+'</td>'+rk(h.il,h.ic)
++'<td class="ml">'+window.cbsCt.cell(h.controls)+'</td>'+ctCell(h.ctrl)+rk(h.rl,h.rc)+'<td>'+esc(h.who)+'</td></tr>'};
+})});
+
+var r=state.res;
+var WK=String(r.workers||"").split("\n").map(function(s){return s.trim();}).filter(Boolean);
+out.push({title:"6. Resources & plant", cols:[22,78], head:null, rows:kv([
+'<tr><td class="k">Site lead / supervisor</td><td>'+esc(r.supervisor)+'</td></tr>',
+'<tr><td class="k">Workers</td><td>'+(WK.length?esc(WK.join(", "))+'<br>':'')+'<span style="color:#6b6e70">Sign-on: see section 12</span></td></tr>'].concat((String(r.subcontractors||"").trim()&&!/^n\/?a$/i.test(String(r.subcontractors).trim()))?['<tr><td class="k">Subcontractors</td><td>'+esc(r.subcontractors)+'</td></tr>']:[]).concat([
+'<tr><td class="k">Plant, tools &amp; equipment</td><td class="ml">'+esc(r.plant)+'</td></tr>'
+]))});
+
+var CXM=window.CBS_COSHH||{},CXL=(state.coshh||[]).slice();String(state.res.materials||"").split("\n").forEach(function(l){var m=l.trim().match(/^CoSHH:\s*(.+?)(?:\s*\((.*)\))?$/i);if(!m)return;var nm=m[1].trim().toLowerCase(),hit="";Object.keys(CXM).forEach(function(k){if(String(CXM[k].product||"").trim().toLowerCase()===nm)hit=k;});if(!CXL.some(function(c){return hit?String(c.id)===hit:String(c.product||"").toLowerCase()===nm;}))CXL.push({id:hit,product:m[1].trim()});});var CX=CXL.map(function(c){var x=CXM[String(c.id)];return x?{p:x.product,s:x.supplier,k:x.coshh_class,st:x.pack_url?(x.status||"Issued"):((x.status||"Draft")+", pack not built")}:{p:c.product,s:"",k:"",st:""};});
+if(CX.length) out.push({title:"CoSHH assessments", note:"Assessment packs are filed on the job", cols:[36,24,18,22], head:'<tr><th>Product</th><th>Supplier</th><th>Hazard class</th><th>Status</th></tr>', rows:CX.map(function(x){return {html:'<tr><td>'+esc(x.p)+'</td><td>'+esc(x.s)+'</td><td>'+esc(x.k)+'</td><td>'+esc(x.st)+'</td></tr>'};})});
+out.push({title:"7. Personal protective equipment", cols:[100], head:null, rows:kv([
+'<tr><td class="ml">Minimum on this job: '+esc(state.ppe.join(", ")||"-")+'.'+(state.ppeExtra?'\n'+esc(state.ppeExtra):'')
++'\nPPE is the last line of defence and is used alongside, not instead of, the higher-order controls above.</td></tr>'
+])});
+
+var pl=state.permits.map(function(id){ var p=null; PERMIT_LIB.forEach(function(x){ if(x[0]===id) p=x[1]; }); return p||id; });
+var prow=[]; for(var i=0;i<pl.length;i+=2){
+prow.push('<tr><td>&#9745; '+esc(pl[i])+'</td><td>'+(pl[i+1]?'&#9745; '+esc(pl[i+1]):'')+'</td></tr>');
+}
+var QC=(state.quals||[]).filter(function(x){return x.grp==="co";}),QP=(state.quals||[]).filter(function(x){return x.grp!=="co";});
+if(QC.length) prow.push('<tr><td colspan="2"><b>Company accreditations</b><br>'+QC.map(function(x){return '&#9745; '+esc(x.label);}).join('<br>')+'</td></tr>');
+if(QP.length) prow.push('<tr><td colspan="2"><b>Operative qualifications</b><br>'+QP.map(function(x){return '&#9745; '+esc(x.label);}).join('<br>')+'</td></tr>');
+if(state.permitExtra) prow.push('<tr><td colspan="2" class="ml">'+esc(state.permitExtra)+'</td></tr>');
+if(!prow.length) prow.push('<tr><td colspan="2">None required.</td></tr>');
+out.push({title:"8. Permits, licences & competencies", cols:[50,50], head:null, rows:kv(prow)});
+
+out.push({title:"9. Emergency & welfare", cols:[22,78], head:null, rows:kv([
+'<tr><td class="k">Emergency services</td><td><b>999</b> &nbsp; NHS 111 &nbsp; Poisons via NHS 111 &nbsp; HSE 0345 300 9923</td></tr>',
+'<tr><td class="k">Nearest hospital / A&amp;E</td><td>'+esc(s.hospital)+'</td></tr>',
+'<tr><td class="k">Assembly point</td><td>'+esc(s.assembly)+'</td></tr>',
+'<tr><td class="k">Emergency procedure</td><td class="ml">'+esc(s.emergency)+'</td></tr>',
+'<tr><td class="k">First aid</td><td class="ml">'+esc(s.firstAid)+'</td></tr>',
+'<tr><td class="k">Fire</td><td class="ml">'+esc(s.fire)+'</td></tr>',
+'<tr><td class="k">Welfare facilities</td><td class="ml">'+esc(s.welfare)+'</td></tr>',
+'<tr><td class="k">Incidents &amp; RIDDOR reportable incidents</td><td class="ml">'+esc(s.notifiable)+'</td></tr>'
+])});
+
+out.push({title:"10. Consultation, monitoring & review", cols:[22,78], head:null, rows:kv([
+'<tr><td class="k">Worker engagement</td><td class="ml">'+esc(s.consultation)+'</td></tr>',
+'<tr><td class="k">Cooperation with others on site</td><td class="ml">'+esc(s.overlap)+'</td></tr>',
+'<tr><td class="k">Supervision &amp; monitoring</td><td class="ml">'+esc(s.monitoring)+'</td></tr>',
+'<tr><td class="k">Review</td><td class="ml">'+esc(s.review)+'</td></tr>'
+])});
+
+out.push({title:"11. Sign-off", cols:[22,26,32,20],
+head:'<tr><th></th><th>Name</th><th>Signature</th><th>Date</th></tr>', rows:kv([
+'<tr class="sigRow"><td class="k">Prepared by</td><td>'+esc(m.preparedBy)+'</td><td></td><td></td></tr>',
+'<tr class="sigRow"><td class="k">Approved by'+(m.approverRole?' ('+esc(m.approverRole)+')':'')+'</td><td>'+esc(m.approvedBy)+'</td><td></td><td></td></tr>'
+])});
+
+var names=r.workers.split("\n").map(function(x){return x.trim();}).filter(Boolean);
+var total=Math.max(10,names.length+3), sig=[];
+sig.push({html:'<tr><td colspan="3" class="ml" style="font-size:8pt">By signing I confirm this RAMS has been explained to me, I understand the hazards and controls, and I will work in line with it. I will stop work and tell the site lead if I believe the work can\u2019t be done safely, or if the task or conditions change.</td></tr>'});
+for(var k=0;k<total;k++) sig.push({html:'<tr class="sigRow"><td>'+esc(names[k]||"")+'</td><td></td><td></td></tr>'});
+out.push({title:"12. Worker sign-on", cols:[44,38,18],
+head:null, rows:[{html:'<tr><td colspan="3" class="ml">Workers sign on to this RAMS electronically on the CBS sign-on page, linked from the ServiceM8 job note. The Sign-on record for this revision is filed with this RAMS on the job card. A new revision needs everyone to sign on again.</td></tr>'}]});
+return out;
+}
+
+function matrixBlock(){
+var h='<div class="sec"><div class="secT">3. Risk rating matrix<i>Rating = likelihood \u00d7 consequence</i></div><div class="mxwrap"><table class="mx"><colgroup><col style="width:22mm">';
+for(var c=1;c<=5;c++) h+='<col style="width:15.5mm">';
+h+='</colgroup><tr><th rowspan="2">Likelihood</th><th colspan="5">Consequence</th></tr><tr>';
+for(c=1;c<=5;c++) h+='<th>'+c+' '+CON[c]+'</th>';
+h+='</tr>';
+for(var l=5;l>=1;l--){
+h+='<tr><th style="text-align:left">'+l+' '+LIK[l]+'</th>';
+for(c=1;c<=5;c++){ var sc=l*c; h+='<td class="sc r-'+band(sc)+'">'+sc+'</td>'; }
+h+='</tr>';
+}
+h+='</table><div class="legend"><table>'
++'<tr><td class="lb r-E">Extreme<br>20\u201325</td><td>Do not start. Stop work immediately and eliminate or redesign before proceeding.</td></tr>'
++'<tr><td class="lb r-H">High<br>10\u201316</td><td>Work may only proceed once controls are in place and checked by the site lead.</td></tr>'
++'<tr><td class="lb r-M">Medium<br>5\u20139</td><td>Manage with the controls in this RAMS; monitor throughout.</td></tr>'
++'<tr><td class="lb r-L">Low<br>1\u20134</td><td>Manage by routine procedures.</td></tr>'
++'</table><div class="hier"><b>Likelihood:</b> 1 Rare, 2 Unlikely, 3 Possible, 4 Likely, 5 Almost certain. '
++'<b>Consequence:</b> 1 First aid, 2 Medical treatment, 3 Lost time, 4 Major injury / RIDDOR reportable, 5 Fatality.<br>'
++'<b>Hierarchy of controls</b> (the control type against each step and hazard): <b>Elim</b>inate the hazard; if not reasonably practicable, minimise by <b>Sub</b>stitution, <b>Iso</b>lation or <b>Eng</b>ineering controls; then <b>Admin</b>istrative controls; then <b>PPE</b>. Administrative controls and PPE are never relied on alone where a higher-order control is reasonably practicable. Residual risk must be Medium or lower before work starts.</div></div></div></div>';
+return h;
+}
+
+/* ============================ PAGINATION ============================ */
+function frag(html){ var d=document.createElement("div"); d.innerHTML=html; return d.firstElementChild; }
+function rowFrag(html){ var tb=document.createElement("tbody"); tb.innerHTML=html; return tb.firstElementChild; }
+function secShell(b,cont){
+var cols=b.cols.map(function(w){ return '<col style="width:'+w+'%">'; }).join("");
+return '<div class="sec"><div class="secT">'+esc(b.title)+(cont?' (continued)':'')+(b.note?'<i>'+esc(b.note)+'</i>':'')+'</div>'
++'<table class="t"><colgroup>'+cols+'</colgroup>'+(b.head?'<thead>'+b.head+'</thead>':'')+'<tbody></tbody></table></div>';
+}
+
+function paginate(){
+var host=$("#measure"); host.innerHTML="";
+var pages=[], body, tooTall=[];
+var headHTML=pageHead(), footHTML=pageFoot();
+function newPage(){
+var p=document.createElement("div"); p.className="page";
+p.innerHTML=headHTML+'<div class="pbody"></div>'+footHTML;
+host.appendChild(p); pages.push(p); body=p.querySelector(".pbody");
+}
+function over(){ return body.scrollHeight > body.clientHeight + 1; }
+newPage();
+blocks().forEach(function(b){
+if(b.atomic){
+var el=frag(b.atomic); body.appendChild(el);
+if(over() && body.children.length>1){ body.removeChild(el); newPage(); body.appendChild(el); }
+if(over()) tooTall.push(pages.length);
+return;
+}
+var rows=b.rows.slice(), cont=false;
+if(!rows.length) rows=[{html:'<tr><td colspan="'+b.cols.length+'">&nbsp;</td></tr>'}];
+while(rows.length){
+var sec=frag(secShell(b,cont)); body.appendChild(sec);
+var tb=sec.querySelector("tbody"), placed=[];
+while(rows.length){
+var tr=rowFrag(rows[0].html); tb.appendChild(tr);
+if(over()){ tb.removeChild(tr); break; }
+placed.push(rows.shift());
+}
+/* don't strand a group heading at the foot of a page */
+while(rows.length && placed.length && placed[placed.length-1].keep){
+rows.unshift(placed.pop()); tb.removeChild(tb.lastElementChild);
+}
+if(!rows.length) break;
+if(!placed.length){
+body.removeChild(sec);
+if(body.children.length){ newPage(); continue; }
+/* single row taller than a whole page: place it anyway */
+body.appendChild(sec); tb.appendChild(rowFrag(rows.shift().html)); tooTall.push(pages.length);
+if(!rows.length) break;
+}
+newPage(); cont=true;
+}
+});
+pages.forEach(function(p,i){ p.querySelector(".pn").textContent="Page "+(i+1)+" of "+pages.length; });
+return {pages:pages, tooTall:tooTall};
+}
+
+var docTimer=null;
+function scheduleDoc(){ clearTimeout(docTimer); docTimer=setTimeout(renderDoc,180); }
+function renderDoc(){
+var res=paginate(), doc=$("#doc");
+doc.innerHTML="";
+res.pages.forEach(function(p){ doc.appendChild(p); });
+$("#pageInfo").textContent=res.pages.length+" page"+(res.pages.length===1?"":"s");
+$("#overflowWarn").textContent=res.tooTall.length?("\u26A0 A single row on page "+res.tooTall.join(", ")+" is taller than a page; shorten it or split it into two steps"):"";
+}
+
+/* ============================ EDITOR ============================ */
+function badge(l,c){ var s=l*c, b=band(s); return '<span class="bd b-'+b+'" title="'+BAND_NAME[b]+'">'+s+'</span>'; }
+function sel(name,val,labels,attrs){
+var h='<select '+attrs+' aria-label="'+name+'">';
+for(var i=1;i<=5;i++) h+='<option value="'+i+'"'+(+val===i?' selected':'')+'>'+i+' '+labels[i]+'</option>';
+return h+'</select>';
+}
+function rateBox(kind,id,obj){
+function box(title,lk,ck){
+return '<div class="rate"><div class="rl"><span>'+title+'</span><span data-bdg="'+kind+':'+id+':'+lk+'">'+badge(obj[lk],obj[ck])+'</span></div>'
++'<div class="sels">'+sel("Likelihood",obj[lk],LIK,'data-rt="'+kind+'" data-id="'+id+'" data-f="'+lk+'"')
++sel("Consequence",obj[ck],CON,'data-rt="'+kind+'" data-id="'+id+'" data-f="'+ck+'"')+'</div></div>';
+}
+return ctChips(kind,id,obj)+'<div class="rateRow">'+box("Risk before controls","il","ic")+box("Residual with controls","rl","rc")+'</div>'
++'<div class="warnTxt" data-warn="'+kind+':'+id+'">'+rateWarn(obj)+'</div>';
+}
+function rateWarn(o){
+var a=o.il*o.ic, b=o.rl*o.rc, c=o.ctrl||[];
+if(b>a) return "Residual is higher than the initial rating.";
+if(b>=10) return "Residual is "+BAND_NAME[band(b)]+"; add controls before work starts.";
+if(b>=5 && c.length && !/[ESIG]/.test(c.join(""))) return "Admin controls or PPE only. Check whether a higher-order control is reasonably practicable.";
+return "";
+}
+function ctChips(kind,id,obj){
+var on={}; (obj.ctrl||[]).forEach(function(c){ on[c]=true; });
+return '<label class="f"><span>Control type (hierarchy)</span></label><div class="chipwrap" data-ctwrap="'+kind+':'+id+'">'
++CTRL_LIB.map(function(x){
+return '<label class="chip'+(on[x[0]]?" on":"")+'"><input type="checkbox" data-ct="'+x[0]+'" data-ctk="'+kind+'" data-id="'+id+'"'+(on[x[0]]?" checked":"")+'>'+x[1]+'</label>';
+}).join("")+'</div>';
+}
+var openCards={};
+function stepSummary(st,n){
+return '<span class="n">'+n+'</span><span class="stxt">'+esc(st.task||"New step")+'</span>'
++badge(st.il,st.ic)+'<span class="arrow">\u2192</span>'+badge(st.rl,st.rc);
+}
+function actName(t){ return String((t&&(t.taskShort||t.name))||"").replace(/\s*\(start blank\)/i,"").trim(); }
+function ensureActs(){ if(!state.acts||!state.acts.length){ state.acts=[{id:uid(),name:state.meta.taskShort||state.meta.activity||"Task"}]; } var ids=state.acts.map(function(a){return a.id;}); state.steps.forEach(function(x){ if(x.g==="task"&&ids.indexOf(x.a)<0) x.a=ids[0]; }); }
+function sortSteps(){ ensureActs(); var o=[],c=[],tk={}; state.steps.forEach(function(s){ if(s.g==="open")o.push(s); else if(s.g==="close")c.push(s); else (tk[s.a]=tk[s.a]||[]).push(s); }); var out=o; state.acts.forEach(function(a){ out=out.concat(tk[a.id]||[]); }); state.steps=out.concat(c); }
+function actTitle(one){ var n=(state.acts||[]).map(function(a){return String(a.name||"").trim();}).filter(Boolean); if(one&&n.length===1) return n[0]; if(n.length<2) return ""; return n.slice(0,-1).join(", ")+" and "+n[n.length-1]; }
+function autoTitles(one){ var v=actTitle(one); if(!v) return; var m=state.meta; if(!m.activity||m.activity===state._autoT) m.activity=v; if(!m.taskShort||m.taskShort===state._autoS) m.taskShort=v; state._autoT=v; state._autoS=v; }
+function libSort(arr,lib){ var order=lib.map(function(p){ return Array.isArray(p)?p[0]:p; }); arr.sort(function(a,b){ return order.indexOf(a)-order.indexOf(b); }); }
+function addLines(cur,add){ var L=String(cur||"").split("\n").map(function(s){return s.trim();}).filter(Boolean); String(add||"").split("\n").map(function(s){return s.trim();}).filter(Boolean).forEach(function(s){ if(L.indexOf(s)<0) L.push(s); }); return L.join("\n"); }
+function addActivity(tid){
+ ensureActs(); var t=null; TEMPLATES.forEach(function(x){ if(x.id===tid) t=x; });
+ var A, solo=state.acts.length===1&&!state.steps.some(function(s){ return s.g==="task"&&s.a===state.acts[0].id; });
+ if(solo){ A=state.acts[0].id; state.acts[0].name=t?actName(t):(state.acts[0].name||"New activity"); } else { A=uid(); state.acts.push({id:A,name:t?actName(t):"New activity"}); }
+ if(t){
+  var tct=CT_TASK[t.id]||[];
+  t.steps.forEach(function(s,i){ var x=mkStep("task",s,tct[i]); x.a=A; state.steps.push(x); });
+  OPEN_STEPS.forEach(function(s,i){ if(t.openIdx && t.openIdx.indexOf(i)<0) return; if(!state.steps.some(function(x){ return x.g==="open"&&x.task===s[0]; })) state.steps.push(mkStep("open",s,CT_OPEN[i])); });
+  CLOSE_STEPS.forEach(function(s,i){ if(!state.steps.some(function(x){ return x.g==="close"&&x.task===s[0]; })) state.steps.push(mkStep("close",s,CT_CLOSE[i])); });
+  (t.hazards||[]).forEach(function(h){ if(!state.register.some(function(x){ return x.id===h; })){ var a=libHaz(h); if(a) state.register.push(mkHaz(a)); } });
+  state.register.sort(function(a,b){ return libIndex(a.id)-libIndex(b.id); });
+  (t.ppe||[]).forEach(function(p){ if(state.ppe.indexOf(p)<0) state.ppe.push(p); }); libSort(state.ppe,PPE_LIB);
+  (t.permits||[]).forEach(function(p){ if(state.permits.indexOf(p)<0) state.permits.push(p); }); libSort(state.permits,PERMIT_LIB);
+  state.res.plant=addLines(state.res.plant,t.plant); state.res.materials=addLines(state.res.materials,t.materials);
+  if(t.scope && String(state.scope||"").indexOf(t.scope)<0) state.scope=(state.scope?state.scope+"\n\n":"")+t.scope;
+ } else { var ns=mkStep("task",["","","",3,3,1,3,""],"A"); ns.a=A; state.steps.push(ns); openCards[ns.id]=true; }
+ if(solo&&t){ var m=state.meta; if(!m.activity||m.activity===state._autoT){ m.activity=t.activity||actName(t); state._autoT=m.activity; } if(!m.taskShort||m.taskShort===state._autoS){ m.taskShort=t.taskShort||actName(t); state._autoS=m.taskShort; } }
+ autoTitles(); renderAll();
+ setTimeout(function(){ var i=document.querySelector('[data-actname="'+A+'"]'); if(i){ try{ i.scrollIntoView({block:"center"}); }catch(x){} if(!t){ i.focus(); i.select(); } } },50);
+}
+var WHO_OPTS=["Personnel","Operative","Public"];
+function mapWho(w){var s=String(w||"").trim();if(!s)return "";var o=[];if(/personnel|supervisor|manager|lead|engineer|director|office|foreman/i.test(s))o.push("Personnel");if(/operative|worker|crew|labour|\ball\b|staff|team|everyone|trade/i.test(s))o.push("Operative");if(/public|visitor|member|client|occupant|other/i.test(s))o.push("Public");return o.length?o.join(", "):s;}
+function whoHtml(st){var cur=String(st.who||"").split(/\s*,\s*/).filter(Boolean);var ex=cur.filter(function(x){return WHO_OPTS.indexOf(x)<0;});
+return '<div class="f"><span>Who</span><div style="display:flex;gap:16px;flex-wrap:wrap;padding:4px 0">'+WHO_OPTS.concat(ex).map(function(o){return '<label style="display:flex;gap:6px;align-items:center;font-size:14px;margin:0"><input type="checkbox" class="whoCb" data-wid="'+st.id+'" value="'+esc(o)+'"'+(cur.indexOf(o)>-1?' checked':'')+'> '+esc(o)+'</label>';}).join("")+'</div><input type="hidden" data-sf="who" data-id="'+st.id+'" value="'+esc(st.who)+'"></div>';}
+document.addEventListener("change",function(e){var t=e.target;if(!t||!t.classList||!t.classList.contains("whoCb"))return;var id=t.getAttribute("data-wid");var v=Array.prototype.filter.call(document.querySelectorAll('.whoCb[data-wid="'+id+'"]'),function(c){return c.checked;}).map(function(c){return c.value;});v.sort(function(a,b){var i=WHO_OPTS.indexOf(a),j=WHO_OPTS.indexOf(b);return (i<0?9:i)-(j<0?9:j);});var h=document.querySelector('input[type="hidden"][data-sf="who"][data-id="'+id+'"]');if(h){h.value=v.join(", ");h.dispatchEvent(new Event("input",{bubbles:true}));}});
+function hzLines(t){return String(t||"").split("\n").map(function(s){return s.trim();}).filter(Boolean);}
+function hzPickHtml(st){var sel=st.hz||[],on={};sel.forEach(function(k){on[k]=1;});
+ var rows=HAZARD_LIB.map(function(h){return h;}).sort(function(a,b){var x=on[a[0]]?0:1,y=on[b[0]]?0:1;return x-y||String(a[1]).localeCompare(String(b[1]));});
+ var nm=function(n){try{return window.cbsHz&&window.cbsHz.nameCell?window.cbsHz.nameCell(n):esc(n);}catch(e){return esc(n);}};
+ return '<div class="f hzPick" data-hpk="'+st.id+'"><span>Hazards for this step'+(sel.length?' ('+sel.length+' selected)':'')+'</span><div class="hint" style="font-size:12px;color:#6b6e70;margin-bottom:4px">Tick the hazards from the hazard register. Their controls fill in below and they are added to section 5.</div>'
+ +'<input type="search" class="hzQ" data-sid="'+st.id+'" placeholder="Search hazards\u2026" style="width:100%;padding:8px 10px;border:1px solid #d9d9d6;border-radius:8px;font-size:14px;box-sizing:border-box">'
+ +'<div class="hzL" style="max-height:210px;overflow:auto;border:1px solid #d9d9d6;border-radius:8px;background:#fff;margin-top:6px">'
+ +rows.map(function(h){var ck=!!on[h[0]];return '<label class="hzR" data-txt="'+esc(String(h[1]).toLowerCase())+'" style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-bottom:1px solid #ececea;font-size:13.5px;cursor:pointer;margin:0;'+(ck?'background:#fff4e0;':'')+'"><input type="checkbox" class="hzCb" data-sid="'+st.id+'" data-hid="'+esc(h[0])+'"'+(ck?' checked':'')+' style="width:18px;height:18px;flex:0 0 auto;margin:0"><span style="flex:1;display:flex;align-items:center;gap:6px">'+nm(h[1])+'</span></label>';}).join("")
+ +'</div></div>';}
+function applyStepHz(st,id,on){var a=libHaz(id);if(!a)return;st.hz=(st.hz||[]).filter(function(k){return k!==id;});
+ var H=hzLines(st.hazards),C=hzLines(st.controls),hl=String(a[1]).trim(),cl=String(a[3]||"").trim();
+ if(on){st.hz.push(id);if(H.indexOf(hl)<0)H.push(hl);if(cl&&C.indexOf(cl)<0)C.push(cl);
+  if(a[4]*a[5]>st.il*st.ic){st.il=a[4];st.ic=a[5];}
+  if(a[6]*a[7]>st.rl*st.rc){st.rl=a[6];st.rc=a[7];}
+  var codes=ct(CT_HAZ[libIndex(id)]);st.ctrl=st.ctrl||[];codes.forEach(function(c){if(st.ctrl.indexOf(c)<0)st.ctrl.push(c);});st.ctrl.sort(function(x,y){return CTRL_ORDER.indexOf(x)-CTRL_ORDER.indexOf(y);});
+  if(!state.register.some(function(x){return x.id===id;})){state.register.push(mkHaz(a));state.register.sort(function(x,y){return libIndex(x.id)-libIndex(y.id);});}}
+ else{H=H.filter(function(s){return s!==hl;});C=C.filter(function(s){return s!==cl;});}
+ st.hazards=H.join("\n");st.controls=C.join("\n");}
+document.addEventListener("change",function(e){var t=e.target;if(!t||!t.classList||!t.classList.contains("hzCb"))return;var st=stepById(t.getAttribute("data-sid"));if(!st)return;
+ var box=t.closest(".hzL"),sc=box?box.scrollTop:0;applyStepHz(st,t.getAttribute("data-hid"),t.checked);openCards[st.id]=true;
+ renderSteps();try{renderHazards();}catch(x){}renderDoc();
+ var nb=document.querySelector('.hzPick[data-hpk="'+st.id+'"] .hzL');if(nb)nb.scrollTop=sc;});
+document.addEventListener("input",function(e){var t=e.target;if(!t||!t.classList||!t.classList.contains("hzQ"))return;var q=String(t.value||"").trim().toLowerCase();var wrap=t.closest(".hzPick");if(!wrap)return;
+ Array.prototype.forEach.call(wrap.querySelectorAll(".hzR"),function(r){var cb=r.querySelector("input");r.style.display=(!q||cb.checked||r.getAttribute("data-txt").indexOf(q)>-1)?"":"none";});});
+function cardHtml(st,idx){ var html="";
+html+='<details class="card" data-card="'+st.id+'"'+(openCards[st.id]?' open':'')+'>'
++'<summary data-sum="'+st.id+'">'+stepSummary(st,idx[st.id])+'</summary><div class="cardBody">'
++'<label class="f"><span>Task step</span><textarea data-sf="task" data-id="'+st.id+'">'+esc(st.task)+'</textarea></label>'
++hzPickHtml(st)+'<label class="f"><span>Hazards</span><textarea data-sf="hazards" data-id="'+st.id+'">'+esc(st.hazards)+'</textarea></label>'
++'<label class="f"><span>Controls</span><textarea data-sf="controls" data-id="'+st.id+'" style="min-height:74px">'+esc(st.controls)+'</textarea></label>'
++rateBox("step",st.id,st)
++whoHtml(st)
++'<div class="cardCtrls"><button class="btn tiny" data-move="'+st.id+'" data-dir="-1">Move up</button>'
++'<button class="btn tiny" data-move="'+st.id+'" data-dir="1">Move down</button>'
++'<button class="btn tiny" data-del="'+st.id+'">Delete</button></div>'
++'</div></details>';
+return html; }
+function renderSteps(){
+sortSteps();
+var idx={}; state.steps.forEach(function(s,i){ idx[s.id]=i+1; });
+["open","close"].forEach(function(g){ var host=$(g==="open"?"#stepsOpen":"#stepsClose"),html=""; state.steps.forEach(function(st){ if(st.g===g) html+=cardHtml(st,idx); }); host.innerHTML=html||'<p class="hint">No steps in this block.</p>'; });
+var th="",multi=state.acts.length>1;
+state.acts.forEach(function(a,ai){ var h=""; state.steps.forEach(function(st){ if(st.g==="task"&&st.a===a.id) h+=cardHtml(st,idx); });
+ th+='<div class="actBlk"><div class="actHd"><span class="actN">Activity '+(ai+1)+'</span><input type="text" data-actname="'+a.id+'" value="'+esc(a.name)+'" placeholder="Activity name, e.g. Tarmac replacement">'+(multi?'<button type="button" class="btn tiny" data-actdel="'+a.id+'">Remove</button>':'')+'</div>'+(h||'<p class="hint">No steps in this activity yet.</p>')+'<button class="btn tiny" data-add="task" data-act="'+a.id+'">+ Add task step</button></div>'; });
+th+='<div class="actAdd"><select id="actTpl"><option value="">Blank activity</option>'+TEMPLATES.map(function(t){ return '<option value="'+esc(t.id)+'">'+esc(t.name)+'</option>'; }).join("")+'</select><button type="button" class="btn tiny" id="actAddBtn">+ Add activity</button></div><p class="hint">Site set-up and close out are shared by every activity.</p>';
+$("#stepsTask").innerHTML=th;
+$("#stepCount").textContent=state.steps.length+" steps"+(multi?" \u00b7 "+state.acts.length+" activities":"");
+}
+document.addEventListener("input",function(e){ var t=e.target; if(!t||!t.getAttribute) return; var id=t.getAttribute("data-actname"); if(!id) return; var a=(state.acts||[]).filter(function(x){ return x.id===id; })[0]; if(!a) return; a.name=t.value; autoTitles(); try{ renderBindings(); }catch(x){} scheduleDoc(); });
+document.addEventListener("click",function(e){ var t=e.target; if(!t||!t.closest) return;
+ var d=t.closest("[data-actdel]"); if(d){ e.preventDefault(); var id=d.getAttribute("data-actdel"); var a=state.acts.filter(function(x){ return x.id===id; })[0]; var n=state.steps.filter(function(s){ return s.g==="task"&&s.a===id; }).length;
+  if(!window.confirm("Remove \u201C"+((a&&a.name)||"this activity")+"\u201D"+(n?" and its "+n+" step"+(n===1?"":"s"):"")+"? Hazards, PPE and permits it added stay in the RAMS.")) return;
+  state.acts=state.acts.filter(function(x){ return x.id!==id; }); state.steps=state.steps.filter(function(s){ return !(s.g==="task"&&s.a===id); }); autoTitles(true); renderAll(); return; }
+ if(t.id==="actAddBtn"){ e.preventDefault(); var sel=document.getElementById("actTpl"); addActivity(sel?sel.value:""); }
+});
+
+var OPENHZ={};document.addEventListener("click",function(e){var b=e.target&&e.target.closest?e.target.closest("[data-hzopen]"):null;if(!b)return;e.preventDefault();var id=b.getAttribute("data-hzopen");OPENHZ[id]=!OPENHZ[id];var box=b.nextElementSibling;if(box)box.style.display=OPENHZ[id]?"":"none";b.textContent=OPENHZ[id]?"Hide details \u25B4":"Edit details \u25BE";});
+function renderHazards(){
+var chosen={}; state.register.forEach(function(h){ chosen[h.id]=h; });
+var list=HAZARD_LIB.map(function(a){ return chosen[a[0]]||mkHaz(a); });
+state.register.forEach(function(h){ if(libIndex(h.id)===999) list.push(h); });
+var html="";
+list.forEach(function(h){
+var on=!!chosen[h.id];
+html+='<div class="hz"><label class="hzhead"><input type="checkbox" data-hz="'+esc(h.id)+'"'+(on?" checked":"")+'> '
++'<span>'+esc(h.name)+'</span>'+(on?'<span class="bds" data-hbd="'+esc(h.id)+'">'+badge(h.il,h.ic)+'\u2192'+badge(h.rl,h.rc)+'</span>':'')+'</label>';
+if(on){
+html+='<button type="button" class="hzt" data-hzopen="'+esc(h.id)+'">'+(OPENHZ[h.id]?"Hide details \u25B4":"Edit details \u25BE")+'</button><div class="hzb" style="'+(OPENHZ[h.id]?"":"display:none")+'">'+'<label class="f"><span>Hazard</span><input type="text" data-hf="name" data-id="'+esc(h.id)+'" value="'+esc(h.name)+'"></label>'
++'<label class="f"><span>Potential harm</span><input type="text" data-hf="harm" data-id="'+esc(h.id)+'" value="'+esc(h.harm)+'"></label>'
++'<label class="f"><span>Controls</span><textarea data-hf="controls" data-id="'+esc(h.id)+'" style="min-height:74px">'+esc(h.controls)+'</textarea></label>'
++rateBox("haz",h.id,h)
++'<label class="f"><span>Who</span><input type="text" data-hf="who" data-id="'+esc(h.id)+'" value="'+esc(h.who)+'"></label>'+'</div>';
+}
+html+='</div>';
+});
+$("#hazardList").innerHTML=html;
+$("#hzCount").textContent=state.register.length+" selected";
+}
+function renderChips(host,lib,chosenArr,attr){
+var chosen={}; chosenArr.forEach(function(p){ chosen[p]=true; });
+$(host).innerHTML=lib.map(function(p){
+var id=Array.isArray(p)?p[0]:p, label=Array.isArray(p)?p[1]:p;
+return '<label class="chip'+(chosen[id]?" on":"")+'"><input type="checkbox" '+attr+'="'+esc(id)+'"'+(chosen[id]?" checked":"")+'>'+esc(label)+'</label>';
+}).join("");
+}
+function renderBindings(){ $all("[data-bind]").forEach(function(el){ el.value=get(el.getAttribute("data-bind")); }); }
+function renderAll(){
+renderBindings(); renderSteps(); renderHazards();
+renderChips("#ppeChips",PPE_LIB,state.ppe,"data-ppe");
+renderChips("#permitChips",PERMIT_LIB,state.permits,"data-pm");
+renderDoc();
+}
+
+/* ============================ EVENTS ============================ */
+var tsel=$("#templateSelect");
+TEMPLATES.forEach(function(t){ var o=document.createElement("option"); o.value=t.id; o.textContent=t.name; tsel.appendChild(o); });
+
+$("#applyTemplate").addEventListener("click",function(){
+if(state.steps.length && !window.confirm("Replace the steps, hazard register, plant, PPE and permits with the \u201C"+tsel.options[tsel.selectedIndex].text+"\u201D template?")) return;
+applyTemplate(tsel.value); openCards={}; renderAll();
+});
+
+document.addEventListener("toggle",function(e){
+var t=e.target; if(t.getAttribute && t.hasAttribute("data-card")) openCards[t.getAttribute("data-card")]=t.open;
+},true);
+
+function refreshBadges(kind,id,obj){
+var a=$('[data-bdg="'+kind+':'+id+':il"]'), b=$('[data-bdg="'+kind+':'+id+':rl"]');
+if(a) a.innerHTML=badge(obj.il,obj.ic); if(b) b.innerHTML=badge(obj.rl,obj.rc);
+var w=$('[data-warn="'+kind+':'+id+'"]'); if(w) w.textContent=rateWarn(obj);
+if(kind==="step"){ var s=$('[data-sum="'+id+'"]'); if(s){ var i=state.steps.indexOf(obj)+1; s.innerHTML=stepSummary(obj,i); } }
+else { var h=$('[data-hbd="'+id+'"]'); if(h) h.innerHTML=badge(obj.il,obj.ic)+'\u2192'+badge(obj.rl,obj.rc); }
+}
+
+document.addEventListener("input",function(e){
+var t=e.target; if(!t.getAttribute) return;
+if(t.hasAttribute("data-bind")){ set(t.getAttribute("data-bind"),t.value); scheduleDoc(); }
+else if(t.hasAttribute("data-sf")){
+var st=stepById(t.getAttribute("data-id")); if(!st) return;
+st[t.getAttribute("data-sf")]=t.value;
+if(t.getAttribute("data-sf")==="task") refreshBadges("step",st.id,st);
+scheduleDoc();
+}
+else if(t.hasAttribute("data-hf")){
+var h=hazById(t.getAttribute("data-id")); if(!h) return;
+h[t.getAttribute("data-hf")]=t.value; scheduleDoc();
+}
+});
+
+document.addEventListener("change",function(e){
+var t=e.target; if(!t.getAttribute) return;
+if(t.hasAttribute("data-rt")){
+var kind=t.getAttribute("data-rt"), id=t.getAttribute("data-id");
+var obj=kind==="step"?stepById(id):hazById(id); if(!obj) return;
+obj[t.getAttribute("data-f")]=+t.value; refreshBadges(kind,id,obj); scheduleDoc();
+}
+if(t.hasAttribute("data-ct")){
+var ck=t.getAttribute("data-ctk"), cid=t.getAttribute("data-id"), code=t.getAttribute("data-ct");
+var o2=ck==="step"?stepById(cid):hazById(cid); if(!o2) return;
+if(!o2.ctrl) o2.ctrl=[];
+if(t.checked){ if(o2.ctrl.indexOf(code)===-1) o2.ctrl.push(code); }
+else o2.ctrl=o2.ctrl.filter(function(x){ return x!==code; });
+o2.ctrl=ctSort(o2.ctrl);
+var lbl=t.parentNode; if(lbl) lbl.className="chip"+(t.checked?" on":"");
+var w2=$('[data-warn="'+ck+':'+cid+'"]'); if(w2) w2.textContent=rateWarn(o2);
+scheduleDoc();
+}
+if(t.hasAttribute("data-hz")){
+var hid=t.getAttribute("data-hz");
+if(t.checked){
+var a=libHaz(hid);
+if(a && !hazById(hid)){ state.register.push(mkHaz(a)); state.register.sort(function(x,y){ return libIndex(x.id)-libIndex(y.id); }); }
+} else state.register=state.register.filter(function(h){ return h.id!==hid; });
+renderHazards(); scheduleDoc();
+}
+if(t.hasAttribute("data-ppe")) toggleIn("ppe",t.getAttribute("data-ppe"),t.checked,"#ppeChips",PPE_LIB,"data-ppe");
+if(t.hasAttribute("data-pm")) toggleIn("permits",t.getAttribute("data-pm"),t.checked,"#permitChips",PERMIT_LIB,"data-pm");
+});
+function toggleIn(key,v,on,host,lib,attr){
+if(on){ if(state[key].indexOf(v)===-1) state[key].push(v); }
+else state[key]=state[key].filter(function(x){ return x!==v; });
+/* keep library order */
+var order=lib.map(function(p){ return Array.isArray(p)?p[0]:p; });
+state[key].sort(function(a,b){ return order.indexOf(a)-order.indexOf(b); });
+renderChips(host,lib,state[key],attr); scheduleDoc();
+}
+
+document.addEventListener("click",function(e){
+var t=e.target; if(!t.getAttribute) return;
+if(t.hasAttribute("data-add")){
+if(t.getAttribute("data-add")==="task"){ ensureActs(); var aid=t.getAttribute("data-act")||state.acts[state.acts.length-1].id; var nt=mkStep("task",["","","",3,3,1,3,""],"A"); nt.a=aid; state.steps.push(nt); openCards[nt.id]=true; renderSteps(); renderDoc(); return; }
+var g=t.getAttribute("data-add"), order={open:0,task:1,close:2}, pos=state.steps.length;
+for(var i=state.steps.length-1;i>=0;i--){ if(order[state.steps[i].g]<=order[g]){ pos=i+1; break; } if(i===0) pos=0; }
+var ns=mkStep(g,["","","",3,3,1,3,""],"A"); state.steps.splice(pos,0,ns); openCards[ns.id]=true;
+renderSteps(); renderDoc();
+}
+if(t.hasAttribute("data-del")){
+var id=t.getAttribute("data-del"), st=stepById(id);
+if(st && (!st.task || window.confirm("Delete this step?"))){ state.steps.splice(state.steps.indexOf(st),1); renderSteps(); renderDoc(); }
+}
+if(t.hasAttribute("data-move")){
+var s2=stepById(t.getAttribute("data-move")), i2=state.steps.indexOf(s2), j=i2+(+t.getAttribute("data-dir"));
+if(j>=0 && j<state.steps.length && state.steps[j].g===s2.g && (s2.g!=="task"||state.steps[j].a===s2.a)){
+state.steps[i2]=state.steps[j]; state.steps[j]=s2; renderSteps(); renderDoc();
+}
+}
+});
+
+$("#addHazard").addEventListener("click",function(){
+var name=window.prompt("Hazard name"); if(!name) return;
+var cid="custom_"+Date.now();try{OPENHZ[cid]=true;}catch(e){}state.register.push({id:cid,name:name,harm:"",controls:"",il:3,ic:3,rl:1,rc:3,who:"Site lead",ctrl:["A"]}); renderHazards(); renderDoc(); if(window.confirm("Add \""+name+"\" to the company hazard register too? The office can fill in the details there.")){try{fetch("/webhook/cbs-admin-save?a=save&t=hazards",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({hazard:name,status:"Active",source:"Added from a RAMS"+(state.meta.site?" for "+state.meta.site:""),rams_key:cid,likelihood:"Possible",consequence:"Moderate",risk_rating:"Medium",residual_likelihood:"Rare",residual_consequence:"Moderate",residual_risk:"Low",owner:"Site lead",ctrl_codes:"A",review_on:new Date().toISOString().slice(0,10)})});}catch(e){}} });
+
+var PHZ=window.CBS_PHZ||{};function plantMsg(m){try{if(typeof status==="function")status(m);}catch(e){}}function plantLines(){return String(state.res.plant||"").split("\n").map(function(s){return s.trim();});}function renderPlant(){var PLANT=window.CBS_PLANT||[];var el=document.getElementById("plantPick");if(!el)return;
+ if(!document.getElementById("plList")){el.innerHTML='<span class="lbl" id="plHead" style="display:block;font-size:12px;font-weight:600;color:#6b6e70">Plant and tools</span><div class="hint" style="font-size:12px;color:#6b6e70">Tick the plant and tools for this job. Each one adds its hazards to section 5.</div><input type="search" id="plQ" placeholder="Search plant and tools\u2026" style="width:100%;margin-top:6px;padding:8px 10px;border:1px solid #d9d9d6;border-radius:8px;font-size:14px;box-sizing:border-box"><div id="plList" style="max-height:300px;overflow:auto;border:1px solid #d9d9d6;border-radius:8px;background:#fff;margin-top:6px"></div>';
+  document.getElementById("plQ").addEventListener("input",function(){window.__plQ=this.value;renderPlant();});}
+ var list=document.getElementById("plList"),head=document.getElementById("plHead");
+ if(!PLANT.length){list.innerHTML='<div style="padding:10px;font-size:12.5px;color:#6b6e70">'+(window.CBS_PLANT_LOADED?'No items in the plant and tools register yet. Add them in the Operations Hub to pick them here.':'Loading the plant and tools register\u2026')+'</div>';return;}
+ var L=plantLines(),q=String(window.__plQ||"").trim().toLowerCase(),g={},seen={};
+ PLANT.forEach(function(p){var c=p.cat||"Other",k=c+"|"+String(p.name).trim().toLowerCase();if(seen[k]){seen[k].n++;if(p.warn&&!seen[k].warn)seen[k].warn=p.warn;return;}var o={id:p.id,name:String(p.name).trim(),cat:c,warn:p.warn||"",n:1};seen[k]=o;(g[c]=g[c]||[]).push(o);});
+ var on=0,h='',sel=[];Object.keys(g).forEach(function(c){g[c].forEach(function(o){if(L.indexOf(o.name)>-1){sel.push(o);on++;}});});
+ function row(o){var ck=L.indexOf(o.name)>-1;return '<label class="plR" style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:1px solid #ececea;font-size:13.5px;cursor:pointer;margin:0;'+(ck?'background:#fff4e0;':'')+'"><input type="checkbox" data-plant="'+o.id+'"'+(ck?" checked":"")+' style="width:18px;height:18px;flex:0 0 auto;margin:0"><span style="flex:1">'+esc(o.name)+(o.n>1?' <span style="color:#6b6e70;font-size:12px">\u00d7'+o.n+' in register</span>':'')+(o.warn?' <span style="color:#b3261e;font-size:12px;font-weight:600">'+esc(o.warn)+'</span>':'')+'</span><span style="color:#6b6e70;font-size:12px">'+esc(o.cat)+'</span></label>';}
+ function hdr(t,sub){return '<div style="position:sticky;top:0;background:#f4f4f2;padding:6px 10px;font-size:12px;font-weight:700;border-bottom:1px solid #e3e3e0;z-index:1">'+esc(t)+(sub?' <span style="font-weight:400;color:#6b6e70">'+esc(sub)+'</span>':'')+'</div>';}
+ if(sel.length&&!q){h+=hdr("Selected ("+sel.length+")");sel.forEach(function(o){h+=row(o);});}
+ Object.keys(g).sort().forEach(function(c){var rows=g[c].filter(function(o){return (q?(o.name+" "+c).toLowerCase().indexOf(q)>-1:L.indexOf(o.name)<0);});if(!rows.length)return;rows.sort(function(a,b){return a.name.localeCompare(b.name);});var hz=(PHZ[c]||[]).map(function(k){var a=libHaz(k);return a?a[1]:"";}).filter(Boolean);h+=hdr(c,hz.length?"adds "+hz.slice(0,3).join(", ")+(hz.length>3?" +"+(hz.length-3)+" more":""):"");rows.forEach(function(o){h+=row(o);});});
+ list.innerHTML=h||'<div style="padding:10px;font-size:12.5px;color:#6b6e70">Nothing matches.</div>';
+ head.textContent="Plant and tools"+(on?" ("+on+" selected)":"");
+ Array.prototype.forEach.call(list.querySelectorAll("[data-plant]"),function(cb){cb.onchange=function(){var p=(window.CBS_PLANT||[]).filter(function(x){return String(x.id)===cb.getAttribute("data-plant");})[0];if(!p)return;var nm=String(p.name).trim();var L=plantLines().filter(Boolean);if(cb.checked){if(L.indexOf(nm)<0)L.push(nm);var added=[];(PHZ[p.cat]||[]).forEach(function(k){if(!state.register.some(function(x){return x.id===k;})){var a=libHaz(k);if(a){state.register.push(mkHaz(a));added.push(a[1]);}}});if(added.length)plantMsg("Added hazards from "+nm+": "+added.join(", ")+".");if(p.warn)window.alert(nm+": "+p.warn+". Sort this out before the job.");}else{L=L.filter(function(s){return s!==nm;});}state.res.plant=L.join("\n");var ta=document.querySelector('[data-bind="res.plant"]');if(ta)ta.value=state.res.plant;renderHazards();renderDoc();};});
+}var _rhzP=renderHazards;renderHazards=function(){_rhzP.apply(this,arguments);try{renderPlant();}catch(e){}};try{renderPlant();}catch(e){}window.__cbsPlantRender=renderPlant;
+$("#newJob").addEventListener("click",function(){
+if(!window.confirm("Start a new blank RAMS? Unsaved changes will be lost.")) return;
+state=blankState(); applyTemplate(tsel.value||"general"); openCards={}; REC_ID=0; REC_PDF=""; try{ history.replaceState(null,"",location.pathname); }catch(e){} recInfo(); renderAll();
+});
+
+$("#zoom").addEventListener("change",function(){ $("#doc").style.zoom=this.value; });
+$("#tabEdit").addEventListener("click",function(){
+document.body.classList.remove("show-preview");
+this.setAttribute("aria-selected","true"); $("#tabPrev").setAttribute("aria-selected","false");
+});
+$("#tabPrev").addEventListener("click",function(){
+document.body.classList.add("show-preview");
+this.setAttribute("aria-selected","true"); $("#tabEdit").setAttribute("aria-selected","false");
+});
+
+/* ============================ EXPORT ============================ */
+function fileBase(){var cl0=function(v){var t=String(v==null?"":v).split("").map(function(c){var k=c.charCodeAt(0);return [47,92,58,42,63,34,60,62,124,10,13,9].indexOf(k)>-1?" ":c;}).join("");return t.split(" ").filter(Boolean).join(" ");};var m0=state.meta;var iso0=function(d){var p=String(d==null?"":d).split("/");return p.length===3&&p[2].length===4?p[2]+"-"+("0"+p[1]).slice(-2)+"-"+("0"+p[0]).slice(-2):String(d==null?"":d);};return [iso0(m0.date),m0.site,m0.jobNo,"RAMS"].map(cl0).filter(Boolean).join(" - ").slice(0,150);
+var m=state.meta, parts=[];
+if(m.ramsNo) parts.push("RAMS "+m.ramsNo);
+if(m.site) parts.push(m.site);
+if(m.taskShort) parts.push(m.taskShort);
+if(!parts.length) parts.push("CBS RAMS");
+return parts.join(" - ").replace(/[\\/:*?"<>|]+/g," ").slice(0,120);
+}
+function loadScript(src){
+return new Promise(function(res,rej){
+var s=document.createElement("script"); s.src=src; s.async=true;
+s.onload=function(){res(true);}; s.onerror=function(){rej(new Error("load failed"));};
+document.head.appendChild(s);
+});
+}
+function ensureLib(g,urls){
+if(window[g]) return Promise.resolve(window[g]);
+var i=0;
+function next(){ if(i>=urls.length) return Promise.resolve(null);
+return loadScript(urls[i++]).then(function(){ return window[g]||next(); },function(){ return next(); }); }
+return next();
+}
+var JSPDF_URLS=["https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js","https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"];
+var H2C_URLS=["https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js","https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"];
+function status(msg){ $("#pdfStatus").textContent=msg||""; }
+
+var dlPromise=null;
+function getDownloads(){
+if(!dlPromise) dlPromise=Promise.resolve(null);
+return dlPromise;
+}
+function offer(filename,data){
+return getDownloads().then(function(dl){
+if(dl && dl.save) return dl.save({filename:filename,data:data});
+var blob=(data instanceof Blob)?data:new Blob([data],{type:"text/html"});
+var url=URL.createObjectURL(blob), a=document.createElement("a");
+a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove();
+setTimeout(function(){ URL.revokeObjectURL(url); },4000);
+return {status:"saved"};
+});
+}
+function makePdf(){
+var docEl=$("#doc"), prevZoom=docEl.style.zoom, wasHidden=!document.body.classList.contains("show-preview");
+document.body.classList.add("show-preview");
+function restore(){ docEl.style.zoom=prevZoom; if(wasHidden) document.body.classList.remove("show-preview"); }
+status("Loading PDF engine\u2026");
+return Promise.all([ensureLib("jspdf",JSPDF_URLS),ensureLib("html2canvas",H2C_URLS)]).then(function(libs){
+var ns=libs[0], h2c=libs[1]; if(!ns||!h2c) throw new Error("libs");
+var jsPDF=ns.jsPDF||ns, pdf=new jsPDF({unit:"mm",format:"a4",orientation:"portrait",compress:true});
+docEl.style.zoom="1";
+var pages=$all("#doc .page"), chain=Promise.resolve();
+pages.forEach(function(p,i){
+chain=chain.then(function(){ status("Rendering page "+(i+1)+" of "+pages.length+"\u2026");
+return h2c(p,{scale:3,backgroundColor:"#ffffff",logging:false,useCORS:true});
+}).then(function(canvas){
+if(i) pdf.addPage();
+pdf.addImage(canvas.toDataURL("image/png"),"PNG",0,0,210,297,undefined,"FAST");
+});
+});
+return chain.then(function(){ restore(); return pdf.output("blob"); });
+})["catch"](function(err){ restore(); throw err; });
+}
+function pdfFail(err){
+if(err && err.code==="declined") status("");
+else if(err && err.message==="libs") status("PDF engine could not load. Check your connection.");
+else status("PDF failed. Try again.");
+}
+$("#pdfBtn").addEventListener("click",function(){
+var btn=this; btn.disabled=true;
+makePdf().then(function(blob){ status("Saving\u2026"); return offer(fileBase()+".pdf",blob); })
+.then(function(){ status("PDF ready."); })["catch"](pdfFail).then(function(){ btn.disabled=false; });
+});
+
+/* ============================ CBS OPERATIONS ============================ */
+var REC_ID=0, REC_PDF="";
+function recInfo(){
+var el=$("#recInfo"); if(!el) return;
+if(!REC_ID){ el.textContent="Not saved yet. Save to Operations Hub stores this RAMS, creates the PDF and files it in SharePoint."; return; }
+el.innerHTML="Saved as RAMS record #"+REC_ID+"."+(REC_PDF?' <a href="'+esc(REC_PDF)+'" target="_blank" rel="noopener">Open PDF</a>':"");
+}
+function blobToB64(blob){
+return new Promise(function(res,rej){ var r=new FileReader();
+r.onload=function(){ res(String(r.result).split(",")[1]||""); }; r.onerror=rej; r.readAsDataURL(blob); });
+}
+function normalise(st){
+var base=blankState();
+st.meta=Object.assign(base.meta,st.meta||{}); st.std=Object.assign(base.std,st.std||{}); st.res=Object.assign(base.res,st.res||{});
+["steps","register","ppe","permits"].forEach(function(k){ if(!st[k]) st[k]=[]; });
+st.steps.forEach(function(x){ x.who=mapWho(x.who); });
+if(!st.acts||!st.acts.length){ st.acts=[{id:uid(),name:st.meta.taskShort||st.meta.activity||"Task"}]; }
+if(st._autoT===undefined){ st._autoT=st.meta.activity; st._autoS=st.meta.taskShort; }
+st.steps.forEach(function(x){ if(!x.ctrl) x.ctrl=["A"]; if(x.g==="task"&&!st.acts.some(function(a){ return a.id===x.a; })) x.a=st.acts[0].id; });
+st.register.forEach(function(x){ if(!x.ctrl) x.ctrl=ct(CT_HAZ[libIndex(x.id)]||"A"); });
+return st;
+}
+$("#saveOps").addEventListener("click",function(){
+var btn=this, m=state.meta;
+if(!m.site && !m.activity){ status("Add the site and task activity before saving."); return; }
+btn.disabled=true;
+if(REC_ID&&window.__cbsNewRev){m.rev=String((parseInt(m.rev,10)||0)+1);m.approvedBy="";}else if(m.rev===""||m.rev==null){m.rev="0";}if(String(m.jobNo||"").trim())m.ramsNo=String(m.jobNo).trim();else if(!m.ramsNo&&window.CBS_NEXT_RAMS)m.ramsNo=String(window.CBS_NEXT_RAMS);try{renderBindings();}catch(e){}
+makePdf().then(function(blob){ status("Uploading\u2026"); return blobToB64(blob); }).then(function(b64){
+var t=null; TEMPLATES.forEach(function(x){ if(x.id===state.templateId) t=x; });
+var body={ id:REC_ID, filename:fileBase()+".pdf", pdf:b64, row:{
+site:m.site||"", activity:m.activity||"", task:(t&&t.name)||m.taskShort||"", revision:m.rev||"0",
+prepared_by:m.preparedBy||"", dated:m.date||"", job_no:m.jobNo||"", status:"Issued", job_json:JSON.stringify(state) } };
+return fetch("/webhook/cbs-rams-save",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+}).then(function(r){ return r.json(); }).then(function(d){
+if(!d || !d.ok) throw new Error("save");
+REC_ID=d.id; REC_PDF=d.pdf_url||"";
+try{ history.replaceState(null,"","?id="+REC_ID); }catch(e){}
+recInfo();
+status(REC_PDF?"Saved to Operations Hub and SharePoint.":"Saved to Operations Hub. The SharePoint upload didn't complete - save again to retry.");
+})["catch"](function(err){
+if(err && (err.message==="libs")) pdfFail(err); else status("Couldn't save. Check your connection and try again.");
+}).then(function(){ btn.disabled=false; });
+});
+function loadRecord(id){
+status("Loading RAMS #"+id+"\u2026");
+return fetch("/webhook/cbs-admin?a=list&t=rams").then(function(r){ return r.json(); }).then(function(rows){
+var row=(rows||[]).filter(function(x){ return Number(x.id)===Number(id); })[0];
+if(!row){ status("RAMS #"+id+" wasn't found."); return; }
+REC_ID=row.id; REC_PDF=row.pdf_url||"";
+if(row.job_json){ try{ state=normalise(JSON.parse(row.job_json)); tsel.value=state.templateId||"general"; openCards={}; renderAll(); }catch(e){ status("That record has no builder data."); return; } }
+recInfo(); status("Loaded RAMS #"+id+".");
+})["catch"](function(){ status("Couldn't load that RAMS."); });
+}
+
+window.__cbsRams={state:function(){return state;},
+ addLib:function(list){var nm={};HAZARD_LIB.forEach(function(h){nm[String(h[1]).toLowerCase()]=1;});list.forEach(function(x){if(libIndex(x.h[0])===999&&!nm[String(x.h[1]).toLowerCase()]){HAZARD_LIB.push(x.h);CT_HAZ.push(x.ct||"A");nm[String(x.h[1]).toLowerCase()]=1;}});renderHazards();},
+ ensureHaz:function(id){var a=libHaz(id);if(a&&!hazById(id)){state.register.push(mkHaz(a));state.register.sort(function(x,y){return libIndex(x.id)-libIndex(y.id);});}},
+ ensurePermit:function(id){if(state.permits.indexOf(id)<0){state.permits.push(id);var od=PERMIT_LIB.map(function(p){return p[0];});state.permits.sort(function(a,c){return od.indexOf(a)-od.indexOf(c);});}},
+ rerender:function(){renderAll();},doc:function(){renderDoc();}};
+/* ============================ BOOT ============================ */
+applyTemplate("general"); tsel.value="general";
+$("#doc").style.zoom="0.85";
+renderAll(); $("#topLogo").src=LOGO_URI; recInfo();
+(function(){ var q=new URLSearchParams(location.search); if(q.get("id")) loadRecord(q.get("id")); })();
+/* ============ TEMPLATES (Operations Hub > Health and safety > Templates > RAMS job types) ============
+   Job type list: the hub's Active job types (A to Z); the built-in list above stays as the fallback if the hub cannot be reached.
+   + Save as new job type: saves what is on screen (description, task steps with ratings and control codes, hazards, plant, PPE,
+     permits, which opening steps are in) as a new job type.
+   ?tpl=<id> / ?tpl=new (from Templates): job type mode. A bar shows the job type's name with Save job type; the RAMS actions
+     (Save to Operations Hub, Download PDF, New) are hidden so a template is never issued as a RAMS. RAMS already saved never change. */
+(function(){
+ var q=new URLSearchParams(location.search),TP=q.get('tpl'),ROWS=[],BUILTIN=TEMPLATES.slice(),BUILTCT={};
+ Object.keys(CT_TASK).forEach(function(k){BUILTCT[k]=CT_TASK[k];});
+ function who(){try{return localStorage.getItem('cbs_name')||'';}catch(e){return '';}}
+ function keyOf(r){return String(r.type_key||('jt'+r.id));}
+ function asTpl(r){var t=null;try{t=JSON.parse(r.tpl||'null');}catch(e){}if(!t||typeof t!=='object')return null;var o=Object.assign({},t,{id:keyOf(r),name:String(r.name||t.name||'Job type')});o.steps=Array.isArray(o.steps)?o.steps:[];o.hazards=Array.isArray(o.hazards)?o.hazards:[];o.ppe=Array.isArray(o.ppe)?o.ppe:[];o.permits=Array.isArray(o.permits)?o.permits:[];return o;}
+ function fillSelect(){var cur=tsel.value;tsel.innerHTML='';TEMPLATES.forEach(function(t){var o=document.createElement('option');o.value=t.id;o.textContent=t.name;tsel.appendChild(o);});if([].some.call(tsel.options,function(o){return o.value===cur;}))tsel.value=cur;}
+ function useRows(rows,extraId){var L=[];rows.forEach(function(r){if(String(r.status||'Active')==='Retired'&&String(r.id)!==String(extraId))return;var t=asTpl(r);if(!t)return;L.push(t);CT_TASK[t.id]=Array.isArray(t.ct)?t.ct:[];});
+  if(!L.length)return false;L.sort(function(a,b){if(a.id==='general')return -1;if(b.id==='general')return 1;return String(a.name).localeCompare(String(b.name));});
+  TEMPLATES.length=0;L.forEach(function(t){TEMPLATES.push(t);});fillSelect();return true;}
+ function load(extraId){return fetch('/webhook/cbs-admin-data?t=ramstypes',{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(d){ROWS=(d&&Array.isArray(d.ramstypes))?d.ramstypes:[];useRows(ROWS,extraId);return ROWS;})['catch'](function(){return ROWS;});}
+ /* what is on screen, as a job type */
+ function current(){var steps=[],ct=[];(state.steps||[]).forEach(function(s){if(s.g!=='task')return;steps.push([s.task||'',s.hazards||'',s.controls||'',+s.il||1,+s.ic||1,+s.rl||1,+s.rc||1,s.who||'']);ct.push((s.ctrl||[]).join(''));});
+  var oi=[];OPEN_STEPS.forEach(function(o,i){if((state.steps||[]).some(function(s){return s.g==='open'&&s.task===o[0];}))oi.push(i);});
+  var t={activity:state.meta.activity||'',taskShort:state.meta.taskShort||'',scope:state.scope||'',plant:(state.res&&state.res.plant)||'',materials:(state.res&&state.res.materials)||'',
+   hazards:(state.register||[]).map(function(h){return h.id;}).filter(function(id){return !!libHaz(id);}),ppe:(state.ppe||[]).slice(),permits:(state.permits||[]).slice(),steps:steps,ct:ct};
+  if(oi.length!==OPEN_STEPS.length)t.openIdx=oi;return t;}
+ function save(id,name,extra){var t=current();t.name=name;var body=Object.assign({name:name,step_count:String(t.steps.length),tpl:JSON.stringify(t),updated_by:who()},extra||{});
+  return fetch('/webhook/cbs-admin-save?a=save&t=ramstypes&id='+(id||0),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw new Error('save');return r.json()['catch'](function(){return {};});});}
+ var css=document.createElement('style');css.textContent='#cbsTplNew{margin-top:6px;margin-left:6px}'
+  +'#cbsTplBar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#fff4ec;border:1px solid #f6c7a3;border-radius:10px;padding:10px 12px;margin:0 0 12px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:13.5px;color:#7a3a0a}'
+  +'#cbsTplBar b{white-space:nowrap}#cbsTplBar input{flex:1 1 220px;min-width:0;height:36px;border:1px solid #c4c6c8;border-radius:8px;padding:0 10px;font:inherit;color:#161616;background:#fff}'
+  +'#cbsTplBar button,#cbsTplBar a{height:36px;padding:0 14px;border-radius:8px;border:1px solid #c4c6c8;background:#fff;font:inherit;font-weight:600;color:#1d1d1d;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}'
+  +'#cbsTplBar button.p{background:#F47920;border-color:#F47920;color:#161616;font-weight:700}#cbsTplBar .msg{flex-basis:100%;font-size:12.5px;color:#5a5d60;min-height:0}'
+  +'html.cbstpl #saveOps,html.cbstpl #pdfBtn,html.cbstpl #newJob,html.cbstpl #newRevBtn,html.cbstpl #cbsMore,html.cbstpl #cbsTplNew,html.cbstpl #cbsSign{display:none!important}';
+ document.head.appendChild(css);
+ if(!TP){
+  /* normal RAMS: hub job types in the list, plus + Save as new job type */
+  load();
+  var ab=document.getElementById('applyTemplate');if(ab){var b=document.createElement('button');b.className='btn tiny';b.id='cbsTplNew';b.type='button';b.textContent='+ Save as new job type';ab.parentNode.insertBefore(b,ab.nextSibling);
+   b.addEventListener('click',function(){var nm=window.prompt('Name for the new job type (it will appear in the Job type list and under Templates in the hub):',state.meta.taskShort||state.meta.activity||'');if(nm==null)return;nm=String(nm).trim();if(!nm){alert('Give the job type a name.');return;}
+    b.disabled=true;b.textContent='Saving\u2026';save(0,nm,{status:'Active',type_key:''}).then(function(){return load();}).then(function(){b.textContent='Saved \u2713';alert('Saved \u201c'+nm+'\u201d as a job type. It is now in the Job type list, and under Health and safety \u203a Templates \u203a RAMS job types.');})
+     ['catch'](function(){alert('Could not save the job type. Check your connection and try again.');b.textContent='+ Save as new job type';})['finally'](function(){b.disabled=false;setTimeout(function(){b.textContent='+ Save as new job type';},2500);});});}
+  return;}
+ /* job type mode */
+ document.documentElement.classList.add('cbstpl');
+ var id=TP==='new'?0:TP,bar=document.createElement('div');bar.id='cbsTplBar';
+ bar.innerHTML='<b>'+(id?'Editing job type':'New job type')+'</b><input type="text" id="cbsTplName" placeholder="Job type name, e.g. Resin floor and plinths" maxlength="120"><button type="button" class="p" id="cbsTplSave">Save job type</button><a href="/webhook/cbs-admin?open=ramstypes">Back to Templates</a><div class="msg" id="cbsTplMsg">'+(id?'Loading the job type\u2026':'Set up the description, steps, hazards, PPE and permits below, then Save job type. You can start from an existing job type with Apply template.')+'</div>';
+ var host=tsel.closest('.panel')||document.querySelector('.panel')||document.body;host.insertBefore(bar,host.firstChild);
+ var nameI=bar.querySelector('#cbsTplName'),msg=bar.querySelector('#cbsTplMsg'),saveB=bar.querySelector('#cbsTplSave');
+ load(id).then(function(rows){if(!id){applyTemplate('general');tsel.value='general';openCards={};renderAll();return;}
+  var r=rows.filter(function(x){return String(x.id)===String(id);})[0],t=r&&asTpl(r);
+  if(!t){msg.textContent='This job type could not be found. It may have been deleted.';saveB.disabled=true;return;}
+  if(!TEMPLATES.some(function(x){return x.id===t.id;})){TEMPLATES.push(t);CT_TASK[t.id]=t.ct||[];fillSelect();}
+  nameI.value=r.name||'';applyTemplate(t.id);tsel.value=t.id;openCards={};renderAll();
+  msg.textContent=(String(r.status)==='Retired'?'This job type is Retired, so it is not offered in new RAMS. ':'')+'Change anything below, then Save job type. RAMS already made from it are not changed.';});
+ saveB.addEventListener('click',function(){var nm=String(nameI.value||'').trim();if(!nm){nameI.focus();msg.textContent='Give the job type a name first.';return;}
+  saveB.disabled=true;saveB.textContent='Saving\u2026';var ex=id?{}:{status:'Active',type_key:''};
+  save(id,nm,ex).then(function(res){var nid=(res&&(res.id||(res.row&&res.row.id)||(res.data&&res.data.id)))||0;msg.textContent='Saved \u2713 '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+'. New RAMS will use this version.';
+   if(!id){if(nid){id=nid;try{history.replaceState(null,'','?tpl='+nid);}catch(e){}bar.querySelector('b').textContent='Editing job type';}else{setTimeout(function(){location.href='/webhook/cbs-admin?open=ramstypes';},900);}}})
+   ['catch'](function(){msg.textContent='Could not save. Check your connection and try again.';})['finally'](function(){saveB.disabled=false;saveB.textContent='Save job type';});});
+})();
+
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(renderDoc);
+
+})();
+</script>
+<script>(function(){var bc=null;try{bc=new BroadcastChannel("cbs-ops");}catch(e){}var _f=window.fetch;window.fetch=function(u,o){var p=_f.apply(this,arguments);if(String(u).indexOf("rams-save")>-1){p.then(function(r){if(r&&r.ok){try{if(bc)bc.postMessage({type:"rams-saved"});}catch(e){}try{localStorage.setItem("cbs-rams-saved",String(Date.now()));}catch(e){}}},function(){});}return p;};var b=document.getElementById("backOps");if(b)b.addEventListener("click",function(e){if(window.opener&&!window.opener.closed){e.preventDefault();try{window.opener.focus();}catch(x){}window.close();}});})();</script><script>(function(){var q=new URLSearchParams(location.search),no=(q.get("job")||"").replace(/[^0-9A-Za-z-]/g,"");if(!no||q.get("id"))return;
+var SEL={"job": ["[data-bind=\"meta.jobNo\"]"], "site": ["[data-bind=\"meta.site\"]"], "client": ["[data-bind=\"meta.client\"]"]};
+function set(sels,v){if(!v)return;(sels||[]).forEach(function(s){var e=document.querySelector(s);if(e&&!String(e.value||"").trim()){e.value=v;e.dispatchEvent(new Event("input",{bubbles:true}));e.dispatchEvent(new Event("change",{bubbles:true}));}});}
+var tries=0;(function wait(){if(!document.querySelector(SEL.job[0])){if(++tries<100)setTimeout(wait,150);return;}
+set(SEL.job,no);
+if(SEL.look){var b=document.querySelector(SEL.look);if(b){setTimeout(function(){b.click();},50);return;}}
+var bar=document.createElement("div");bar.style.cssText="background:#fff4e0;border:1px solid #f0d7a6;color:#5a4a2a;padding:8px 12px;margin:8px 12px;border-radius:8px;font:13px system-ui,sans-serif;position:relative;z-index:40";bar.textContent="Loading job "+no+" from ServiceM8\u2026";var top=document.querySelector(".topbar");if(top&&top.parentNode)top.parentNode.insertBefore(bar,top.nextSibling);else document.body.insertBefore(bar,document.body.firstChild);
+fetch("/webhook/cbs-sm8-job?no="+encodeURIComponent(no)).then(function(r){return r.json();}).then(function(j){if(!j||!j.found){bar.textContent="Job "+no+" wasn't found in ServiceM8. Fill in the details by hand.";return;}
+ set(SEL.site,j.site);set(SEL.client,j.client);bar.textContent="Filled in from ServiceM8 job "+no+(j.client?" ("+j.client+")":"")+". Check the details.";setTimeout(function(){if(bar.parentNode)bar.parentNode.removeChild(bar);},9000);})["catch"](function(){bar.textContent="Couldn't reach ServiceM8. Fill in the details by hand.";});})();})();
+</script><script>window.__CBS_LK={"job":"[data-bind=\"meta.jobNo\"]","fill":[["[data-bind=\"meta.site\"]","site","site address"],["[data-bind=\"meta.client\"]","client","client"]]};(function(){
+var CFG=window.__CBS_LK;if(!CFG)return;
+function q(s){return document.querySelector(s);}
+function msg(el,t,bad){el.textContent=t;el.style.color=bad?"#b3261e":"#5a4a2a";}
+function add(){var inp=q(CFG.job);if(!inp||inp.getAttribute("data-lk"))return;inp.setAttribute("data-lk","1");
+ var wrap=document.createElement("div");wrap.style.cssText="display:flex;gap:6px;align-items:stretch";inp.parentNode.insertBefore(wrap,inp);wrap.appendChild(inp);inp.style.flex="1";inp.style.minWidth="0";
+ var b=document.createElement("button");b.type="button";b.className="btn";b.textContent="Look up";b.style.cssText="flex:0 0 auto;white-space:nowrap;cursor:pointer";wrap.appendChild(b);
+ var m=document.createElement("div");m.style.cssText="font-size:12.5px;margin:4px 0 0;min-height:0";wrap.parentNode.insertBefore(m,wrap.nextSibling);
+ b.onclick=function(){var no=String(inp.value||"").replace(/[^0-9]/g,"");if(!no){msg(m,"Type the job number first.",1);return;}b.disabled=true;b.textContent="\u2026";msg(m,"Looking up job "+no+" in ServiceM8\u2026");
+  fetch("/webhook/cbs-sm8-job?no="+no).then(function(r){return r.json();}).then(function(j){if(!j||!j.found){msg(m,"Job "+no+" wasn't found in ServiceM8.",1);return;}
+   var ch=[];(CFG.fill||[]).forEach(function(f){var e=q(f[0]);if(!e)return;var cur=String(e.value||"").trim(),nv=String(j[f[1]]||"").trim();if(cur!==nv)ch.push({e:e,cur:cur,nv:nv,l:f[2]});});
+   if(!ch.length){msg(m,"Job "+no+" found"+(j.client?" ("+j.client+")":"")+". Nothing needed changing.");return;}
+   if(ch.some(function(c){return c.cur;})&&!confirm("Are you sure you want to replace the job details with ServiceM8 job "+no+"?\n\n"+ch.map(function(c){return c.l.charAt(0).toUpperCase()+c.l.slice(1)+": "+(c.nv||"(blank)");}).join("\n")+"\n\nThe current details will be overwritten.")){msg(m,"Kept the existing details.");return;}
+   ch.forEach(function(c){c.e.value=c.nv;c.e.dispatchEvent(new Event("input",{bubbles:true}));c.e.dispatchEvent(new Event("change",{bubbles:true}));});
+   msg(m,"Filled in from ServiceM8 job "+no+(j.client?" ("+j.client+")":"")+".");})["catch"](function(){msg(m,"Couldn't reach ServiceM8. Try again.",1);}).then(function(){b.disabled=false;b.textContent="Look up";});};}
+add();try{new MutationObserver(add).observe(document.body,{childList:true,subtree:true});}catch(e){setInterval(add,800);};
+})();
+
+(function(){var SG=null;
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");}
+function find(n){n=String(n||"").trim().toLowerCase();if(!n||!SG)return null;return SG.filter(function(x){return String(x.name||"").trim().toLowerCase()===n&&x.image;})[0]||null;}
+function apply(){if(!SG)return;
+ Array.prototype.forEach.call(document.querySelectorAll("tr.sigRow"),function(tr){var k=tr.querySelector("td.k");if(!k||!/^Approved by/.test(k.textContent))return;var td=tr.querySelectorAll("td");if(td.length<3)return;var s=find(td[1].textContent),c=td[2],cur=c.querySelector("img.cbsSig");
+  if(s){if(!cur||cur.getAttribute("data-n")!==s.name)c.innerHTML="<img class='cbsSig' data-n='"+esc(s.name)+"' src='"+s.image+"' style='max-height:34px;max-width:100%;display:block'>";}else if(cur)c.innerHTML="";});
+ var inp=document.querySelector('[data-bind="meta.approvedBy"]');if(inp&&!inp.getAttribute("list")&&SG.length){var dl=document.getElementById("cbsSigNames");if(!dl){dl=document.createElement("datalist");dl.id="cbsSigNames";dl.innerHTML=SG.map(function(x){return "<option value=\""+esc(x.name)+"\">";}).join("");document.body.appendChild(dl);}inp.setAttribute("list","cbsSigNames");}}
+var busy=false;new MutationObserver(function(){if(busy)return;busy=true;try{apply();}finally{busy=false;}}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});
+fetch("/webhook/cbs-admin-data?t=signatures").then(function(r){return r.json();}).then(function(d){SG=(d&&d.signatures)||[];apply();})["catch"](function(){});
+})();
+</script><script>window.__CBS_REV={"save": "#saveOps"};(function(){var C=window.__CBS_REV||{};function add(){var s=document.querySelector(C.save);if(!s||document.getElementById("newRevBtn"))return;var b=document.createElement("button");b.className="btn";b.id="newRevBtn";b.type="button";b.textContent="Save as new revision";s.parentNode.insertBefore(b,s.nextSibling);b.onclick=function(){if(!confirm("This is a revision. Everyone who has signed must sign again, and the document has to go back through approval. Continue?"))return;window.__cbsNewRev=true;try{s.click();}finally{window.__cbsNewRev=false;}};}add();try{new MutationObserver(add).observe(document.body,{childList:true,subtree:true});}catch(e){setInterval(add,800);};})();</script><script id="cbsTidyJs">(function(){function fit(){if(window.innerWidth>1150)return;var s=document.getElementById('zoom');if(!s)return;var z=Math.max(.3,Math.min(1,(window.innerWidth-24)/794));z=Math.round(z*100)/100;var o=s.querySelector('option[data-fit]');if(!o){o=document.createElement('option');o.setAttribute('data-fit','1');s.insertBefore(o,s.firstChild);}o.value=String(z);o.textContent='Fit';if(s.value!==o.value){s.value=o.value;s.dispatchEvent(new Event('change',{bubbles:true}));s.dispatchEvent(new Event('input',{bubbles:true}));}}window.addEventListener('load',function(){setTimeout(fit,600);});window.addEventListener('resize',fit);document.addEventListener('click',function(e){if(e.target&&e.target.id==='tabPrev')setTimeout(fit,120);});})();</script><script>window.__CBS_PV={doc:"rams",label:"RAMS",preview:false,sheet:true};</script><script id="cbsLive">(function(){
+fetch("/webhook/cbs-admin-data?t=assets").then(function(r){return r.json();}).then(function(d){var a=(d&&d.assets)||[];window.CBS_PLANT_LOADED=1;
+ window.CBS_PLANT=a.filter(function(x){return !/retired|disposed|lost|scrapped/i.test(String(x.status||""));}).map(function(x){return {id:x.id,name:x.name,cat:x.category||"Other",warn:/repair|quarantine|out of service|faulty/i.test(String(x.status||""))?String(x.status):""};});
+ try{var el=document.getElementById("plantPick");if(el&&typeof window.__cbsPlantRender==="function")window.__cbsPlantRender();}catch(e){}}).catch(function(){});
+fetch("/webhook/cbs-admin-data?t=rams").then(function(r){return r.json();}).then(function(d){var a=(d&&d.rams)||[],mx=0;
+ a.forEach(function(x){var n=0;try{n=parseInt(JSON.parse(x.job_json||"{}").meta.ramsNo,10)||0;}catch(e){}if(n>mx)mx=n;});
+ var nx=String(Math.max(mx,a.length)+1);while(nx.length<3)nx="0"+nx;window.CBS_NEXT_RAMS=nx;
+ var i=document.querySelector('[data-bind="meta.ramsNo"]');if(i&&!new URLSearchParams(location.search).get("id")&&(!i.value||i.value==="004")){i.value=nx;i.dispatchEvent(new Event("input",{bubbles:true}));}}).catch(function(){});
+})();</script><style id="cbsHospCss">#hospBox{margin:-2px 0 12px}#hospBox .hb{display:flex;gap:8px;flex-wrap:wrap;align-items:center}#hospList{margin-top:8px}#hospList .ho{border:1px solid #d9d9d6;border-radius:8px;padding:9px 11px;margin-bottom:6px;background:#fff;cursor:pointer}#hospList .ho:hover{border-color:#F47920}#hospList .ho b{display:block;font-size:14px}#hospList .ho span{display:block;font-size:12.5px;color:#6b6e70}#hospList .ho a{font-size:12.5px}#hospMsg{font-size:12.5px;color:#5a4a2a;margin-top:6px}</style>
+<script id="cbsHosp">(function(){if(window.__cbsHosp)return;window.__cbsHosp=1;
+function q(s){return document.querySelector(s);}function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");}
+var busy=false,lastSite="";
+function setH(v){var i=q('[data-bind="std.hospital"]');if(!i)return;i.value=v;i.dispatchEvent(new Event("input",{bubbles:true}));}
+function find(auto){var site=String((q('[data-bind="meta.site"]')||{}).value||"").trim(),msg=q("#hospMsg"),list=q("#hospList"),btn=q("#hospBtn");
+ if(!site){if(!auto)msg.textContent="Fill in the site address first (with the postcode if you have it).";return;}
+ if(busy)return;busy=true;lastSite=site;btn.disabled=true;btn.textContent="Searching\u2026";msg.textContent="Finding the nearest A&E departments\u2026";list.innerHTML="";
+ fetch("/webhook/cbs-nearest-hospital?q="+encodeURIComponent(site)).then(function(r){return r.json();}).then(function(d){
+  if(!d||!d.ok){msg.textContent=(d&&d.error)||"Couldn't find hospitals for that address.";return;}
+  var h=d.hospitals||[];if(!h.length){msg.textContent="No A&E departments found nearby. Enter it by hand.";return;}
+  var cur=String((q('[data-bind="std.hospital"]')||{}).value||"").trim();
+  if(auto&&!cur){setH(h[0].text);msg.textContent="Filled in the nearest A&E. Check it's right, or pick another below.";}
+  else msg.textContent="Tap one to use it. Distances are straight-line; check the route before issuing.";
+  list.innerHTML=h.map(function(x,i){return '<div class="ho" data-i="'+i+'"><b>'+esc(x.name)+' \u2013 '+x.miles+' mi</b><span>'+esc(x.address||"")+(x.phone?' \u00b7 '+esc(x.phone):'')+'</span><a href="'+esc(x.maps)+'" target="_blank" rel="noopener">Directions</a></div>';}).join("");
+  Array.prototype.forEach.call(list.querySelectorAll(".ho"),function(el){el.addEventListener("click",function(e){if(e.target.tagName==="A")return;setH(h[+el.getAttribute("data-i")].text);msg.textContent="Nearest hospital updated.";list.innerHTML="";});});
+ })["catch"](function(){msg.textContent="Couldn't reach the hospital lookup. Try again.";}).then(function(){busy=false;btn.disabled=false;btn.textContent="Find nearest A&E";});}
+function add(){var i=q('[data-bind="std.hospital"]');if(!i||q("#hospBox"))return;var lab=i.closest("label");var row=lab&&lab.parentNode;if(!row)return;
+ var box=document.createElement("div");box.id="hospBox";box.innerHTML='<div class="hb"><button type="button" class="btn" id="hospBtn">Find nearest A&amp;E</button></div><div id="hospMsg"></div><div id="hospList"></div>';
+ row.parentNode.insertBefore(box,row.nextSibling);q("#hospBtn").addEventListener("click",function(){find(false);});}
+add();try{new MutationObserver(add).observe(document.body,{childList:true,subtree:true});}catch(e){setInterval(add,800);};
+var tries=0;(function auto(){var s=q('[data-bind="meta.site"]'),h=q('[data-bind="std.hospital"]');
+ if(new URLSearchParams(location.search).get("id"))return;
+ if(s&&h&&String(s.value||"").trim()&&!String(h.value||"").trim()&&q("#hospBtn")){find(true);return;}
+ if(++tries<60)setTimeout(auto,1000);})();
+})();</script><style id="cbsRegCss">#coshhPick{border:1px solid #d9d9d6;border-radius:8px;padding:10px;margin:0 0 10px;background:#fff}#coshhPick .ct{font-size:13px;font-weight:700;margin-bottom:4px}#coshhPick label{display:flex;gap:8px;align-items:flex-start;font-size:14px;margin:5px 0}#coshhPick small{display:block;color:#6b6e70;font-size:12px}#coshhPick .wn{color:#b3261e;font-size:12px;font-weight:600}</style>
+<script id="cbsReg">(function(){if(window.__cbsRegOn)return;window.__cbsRegOn=1;
+var LK=["","rare","unlikely","possible","likely","almost certain"],CN=["","insignificant","minor","moderate","major","catastrophic"];
+function lv(v,arr,d){var s=String(v==null?"":v).trim().toLowerCase();for(var i=1;i<arr.length;i++)if(arr[i]===s)return i;var x=parseInt(s,10);return x>=1&&x<=5?x:d;}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");}
+function ready(f){var t=0;(function w(){if(window.__cbsRams)return f(window.__cbsRams);if(++t<150)setTimeout(w,100);})();}
+ready(function(R){
+ /* company hazard register -> section 5 */
+ fetch("/webhook/cbs-admin-data?t=hazards").then(function(r){return r.json();}).then(function(d){var a=(d&&d.hazards)||[],list=[],P=window.CBS_PHZ||{};
+  a.forEach(function(x){if(!String(x.hazard||"").trim())return;if(/inactive|archiv|closed|retired|removed/i.test(String(x.status||"")))return;var id="reg_"+x.id;
+   list.push({h:[id,String(x.hazard).trim(),String(x.harm||""),String(x.controls||""),lv(x.likelihood,LK,3),lv(x.consequence,CN,3),lv(x.residual_likelihood,LK,1),lv(x.residual_consequence,CN,3),String(x.owner||"Supervisor")],ct:String(x.ctrl_codes||"A").replace(/[^ESIGAP]/g,"")||"A"});
+   String(x.plant_categories||"").split(/[,;|\n]/).map(function(s){return s.trim();}).filter(Boolean).forEach(function(c){(P[c]=P[c]||[]);if(P[c].indexOf(id)<0)P[c].push(id);});});
+  if(list.length)R.addLib(list);})["catch"](function(){});
+ /* CoSHH: picker is cbsRamsCoshh. Keep library data for the PDF and auto-tick the chemicals hazard and COSHH permit. */
+ fetch("/webhook/cbs-coshh-data",{cache:"no-store"}).then(function(r){return r.json();}).then(function(d){var a=(d&&d.items)||[];window.CBS_COSHH={};a.forEach(function(x){window.CBS_COSHH[String(x.id)]=x;});R.doc();})["catch"](function(){});
+ var HADC=false;setInterval(function(){var st=R.state();if(!st||!st.res)return;var has=/^\s*CoSHH:/im.test(String(st.res.materials||""));if(has&&!HADC){R.ensureHaz("chemicals");R.ensurePermit("coshh");R.rerender();}HADC=has;},1200);
+});
+})();</script><style id="cbsCrewCss">.stSel{margin-top:6px;width:100%;font-size:14px;padding:8px;border:1px solid #d9d9d6;border-radius:8px;background:#fff}#crewPick{border:1px solid #d9d9d6;border-radius:8px;padding:10px;margin:0 0 10px;background:#fff}#crewPick .ct{font-size:13px;font-weight:700;margin-bottom:4px}#crewPick label{display:flex;gap:8px;align-items:center;font-size:14px;margin:4px 0}#crewPick small{color:#6b6e70;font-size:12px}#crewPick .cr{display:flex;gap:8px;margin-top:8px}#crewPick .cr input{flex:1;font-size:14px;padding:8px;border:1px solid #d9d9d6;border-radius:8px}.srch{width:100%;font-size:14px;padding:8px 10px;border:1px solid #d9d9d6;border-radius:8px;margin:0 0 8px;background:#fff}</style>
+<script id="cbsCrew">(function(){if(window.__cbsCrewOn)return;window.__cbsCrewOn=1;
+function q(s){return document.querySelector(s);}function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");}
+function setVal(el,v){el.value=v;el.dispatchEvent(new Event("input",{bubbles:true}));el.dispatchEvent(new Event("change",{bubbles:true}));}
+var STAFF=null;
+function role(s){var r=String(s.role||"");return /\{\{/.test(r)?"":r;}
+/* staff dropdowns for single-name fields */
+function addSel(bind,roleBind,mobBind){var inp=q('[data-bind="'+bind+'"]');if(!inp||!STAFF||inp.getAttribute("data-stsel"))return;inp.setAttribute("data-stsel","1");
+ var s=document.createElement("select");s.className="stSel";
+ s.innerHTML='<option value="">Pick from staff\u2026</option>'+STAFF.map(function(x,i){var rl=role(x);return '<option value="'+i+'">'+esc(x.name)+(rl?' \u2013 '+esc(rl):'')+'</option>';}).join("")+'<option value="custom">Custom name (type it above)</option>';
+ s.onchange=function(){var v=s.value;s.value="";if(v==="custom"){setVal(inp,"");inp.focus();return;}if(v!==""){setVal(inp,STAFF[+v].name);var rb=roleBind&&q('[data-bind="'+roleBind+'"]');if(rb&&role(STAFF[+v]))setVal(rb,role(STAFF[+v]));var mb=mobBind&&q('[data-bind="'+mobBind+'"]');if(mb)setVal(mb,String(STAFF[+v].mobile||"").trim());}};
+ inp.parentNode.insertBefore(s,inp.nextSibling);}
+/* workers tick list + custom name */
+var CSIG="";
+function wLines(){var ta=q('[data-bind="res.workers"]');return ta?String(ta.value||"").split("\n").map(function(s){return s.trim();}).filter(Boolean):[];}
+function wSet(L){var ta=q('[data-bind="res.workers"]');if(ta)setVal(ta,L.join("\n"));}
+function crew(){var ta=q('[data-bind="res.workers"]');if(!ta||!STAFF)return;var lab=ta.closest("label");if(!lab)return;
+ lab.style.display="none";
+ var sub=q('[data-bind="res.subcontractors"]');if(sub){var sl=sub.closest("label"),sv=String(sub.value||"").trim();if(sl)sl.style.display=(sv&&!/^n\/?a$/i.test(sv))?"":"none";}
+ var names=STAFF.map(function(x){return x.name;});
+ var box=q("#crewPick");if(!box){box=document.createElement("div");box.id="crewPick";lab.parentNode.insertBefore(box,lab);}
+ var oth=q("#crewOther");if(!oth){var ol=document.createElement("label");ol.className="f";ol.innerHTML='<span>Other workers or subcontractors (one per line)</span><textarea id="crewOther"></textarea>';lab.parentNode.insertBefore(ol,lab);oth=q("#crewOther");
+  oth.addEventListener("input",function(){var keep=wLines().filter(function(n){return names.indexOf(n)>-1;});var o=String(oth.value||"").split("\n").map(function(s){return s.trim();}).filter(Boolean);wSet(keep.concat(o.filter(function(x){return keep.indexOf(x)<0;})));});}
+ var L=wLines(),others=L.filter(function(n){return names.indexOf(n)<0;});
+ if(document.activeElement!==oth){var cur=String(oth.value||"").split("\n").map(function(s){return s.trim();}).filter(Boolean).join("|");if(cur!==others.join("|"))oth.value=others.join("\n");}
+ var sig=L.join("|");if(sig===CSIG&&box.innerHTML)return;CSIG=sig;
+ box.innerHTML='<div class="ct">Workers</div><small>Tick the staff on this job. Add anyone else in the box below.</small>'
+  +STAFF.map(function(x,i){var rl=role(x);return '<label><input type="checkbox" data-crew="'+i+'"'+(L.indexOf(x.name)>-1?" checked":"")+'><span>'+esc(x.name)+(rl?' <small>'+esc(rl)+'</small>':'')+'</span></label>';}).join("");
+ Array.prototype.forEach.call(box.querySelectorAll("[data-crew]"),function(cb){cb.onchange=function(){var n=STAFF[+cb.getAttribute("data-crew")].name,L=wLines().filter(function(x){return x!==n;});if(cb.checked){var st=L.filter(function(x){return names.indexOf(x)>-1;}),ot=L.filter(function(x){return names.indexOf(x)<0;});st.push(n);L=st.concat(ot);}wSet(L);CSIG="";crew();};});}
+/* search boxes */
+function norm(s){return String(s||"").toLowerCase();}
+function hzFilter(){var s=q("#hzSearch"),list=q("#hazardList");if(!s||!list)return;var t=norm(s.value).trim();
+ Array.prototype.forEach.call(list.querySelectorAll(".hz"),function(h){var cb=h.querySelector("[data-hz]"),head=h.querySelector(".hzhead");var show=!t||(cb&&cb.checked)||norm(head?head.textContent:h.textContent).indexOf(t)>-1;h.style.display=show?"":"none";});}
+function plFilter(){var s=q("#plSearch"),el=q("#plantPick");if(!s||!el)return;var t=norm(s.value).trim();var kids=Array.prototype.slice.call(el.children),head=null,group=[],out=[];
+ kids.forEach(function(k){if(k.tagName==="LABEL"&&k.querySelector("[data-plant]"))group.push(k);else if(k.tagName==="DIV"){if(head||group.length)out.push([head,group]);head=k;group=[];}});if(head||group.length)out.push([head,group]);
+ out.forEach(function(p){var hd=p[0],g=p[1],catHit=t&&hd&&norm(hd.textContent).indexOf(t)>-1,any=false;g.forEach(function(l){var cb=l.querySelector("input");var sh=!t||catHit||(cb&&cb.checked)||norm(l.textContent).indexOf(t)>-1;l.style.display=sh?"":"none";if(sh)any=true;});if(hd)hd.style.display=(!t||any)?"":"none";});}
+function searches(){var hl=q("#hazardList");if(hl&&!q("#hzSearch")){var i=document.createElement("input");i.type="search";i.id="hzSearch";i.className="srch";i.placeholder="Search hazards\u2026";hl.parentNode.insertBefore(i,hl);i.addEventListener("input",hzFilter);new MutationObserver(hzFilter).observe(hl,{childList:true});}
+}
+function ramsSync(){var jn=q('[data-bind="meta.jobNo"]'),rn=q('[data-bind="meta.ramsNo"]');if(jn&&rn){var jv=String(jn.value||"").trim();if(jv&&rn.value!==jv)setVal(rn,jv);}
+ var rp=q('[data-bind="meta.responsible"]'),pc=q('[data-bind="meta.pcbuContact"]');if(STAFF&&rp&&pc){var cv=String(pc.value||"").trim();if(!cv||/@|0117 496 0004/.test(cv)){var s=STAFF.filter(function(x){return String(x.name).trim().toLowerCase()===String(rp.value||"").trim().toLowerCase();})[0];if(s&&String(s.mobile||"").trim())setVal(pc,String(s.mobile).trim());}}}
+function tick(){searches();ramsSync();if(STAFF){addSel("meta.preparedBy");addSel("res.supervisor");addSel("meta.approvedBy","meta.approverRole");addSel("meta.responsible",null,"meta.pcbuContact");crew();}}
+fetch("/webhook/cbs-admin-data?t=workers").then(function(r){return r.json();}).then(function(d){STAFF=((d&&d.workers)||[]).filter(function(x){return x&&String(x.name||"").trim()&&!(x.active===false||String(x.active)==="false");}).sort(function(a,b){return String(a.name).localeCompare(String(b.name));});tick();})["catch"](function(){STAFF=null;});
+tick();setInterval(tick,1000);
+})();</script><style id="cbsActsCss">.actBlk{border:1px solid #e3e3e0;border-left:4px solid #F47920;border-radius:8px;padding:8px;margin:0 0 10px;background:#fcfcfb}.actHd{display:flex;gap:8px;align-items:center;margin-bottom:6px}.actHd input{flex:1;min-width:0;font-weight:700;font-size:14px;padding:7px 9px;border:1px solid #d9d9d6;border-radius:6px}.actN{font-size:11px;font-weight:700;text-transform:uppercase;color:#F47920;white-space:nowrap}.actAdd{display:flex;gap:8px;margin:4px 0}.actAdd select{flex:1;min-width:0;padding:7px;border:1px solid #d9d9d6;border-radius:6px;font-size:14px;background:#fff}</style><style id="cbsQualCss">#qualPick{margin:8px 0 10px}#qualPick .qL{max-height:260px;overflow:auto;border:1px solid #d9d9d6;border-radius:8px;background:#fff;margin-top:6px}#qualPick label.qR{display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:1px solid #ececea;font-size:13.5px;cursor:pointer;margin:0}#qualPick label.qR.on{background:#fff4e0}#qualPick label.qR input{width:18px;height:18px;flex:0 0 auto;margin:0}#qualPick .qH{position:sticky;top:0;background:#f4f4f2;padding:6px 10px;font-size:12px;font-weight:700;border-bottom:1px solid #e3e3e0;z-index:1}#qualPick .qS{color:#6b6e70;font-size:12px}#qualPick .qX{font-size:12px;font-weight:600;margin-left:auto;white-space:nowrap}</style>
+<script id="cbsQual">(function(){if(window.__cbsQualOn)return;window.__cbsQualOn=1;
+function q(s){return document.querySelector(s);}function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");}
+var CO=null,TR=null,ALL=false,SIG="";
+function dmy(v){var m=String(v||"").match(/^(\d{4})-(\d{2})-(\d{2})/);return m?m[3]+"/"+m[2]+"/"+m[1]:"";}
+function exp(v){var m=String(v||"").match(/^(\d{4})-(\d{2})-(\d{2})/);if(!m)return {t:"",c:""};var d=(new Date(m[1],m[2]-1,m[3])-new Date())/864e5;if(d<0)return {t:"Expired "+dmy(v),c:"#b3261e"};if(d<=30)return {t:"Expires "+dmy(v),c:"#b26a00"};return {t:"Expires "+dmy(v),c:"#6b6e70"};}
+function people(st){var n=[st.res&&st.res.supervisor].concat(String((st.res&&st.res.workers)||"").split("\n"));return n.map(function(s){return String(s||"").trim().toLowerCase();}).filter(Boolean);}
+function key(t,id){return t+":"+id;}
+function ready(f){var t=0;(function w(){if(window.__cbsRams)return f(window.__cbsRams);if(++t<150)setTimeout(w,100);})();}
+ready(function(R){
+ function items(st){var o=[];(CO||[]).forEach(function(c){var nm=String(c.name==="Other"&&c.other_name?c.other_name:(c.name||c.other_name||"")).trim();if(!nm)return;var e=exp(c.expires_on);o.push({k:key("co",c.id),grp:"Company accreditations",label:nm+(c.level&&String(c.level).trim()?" ("+String(c.level).trim()+")":""),sub:[c.issuer,c.reference].filter(Boolean).join(" \u00b7 "),e:e,pdf:nm+(c.reference?" ("+c.reference+")":"")+(c.expires_on?" \u2013 expires "+dmy(c.expires_on):"")});});
+  var ppl=people(st);(TR||[]).forEach(function(t){var who=String(t.person||"").trim();if(!who)return;if(!ALL&&ppl.indexOf(who.toLowerCase())<0)return;var ql=String(t.qualification==="Other"&&t.qual_other?t.qual_other:(t.qualification||t.qual_other||"")).trim();if(!ql)return;var e=exp(t.expires_on);o.push({k:key("tr",t.id),grp:"People on this RAMS",label:who+" \u2013 "+ql,sub:[t.provider,t.reference].filter(Boolean).join(" \u00b7 "),e:e,pdf:who+": "+ql+(t.expires_on?" (expires "+dmy(t.expires_on)+")":"")});});return o;}
+ function draw(){var box=q("#qualPick");if(!box){var pc=q("#permitChips");if(!pc)return;box=document.createElement("div");box.id="qualPick";pc.parentNode.insertBefore(box,pc.nextSibling);}
+  var st=R.state();if(!st)return;st.quals=st.quals||[];var on={};st.quals.forEach(function(x){on[x.k]=1;});
+  var sig=[CO?CO.length:-1,TR?TR.length:-1,ALL,people(st).join(","),Object.keys(on).sort().join(",")].join("|");if(sig===SIG&&box.innerHTML)return;SIG=sig;
+  if(CO===null||TR===null){box.innerHTML='<div class="qS">Loading accreditations and qualifications\u2026</div>';return;}
+  var it=items(st),h='<span style="display:block;font-size:12px;font-weight:600;color:#6b6e70">Company accreditations and operative qualifications'+(st.quals.length?" ("+st.quals.length+" selected)":"")+'</span><div class="qS">Tick what applies to this job. Qualifications are shown for the supervisor and workers on this RAMS.</div><label style="display:flex;gap:6px;align-items:center;font-size:12.5px;margin:6px 0 0"><input type="checkbox" id="qAll"'+(ALL?" checked":"")+'> Show all staff qualifications</label><div class="qL">';
+  var g={};it.forEach(function(x){(g[x.grp]=g[x.grp]||[]).push(x);});
+  ["Company accreditations","People on this RAMS"].forEach(function(gr){var rows=g[gr]||[];h+='<div class="qH">'+(gr==="People on this RAMS"&&ALL?"Staff qualifications":gr)+'</div>';if(!rows.length){h+='<div class="qS" style="padding:8px 10px">'+(gr==="Company accreditations"?"No accreditations on the register yet.":(TR.length?"No qualifications recorded for the people on this RAMS.":"No qualifications on the training register yet."))+'</div>';return;}
+   rows.forEach(function(x){h+='<label class="qR'+(on[x.k]?" on":"")+'"><input type="checkbox" data-q="'+esc(x.k)+'"'+(on[x.k]?" checked":"")+'><span>'+esc(x.label)+(x.sub?'<br><span class="qS">'+esc(x.sub)+'</span>':'')+'</span>'+(x.e.t?'<span class="qX" style="color:'+x.e.c+'">'+esc(x.e.t)+'</span>':'')+'</label>';});});
+  h+='</div>';box.innerHTML=h;
+  q("#qAll").onchange=function(){ALL=this.checked;SIG="";draw();};
+  Array.prototype.forEach.call(box.querySelectorAll("[data-q]"),function(cb){cb.onchange=function(){var k=cb.getAttribute("data-q"),x=it.filter(function(i){return i.k===k;})[0];var st=R.state();st.quals=(st.quals||[]).filter(function(y){return y.k!==k;});if(cb.checked&&x){if(/^Expired/.test(x.e.t))window.alert(x.label+" has expired. Renew it before relying on it for this job.");st.quals.push({k:k,grp:x.grp==="People on this RAMS"?"p":"co",label:x.pdf});}SIG="";draw();R.doc();};});}
+ fetch("/webhook/cbs-admin-data?t=companycerts").then(function(r){return r.json();}).then(function(d){CO=(d&&d.companycerts)||[];draw();})["catch"](function(){CO=[];draw();});
+ fetch("/webhook/cbs-admin-data?t=training").then(function(r){return r.json();}).then(function(d){TR=(d&&d.training)||[];draw();})["catch"](function(){TR=[];draw();});
+ draw();setInterval(draw,1000);
+});
+})();</script><script src="/webhook/cbs-builder-kit"></script><script id="cbsRamsCoshh">(function(){if(window.__ramsCoshh)return;window.__ramsCoshh=1;
+var ta=document.querySelector('textarea[data-bind="res.materials"]');if(!ta)return;
+var lab=ta.closest('label')||ta;var box=document.createElement('div');box.id='coshhPick';box.style.margin='6px 0 10px';lab.parentNode.insertBefore(box,lab);
+var st=document.createElement('style');st.textContent='#coshhPick .cpL{max-height:230px;overflow:auto;border:1px solid #d9d9d6;border-radius:8px;background:#fff;margin-top:6px}#coshhPick label.cpR{display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:1px solid #ececea;font-size:13.5px;cursor:pointer;margin:0}#coshhPick label.cpR:last-child{border-bottom:0}#coshhPick label.cpR input{width:18px;height:18px;flex:0 0 auto;margin:0}#coshhPick label.cpR.on{background:#fff4e0}#coshhPick label.cpR.off{color:#8a8782;cursor:default}#coshhPick .cpS{color:#6b6e70;font-size:12px;margin-left:auto;white-space:nowrap}#coshhPick input.cpQ{width:100%;margin-top:6px}#cpToast{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:6000;background:#3d4043;color:#fff;padding:10px 16px;border-radius:8px;font-size:14px;display:none}';document.head.appendChild(st);
+var ITEMS=[],Q='',PFX='CoSHH: ',LAST=null;
+function e(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function me(){try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)return m.name;}catch(x){}try{return localStorage.getItem('cbs_name')||'';}catch(x){return '';}}
+function lineFor(r){return PFX+String(r.product||'').trim()+(r.supplier?' ('+String(r.supplier).trim()+')':'');}
+function lines(){return String(ta.value||'').split('\n');}
+function isOn(r){var L=lineFor(r).toLowerCase();return lines().some(function(x){return x.trim().toLowerCase()===L;});}
+function setOn(r,on){var L=lineFor(r);var ls=lines().filter(function(x){return x.trim().toLowerCase()!==L.toLowerCase();});if(on)ls.push(L);
+ ta.value=ls.join('\n').replace(/^\s*\n+/,'').replace(/\n+\s*$/,'');LAST=ta.value;ta.dispatchEvent(new Event('input',{bubbles:true}));}
+function ids(){return ITEMS.filter(function(r){return r.pack_url&&isOn(r);}).map(function(r){return String(r.id);});}
+function draw(){var on=ITEMS.filter(isOn).length;var q=Q.toLowerCase();
+ var rows=ITEMS.filter(function(r){return !q||isOn(r)||(String(r.product||'')+' '+String(r.supplier||'')).toLowerCase().indexOf(q)>-1;}).sort(function(a,b){return (isOn(b)?1:0)-(isOn(a)?1:0)||String(a.product||'').localeCompare(String(b.product||''));});
+ var h='<span class="lbl" style="display:block;font-size:12px;font-weight:600;color:#6b6e70">CoSHH assessments'+(on?' ('+on+' selected)':'')+'</span><div class="hint" style="font-size:12px;color:#6b6e70">Tick the products used on this job. They are listed under materials on the RAMS and added to the job\'s CoSHH when you save.</div>';
+ if(!ITEMS.length){h+='<div class="hint" style="font-size:12px;color:#6b6e70;margin-top:6px">'+(LOADED?'No CoSHH assessments on the register yet.':'Loading the CoSHH register\u2026')+'</div>';box.innerHTML=h;return;}
+ h+='<input type="search" class="cpQ" placeholder="Search products or suppliers" value="'+e(Q)+'"><div class="cpL">'+(rows.length?rows.map(function(r){var ok=!!r.pack_url,c=isOn(r);
+  return '<label class="cpR'+(c?' on':'')+(ok?'':' off')+'"><input type="checkbox" data-cp="'+r.id+'"'+(c?' checked':'')+(ok||c?'':' disabled')+'>'+e(r.product||'Product')+(r.supplier?' <span style="color:#6b6e70">'+e(r.supplier)+'</span>':'')+'<span class="cpS">'+(ok?'':'<a href="/webhook/cbs-coshh-builder?id='+r.id+'" target="_blank" rel="noopener">draft, finish it</a>')+'</span></label>';}).join(''):'<div class="hint" style="padding:8px 10px;font-size:12px;color:#6b6e70">No matches.</div>')+'</div>';
+ var a=document.activeElement&&document.activeElement.classList&&document.activeElement.classList.contains('cpQ'),pos=a?document.activeElement.selectionStart:0;
+ box.innerHTML=h;if(a){var i=box.querySelector('.cpQ');i.focus();try{i.setSelectionRange(pos,pos);}catch(x){}}}
+var LOADED=false;
+box.addEventListener('input',function(ev){if(ev.target.classList.contains('cpQ')){Q=ev.target.value;draw();}});
+box.addEventListener('change',function(ev){var id=ev.target.getAttribute('data-cp');if(!id)return;var r=ITEMS.filter(function(x){return String(x.id)===id;})[0];if(r){setOn(r,ev.target.checked);draw();}});
+ta.addEventListener('input',function(){if(ta.value!==LAST){LAST=ta.value;draw();}});
+setInterval(function(){if(ta.value!==LAST){LAST=ta.value;draw();}},1500);
+fetch('/webhook/cbs-coshh-data',{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){ITEMS=(d&&d.items)||[];LOADED=true;LAST=ta.value;draw();})['catch'](function(){LOADED=true;box.innerHTML='<div class="hint" style="font-size:12px;color:#b3261e">Could not load the CoSHH register. Refresh to try again.</div>';});
+draw();
+function toast(t){var x=document.getElementById('cpToast');if(!x){x=document.createElement('div');x.id='cpToast';document.body.appendChild(x);}x.textContent=t;x.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(function(){x.style.display='none';},5000);}
+var of=window.fetch;window.fetch=function(u,o){var p=of.apply(this,arguments);try{var url=String(u&&u.url||u),m=String(o&&o.method||'GET').toUpperCase();
+ if(m==='POST'&&/\/webhook\/cbs-rams-save(\?|$)/.test(url)){p.then(function(r){if(!r.ok)return;var jb=document.querySelector('[data-bind="meta.jobNo"]');var job=String(jb&&jb.value||'').replace(/[^0-9A-Za-z-]/g,'');var I=ids();if(!job||!I.length)return;
+  of('/webhook/cbs-coshh-job',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'add',job_no:job,ids:I,by:me()})}).then(function(x){return x.json();}).then(function(d){if(d&&d.ok)toast(d.note?'CoSHH packs already on job '+job+'.':I.length+' CoSHH pack'+(I.length===1?'':'s')+' added to job '+job+'.');})['catch'](function(){toast('RAMS saved, but the CoSHH packs could not be added to the job. Add them from the job file.');});},function(){});}}catch(x){}return p;};
+})();
+</script><script id="cbsDelGuard">(function(){
+if(window.__cbsDelGuard)return;window.__cbsDelGuard=1;
+var ok=false,SEL='#delBtn,.std-del,button[data-hub],button[data-rm]';
+var css=document.createElement('style');
+css.textContent='#delModal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:99999;padding:16px}#delModal .bx{background:#fff;border-radius:14px;max-width:380px;width:100%;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.3);font-family:inherit;text-align:left}#delModal h3{margin:0 0 8px;font-size:19px;color:#000}#delModal p{margin:0 0 6px;color:#333;font-size:15px}#delModal .what{font-weight:700;color:#000;margin:10px 0 4px;word-break:break-word}#delModal .row2{display:flex;gap:10px;margin-top:18px}#delModal button{flex:1;padding:12px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer}#delModal .cx{background:#F47920;color:#fff;border:0}#delModal .yes{background:#fff;color:#b3261e;border:2px solid #b3261e}';
+document.head.appendChild(css);
+function tgt(e){var t=e.target;if(!t||!t.closest)return null;var b=t.closest(SEL);if(!b||b.tagName!=='BUTTON'||b.disabled)return null;if(b.hasAttribute('data-hub')&&!/^delete/i.test((b.textContent||'').trim()))return null;return b;}
+function clean(el){if(!el)return '';var c=el.cloneNode(true);Array.prototype.forEach.call(c.querySelectorAll('button,a,input,select,textarea,script,style'),function(x){x.parentNode.removeChild(x);});return (c.textContent||'').replace(/\s+/g,' ').trim();}
+function what(b){var s='';if(b.hasAttribute('data-rm')){var p=b.parentElement;for(var i=0;i<4&&p&&!s;i++){s=clean(p);p=p.parentElement;}}
+ if(!s){var po=document.getElementById('po_no');s=po&&po.value?po.value:'';}
+ if(!s)s=clean(document.querySelector('h1,h2,h3'))||document.title||'this record';return s.slice(0,160);}
+function note(rm){var p=location.pathname;if(/cbs-coshh/.test(p))return 'It stays on the CoSHH register.';if(/cbs-pci/.test(p))return 'The file stays in SharePoint.';return rm?'':'Any PDF already saved stays in SharePoint.';}
+function ask(b){var rm=/^remove/i.test((b.textContent||'').trim());
+ var m=document.createElement('div');m.id='delModal';
+ m.innerHTML='<div class="bx" role="dialog" aria-modal="true"><h3>Are you sure?</h3><p>'+(rm?'This will remove it from the job:':'This will permanently delete:')+'</p><div class="what"></div><p class="xtra"></p>'+(rm?'':'<p>It cannot be undone.</p>')+'<div class="row2"><button class="cx" type="button">Cancel</button><button class="yes" type="button">Yes, '+(rm?'remove':'delete')+'</button></div></div>';
+ m.querySelector('.what').textContent=what(b);var n=note(rm);if(n)m.querySelector('.xtra').textContent=n;
+ document.body.appendChild(m);var cx=m.querySelector('.cx'),yes=m.querySelector('.yes');cx.focus();
+ function close(){if(m.parentNode)m.parentNode.removeChild(m);document.removeEventListener('keydown',key,true);}
+ function key(e){if(e.key==='Escape'){e.preventDefault();close();}}
+ document.addEventListener('keydown',key,true);
+ cx.onclick=close;m.onclick=function(e){if(e.target===m)close();};
+ yes.onclick=function(){close();ok=true;try{b.click();}finally{ok=false;}};}
+document.addEventListener('click',function(e){if(ok)return;var b=tgt(e);if(!b)return;e.preventDefault();e.stopImmediatePropagation();ask(b);},true);
+var _c=window.confirm;window.confirm=function(){if(ok)return true;return _c.apply(window,arguments);};
+})();</script><script id="cbsJfScr">(function(){
+var a=document.getElementById("cbsJf");if(!a)return;var hub=a.previousElementSibling;
+var GEN={"10871":1,"10885":1};
+function clean(v){return String(v||"").replace(/[^0-9A-Za-z-]/g,"");}
+function fromInputs(){var els=document.querySelectorAll("input,select");for(var i=0;i<els.length;i++){var el=els[i];if(el.type==="hidden"||el.type==="checkbox")continue;
+ var k=[el.id,el.name,el.getAttribute("data-k"),el.getAttribute("data-bind")].join(" ").toLowerCase();
+ if(!/(^|[\s._-])(job|jobno|job_no|sm8_job)($|[\s._-])/.test(k)&&!/jobno|job_no|sm8_job/.test(k))continue;
+ var m=String(el.value||"").match(/\b\d{3,}\b/);if(m)return m[0];}return "";}
+function fromQuery(){var m=location.search.match(/[?&]job=([^&#]+)/);if(!m)return "";try{return clean(decodeURIComponent(m[1]));}catch(e){return clean(m[1]);}}
+function fromLinks(){var l=document.querySelectorAll("a[href*='job=']");for(var i=0;i<l.length;i++){if(l[i]===a)continue;var h=l[i].getAttribute("href")||"";if(!/cbs-(job-file|permit|visit|pci)\?/.test(h))continue;var m=h.match(/[?&]job=([0-9A-Za-z-]+)/);if(m)return m[1];}return "";}
+function upd(){var j=fromInputs()||fromQuery()||fromLinks();var n=(j.match(/\d{3,}/)||[""])[0];
+ var hidden=hub&&hub.style&&hub.style.display==="none";
+ if(!n||GEN[n]||hidden){a.style.display="none";return;}
+ var href="/webhook/cbs-job-file?job="+encodeURIComponent(j);if(a.getAttribute("href")!==href){a.setAttribute("href",href);a.title="Open the Job File for job "+j;}a.style.display="";}
+upd();setInterval(upd,1500);document.addEventListener("input",upd,true);document.addEventListener("change",upd,true);
+})();
+</script><script id="cbsItemPrefill">(function(){/* ITEM PREFILL (keep): opened from a task's item row (New RAMS on an item), ?activity= fills the task activity and page header so the saved RAMS matches its item. */
+var q=new URLSearchParams(location.search),a=(q.get("activity")||"").trim();if(!a||q.get("id"))return;
+function setv(sel){var e=document.querySelector(sel);if(!e)return false;e.value=a;e.dispatchEvent(new Event("input",{bubbles:true}));e.dispatchEvent(new Event("change",{bubbles:true}));return true;}
+var n=0;function go(){var ok=setv('[data-bind="meta.activity"]')&&setv('[data-bind="meta.taskShort"]');if(!ok&&++n<40)setTimeout(go,250);}
+setTimeout(go,400);setTimeout(function(){var e=document.querySelector('[data-bind="meta.taskShort"]');if(e&&!String(e.value||"").trim())go();},2500);})();
+</script></body>
+</html>

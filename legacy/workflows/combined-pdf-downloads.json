@@ -1,0 +1,218 @@
+{
+  "id": "DsuyE7HOOJcluMFp",
+  "name": "CBS - Combined PDF Downloads",
+  "active": true,
+  "isArchived": false,
+  "versionId": "a5d14c06-9a22-4e39-bb03-4433f05d1764",
+  "activeVersionId": "a5d14c06-9a22-4e39-bb03-4433f05d1764",
+  "triggerCount": 1,
+  "createdAt": "2026-10-10T19:15:28.952Z",
+  "updatedAt": "2026-10-10T19:20:00.286Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "UI Hook": {
+      "main": [
+        [
+          {
+            "node": "Combined PDF Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combined PDF Script": {
+      "main": [
+        [
+          {
+            "node": "Send Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "bdd6d77e-ca99-42ff-870e-a88935214d77",
+      "name": "UI Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-dlpdf",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "ba062012-8caa-4ba4-9e73-34e124f00f7c"
+    },
+    {
+      "id": "4eb01bf4-c68e-4b8c-9cd2-82235e0ff204",
+      "name": "Combined PDF Script",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* Serves the \"one combined PDF\" option for every download pop-up (forms posted to cbs-docs-zip) and site file / close-out pack links. Loaded by cbs-guard. */\nreturn [{json:{js:'(function(){var f='+cbsDlPdf.toString()+';if(document.readyState===\"loading\")document.addEventListener(\"DOMContentLoaded\",f);else f();})();'}}];\nfunction cbsDlPdf(){\n if(window.__cbsDlPdf)return;window.__cbsDlPdf=1;\n var LIB='https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js',libP=null;\n function s(v){return v==null?'':String(v);}\n function e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\n function lib(){if(window.PDFLib)return Promise.resolve(window.PDFLib);if(libP)return libP;libP=new Promise(function(ok,no){var sc=document.createElement('script');sc.src=LIB;sc.onload=function(){window.PDFLib?ok(window.PDFLib):no();};sc.onerror=no;document.head.appendChild(sc);});return libP;}\n var css=document.createElement('style');css.textContent='.mpov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:40px 12px;z-index:10050;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif}.mpdl{background:#fff;border-radius:14px;max-width:440px;width:100%;padding:16px;color:#161616}.mpdl h2{margin:0 0 6px;font-size:18px}.mpdl .m{color:#555;font-size:14px}.mpdl .b{display:flex;flex-direction:column;gap:8px;margin-top:14px}.mpdl button{font:inherit;font-size:15px;font-weight:600;border-radius:8px;padding:10px 14px;cursor:pointer;border:1px solid #d9d9d6;background:#fff;color:#1d1d1d;text-align:left}.mpdl button.p{background:#F47920;border-color:#F47920;color:#fff}.mpdl button small{display:block;font-weight:400;font-size:12.5px;opacity:.85}.mpbar{height:8px;background:#ececea;border-radius:6px;overflow:hidden;margin-top:12px}.mpbar i{display:block;height:100%;width:0;background:#F47920;transition:width .2s}';(document.head||document.documentElement).appendChild(css);\n function box(h){var o=document.createElement('div');o.className='mpov';o.innerHTML='<div class=\"mpdl\">'+h+'</div>';document.body.appendChild(o);return o;}\n function choose(n,label){return new Promise(function(res){var o=box('<h2>'+e(label||'Download')+'</h2><div class=\"m\">'+n+' document'+(n===1?'':'s')+'. How would you like them?</div><div class=\"b\"><button class=\"p\" data-c=\"pdf\">One combined PDF<small>All the PDFs and photos in one file, with a contents page</small></button><button data-c=\"zip\">Zip of separate files<small>Each document as its own file, in folders</small></button><button data-c=\"x\">Cancel</button></div>');\n  o.addEventListener('click',function(ev){var b=ev.target.closest('[data-c]');if(ev.target===o){o.remove();res('x');return;}if(!b)return;o.remove();res(b.getAttribute('data-c'));});});}\n function prog(label){var o=box('<h2>Building the PDF</h2><div class=\"m\" id=\"mpm\">Starting\\u2026</div><div class=\"mpbar\"><i id=\"mpb\"></i></div>');return {o:o,set:function(t,p){o.querySelector('#mpm').textContent=t;if(p!=null)o.querySelector('#mpb').style.width=Math.round(p*100)+'%';},close:function(){o.remove();}};}\n function getBytes(u){var url=/sharepoint\\.com/i.test(u)?'/webhook/cbs-file?u='+encodeURIComponent(u):u;return fetch(url,{credentials:'same-origin'}).then(function(r){if(!r.ok)throw 0;var ct=r.headers.get('content-type')||'';return r.arrayBuffer().then(function(b){return {b:b,ct:ct};});});}\n function kind(name,ct,b){var h=new Uint8Array(b.slice(0,4));if(h[0]===0x25&&h[1]===0x50&&h[2]===0x44&&h[3]===0x46)return 'pdf';if(h[0]===0xFF&&h[1]===0xD8)return 'jpg';if(h[0]===0x89&&h[1]===0x50)return 'png';if(/image\\/(heic|webp|gif)/i.test(ct)||/\\.(heic|webp|gif)$/i.test(name))return 'img';return '';}\n function toJpg(b){return new Promise(function(ok,no){var u=URL.createObjectURL(new Blob([b])),im=new Image();im.onload=function(){var c=document.createElement('canvas'),sc=Math.min(1,2000/Math.max(im.width,im.height));c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);var g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(function(bl){bl.arrayBuffer().then(ok,no);},'image/jpeg',0.85);};im.onerror=function(){URL.revokeObjectURL(u);no();};im.src=u;});}\n function safe(t){return s(t).replace(/[^\\x20-\\x7E\\u00a3]/g,function(c){return c==='\\u2013'||c==='\\u2014'?'-':(c==='\\u2019'?\"'\":'');});}\n function merge(label,files,gen){var P=prog(label);\n  return lib().then(function(L){var out,font,bold,A4=[595.28,841.89],toc=[],skipped=[];\n   return L.PDFDocument.create().then(function(d){out=d;return out.embedFont(L.StandardFonts.Helvetica);}).then(function(f){font=f;return out.embedFont(L.StandardFonts.HelveticaBold);}).then(function(f){bold=f;\n    var tocPage=out.addPage(A4);\n    function textPages(title,lines){var pg=out.addPage(A4),y=800;pg.drawText(safe(title),{x:42,y:y,size:15,font:bold});y-=24;(lines||[]).forEach(function(l){var t=safe(typeof l==='string'?l:(l&&l.t)),sz=(l&&l.s)||10,b=l&&l.b,maxc=Math.floor(510/(sz*0.5));while(t.length){var part=t.length>maxc?t.slice(0,t.lastIndexOf(' ',maxc)>10?t.lastIndexOf(' ',maxc):maxc):t;t=t.slice(part.length).trim();if(y<50){pg=out.addPage(A4);y=800;}pg.drawText(part,{x:42+((l&&l.i)||0),y:y,size:sz,font:b?bold:font});y-=sz*1.4;}});}\n    var seq=Promise.resolve(),i=0,N=files.length;\n    (gen||[]).forEach(function(g){toc.push({n:s(g.n),f:s(g.f),p:out.getPageCount()+1});textPages(g.n,g.lines);});\n    files.forEach(function(fx){seq=seq.then(function(){i++;P.set('Adding '+i+' of '+N+': '+s(fx.n),i/(N+1));\n     if(!fx.u){skipped.push(fx);return;}\n     return getBytes(fx.u).then(function(r){var k=kind(s(fx.n),r.ct,r.b),start=out.getPageCount()+1;\n      if(k==='pdf')return L.PDFDocument.load(r.b,{ignoreEncryption:true}).then(function(src){return out.copyPages(src,src.getPageIndices());}).then(function(pages){pages.forEach(function(p){out.addPage(p);});toc.push({n:s(fx.n),f:s(fx.f),p:start});});\n      var jp=k==='jpg'?Promise.resolve(r.b):(k==='png'||k==='img'?toJpg(r.b):null);if(!jp){skipped.push(fx);return;}\n      return jp.then(function(b){return out.embedJpg(b);}).then(function(img){var pg=out.addPage(A4),m=36,sc=Math.min((A4[0]-2*m)/img.width,(A4[1]-2*m-20)/img.height,1),w=img.width*sc,h=img.height*sc;pg.drawImage(img,{x:(A4[0]-w)/2,y:A4[1]-m-20-h,width:w,height:h});pg.drawText(safe(fx.n).slice(0,90),{x:m,y:A4[1]-m,size:10,font:bold});toc.push({n:s(fx.n),f:s(fx.f),p:start});});\n     }).catch(function(){skipped.push(fx);});});});\n    return seq.then(function(){P.set('Finishing\\u2026',0.97);\n     var y=800,pg=tocPage;pg.drawText(safe(label||'Documents'),{x:42,y:y,size:17,font:bold});y-=18;pg.drawText('Chelmsford Building Services Ltd  |  '+new Date().toLocaleDateString('en-GB')+'  |  '+toc.length+' document'+(toc.length===1?'':'s'),{x:42,y:y,size:9,font:font,color:L.rgb(.4,.4,.4)});y-=26;\n     var lastF=null;toc.forEach(function(t){if(y<60){pg=out.insertPage(out.getPages().indexOf(pg)+1,A4);y=800;}if(t.f&&t.f!==lastF){lastF=t.f;y-=4;pg.drawText(safe(t.f).slice(0,90),{x:42,y:y,size:10.5,font:bold});y-=15;}pg.drawText(safe(t.n).slice(0,88),{x:t.f?54:42,y:y,size:9.5,font:font});pg.drawText('page '+t.p,{x:500,y:y,size:9.5,font:font});y-=13;});\n     if(skipped.length){y-=10;if(y<80){pg=out.insertPage(out.getPages().indexOf(pg)+1,A4);y=800;}pg.drawText('Not included (not a PDF or photo, or could not be opened) - these are in the zip download:',{x:42,y:y,size:9.5,font:bold});y-=14;skipped.forEach(function(x){if(y<50){pg=out.insertPage(out.getPages().indexOf(pg)+1,A4);y=800;}pg.drawText(safe(x.n).slice(0,95),{x:54,y:y,size:9,font:font});y-=12;});}\n     var n=out.getPageCount();out.getPages().forEach(function(p,k){var sz=p.getSize();p.drawText('Page '+(k+1)+' of '+n,{x:sz.width-90,y:16,size:7.5,font:font,color:L.rgb(.45,.45,.45)});});\n     return out.save();}).then(function(bytes){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}));a.download=safe(label||'Documents').replace(/[\\\\\\/:*?\"<>|]+/g,' ')+'.pdf';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},4000);P.close();\n      if(skipped.length)setTimeout(function(){alert(skipped.length+' document'+(skipped.length===1?' was':'s were')+' left out of the PDF (not a PDF or photo). They are listed on the contents page and are in the zip download.');},300);});});\n  }).catch(function(){P.close();alert('Could not build the combined PDF. Try the zip download instead.');});}\n window.cbsPackChoice=function(href,label){var u=new URL(href,location.href),job=u.searchParams.get('job'),fs=(u.searchParams.get('f')||'').split(',').filter(Boolean).map(Number);choose('the',label||'Site file').then(function(c){if(c==='zip'){location.href=href;return;}if(c==='pdf')packPdf(job,fs);});};\n /* forms posted to cbs-docs-zip (every pick-and-download pop-up) */\n var sub=HTMLFormElement.prototype.submit;\n HTMLFormElement.prototype.submit=function(){var f=this;if(f.__mpok||!/\\/webhook\\/cbs-docs-zip/.test(f.action||'')){return sub.call(f);}\n  var inp=f.querySelector('input[name=d]'),d=null;try{d=JSON.parse(inp.value);}catch(x){}\n  var files=(d&&d.files||[]).filter(function(x){return x&&x.u;}),n=files.length+((d&&d.gen)||[]).length;\n  if(n<2){f.__mpok=1;return sub.call(f);}\n  choose(n,d.label).then(function(c){if(c==='zip'){f.__mpok=1;sub.call(f);}else if(c==='pdf')merge(d.label||'Documents',files,d.gen||[]);f.remove&&setTimeout(function(){try{f.remove();}catch(x){}},2000);});};\n /* site file / close-out pack links (cbs-cdm?...&a=pack) */\n document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a[href*=\"cbs-cdm?\"]');if(!a||a.id==='dl'||a.__mpok||!/[?&]a=pack/.test(a.getAttribute('href')))return;\n  ev.preventDefault();ev.stopImmediatePropagation();var href=a.getAttribute('href'),u=new URL(href,location.href),job=u.searchParams.get('job'),fs=(u.searchParams.get('f')||'').split(',').filter(Boolean).map(Number);\n  choose('the',a.textContent.trim()||'Site file').then(function(c){if(c==='zip'){a.__mpok=1;a.click();setTimeout(function(){a.__mpok=0;},500);return;}if(c==='pdf')packPdf(job,fs);});},true);\n function packPdf(job,fs){\n   fetch('/webhook/cbs-cdm?job='+encodeURIComponent(job),{cache:'no-store'}).then(function(r){return r.json();}).then(function(st){var files=[];(st.sections||[]).forEach(function(sec){if(fs.length&&fs.indexOf(sec.no)<0)return;(sec.items||[]).forEach(function(it){if(it.url&&/sharepoint\\.com/i.test(it.url))files.push({u:it.url,n:it.title,f:sec.folder});else if(it.gen)files.push({u:'',n:it.title+' (generated - zip only)',f:sec.folder});});});\n    if(!files.filter(function(x){return x.u;}).length){alert('There are no stored documents to put in a PDF. The generated summaries are in the zip download.');return;}\n    merge('Job '+job+' - '+(fs.length===1&&fs[0]===13?'Close-out pack':'Site file'),files,[]);}).catch(function(){alert('Could not load the document list. Try the zip download.');});}\n}\n"
+      }
+    },
+    {
+      "id": "67db3e5a-a886-415d-9c4e-e82c73b87c6e",
+      "name": "Send Script",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.js }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/javascript; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-cache"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "bdd6d77e-ca99-42ff-870e-a88935214d77",
+        "name": "UI Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-dlpdf",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "ba062012-8caa-4ba4-9e73-34e124f00f7c"
+      },
+      {
+        "id": "4eb01bf4-c68e-4b8c-9cd2-82235e0ff204",
+        "name": "Combined PDF Script",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* Serves the \"one combined PDF\" option for every download pop-up (forms posted to cbs-docs-zip) and site file / close-out pack links. Loaded by cbs-guard. */\nreturn [{json:{js:'(function(){var f='+cbsDlPdf.toString()+';if(document.readyState===\"loading\")document.addEventListener(\"DOMContentLoaded\",f);else f();})();'}}];\nfunction cbsDlPdf(){\n if(window.__cbsDlPdf)return;window.__cbsDlPdf=1;\n var LIB='https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js',libP=null;\n function s(v){return v==null?'':String(v);}\n function e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\n function lib(){if(window.PDFLib)return Promise.resolve(window.PDFLib);if(libP)return libP;libP=new Promise(function(ok,no){var sc=document.createElement('script');sc.src=LIB;sc.onload=function(){window.PDFLib?ok(window.PDFLib):no();};sc.onerror=no;document.head.appendChild(sc);});return libP;}\n var css=document.createElement('style');css.textContent='.mpov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:40px 12px;z-index:10050;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif}.mpdl{background:#fff;border-radius:14px;max-width:440px;width:100%;padding:16px;color:#161616}.mpdl h2{margin:0 0 6px;font-size:18px}.mpdl .m{color:#555;font-size:14px}.mpdl .b{display:flex;flex-direction:column;gap:8px;margin-top:14px}.mpdl button{font:inherit;font-size:15px;font-weight:600;border-radius:8px;padding:10px 14px;cursor:pointer;border:1px solid #d9d9d6;background:#fff;color:#1d1d1d;text-align:left}.mpdl button.p{background:#F47920;border-color:#F47920;color:#fff}.mpdl button small{display:block;font-weight:400;font-size:12.5px;opacity:.85}.mpbar{height:8px;background:#ececea;border-radius:6px;overflow:hidden;margin-top:12px}.mpbar i{display:block;height:100%;width:0;background:#F47920;transition:width .2s}';(document.head||document.documentElement).appendChild(css);\n function box(h){var o=document.createElement('div');o.className='mpov';o.innerHTML='<div class=\"mpdl\">'+h+'</div>';document.body.appendChild(o);return o;}\n function choose(n,label){return new Promise(function(res){var o=box('<h2>'+e(label||'Download')+'</h2><div class=\"m\">'+n+' document'+(n===1?'':'s')+'. How would you like them?</div><div class=\"b\"><button class=\"p\" data-c=\"pdf\">One combined PDF<small>All the PDFs and photos in one file, with a contents page</small></button><button data-c=\"zip\">Zip of separate files<small>Each document as its own file, in folders</small></button><button data-c=\"x\">Cancel</button></div>');\n  o.addEventListener('click',function(ev){var b=ev.target.closest('[data-c]');if(ev.target===o){o.remove();res('x');return;}if(!b)return;o.remove();res(b.getAttribute('data-c'));});});}\n function prog(label){var o=box('<h2>Building the PDF</h2><div class=\"m\" id=\"mpm\">Starting\\u2026</div><div class=\"mpbar\"><i id=\"mpb\"></i></div>');return {o:o,set:function(t,p){o.querySelector('#mpm').textContent=t;if(p!=null)o.querySelector('#mpb').style.width=Math.round(p*100)+'%';},close:function(){o.remove();}};}\n function getBytes(u){var url=/sharepoint\\.com/i.test(u)?'/webhook/cbs-file?u='+encodeURIComponent(u):u;return fetch(url,{credentials:'same-origin'}).then(function(r){if(!r.ok)throw 0;var ct=r.headers.get('content-type')||'';return r.arrayBuffer().then(function(b){return {b:b,ct:ct};});});}\n function kind(name,ct,b){var h=new Uint8Array(b.slice(0,4));if(h[0]===0x25&&h[1]===0x50&&h[2]===0x44&&h[3]===0x46)return 'pdf';if(h[0]===0xFF&&h[1]===0xD8)return 'jpg';if(h[0]===0x89&&h[1]===0x50)return 'png';if(/image\\/(heic|webp|gif)/i.test(ct)||/\\.(heic|webp|gif)$/i.test(name))return 'img';return '';}\n function toJpg(b){return new Promise(function(ok,no){var u=URL.createObjectURL(new Blob([b])),im=new Image();im.onload=function(){var c=document.createElement('canvas'),sc=Math.min(1,2000/Math.max(im.width,im.height));c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);var g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(function(bl){bl.arrayBuffer().then(ok,no);},'image/jpeg',0.85);};im.onerror=function(){URL.revokeObjectURL(u);no();};im.src=u;});}\n function safe(t){return s(t).replace(/[^\\x20-\\x7E\\u00a3]/g,function(c){return c==='\\u2013'||c==='\\u2014'?'-':(c==='\\u2019'?\"'\":'');});}\n function merge(label,files,gen){var P=prog(label);\n  return lib().then(function(L){var out,font,bold,A4=[595.28,841.89],toc=[],skipped=[];\n   return L.PDFDocument.create().then(function(d){out=d;return out.embedFont(L.StandardFonts.Helvetica);}).then(function(f){font=f;return out.embedFont(L.StandardFonts.HelveticaBold);}).then(function(f){bold=f;\n    var tocPage=out.addPage(A4);\n    function textPages(title,lines){var pg=out.addPage(A4),y=800;pg.drawText(safe(title),{x:42,y:y,size:15,font:bold});y-=24;(lines||[]).forEach(function(l){var t=safe(typeof l==='string'?l:(l&&l.t)),sz=(l&&l.s)||10,b=l&&l.b,maxc=Math.floor(510/(sz*0.5));while(t.length){var part=t.length>maxc?t.slice(0,t.lastIndexOf(' ',maxc)>10?t.lastIndexOf(' ',maxc):maxc):t;t=t.slice(part.length).trim();if(y<50){pg=out.addPage(A4);y=800;}pg.drawText(part,{x:42+((l&&l.i)||0),y:y,size:sz,font:b?bold:font});y-=sz*1.4;}});}\n    var seq=Promise.resolve(),i=0,N=files.length;\n    (gen||[]).forEach(function(g){toc.push({n:s(g.n),f:s(g.f),p:out.getPageCount()+1});textPages(g.n,g.lines);});\n    files.forEach(function(fx){seq=seq.then(function(){i++;P.set('Adding '+i+' of '+N+': '+s(fx.n),i/(N+1));\n     if(!fx.u){skipped.push(fx);return;}\n     return getBytes(fx.u).then(function(r){var k=kind(s(fx.n),r.ct,r.b),start=out.getPageCount()+1;\n      if(k==='pdf')return L.PDFDocument.load(r.b,{ignoreEncryption:true}).then(function(src){return out.copyPages(src,src.getPageIndices());}).then(function(pages){pages.forEach(function(p){out.addPage(p);});toc.push({n:s(fx.n),f:s(fx.f),p:start});});\n      var jp=k==='jpg'?Promise.resolve(r.b):(k==='png'||k==='img'?toJpg(r.b):null);if(!jp){skipped.push(fx);return;}\n      return jp.then(function(b){return out.embedJpg(b);}).then(function(img){var pg=out.addPage(A4),m=36,sc=Math.min((A4[0]-2*m)/img.width,(A4[1]-2*m-20)/img.height,1),w=img.width*sc,h=img.height*sc;pg.drawImage(img,{x:(A4[0]-w)/2,y:A4[1]-m-20-h,width:w,height:h});pg.drawText(safe(fx.n).slice(0,90),{x:m,y:A4[1]-m,size:10,font:bold});toc.push({n:s(fx.n),f:s(fx.f),p:start});});\n     }).catch(function(){skipped.push(fx);});});});\n    return seq.then(function(){P.set('Finishing\\u2026',0.97);\n     var y=800,pg=tocPage;pg.drawText(safe(label||'Documents'),{x:42,y:y,size:17,font:bold});y-=18;pg.drawText('Chelmsford Building Services Ltd  |  '+new Date().toLocaleDateString('en-GB')+'  |  '+toc.length+' document'+(toc.length===1?'':'s'),{x:42,y:y,size:9,font:font,color:L.rgb(.4,.4,.4)});y-=26;\n     var lastF=null;toc.forEach(function(t){if(y<60){pg=out.insertPage(out.getPages().indexOf(pg)+1,A4);y=800;}if(t.f&&t.f!==lastF){lastF=t.f;y-=4;pg.drawText(safe(t.f).slice(0,90),{x:42,y:y,size:10.5,font:bold});y-=15;}pg.drawText(safe(t.n).slice(0,88),{x:t.f?54:42,y:y,size:9.5,font:font});pg.drawText('page '+t.p,{x:500,y:y,size:9.5,font:font});y-=13;});\n     if(skipped.length){y-=10;if(y<80){pg=out.insertPage(out.getPages().indexOf(pg)+1,A4);y=800;}pg.drawText('Not included (not a PDF or photo, or could not be opened) - these are in the zip download:',{x:42,y:y,size:9.5,font:bold});y-=14;skipped.forEach(function(x){if(y<50){pg=out.insertPage(out.getPages().indexOf(pg)+1,A4);y=800;}pg.drawText(safe(x.n).slice(0,95),{x:54,y:y,size:9,font:font});y-=12;});}\n     var n=out.getPageCount();out.getPages().forEach(function(p,k){var sz=p.getSize();p.drawText('Page '+(k+1)+' of '+n,{x:sz.width-90,y:16,size:7.5,font:font,color:L.rgb(.45,.45,.45)});});\n     return out.save();}).then(function(bytes){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}));a.download=safe(label||'Documents').replace(/[\\\\\\/:*?\"<>|]+/g,' ')+'.pdf';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},4000);P.close();\n      if(skipped.length)setTimeout(function(){alert(skipped.length+' document'+(skipped.length===1?' was':'s were')+' left out of the PDF (not a PDF or photo). They are listed on the contents page and are in the zip download.');},300);});});\n  }).catch(function(){P.close();alert('Could not build the combined PDF. Try the zip download instead.');});}\n window.cbsPackChoice=function(href,label){var u=new URL(href,location.href),job=u.searchParams.get('job'),fs=(u.searchParams.get('f')||'').split(',').filter(Boolean).map(Number);choose('the',label||'Site file').then(function(c){if(c==='zip'){location.href=href;return;}if(c==='pdf')packPdf(job,fs);});};\n /* forms posted to cbs-docs-zip (every pick-and-download pop-up) */\n var sub=HTMLFormElement.prototype.submit;\n HTMLFormElement.prototype.submit=function(){var f=this;if(f.__mpok||!/\\/webhook\\/cbs-docs-zip/.test(f.action||'')){return sub.call(f);}\n  var inp=f.querySelector('input[name=d]'),d=null;try{d=JSON.parse(inp.value);}catch(x){}\n  var files=(d&&d.files||[]).filter(function(x){return x&&x.u;}),n=files.length+((d&&d.gen)||[]).length;\n  if(n<2){f.__mpok=1;return sub.call(f);}\n  choose(n,d.label).then(function(c){if(c==='zip'){f.__mpok=1;sub.call(f);}else if(c==='pdf')merge(d.label||'Documents',files,d.gen||[]);f.remove&&setTimeout(function(){try{f.remove();}catch(x){}},2000);});};\n /* site file / close-out pack links (cbs-cdm?...&a=pack) */\n document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a[href*=\"cbs-cdm?\"]');if(!a||a.id==='dl'||a.__mpok||!/[?&]a=pack/.test(a.getAttribute('href')))return;\n  ev.preventDefault();ev.stopImmediatePropagation();var href=a.getAttribute('href'),u=new URL(href,location.href),job=u.searchParams.get('job'),fs=(u.searchParams.get('f')||'').split(',').filter(Boolean).map(Number);\n  choose('the',a.textContent.trim()||'Site file').then(function(c){if(c==='zip'){a.__mpok=1;a.click();setTimeout(function(){a.__mpok=0;},500);return;}if(c==='pdf')packPdf(job,fs);});},true);\n function packPdf(job,fs){\n   fetch('/webhook/cbs-cdm?job='+encodeURIComponent(job),{cache:'no-store'}).then(function(r){return r.json();}).then(function(st){var files=[];(st.sections||[]).forEach(function(sec){if(fs.length&&fs.indexOf(sec.no)<0)return;(sec.items||[]).forEach(function(it){if(it.url&&/sharepoint\\.com/i.test(it.url))files.push({u:it.url,n:it.title,f:sec.folder});else if(it.gen)files.push({u:'',n:it.title+' (generated - zip only)',f:sec.folder});});});\n    if(!files.filter(function(x){return x.u;}).length){alert('There are no stored documents to put in a PDF. The generated summaries are in the zip download.');return;}\n    merge('Job '+job+' - '+(fs.length===1&&fs[0]===13?'Close-out pack':'Site file'),files,[]);}).catch(function(){alert('Could not load the document list. Try the zip download.');});}\n}\n"
+        }
+      },
+      {
+        "id": "67db3e5a-a886-415d-9c4e-e82c73b87c6e",
+        "name": "Send Script",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.js }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/javascript; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-cache"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "connections": {
+      "UI Hook": {
+        "main": [
+          [
+            {
+              "node": "Combined PDF Script",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Combined PDF Script": {
+        "main": [
+          [
+            {
+              "node": "Send Script",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "GET cbs-dlpdf: script loaded by cbs-guard. Every download pop-up (forms to cbs-docs-zip) and site file / close-out pack link asks: one combined PDF (merged in the browser with pdf-lib, contents page, photos as pages) or the zip.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

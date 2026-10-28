@@ -1,0 +1,72 @@
+{
+  "table": "cbs_scope",
+  "n8n_id": "9Sq09Fbkh42B2okn",
+  "columns": [
+    {
+      "name": "created_at",
+      "type": "string"
+    },
+    {
+      "name": "created_by",
+      "type": "string"
+    },
+    {
+      "name": "history",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "scope_json",
+      "type": "string"
+    },
+    {
+      "name": "updated_at",
+      "type": "string"
+    },
+    {
+      "name": "updated_by",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "job_no": "12",
+      "scope_json": "{\"v\":1,\"next\":6,\"sections\":[{\"id\":\"s1\",\"name\":\"Loading Bay Car Park\",\"who\":\"CBS\",\"items\":[{\"id\":\"i2\",\"text\":\"Remove barriers\",\"who\":\"CBS\",\"notes\":\"\",\"src\":\"\",\"var\":\"\",\"photos\":[{\"k\":\"sp\",\"u\":\"https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-17.jpg\",\"n\":\"IMG_5996.jpeg\",\"by\":\"Ethan\",\"at\":\"2026-10-19T20:03\"}]},{\"id\":\"i4\",\"text\":\"Install feet\",\"who\":\"CBS\",\"notes\":\"\",\"src\":\"\",\"var\":\"\",\"supplier\":\"ZZ Waste Ltd\",\"sup_notes\":\"\",\"photos\":[{\"k\":\"sp\",\"u\":\"https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-18.jpg\",\"n\":\"IMG_5988.png\",\"by\":\"Ethan\",\"at\":\"2026-10-19T20:05\"}]},{\"id\":\"i5\",\"text\":\"Remove the water proofing\",\"who\":\"CBS\",\"notes\":\"\",\"src\":\"\",\"var\":\"\",\"supplier\":\"\",\"sup_notes\":\"\"}]}],\"desc\":\"Replace barrier arms\",\"docs\":[{\"n\":\"Screenshot 2026-10-19 at 2.27.50 PM.png\",\"u\":\"https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-19.png\",\"by\":\"ZZ Person B\",\"at\":\"2026-10-20T08:59\"}]}",
+      "history": "19/10/2026 16:05 - Section \"loading bay carp park\" added by ZZ Person B\n19/10/2026 16:06 - Item added to \"loading bay carp park\": Remove barriers by ZZ Person B\n19/10/2026 16:07 - Section \"loading bay carp park\" renamed to \"Loading Bay Car Park\" by ZZ Person B\n19/10/2026 19:54 - Item added to \"Loading Bay Car Park\": Test by Ethan\n19/10/2026 19:55 - Item deleted from \"Loading Bay Car Park\": Test by Ethan\n19/10/2026 20:03 - 1 photo added to \"Remove barriers\" by Ethan\n19/10/2026 20:04 - Item added to \"Loading Bay Car Park\": Install feet by Ethan\n19/10/2026 20:05 - 1 photo added to \"Install feet\" by Ethan\n20/10/2026 08:59 - Description updated by ZZ Person B\n20/10/2026 08:59 - Document \"Screenshot 2026-10-19 at 2.27.50 PM.png\" added to the job by ZZ Person B\n27/10/2026 09:36 - Item added to \"Loading Bay Car Park\": Remove the water proofing by Ethan Paraha",
+      "created_by": "ZZ Person B",
+      "created_at": "2026-10-19T16:05",
+      "updated_by": "Ethan Paraha",
+      "updated_at": "2026-10-27T09:36",
+      "id": 1,
+      "createdAt": "2026-10-19T15:05:51.343Z",
+      "updatedAt": "2026-10-27T09:36:01.068Z"
+    },
+    {
+      "job_no": "10148",
+      "scope_json": "{\"v\":1,\"next\":3,\"sections\":[{\"id\":\"s2\",\"name\":\"Site Entrance Barrier and Walkway Alterations\",\"who\":\"CBS\",\"items\":[{\"id\":\"i1\",\"text\":\"Install 1\",\"who\":\"CBS\",\"notes\":\"\",\"src\":\"Job description\",\"var\":\"\",\"photos\":[{\"k\":\"sp\",\"u\":\"https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-20.jpg\",\"n\":\"Picture1.jpg\",\"by\":\"Ethan Paraha\",\"at\":\"2026-10-22T16:01\"}],\"supplier\":\"\",\"sup_notes\":\"\"}],\"docs\":[{\"n\":\"Job 10148 - ZZ-ORD-1 DD ZZ Client B Site 1 Site Entrance Barrier and Walkway Alterations.pdf\",\"u\":\"https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-21.pdf\",\"by\":\"Ethan Paraha\",\"at\":\"2026-10-22T16:03\"}]}],\"desc\":\"ZZ-ORD-1 Site Entrance Barrier and Walkway Alterations\\n\\nArea: External\\nRaised by: ZZ Client Contact B\",\"docs\":[]}",
+      "history": "22/10/2026 15:41 - Scope started from the job description by Ethan Paraha\n22/10/2026 15:42 - Section \"External\" renamed to \"Site Entrance Barrier and Walkway Alterations\" by Ethan Paraha\n22/10/2026 16:00 - Description updated by Ethan Paraha\n22/10/2026 16:00 - Document \"Job 10148 - ZZ-ORD-1 DD ZZ Client B Site 1 Site Entrance Barrier and Walkway Alterations.pdf\" added to the job by Ethan Paraha\n22/10/2026 16:01 - 1 photo added to \"ZZ-ORD-1 Site Entrance Barrier and Walkway Alterations\" by Ethan Paraha\n22/10/2026 16:01 - Item \"Install 1\" edited (text) by Ethan Paraha\n22/10/2026 16:03 - Document \"Job 10148 - ZZ-ORD-1 DD ZZ Client B Site 1 Site Entrance Barrier and Walkway Alterations.pdf\" added to \"Site Entrance Barrier and Walkway Alterations\" by Ethan Paraha\n22/10/2026 16:03 - Document \"Job 10148 - ZZ-ORD-1 DD ZZ Client B Site 1 Site Entrance Barrier and Walkway Alterations.pdf\" removed from the job by Ethan Paraha",
+      "created_by": "Ethan Paraha",
+      "created_at": "2026-10-22T15:41",
+      "updated_by": "Ethan Paraha",
+      "updated_at": "2026-10-22T16:03",
+      "id": 2,
+      "createdAt": "2026-10-22T14:42:01.713Z",
+      "updatedAt": "2026-10-22T15:03:48.638Z"
+    },
+    {
+      "job_no": "10266",
+      "scope_json": "{\"v\":1,\"next\":3,\"sections\":[{\"id\":\"s1\",\"name\":\"Ucrete Ramp\",\"who\":\"CBS\",\"items\":[{\"id\":\"i2\",\"text\":\"See photos\",\"who\":\"CBS\",\"notes\":\"\",\"src\":\"\",\"var\":\"\",\"supplier\":\"\",\"sup_notes\":\"\",\"photos\":[{\"k\":\"sm8\",\"u\":\"01a15f06-4a62-79fe-9530-a3645dc718ab\",\"n\":\"WhatsApp Image 2026-09-30 at 13.45.58 1.jpeg\",\"by\":\"Ethan Paraha\",\"at\":\"2026-10-27T09:45\"},{\"k\":\"sm8\",\"u\":\"01a15f06-4a69-79fe-9531-7e07a71042db\",\"n\":\"WhatsApp Image 2026-09-30 at 13.45.57 2.jpeg\",\"by\":\"Ethan Paraha\",\"at\":\"2026-10-27T09:45\"},{\"k\":\"sm8\",\"u\":\"01a15f06-4a97-79fe-9530-14aa67ed213b\",\"n\":\"WhatsApp Image 2026-09-30 at 13.45.57 1.jpeg\",\"by\":\"Ethan Paraha\",\"at\":\"2026-10-27T09:45\"},{\"k\":\"sm8\",\"u\":\"01a15f06-4a9f-79fe-9530-d6714ef54dab\",\"n\":\"WhatsApp Image 2026-09-30 at 13.45.57 3.jpeg\",\"by\":\"Ethan Paraha\",\"at\":\"2026-10-27T09:45\"},{\"k\":\"sm8\",\"u\":\"01a15f06-4ab5-79fe-9530-204ac443851b\",\"n\":\"WhatsApp Image 2026-09-30 at 18.59.58.jpeg\",\"by\":\"Ethan Paraha\",\"at\":\"2026-10-27T09:45\"},{\"k\":\"sm8\",\"u\":\"01a15f06-4950-79fe-9531-2280b0ecbe9b\",\"n\":\"WhatsApp Image 2026-09-30 at 18.59.58 1.jpeg\",\"by\":\"Ethan Paraha\",\"at\":\"2026-10-27T09:45\"}]}]}],\"desc\":\"Breakout the defective area of resin floor and reinstate\"}",
+      "history": "27/10/2026 09:39 - Section \"Ucrete Ramp\" added by Ethan Paraha\n27/10/2026 09:44 - Description updated by Ethan Paraha\n27/10/2026 09:45 - Item added to \"Ucrete Ramp\": See photos by Ethan Paraha\n27/10/2026 09:45 - 6 photos added to \"See photos\" by Ethan Paraha",
+      "created_by": "Ethan Paraha",
+      "created_at": "2026-10-27T09:39",
+      "updated_by": "Ethan Paraha",
+      "updated_at": "2026-10-27T09:45",
+      "id": 3,
+      "createdAt": "2026-10-27T09:39:54.612Z",
+      "updatedAt": "2026-10-27T09:45:27.942Z"
+    }
+  ]
+}

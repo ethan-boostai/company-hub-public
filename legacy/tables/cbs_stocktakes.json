@@ -1,0 +1,48 @@
+{
+  "table": "cbs_stocktakes",
+  "n8n_id": "JXOdwpye7BjXzjB9",
+  "columns": [
+    {
+      "name": "counted_by",
+      "type": "string"
+    },
+    {
+      "name": "created_at",
+      "type": "string"
+    },
+    {
+      "name": "decided_at",
+      "type": "string"
+    },
+    {
+      "name": "decided_by",
+      "type": "string"
+    },
+    {
+      "name": "diff_count",
+      "type": "number"
+    },
+    {
+      "name": "line_count",
+      "type": "number"
+    },
+    {
+      "name": "lines_json",
+      "type": "string"
+    },
+    {
+      "name": "location",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [],
+  "note": "no sample found (CBS - Yard has no saved successful executions)"
+}

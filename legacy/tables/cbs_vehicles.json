@@ -1,0 +1,121 @@
+{
+  "table": "cbs_vehicles",
+  "n8n_id": "chFjXqeuWU1vB1l6",
+  "columns": [
+    {
+      "name": "assigned_to",
+      "type": "string"
+    },
+    {
+      "name": "doc_url",
+      "type": "string"
+    },
+    {
+      "name": "fleet_only",
+      "type": "string"
+    },
+    {
+      "name": "ins_due",
+      "type": "string"
+    },
+    {
+      "name": "insp_freq",
+      "type": "string"
+    },
+    {
+      "name": "insp_next",
+      "type": "string"
+    },
+    {
+      "name": "make_model",
+      "type": "string"
+    },
+    {
+      "name": "mot_expiry",
+      "type": "string"
+    },
+    {
+      "name": "no_monthly",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "reg",
+      "type": "string"
+    },
+    {
+      "name": "service_due",
+      "type": "string"
+    },
+    {
+      "name": "tax_due",
+      "type": "string"
+    },
+    {
+      "name": "year",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "reg": "ZZ01ZZA",
+      "make_model": "Ford Transit",
+      "year": "2024",
+      "assigned_to": "ZZ Person H",
+      "tax_due": "2027-01-01",
+      "mot_expiry": "2027-10-31",
+      "ins_due": "",
+      "service_due": "2027-01-04",
+      "doc_url": "",
+      "notes": "",
+      "fleet_only": "",
+      "no_monthly": "",
+      "insp_freq": "Quarterly",
+      "insp_next": "2027-02-01",
+      "id": 1,
+      "createdAt": "2026-10-05T13:53:16.252Z",
+      "updatedAt": "2026-10-22T08:46:17.497Z"
+    },
+    {
+      "reg": "ZZ02ZZB",
+      "make_model": "Ford Transit Custom",
+      "year": "",
+      "assigned_to": "ZZ Person I",
+      "tax_due": "2027-06-01",
+      "mot_expiry": "2027-03-30",
+      "ins_due": "",
+      "service_due": "2027-03-09",
+      "doc_url": "",
+      "notes": "",
+      "fleet_only": "",
+      "no_monthly": "",
+      "insp_freq": "Quarterly",
+      "insp_next": "2027-02-01",
+      "id": 3,
+      "createdAt": "2026-10-06T09:19:15.601Z",
+      "updatedAt": "2026-10-22T08:46:17.667Z"
+    },
+    {
+      "reg": "ZZ03 ZZC",
+      "make_model": "Ford Transit Custom",
+      "year": "2026",
+      "assigned_to": "ZZ Person J",
+      "tax_due": "2027-11-01",
+      "mot_expiry": "2029-07-31",
+      "ins_due": "",
+      "service_due": "2027-08-01",
+      "doc_url": "",
+      "notes": "",
+      "fleet_only": "",
+      "no_monthly": "",
+      "insp_freq": "Quarterly",
+      "insp_next": "2027-02-01",
+      "id": 4,
+      "createdAt": "2026-10-06T10:40:34.980Z",
+      "updatedAt": "2026-10-22T08:46:17.850Z"
+    }
+  ]
+}

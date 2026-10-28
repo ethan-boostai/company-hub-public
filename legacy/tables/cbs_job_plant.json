@@ -1,0 +1,114 @@
+{
+  "table": "cbs_job_plant",
+  "n8n_id": "QTiRE1GCvSWgnzWg",
+  "columns": [
+    {
+      "name": "asset_id",
+      "type": "string"
+    },
+    {
+      "name": "asset_name",
+      "type": "string"
+    },
+    {
+      "name": "asset_tag",
+      "type": "string"
+    },
+    {
+      "name": "booked_at",
+      "type": "string"
+    },
+    {
+      "name": "booked_by",
+      "type": "string"
+    },
+    {
+      "name": "category",
+      "type": "string"
+    },
+    {
+      "name": "due_back",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "out_with",
+      "type": "string"
+    },
+    {
+      "name": "returned_at",
+      "type": "string"
+    },
+    {
+      "name": "returned_by",
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "job_no": "10148",
+      "asset_id": "1",
+      "asset_name": "Plate compactor 16\"",
+      "asset_tag": "CBS1001",
+      "category": "Plant and machinery",
+      "out_with": "ZZ01ZZA - ZZ Person H",
+      "booked_by": "ZZ Person C",
+      "booked_at": "2026-10-20T12:39",
+      "due_back": "2026-10-26",
+      "returned_at": "",
+      "returned_by": "",
+      "source": "Load-up sheet 1",
+      "notes": "",
+      "id": 1,
+      "createdAt": "2026-10-20T11:39:48.165Z",
+      "updatedAt": "2026-10-20T13:51:13.457Z"
+    },
+    {
+      "job_no": "10148",
+      "asset_id": "22",
+      "asset_name": "Breaker TE 3000-AVR",
+      "asset_tag": "CBS1023",
+      "category": "110V power tool",
+      "out_with": "ZZ01ZZA - ZZ Person H",
+      "booked_by": "ZZ Person C",
+      "booked_at": "2026-10-20T12:39",
+      "due_back": "2026-10-26",
+      "returned_at": "",
+      "returned_by": "",
+      "source": "Load-up sheet 1",
+      "notes": "",
+      "id": 2,
+      "createdAt": "2026-10-20T11:39:48.782Z",
+      "updatedAt": "2026-10-20T13:51:12.696Z"
+    },
+    {
+      "job_no": "10148",
+      "asset_id": "23",
+      "asset_name": "Breaker trolley TE 3000-T",
+      "asset_tag": "CBS1024",
+      "category": "Plant and machinery",
+      "out_with": "ZZ01ZZA - ZZ Person H",
+      "booked_by": "ZZ Person C",
+      "booked_at": "2026-10-20T12:39",
+      "due_back": "2026-10-26",
+      "returned_at": "",
+      "returned_by": "",
+      "source": "Load-up sheet 1",
+      "notes": "",
+      "id": 3,
+      "createdAt": "2026-10-20T11:39:49.047Z",
+      "updatedAt": "2026-10-20T13:51:11.088Z"
+    }
+  ]
+}

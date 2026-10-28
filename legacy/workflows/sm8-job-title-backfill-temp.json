@@ -1,0 +1,144 @@
+{
+  "id": "rlwv04vr3db1ygfl",
+  "name": "CBS - SM8 Job Title Backfill (temp)",
+  "active": false,
+  "isArchived": false,
+  "versionId": "a70385dc-c166-4b67-a95b-91d849e9a0fb",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "createdAt": "2026-10-09T14:32:32.769Z",
+  "updatedAt": "2026-10-09T14:32:53.191Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Run Backfill": {
+      "main": [
+        [
+          {
+            "node": "Get Jobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Jobs": {
+      "main": [
+        [
+          {
+            "node": "Plan New Descriptions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Plan New Descriptions": {
+      "main": [
+        [
+          {
+            "node": "Update Job Description",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "7c616c6b-2374-4194-ba59-25396ac2ce5d",
+      "name": "Run Backfill",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "7a5900e9-18d1-4fca-9e59-b8cfa617b7d4",
+      "name": "Get Jobs",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8",
+      "typeVersion": 1,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "resource": "job",
+        "operation": "getMany",
+        "limit": 500,
+        "includeContacts": false
+      }
+    },
+    {
+      "id": "5403c4f2-30fd-4e3d-b689-666e49a1860e",
+      "name": "Plan New Descriptions",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// Only touches jobs created by 'CBS - Excel to ServiceM8' (they carry a\n// 'Source: <tab> sheet, row N' line). Rewrites the first line to\n// '<sheet job number> <description>'. Everything below line 1 is kept.\nconst out = [];\nfor (const item of $input.all()) {\n  const j = item.json;\n  const desc = String(j.job_description || '');\n  if (!/\\nSource: .+ sheet, row \\d+/.test(desc)) { continue; }\n  const jobNumber = String(j.purchase_order_number || '').trim();\n  if (!jobNumber) { continue; }\n  const lines = desc.split('\\n');\n  let first = lines[0];\n  const areaLine = lines.find(function (l) { return l.indexOf('Area: ') === 0; });\n  const area = areaLine ? areaLine.slice(6).trim() : '';\n  if (area && first.indexOf(area + ' - ') === 0) { first = first.slice(area.length + 3); }\n  if (first.indexOf(jobNumber + ' ') === 0) { continue; }\n  const newFirst = jobNumber + ' ' + first.trim();\n  lines[0] = newFirst;\n  out.push({ json: { uuid: j.uuid, smJobNo: j.generated_job_id, oldFirstLine: desc.split('\\n')[0], newFirstLine: newFirst, newDescription: lines.join('\\n') } });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "89524b60-5fdf-4582-b002-1465ef2dde9e",
+      "name": "Update Job Description",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8",
+      "typeVersion": 1,
+      "position": [
+        672,
+        0
+      ],
+      "parameters": {
+        "fields": {
+          "field": [
+            {
+              "field": "job_description",
+              "value": "={{ $json.newDescription }}"
+            }
+          ]
+        },
+        "operation": "update",
+        "resource": "job",
+        "uuid": "={{ $json.uuid }}"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": null,
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Temporary: rewrites the first line of ServiceM8 jobs created from the CBS sheet to '<job number> <description>'.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

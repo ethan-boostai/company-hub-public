@@ -1,0 +1,818 @@
+{
+  "id": "96d6xcxhYO4r8apl",
+  "name": "CBS - Support",
+  "active": true,
+  "isArchived": false,
+  "versionId": "621f64fd-c258-43ba-9850-3952312b18f1",
+  "activeVersionId": "621f64fd-c258-43ba-9850-3952312b18f1",
+  "triggerCount": 4,
+  "createdAt": "2026-10-09T13:44:53.248Z",
+  "updatedAt": "2026-10-16T11:17:25.902Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Page Hook": {
+      "main": [
+        [
+          {
+            "node": "Build Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Hook": {
+      "main": [
+        [
+          {
+            "node": "Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data": {
+      "main": [
+        [
+          {
+            "node": "Respond Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Photo Hook": {
+      "main": [
+        [
+          {
+            "node": "Photo Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Photo Prep": {
+      "main": [
+        [
+          {
+            "node": "Photo Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Photo Upload": {
+      "main": [
+        [
+          {
+            "node": "Photo Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Act Hook": {
+      "main": [
+        [
+          {
+            "node": "Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Act": {
+      "main": [
+        [
+          {
+            "node": "Respond Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Page": {
+      "main": [
+        [
+          {
+            "node": "Hub Header",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hub Header": {
+      "main": [
+        [
+          {
+            "node": "Respond Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "772d53ae-170e-447a-8676-531370b4710e",
+      "name": "Page Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-support",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "03e8deea-5827-4754-b2a1-cb908507602f"
+    },
+    {
+      "id": "51d91058-6927-4dee-af72-7b035433e0c6",
+      "name": "Build Page",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v);\nconst q=$input.first().json.query||{};\nlet rows=[];try{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=support',body:{},json:true,timeout:20000});rows=(Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);}catch(x){}\nconst D={tab:/^f/i.test(S(q.tab))?'feature':'bug',from:S(q.from).slice(0,500),openNew:S(q.new)==='1',rows:rows};\nconst CSS='*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n+'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n+'.wrap{max-width:760px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}'\n+'.btn{background:#F47920;color:#fff;text-decoration:none;font-weight:600;border-radius:8px;padding:8px 14px;font-size:14px;border:0;font-family:inherit;cursor:pointer}.btn.ghost{background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}.btn:disabled{opacity:.5}.btn.red{background:#fff;color:#b3261e;border:1px solid #e9b6b1}'\n+'.tabs{display:flex;gap:6px;margin-bottom:12px}.tab{flex:1;background:#fff;border:1px solid #d9d9d6;border-radius:10px;padding:10px;font:inherit;font-weight:600;cursor:pointer;color:#1d1d1d}.tab.on{background:#3d4043;color:#fff;border-color:#3d4043}.tab span{display:inline-block;background:#F47920;color:#fff;border-radius:20px;padding:0 7px;font-size:12px;margin-left:4px}'\n+'.strip{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}.pst{background:#fff;border:1px solid #d9d9d6;border-radius:10px;padding:8px 6px;text-align:center;cursor:pointer}.pst b{display:block;font-size:22px;line-height:1.1}.pst span{font-size:12px;color:#555}.pst.on{outline:2px solid #F47920}.pst.warn{border-color:#f2d398;background:#fff8ea}.pst.ok{border-color:#b9dfc1;background:#f1faf2}'\n+'.srch{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;margin-bottom:10px;background:#fff}'\n+'.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;margin-bottom:10px;padding:12px 14px}.t{font-weight:600}.m{color:#555;font-size:14px;margin-top:2px}.b{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.tx{white-space:pre-wrap;font-size:15px}'\n+'.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:20px;padding:1px 8px;margin-left:6px;background:#eee;color:#333;vertical-align:middle}.tag.ok{background:#e3f4e6;color:#1d6b2c}.tag.warn{background:#fff1d6;color:#8a5a00}.tag.bad{background:#fde3e1;color:#b3261e}.tag.blue{background:#e6efff;color:#1f5fbf}.tag.grey{background:#eee;color:#555}'\n+'.resp{background:#f6f6f4;border-radius:8px;padding:8px 10px;margin-top:8px;font-size:14px;white-space:pre-wrap}.resp.bad{background:#fde3e1}'\n+'.ph{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.ph .pc{position:relative;width:84px;height:84px;border-radius:8px;overflow:hidden;background:#eee}.ph img{width:100%;height:100%;object-fit:cover;display:block}.ph .x{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.65);color:#fff;border:0;border-radius:50%;width:24px;height:24px;font-size:14px;line-height:24px;padding:0;cursor:pointer}.pl{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#6b6e70;margin-top:10px}'\n+'.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}'\n+'.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;overflow:auto;z-index:20}.dlg{background:#fff;border-radius:14px;max-width:560px;width:100%;padding:16px}.dlg h2{margin:0 0 10px;font-size:18px}'\n+'label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}.dlg input[type=text],.dlg textarea,.dlg select{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}.dlg textarea{min-height:80px}'\n+'.chk{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid #eee}.chk input{width:20px;height:20px;flex:0 0 auto}.note{font-size:13px;color:#6b6e70;margin-top:8px}.hist{white-space:pre-wrap;font-size:12px;color:#6b6e70;margin-top:8px;border-top:1px solid #eee;padding-top:6px}.busy{font-size:14px;color:#8a5a00;margin-top:8px}';\nconst data=JSON.stringify(D).replace(/</g,'\\\\u003c');\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Support - CBS Operations Hub</title><script src=\"/webhook/cbs-guard\"></script><style>'+CSS+'</style>'\n+'<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script>'\n+'</head><body><header><div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a></div><h1>Support</h1><p>Bug reports and feature requests for the Operations Hub</p></header><div class=\"wrap\" id=\"app\"></div>'\n+'<script>window.D='+data+';</script><script>('+clientMain.toString()+')();</script></body></html>';\nreturn [{json:{html:html}}];\n\nfunction clientMain(){\nvar D=window.D,app=document.getElementById('app'),TAB=D.tab,FILTER='open',QUERY='';\nvar ST={bug:['New','Investigating','Fixed','Closed',\"Can't reproduce\"],feature:['Submitted','Under review','Accepted','Planned','In progress','Released','Not suitable','Duplicate']};\nvar DONE={'Closed':1,\"Can't reproduce\":1,'Released':1,'Not suitable':1,'Duplicate':1};\nvar PRI={bug:['Stops work','Annoying','Cosmetic'],feature:['Blocking my work','Important','Nice to have']};\nvar BASE_SECTIONS=['Hub home','Jobs','Enquiry prep','Job File','Programme','Snagging','Actions board','TV dashboard','RAMS builder','CoSHH builder','CPHSP','Pre-starts','Permits to work','Site inspections','Toolbox talks','Purchase orders','Equipment and Materials','Load-up sheets','Yard page','Vehicles','People','Training','Accreditations','Insurance','Subcontractors and Suppliers','H&S documents','Incidents','Hazards','Notifications','ServiceM8 add-on','Other'];\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction pj(v){try{var a=JSON.parse(v||'[]');return Array.isArray(a)?a:[];}catch(x){return [];}}\nfunction dmy(d){d=s(d);var m=d.match(/^(\\d{4})-(\\d{2})-(\\d{2})(?:[T ](\\d{2}:\\d{2}))?/);return m?m[3]+'/'+m[2]+'/'+m[1]+(m[4]?' '+m[4]:''):d;}\nfunction img(u){return '/webhook/cbs-file?u='+encodeURIComponent(u);}\nfunction me(){try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)return m.name;}catch(x){}try{return localStorage.getItem('cbs_name')||'';}catch(x){return '';}}\nfunction who(){var n=me()||prompt('Your name:');if(!n)return '';n=n.trim();try{localStorage.setItem('cbs_name',n);}catch(x){}return n;}\nfunction post(path,body){return fetch('/webhook/'+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();});}\nfunction resize(file,max){return new Promise(function(res,rej){var fr=new FileReader();fr.onerror=rej;fr.onload=function(){var im=new Image();im.onerror=rej;im.onload=function(){var w=im.width,hh=im.height,k=Math.min(1,max/Math.max(w,hh));var c=document.createElement('canvas');c.width=Math.round(w*k);c.height=Math.round(hh*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',0.85));};im.src=fr.result;};fr.readAsDataURL(file);});}\nfunction upload(files,ref,by,msgEl){var out=[],i=0;files=Array.prototype.slice.call(files||[]);\n function next(){if(i>=files.length)return Promise.resolve(out);var f=files[i++];if(msgEl)msgEl.textContent='Uploading photo '+i+' of '+files.length+'...';\n  return resize(f,1600).then(function(d){return post('cbs-support-photo',{ref:ref,by:by,data:d});}).then(function(r){if(!r||!r.ok||!r.url)throw new Error('upload');out.push({u:r.url,at:new Date().toISOString(),by:by});return next();});}\n return next();}\nfunction thumbs(list,rm){return '<div class=\"ph\">'+list.map(function(p,i){return '<div class=\"pc\"><a href=\"'+img(p.u)+'\" target=\"_blank\" rel=\"noopener\"><img loading=\"lazy\" src=\"'+img(p.u)+'\" alt=\"\"></a>'+(rm?'<button type=\"button\" class=\"x\" data-rm=\"'+i+'\" title=\"Remove\">&times;</button>':'')+'</div>';}).join('')+'</div>';}\nfunction dlg(html){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg\">'+html+'</div>';document.body.appendChild(o);o.addEventListener('click',function(ev){if(ev.target===o)o.remove();});o.close=function(){o.remove();};return o;}\nfunction dev(){var u=navigator.userAgent||'';var os=/iPad/.test(u)?'iPad':/iPhone/.test(u)?'iPhone':/Android/.test(u)?'Android':/Windows/.test(u)?'Windows':/Mac/.test(u)?'Mac':'Other';var br=/Edg\\//.test(u)?'Edge':/CriOS|Chrome\\//.test(u)?'Chrome':/FxiOS|Firefox\\//.test(u)?'Firefox':/Safari\\//.test(u)?'Safari':'Browser';return os+' / '+br+' / screen '+window.innerWidth+'x'+window.innerHeight;}\nfunction kindRows(k){return D.rows.filter(function(r){return (s(r.kind)||'bug')===k;});}\nfunction stOf(r){return s(r.status)||(s(r.kind)==='feature'?'Submitted':'New');}\nfunction isDone(r){return !!DONE[stOf(r)];}\nfunction cls(st){if(st==='Closed'||st==='Released'||st==='Fixed')return 'ok';if(st==='Not suitable'||st===\"Can't reproduce\")return 'bad';if(st==='Duplicate')return 'grey';if(st==='New'||st==='Submitted')return 'warn';return 'blue';}\nfunction priCls(p){return /stops|blocking/i.test(p)?'bad':(/annoying|important/i.test(p)?'warn':'grey');}\nfunction sections(){var m={};BASE_SECTIONS.forEach(function(x){m[x]=1;});D.rows.forEach(function(r){if(r.section)m[r.section]=1;});return Object.keys(m);}\nfunction newest(L){return L.slice().sort(function(a,b){return Number(b.id)-Number(a.id);});}\nfunction matches(r){if(!QUERY)return true;var t=[r.ref,r.title,r.details,r.expected,r.steps,r.section,stOf(r),r.priority,r.raised_by,r.response,r.reason].join(' ').toLowerCase();return QUERY.split(/\\s+/).every(function(w){return t.indexOf(w)>-1;});}\nfunction visible(){return newest(kindRows(TAB)).filter(function(r){if(FILTER==='open'&&isDone(r))return false;if(FILTER==='done'&&!isDone(r))return false;return matches(r);});}\nfunction card(r){var P=pj(r.photos_json),bug=s(r.kind)!=='feature',st=stOf(r);\n var h='<div class=\"card\" data-id=\"'+r.id+'\"><div class=\"t\">'+e(r.ref)+' &middot; '+e(r.title)+'<span class=\"tag '+cls(st)+'\">'+e(st)+'</span>'+(r.priority?'<span class=\"tag '+priCls(r.priority)+'\">'+e(r.priority)+'</span>':'')+'</div>';\n h+='<div class=\"m\">'+e([r.section,r.raised_by?'Raised by '+r.raised_by:'',r.raised_at?dmy(r.raised_at):''].filter(Boolean).join(' \\u00b7 '))+'</div>';\n if(r.details)h+='<div class=\"pl\">'+(bug?'What happened':'Request')+'</div><div class=\"tx\">'+e(r.details)+'</div>';\n if(bug&&r.expected)h+='<div class=\"pl\">Expected</div><div class=\"tx\">'+e(r.expected)+'</div>';\n if(bug&&r.steps)h+='<div class=\"pl\">Steps</div><div class=\"tx\">'+e(r.steps)+'</div>';\n if(P.length)h+='<div class=\"pl\">Photos</div>'+thumbs(P);\n if(r.reason)h+='<div class=\"resp bad\"><b>Not suitable:</b> '+e(r.reason)+'</div>';\n if(r.duplicate_of)h+='<div class=\"resp\"><b>Duplicate of</b> '+e(r.duplicate_of)+'</div>';\n if(r.response)h+='<div class=\"resp\"><b>Response:</b> '+e(r.response)+'</div>';\n if(bug&&(r.page_url||r.device))h+='<div class=\"note\">'+e([r.page_url?'Page: '+r.page_url:'',r.device?'Device: '+r.device:''].filter(Boolean).join(' \\u00b7 '))+'</div>';\n h+='<div class=\"b\"><button class=\"btn\" data-act=\"status\">Update status</button><button class=\"btn ghost\" data-act=\"edit\">Edit</button><button class=\"btn red\" data-act=\"del\">Delete</button></div>';\n if(r.history)h+='<details><summary class=\"m\" style=\"cursor:pointer\">History</summary><div class=\"hist\">'+e(r.history)+'</div></details>';\n return h+'</div>';}\nfunction render(){\n var ob=kindRows('bug').filter(function(r){return !isDone(r);}).length,of=kindRows('feature').filter(function(r){return !isDone(r);}).length;\n var L=kindRows(TAB),o=L.filter(function(r){return !isDone(r);}).length,bug=TAB==='bug';\n var h='<div class=\"tabs\"><button class=\"tab'+(bug?' on':'')+'\" data-tab=\"bug\">Bug reports<span>'+ob+'</span></button><button class=\"tab'+(!bug?' on':'')+'\" data-tab=\"feature\">Feature requests<span>'+of+'</span></button></div>';\n h+='<div class=\"tools\"><button class=\"btn\" id=\"add\">'+(bug?'+ Report a bug':'+ Request a feature')+'</button><button class=\"btn ghost\" id=\"rep\">Claude report</button></div>';\n h+='<div class=\"strip\"><div class=\"pst warn'+(FILTER==='open'?' on':'')+'\" data-f=\"open\"><b>'+o+'</b><span>Open</span></div><div class=\"pst ok'+(FILTER==='done'?' on':'')+'\" data-f=\"done\"><b>'+(L.length-o)+'</b><span>'+(bug?'Closed':'Done')+'</span></div><div class=\"pst'+(FILTER==='all'?' on':'')+'\" data-f=\"all\"><b>'+L.length+'</b><span>All</span></div></div>';\n h+='<input type=\"search\" id=\"q\" class=\"srch\" placeholder=\"Search '+(bug?'bug reports':'feature requests')+'\" value=\"'+e(QUERY)+'\"><div id=\"list\"></div>';\n app.innerHTML=h;\n app.querySelectorAll('.tab').forEach(function(t){t.onclick=function(){TAB=t.getAttribute('data-tab');FILTER='open';QUERY='';try{history.replaceState(null,'','?tab='+TAB);}catch(x){}render();};});\n app.querySelectorAll('.pst').forEach(function(p){p.onclick=function(){FILTER=p.getAttribute('data-f');render();};});\n document.getElementById('q').oninput=function(){QUERY=this.value.trim().toLowerCase();renderList();};\n document.getElementById('add').onclick=function(){editDlg(null);};\n document.getElementById('rep').onclick=reportDlg;\n renderList();}\nfunction renderList(){var V=visible(),el=document.getElementById('list'),h='';\n if(!V.length)h='<div class=\"empty\">'+(QUERY?'Nothing matches your search.':(kindRows(TAB).length?'Nothing in this list.':(TAB==='bug'?'No bug reports yet. Tap + Report a bug if something is not working.':'No feature requests yet. Tap + Request a feature to suggest one.')))+'</div>';\n V.forEach(function(r){h+=card(r);});el.innerHTML=h;\n el.querySelectorAll('[data-act]').forEach(function(b){b.onclick=function(){var id=b.closest('.card').getAttribute('data-id');var r=D.rows.filter(function(x){return String(x.id)===id;})[0];if(!r)return;var a=b.getAttribute('data-act');\n  if(a==='edit')editDlg(r);else if(a==='status')statusDlg(r);else if(a==='del')del(r);};});}\nfunction reload(){return fetch('/webhook/cbs-support-data',{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){D.rows=d.rows||[];render();}).catch(function(){location.reload();});}\nfunction errMsg(err,fallback){return err&&err.message&&err.message.length<160&&!/HTTP|upload|save|fetch|network/i.test(err.message)?err.message:fallback;}\nfunction editDlg(r){var kind=r?(s(r.kind)==='feature'?'feature':'bug'):TAB,bug=kind==='bug',P=r?pj(r.photos_json):[],pri=PRI[kind];\n var o=dlg('<h2>'+(r?'Edit '+e(r.ref):(bug?'Report a bug':'Request a feature'))+'</h2>'\n +'<label class=\"f\">'+(bug?'Short summary':'Feature in a few words')+'</label><input type=\"text\" id=\"ft\" value=\"'+e(r&&r.title)+'\" placeholder=\"'+(bug?'e.g. Load-up sheet will not save':'e.g. Add a fuel log to Vehicles')+'\">'\n +'<label class=\"f\">Hub section</label><input type=\"text\" id=\"fs\" list=\"dls\" value=\"'+e(r&&r.section)+'\" placeholder=\"Pick or type a section\"><datalist id=\"dls\">'+sections().map(function(x){return '<option value=\"'+e(x)+'\">';}).join('')+'</datalist>'\n +'<label class=\"f\">'+(bug?'What happened':'What it should do and why it would help')+'</label><textarea id=\"fd\">'+e(r&&r.details)+'</textarea>'\n +(bug?'<label class=\"f\">What you expected to happen</label><textarea id=\"fe\">'+e(r&&r.expected)+'</textarea><label class=\"f\">Steps to get there (optional)</label><textarea id=\"fx\" placeholder=\"1. Open ...  2. Tap ...  3. ...\">'+e(r&&r.steps)+'</textarea>':'')\n +'<label class=\"f\">'+(bug?'Severity':'Priority')+'</label><select id=\"fp\">'+pri.map(function(x){var on=r?r.priority===x:x===pri[1];return '<option'+(on?' selected':'')+'>'+e(x)+'</option>';}).join('')+'</select>'\n +'<label class=\"f\">Photos / screenshots</label><div id=\"fph\"></div><input type=\"file\" id=\"ff\" accept=\"image/*\" multiple style=\"margin-top:6px\">'\n +(bug&&!r&&D.from?'<div class=\"note\">Raised from: '+e(D.from)+'</div>':'')\n +'<div class=\"busy\" id=\"fm\"></div><div class=\"b\"><button class=\"btn\" id=\"fsv\">'+(r?'Save changes':(bug?'Send bug report':'Send request'))+'</button><button class=\"btn ghost\" id=\"fc\">Cancel</button></div>');\n function ph(){var el=o.querySelector('#fph');el.innerHTML=P.length?thumbs(P,true):'<div class=\"note\">No photos yet.</div>';el.querySelectorAll('[data-rm]').forEach(function(x){x.onclick=function(){P.splice(Number(x.getAttribute('data-rm')),1);ph();};});}ph();\n o.querySelector('#fc').onclick=function(){o.close();};\n o.querySelector('#fsv').onclick=function(){var t=o.querySelector('#ft').value.trim(),d=o.querySelector('#fd').value.trim();if(!t){alert('Add a short summary.');return;}if(!d){alert(bug?'Say what happened.':'Describe the feature.');return;}var by=who();if(!by)return;\n  var btn=this,msg=o.querySelector('#fm');btn.disabled=true;\n  upload(o.querySelector('#ff').files,r?s(r.ref):(bug?'Bug':'Feature'),by,msg).then(function(up){msg.textContent='Saving...';\n   var body={a:'save',id:r?r.id:0,kind:kind,by:by,title:t,details:d,section:o.querySelector('#fs').value.trim(),priority:o.querySelector('#fp').value,photos_json:JSON.stringify(P.concat(up))};\n   if(bug){body.expected=o.querySelector('#fe').value.trim();body.steps=o.querySelector('#fx').value.trim();if(!r){body.page_url=D.from;body.device=dev();}}\n   return post('cbs-support-act',body);})\n  .then(function(res){if(!res.ok)throw new Error(res.message||'save');o.close();if(!r){FILTER='open';D.from='';}return reload().then(function(){if(!r&&res.ref)alert((bug?'Bug report ':'Feature request ')+res.ref+' sent. Thanks!');});})\n  .catch(function(err){btn.disabled=false;msg.textContent='';alert(errMsg(err,'Could not save. Check your connection and try again.'));});};}\nfunction statusDlg(r){var kind=s(r.kind)==='feature'?'feature':'bug',L=ST[kind],cur=stOf(r);\n var others=newest(kindRows(kind)).filter(function(x){return x.id!==r.id;});\n var o=dlg('<h2>Update '+e(r.ref)+'</h2><div class=\"m\">'+e(r.title)+'</div>'\n +'<label class=\"f\">Status</label><select id=\"ss\">'+L.map(function(x){return '<option'+(x===cur?' selected':'')+'>'+e(x)+'</option>';}).join('')+'</select>'\n +'<div id=\"sw\"><label class=\"f\">Why it does not fit the workflow (shown to the team)</label><textarea id=\"sr\" placeholder=\"e.g. Clashes with how ServiceM8 handles job queues\">'+e(r.reason)+'</textarea></div>'\n +'<div id=\"sdw\"><label class=\"f\">Duplicate of</label><select id=\"sd\"><option value=\"\">Pick the original</option>'+others.map(function(x){return '<option value=\"'+e(x.ref)+'\"'+(x.ref===r.duplicate_of?' selected':'')+'>'+e(x.ref+' - '+x.title)+'</option>';}).join('')+'</select></div>'\n +'<label class=\"f\">Response / notes for the team (optional)</label><textarea id=\"sn\">'+e(r.response)+'</textarea>'\n +'<div class=\"busy\" id=\"sm\"></div><div class=\"b\"><button class=\"btn\" id=\"sv\">Save</button><button class=\"btn ghost\" id=\"sc\">Cancel</button></div>');\n var sel=o.querySelector('#ss');function vis(){o.querySelector('#sw').style.display=sel.value==='Not suitable'?'':'none';o.querySelector('#sdw').style.display=sel.value==='Duplicate'?'':'none';}sel.onchange=vis;vis();\n o.querySelector('#sc').onclick=function(){o.close();};\n o.querySelector('#sv').onclick=function(){var st=sel.value,why=o.querySelector('#sr').value.trim(),dup=o.querySelector('#sd').value;\n  if(st==='Not suitable'&&!why){alert('Say why it does not fit the workflow.');return;}if(st==='Duplicate'&&!dup){alert('Pick the original request.');return;}var by=who();if(!by)return;\n  var btn=this,msg=o.querySelector('#sm');btn.disabled=true;msg.textContent='Saving...';\n  post('cbs-support-act',{a:'status',id:r.id,by:by,status:st,reason:why,duplicate_of:dup,response:o.querySelector('#sn').value.trim()})\n  .then(function(res){if(!res.ok)throw new Error(res.message||'save');o.close();return reload();})\n  .catch(function(err){btn.disabled=false;msg.textContent='';alert(errMsg(err,'Could not save. Check your connection and try again.'));});};}\nfunction del(r){if(!confirm('Delete '+r.ref+' - '+r.title+'?'))return;if(!confirm('Are you sure? This permanently removes the record. Photos stay in SharePoint.'))return;var by=who();if(!by)return;\n post('cbs-support-act',{a:'delete',id:r.id,by:by}).then(function(res){if(!res.ok)throw 0;return reload();}).catch(function(){alert('Could not delete. Try again.');});}\nfunction CTX(){return TAB==='bug'?'For Claude: these are bug reports raised by Chelmsford Building Services (CBS) staff in the CBS Operations Hub. The hub is a set of web pages served by n8n webhook workflows (named \"CBS - ...\"), with data in n8n data tables named cbs_*, linked to ServiceM8 (jobs) and SharePoint (documents). Each report has what happened, what was expected, steps, the hub section, the page and device it was raised from, and screenshots. For each one, work out the likely cause and the fix, and say which workflow or page it sits in.':'For Claude: these are feature requests raised by Chelmsford Building Services (CBS) staff for the CBS Operations Hub, a set of web pages served by n8n webhook workflows (named \"CBS - ...\") with data in n8n data tables named cbs_*, linked to ServiceM8 and SharePoint. For each one, suggest how it could be built in the hub, flag anything that clashes with the current workflow, and give a rough size.';}\nfunction meta(r){var bug=s(r.kind)!=='feature';return 'Status: '+stOf(r)+'  |  '+(bug?'Severity':'Priority')+': '+(s(r.priority)||'-')+'  |  Section: '+(s(r.section)||'-')+'  |  Raised by '+(s(r.raised_by)||'-')+' on '+dmy(r.raised_at);}\nfunction buildText(list,opt){var bug=TAB==='bug',out=[CTX(),'','Exported '+new Date().toLocaleString('en-GB')+' - '+list.length+' item'+(list.length===1?'':'s'),''];\n list.forEach(function(r){out.push('## '+r.ref+' - '+r.title);out.push(meta(r));out.push('');out.push((bug?'What happened: ':'Request: ')+s(r.details));\n  if(bug&&r.expected)out.push('Expected: '+r.expected);if(bug&&r.steps)out.push('Steps: '+r.steps);if(bug&&r.page_url)out.push('Page: '+r.page_url);if(bug&&r.device)out.push('Device: '+r.device);\n  if(r.response)out.push('Response: '+r.response);if(r.reason)out.push('Not suitable because: '+r.reason);if(r.duplicate_of)out.push('Duplicate of: '+r.duplicate_of);\n  var P=pj(r.photos_json);if(P.length)out.push('Photos: '+P.map(function(p){return p.u;}).join(' , '));\n  if(opt.hist&&r.history)out.push('History:\\n'+r.history);out.push('');});\n return out.join('\\n');}\nfunction copyText(t){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t);return new Promise(function(res,rej){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();var ok=false;try{ok=document.execCommand('copy');}catch(x){}ta.remove();ok?res():rej();});}\nfunction loadImg(u){return fetch(img(u)).then(function(r){if(!r.ok)throw 0;return r.blob();}).then(function(b){return new Promise(function(res,rej){var im=new Image();var url=URL.createObjectURL(b);im.onload=function(){var k=Math.min(1,1400/Math.max(im.width,im.height));var c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(url);res({d:c.toDataURL('image/jpeg',0.85),w:c.width,h:c.height});};im.onerror=function(){URL.revokeObjectURL(url);rej();};im.src=url;});}).catch(function(){return null;});}\nfunction buildPdf(list,opt){\n if(!window.jspdf)return Promise.reject(new Error('pdf'));\n var doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'}),W=210,M=14,y=0,bug=TAB==='bug';\n var title=(bug?'Bug reports':'Feature requests')+' - CBS Operations Hub',dt=new Date().toLocaleString('en-GB');\n function top(){doc.setFillColor(244,121,32);doc.rect(0,0,W,4,'F');doc.setTextColor(30);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text(title,M,14);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text('Chelmsford Building Services Ltd  |  Exported '+dt+'  |  '+list.length+' item'+(list.length===1?'':'s'),M,19);y=26;}\n function need(hh){if(y+hh>285){doc.addPage();top();}}\n function para(t,size,col,bold){t=s(t);if(!t)return;doc.setFont('helvetica',bold?'bold':'normal');doc.setFontSize(size);doc.setTextColor(col);var L=doc.splitTextToSize(t,W-2*M),lh=size*0.45;for(var i=0;i<L.length;i++){need(lh);doc.text(L[i],M,y);y+=lh;}}\n function field(label,val){if(!s(val))return;y+=1.5;para(label,8,110,true);y+=0.5;para(val,10,30,false);}\n top();para(CTX(),9,70,false);y+=3;\n var p=Promise.resolve();\n list.forEach(function(r){p=p.then(function(){var P=opt.photos?pj(r.photos_json):[];\n  return Promise.all(P.map(function(x){return loadImg(x.u);})).then(function(ims){ims=ims.filter(Boolean);\n   need(22);doc.setDrawColor(210);doc.line(M,y,W-M,y);y+=6;\n   para(s(r.ref)+'  -  '+s(r.title),12,20,true);y+=0.5;para(meta(r),8.5,100,false);\n   field(bug?'WHAT HAPPENED':'REQUEST',r.details);\n   if(bug){field('EXPECTED',r.expected);field('STEPS',r.steps);field('PAGE',r.page_url);field('DEVICE',r.device);}\n   field('RESPONSE',r.response);field('NOT SUITABLE BECAUSE',r.reason);field('DUPLICATE OF',r.duplicate_of);\n   if(opt.hist)field('HISTORY',r.history);\n   if(ims.length){y+=2;para('PHOTOS ('+ims.length+')',8,110,true);var cw=(W-2*M-6)/2;\n    for(var j=0;j<ims.length;j+=2){var a=ims[j],b2=ims[j+1];function dim(im){if(!im)return [0,0];var w=cw,hh=im.h*w/im.w;if(hh>95){hh=95;w=im.w*hh/im.h;}return [w,hh];}\n     var d1=dim(a),d2=dim(b2),rh=Math.max(d1[1],d2[1]);need(rh+4);doc.addImage(a.d,'JPEG',M,y+1,d1[0],d1[1]);if(b2)doc.addImage(b2.d,'JPEG',M+cw+6,y+1,d2[0],d2[1]);y+=rh+4;}}\n   y+=3;});});});\n return p.then(function(){var n=doc.getNumberOfPages();for(var i=1;i<=n;i++){doc.setPage(i);doc.setFontSize(7.5);doc.setTextColor(120);doc.text('Page '+i+' of '+n,W-M,292,{align:'right'});}return doc;});}\nfunction reportDlg(){var L=newest(kindRows(TAB)).reverse(),bug=TAB==='bug';\n var o=dlg('<h2>Claude report - '+(bug?'bug reports':'feature requests')+'</h2><div class=\"note\" style=\"margin:0 0 8px\">Pick what to include (open items are ticked). Download the PDF and drop it into Claude in one go - details and photos sit together.</div>'\n +(L.length?'<div class=\"b\" style=\"margin:0 0 6px\"><button type=\"button\" class=\"btn ghost\" id=\"pa\">Select all</button><button type=\"button\" class=\"btn ghost\" id=\"po\">Open only</button><button type=\"button\" class=\"btn ghost\" id=\"pn\">Select none</button></div>'+L.map(function(r){return '<label class=\"chk\"><input type=\"checkbox\" value=\"'+r.id+'\"'+(isDone(r)?'':' checked')+'><span><b>'+e(r.ref)+' - '+e(r.title)+'</b><span class=\"tag '+cls(stOf(r))+'\">'+e(stOf(r))+'</span><br><span class=\"m\">'+e([r.section,r.priority].filter(Boolean).join(' \\u00b7 '))+'</span></span></label>';}).join(''):'<div class=\"empty\">Nothing to report yet.</div>')\n +'<div class=\"pl\">Include</div><label class=\"chk\"><input type=\"checkbox\" id=\"op\" checked><span>Photos and screenshots</span></label><label class=\"chk\"><input type=\"checkbox\" id=\"oh\"><span>History (status changes)</span></label>'\n +'<div class=\"busy\" id=\"pm\"></div><div class=\"b\"><button class=\"btn\" id=\"pg\"'+(L.length?'':' disabled')+'>Download PDF</button><button class=\"btn ghost\" id=\"pt\"'+(L.length?'':' disabled')+'>Copy as text</button><button class=\"btn ghost\" id=\"pc\">Cancel</button></div>');\n var bx=o.querySelectorAll('.chk input[value]');\n if(L.length){o.querySelector('#pa').onclick=function(){bx.forEach(function(x){x.checked=true;});};o.querySelector('#pn').onclick=function(){bx.forEach(function(x){x.checked=false;});};\n  o.querySelector('#po').onclick=function(){bx.forEach(function(x){var r=L.filter(function(y){return String(y.id)===x.value;})[0];x.checked=!!r&&!isDone(r);});};}\n o.querySelector('#pc').onclick=function(){o.close();};\n function picked(){var ids=Array.prototype.filter.call(bx,function(x){return x.checked;}).map(function(x){return x.value;});return L.filter(function(r){return ids.indexOf(String(r.id))>-1;});}\n var msg=o.querySelector('#pm');\n o.querySelector('#pg').onclick=function(){var sel=picked();if(!sel.length){alert('Pick at least one item.');return;}var btn=this;btn.disabled=true;msg.textContent='Building the report...';\n  buildPdf(sel,{photos:o.querySelector('#op').checked,hist:o.querySelector('#oh').checked}).then(function(doc){doc.save('CBS Hub - '+(bug?'Bug reports':'Feature requests')+' - '+new Date().toLocaleDateString('en-CA')+'.pdf');btn.disabled=false;msg.textContent='';o.close();})\n  .catch(function(){btn.disabled=false;msg.textContent='';alert('Could not build the report. Try again.');});};\n o.querySelector('#pt').onclick=function(){var sel=picked();if(!sel.length){alert('Pick at least one item.');return;}\n  copyText(buildText(sel,{hist:o.querySelector('#oh').checked})).then(function(){msg.textContent='Copied. Paste it into Claude (photo links are included).';}).catch(function(){alert('Could not copy on this device. Use Download PDF instead.');});};}\nrender();\nif(D.openNew)editDlg(null);\n}\n"
+      }
+    },
+    {
+      "id": "6e0f65b1-7c37-4506-a611-f273b18e4ca0",
+      "name": "Respond Page",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "6ae1710c-dd75-4a37-aaee-592584011ac4",
+      "name": "Data Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        224
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-support-data",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "bd03c1d9-b4e7-4108-b45d-1722fe9833d8"
+    },
+    {
+      "id": "641e12b1-c05f-4b19-92e7-3de64a3a3fa2",
+      "name": "Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        224
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/';\nlet L=[];try{L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=support',body:{},json:true,timeout:20000});}catch(e){L=[];}\nL=(Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);\nconst k=String(($input.first().json.query||{}).kind||'');if(k)L=L.filter(r=>String(r.kind)===k);\nconst open=L.filter(r=>!/^(Closed|Can't reproduce|Released|Not suitable|Duplicate)$/.test(String(r.status||''))).length;\nreturn [{json:{rows:L,open:open}}];\n"
+      }
+    },
+    {
+      "id": "e8ae67e8-733e-40db-ab7f-5c7405da7535",
+      "name": "Respond Data",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        224
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "857dec78-e59b-4ab0-a831-6029220ad75d",
+      "name": "Photo Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        448
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-support-photo",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "2108ff22-7ff4-4064-8fcf-4ad48943a36a"
+    },
+    {
+      "id": "6970dc3a-1bf5-4fe6-b072-1caf6c949652",
+      "name": "Photo Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        448
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const b=$input.first().json.body||{};const S=v=>v==null?'':String(v).trim();\nconst seg=v=>S(v).replace(/[\\\\/:*?\"<>|#%\\r\\n]+/g,' ').replace(/\\s+/g,' ').trim();\nconst data=S(b.data).replace(/^data:[^,]*,/,'').replace(/[^A-Za-z0-9+/=]/g,'');if(data.length<200)throw new Error('No photo');\nconst ref=seg(b.ref)||'Support';\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','_').replace(/:/g,'').slice(0,15);\nconst fn=seg(now+' - '+ref+' - '+Math.random().toString(36).slice(2,6))+'.jpg';\nreturn [{json:{path:['CBS System','Operations','Support','Photos',fn].map(encodeURIComponent).join('/'),name:fn},binary:{data:{data:data,mimeType:'image/jpeg',fileName:fn}}}];\n"
+      }
+    },
+    {
+      "id": "999b8f7b-dd1f-44b8-8b60-2371c24d0aa0",
+      "name": "Photo Upload",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        448
+      ],
+      "parameters": {
+        "method": "PUT",
+        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.path }}:/content?@microsoft.graph.conflictBehavior=rename",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "a43aa06e-1731-4831-be06-dcabdb8f0bb3",
+      "name": "Photo Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        448
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ ok: !!$json.webUrl, url: $json.webUrl || \"\" }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "b3c7f96a-9c30-4e75-b980-b38654342e0b",
+      "name": "Act Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        672
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-support-act",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "a089fc83-832c-49cf-b5ab-f9c8a6adb9e8"
+    },
+    {
+      "id": "0a116674-a5bd-4a02-b3c0-0e5148ae0013",
+      "name": "Act",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        672
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();\nconst b=$input.first().json.body||{};const a=S(b.a),by=S(b.by).slice(0,80);\nif(!by)return [{json:{ok:false,message:'Enter your name.'}}];\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst stamp=now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16);\nconst save=(id,row,p)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=support&id='+(id||0)+'&k='+K+(p?'&partial=1':''),body:row,json:true,timeout:20000});\nlet L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=support',body:{},json:true,timeout:20000});L=Array.isArray(L)?L:[];\nconst find=id=>L.find(r=>r&&String(r.id)===S(id));\nconst hist=(r,line)=>[S(r&&r.history),stamp+' - '+line].filter(Boolean).join('\\n');\nconst pj=v=>{try{const x=JSON.parse(v||'[]');return Array.isArray(x)?x.filter(p=>p&&/^https:\\/\\/chelmsfordbuildingservices(-my)?\\.sharepoint\\.com\\//i.test(S(p.u))).slice(0,30):[];}catch(e){return [];}};\nconst ST={bug:['New','Investigating','Fixed','Closed',\"Can't reproduce\"],feature:['Submitted','Under review','Accepted','Planned','In progress','Released','Not suitable','Duplicate']};\nconst PRI={bug:['Stops work','Annoying','Cosmetic'],feature:['Blocking my work','Important','Nice to have']};\nif(a==='save'){\n const id=Number(b.id)||0;const old=id?find(id):null;if(id&&!old)return [{json:{ok:false,message:'That item was not found. Refresh the page.'}}];\n const kind=old?(S(old.kind)==='feature'?'feature':'bug'):(S(b.kind)==='feature'?'feature':'bug');\n const title=S(b.title).slice(0,200),details=S(b.details).slice(0,5000);\n if(!title)return [{json:{ok:false,message:'Add a short summary.'}}];\n if(!details)return [{json:{ok:false,message:kind==='bug'?'Say what happened.':'Describe the feature.'}}];\n const row={title:title,details:details,section:S(b.section).slice(0,120),priority:PRI[kind].indexOf(S(b.priority))>-1?S(b.priority):PRI[kind][1],photos_json:JSON.stringify(pj(b.photos_json))};\n if(kind==='bug'){row.expected=S(b.expected).slice(0,3000);row.steps=S(b.steps).slice(0,3000);}\n if(old){row.updated_by=by;row.history=hist(old,'Edited by '+by);await save(id,row,true);return [{json:{ok:true,id:id,ref:S(old.ref)}}];}\n const pre=kind==='bug'?'BUG-':'FR-';\n const n=L.filter(r=>S(r.kind)===kind).reduce((m,r)=>Math.max(m,Number(S(r.ref).replace(/\\D/g,''))||0),0)+1;\n const ref=pre+String(n).padStart(3,'0');\n Object.assign(row,{kind:kind,ref:ref,status:ST[kind][0],reason:'',response:'',duplicate_of:'',page_url:kind==='bug'?S(b.page_url).slice(0,500):'',device:kind==='bug'?S(b.device).slice(0,200):'',raised_by:by,raised_at:now,updated_by:'',history:stamp+' - Raised by '+by});\n if(kind!=='bug'){row.expected='';row.steps='';}\n const res=await save(0,row,false);\n try{await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=notices&id=0&k='+K,body:{title:(kind==='bug'?'New bug report ':'New feature request ')+ref,message:title+' (raised by '+by+')',event:kind==='bug'?'support_bug':'support_feature',job_no:'',link:H+'cbs-support?tab='+kind,created_at:now},json:true,timeout:10000});}catch(e){}\n return [{json:{ok:true,id:Number(res&&res.id)||0,ref:ref}}];\n}\nif(a==='status'){const r=find(b.id);if(!r)return [{json:{ok:false,message:'That item was not found. Refresh the page.'}}];\n const kind=S(r.kind)==='feature'?'feature':'bug';const st=S(b.status);if(ST[kind].indexOf(st)<0)return [{json:{ok:false,message:'Pick a status.'}}];\n const reason=st==='Not suitable'?S(b.reason).slice(0,2000):'';if(st==='Not suitable'&&!reason)return [{json:{ok:false,message:'Say why it is not suitable.'}}];\n const dup=st==='Duplicate'?S(b.duplicate_of).slice(0,20):'';if(st==='Duplicate'&&!dup)return [{json:{ok:false,message:'Pick the original request.'}}];\n const resp=S(b.response).slice(0,3000);\n const line=(st!==S(r.status)?'Status '+(S(r.status)||'-')+' to '+st:'Updated')+' by '+by+(reason?': '+reason:'')+(dup?' (duplicate of '+dup+')':'')+(resp&&resp!==S(r.response)?' - response: '+resp:'');\n await save(r.id,{status:st,reason:reason,duplicate_of:dup,response:resp,updated_by:by,history:hist(r,line)},true);\n return [{json:{ok:true}}];}\nif(a==='delete'){const r=find(b.id);if(!r)return [{json:{ok:true}}];\n await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=del&t=support&id='+r.id+'&k='+K,body:{},json:true,timeout:20000});return [{json:{ok:true}}];}\nreturn [{json:{ok:false,message:'Unknown action.'}}];\n"
+      }
+    },
+    {
+      "id": "2686afda-2503-4556-97f5-6cc7f2d95c21",
+      "name": "Respond Act",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        672
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "06be2431-5629-4d8c-9bcc-8814ee0d166a",
+      "name": "Hub Header",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        160
+      ],
+      "parameters": {
+        "jsCode": "let h=String($input.first().json.html||'');\nh=h.split('>Claude report<').join('>Report<').split('<h2>Claude report - ').join('<h2>Report - ');\nh=h.split('<header><div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a></div><h1>Support</h1><p>Bug reports and feature requests for the Operations Hub</p></header>').join('<header><img id=\"cbsLogo\" src=\"/webhook/cbs-programme-logo\" alt=\"Chelmsford Building Services\" title=\"Home\" onerror=\"this.style.display=\\'none\\'\" onclick=\"location.href=\\'/webhook/cbs-admin\\'\"><button id=\"back\" type=\"button\" onclick=\"location.href=\\'/webhook/cbs-admin\\'\">&#8249; Back</button><h1 id=\"title\">Support</h1></header>');\nconst css='header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:12px}header h1{margin:0!important;font-size:17px!important;flex:1}header button{background:none;border:0;color:#ffb37a;font-size:15px;font-weight:600;cursor:pointer;padding:6px;font-family:inherit}#cbsLogo{height:24px;width:auto;max-width:180px;cursor:pointer;flex:0 0 auto;display:block}@media(max-width:480px){#cbsLogo{height:19px}}@media(max-width:760px){header{flex-wrap:wrap;row-gap:10px;column-gap:10px;padding:10px 12px}#cbsLogo{order:1}header h1#title{order:2;font-size:16px!important}header::after{content:\"\";order:3;flex-basis:100%;height:0}#back{order:4;padding:7px 10px;border:1px solid #6b6e70;border-radius:8px}}';\nh=h.replace('</head>','<style id=\"hubHdr\">'+css+'</style></head>');\nreturn [{json:{html:h}}];"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "772d53ae-170e-447a-8676-531370b4710e",
+        "name": "Page Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-support",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "03e8deea-5827-4754-b2a1-cb908507602f"
+      },
+      {
+        "id": "51d91058-6927-4dee-af72-7b035433e0c6",
+        "name": "Build Page",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v);\nconst q=$input.first().json.query||{};\nlet rows=[];try{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=support',body:{},json:true,timeout:20000});rows=(Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);}catch(x){}\nconst D={tab:/^f/i.test(S(q.tab))?'feature':'bug',from:S(q.from).slice(0,500),openNew:S(q.new)==='1',rows:rows};\nconst CSS='*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n+'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n+'.wrap{max-width:760px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}'\n+'.btn{background:#F47920;color:#fff;text-decoration:none;font-weight:600;border-radius:8px;padding:8px 14px;font-size:14px;border:0;font-family:inherit;cursor:pointer}.btn.ghost{background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}.btn:disabled{opacity:.5}.btn.red{background:#fff;color:#b3261e;border:1px solid #e9b6b1}'\n+'.tabs{display:flex;gap:6px;margin-bottom:12px}.tab{flex:1;background:#fff;border:1px solid #d9d9d6;border-radius:10px;padding:10px;font:inherit;font-weight:600;cursor:pointer;color:#1d1d1d}.tab.on{background:#3d4043;color:#fff;border-color:#3d4043}.tab span{display:inline-block;background:#F47920;color:#fff;border-radius:20px;padding:0 7px;font-size:12px;margin-left:4px}'\n+'.strip{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}.pst{background:#fff;border:1px solid #d9d9d6;border-radius:10px;padding:8px 6px;text-align:center;cursor:pointer}.pst b{display:block;font-size:22px;line-height:1.1}.pst span{font-size:12px;color:#555}.pst.on{outline:2px solid #F47920}.pst.warn{border-color:#f2d398;background:#fff8ea}.pst.ok{border-color:#b9dfc1;background:#f1faf2}'\n+'.srch{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;margin-bottom:10px;background:#fff}'\n+'.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;margin-bottom:10px;padding:12px 14px}.t{font-weight:600}.m{color:#555;font-size:14px;margin-top:2px}.b{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.tx{white-space:pre-wrap;font-size:15px}'\n+'.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:20px;padding:1px 8px;margin-left:6px;background:#eee;color:#333;vertical-align:middle}.tag.ok{background:#e3f4e6;color:#1d6b2c}.tag.warn{background:#fff1d6;color:#8a5a00}.tag.bad{background:#fde3e1;color:#b3261e}.tag.blue{background:#e6efff;color:#1f5fbf}.tag.grey{background:#eee;color:#555}'\n+'.resp{background:#f6f6f4;border-radius:8px;padding:8px 10px;margin-top:8px;font-size:14px;white-space:pre-wrap}.resp.bad{background:#fde3e1}'\n+'.ph{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.ph .pc{position:relative;width:84px;height:84px;border-radius:8px;overflow:hidden;background:#eee}.ph img{width:100%;height:100%;object-fit:cover;display:block}.ph .x{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.65);color:#fff;border:0;border-radius:50%;width:24px;height:24px;font-size:14px;line-height:24px;padding:0;cursor:pointer}.pl{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#6b6e70;margin-top:10px}'\n+'.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}'\n+'.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;overflow:auto;z-index:20}.dlg{background:#fff;border-radius:14px;max-width:560px;width:100%;padding:16px}.dlg h2{margin:0 0 10px;font-size:18px}'\n+'label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}.dlg input[type=text],.dlg textarea,.dlg select{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}.dlg textarea{min-height:80px}'\n+'.chk{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid #eee}.chk input{width:20px;height:20px;flex:0 0 auto}.note{font-size:13px;color:#6b6e70;margin-top:8px}.hist{white-space:pre-wrap;font-size:12px;color:#6b6e70;margin-top:8px;border-top:1px solid #eee;padding-top:6px}.busy{font-size:14px;color:#8a5a00;margin-top:8px}';\nconst data=JSON.stringify(D).replace(/</g,'\\\\u003c');\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Support - CBS Operations Hub</title><script src=\"/webhook/cbs-guard\"></script><style>'+CSS+'</style>'\n+'<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script>'\n+'</head><body><header><div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a></div><h1>Support</h1><p>Bug reports and feature requests for the Operations Hub</p></header><div class=\"wrap\" id=\"app\"></div>'\n+'<script>window.D='+data+';</script><script>('+clientMain.toString()+')();</script></body></html>';\nreturn [{json:{html:html}}];\n\nfunction clientMain(){\nvar D=window.D,app=document.getElementById('app'),TAB=D.tab,FILTER='open',QUERY='';\nvar ST={bug:['New','Investigating','Fixed','Closed',\"Can't reproduce\"],feature:['Submitted','Under review','Accepted','Planned','In progress','Released','Not suitable','Duplicate']};\nvar DONE={'Closed':1,\"Can't reproduce\":1,'Released':1,'Not suitable':1,'Duplicate':1};\nvar PRI={bug:['Stops work','Annoying','Cosmetic'],feature:['Blocking my work','Important','Nice to have']};\nvar BASE_SECTIONS=['Hub home','Jobs','Enquiry prep','Job File','Programme','Snagging','Actions board','TV dashboard','RAMS builder','CoSHH builder','CPHSP','Pre-starts','Permits to work','Site inspections','Toolbox talks','Purchase orders','Equipment and Materials','Load-up sheets','Yard page','Vehicles','People','Training','Accreditations','Insurance','Subcontractors and Suppliers','H&S documents','Incidents','Hazards','Notifications','ServiceM8 add-on','Other'];\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction pj(v){try{var a=JSON.parse(v||'[]');return Array.isArray(a)?a:[];}catch(x){return [];}}\nfunction dmy(d){d=s(d);var m=d.match(/^(\\d{4})-(\\d{2})-(\\d{2})(?:[T ](\\d{2}:\\d{2}))?/);return m?m[3]+'/'+m[2]+'/'+m[1]+(m[4]?' '+m[4]:''):d;}\nfunction img(u){return '/webhook/cbs-file?u='+encodeURIComponent(u);}\nfunction me(){try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)return m.name;}catch(x){}try{return localStorage.getItem('cbs_name')||'';}catch(x){return '';}}\nfunction who(){var n=me()||prompt('Your name:');if(!n)return '';n=n.trim();try{localStorage.setItem('cbs_name',n);}catch(x){}return n;}\nfunction post(path,body){return fetch('/webhook/'+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();});}\nfunction resize(file,max){return new Promise(function(res,rej){var fr=new FileReader();fr.onerror=rej;fr.onload=function(){var im=new Image();im.onerror=rej;im.onload=function(){var w=im.width,hh=im.height,k=Math.min(1,max/Math.max(w,hh));var c=document.createElement('canvas');c.width=Math.round(w*k);c.height=Math.round(hh*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',0.85));};im.src=fr.result;};fr.readAsDataURL(file);});}\nfunction upload(files,ref,by,msgEl){var out=[],i=0;files=Array.prototype.slice.call(files||[]);\n function next(){if(i>=files.length)return Promise.resolve(out);var f=files[i++];if(msgEl)msgEl.textContent='Uploading photo '+i+' of '+files.length+'...';\n  return resize(f,1600).then(function(d){return post('cbs-support-photo',{ref:ref,by:by,data:d});}).then(function(r){if(!r||!r.ok||!r.url)throw new Error('upload');out.push({u:r.url,at:new Date().toISOString(),by:by});return next();});}\n return next();}\nfunction thumbs(list,rm){return '<div class=\"ph\">'+list.map(function(p,i){return '<div class=\"pc\"><a href=\"'+img(p.u)+'\" target=\"_blank\" rel=\"noopener\"><img loading=\"lazy\" src=\"'+img(p.u)+'\" alt=\"\"></a>'+(rm?'<button type=\"button\" class=\"x\" data-rm=\"'+i+'\" title=\"Remove\">&times;</button>':'')+'</div>';}).join('')+'</div>';}\nfunction dlg(html){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg\">'+html+'</div>';document.body.appendChild(o);o.addEventListener('click',function(ev){if(ev.target===o)o.remove();});o.close=function(){o.remove();};return o;}\nfunction dev(){var u=navigator.userAgent||'';var os=/iPad/.test(u)?'iPad':/iPhone/.test(u)?'iPhone':/Android/.test(u)?'Android':/Windows/.test(u)?'Windows':/Mac/.test(u)?'Mac':'Other';var br=/Edg\\//.test(u)?'Edge':/CriOS|Chrome\\//.test(u)?'Chrome':/FxiOS|Firefox\\//.test(u)?'Firefox':/Safari\\//.test(u)?'Safari':'Browser';return os+' / '+br+' / screen '+window.innerWidth+'x'+window.innerHeight;}\nfunction kindRows(k){return D.rows.filter(function(r){return (s(r.kind)||'bug')===k;});}\nfunction stOf(r){return s(r.status)||(s(r.kind)==='feature'?'Submitted':'New');}\nfunction isDone(r){return !!DONE[stOf(r)];}\nfunction cls(st){if(st==='Closed'||st==='Released'||st==='Fixed')return 'ok';if(st==='Not suitable'||st===\"Can't reproduce\")return 'bad';if(st==='Duplicate')return 'grey';if(st==='New'||st==='Submitted')return 'warn';return 'blue';}\nfunction priCls(p){return /stops|blocking/i.test(p)?'bad':(/annoying|important/i.test(p)?'warn':'grey');}\nfunction sections(){var m={};BASE_SECTIONS.forEach(function(x){m[x]=1;});D.rows.forEach(function(r){if(r.section)m[r.section]=1;});return Object.keys(m);}\nfunction newest(L){return L.slice().sort(function(a,b){return Number(b.id)-Number(a.id);});}\nfunction matches(r){if(!QUERY)return true;var t=[r.ref,r.title,r.details,r.expected,r.steps,r.section,stOf(r),r.priority,r.raised_by,r.response,r.reason].join(' ').toLowerCase();return QUERY.split(/\\s+/).every(function(w){return t.indexOf(w)>-1;});}\nfunction visible(){return newest(kindRows(TAB)).filter(function(r){if(FILTER==='open'&&isDone(r))return false;if(FILTER==='done'&&!isDone(r))return false;return matches(r);});}\nfunction card(r){var P=pj(r.photos_json),bug=s(r.kind)!=='feature',st=stOf(r);\n var h='<div class=\"card\" data-id=\"'+r.id+'\"><div class=\"t\">'+e(r.ref)+' &middot; '+e(r.title)+'<span class=\"tag '+cls(st)+'\">'+e(st)+'</span>'+(r.priority?'<span class=\"tag '+priCls(r.priority)+'\">'+e(r.priority)+'</span>':'')+'</div>';\n h+='<div class=\"m\">'+e([r.section,r.raised_by?'Raised by '+r.raised_by:'',r.raised_at?dmy(r.raised_at):''].filter(Boolean).join(' \\u00b7 '))+'</div>';\n if(r.details)h+='<div class=\"pl\">'+(bug?'What happened':'Request')+'</div><div class=\"tx\">'+e(r.details)+'</div>';\n if(bug&&r.expected)h+='<div class=\"pl\">Expected</div><div class=\"tx\">'+e(r.expected)+'</div>';\n if(bug&&r.steps)h+='<div class=\"pl\">Steps</div><div class=\"tx\">'+e(r.steps)+'</div>';\n if(P.length)h+='<div class=\"pl\">Photos</div>'+thumbs(P);\n if(r.reason)h+='<div class=\"resp bad\"><b>Not suitable:</b> '+e(r.reason)+'</div>';\n if(r.duplicate_of)h+='<div class=\"resp\"><b>Duplicate of</b> '+e(r.duplicate_of)+'</div>';\n if(r.response)h+='<div class=\"resp\"><b>Response:</b> '+e(r.response)+'</div>';\n if(bug&&(r.page_url||r.device))h+='<div class=\"note\">'+e([r.page_url?'Page: '+r.page_url:'',r.device?'Device: '+r.device:''].filter(Boolean).join(' \\u00b7 '))+'</div>';\n h+='<div class=\"b\"><button class=\"btn\" data-act=\"status\">Update status</button><button class=\"btn ghost\" data-act=\"edit\">Edit</button><button class=\"btn red\" data-act=\"del\">Delete</button></div>';\n if(r.history)h+='<details><summary class=\"m\" style=\"cursor:pointer\">History</summary><div class=\"hist\">'+e(r.history)+'</div></details>';\n return h+'</div>';}\nfunction render(){\n var ob=kindRows('bug').filter(function(r){return !isDone(r);}).length,of=kindRows('feature').filter(function(r){return !isDone(r);}).length;\n var L=kindRows(TAB),o=L.filter(function(r){return !isDone(r);}).length,bug=TAB==='bug';\n var h='<div class=\"tabs\"><button class=\"tab'+(bug?' on':'')+'\" data-tab=\"bug\">Bug reports<span>'+ob+'</span></button><button class=\"tab'+(!bug?' on':'')+'\" data-tab=\"feature\">Feature requests<span>'+of+'</span></button></div>';\n h+='<div class=\"tools\"><button class=\"btn\" id=\"add\">'+(bug?'+ Report a bug':'+ Request a feature')+'</button><button class=\"btn ghost\" id=\"rep\">Claude report</button></div>';\n h+='<div class=\"strip\"><div class=\"pst warn'+(FILTER==='open'?' on':'')+'\" data-f=\"open\"><b>'+o+'</b><span>Open</span></div><div class=\"pst ok'+(FILTER==='done'?' on':'')+'\" data-f=\"done\"><b>'+(L.length-o)+'</b><span>'+(bug?'Closed':'Done')+'</span></div><div class=\"pst'+(FILTER==='all'?' on':'')+'\" data-f=\"all\"><b>'+L.length+'</b><span>All</span></div></div>';\n h+='<input type=\"search\" id=\"q\" class=\"srch\" placeholder=\"Search '+(bug?'bug reports':'feature requests')+'\" value=\"'+e(QUERY)+'\"><div id=\"list\"></div>';\n app.innerHTML=h;\n app.querySelectorAll('.tab').forEach(function(t){t.onclick=function(){TAB=t.getAttribute('data-tab');FILTER='open';QUERY='';try{history.replaceState(null,'','?tab='+TAB);}catch(x){}render();};});\n app.querySelectorAll('.pst').forEach(function(p){p.onclick=function(){FILTER=p.getAttribute('data-f');render();};});\n document.getElementById('q').oninput=function(){QUERY=this.value.trim().toLowerCase();renderList();};\n document.getElementById('add').onclick=function(){editDlg(null);};\n document.getElementById('rep').onclick=reportDlg;\n renderList();}\nfunction renderList(){var V=visible(),el=document.getElementById('list'),h='';\n if(!V.length)h='<div class=\"empty\">'+(QUERY?'Nothing matches your search.':(kindRows(TAB).length?'Nothing in this list.':(TAB==='bug'?'No bug reports yet. Tap + Report a bug if something is not working.':'No feature requests yet. Tap + Request a feature to suggest one.')))+'</div>';\n V.forEach(function(r){h+=card(r);});el.innerHTML=h;\n el.querySelectorAll('[data-act]').forEach(function(b){b.onclick=function(){var id=b.closest('.card').getAttribute('data-id');var r=D.rows.filter(function(x){return String(x.id)===id;})[0];if(!r)return;var a=b.getAttribute('data-act');\n  if(a==='edit')editDlg(r);else if(a==='status')statusDlg(r);else if(a==='del')del(r);};});}\nfunction reload(){return fetch('/webhook/cbs-support-data',{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){D.rows=d.rows||[];render();}).catch(function(){location.reload();});}\nfunction errMsg(err,fallback){return err&&err.message&&err.message.length<160&&!/HTTP|upload|save|fetch|network/i.test(err.message)?err.message:fallback;}\nfunction editDlg(r){var kind=r?(s(r.kind)==='feature'?'feature':'bug'):TAB,bug=kind==='bug',P=r?pj(r.photos_json):[],pri=PRI[kind];\n var o=dlg('<h2>'+(r?'Edit '+e(r.ref):(bug?'Report a bug':'Request a feature'))+'</h2>'\n +'<label class=\"f\">'+(bug?'Short summary':'Feature in a few words')+'</label><input type=\"text\" id=\"ft\" value=\"'+e(r&&r.title)+'\" placeholder=\"'+(bug?'e.g. Load-up sheet will not save':'e.g. Add a fuel log to Vehicles')+'\">'\n +'<label class=\"f\">Hub section</label><input type=\"text\" id=\"fs\" list=\"dls\" value=\"'+e(r&&r.section)+'\" placeholder=\"Pick or type a section\"><datalist id=\"dls\">'+sections().map(function(x){return '<option value=\"'+e(x)+'\">';}).join('')+'</datalist>'\n +'<label class=\"f\">'+(bug?'What happened':'What it should do and why it would help')+'</label><textarea id=\"fd\">'+e(r&&r.details)+'</textarea>'\n +(bug?'<label class=\"f\">What you expected to happen</label><textarea id=\"fe\">'+e(r&&r.expected)+'</textarea><label class=\"f\">Steps to get there (optional)</label><textarea id=\"fx\" placeholder=\"1. Open ...  2. Tap ...  3. ...\">'+e(r&&r.steps)+'</textarea>':'')\n +'<label class=\"f\">'+(bug?'Severity':'Priority')+'</label><select id=\"fp\">'+pri.map(function(x){var on=r?r.priority===x:x===pri[1];return '<option'+(on?' selected':'')+'>'+e(x)+'</option>';}).join('')+'</select>'\n +'<label class=\"f\">Photos / screenshots</label><div id=\"fph\"></div><input type=\"file\" id=\"ff\" accept=\"image/*\" multiple style=\"margin-top:6px\">'\n +(bug&&!r&&D.from?'<div class=\"note\">Raised from: '+e(D.from)+'</div>':'')\n +'<div class=\"busy\" id=\"fm\"></div><div class=\"b\"><button class=\"btn\" id=\"fsv\">'+(r?'Save changes':(bug?'Send bug report':'Send request'))+'</button><button class=\"btn ghost\" id=\"fc\">Cancel</button></div>');\n function ph(){var el=o.querySelector('#fph');el.innerHTML=P.length?thumbs(P,true):'<div class=\"note\">No photos yet.</div>';el.querySelectorAll('[data-rm]').forEach(function(x){x.onclick=function(){P.splice(Number(x.getAttribute('data-rm')),1);ph();};});}ph();\n o.querySelector('#fc').onclick=function(){o.close();};\n o.querySelector('#fsv').onclick=function(){var t=o.querySelector('#ft').value.trim(),d=o.querySelector('#fd').value.trim();if(!t){alert('Add a short summary.');return;}if(!d){alert(bug?'Say what happened.':'Describe the feature.');return;}var by=who();if(!by)return;\n  var btn=this,msg=o.querySelector('#fm');btn.disabled=true;\n  upload(o.querySelector('#ff').files,r?s(r.ref):(bug?'Bug':'Feature'),by,msg).then(function(up){msg.textContent='Saving...';\n   var body={a:'save',id:r?r.id:0,kind:kind,by:by,title:t,details:d,section:o.querySelector('#fs').value.trim(),priority:o.querySelector('#fp').value,photos_json:JSON.stringify(P.concat(up))};\n   if(bug){body.expected=o.querySelector('#fe').value.trim();body.steps=o.querySelector('#fx').value.trim();if(!r){body.page_url=D.from;body.device=dev();}}\n   return post('cbs-support-act',body);})\n  .then(function(res){if(!res.ok)throw new Error(res.message||'save');o.close();if(!r){FILTER='open';D.from='';}return reload().then(function(){if(!r&&res.ref)alert((bug?'Bug report ':'Feature request ')+res.ref+' sent. Thanks!');});})\n  .catch(function(err){btn.disabled=false;msg.textContent='';alert(errMsg(err,'Could not save. Check your connection and try again.'));});};}\nfunction statusDlg(r){var kind=s(r.kind)==='feature'?'feature':'bug',L=ST[kind],cur=stOf(r);\n var others=newest(kindRows(kind)).filter(function(x){return x.id!==r.id;});\n var o=dlg('<h2>Update '+e(r.ref)+'</h2><div class=\"m\">'+e(r.title)+'</div>'\n +'<label class=\"f\">Status</label><select id=\"ss\">'+L.map(function(x){return '<option'+(x===cur?' selected':'')+'>'+e(x)+'</option>';}).join('')+'</select>'\n +'<div id=\"sw\"><label class=\"f\">Why it does not fit the workflow (shown to the team)</label><textarea id=\"sr\" placeholder=\"e.g. Clashes with how ServiceM8 handles job queues\">'+e(r.reason)+'</textarea></div>'\n +'<div id=\"sdw\"><label class=\"f\">Duplicate of</label><select id=\"sd\"><option value=\"\">Pick the original</option>'+others.map(function(x){return '<option value=\"'+e(x.ref)+'\"'+(x.ref===r.duplicate_of?' selected':'')+'>'+e(x.ref+' - '+x.title)+'</option>';}).join('')+'</select></div>'\n +'<label class=\"f\">Response / notes for the team (optional)</label><textarea id=\"sn\">'+e(r.response)+'</textarea>'\n +'<div class=\"busy\" id=\"sm\"></div><div class=\"b\"><button class=\"btn\" id=\"sv\">Save</button><button class=\"btn ghost\" id=\"sc\">Cancel</button></div>');\n var sel=o.querySelector('#ss');function vis(){o.querySelector('#sw').style.display=sel.value==='Not suitable'?'':'none';o.querySelector('#sdw').style.display=sel.value==='Duplicate'?'':'none';}sel.onchange=vis;vis();\n o.querySelector('#sc').onclick=function(){o.close();};\n o.querySelector('#sv').onclick=function(){var st=sel.value,why=o.querySelector('#sr').value.trim(),dup=o.querySelector('#sd').value;\n  if(st==='Not suitable'&&!why){alert('Say why it does not fit the workflow.');return;}if(st==='Duplicate'&&!dup){alert('Pick the original request.');return;}var by=who();if(!by)return;\n  var btn=this,msg=o.querySelector('#sm');btn.disabled=true;msg.textContent='Saving...';\n  post('cbs-support-act',{a:'status',id:r.id,by:by,status:st,reason:why,duplicate_of:dup,response:o.querySelector('#sn').value.trim()})\n  .then(function(res){if(!res.ok)throw new Error(res.message||'save');o.close();return reload();})\n  .catch(function(err){btn.disabled=false;msg.textContent='';alert(errMsg(err,'Could not save. Check your connection and try again.'));});};}\nfunction del(r){if(!confirm('Delete '+r.ref+' - '+r.title+'?'))return;if(!confirm('Are you sure? This permanently removes the record. Photos stay in SharePoint.'))return;var by=who();if(!by)return;\n post('cbs-support-act',{a:'delete',id:r.id,by:by}).then(function(res){if(!res.ok)throw 0;return reload();}).catch(function(){alert('Could not delete. Try again.');});}\nfunction CTX(){return TAB==='bug'?'For Claude: these are bug reports raised by Chelmsford Building Services (CBS) staff in the CBS Operations Hub. The hub is a set of web pages served by n8n webhook workflows (named \"CBS - ...\"), with data in n8n data tables named cbs_*, linked to ServiceM8 (jobs) and SharePoint (documents). Each report has what happened, what was expected, steps, the hub section, the page and device it was raised from, and screenshots. For each one, work out the likely cause and the fix, and say which workflow or page it sits in.':'For Claude: these are feature requests raised by Chelmsford Building Services (CBS) staff for the CBS Operations Hub, a set of web pages served by n8n webhook workflows (named \"CBS - ...\") with data in n8n data tables named cbs_*, linked to ServiceM8 and SharePoint. For each one, suggest how it could be built in the hub, flag anything that clashes with the current workflow, and give a rough size.';}\nfunction meta(r){var bug=s(r.kind)!=='feature';return 'Status: '+stOf(r)+'  |  '+(bug?'Severity':'Priority')+': '+(s(r.priority)||'-')+'  |  Section: '+(s(r.section)||'-')+'  |  Raised by '+(s(r.raised_by)||'-')+' on '+dmy(r.raised_at);}\nfunction buildText(list,opt){var bug=TAB==='bug',out=[CTX(),'','Exported '+new Date().toLocaleString('en-GB')+' - '+list.length+' item'+(list.length===1?'':'s'),''];\n list.forEach(function(r){out.push('## '+r.ref+' - '+r.title);out.push(meta(r));out.push('');out.push((bug?'What happened: ':'Request: ')+s(r.details));\n  if(bug&&r.expected)out.push('Expected: '+r.expected);if(bug&&r.steps)out.push('Steps: '+r.steps);if(bug&&r.page_url)out.push('Page: '+r.page_url);if(bug&&r.device)out.push('Device: '+r.device);\n  if(r.response)out.push('Response: '+r.response);if(r.reason)out.push('Not suitable because: '+r.reason);if(r.duplicate_of)out.push('Duplicate of: '+r.duplicate_of);\n  var P=pj(r.photos_json);if(P.length)out.push('Photos: '+P.map(function(p){return p.u;}).join(' , '));\n  if(opt.hist&&r.history)out.push('History:\\n'+r.history);out.push('');});\n return out.join('\\n');}\nfunction copyText(t){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t);return new Promise(function(res,rej){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();var ok=false;try{ok=document.execCommand('copy');}catch(x){}ta.remove();ok?res():rej();});}\nfunction loadImg(u){return fetch(img(u)).then(function(r){if(!r.ok)throw 0;return r.blob();}).then(function(b){return new Promise(function(res,rej){var im=new Image();var url=URL.createObjectURL(b);im.onload=function(){var k=Math.min(1,1400/Math.max(im.width,im.height));var c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(url);res({d:c.toDataURL('image/jpeg',0.85),w:c.width,h:c.height});};im.onerror=function(){URL.revokeObjectURL(url);rej();};im.src=url;});}).catch(function(){return null;});}\nfunction buildPdf(list,opt){\n if(!window.jspdf)return Promise.reject(new Error('pdf'));\n var doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'}),W=210,M=14,y=0,bug=TAB==='bug';\n var title=(bug?'Bug reports':'Feature requests')+' - CBS Operations Hub',dt=new Date().toLocaleString('en-GB');\n function top(){doc.setFillColor(244,121,32);doc.rect(0,0,W,4,'F');doc.setTextColor(30);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text(title,M,14);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text('Chelmsford Building Services Ltd  |  Exported '+dt+'  |  '+list.length+' item'+(list.length===1?'':'s'),M,19);y=26;}\n function need(hh){if(y+hh>285){doc.addPage();top();}}\n function para(t,size,col,bold){t=s(t);if(!t)return;doc.setFont('helvetica',bold?'bold':'normal');doc.setFontSize(size);doc.setTextColor(col);var L=doc.splitTextToSize(t,W-2*M),lh=size*0.45;for(var i=0;i<L.length;i++){need(lh);doc.text(L[i],M,y);y+=lh;}}\n function field(label,val){if(!s(val))return;y+=1.5;para(label,8,110,true);y+=0.5;para(val,10,30,false);}\n top();para(CTX(),9,70,false);y+=3;\n var p=Promise.resolve();\n list.forEach(function(r){p=p.then(function(){var P=opt.photos?pj(r.photos_json):[];\n  return Promise.all(P.map(function(x){return loadImg(x.u);})).then(function(ims){ims=ims.filter(Boolean);\n   need(22);doc.setDrawColor(210);doc.line(M,y,W-M,y);y+=6;\n   para(s(r.ref)+'  -  '+s(r.title),12,20,true);y+=0.5;para(meta(r),8.5,100,false);\n   field(bug?'WHAT HAPPENED':'REQUEST',r.details);\n   if(bug){field('EXPECTED',r.expected);field('STEPS',r.steps);field('PAGE',r.page_url);field('DEVICE',r.device);}\n   field('RESPONSE',r.response);field('NOT SUITABLE BECAUSE',r.reason);field('DUPLICATE OF',r.duplicate_of);\n   if(opt.hist)field('HISTORY',r.history);\n   if(ims.length){y+=2;para('PHOTOS ('+ims.length+')',8,110,true);var cw=(W-2*M-6)/2;\n    for(var j=0;j<ims.length;j+=2){var a=ims[j],b2=ims[j+1];function dim(im){if(!im)return [0,0];var w=cw,hh=im.h*w/im.w;if(hh>95){hh=95;w=im.w*hh/im.h;}return [w,hh];}\n     var d1=dim(a),d2=dim(b2),rh=Math.max(d1[1],d2[1]);need(rh+4);doc.addImage(a.d,'JPEG',M,y+1,d1[0],d1[1]);if(b2)doc.addImage(b2.d,'JPEG',M+cw+6,y+1,d2[0],d2[1]);y+=rh+4;}}\n   y+=3;});});});\n return p.then(function(){var n=doc.getNumberOfPages();for(var i=1;i<=n;i++){doc.setPage(i);doc.setFontSize(7.5);doc.setTextColor(120);doc.text('Page '+i+' of '+n,W-M,292,{align:'right'});}return doc;});}\nfunction reportDlg(){var L=newest(kindRows(TAB)).reverse(),bug=TAB==='bug';\n var o=dlg('<h2>Claude report - '+(bug?'bug reports':'feature requests')+'</h2><div class=\"note\" style=\"margin:0 0 8px\">Pick what to include (open items are ticked). Download the PDF and drop it into Claude in one go - details and photos sit together.</div>'\n +(L.length?'<div class=\"b\" style=\"margin:0 0 6px\"><button type=\"button\" class=\"btn ghost\" id=\"pa\">Select all</button><button type=\"button\" class=\"btn ghost\" id=\"po\">Open only</button><button type=\"button\" class=\"btn ghost\" id=\"pn\">Select none</button></div>'+L.map(function(r){return '<label class=\"chk\"><input type=\"checkbox\" value=\"'+r.id+'\"'+(isDone(r)?'':' checked')+'><span><b>'+e(r.ref)+' - '+e(r.title)+'</b><span class=\"tag '+cls(stOf(r))+'\">'+e(stOf(r))+'</span><br><span class=\"m\">'+e([r.section,r.priority].filter(Boolean).join(' \\u00b7 '))+'</span></span></label>';}).join(''):'<div class=\"empty\">Nothing to report yet.</div>')\n +'<div class=\"pl\">Include</div><label class=\"chk\"><input type=\"checkbox\" id=\"op\" checked><span>Photos and screenshots</span></label><label class=\"chk\"><input type=\"checkbox\" id=\"oh\"><span>History (status changes)</span></label>'\n +'<div class=\"busy\" id=\"pm\"></div><div class=\"b\"><button class=\"btn\" id=\"pg\"'+(L.length?'':' disabled')+'>Download PDF</button><button class=\"btn ghost\" id=\"pt\"'+(L.length?'':' disabled')+'>Copy as text</button><button class=\"btn ghost\" id=\"pc\">Cancel</button></div>');\n var bx=o.querySelectorAll('.chk input[value]');\n if(L.length){o.querySelector('#pa').onclick=function(){bx.forEach(function(x){x.checked=true;});};o.querySelector('#pn').onclick=function(){bx.forEach(function(x){x.checked=false;});};\n  o.querySelector('#po').onclick=function(){bx.forEach(function(x){var r=L.filter(function(y){return String(y.id)===x.value;})[0];x.checked=!!r&&!isDone(r);});};}\n o.querySelector('#pc').onclick=function(){o.close();};\n function picked(){var ids=Array.prototype.filter.call(bx,function(x){return x.checked;}).map(function(x){return x.value;});return L.filter(function(r){return ids.indexOf(String(r.id))>-1;});}\n var msg=o.querySelector('#pm');\n o.querySelector('#pg').onclick=function(){var sel=picked();if(!sel.length){alert('Pick at least one item.');return;}var btn=this;btn.disabled=true;msg.textContent='Building the report...';\n  buildPdf(sel,{photos:o.querySelector('#op').checked,hist:o.querySelector('#oh').checked}).then(function(doc){doc.save('CBS Hub - '+(bug?'Bug reports':'Feature requests')+' - '+new Date().toLocaleDateString('en-CA')+'.pdf');btn.disabled=false;msg.textContent='';o.close();})\n  .catch(function(){btn.disabled=false;msg.textContent='';alert('Could not build the report. Try again.');});};\n o.querySelector('#pt').onclick=function(){var sel=picked();if(!sel.length){alert('Pick at least one item.');return;}\n  copyText(buildText(sel,{hist:o.querySelector('#oh').checked})).then(function(){msg.textContent='Copied. Paste it into Claude (photo links are included).';}).catch(function(){alert('Could not copy on this device. Use Download PDF instead.');});};}\nrender();\nif(D.openNew)editDlg(null);\n}\n"
+        }
+      },
+      {
+        "id": "6e0f65b1-7c37-4506-a611-f273b18e4ca0",
+        "name": "Respond Page",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "6ae1710c-dd75-4a37-aaee-592584011ac4",
+        "name": "Data Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          224
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-support-data",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "bd03c1d9-b4e7-4108-b45d-1722fe9833d8"
+      },
+      {
+        "id": "641e12b1-c05f-4b19-92e7-3de64a3a3fa2",
+        "name": "Data",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          224
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/';\nlet L=[];try{L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=support',body:{},json:true,timeout:20000});}catch(e){L=[];}\nL=(Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);\nconst k=String(($input.first().json.query||{}).kind||'');if(k)L=L.filter(r=>String(r.kind)===k);\nconst open=L.filter(r=>!/^(Closed|Can't reproduce|Released|Not suitable|Duplicate)$/.test(String(r.status||''))).length;\nreturn [{json:{rows:L,open:open}}];\n"
+        }
+      },
+      {
+        "id": "e8ae67e8-733e-40db-ab7f-5c7405da7535",
+        "name": "Respond Data",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          224
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "857dec78-e59b-4ab0-a831-6029220ad75d",
+        "name": "Photo Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          448
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-support-photo",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "2108ff22-7ff4-4064-8fcf-4ad48943a36a"
+      },
+      {
+        "id": "6970dc3a-1bf5-4fe6-b072-1caf6c949652",
+        "name": "Photo Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          448
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const b=$input.first().json.body||{};const S=v=>v==null?'':String(v).trim();\nconst seg=v=>S(v).replace(/[\\\\/:*?\"<>|#%\\r\\n]+/g,' ').replace(/\\s+/g,' ').trim();\nconst data=S(b.data).replace(/^data:[^,]*,/,'').replace(/[^A-Za-z0-9+/=]/g,'');if(data.length<200)throw new Error('No photo');\nconst ref=seg(b.ref)||'Support';\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','_').replace(/:/g,'').slice(0,15);\nconst fn=seg(now+' - '+ref+' - '+Math.random().toString(36).slice(2,6))+'.jpg';\nreturn [{json:{path:['CBS System','Operations','Support','Photos',fn].map(encodeURIComponent).join('/'),name:fn},binary:{data:{data:data,mimeType:'image/jpeg',fileName:fn}}}];\n"
+        }
+      },
+      {
+        "id": "999b8f7b-dd1f-44b8-8b60-2371c24d0aa0",
+        "name": "Photo Upload",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          448,
+          448
+        ],
+        "parameters": {
+          "method": "PUT",
+          "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.path }}:/content?@microsoft.graph.conflictBehavior=rename",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "sendBody": true,
+          "contentType": "binaryData",
+          "inputDataFieldName": "data",
+          "options": {
+            "timeout": 120000
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "a43aa06e-1731-4831-be06-dcabdb8f0bb3",
+        "name": "Photo Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          448
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify({ ok: !!$json.webUrl, url: $json.webUrl || \"\" }) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "b3c7f96a-9c30-4e75-b980-b38654342e0b",
+        "name": "Act Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          672
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-support-act",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "a089fc83-832c-49cf-b5ab-f9c8a6adb9e8"
+      },
+      {
+        "id": "0a116674-a5bd-4a02-b3c0-0e5148ae0013",
+        "name": "Act",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          672
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();\nconst b=$input.first().json.body||{};const a=S(b.a),by=S(b.by).slice(0,80);\nif(!by)return [{json:{ok:false,message:'Enter your name.'}}];\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst stamp=now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16);\nconst save=(id,row,p)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=support&id='+(id||0)+'&k='+K+(p?'&partial=1':''),body:row,json:true,timeout:20000});\nlet L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=support',body:{},json:true,timeout:20000});L=Array.isArray(L)?L:[];\nconst find=id=>L.find(r=>r&&String(r.id)===S(id));\nconst hist=(r,line)=>[S(r&&r.history),stamp+' - '+line].filter(Boolean).join('\\n');\nconst pj=v=>{try{const x=JSON.parse(v||'[]');return Array.isArray(x)?x.filter(p=>p&&/^https:\\/\\/chelmsfordbuildingservices(-my)?\\.sharepoint\\.com\\//i.test(S(p.u))).slice(0,30):[];}catch(e){return [];}};\nconst ST={bug:['New','Investigating','Fixed','Closed',\"Can't reproduce\"],feature:['Submitted','Under review','Accepted','Planned','In progress','Released','Not suitable','Duplicate']};\nconst PRI={bug:['Stops work','Annoying','Cosmetic'],feature:['Blocking my work','Important','Nice to have']};\nif(a==='save'){\n const id=Number(b.id)||0;const old=id?find(id):null;if(id&&!old)return [{json:{ok:false,message:'That item was not found. Refresh the page.'}}];\n const kind=old?(S(old.kind)==='feature'?'feature':'bug'):(S(b.kind)==='feature'?'feature':'bug');\n const title=S(b.title).slice(0,200),details=S(b.details).slice(0,5000);\n if(!title)return [{json:{ok:false,message:'Add a short summary.'}}];\n if(!details)return [{json:{ok:false,message:kind==='bug'?'Say what happened.':'Describe the feature.'}}];\n const row={title:title,details:details,section:S(b.section).slice(0,120),priority:PRI[kind].indexOf(S(b.priority))>-1?S(b.priority):PRI[kind][1],photos_json:JSON.stringify(pj(b.photos_json))};\n if(kind==='bug'){row.expected=S(b.expected).slice(0,3000);row.steps=S(b.steps).slice(0,3000);}\n if(old){row.updated_by=by;row.history=hist(old,'Edited by '+by);await save(id,row,true);return [{json:{ok:true,id:id,ref:S(old.ref)}}];}\n const pre=kind==='bug'?'BUG-':'FR-';\n const n=L.filter(r=>S(r.kind)===kind).reduce((m,r)=>Math.max(m,Number(S(r.ref).replace(/\\D/g,''))||0),0)+1;\n const ref=pre+String(n).padStart(3,'0');\n Object.assign(row,{kind:kind,ref:ref,status:ST[kind][0],reason:'',response:'',duplicate_of:'',page_url:kind==='bug'?S(b.page_url).slice(0,500):'',device:kind==='bug'?S(b.device).slice(0,200):'',raised_by:by,raised_at:now,updated_by:'',history:stamp+' - Raised by '+by});\n if(kind!=='bug'){row.expected='';row.steps='';}\n const res=await save(0,row,false);\n try{await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=notices&id=0&k='+K,body:{title:(kind==='bug'?'New bug report ':'New feature request ')+ref,message:title+' (raised by '+by+')',event:kind==='bug'?'support_bug':'support_feature',job_no:'',link:H+'cbs-support?tab='+kind,created_at:now},json:true,timeout:10000});}catch(e){}\n return [{json:{ok:true,id:Number(res&&res.id)||0,ref:ref}}];\n}\nif(a==='status'){const r=find(b.id);if(!r)return [{json:{ok:false,message:'That item was not found. Refresh the page.'}}];\n const kind=S(r.kind)==='feature'?'feature':'bug';const st=S(b.status);if(ST[kind].indexOf(st)<0)return [{json:{ok:false,message:'Pick a status.'}}];\n const reason=st==='Not suitable'?S(b.reason).slice(0,2000):'';if(st==='Not suitable'&&!reason)return [{json:{ok:false,message:'Say why it is not suitable.'}}];\n const dup=st==='Duplicate'?S(b.duplicate_of).slice(0,20):'';if(st==='Duplicate'&&!dup)return [{json:{ok:false,message:'Pick the original request.'}}];\n const resp=S(b.response).slice(0,3000);\n const line=(st!==S(r.status)?'Status '+(S(r.status)||'-')+' to '+st:'Updated')+' by '+by+(reason?': '+reason:'')+(dup?' (duplicate of '+dup+')':'')+(resp&&resp!==S(r.response)?' - response: '+resp:'');\n await save(r.id,{status:st,reason:reason,duplicate_of:dup,response:resp,updated_by:by,history:hist(r,line)},true);\n return [{json:{ok:true}}];}\nif(a==='delete'){const r=find(b.id);if(!r)return [{json:{ok:true}}];\n await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=del&t=support&id='+r.id+'&k='+K,body:{},json:true,timeout:20000});return [{json:{ok:true}}];}\nreturn [{json:{ok:false,message:'Unknown action.'}}];\n"
+        }
+      },
+      {
+        "id": "2686afda-2503-4556-97f5-6cc7f2d95c21",
+        "name": "Respond Act",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          672
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "06be2431-5629-4d8c-9bcc-8814ee0d166a",
+        "name": "Hub Header",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          336,
+          160
+        ],
+        "parameters": {
+          "jsCode": "let h=String($input.first().json.html||'');\nh=h.split('>Claude report<').join('>Report<').split('<h2>Claude report - ').join('<h2>Report - ');\nh=h.split('<header><div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a></div><h1>Support</h1><p>Bug reports and feature requests for the Operations Hub</p></header>').join('<header><img id=\"cbsLogo\" src=\"/webhook/cbs-programme-logo\" alt=\"Chelmsford Building Services\" title=\"Home\" onerror=\"this.style.display=\\'none\\'\" onclick=\"location.href=\\'/webhook/cbs-admin\\'\"><button id=\"back\" type=\"button\" onclick=\"location.href=\\'/webhook/cbs-admin\\'\">&#8249; Back</button><h1 id=\"title\">Support</h1></header>');\nconst css='header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:12px}header h1{margin:0!important;font-size:17px!important;flex:1}header button{background:none;border:0;color:#ffb37a;font-size:15px;font-weight:600;cursor:pointer;padding:6px;font-family:inherit}#cbsLogo{height:24px;width:auto;max-width:180px;cursor:pointer;flex:0 0 auto;display:block}@media(max-width:480px){#cbsLogo{height:19px}}@media(max-width:760px){header{flex-wrap:wrap;row-gap:10px;column-gap:10px;padding:10px 12px}#cbsLogo{order:1}header h1#title{order:2;font-size:16px!important}header::after{content:\"\";order:3;flex-basis:100%;height:0}#back{order:4;padding:7px 10px;border:1px solid #6b6e70;border-radius:8px}}';\nh=h.replace('</head>','<style id=\"hubHdr\">'+css+'</style></head>');\nreturn [{json:{html:h}}];"
+        }
+      }
+    ],
+    "connections": {
+      "Page Hook": {
+        "main": [
+          [
+            {
+              "node": "Build Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data Hook": {
+        "main": [
+          [
+            {
+              "node": "Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data": {
+        "main": [
+          [
+            {
+              "node": "Respond Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Photo Hook": {
+        "main": [
+          [
+            {
+              "node": "Photo Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Photo Prep": {
+        "main": [
+          [
+            {
+              "node": "Photo Upload",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Photo Upload": {
+        "main": [
+          [
+            {
+              "node": "Photo Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Act Hook": {
+        "main": [
+          [
+            {
+              "node": "Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Act": {
+        "main": [
+          [
+            {
+              "node": "Respond Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Build Page": {
+        "main": [
+          [
+            {
+              "node": "Hub Header",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Hub Header": {
+        "main": [
+          [
+            {
+              "node": "Respond Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS Support: bug reports and feature requests. GET cbs-support (page, ?tab=bug|feature, ?new=1&from=<url> opens a new report), GET cbs-support-data, POST cbs-support-photo (SharePoint), POST cbs-support-act (save/status/delete). Claude report PDF built in",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

@@ -1,0 +1,136 @@
+{
+  "id": "esJ5f1xamBaulg4D",
+  "name": "CBS - Site Tasks",
+  "active": true,
+  "isArchived": false,
+  "versionId": "2fe2a913-bbed-4789-ab86-91d64185575e",
+  "activeVersionId": "2fe2a913-bbed-4789-ab86-91d64185575e",
+  "triggerCount": 1,
+  "createdAt": "2026-10-25T14:15:26.098Z",
+  "updatedAt": "2026-10-25T14:15:26.098Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Site Task Hook": {
+      "main": [
+        [
+          {
+            "node": "Site Task Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "e6e5c015-3eed-4444-ab98-f0ef006973aa",
+      "name": "Site Task Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-site-task",
+        "responseMode": "lastNode"
+      },
+      "webhookId": "712d9ace-6716-404f-b0d3-02f0b4e03bf2"
+    },
+    {
+      "id": "cef5bb04-ae07-4b03-9b95-c6998144273b",
+      "name": "Site Task Act",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* CBS ON SITE TASKS. POST cbs-site-task {a,by,...} from the hub (+ New task picker On site tasks side, task panel).\n   An on site task is a one-off job task row (cbs_job_tasks, req custom) with data_json.onsite = true, optionally a form\n   (survey, permits, inspection, audit, preuse) the crew fill in from the job portal and mark as submitted (data_json.sub).\n   a=get {id}: the row's on site settings. a=create {job, form, title, desc}: a new on site task (title defaults to the form name).\n   a=set {id, onsite}: send to site / move to office. a=sendback {id, note}: back to the crew with a note (clears sub, To do).\n   Approve is the normal Done (cbs-tasks-act status). Writes through cbs-task-db and the shared status. */\nconst H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const b=$input.first().json.body||{};\nconst R=(ok,x)=>[{json:Object.assign({ok:ok},x||{})}];\nconst a=S(b.a),by=S(b.by).slice(0,80);if(!by)return R(false,{message:'Enter your name.'});\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst db=(op,o)=>this.helpers.httpRequest({method:'POST',url:H+'cbs-task-db',body:Object.assign({k:K,op:op},o||{}),json:true,timeout:30000});\nconst pj=v=>{try{const o=JSON.parse(S(v)||'{}');return o&&typeof o==='object'?o:{};}catch(e){return {};}};\nconst F={survey:['Site survey','Survey'],permits:['Permits to work','H&S'],inspection:['Site inspection','H&S'],audit:['Sub-contractor audit','H&S'],preuse:['Pre-use checks','H&S']};\nasync function row(id){const L=await db('get',{id:id});return Array.isArray(L)&&L[0]&&L[0].id!=null?L[0]:null;}\nconst st=(r,to)=>this.helpers.httpRequest({method:'POST',url:H+'cbs-task-status',body:{rows:[{task_key:'jobreq:'+S(r.job_no)+':task'+r.id,title:S(r.label).slice(0,200),ref_table:'row',ref_id:String(r.id),grp:'Job '+S(r.job_no),status:to,v:2,note:'',note_date:'',note_by:''}]},json:true,timeout:20000}).catch(()=>null);\nif(a==='create'){const job=S(b.job).replace(/[^0-9A-Za-z-]/g,'');if(!job)return R(false,{message:'No job number.'});\n const form=F[S(b.form)]?S(b.form):'';const title=(S(b.title)||(form?F[form][0]:'')).slice(0,200);if(!title)return R(false,{message:'Say what needs doing.'});\n const d={onsite:true};if(form)d.form=form;\n const res=await db('insert',{row:{job_no:job,req:'custom',kind:'custom',label:title,status:'To do',due_on:'',notes:S(b.desc).slice(0,4000),category:form?F[form][1]:'Site',assignee:'',stage:'Job',applies_to:'',data_json:JSON.stringify(d),files_json:'',created_by:by,created_at:now}});\n return R(true,{id:res&&res.id,key:'jobreq:'+job+':task'+(res&&res.id)});}\nconst r=await row(b.id);if(!r)return R(false,{message:'That task was not found. Refresh the page.'});\nconst d=pj(r.data_json),custom=(S(r.req)||'custom')==='custom';\nif(a==='get'){const on=custom&&!!S(r.job_no)&&(d.onsite===true||(d.onsite==null&&['Site','Snag','H&S'].indexOf(S(r.category))>-1));\n return R(true,{id:r.id,job:S(r.job_no),custom:custom,onsite:on,set:d.onsite===true||d.onsite===false,form:S(d.form),sub:d.sub||null,sendback:d.sendback||null,status:S(r.status)});}\nif(!custom||!S(r.job_no))return R(false,{message:'Only one-off job tasks can go to site.'});\nif(a==='set'){const on=b.onsite===true||b.onsite==='true';d.onsite=on;await db('update',{id:r.id,row:{data_json:JSON.stringify(d)}});return R(true,{onsite:on});}\nif(a==='sendback'){const note=S(b.note).slice(0,1000);if(!note)return R(false,{message:'Say what needs doing again.'});\n d.sendback={note:note,by:by,at:now};delete d.sub;d.onsite=true;await db('update',{id:r.id,row:{data_json:JSON.stringify(d),status:'To do',done_by:'',done_at:''}});await st(r,'To do');return R(true);}\nreturn R(false,{message:'Unknown action.'});"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "e6e5c015-3eed-4444-ab98-f0ef006973aa",
+        "name": "Site Task Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-site-task",
+          "responseMode": "lastNode"
+        },
+        "webhookId": "712d9ace-6716-404f-b0d3-02f0b4e03bf2"
+      },
+      {
+        "id": "cef5bb04-ae07-4b03-9b95-c6998144273b",
+        "name": "Site Task Act",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* CBS ON SITE TASKS. POST cbs-site-task {a,by,...} from the hub (+ New task picker On site tasks side, task panel).\n   An on site task is a one-off job task row (cbs_job_tasks, req custom) with data_json.onsite = true, optionally a form\n   (survey, permits, inspection, audit, preuse) the crew fill in from the job portal and mark as submitted (data_json.sub).\n   a=get {id}: the row's on site settings. a=create {job, form, title, desc}: a new on site task (title defaults to the form name).\n   a=set {id, onsite}: send to site / move to office. a=sendback {id, note}: back to the crew with a note (clears sub, To do).\n   Approve is the normal Done (cbs-tasks-act status). Writes through cbs-task-db and the shared status. */\nconst H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const b=$input.first().json.body||{};\nconst R=(ok,x)=>[{json:Object.assign({ok:ok},x||{})}];\nconst a=S(b.a),by=S(b.by).slice(0,80);if(!by)return R(false,{message:'Enter your name.'});\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst db=(op,o)=>this.helpers.httpRequest({method:'POST',url:H+'cbs-task-db',body:Object.assign({k:K,op:op},o||{}),json:true,timeout:30000});\nconst pj=v=>{try{const o=JSON.parse(S(v)||'{}');return o&&typeof o==='object'?o:{};}catch(e){return {};}};\nconst F={survey:['Site survey','Survey'],permits:['Permits to work','H&S'],inspection:['Site inspection','H&S'],audit:['Sub-contractor audit','H&S'],preuse:['Pre-use checks','H&S']};\nasync function row(id){const L=await db('get',{id:id});return Array.isArray(L)&&L[0]&&L[0].id!=null?L[0]:null;}\nconst st=(r,to)=>this.helpers.httpRequest({method:'POST',url:H+'cbs-task-status',body:{rows:[{task_key:'jobreq:'+S(r.job_no)+':task'+r.id,title:S(r.label).slice(0,200),ref_table:'row',ref_id:String(r.id),grp:'Job '+S(r.job_no),status:to,v:2,note:'',note_date:'',note_by:''}]},json:true,timeout:20000}).catch(()=>null);\nif(a==='create'){const job=S(b.job).replace(/[^0-9A-Za-z-]/g,'');if(!job)return R(false,{message:'No job number.'});\n const form=F[S(b.form)]?S(b.form):'';const title=(S(b.title)||(form?F[form][0]:'')).slice(0,200);if(!title)return R(false,{message:'Say what needs doing.'});\n const d={onsite:true};if(form)d.form=form;\n const res=await db('insert',{row:{job_no:job,req:'custom',kind:'custom',label:title,status:'To do',due_on:'',notes:S(b.desc).slice(0,4000),category:form?F[form][1]:'Site',assignee:'',stage:'Job',applies_to:'',data_json:JSON.stringify(d),files_json:'',created_by:by,created_at:now}});\n return R(true,{id:res&&res.id,key:'jobreq:'+job+':task'+(res&&res.id)});}\nconst r=await row(b.id);if(!r)return R(false,{message:'That task was not found. Refresh the page.'});\nconst d=pj(r.data_json),custom=(S(r.req)||'custom')==='custom';\nif(a==='get'){const on=custom&&!!S(r.job_no)&&(d.onsite===true||(d.onsite==null&&['Site','Snag','H&S'].indexOf(S(r.category))>-1));\n return R(true,{id:r.id,job:S(r.job_no),custom:custom,onsite:on,set:d.onsite===true||d.onsite===false,form:S(d.form),sub:d.sub||null,sendback:d.sendback||null,status:S(r.status)});}\nif(!custom||!S(r.job_no))return R(false,{message:'Only one-off job tasks can go to site.'});\nif(a==='set'){const on=b.onsite===true||b.onsite==='true';d.onsite=on;await db('update',{id:r.id,row:{data_json:JSON.stringify(d)}});return R(true,{onsite:on});}\nif(a==='sendback'){const note=S(b.note).slice(0,1000);if(!note)return R(false,{message:'Say what needs doing again.'});\n d.sendback={note:note,by:by,at:now};delete d.sub;d.onsite=true;await db('update',{id:r.id,row:{data_json:JSON.stringify(d),status:'To do',done_by:'',done_at:''}});await st(r,'To do');return R(true);}\nreturn R(false,{message:'Unknown action.'});"
+        }
+      }
+    ],
+    "connections": {
+      "Site Task Hook": {
+        "main": [
+          [
+            {
+              "node": "Site Task Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS on site tasks API for the hub: POST cbs-site-task a=get/create/set/sendback on one-off job task rows (data_json.onsite, form, sub, sendback). Used by the + New task picker On site tasks side and the task panel.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

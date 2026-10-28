@@ -1,0 +1,230 @@
+<!--cbs-baked--><!doctype html><html lang='en'><head><script id="cbsDl">(function(){if(window.__cbsDl)return;window.__cbsDl=1;
+var ua=navigator.userAgent||'',fr=false;try{fr=window.top!==window.self;}catch(e){fr=true;}
+var ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+var wv=(ios&&ua.indexOf('Safari/')<0)||ua.indexOf('; wv)')>-1||/ServiceM8/i.test(ua);
+window.__cbsDlPost=fr||wv;
+var oc=HTMLAnchorElement.prototype.click,od=HTMLAnchorElement.prototype.dispatchEvent;
+function want(a){if(!window.__cbsDlPost||!a||!a.download)return false;var h=String(a.href||'');return (h.indexOf('blob:')===0||h.indexOf('data:application/pdf')===0)&&(/[.]pdf$/i.test(a.download)||h.indexOf('data:application/pdf')===0);}
+function b64(href){return fetch(href).then(function(r){return r.blob();}).then(function(b){return new Promise(function(res,rej){var f=new FileReader();f.onload=function(){res(String(f.result).split(',')[1]);};f.onerror=rej;f.readAsDataURL(b);});});}
+function css(){if(document.getElementById('cbsDlCss'))return;var s=document.createElement('style');s.id='cbsDlCss';s.textContent='#cbsDlOv{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px;font-family:inherit}#cbsDlOv .bx{background:#fff;border-radius:12px;padding:20px;max-width:360px;width:100%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.25)}#cbsDlOv b{display:block;font-size:18px;margin-bottom:6px}#cbsDlOv p{margin:0 0 14px;color:#555;font-size:14px;word-break:break-word}#cbsDlOv button{display:block;width:100%;border:0;border-radius:8px;padding:13px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;margin-top:8px}#cbsDlGo{background:#F47920;color:#fff}#cbsDlX{background:#eef0f2;color:#1f2328}';document.head.appendChild(s);}
+function show(name,data){css();var o=document.getElementById('cbsDlOv');if(o)o.remove();o=document.createElement('div');o.id='cbsDlOv';
+ var bx=document.createElement('div');bx.className='bx';var t=document.createElement('b');t.textContent='Your PDF is ready';var p=document.createElement('p');p.textContent=name;
+ var f=document.createElement('form');f.method='POST';f.action='/webhook/cbs-pdf-out';f.target='_blank';f.style.margin='0';
+ [['name',name],['data',data]].forEach(function(x){var i=document.createElement('input');i.type='hidden';i.name=x[0];i.value=x[1];f.appendChild(i);});
+ var g=document.createElement('button');g.type='submit';g.id='cbsDlGo';g.textContent='Open PDF';f.appendChild(g);
+ var x=document.createElement('button');x.type='button';x.id='cbsDlX';x.textContent='Close';x.onclick=function(){o.remove();};
+ f.onsubmit=function(){setTimeout(function(){o.remove();},1500);};
+ bx.appendChild(t);bx.appendChild(p);bx.appendChild(f);bx.appendChild(x);o.appendChild(bx);document.body.appendChild(o);}
+function go(a){var n=a.download||'document.pdf';b64(a.href).then(function(d){show(n,d);})['catch'](function(){try{window.open(a.href,'_blank');}catch(e){}});}
+HTMLAnchorElement.prototype.click=function(){if(want(this)){go(this);return;}return oc.apply(this,arguments);};
+HTMLAnchorElement.prototype.dispatchEvent=function(e){if(e&&e.type==='click'&&want(this)){go(this);return true;}return od.apply(this,arguments);};
+})();</script><script id="cbsSp">(function(){if(window.__cbsSP)return;window.__cbsSP=1;var R=/^https:\/\/chelmsfordbuildingservices(-my)?\.sharepoint\.com\//i;function px(u){u=String(u||"");return R.test(u)?"/webhook/cbs-file?u="+encodeURIComponent(u):u;}window.__cbsPx=px;document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(!a)return;var h=a.getAttribute("href"),v=px(h);if(v!==h){a.setAttribute("href",v);a.setAttribute("target","_blank");a.setAttribute("rel","noopener");}},true);var wo=window.open;window.open=function(u){var a=[].slice.call(arguments);a[0]=px(u);return wo.apply(window,a);};})();</script><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Permit to Work | CBS</title>
+<style>
+:root{--o:#F47920;--g:#3d4045;--ink:#1f2328;--mut:#6b7280;--line:#e5e7eb;--bg:#f5f6f7}
+*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+.top{background:var(--g);color:#fff;display:flex;align-items:center;gap:14px;padding:10px 18px;border-bottom:3px solid var(--o)}
+.top img{height:34px;width:auto;background:transparent}.top b{font-size:17px}.top a{color:#fff;text-decoration:none;margin-left:auto;font-size:14px;opacity:.85}
+.wrap{max-width:860px;margin:0 auto;padding:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+h1{font-size:21px;margin:2px 0 4px}.mut{color:var(--mut);font-size:13px}.mut a{color:inherit}
+.bo,.bg{display:inline-block;border:0;border-radius:8px;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer;text-decoration:none}
+.bo{background:var(--o);color:#fff}.bg{background:#eef0f2;color:var(--ink)}.bo:disabled{opacity:.6}
+.bl{background:none;border:0;color:var(--mut);padding:4px 0;font:inherit;font-size:13px;text-decoration:underline;cursor:pointer}
+.cdm{display:inline-block;background:var(--o);color:#fff;font-size:12px;font-weight:700;border-radius:20px;padding:2px 10px;vertical-align:middle}
+.cdmbox{background:#fff7ed;border-left:4px solid var(--o);padding:12px 14px;border-radius:8px;margin-top:12px}
+.cdmoff{background:#f8fafc;border-left:4px solid #cbd5e1;padding:12px 14px;border-radius:8px;margin-top:12px}
+.live{background:#ecfdf5;border-left:4px solid #16a34a;padding:12px 14px;border-radius:8px;margin-top:12px}
+.dead{background:#fef2f2;border-left:4px solid #dc2626;padding:12px 14px;border-radius:8px;margin-top:12px}
+.big{font-size:18px;font-weight:700;margin-bottom:2px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.hide{display:none}
+label{display:block;margin-top:10px;font-size:13px;font-weight:600;color:#374151}
+input,select,textarea{display:block;width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;font-weight:400;color:var(--ink);background:#fff}
+.two{display:flex;gap:10px;flex-wrap:wrap}.two label{flex:1;min-width:180px}
+.lb{margin-top:14px;font-size:13px;font-weight:700;color:#374151}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.ch{display:flex;align-items:center;gap:6px;margin:0;padding:6px 10px;border:1px solid var(--line);border-radius:20px;font-weight:400;font-size:13px}
+.ch input,.kr input,.dc input{width:auto;margin:0;display:inline;flex:none}
+.kr{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px}.kr span{flex:1;min-width:200px}
+.kr label{display:flex;align-items:center;gap:5px;margin:0;font-weight:400}
+.dc{display:flex;gap:9px;align-items:flex-start;font-weight:400;font-size:14px}.dc input{margin-top:3px}
+.sig{display:block;width:100%;height:150px;border:1px dashed #9ca3af;border-radius:8px;background:#fff;touch-action:none;margin-top:6px}
+.pr{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid var(--line)}.nm{flex:1;font-weight:600}
+.sb,.sa,.sg,.sr,.sk{display:inline-block;font-size:11px;font-weight:700;border-radius:20px;padding:2px 9px;margin-left:8px;vertical-align:middle;color:#fff}
+.sb{background:#2563eb}.sa{background:#d97706}.sg{background:#16a34a}.sr{background:#dc2626}.sk{background:#6b7280}
+.kv{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}.kv b{width:165px;flex:none;color:#374151}
+.it{padding:6px 0;font-size:13px;border-bottom:1px dashed var(--line)}
+.lk{word-break:break-all;background:#fff;border:1px solid var(--line);border-radius:6px;padding:8px;margin-top:8px;font-size:13px}
+.ok{color:#15803d;font-size:13px}.bad{color:#b91c1c;font-size:13px;font-weight:600}
+</style></head><body>
+<div class='top'><img id='lg' alt='CBS'><b>Permit to Work</b><a id='hb' href='/webhook/cbs-admin'>&larr; Operations Hub</a><a id='cbsJf' href='/webhook/cbs-job-file' style='display:none'>Job File</a></div>
+<div class='wrap' id='app'><p class='mut'>Loading&hellip;</p></div>
+<script>
+(function(){
+var LOGO='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';if(LOGO)document.getElementById('lg').src='data:image/png;base64,'+LOGO;
+var Q=new URLSearchParams(location.search),TK=(Q.get('t')||'').replace(/[^a-z0-9]/g,''),ID=(Q.get('id')||'').replace(/[^0-9]/g,''),JOB=(Q.get('job')||'').replace(/[^0-9A-Za-z-]/g,'');
+var app=document.getElementById('app'),LAST=null;
+var TY=[
+['Hot works',['Combustible materials removed or protected within 10 m','Suitable fire extinguisher at the work area','Fire watch during the work and for at least 60 minutes after','Fire alarm detection isolated only with client agreement','Gas cylinders upright, secured, with flashback arrestors','Screens in place to protect others from sparks and glare']],
+['Work at height',['Scaffold or edge protection inspected and tagged','MEWP operators hold IPAF and harnesses are worn','Ladders only for short-duration work, inspected and footed','Exclusion zone set up below the work','Rescue plan in place','Weather checked (wind and rain)']],
+['Permit to dig',['CAT and Genny scan by a trained operator','Service drawings obtained and checked','Trial holes hand dug near known services','Excavation over 1.2 m supported or battered back','Barriers around the excavation','Spoil and plant kept back from the edge']],
+['Isolation (electrical or mechanical)',['Isolation point identified and locked off','Personal padlock and tag applied','Proved dead or zero energy before work','Stored energy released (pressure, springs, capacitors)','Client informed of the isolation','Isolation recorded and handed back at the end']],
+['Confined space entry',['Atmosphere tested before entry (O2, LEL, H2S, CO)','Continuous gas monitoring during entry','Trained top person in attendance','Rescue equipment and rescue plan in place','Means of communication agreed','Ventilation provided']],
+['Lifting operations',['Lift plan prepared by a competent person','LOLER certificates checked for all lifting equipment','Slinger or signaller appointed','Exclusion zone below the lift','Ground conditions checked for outriggers','Wind speed and weather checked']],
+['Roof access',['Fragile surfaces identified and covered or marked','Edge protection or harness system in place','Safe access route agreed with the client','Exclusion zone below','Weather checked','Rescue plan in place']]];
+var HZ=['Fire','Falls from height','Falling objects','Underground services','Electricity','Stored energy','Toxic or flammable atmosphere','Moving plant or vehicles','Manual handling','Noise or dust','Members of the public','Client operations nearby'];
+var HB=['Work complete, or the area made safe and left as agreed','All tools, materials and waste removed','Everyone withdrawn from the work area','Isolations removed or handed back as agreed','Fire watch completed (hot works)'];
+function $(i){return document.getElementById(i);}
+function e(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;');}
+function p2(n){return ('0'+n).slice(-2);}
+function dt(h){var d=new Date(Date.now()+h*3600000);return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate())+'T'+p2(d.getHours())+':00';}
+function fdt(s){s=String(s||'');return s?s.slice(8,10)+'/'+s.slice(5,7)+'/'+s.slice(0,4)+(s.length>10?' '+s.slice(11,16):''):'-';}
+function me(){try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)return m.name;}catch(x){}try{return localStorage.getItem('cbs_name')||'';}catch(x){return '';}}
+function remember(n){try{localStorage.setItem('cbs_name',n);}catch(x){}}
+function get(u){return fetch(u,{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){if(!d.ok)throw new Error(d.error||'Could not load');return d;});}
+function post(o){return fetch('/webhook/cbs-permit-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)}).then(function(r){return r.json();}).then(function(d){if(!d.ok)throw new Error(d.error||'Could not save');return d;});}
+function chip(s){var c={'With contractor':'sb','Submitted':'sa','Approved':'sg','Expired':'sr','Rejected':'sr','Handed back':'sa','Closed':'sk','Cancelled':'sk'}[s]||'sk';return '<span class='+c+'>'+e(s)+'</span>';}
+function checks(t){for(var i=0;i<TY.length;i++)if(TY[i][0]===t)return TY[i][1];return [];}
+function opts(sel,list){sel.innerHTML=list.map(function(v){return '<option>'+e(v)+'</option>';}).join('');}
+function msg(t,bad){var m=$('msg');if(m){m.textContent=t;m.className=bad?'bad':'ok';}return false;}
+function fail(x){msg(x&&x.message?x.message:'Could not save. Check your connection and try again.',true);}
+function busy(b,on,t){b.disabled=on;if(t)b.textContent=t;}
+function kv(k,v){return '<div class=kv><b>'+e(k)+'</b><span>'+(v?e(v):'-')+'</span></div>';}
+function lines(s){return String(s||'').split(String.fromCharCode(10)).map(function(x){return x.trim();}).filter(Boolean).join(', ');}
+function pad(box){var c=document.createElement('canvas');c.className='sig';box.appendChild(c);var x=c.getContext('2d'),dr=false,used=false;
+ function fit(){var r=c.getBoundingClientRect();c.width=Math.max(300,r.width)*2;c.height=r.height*2;x.setTransform(2,0,0,2,0,0);x.lineWidth=2.2;x.lineCap='round';x.lineJoin='round';x.strokeStyle='#111';}setTimeout(fit,0);
+ function pt(ev){var r=c.getBoundingClientRect();return [ev.clientX-r.left,ev.clientY-r.top];}
+ c.addEventListener('pointerdown',function(ev){dr=true;used=true;var p=pt(ev);x.beginPath();x.moveTo(p[0],p[1]);try{c.setPointerCapture(ev.pointerId);}catch(z){}ev.preventDefault();});
+ c.addEventListener('pointermove',function(ev){if(!dr)return;var p=pt(ev);x.lineTo(p[0],p[1]);x.stroke();ev.preventDefault();});
+ c.addEventListener('pointerup',function(){dr=false;});c.addEventListener('pointercancel',function(){dr=false;});
+ var cl=document.createElement('button');cl.className='bl';cl.type='button';cl.textContent='Clear signature';cl.onclick=function(){x.clearRect(0,0,c.width,c.height);used=false;};box.appendChild(cl);
+ return {get:function(){return used?c.toDataURL('image/png'):'';}};}
+function linkOf(t){return location.origin+'/webhook/cbs-permit?t='+t;}
+function shareBox(no,tok,mob,em,co){var u=linkOf(tok),tx='Chelmsford Building Services: please complete and sign permit to work '+no+' before starting work: '+u;mob=String(mob||'').replace(/[^0-9+]/g,'');em=String(em||'').replace(/[^A-Za-z0-9@._+-]/g,'');
+ return '<div class=cdmbox><b>Contractor link for '+e(no)+'</b><div class=mut>Send this to '+e(co||'the contractor')+'. They complete and sign it on their phone, then it comes back here for approval.</div><div class=lk>'+e(u)+'</div><div class=bar><button class=bo id=cpy>Copy link</button><a class=bg href=sms:'+mob+'?&amp;body='+encodeURIComponent(tx)+'>Send by text</a><a class=bg href=mailto:'+em+'?subject='+encodeURIComponent('Permit to work '+no)+'&amp;body='+encodeURIComponent(tx)+'>Send by email</a></div></div>';}
+function bindCopy(t){var b=$('cpy');if(!b)return;b.onclick=function(){var u=linkOf(t);var pr=navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject();pr.then(function(){b.textContent='Copied';}).catch(function(){prompt('Copy this link:',u);});};}
+function oops(x){app.innerHTML='<div class=card><b>'+e(x&&x.message?x.message:'Could not load.')+'</b><p class=mut>Check your connection and refresh the page.</p></div>';}
+if(TK){$('hb').style.display='none';contractor();}else if(ID)detail();else if(JOB)jobView();else app.innerHTML='<div class=card><b>Open permits from a job.</b><p class=mut><a href=/webhook/cbs-job-file>Go to the Job File</a></p></div>';
+function jobView(){get('/webhook/cbs-permit-data?job='+encodeURIComponent(JOB)).then(function(d){
+ var h='<div class=card><div class=mut><a href=/webhook/cbs-job-file?job='+encodeURIComponent(JOB)+'>&larr; Job '+e(JOB)+'</a></div><h1>Permits to work'+(d.cdm?' <span class=cdm>CDM</span>':'')+'</h1><div class=mut>Job '+e(JOB)+(d.site?' &middot; '+e(d.site):'')+(d.client?' &middot; '+e(d.client):'')+'</div>';
+ h+=d.cdm?'<div class=cdmbox>CBS is Principal Contractor on this job. CBS permits control all higher-risk work on site, including work by contractors the client brings in.</div>':'<div class=cdmoff>Not a CDM job. Use CBS permits for work CBS controls. Where the client runs its own permit system, follow theirs and file a copy against the job.</div>';
+ h+='<p class=mut>'+(d.approvers.length?'Can approve permits on this job: <b>'+d.approvers.map(e).join(', ')+'</b>':'<b>Nobody can approve permits on this job yet.</b> Approvers are the people named on its CPHSP, RAMS or pre-start, or the job PM.')+'</p>';
+ if(LAST)h+=shareBox(LAST.no,LAST.tok,LAST.mob,LAST.em,LAST.co);
+ h+='<div class=bar><button class=bo id=nb>Raise a permit</button></div><div id=nf class=hide></div></div>';
+ h+='<div class=card><b>Permits on this job</b>'+(d.permits.length?d.permits.map(function(p){return '<div class=pr><div class=nm>'+e(p.permit_no)+' &middot; '+e(p.permit_type)+chip(p.status_view)+'<div class=mut>'+e(p.contractor_company)+(p.contractor_name?' ('+e(p.contractor_name)+')':'')+' &middot; '+fdt(p.valid_from)+' to '+fdt(p.valid_to)+'</div></div><a class=bg href=/webhook/cbs-permit?id='+p.id+'>Open</a></div>';}).join(''):'<p class=mut>No permits raised yet.</p>')+'</div>';
+ app.innerHTML=h;if(LAST)bindCopy(LAST.tok);
+ $('nb').onclick=function(){var f=$('nf');if(f.className!=='hide'){f.className='hide';return;}f.className='';
+  f.innerHTML='<label>Permit type<select id=ty></select></label><label>Contractor company<input id=co></label><div class=two><label>Contact name<input id=cn></label><label>Mobile<input id=cm type=tel></label></div><label>Email<input id=ce type=email></label><label>Where on site<input id=lo></label><label>Work to be done<textarea id=sc rows=3></textarea></label><div class=two><label>Planned start<input id=vf type=datetime-local></label><label>Planned finish<input id=vt type=datetime-local></label></div><label>Your name<input id=rb></label><div class=bar><button class=bo id=rs>Create permit and get contractor link</button><span id=msg></span></div>';
+  opts($('ty'),TY.map(function(x){return x[0];}));$('vf').value=dt(1);$('vt').value=dt(9);$('rb').value=me();
+  $('rs').onclick=function(){var b=this,o={action:'raise',job_no:JOB,site:d.site,permit_type:$('ty').value,contractor_company:$('co').value.trim(),contractor_name:$('cn').value.trim(),contractor_mobile:$('cm').value.trim(),contractor_email:$('ce').value.trim(),location:$('lo').value.trim(),scope:$('sc').value.trim(),valid_from:$('vf').value,valid_to:$('vt').value,requested_by:$('rb').value.trim()};
+   if(!o.contractor_company)return msg('Enter the contractor company.',true);if(!o.contractor_mobile&&!o.contractor_email)return msg('Enter a mobile or email so the link can be sent.',true);if(!o.requested_by)return msg('Enter your name.',true);
+   busy(b,true,'Creating...');post(o).then(function(r){remember(o.requested_by);LAST={no:r.permit_no,tok:r.token,mob:o.contractor_mobile,em:o.contractor_email,co:o.contractor_company};jobView();}).catch(function(x){busy(b,false,'Create permit and get contractor link');fail(x);});};};
+}).catch(oops);}
+function detail(){get('/webhook/cbs-permit-data?id='+ID).then(function(d){var p=d.permit,st=p.state||{},A=d.approvers||[],ck=st.checklist||{},s=p.status_view;
+ var h='<div class=card><div class=mut><a href=/webhook/cbs-permit?job='+encodeURIComponent(p.job_no)+'>&larr; Permits for job '+e(p.job_no)+'</a></div><h1>'+e(p.permit_no)+chip(s)+'</h1><div class=mut>'+e(p.permit_type)+' &middot; '+e(p.contractor_company)+'</div>';
+ if(p.status==='Rejected')h+='<div class=dead><b>Rejected:</b> '+e(p.reject_reason)+'<div class=mut>The contractor can correct it and resubmit using the same link.</div></div>';
+ if(s==='Expired')h+='<div class=dead><b>Expired</b> at '+fdt(p.valid_to)+'. Work under this permit must stop.</div>';
+ if(s==='Approved')h+='<div class=live><b>Live.</b> Valid from '+fdt(p.valid_from)+' to '+fdt(p.valid_to)+'.</div>';
+ if(p.pdf_url)h+='<div class=bar><a class=bg target=_blank rel=noopener href='+e(p.pdf_url)+'>Open permit PDF</a></div>';
+ h+='</div><div class=card><b>Details</b>'+kv('Job',p.job_no+(p.site?' - '+p.site:''))+kv('Location',p.location)+kv('Work and method',p.scope)+kv('Valid from',fdt(p.valid_from))+kv('Valid to',fdt(p.valid_to))+kv('Responsible person',p.contractor_name)+kv('Mobile',p.contractor_mobile)+kv('People on permit',lines(p.people))+kv('Hazards',p.hazards)+kv('Isolations / services',p.isolations)+kv('Emergency arrangements',st.emergency)+kv('Conditions',st.ap_conditions)+kv('Raised by',p.requested_by+' '+fdt(p.requested_at))+kv('Submitted',p.submitted_at?(st.sub_by||p.contractor_name)+' '+fdt(p.submitted_at):'')+kv('Approved',p.approved_by?p.approved_by+' '+fdt(p.approved_at):'')+(st.hb?kv('Handed back',st.hb.by+' '+fdt(st.hb.at)+(st.hb.notes?' - '+st.hb.notes:'')):'')+kv('Closed',p.closed_by?p.closed_by+' '+fdt(p.closed_at):'');
+ var ks=Object.keys(ck);if(ks.length)h+='<div class=lb>Controls checklist</div>'+ks.map(function(k){return '<div class=kr><span>'+e(k)+'</span><b>'+e(ck[k])+'</b></div>';}).join('');
+ h+='</div>';
+ if(p.status==='With contractor'||p.status==='Rejected')h+='<div class=card><b>Waiting for the contractor</b>'+shareBox(p.permit_no,p.token,p.contractor_mobile,p.contractor_email,p.contractor_company)+'</div>';
+ var noAp='<p class=bad>Nobody is named on the paperwork for this job, so nobody can approve it yet. Add a CPHSP, RAMS or pre-start for the job, or set the job PM.</p>';
+ if(p.status==='Submitted')h+='<div class=card><b>Approve or reject</b><div class=mut>Check the hazards, controls and people above before approving.</div>'+(A.length?'<label>Your name<select id=ap></select></label><div class=two><label>Valid from<input id=vf type=datetime-local></label><label>Valid to<input id=vt type=datetime-local></label></div><label>Conditions or extra controls (optional)<textarea id=cd rows=2></textarea></label><div class=lb>Sign to approve</div><div id=sg></div><div class=bar><button class=bo id=okb>Approve permit</button><button class=bg id=nob>Reject</button><span id=msg></span></div>':noAp)+'</div>';
+ if(p.status==='Handed back')h+='<div class=card><b>Sign off and close</b><div class=mut>Check the area is safe and the work is finished, then sign to close the permit.</div>'+(A.length?'<label>Your name<select id=ap></select></label><div class=lb>Sign to close</div><div id=sg></div><div class=bar><button class=bo id=sob>Sign off and close</button><span id=msg></span></div>':noAp)+'</div>';
+ if(['Closed','Cancelled'].indexOf(p.status)<0)h+='<div class=card><button class=bl id=cnb>Cancel or withdraw this permit</button></div>';
+ h+='<div class=card><b>History</b>'+(st.log||[]).map(function(g){return '<div class=it>'+fdt(g.at)+' &middot; <b>'+e(g.by)+'</b> '+e(g.ev)+'</div>';}).join('')+'</div>';
+ app.innerHTML=h;bindCopy(p.token);
+ var sg=$('sg')?pad($('sg')):null;
+ if($('ap')){opts($('ap'),['Choose your name'].concat(A));var m=me();if(A.indexOf(m)>-1)$('ap').value=m;}
+ if($('vf')){$('vf').value=p.valid_from||dt(1);$('vt').value=p.valid_to||dt(9);}
+ function who(){var n=$('ap').value;if(A.indexOf(n)<0){msg('Choose your name.',true);return '';}return n;}
+ if($('okb'))$('okb').onclick=function(){var b=this,n=who();if(!n)return;var g=sg.get();if(!g)return msg('Sign to approve.',true);busy(b,true,'Approving...');
+  post({action:'approve',id:p.id,by:n,signature:g,valid_from:$('vf').value,valid_to:$('vt').value,conditions:$('cd').value.trim()}).then(function(){remember(n);location.reload();}).catch(function(x){busy(b,false,'Approve permit');fail(x);});};
+ if($('nob'))$('nob').onclick=function(){var n=who();if(!n)return;var r=prompt('Reason for rejecting (the contractor will see this):');if(!r)return;post({action:'reject',id:p.id,by:n,reason:r}).then(function(){remember(n);location.reload();}).catch(fail);};
+ if($('sob'))$('sob').onclick=function(){var b=this,n=who();if(!n)return;var g=sg.get();if(!g)return msg('Sign to close the permit.',true);busy(b,true,'Closing...');
+  post({action:'signoff',id:p.id,by:n,signature:g}).then(function(){remember(n);location.reload();}).catch(function(x){busy(b,false,'Sign off and close');fail(x);});};
+ if($('cnb'))$('cnb').onclick=function(){var n=me()||prompt('Your name:');if(!n)return;var r=prompt('Reason for cancelling or withdrawing this permit:');if(r===null)return;post({action:'cancel',id:p.id,by:n,reason:r}).then(function(){location.reload();}).catch(function(x){alert(x.message);});};
+}).catch(oops);}
+function contractor(){get('/webhook/cbs-permit-data?t='+TK).then(function(d){var p=d.permit,st=p.state||{},J=d.job||{},s=p.status_view;
+ var h='<div class=card><div class=mut>Chelmsford Building Services Ltd &middot; Permit to Work</div><h1>'+e(p.permit_no)+chip(s)+'</h1><div class=mut>'+e(p.permit_type)+' &middot; Job '+e(p.job_no)+(p.site?' &middot; '+e(p.site):'')+'</div><div class=mut>Issued to '+e(p.contractor_company)+' by '+e(p.requested_by)+(J.cdm?'. CBS is Principal Contractor on this site.':'.')+'</div>';
+ if(p.status==='Rejected')h+='<div class=dead><b>Returned by CBS:</b> '+e(p.reject_reason)+'<div class=mut>Correct the permit below and submit it again.</div></div>';
+ if(s==='Approved')h+='<div class=live><div class=big>Approved. Work may start.</div>Valid from <b>'+fdt(p.valid_from)+'</b> to <b>'+fdt(p.valid_to)+'</b>. Approved by '+e(p.approved_by)+'.'+(st.ap_conditions?'<div><b>Conditions:</b> '+e(st.ap_conditions)+'</div>':'')+'</div>';
+ if(s==='Expired')h+='<div class=dead><div class=big>Permit expired. Stop work.</div>It ran out at '+fdt(p.valid_to)+'. Make the area safe and contact CBS before carrying on. Hand the permit back below once the area is safe.</div>';
+ if(s==='Submitted')h+='<div class=cdmbox><b>Sent to CBS for approval.</b> Do not start work until this page shows the permit as approved. Refresh this page to check.</div>';
+ if(s==='Handed back')h+='<div class=cdmbox><b>Handed back.</b> CBS will check the area and close the permit.</div>';
+ if(s==='Closed')h+='<div class=live><b>Closed.</b> Signed off by '+e(p.closed_by)+' on '+fdt(p.closed_at)+'. Thank you.</div>';
+ if(s==='Cancelled')h+='<div class=dead><b>This permit has been cancelled.</b> Contact CBS before doing this work.</div>';
+ h+='</div>';var C=checks(p.permit_type),HBs=HB.filter(function(x){return p.permit_type==='Hot works'||x.indexOf('Fire watch')<0;});
+ if(s==='With contractor'||s==='Rejected'){
+  h+='<div class=card><b>Complete the permit</b><div class=mut>Fill in every section. CBS will check it and approve it before work starts.</div><div class=two><label>Your name (responsible person)<input id=cn></label><label>Mobile<input id=cm type=tel></label></div><label>Everyone working under this permit, one per line<textarea id=pp rows=3></textarea></label><label>Exact location of the work<input id=lo></label><label>Work to be done and how it will be done<textarea id=sc rows=4></textarea></label><div class=lb>Hazards present</div><div class=chips id=hz></div><label>Other hazards<input id=ho></label><div class=lb>Controls for '+e(p.permit_type)+' (answer every line)</div><div id=ck></div><label>Isolations or services affected (if any)<textarea id=is rows=2></textarea></label><label>Emergency arrangements: first aid, fire, rescue<textarea id=em rows=2></textarea></label><div class=two><label>Start<input id=vf type=datetime-local></label><label>Finish<input id=vt type=datetime-local></label></div><label class=dc><input type=checkbox id=dcl><span>I confirm this information is correct, everyone named has been briefed on the hazards and controls, and no work will start until CBS has approved this permit.</span></label><div class=lb>Sign</div><div id=sg></div><div class=bar><button class=bo id=sbt>Submit for approval</button><span id=msg></span></div></div>';}
+ else if(s==='Approved'||s==='Expired'){
+  h+='<div class=card><b>Hand back the permit</b><div class=mut>When the work is finished, or the permit has run out, confirm the area is safe and hand it back.</div><div id=hbk>'+HBs.map(function(c,i){return '<label class=dc><input type=checkbox data-i='+i+'><span>'+e(c)+'</span></label>';}).join('')+'</div><label>Notes (anything unfinished, or anything CBS should know)<textarea id=nt rows=2></textarea></label><label>Your name<input id=cn></label><div class=lb>Sign</div><div id=sg></div><div class=bar><button class=bo id=hbt>Hand back permit</button><span id=msg></span></div></div>';}
+ app.innerHTML=h;
+ if($('sbt')){
+  $('cn').value=p.contractor_name||'';$('cm').value=p.contractor_mobile||'';$('pp').value=p.people||'';$('lo').value=p.location||'';$('sc').value=p.scope||'';$('is').value=p.isolations||'';$('em').value=st.emergency||'';$('vf').value=p.valid_from||dt(1);$('vt').value=p.valid_to||dt(9);
+  var had=String(p.hazards||'').split(', ').filter(Boolean);$('ho').value=had.filter(function(z){return HZ.indexOf(z)<0;}).join(', ');
+  $('hz').innerHTML=HZ.map(function(z,i){return '<label class=ch><input type=checkbox data-i='+i+(had.indexOf(z)>-1?' checked':'')+'>'+e(z)+'</label>';}).join('');
+  var prev=st.checklist||{};
+  $('ck').innerHTML=C.map(function(c,i){return '<div class=kr><span>'+e(c)+'</span><label><input type=radio name=k'+i+' value=Yes'+(prev[c]==='Yes'?' checked':'')+'>Yes</label><label><input type=radio name=k'+i+' value=NA'+(prev[c]==='N/A'?' checked':'')+'>N/A</label></div>';}).join('');
+  var sg=pad($('sg'));
+  $('sbt').onclick=function(){var b=this,hz=[];[].forEach.call(document.querySelectorAll('#hz input'),function(x){if(x.checked)hz.push(HZ[+x.getAttribute('data-i')]);});if($('ho').value.trim())hz.push($('ho').value.trim());
+   var cl={},miss=0;C.forEach(function(c,i){var r=document.querySelector('input[name=k'+i+']:checked');if(!r)miss++;else cl[c]=r.value==='Yes'?'Yes':'N/A';});
+   if(!$('cn').value.trim())return msg('Enter your name.',true);if(!$('pp').value.trim())return msg('List everyone working under this permit.',true);if(!$('lo').value.trim())return msg('Enter the exact location.',true);if(!$('sc').value.trim())return msg('Describe the work and how it will be done.',true);
+   if(!hz.length)return msg('Tick at least one hazard.',true);if(miss)return msg('Answer every line of the controls checklist ('+miss+' left).',true);if(!$('em').value.trim())return msg('Enter the emergency arrangements.',true);
+   if(!$('vf').value||!$('vt').value||$('vt').value<=$('vf').value)return msg('Check the start and finish times.',true);if(!$('dcl').checked)return msg('Tick the declaration.',true);var g=sg.get();if(!g)return msg('Please sign.',true);
+   busy(b,true,'Submitting...');post({action:'submit',token:TK,contractor_name:$('cn').value.trim(),contractor_mobile:$('cm').value.trim(),people:$('pp').value.trim(),location:$('lo').value.trim(),scope:$('sc').value.trim(),hazards:hz.join(', '),checklist:cl,isolations:$('is').value.trim(),emergency:$('em').value.trim(),valid_from:$('vf').value,valid_to:$('vt').value,declare:true,signature:g}).then(function(){location.reload();}).catch(function(x){busy(b,false,'Submit for approval');fail(x);});};}
+ if($('hbt')){$('cn').value=p.contractor_name||'';var sg2=pad($('sg'));
+  $('hbt').onclick=function(){var b=this,ch={},un=0;[].forEach.call(document.querySelectorAll('#hbk input'),function(x){var k=HBs[+x.getAttribute('data-i')];ch[k]=x.checked;if(!x.checked)un++;});
+   if(un&&!$('nt').value.trim())return msg('Add a note explaining anything not ticked.',true);if(!$('cn').value.trim())return msg('Enter your name.',true);var g=sg2.get();if(!g)return msg('Please sign.',true);
+   busy(b,true,'Handing back...');post({action:'handback',token:TK,name:$('cn').value.trim(),checks:ch,notes:$('nt').value.trim(),signature:g}).then(function(){location.reload();}).catch(function(x){busy(b,false,'Hand back permit');fail(x);});};}
+}).catch(oops);}
+})();
+</script><script id="cbsDelGuard">(function(){
+if(window.__cbsDelGuard)return;window.__cbsDelGuard=1;
+var ok=false,SEL='#delBtn,.std-del,button[data-hub],button[data-rm]';
+var css=document.createElement('style');
+css.textContent='#delModal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:99999;padding:16px}#delModal .bx{background:#fff;border-radius:14px;max-width:380px;width:100%;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.3);font-family:inherit;text-align:left}#delModal h3{margin:0 0 8px;font-size:19px;color:#000}#delModal p{margin:0 0 6px;color:#333;font-size:15px}#delModal .what{font-weight:700;color:#000;margin:10px 0 4px;word-break:break-word}#delModal .row2{display:flex;gap:10px;margin-top:18px}#delModal button{flex:1;padding:12px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer}#delModal .cx{background:#F47920;color:#fff;border:0}#delModal .yes{background:#fff;color:#b3261e;border:2px solid #b3261e}';
+document.head.appendChild(css);
+function tgt(e){var t=e.target;if(!t||!t.closest)return null;var b=t.closest(SEL);if(!b||b.tagName!=='BUTTON'||b.disabled)return null;if(b.hasAttribute('data-hub')&&!/^delete/i.test((b.textContent||'').trim()))return null;return b;}
+function clean(el){if(!el)return '';var c=el.cloneNode(true);Array.prototype.forEach.call(c.querySelectorAll('button,a,input,select,textarea,script,style'),function(x){x.parentNode.removeChild(x);});return (c.textContent||'').replace(/\s+/g,' ').trim();}
+function what(b){var s='';if(b.hasAttribute('data-rm')){var p=b.parentElement;for(var i=0;i<4&&p&&!s;i++){s=clean(p);p=p.parentElement;}}
+ if(!s){var po=document.getElementById('po_no');s=po&&po.value?po.value:'';}
+ if(!s)s=clean(document.querySelector('h1,h2,h3'))||document.title||'this record';return s.slice(0,160);}
+function note(rm){var p=location.pathname;if(/cbs-coshh/.test(p))return 'It stays on the CoSHH register.';if(/cbs-pci/.test(p))return 'The file stays in SharePoint.';return rm?'':'Any PDF already saved stays in SharePoint.';}
+function ask(b){var rm=/^remove/i.test((b.textContent||'').trim());
+ var m=document.createElement('div');m.id='delModal';
+ m.innerHTML='<div class="bx" role="dialog" aria-modal="true"><h3>Are you sure?</h3><p>'+(rm?'This will remove it from the job:':'This will permanently delete:')+'</p><div class="what"></div><p class="xtra"></p>'+(rm?'':'<p>It cannot be undone.</p>')+'<div class="row2"><button class="cx" type="button">Cancel</button><button class="yes" type="button">Yes, '+(rm?'remove':'delete')+'</button></div></div>';
+ m.querySelector('.what').textContent=what(b);var n=note(rm);if(n)m.querySelector('.xtra').textContent=n;
+ document.body.appendChild(m);var cx=m.querySelector('.cx'),yes=m.querySelector('.yes');cx.focus();
+ function close(){if(m.parentNode)m.parentNode.removeChild(m);document.removeEventListener('keydown',key,true);}
+ function key(e){if(e.key==='Escape'){e.preventDefault();close();}}
+ document.addEventListener('keydown',key,true);
+ cx.onclick=close;m.onclick=function(e){if(e.target===m)close();};
+ yes.onclick=function(){close();ok=true;try{b.click();}finally{ok=false;}};}
+document.addEventListener('click',function(e){if(ok)return;var b=tgt(e);if(!b)return;e.preventDefault();e.stopImmediatePropagation();ask(b);},true);
+var _c=window.confirm;window.confirm=function(){if(ok)return true;return _c.apply(window,arguments);};
+})();</script><script id="cbsJfScr">(function(){
+var a=document.getElementById("cbsJf");if(!a)return;var hub=a.previousElementSibling;
+var GEN={"10871":1,"10885":1};
+function clean(v){return String(v||"").replace(/[^0-9A-Za-z-]/g,"");}
+function fromInputs(){var els=document.querySelectorAll("input,select");for(var i=0;i<els.length;i++){var el=els[i];if(el.type==="hidden"||el.type==="checkbox")continue;
+ var k=[el.id,el.name,el.getAttribute("data-k"),el.getAttribute("data-bind")].join(" ").toLowerCase();
+ if(!/(^|[\s._-])(job|jobno|job_no|sm8_job)($|[\s._-])/.test(k)&&!/jobno|job_no|sm8_job/.test(k))continue;
+ var m=String(el.value||"").match(/\b\d{3,}\b/);if(m)return m[0];}return "";}
+function fromQuery(){var m=location.search.match(/[?&]job=([^&#]+)/);if(!m)return "";try{return clean(decodeURIComponent(m[1]));}catch(e){return clean(m[1]);}}
+function fromLinks(){var l=document.querySelectorAll("a[href*='job=']");for(var i=0;i<l.length;i++){if(l[i]===a)continue;var h=l[i].getAttribute("href")||"";if(!/cbs-(job-file|permit|visit|pci)\?/.test(h))continue;var m=h.match(/[?&]job=([0-9A-Za-z-]+)/);if(m)return m[1];}return "";}
+function upd(){var j=fromInputs()||fromQuery()||fromLinks();var n=(j.match(/\d{3,}/)||[""])[0];
+ var hidden=hub&&hub.style&&hub.style.display==="none";
+ if(!n||GEN[n]||hidden){a.style.display="none";return;}
+ var href="/webhook/cbs-job-file?job="+encodeURIComponent(j);if(a.getAttribute("href")!==href){a.setAttribute("href",href);a.title="Open the Job File for job "+j;}a.style.display="";}
+upd();setInterval(upd,1500);document.addEventListener("input",upd,true);document.addEventListener("change",upd,true);
+})();
+</script><script id="cbsItemPrefill">(function(){/* ITEM PREFILL (keep): opened from a task's item row (Raise permit on an item), ?type= opens the raise form with that permit type picked (Other if it is not in the list). */
+var q=new URLSearchParams(location.search),t=(q.get("type")||"").trim().toLowerCase();if(!t||q.get("id")||q.get("t"))return;
+var n=0;function go(){var ty=document.getElementById("ty");if(!ty){var nb=document.getElementById("nb");if(nb&&!nb.getAttribute("data-pf")){nb.setAttribute("data-pf","1");nb.click();}if(++n<60)setTimeout(go,250);return;}
+ var L=[].slice.call(ty.options),o=L.filter(function(x){return String(x.value).toLowerCase()===t||String(x.text).toLowerCase()===t;})[0]||L.filter(function(x){return /other/i.test(x.value);})[0];
+ if(o){ty.value=o.value;ty.dispatchEvent(new Event("change",{bubbles:true}));}}
+setTimeout(go,300);})();
+</script></body></html>

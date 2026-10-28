@@ -1,0 +1,492 @@
+{
+  "id": "MndFDYUhdxZbDlDW",
+  "name": "CBS - Job Task Done",
+  "active": true,
+  "isArchived": false,
+  "versionId": "b5d14294-0260-4cbe-b06d-79eba3f870da",
+  "activeVersionId": "b5d14294-0260-4cbe-b06d-79eba3f870da",
+  "triggerCount": 1,
+  "createdAt": "2026-10-08T14:58:01.343Z",
+  "updatedAt": "2026-10-21T14:18:31.490Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Done Hook": {
+      "main": [
+        [
+          {
+            "node": "Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prep": {
+      "main": [
+        [
+          {
+            "node": "Get Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Job": {
+      "main": [
+        [
+          {
+            "node": "Apply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apply": {
+      "main": [
+        [
+          {
+            "node": "Save Enquiry?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Enquiry?": {
+      "main": [
+        [
+          {
+            "node": "Update Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Job": {
+      "main": [
+        [
+          {
+            "node": "Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "69f7fc0d-b070-4c95-99fd-016e70288370",
+      "name": "Done Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-jobtask-done",
+        "responseMode": "lastNode",
+        "responseData": "firstEntryJson",
+        "options": {}
+      },
+      "webhookId": "066ecd11-d3fb-47ed-93a0-89383e9c5cc0"
+    },
+    {
+      "id": "c31ec292-25e9-4ac4-926c-7566b8f06246",
+      "name": "Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var b=$input.first().json.body||{};if(typeof b==='string'){try{b=JSON.parse(b);}catch(e){b={};}}\nfunction S(v,n){return String(v==null?'':v).trim().slice(0,n||200);}\nvar kind=S(b.kind,10),undo=b.undo===true||b.undo==='true';\nvar now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nif(kind==='new'){var lab=S(b.label,200);if(!lab)throw new Error('Missing task');var due=S(b.due,10);if(due&&!/^\\d{4}-\\d{2}-\\d{2}$/.test(due))due='';return [{json:{kind:kind,label:lab,notes:S(b.notes,1000),due:due,by:S(b.by,80),now:now}}];}\nif(kind==='jobtask'){var id=Number(b.id)||0;if(!id)throw new Error('Missing task id');return [{json:{kind:kind,id:id,by:S(b.by,80),now:now,undo:undo}}];}\n/* Enquiry checklist: st (Done / Open / In hand) sets that status; without st it ticks Done (undo = Open), as before. */\nif(kind==='enq'){var job=S(b.job,20).replace(/^#/,'');if(!job||!S(b.tx))throw new Error('Missing job or task');var st=['Done','Open','In hand'].indexOf(S(b.st,10))>-1?S(b.st,10):'';return [{json:{kind:kind,job:job,tx:S(b.tx,400),by:S(b.by,80),now:now,undo:undo,st:st}}];}\n/* Enquiry requirements (Set up tasks on an enquiry): sets enq_json.reqs to the ticked keys. */\nif(kind==='enqreqs'){var job2=S(b.job,20).replace(/^#/,'');if(!job2)throw new Error('Missing job');var OK=['survey','estimate','drawings','supq','subq','docs','programme'];var R=(Array.isArray(b.reqs)?b.reqs:[]).map(function(x){return S(x,20);}).filter(function(x,i,a){return OK.indexOf(x)>-1&&a.indexOf(x)===i;});return [{json:{kind:kind,job:job2,reqs:R,by:S(b.by,80),now:now}}];}\n/* enqst: the Estimate / Programme status (enq_json.st.estimate / .programme), set from the task drawer's status buttons (Save Act). */\nif(kind==='enqst'){var job3=S(b.job,20).replace(/^#/,'');var k3=S(b.k,20),v3=S(b.val,40);var OKV={estimate:['Not started','In progress','Ready for review','Complete'],programme:['Not started','Draft in progress','Draft ready']};if(!job3||!OKV[k3]||OKV[k3].indexOf(v3)<0)throw new Error('Unknown status');return [{json:{kind:kind,job:job3,k:k3,val:v3,by:S(b.by,80),now:now}}];}\n/* clearenq: after the Enquiry checklist has been moved into task rows (cbs-tasks-act migrate_enq), empty enq_json.tasks on those jobs (kept as tasks_old). */\nif(kind==='clearenq'){var J=(Array.isArray(b.jobs)?b.jobs:[]).map(function(x){return S(x,20).replace(/^#/,'');}).filter(Boolean);if(!J.length)throw new Error('Missing jobs');return [{json:{kind:kind,jobs:J,by:S(b.by,80),now:now}}];}\nthrow new Error('Unknown task kind');"
+      }
+    },
+    {
+      "id": "bc5f526a-93ab-44d4-a271-48c2bf641851",
+      "name": "Get Job",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "5dgWt9kYzCb49m5h"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "947e243c-6485-466d-b969-da3371fbce5e",
+      "name": "Apply",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var p=$('Prep').first().json;var H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nif(p.kind==='new'){var row={job_no:'',req:'custom',kind:'custom',label:p.label,notes:p.notes,due_on:p.due,status:'',created_by:p.by||'Actions board',created_at:p.now};\n var r=await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=jobtasks&k='+K,body:row,json:true,timeout:20000});\n return [{json:{ok:true,kind:'new',row:r}}];}\nif(p.kind==='jobtask'){var body=p.undo?{status:'',done_by:'',done_at:''}:{status:'Done',done_by:p.by||'Actions board',done_at:p.now};\n await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=jobtasks&id='+p.id+'&k='+K+'&partial=1',body:body,json:true,timeout:20000});\n return [{json:{ok:true,kind:'jobtask',id:p.id,status:body.status}}];}\nfunction jk(v){return String(v==null?'':v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();}\nfunction latest(job){return $input.all().map(function(i){return i.json;}).filter(function(r){return r&&jk(r.ref)===jk(job);}).sort(function(a,b){return Number(b.id)-Number(a.id);})[0];}\nif(p.kind==='clearenq'){var out=[];p.jobs.forEach(function(job){var rw=latest(job);if(!rw)return;var e0={};try{e0=JSON.parse(rw.enq_json||'{}')||{};}catch(x){}\n  if(!Array.isArray(e0.tasks)||!e0.tasks.length)return;e0.tasks_old=(Array.isArray(e0.tasks_old)?e0.tasks_old:[]).concat(e0.tasks);e0.tasks=[];e0.updated_at=new Date().toISOString();\n  out.push({json:{ok:true,kind:'enq',rid:rw.id,enq_json:JSON.stringify(e0)}});});\n return out.length?out:[{json:{ok:true,kind:'none'}}];}\nvar row2=latest(p.job);\nif(!row2)return [{json:{ok:false,message:'Job not found'}}];\nvar e={};try{e=JSON.parse(row2.enq_json||'{}')||{};}catch(x){}\nif(p.kind==='enqreqs'){e.reqs=p.reqs;e.updated_at=new Date().toISOString();return [{json:{ok:true,kind:'enq',rid:row2.id,enq_json:JSON.stringify(e)}}];}\nif(p.kind==='enqst'){e.st=(e.st&&typeof e.st==='object')?e.st:{};e.st[p.k]=p.val;e.updated_at=new Date().toISOString();return [{json:{ok:true,kind:'enq',rid:row2.id,enq_json:JSON.stringify(e)}}];}\nvar T=Array.isArray(e.tasks)?e.tasks:[];var hit=false;\nT.forEach(function(t){if(!hit&&t&&String(t.tx||'').trim()===p.tx){t.st=p.st||(p.undo?'Open':'Done');hit=true;}});\nif(!hit)return [{json:{ok:false,message:'Task not found on the job'}}];\ne.tasks=T;e.updated_at=new Date().toISOString();\nreturn [{json:{ok:true,kind:'enq',rid:row2.id,enq_json:JSON.stringify(e)}}];"
+      }
+    },
+    {
+      "id": "75c88c91-c0e0-4a2e-987d-c425740792d6",
+      "name": "Save Enquiry?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.kind === \"enq\" && $json.ok === true }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "3173cec8-9aa6-4ea9-a5c8-2c9b3dddc15f",
+      "name": "Update Job",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "5dgWt9kYzCb49m5h"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.rid }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "enq_json": "={{ $json.enq_json }}"
+          },
+          "matchingColumns": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "addb654f-1fc6-4729-8018-d4b272011ee0",
+      "name": "Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{json:{ok:true,kind:'enq',saved:$input.all().length}}];"
+      },
+      "executeOnce": true
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "69f7fc0d-b070-4c95-99fd-016e70288370",
+        "name": "Done Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-jobtask-done",
+          "responseMode": "lastNode",
+          "responseData": "firstEntryJson",
+          "options": {}
+        },
+        "webhookId": "066ecd11-d3fb-47ed-93a0-89383e9c5cc0"
+      },
+      {
+        "id": "c31ec292-25e9-4ac4-926c-7566b8f06246",
+        "name": "Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var b=$input.first().json.body||{};if(typeof b==='string'){try{b=JSON.parse(b);}catch(e){b={};}}\nfunction S(v,n){return String(v==null?'':v).trim().slice(0,n||200);}\nvar kind=S(b.kind,10),undo=b.undo===true||b.undo==='true';\nvar now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nif(kind==='new'){var lab=S(b.label,200);if(!lab)throw new Error('Missing task');var due=S(b.due,10);if(due&&!/^\\d{4}-\\d{2}-\\d{2}$/.test(due))due='';return [{json:{kind:kind,label:lab,notes:S(b.notes,1000),due:due,by:S(b.by,80),now:now}}];}\nif(kind==='jobtask'){var id=Number(b.id)||0;if(!id)throw new Error('Missing task id');return [{json:{kind:kind,id:id,by:S(b.by,80),now:now,undo:undo}}];}\n/* Enquiry checklist: st (Done / Open / In hand) sets that status; without st it ticks Done (undo = Open), as before. */\nif(kind==='enq'){var job=S(b.job,20).replace(/^#/,'');if(!job||!S(b.tx))throw new Error('Missing job or task');var st=['Done','Open','In hand'].indexOf(S(b.st,10))>-1?S(b.st,10):'';return [{json:{kind:kind,job:job,tx:S(b.tx,400),by:S(b.by,80),now:now,undo:undo,st:st}}];}\n/* Enquiry requirements (Set up tasks on an enquiry): sets enq_json.reqs to the ticked keys. */\nif(kind==='enqreqs'){var job2=S(b.job,20).replace(/^#/,'');if(!job2)throw new Error('Missing job');var OK=['survey','estimate','drawings','supq','subq','docs','programme'];var R=(Array.isArray(b.reqs)?b.reqs:[]).map(function(x){return S(x,20);}).filter(function(x,i,a){return OK.indexOf(x)>-1&&a.indexOf(x)===i;});return [{json:{kind:kind,job:job2,reqs:R,by:S(b.by,80),now:now}}];}\n/* enqst: the Estimate / Programme status (enq_json.st.estimate / .programme), set from the task drawer's status buttons (Save Act). */\nif(kind==='enqst'){var job3=S(b.job,20).replace(/^#/,'');var k3=S(b.k,20),v3=S(b.val,40);var OKV={estimate:['Not started','In progress','Ready for review','Complete'],programme:['Not started','Draft in progress','Draft ready']};if(!job3||!OKV[k3]||OKV[k3].indexOf(v3)<0)throw new Error('Unknown status');return [{json:{kind:kind,job:job3,k:k3,val:v3,by:S(b.by,80),now:now}}];}\n/* clearenq: after the Enquiry checklist has been moved into task rows (cbs-tasks-act migrate_enq), empty enq_json.tasks on those jobs (kept as tasks_old). */\nif(kind==='clearenq'){var J=(Array.isArray(b.jobs)?b.jobs:[]).map(function(x){return S(x,20).replace(/^#/,'');}).filter(Boolean);if(!J.length)throw new Error('Missing jobs');return [{json:{kind:kind,jobs:J,by:S(b.by,80),now:now}}];}\nthrow new Error('Unknown task kind');"
+        }
+      },
+      {
+        "id": "bc5f526a-93ab-44d4-a271-48c2bf641851",
+        "name": "Get Job",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "5dgWt9kYzCb49m5h"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "947e243c-6485-466d-b969-da3371fbce5e",
+        "name": "Apply",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var p=$('Prep').first().json;var H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nif(p.kind==='new'){var row={job_no:'',req:'custom',kind:'custom',label:p.label,notes:p.notes,due_on:p.due,status:'',created_by:p.by||'Actions board',created_at:p.now};\n var r=await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=jobtasks&k='+K,body:row,json:true,timeout:20000});\n return [{json:{ok:true,kind:'new',row:r}}];}\nif(p.kind==='jobtask'){var body=p.undo?{status:'',done_by:'',done_at:''}:{status:'Done',done_by:p.by||'Actions board',done_at:p.now};\n await this.helpers.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=jobtasks&id='+p.id+'&k='+K+'&partial=1',body:body,json:true,timeout:20000});\n return [{json:{ok:true,kind:'jobtask',id:p.id,status:body.status}}];}\nfunction jk(v){return String(v==null?'':v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();}\nfunction latest(job){return $input.all().map(function(i){return i.json;}).filter(function(r){return r&&jk(r.ref)===jk(job);}).sort(function(a,b){return Number(b.id)-Number(a.id);})[0];}\nif(p.kind==='clearenq'){var out=[];p.jobs.forEach(function(job){var rw=latest(job);if(!rw)return;var e0={};try{e0=JSON.parse(rw.enq_json||'{}')||{};}catch(x){}\n  if(!Array.isArray(e0.tasks)||!e0.tasks.length)return;e0.tasks_old=(Array.isArray(e0.tasks_old)?e0.tasks_old:[]).concat(e0.tasks);e0.tasks=[];e0.updated_at=new Date().toISOString();\n  out.push({json:{ok:true,kind:'enq',rid:rw.id,enq_json:JSON.stringify(e0)}});});\n return out.length?out:[{json:{ok:true,kind:'none'}}];}\nvar row2=latest(p.job);\nif(!row2)return [{json:{ok:false,message:'Job not found'}}];\nvar e={};try{e=JSON.parse(row2.enq_json||'{}')||{};}catch(x){}\nif(p.kind==='enqreqs'){e.reqs=p.reqs;e.updated_at=new Date().toISOString();return [{json:{ok:true,kind:'enq',rid:row2.id,enq_json:JSON.stringify(e)}}];}\nif(p.kind==='enqst'){e.st=(e.st&&typeof e.st==='object')?e.st:{};e.st[p.k]=p.val;e.updated_at=new Date().toISOString();return [{json:{ok:true,kind:'enq',rid:row2.id,enq_json:JSON.stringify(e)}}];}\nvar T=Array.isArray(e.tasks)?e.tasks:[];var hit=false;\nT.forEach(function(t){if(!hit&&t&&String(t.tx||'').trim()===p.tx){t.st=p.st||(p.undo?'Open':'Done');hit=true;}});\nif(!hit)return [{json:{ok:false,message:'Task not found on the job'}}];\ne.tasks=T;e.updated_at=new Date().toISOString();\nreturn [{json:{ok:true,kind:'enq',rid:row2.id,enq_json:JSON.stringify(e)}}];"
+        }
+      },
+      {
+        "id": "75c88c91-c0e0-4a2e-987d-c425740792d6",
+        "name": "Save Enquiry?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          896,
+          0
+        ],
+        "parameters": {
+          "conditions": {
+            "combinator": "and",
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.kind === \"enq\" && $json.ok === true }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ]
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "3173cec8-9aa6-4ea9-a5c8-2c9b3dddc15f",
+        "name": "Update Job",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1120,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "5dgWt9kYzCb49m5h"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $json.rid }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "enq_json": "={{ $json.enq_json }}"
+            },
+            "matchingColumns": []
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "addb654f-1fc6-4729-8018-d4b272011ee0",
+        "name": "Result",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1344,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "return [{json:{ok:true,kind:'enq',saved:$input.all().length}}];"
+        },
+        "executeOnce": true
+      }
+    ],
+    "connections": {
+      "Done Hook": {
+        "main": [
+          [
+            {
+              "node": "Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Prep": {
+        "main": [
+          [
+            {
+              "node": "Get Job",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Job": {
+        "main": [
+          [
+            {
+              "node": "Apply",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Apply": {
+        "main": [
+          [
+            {
+              "node": "Save Enquiry?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Save Enquiry?": {
+        "main": [
+          [
+            {
+              "node": "Update Job",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update Job": {
+        "main": [
+          [
+            {
+              "node": "Result",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS Actions board: tick off a job task from the board. POST cbs-jobtask-done {kind:'jobtask',id,by[,undo]} marks a cbs_job_tasks row Done (or reopens it); {kind:'enq',job,tx,by[,undo]} ticks an Enquiry prep checklist task in cbs_jobs.enq_json.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

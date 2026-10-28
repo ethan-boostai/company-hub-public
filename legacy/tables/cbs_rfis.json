@@ -1,0 +1,93 @@
+{
+  "table": "cbs_rfis",
+  "n8n_id": "35JJVFVHvS4u1E72",
+  "columns": [
+    {
+      "name": "created_at",
+      "type": "string"
+    },
+    {
+      "name": "created_by",
+      "type": "string"
+    },
+    {
+      "name": "files_json",
+      "type": "string"
+    },
+    {
+      "name": "history",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "needed_by",
+      "type": "string"
+    },
+    {
+      "name": "pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "question",
+      "type": "string"
+    },
+    {
+      "name": "responded_on",
+      "type": "string"
+    },
+    {
+      "name": "response",
+      "type": "string"
+    },
+    {
+      "name": "rfi_no",
+      "type": "string"
+    },
+    {
+      "name": "sent_on",
+      "type": "string"
+    },
+    {
+      "name": "sent_to",
+      "type": "string"
+    },
+    {
+      "name": "sent_to_email",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "subject",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "job_no": "12",
+      "rfi_no": "RFI-001",
+      "subject": "Why size door do you require?",
+      "question": "Why size door do you require?",
+      "sent_to": "ZZ Building Services Ltd",
+      "sent_to_email": "contact10@example.com",
+      "sent_on": "",
+      "needed_by": "2026-10-28",
+      "status": "Draft",
+      "response": "",
+      "responded_on": "",
+      "files_json": "[]",
+      "pdf_url": "",
+      "history": "21/10/2026 22:24 - Drafted by Ethan Paraha",
+      "created_by": "Ethan Paraha",
+      "created_at": "2026-10-21T22:24",
+      "id": 1,
+      "createdAt": "2026-10-21T21:24:53.723Z",
+      "updatedAt": "2026-10-21T21:24:53.723Z"
+    }
+  ]
+}

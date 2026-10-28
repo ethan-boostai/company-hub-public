@@ -1,0 +1,1112 @@
+{
+  "id": "8z4NHXaBuo678TcZ",
+  "name": "CBS - Close-out",
+  "active": true,
+  "isArchived": false,
+  "versionId": "9175819b-67ce-4dda-ad17-0041660d8f2f",
+  "activeVersionId": "9175819b-67ce-4dda-ad17-0041660d8f2f",
+  "triggerCount": 4,
+  "createdAt": "2026-10-10T18:02:37.629Z",
+  "updatedAt": "2026-10-22T14:54:58.284Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Page Hook": {
+      "main": [
+        [
+          {
+            "node": "Close-out Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Hook": {
+      "main": [
+        [
+          {
+            "node": "Close-out Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Act Hook": {
+      "main": [
+        [
+          {
+            "node": "Close-out Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Close-out Act": {
+      "main": [
+        [
+          {
+            "node": "Save Close-out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Close-out": {
+      "main": [
+        [
+          {
+            "node": "Send Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF Hook": {
+      "main": [
+        [
+          {
+            "node": "PDF Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF Prep": {
+      "main": [
+        [
+          {
+            "node": "Upload PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload PDF": {
+      "main": [
+        [
+          {
+            "node": "Store Report Link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Report Link": {
+      "main": [
+        [
+          {
+            "node": "Save Report Link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Report Link": {
+      "main": [
+        [
+          {
+            "node": "Send PDF Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Close-out Data": {
+      "main": [
+        [
+          {
+            "node": "Scope Close",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scope Close": {
+      "main": [
+        [
+          {
+            "node": "Send Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Close-out Page": {
+      "main": [
+        [
+          {
+            "node": "Scope Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scope Report": {
+      "main": [
+        [
+          {
+            "node": "Send Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "d4c89e47-0c56-4b1c-b119-a4398ec3bbe5",
+      "name": "Page Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-closeout",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "8ac2fa55-f8fa-43ef-b9b5-debedf197467"
+    },
+    {
+      "id": "6321cac3-ba77-498b-a12a-ee5e737ab26b",
+      "name": "Close-out Page",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* CBS close-out page (admin): cbs-closeout?job=N[&close=1]. Checklist from cbs-closeout-data, closes via cbs-closeout-act, report PDF saved via cbs-closeout-pdf. */\nconst S=v=>v==null?'':String(v);const e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nconst D={job:job,close:S(q.close)==='1'};\nconst CSS='*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n+'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n+'.wrap{max-width:860px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}'\n+'.btn{background:#F47920;color:#fff;text-decoration:none;font-weight:600;border-radius:8px;padding:8px 14px;font-size:14px;border:0;font-family:inherit;cursor:pointer;display:inline-block}.btn.ghost{background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}.btn.sm{padding:6px 10px;font-size:13px}.btn:disabled{opacity:.5}'\n+'.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}.pst{background:#fff;border:1px solid #d9d9d6;border-radius:10px;padding:8px 6px;text-align:center}.pst b{display:block;font-size:18px;line-height:1.2}.pst span{font-size:12px;color:#555}.pst.ok{border-color:#b9dfc1;background:#f1faf2}.pst.warn{border-color:#f2d398;background:#fff8ea}.pst.bad{border-color:#e9b6b1;background:#fdf1f0}@media(max-width:560px){.strip{grid-template-columns:repeat(2,1fr)}}'\n+'.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;margin-bottom:10px;padding:12px 14px}.card.ok{border-left:5px solid #5fae6e}.card.open{border-left:5px solid #d9534f}.card.warn{border-left:5px solid #e6a23c}.card.done{background:#f1faf2;border-color:#b9dfc1}'\n+'.t{font-weight:600}.m{color:#555;font-size:14px;margin-top:2px}.b{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center}ul.li{margin:6px 0 0;padding-left:20px;font-size:14px;color:#333}ul.li li{margin:2px 0}'\n+'.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:20px;padding:1px 8px;margin-left:6px;vertical-align:middle}.tag.ok{background:#e3f4e6;color:#1d6b2c}.tag.open{background:#fde3e1;color:#b3261e}.tag.warn{background:#fff1d6;color:#8a5a00}'\n+'h3{font-size:15px;margin:18px 0 8px;color:#3d4043}.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}'\n+'.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;overflow:auto;z-index:20}.dlg{background:#fff;border-radius:14px;max-width:580px;width:100%;padding:16px}.dlg h2{margin:0 0 10px;font-size:18px}'\n+'label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}.dlg textarea{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;min-height:90px}'\n+'.chk{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid #eee}.chk input{width:20px;height:20px;flex:0 0 auto}.chk.sub{padding-left:30px}.note{font-size:13px;color:#6b6e70;margin-top:6px}.msg{font-size:14px;color:#8a5a00;margin-top:8px;min-height:18px}';\nconst nav='<div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a>'+(job?'<a class=\"hub\" href=\"/webhook/cbs-job-file?job='+encodeURIComponent(job)+'\">Job File</a>':'')+'</div>';\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Close-out - Job '+e(job)+'</title><script src=\"/webhook/cbs-guard\"></script><style>'+CSS+'</style><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script></head><body><header>'+nav+'<h1>Close-out'+(job?' \\u00b7 Job '+e(job):'')+'</h1><p id=\"sub\">Chelmsford Building Services</p></header><div class=\"wrap\" id=\"app\">'+(job?'<div class=\"empty\">Checking the job\\u2026</div>':'<div class=\"empty\">Open close-out from a job.</div>')+'</div><script>window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+';</script>'+(job?'<script>('+client.toString()+')();</script>':'')+'</body></html>';\nreturn [{json:{html:html}}];\n\nfunction client(){\nvar D=window.D,JOB=D.job,app=document.getElementById('app'),X=null,LOGO=null,AUTO=D.close;\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction n(v){var x=Number(v);return isNaN(x)?0:x;}\nfunction gbp(v){var neg=n(v)<0;return (neg?'-':'')+'\\u00a3'+Math.abs(n(v)).toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g,',');}\nfunction dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})(?:T(\\d{2}:\\d{2}))?/);return m?m[3]+'/'+m[2]+'/'+m[1]+(m[4]?' '+m[4]:''):s(d);}\nfunction today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction who(){var x='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)x=m.name;}catch(z){}if(!x){try{x=localStorage.getItem('cbs_name')||'';}catch(z){}}if(!x){x=(prompt('Your name:')||'').trim();if(x){try{localStorage.setItem('cbs_name',x);}catch(z){}}}return x;}\nfunction dlg(h){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg\">'+h+'</div>';document.body.appendChild(o);o.close=function(){o.remove();};return o;}\nfunction guard(o,isDirty){o.addEventListener('click',function(ev){if(ev.target!==o)return;if(isDirty&&isDirty()&&!confirm('Close without saving your changes?'))return;o.close();});}\nfunction load(){return fetch('/webhook/cbs-closeout-data?job='+encodeURIComponent(JOB),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){if(!d||!d.ok)throw 0;X=d;\n var sb=[X.name,X.site,X.client].filter(Boolean).join(' \\u00b7 ');document.getElementById('sub').textContent=sb||'Chelmsford Building Services';render();\n if(AUTO){AUTO=false;if(!X.closed)closeDlg();}}).catch(function(){app.innerHTML='<div class=\"empty\">Could not load the close-out checks. Refresh to try again.</div>';});}\nfunction openItems(){var L=[];(X.checks||[]).forEach(function(c){if(c.warn||!c.n)return;c.items.forEach(function(i){L.push(c.l+': '+i);});if(c.more)L.push(c.l+': and '+c.more+' more');});return L;}\nfunction render(){var C=X.checks||[],co=X.closeout||{},V=X.variations||{},K=X.costs||{},h='';\n h+='<div class=\"strip\"><div class=\"pst '+(X.closed?'ok':'')+'\"><b>'+(X.closed?'Closed':'Open')+'</b><span>Job status</span></div>'\n +'<div class=\"pst '+(X.open?'bad':'ok')+'\"><b>'+X.open+'</b><span>Open items</span></div>'\n +'<div class=\"pst '+(V.final==null?'warn':'')+'\"><b>'+(V.final==null?'Not set':gbp(V.final))+'</b><span>Final account</span></div>'\n +'<div class=\"pst '+(K.margin==null?'':(K.margin<0?'bad':'ok'))+'\"><b>'+(K.margin==null?'\\u2013':gbp(K.margin))+'</b><span>Forecast margin'+(K.pct!=null?' ('+K.pct+'%)':'')+'</span></div></div>';\n if(X.closed||co.closed_at){h+='<div class=\"card '+(X.closed?'done':'')+'\"><div class=\"t\">'+(X.closed?'Closed out':'Previously closed out')+(co.closed_at?' on '+dmy(co.closed_at):'')+(co.by?' by '+e(co.by):'')+'</div>'\n  +(co.reason?'<div class=\"m\">Reason: '+e(co.reason)+'</div>':'')\n  +((co.open||[]).length?'<details><summary class=\"m\" style=\"cursor:pointer\">'+co.open.length+' item'+(co.open.length===1?' was':'s were')+' still open when it was closed</summary><ul class=\"li\">'+co.open.map(function(x){return '<li>'+e(x)+'</li>';}).join('')+'</ul></details>':'<div class=\"m\">Everything was clear when it was closed.</div>')\n  +(co.report_url?'<div class=\"m\">Close-out report saved to the site file '+dmy(co.report_at)+(co.report_by?' by '+e(co.report_by):'')+' \\u00b7 <a href=\"/webhook/cbs-file?u='+encodeURIComponent(co.report_url)+'\" target=\"_blank\" rel=\"noopener\">Open</a></div>':'<div class=\"m\">No close-out report saved to the site file yet.</div>')\n  +(X.closed?'<div class=\"note\">To reopen the job, create the job file again from the Job File page. Nothing was deleted.</div>':'')+'</div>';}\n h+='<div class=\"tools\">'+(X.closed?'':'<button class=\"btn\" id=\"cl\">Close out this job</button>')+'<button class=\"btn '+(X.closed?'':'ghost')+'\" id=\"rp\">Close-out report PDF</button><a class=\"btn ghost\" id=\"pk\" href=\"/webhook/cbs-cdm?job='+encodeURIComponent(JOB)+'&a=pack&f=13\">Download close-out pack</a>'+(X.cdm||co.was_mode==='cdm'?'<a class=\"btn ghost\" id=\"sf\" href=\"/webhook/cbs-cdm?job='+encodeURIComponent(JOB)+'&a=pack\">Full CDM site file</a>':'')+'</div>';\n h+='<div class=\"note\" id=\"pkm\" style=\"margin:-4px 0 10px\">The close-out pack is folder 13 of the site file: the close-out report, snag register, variations and RFI logs, programme as-built and the handover documents.</div>';\n h+='<h3>Close-out checklist</h3>';\n C.forEach(function(c){var st=c.n?(c.warn?'warn':'open'):'ok';\n  h+='<div class=\"card '+st+'\"><div class=\"t\">'+e(c.l)+'<span class=\"tag '+st+'\">'+(c.n?(c.warn?'Check':c.n+' open'):'\\u2713 Clear')+'</span></div>';\n  if(c.n){var first=c.items.slice(0,5),rest=c.items.slice(5);h+='<ul class=\"li\">'+first.map(function(i){return '<li>'+e(i)+'</li>';}).join('')+'</ul>';\n   if(rest.length||c.more)h+='<details><summary class=\"m\" style=\"cursor:pointer\">Show '+(rest.length+c.more)+' more</summary><ul class=\"li\">'+rest.map(function(i){return '<li>'+e(i)+'</li>';}).join('')+(c.more?'<li>and '+c.more+' more</li>':'')+'</ul></details>';\n   if(c.link)h+='<div class=\"b\"><a class=\"btn ghost sm\" href=\"'+e(c.link)+'\">'+e(c.al||'Open')+'</a></div>';}\n  h+='</div>';});\n app.innerHTML=h;\n var cl=document.getElementById('cl');if(cl)cl.onclick=closeDlg;document.getElementById('rp').onclick=function(){reportDlg(false);};\n [document.getElementById('pk'),document.getElementById('sf')].forEach(function(a){if(a)a.addEventListener('click',function(){document.getElementById('pkm').textContent='Building the zip. A big job can take up to a minute; the download starts automatically.';});});}\nfunction closeDlg(){var L=openItems(),C=(X.checks||[]).filter(function(c){return c.n&&!c.warn;}),W=(X.checks||[]).filter(function(c){return c.n&&c.warn;});\n var o=dlg('<h2>Close out job '+e(JOB)+'</h2>'\n  +(L.length?'<div class=\"m\"><b>'+L.length+' item'+(L.length===1?' is':'s are')+' still open:</b></div><ul class=\"li\">'+C.map(function(c){return '<li>'+e(c.l)+': '+c.n+'</li>';}).join('')+'</ul><label class=\"f\">Reason for closing with items open</label><textarea id=\"rs\" placeholder=\"e.g. Client accepted the remaining snags; final RFI no longer needed\"></textarea><div class=\"note\">The open items and your reason are recorded with the close-out.</div>':'<div class=\"m\">Everything on the checklist is clear.</div><label class=\"f\">Note (optional)</label><textarea id=\"rs\" style=\"min-height:60px\"></textarea>')\n  +(W.length?'<div class=\"note\">Also worth checking: '+W.map(function(c){return e(c.l);}).join(', ')+'.</div>':'')\n  +'<div class=\"note\">Closing removes the job from the job files list. Nothing is deleted. You can then create the close-out report.</div><div class=\"msg\" id=\"cm\"></div><div class=\"b\"><button class=\"btn\" id=\"cg\">Close out job</button><button class=\"btn ghost\" id=\"cx\">Cancel</button></div>');\n var rs=o.querySelector('#rs');guard(o,function(){return rs.value.trim()!=='';});o.querySelector('#cx').onclick=function(){if(rs.value.trim()&&!confirm('Close without saving your changes?'))return;o.close();};\n o.querySelector('#cg').onclick=function(){var r=rs.value.trim();if(L.length&&!r){o.querySelector('#cm').textContent='Give a reason for closing with items still open.';rs.focus();return;}\n  if(!confirm('Close out job '+JOB+'?'+(L.length?'\\n\\n'+L.length+' item'+(L.length===1?' is':'s are')+' still open.':'')+'\\n\\nIt will be removed from the job files list. Nothing is deleted.'))return;\n  if(!confirm('Are you sure? Close out job '+JOB+'.'))return;\n  var by=who();if(!by)return;var b=this;b.disabled=true;b.textContent='Closing\\u2026';\n  fetch('/webhook/cbs-closeout-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({a:'close',job:JOB,by:by,reason:r,open:L})}).then(function(x){if(!x.ok)throw 0;return x.json();})\n  .then(function(){o.close();return load().then(function(){reportDlg(true);});})\n  .catch(function(){b.disabled=false;b.textContent='Close out job';o.querySelector('#cm').textContent='Could not close the job. Check your connection and try again.';});};}\nvar SECS=[['sum','Summary and final account',1],['check','Close-out checklist',1],['prog','Programme as-built',1],['snags','Snag register',1],['photos','Snag photos (before and after)',1,1],['vars','Variations log',1],['rfis','RFI log',1],['hs','Health and safety file summary',1],['docs','Handover documents',1],['costs','Costs and margin (internal)',0],['sign','Practical completion sign-off',1]];\nfunction reportDlg(after){var o=dlg('<h2>Close-out report</h2>'+(after?'<div class=\"m\">Job '+e(JOB)+' is closed. Create the close-out report now.</div>':'<div class=\"m\">Choose what goes in the report.</div>')\n  +SECS.map(function(x){var off=(x[0]==='snags'||x[0]==='photos')&&!(X.snags||[]).length||x[0]==='vars'&&!(X.variations.rows||[]).length||x[0]==='rfis'&&!(X.rfis||[]).length||x[0]==='prog'&&!(X.programme.rows||[]).length;\n   return '<label class=\"chk'+(x[3]?' sub':'')+'\"><input type=\"checkbox\" class=\"rs\" value=\"'+x[0]+'\"'+(x[2]&&!off?' checked':'')+(off?' disabled':'')+'><span>'+x[1]+(off?' (none on this job)':'')+'</span></label>';}).join('')\n  +'<label class=\"chk\" style=\"margin-top:8px;border-top:2px solid #ddd\"><input type=\"checkbox\" id=\"sv\" checked><span>Also save a copy to the job\\u2019s site file (close-out folder)</span></label><div class=\"note\">Costs are left out by default as the report usually goes to the client.</div><div class=\"msg\" id=\"rm\"></div><div class=\"b\"><button class=\"btn\" id=\"rg\">Create PDF</button><button class=\"btn ghost\" id=\"rx\">'+(after?'Later':'Cancel')+'</button></div>');\n guard(o);o.querySelector('#rx').onclick=o.close;\n o.querySelector('#rg').onclick=function(){var on={};[].forEach.call(o.querySelectorAll('.rs'),function(x){on[x.value]=x.checked;});if(!Object.keys(on).some(function(k){return on[k];})){alert('Tick at least one section.');return;}\n  if(!window.jspdf){alert('The PDF tool did not load. Refresh and try again.');return;}\n  var sv=o.querySelector('#sv').checked,by='';if(sv){by=who();if(!by)return;}var b=this,m=o.querySelector('#rm');b.disabled=true;m.textContent='Building the report\\u2026';\n  build(on,function(t){m.textContent=t;}).then(function(doc){var name='Job '+JOB+' - Close-out report - '+today()+'.pdf';\n   if(!sv){doc.save(name);o.close();return;}\n   m.textContent='Saving a copy to the site file\\u2026';\n   return fetch('/webhook/cbs-closeout-pdf',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({job:JOB,by:by,b64:doc.output('datauristring')})}).then(function(r){if(!r.ok)throw 0;return r.json();})\n    .then(function(){doc.save(name);o.close();load();}).catch(function(){doc.save(name);b.disabled=false;m.textContent='The PDF downloaded, but the copy could not be saved to the site file. Try again.';});})\n  .catch(function(){b.disabled=false;m.textContent='Could not build the report. Try again.';});};}\nfunction getLogo(){if(LOGO!==null)return Promise.resolve(LOGO);return fetch('/webhook/cbs-programme-logo').then(function(r){return r.json();}).then(function(d){LOGO=(d&&d.lg)||'';return LOGO;}).catch(function(){LOGO='';return '';});}\nfunction imgData(u){return fetch('/webhook/cbs-file?u='+encodeURIComponent(u)).then(function(r){if(!r.ok)throw 0;return r.blob();}).then(function(bl){return new Promise(function(res){var url=URL.createObjectURL(bl),im=new Image();\n im.onload=function(){var mx=900,sc=Math.min(1,mx/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*sc));c.height=Math.max(1,Math.round(im.height*sc));var g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(url);res({d:c.toDataURL('image/jpeg',0.72),w:c.width,h:c.height});};\n im.onerror=function(){URL.revokeObjectURL(url);res(null);};im.src=url;});}).catch(function(){return null;});}\nfunction build(on,say){return getLogo().then(function(lg){\n var P=[];if(on.photos&&on.snags!==false){(X.snags||[]).forEach(function(sn){sn.before.slice(0,2).concat(sn.after.slice(0,2)).forEach(function(u){P.push(u);});});}\n var IM={},done=0;say(P.length?'Loading snag photos (0 of '+P.length+')\\u2026':'Building the report\\u2026');\n return P.reduce(function(pr,u){return pr.then(function(){return imgData(u).then(function(d){IM[u]=d;done++;say('Loading snag photos ('+done+' of '+P.length+')\\u2026');});});},Promise.resolve()).then(function(){return make(on,lg,IM);});});}\nfunction make(on,lg,IM){var jsPDF=window.jspdf.jsPDF,doc=new jsPDF({unit:'mm',format:'a4'}),W=210,HH=297,M=14,y=0,co=X.closeout||{},V=X.variations||{},K=X.costs||{},PRG=X.programme||{};\n function head(){doc.setFillColor(244,121,32);doc.rect(0,0,W,3,'F');var lx=M;if(lg){try{var pr=doc.getImageProperties(lg),hh=13,ww=pr.width*hh/pr.height;if(ww>48){ww=48;hh=pr.height*ww/pr.width;}doc.addImage(lg,'PNG',M,7,ww,hh);lx=M+ww+5;}catch(z){}}\n  doc.setTextColor(30);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text('Close-out report - Job '+JOB,lx,12);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text(([X.site,X.client].filter(Boolean).join('  |  ')||'Chelmsford Building Services').slice(0,100),lx,17.5);y=28;}\n function np(){doc.addPage();y=18;}\n function need(h){if(y+h>HH-18)np();}\n function h2(t){need(16);y+=4;doc.setFont('helvetica','bold');doc.setFontSize(12.5);doc.setTextColor(30);doc.text(t,M,y);doc.setDrawColor(244,121,32);doc.setLineWidth(0.6);doc.line(M,y+1.6,W-M,y+1.6);doc.setLineWidth(0.2);y+=8;}\n function para(t,sz,col){doc.setFont('helvetica','normal');doc.setFontSize(sz||9.5);doc.setTextColor(col==null?30:col);doc.splitTextToSize(s(t),W-2*M).forEach(function(l){need(5);doc.text(l,M,y);y+=4.6;});}\n function kv(k,v,bold){if(!s(v))return;doc.setFontSize(9.5);var L=doc.splitTextToSize(s(v),W-2*M-52);need(L.length*4.6+1.5);doc.setFont('helvetica','bold');doc.setTextColor(80);doc.text(k,M,y);doc.setFont('helvetica',bold?'bold':'normal');doc.setTextColor(20);doc.text(L,M+52,y);y+=Math.max(5.6,L.length*4.6+1.2);}\n function table(cols,rows){var tw=cols.reduce(function(m,c){return m+c.w;},0),sc=(W-2*M)/tw;cols.forEach(function(c){c.w*=sc;});\n  function hdr(){need(10);var x=M;doc.setFillColor(244,121,32);doc.rect(M,y-4.5,W-2*M,7,'F');doc.setTextColor(255);doc.setFont('helvetica','bold');doc.setFontSize(8.5);cols.forEach(function(c){doc.text(c.l,c.r?x+c.w-1.5:x+1.5,y,c.r?{align:'right'}:undefined);x+=c.w;});y+=6;doc.setFont('helvetica','normal');}\n  hdr();rows.forEach(function(r){doc.setFontSize(8.5);var lines=[],hg=1;cols.forEach(function(c,i){var t=s(r[i]);lines[i]=doc.splitTextToSize(t,c.w-3-(c.ind?(r.lv||0)*3:0)).slice(0,10);hg=Math.max(hg,lines[i].length);});var rh=hg*3.8+2.5;\n   if(y+rh>HH-18){np();hdr();}var x=M;doc.setTextColor(25);cols.forEach(function(c,i){if(r.bold&&i===0)doc.setFont('helvetica','bold');if(c.r)doc.text(lines[i],x+c.w-1.5,y,{align:'right'});else doc.text(lines[i],x+1.5+(c.ind?(r.lv||0)*3:0),y);doc.setFont('helvetica','normal');x+=c.w;});y+=rh;doc.setDrawColor(225);doc.line(M,y-3.2,W-M,y-3.2);});y+=3;}\n head();\n if(on.sum){h2('Summary');kv('Job',JOB+(X.name?' - '+X.name:''));kv('Site',X.site);kv('Client',X.client);kv('Project manager',X.pm);\n  var st=PRG.start||X.starts_on,en=PRG.end||X.ends_on;kv('Programme',st||en?[dmy(st),dmy(en)].filter(Boolean).join(' to '):'');if(PRG.pct!=null)kv('Programme complete',PRG.pct+'%');\n  kv('Status',X.closed||co.closed_at?'Closed out '+dmy(co.closed_at)+(co.by?' by '+co.by:''):'Open');if(co.reason)kv('Close-out note',co.reason);\n  y+=2;h2('Final account');kv('Contract value',V.contract==null?'Not set':gbp(V.contract));var ap=(V.rows||[]).filter(function(v){return v.status==='Approved';});kv('Approved variations',gbp(V.approved)+' ('+ap.length+')');\n  kv('Final account',V.final==null?'Contract value not set':gbp(V.final),1);var pd=(V.rows||[]).filter(function(v){return /^(raised|priced|submitted)$/i.test(v.status);});if(pd.length)kv('Variations not decided',gbp(V.pending)+' ('+pd.length+')');if(V.days)kv('Time added by variations',V.days+' working day'+(V.days===1?'':'s'));\n  y+=2;h2('At a glance');var sn=X.snags||[],sd=sn.filter(function(x){return /^(closed|signed off|complete|completed)$/i.test(x.status)||x.signed_at;}).length,rf=X.rfis||[];\n  kv('Snags',sn.length?sn.length+' raised, '+sd+' signed off':'None raised');kv('RFIs',rf.length?rf.length+' raised, '+rf.filter(function(r){return /^(answered|closed)$/i.test(r.status);}).length+' answered or closed':'None raised');kv('Variations',(V.rows||[]).length?(V.rows||[]).length+' logged':'None');}\n if(on.check){h2('Close-out checklist');var CK=X.checks||[];if(co.closed_at)para('Checked when the report was created. '+((co.open||[]).length?co.open.length+' item'+(co.open.length===1?' was':'s were')+' open when the job was closed out.':'Everything was clear when the job was closed out.'),9,70);y+=1;\n  table([{l:'Check',w:60},{l:'Result',w:24},{l:'Detail',w:100}],CK.map(function(c){return [c.l,c.n?(c.warn?'Check':c.n+' open'):'Clear',c.n?c.items.slice(0,6).join('; ')+(c.items.length>6||c.more?' (and '+(c.items.length-6+c.more)+' more)':''):''];}));\n  if((co.open||[]).length&&co.reason){kv('Reason given',co.reason);}}\n if(on.prog&&(PRG.rows||[]).length){h2('Programme as-built');table([{l:'Phase / task',w:80,ind:1},{l:'Start',w:22},{l:'Finish',w:22},{l:'Status',w:26},{l:'Completed',w:22}],PRG.rows.map(function(r){var x=[r.name,dmy(r.start),dmy(r.end),r.status+(r.pct>0&&r.pct<100?' ('+r.pct+'%)':''),dmy(r.done_on)];x.lv=r.lv;x.bold=r.lv===0;return x;}));}\n if(on.snags&&(X.snags||[]).length){h2('Snag register');table([{l:'No.',w:16},{l:'Area',w:28},{l:'Description',w:70},{l:'Status',w:26},{l:'Fixed',w:30},{l:'Signed off',w:32}],X.snags.map(function(x){return [x.no,x.area,x.desc,x.status,[x.fixed_by,dmy(x.fixed_at)].filter(Boolean).join(', '),[x.signed_by,dmy(x.signed_at)].filter(Boolean).join(', ')];}));\n  if(on.photos){var withP=X.snags.filter(function(x){return x.before.length||x.after.length;});if(withP.length){h2('Snag photos');\n   withP.forEach(function(x){need(60);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(30);doc.text((x.no+(x.area?' - '+x.area:'')+': '+x.desc).slice(0,110),M,y);y+=5;\n    [['Before',x.before.slice(0,2)],['After',x.after.slice(0,2)]].forEach(function(g){if(!g[1].length)return;need(48);doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(90);doc.text(g[0],M,y);var x0=M+16,th=40;\n     g[1].forEach(function(u){var im=IM[u];if(im){var ww=Math.min(80,im.w*th/im.h);try{doc.addImage(im.d,'JPEG',x0,y-3,ww,th);}catch(z){}x0+=ww+4;}else{doc.setDrawColor(200);doc.rect(x0,y-3,40,th);doc.text('Photo not available',x0+3,y+8);x0+=44;}});y+=th+3;});y+=2;});}}}\n if(on.vars&&(V.rows||[]).length){h2('Variations log');table([{l:'No.',w:18},{l:'Variation',w:70},{l:'Status',w:22},{l:'Decision',w:40},{l:'Cost',w:24,r:1}],V.rows.map(function(v){return [v.no,v.title,v.status,/^(approved|rejected)$/i.test(v.status)?[v.decided_by,dmy(v.decided_on)].filter(Boolean).join(', '):'',v.cost==null?'TBC':gbp(v.cost)];}));\n  kv('Approved variations',gbp(V.approved));if(V.final!=null)kv('Final account',gbp(V.final),1);}\n if(on.rfis&&(X.rfis||[]).length){h2('RFI log');table([{l:'No.',w:16},{l:'Subject',w:50},{l:'To',w:30},{l:'Status',w:20},{l:'Answer',w:62}],X.rfis.map(function(r){return [r.no,r.subject,r.to,r.status,r.response?(r.responded_on?dmy(r.responded_on)+': ':'')+r.response:''];}));}\n if(on.hs){h2('Health and safety file summary');if((X.hs||[]).length){table([{l:'Folder',w:70},{l:'Items',w:16,r:1},{l:'Contents',w:100}],X.hs.map(function(f){return [f.no+'.0 '+f.name,String(f.count),f.count?f.items.slice(0,4).map(function(i){return i.title;}).join('; ')+(f.items.length>4?' (and '+(f.items.length-4)+' more)':''):(f.note||'None')];}));para('The full documents are in the job\\u2019s site file.',8.5,90);}else para('The site file summary could not be loaded.',9,90);}\n if(on.docs){h2('Handover documents');var DC=X.docs||[];if(!DC.length)para('No handover documents are recorded on the Job File.',9,90);\n  else table([{l:'Document',w:60},{l:'Status',w:24},{l:'Files',w:100}],DC.map(function(d){return [d.label+(d.ref&&d.ref!==d.label?' ('+d.ref+')':''),d.status,d.files.length?d.files.map(function(f){return f.name||'File';}).join('; '):'No file attached'];}));}\n if(on.costs){h2('Costs and margin (internal)');kv('Final account',K.income==null?'Contract value not set':gbp(K.income));kv('Costs to date',gbp(K.costs)+' ('+K.count+' cost'+(K.count===1?'':'s')+', ex VAT)');kv('Committed (POs not billed)',gbp(K.committed));kv('Forecast final cost',gbp(K.forecast));kv('Forecast margin',K.margin==null?'-':gbp(K.margin)+(K.pct!=null?' ('+K.pct+'%)':''),1);\n  var ct=Object.keys(K.cats||{});if(ct.length){y+=2;table([{l:'Category',w:80},{l:'Cost (ex VAT)',w:40,r:1}],ct.map(function(c){return [c,gbp(K.cats[c])];}));}}\n if(on.sign){need(80);h2('Practical completion');para('Chelmsford Building Services confirm the works at the above site are complete'+((co.open||[]).length?', with the items listed in the close-out checklist,':'')+' and have been handed over. Signing below confirms the client accepts practical completion.',9.5);y+=8;\n  doc.setDrawColor(150);doc.setFontSize(9);doc.setTextColor(60);[['For the client',M],['For Chelmsford Building Services',M+98]].forEach(function(c){doc.text(c[0],c[1],y);doc.line(c[1],y+14,c[1]+84,y+14);doc.text('Signed',c[1],y+18);doc.line(c[1],y+28,c[1]+84,y+28);doc.text('Name',c[1],y+32);doc.line(c[1],y+42,c[1]+84,y+42);doc.text('Date',c[1],y+46);});y+=50;}\n var np2=doc.getNumberOfPages();for(var i=1;i<=np2;i++){doc.setPage(i);doc.setFontSize(7.5);doc.setTextColor(120);doc.text('Chelmsford Building Services Ltd  |  Job '+JOB+' close-out report  |  '+new Date().toLocaleDateString('en-GB'),M,HH-8);doc.text('Page '+i+' of '+np2,W-M,HH-8,{align:'right'});}\n return doc;}\nload();\n}\n"
+      }
+    },
+    {
+      "id": "b06868bf-f724-44c4-ac82-3ad2561c9eb4",
+      "name": "Send Page",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "32854a1d-b271-49b0-80c8-7904cd5f66fa",
+      "name": "Data Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        224
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-closeout-data",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "c488ee69-d609-4c3c-af5d-644dee5cefeb"
+    },
+    {
+      "id": "584c7ec0-4748-4079-b3d3-4033f57322b6",
+      "name": "Close-out Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        224
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* CBS close-out data for one job: open-items checklist, close-out record, and the registers used by the close-out report and site file folder 13. */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nif(!job)return [{json:{ok:false,message:'No job number.'}}];\nconst J=jk(job),JQ=encodeURIComponent(job);\nconst list=async t=>{try{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t+'&k='+K,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);}catch(e){return [];}};\nconst [SN,VA,RF,PI,PG,PO,JC,JT,JR]=await Promise.all(['snags','variations','rfis','progitems','programmes','pos','jobcosts','jobtasks','jobrows'].map(list));\nconst mine=(L,k)=>L.filter(r=>jk(r[k||'job_no'])===J);\nconst pj=v=>{try{const a=JSON.parse(S(v)||'[]');return Array.isArray(a)?a:[];}catch(e){return [];}};\nconst purl=x=>typeof x==='string'?S(x):S(x&&(x.url||x.u||x.webUrl||x.src));\nconst d10=v=>S(v).slice(0,10);\nconst gbp=v=>'\\u00a3'+num(v).toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g,',');\nconst byNo=(k)=>(a,b)=>num(S(a[k]).replace(/\\D/g,''))-num(S(b[k]).replace(/\\D/g,''))||num(a.id)-num(b.id);\n/* job record */\nconst jr=mine(JR,'ref').sort((a,b)=>num(b.id)-num(a.id))[0]||{};\nlet co={};try{co=JSON.parse(S(jr.closeout_json)||'{}')||{};}catch(e){co={};}\n/* snags */\nconst snags=mine(SN).sort(byNo('snag_no')).map(r=>({id:r.id,no:S(r.snag_no),area:S(r.area),desc:S(r.description),assigned:S(r.assigned_to),status:S(r.status)||'Open',raised_by:S(r.raised_by),raised_at:d10(r.raised_at),fixed_by:S(r.fixed_by),fixed_at:d10(r.fixed_at),fix_notes:S(r.fix_notes),signed_by:S(r.signed_off_by),signed_at:d10(r.signed_off_at),before:pj(r.before_json).map(purl).filter(Boolean),after:pj(r.after_json).map(purl).filter(Boolean)}));\nconst snDone=x=>/^(closed|signed off|complete|completed)$/i.test(x.status)||!!x.signed_at;\n/* variations */\nconst vars=mine(VA).sort(byNo('var_no')).map(r=>({no:S(r.var_no),title:S(r.title),desc:S(r.description),status:S(r.status)||'Raised',cost:S(r.cost)===''?null:num(r.cost),days:S(r.time_days)===''?null:num(r.time_days),instructed_by:S(r.instructed_by),instructed_on:d10(r.instructed_on),via:S(r.instruction_via),decided_by:S(r.decided_by),decided_on:d10(r.decided_on)}));\nconst vsum=st=>vars.filter(v=>v.status===st).reduce((m,v)=>m+num(v.cost),0);\nconst contract=S(jr.contract_value)===''?null:num(jr.contract_value);\nconst approved=vsum('Approved'),pending=vsum('Raised')+vsum('Priced')+vsum('Submitted');\n/* RFIs */\nconst rfis=mine(RF).sort(byNo('rfi_no')).map(r=>({no:S(r.rfi_no),subject:S(r.subject),question:S(r.question),to:S(r.sent_to),status:S(r.status)||'Draft',sent_on:d10(r.sent_on),needed_by:d10(r.needed_by),response:S(r.response),responded_on:d10(r.responded_on)}));\n/* programme */\nconst prog=mine(PG).sort((a,b)=>num(b.id)-num(a.id));const pr=prog.find(p=>/open/i.test(S(p.status)))||prog.find(p=>/closed/i.test(S(p.status)))||prog[0]||null;\nconst items=mine(PI);const kids={};items.forEach(i=>{const p=S(i.parent_id);(kids[p]=kids[p]||[]).push(i);});\nconst srt=(a,b)=>num(a.sort)-num(b.sort)||S(a.start_on).localeCompare(S(b.start_on))||num(a.id)-num(b.id);\nconst iDone=i=>/^(done|complete|completed)$/i.test(S(i.status))||num(i.pct)>=100;\nconst leaves=items.filter(i=>!(kids[S(i.id)]||[]).length&&S(i.kind)!=='phase');\nconst span=i=>{let s=S(i.start_on),e=S(i.end_on||i.start_on);(kids[S(i.id)]||[]).forEach(c=>{const x=span(c);if(x.s&&(!s||x.s<s))s=x.s;if(x.e&&(!e||x.e>e))e=x.e;});return {s:s,e:e};};\nconst rollPct=i=>{const k=kids[S(i.id)]||[];if(!k.length)return iDone(i)?100:Math.max(0,Math.min(100,num(i.pct)));return Math.round(k.reduce((m,c)=>m+rollPct(c),0)/k.length);};\nconst progRows=[];const walk=(i,lv)=>{const sp=span(i),pc=rollPct(i),dn=pc>=100;progRows.push({lv:lv,name:S(i.name),start:d10(sp.s),end:d10(sp.e),status:dn?'Done':(S(i.status)||(pc>0?'In progress':'Not started')),pct:pc,done_on:dn&&!(kids[S(i.id)]||[]).length?d10(i.updated_at):'',assigned:S(i.assigned_to)});(kids[S(i.id)]||[]).sort(srt).forEach(c=>walk(c,lv+1));};\nitems.filter(i=>S(i.kind)==='phase'||!S(i.parent_id)||!items.some(p=>S(p.id)===S(i.parent_id))).sort(srt).forEach(i=>walk(i,0));\nconst progPct=leaves.length?Math.round(leaves.reduce((m,i)=>m+(iDone(i)?100:Math.max(0,Math.min(100,num(i.pct)))),0)/leaves.length):null;\n/* costs and POs */\nconst costs=mine(JC);const costNet=costs.reduce((m,c)=>m+num(c.net),0);\nconst cats={};costs.forEach(c=>{const k=S(c.category)||'Other';cats[k]=(cats[k]||0)+num(c.net);});\nconst billed={};costs.forEach(c=>{const p=S(c.po_no).toLowerCase();if(p)billed[p]=(billed[p]||0)+num(c.net);});\nconst pos=mine(PO).filter(p=>S(p.po_no)).map(p=>{const tot=num(S(p.subtotal)!==''?p.subtotal:p.total),bl=billed[S(p.po_no).toLowerCase()]||0;return {no:S(p.po_no),supplier:S(p.supplier),type:S(p.po_type),status:S(p.status),total:tot,billed:bl,hire_end:d10(p.hire_end),offhired:d10(p.offhired_on)};});\nconst cancelled=p=>/cancel/i.test(p.status);\nconst committed=pos.filter(p=>!cancelled(p)).reduce((m,p)=>m+Math.max(0,p.total-p.billed),0);\nconst income=contract==null?null:contract+approved;\nconst forecast=costNet+committed;\nconst margin=income==null?null:income-forecast;\n/* handover documents on the Job File */\nconst HO=/o&m|o and m|operation|maintenance|as[- ]?built|test cert|certificate|handover|warrant|guarantee/i;\nconst docs=mine(JT).filter(r=>S(r.req)==='docs').map(r=>({id:r.id,label:S(r.label)||S(r.ref_name)||'Document',ref:S(r.ref_name),status:S(r.status)||'Not started',notes:S(r.notes),date:d10(r.done_at||r.created_at),handover:HO.test(S(r.label)+' '+S(r.ref_name)),files:pj(r.files_json).map(f=>({name:S(f&&(f.n||f.name||f.title)),url:purl(f)})).filter(f=>f.url)}));\nconst docDone=d=>/^(issued|approved|done|complete|completed|received)$/i.test(d.status);\n/* job requirements still outstanding (cards on the Actions board) */\nlet jrq=[];try{const x=await h.httpRequest({method:'POST',url:H+'cbs-job-reqs-data',body:{},json:true,timeout:45000});jrq=(x&&Array.isArray(x.items)?x.items:[]).filter(i=>jk(i.job)===J);}catch(e){}\nconst docKeys={};docs.forEach(d=>{docKeys['task'+d.id]=1;});\njrq=jrq.filter(i=>!/^(var_|rfi_|snag|prog)/i.test(S(i.k))&&!docKeys[S(i.k)]);\n/* H&S file sections (site file folders 1-12) */\nlet hs=[];if(S(q.nosf)!=='1'){try{const x=await h.httpRequest({url:H+'cbs-cdm?job='+JQ+'&nocx=1',json:true,timeout:60000});hs=((x&&x.sections)||[]).filter(s=>num(s.no)<=12).map(s=>({no:s.no,name:S(s.name),count:num(s.count),rag:S(s.rag),note:S(s.note),items:(s.items||[]).map(i=>({title:S(i.title),date:S(i.date)}))}));}catch(e){}}\n/* checklist */\nconst C=[];const add=(k,l,arr,link,al,warn)=>C.push({k:k,l:l,n:arr.length,items:arr.slice(0,40),more:Math.max(0,arr.length-40),link:link?'/webhook/'+link+JQ:'',al:al||'',warn:!!warn});\nadd('snags','Snags not signed off',snags.filter(x=>!snDone(x)).map(x=>x.no+(x.area?' ('+x.area+')':'')+': '+x.desc.slice(0,90)+' - '+x.status),'cbs-snags?job=','Open snagging');\nadd('prog','Programme tasks not complete',leaves.filter(i=>!iDone(i)).sort(srt).map(i=>S(i.name)+(S(i.end_on)?' - due '+d10(i.end_on).split('-').reverse().join('/'):'')+' ('+Math.round(num(i.pct))+'%)'),'cbs-programme?job=','Open programme');\nadd('rfis','RFIs still open',rfis.filter(r=>/^(draft|sent)$/i.test(r.status)).map(r=>r.no+': '+r.subject+' - '+r.status+(r.to?' to '+r.to:'')),'cbs-rfis?job=','Open RFIs');\nadd('vars','Variations not decided',vars.filter(v=>/^(raised|priced|submitted)$/i.test(v.status)).map(v=>v.no+': '+v.title+' - '+v.status+(v.cost!=null?' ('+gbp(v.cost)+')':'')),'cbs-variations?job=','Open variations');\nadd('pos','Purchase orders not fully received',pos.filter(p=>!cancelled(p)&&!/^(received|delivered|complete|completed|closed)$/i.test(p.status)&&!/plant|hire/i.test(p.type)).map(p=>p.no+' '+p.supplier+' - '+(p.status||'Ordered')),'cbs-job-file?job=','Open job file');\nadd('plant','Hire not off-hired',pos.filter(p=>!cancelled(p)&&/plant|hire/i.test(p.type)&&!p.offhired).map(p=>p.no+' '+p.supplier+(p.hire_end?' - hire end '+p.hire_end.split('-').reverse().join('/'):'')),'cbs-job-file?job=','Open job file');\nadd('bills','Purchase orders not billed yet',pos.filter(p=>!cancelled(p)&&p.total>0&&p.billed<p.total-0.5).map(p=>p.no+' '+p.supplier+': '+gbp(p.total-p.billed)+' of '+gbp(p.total)+' still to bill'),'cbs-costs?job=','Open job costing',true);\nconst hoList=docs.filter(d=>!docDone(d)).map(d=>d.label+(d.ref&&d.ref!==d.label?' ('+d.ref+')':'')+' - '+d.status);\nif(!docs.some(d=>d.handover))hoList.unshift('No O&M manual, as-built drawings, test certificates or handover pack added to the Job File yet');\nadd('docs','Handover documents',hoList,'cbs-job-file?job=','Open job file');\nadd('reqs','Job File requirements outstanding',jrq.map(i=>S(i.l)+(S(i.note)?' - '+S(i.note):'')),'cbs-job-file?job=','Open job file');\nadd('cv','Final account',contract==null?['Contract value not set, so the final account and margin cannot be worked out']:[],'cbs-costs?job=','Open job costing',true);\nconst open=C.filter(c=>!c.warn).reduce((m,c)=>m+c.n,0);\nreturn [{json:{ok:true,job:job,name:S(jr.name),site:S(jr.site),client:S(jr.client),pm:S(jr.pm),starts_on:d10(jr.starts_on),ends_on:d10(jr.ends_on),mode:S(jr.mode),cdm:S(jr.mode)==='cdm',closed:S(jr.mode)==='closed',hasJob:!!jr.id,closeout:co,checks:C,open:open,\n snags:snags,variations:{rows:vars,contract:contract,approved:approved,pending:pending,final:income,days:vars.filter(v=>v.status==='Approved').reduce((m,v)=>m+num(v.days),0)},\n rfis:rfis,programme:{status:pr?S(pr.status):'',pct:progPct,rows:progRows,start:progRows.reduce((m,r)=>r.start&&(!m||r.start<m)?r.start:m,''),end:progRows.reduce((m,r)=>r.end&&r.end>m?r.end:m,'')},\n costs:{income:income,contract:contract,approved:approved,costs:costNet,committed:committed,forecast:forecast,margin:margin,pct:income?Math.round(margin/income*1000)/10:null,cats:cats,count:costs.length},\n pos:pos,docs:docs,hs:hs}}];\n"
+      }
+    },
+    {
+      "id": "e59e7b47-bad3-45dc-8e16-5a283e47524b",
+      "name": "Send Data",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        224
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "898d4d3c-a290-44fc-baa6-e3bec7252a25",
+      "name": "Act Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        448
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-closeout-act",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "341c987e-2ee3-4307-a865-9eebdac7d352"
+    },
+    {
+      "id": "c8f293f1-334b-4045-a028-c0ab5714c3b7",
+      "name": "Close-out Act",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        448
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* Close a job out: records who, when, why and what was still open, then:\n   1. ServiceM8: status Completed and moved to the Works completed folder (cbs-enquiry-move action complete). If ServiceM8 is not updated, nothing\n      is closed and the page shows its error, so the job is never left half closed. Already Completed = fine (pressing Close out again finishes it).\n   2. Hub: closes the job file through cbs-cdm-set (mode closed). Output feeds the cbs_jobs upsert. */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst b=$input.first().json.body||{};const job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by).slice(0,80),reason=S(b.reason).slice(0,2000);\nif(S(b.a)!=='close')throw new Error('Unknown action.');\nif(!job)throw new Error('No job number.');if(!by)throw new Error('Enter your name.');\nconst open=(Array.isArray(b.open)?b.open:[]).map(x=>S(x).slice(0,240)).filter(Boolean).slice(0,200);\nif(open.length&&!reason)throw new Error('Give a reason for closing with items still open.');\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=jobrows&k='+K,body:{},json:true,timeout:30000});\nconst jr=(Array.isArray(L)?L:[]).filter(r=>r&&jk(r.ref)===jk(job)).sort((x,y)=>num(y.id)-num(x.id))[0]||{};\nlet old={};try{old=JSON.parse(S(jr.closeout_json)||'{}')||{};}catch(e){old={};}\nlet sm=null;try{sm=await h.httpRequest({method:'POST',url:H+'cbs-enquiry-move',body:{job:job,action:'complete',note:reason,by:by},json:true,timeout:60000});}catch(e){sm={ok:false,error:'ServiceM8 could not be reached'};}\nif(!sm||sm.ok!==true)throw new Error('ServiceM8 was not updated ('+S(sm&&sm.error||'no answer')+'). Nothing was closed. Try again.');\nconst co=Object.assign({},old,{closed_at:now,by:by,reason:reason,open:open,open_count:open.length,was_mode:S(jr.mode),sm8_completed:now});\nco.log=(Array.isArray(old.log)?old.log:[]).concat([{at:now,by:by,ev:'Closed out (ServiceM8 set to Completed, Works completed folder)',reason:reason,open:open.length}]).slice(-20);\nawait h.httpRequest({method:'POST',url:H+'cbs-cdm-set',body:{job_no:job,mode:'closed',by:by},json:true,timeout:30000});\nreturn [{json:{ref:job,closeout_json:JSON.stringify(co)}}];\n"
+      }
+    },
+    {
+      "id": "261b45c6-1322-472c-9f6f-3026920dd520",
+      "name": "Save Close-out",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        448
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "5dgWt9kYzCb49m5h"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "ref",
+              "condition": "eq",
+              "keyValue": "={{ $json.ref }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null,
+          "matchingColumns": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "da159c95-a357-4db5-9254-ebe0865e9aef",
+      "name": "Send Act",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        448
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ ok: true }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "b3e01faf-8f9d-45a1-9b47-4a045988b534",
+      "name": "PDF Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        672
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-closeout-pdf",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "60211c9f-f4cf-47f1-be20-5d244a276efd"
+    },
+    {
+      "id": "640af348-2a9e-43f7-b2fe-dcedb2a4b845",
+      "name": "PDF Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        672
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* Close-out report PDF from the page: makes the file for the SharePoint upload (Job N/Close-out). */\nconst S=v=>v==null?'':String(v).trim();\nconst b=$input.first().json.body||{};const job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by).slice(0,80);\nlet b64=S(b.b64).replace(/^data:[^,]*,/,'');\nif(!job)throw new Error('No job number.');if(!by)throw new Error('Enter your name.');\nif(!b64||b64.length>40000000)throw new Error('The report file is missing or too large.');\nconst day=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).slice(0,10);\nconst fname=('Job '+job+' - Close-out report - '+day+'.pdf').replace(/[\\\\/:*?\"<>|#%]+/g,' ');\nconst path=['CBS System','Operations','Jobs','Job '+job,'Close-out',fname].map(encodeURIComponent).join('/');\nconst bin=await this.helpers.prepareBinaryData(Buffer.from(b64,'base64'),fname,'application/pdf');\nreturn [{json:{job:job,by:by,fname:fname,path:path},binary:{data:bin}}];\n"
+      }
+    },
+    {
+      "id": "116cb239-51bf-43f3-8e59-9487d5213a6a",
+      "name": "Upload PDF",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        672
+      ],
+      "parameters": {
+        "method": "PUT",
+        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.path }}:/content?@microsoft.graph.conflictBehavior=replace",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {
+          "timeout": 120000
+        }
+      }
+    },
+    {
+      "id": "82cbd8e3-755c-4c3c-81b0-4cd079d40f0e",
+      "name": "Store Report Link",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        672
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* Stores the uploaded close-out report link on the job's close-out record. */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst u=$input.first().json||{};const p=$('PDF Prep').first().json;\nif(!S(u.webUrl))throw new Error('SharePoint did not return a link for the report.');\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=jobrows&k='+K,body:{},json:true,timeout:30000});\nconst jr=(Array.isArray(L)?L:[]).filter(r=>r&&jk(r.ref)===jk(p.job)).sort((x,y)=>num(y.id)-num(x.id))[0]||{};\nlet co={};try{co=JSON.parse(S(jr.closeout_json)||'{}')||{};}catch(e){co={};}\nObject.assign(co,{report_url:S(u.webUrl),report_at:now,report_by:p.by,report_name:p.fname});\nco.log=(Array.isArray(co.log)?co.log:[]).concat([{at:now,by:p.by,ev:'Close-out report saved to the site file'}]).slice(-20);\nreturn [{json:{ref:p.job,closeout_json:JSON.stringify(co)}}];\n"
+      }
+    },
+    {
+      "id": "b04fc8b7-714c-4a1f-a4e2-d2445c9433b7",
+      "name": "Save Report Link",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        672
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "5dgWt9kYzCb49m5h"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "ref",
+              "condition": "eq",
+              "keyValue": "={{ $json.ref }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null,
+          "matchingColumns": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "cc7fd900-3676-4694-a8ed-40ce35d10cab",
+      "name": "Send PDF Result",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        672
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ ok: true, url: $('Upload PDF').first().json.webUrl }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "02a3de94-9e34-4b30-86cd-499c5af30f4e",
+      "name": "Scope Close",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        340
+      ],
+      "parameters": {
+        "jsCode": "/* Close-out: scope of works (22/10/2026). Adds the job's scope to the close-out data for the \"Works completed\" report section.\n   The \"Scope of works items not confirmed complete\" check was removed with Build programme from scope (most jobs have no programme).\n   Any failure leaves the close-out data exactly as it was. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v).trim();\nconst j=Object.assign({},$input.first().json);\nif(!j.ok||!j.job)return [{json:j}];\ntry{\n const d=await h.httpRequest({url:H+'cbs-scope-data?job='+encodeURIComponent(j.job),json:true,timeout:25000});\n const secs=(d&&d.ok&&d.scope&&Array.isArray(d.scope.sections))?d.scope.sections:[];\n const total=secs.reduce((m,s)=>m+(s.items||[]).length,0);\n if(!total)return [{json:j}];\n let vars=0;\n const sc=secs.map((s,si)=>({name:S(s.name),items:(s.items||[]).map((it,ii)=>{if(S(it.var))vars++;return {ref:(si+1)+'.'+(ii+1),text:S(it.text),who:S(it.who)||'CBS',var:S(it.var)};})}));\n j.scope={sections:sc,total:total,vars:vars,locked:!!(d.scope&&d.scope.locked_at)};\n return [{json:j}];\n}catch(e){return [{json:j}];}\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "8f089747-ad71-4299-9e18-d166862c5bd3",
+      "name": "Scope Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        120
+      ],
+      "parameters": {
+        "jsCode": "/* Close-out report: \"Works completed\" section from the scope of works (19/10/2026). Exact-once anchors; a miss leaves the page as it was. */\nlet html=String($input.first().json.html||'');const rep=[];\nfunction one(a,b,tag){const c=html.split(a).length-1;if(c===1){html=html.split(a).join(b);rep.push(tag+':ok');}else rep.push(tag+':missing('+c+')');}\none(String.raw`['check','Close-out checklist',1]`,String.raw`['scope','Works completed (scope of works)',1],['check','Close-out checklist',1]`,'sec');\none(String.raw`||x[0]==='prog'&&!(X.programme.rows||[]).length;`,String.raw`||x[0]==='prog'&&!(X.programme.rows||[]).length||x[0]==='scope'&&!((X.scope||{}).total);`,'off');\none(String.raw` if(on.check){h2('Close-out checklist');`,String.raw` if(on.scope&&X.scope&&X.scope.total){h2('Works completed');para('The works carried out under this job, from the agreed scope of works'+(X.scope.vars?', including variations (marked in the Var. column).':'.'),9,70);y+=1;\n  table([{l:'Ref',w:14},{l:'Section',w:36},{l:'Works',w:96},{l:'By',w:34},{l:'Var.',w:14}],[].concat.apply([],X.scope.sections.map(function(sc){return sc.items.map(function(i,ii){return [i.ref,ii?'':sc.name,i.text,i.who==='CBS'?'CBS':i.who,i.var||''];});})));}\n if(on.check){h2('Close-out checklist');`,'make');\nreturn [{json:{html:html,scopeRules:rep.join(' ')}}];\n",
+        "mode": "runOnceForAllItems"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "d4c89e47-0c56-4b1c-b119-a4398ec3bbe5",
+        "name": "Page Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-closeout",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "8ac2fa55-f8fa-43ef-b9b5-debedf197467"
+      },
+      {
+        "id": "6321cac3-ba77-498b-a12a-ee5e737ab26b",
+        "name": "Close-out Page",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* CBS close-out page (admin): cbs-closeout?job=N[&close=1]. Checklist from cbs-closeout-data, closes via cbs-closeout-act, report PDF saved via cbs-closeout-pdf. */\nconst S=v=>v==null?'':String(v);const e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nconst D={job:job,close:S(q.close)==='1'};\nconst CSS='*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n+'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n+'.wrap{max-width:860px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}'\n+'.btn{background:#F47920;color:#fff;text-decoration:none;font-weight:600;border-radius:8px;padding:8px 14px;font-size:14px;border:0;font-family:inherit;cursor:pointer;display:inline-block}.btn.ghost{background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}.btn.sm{padding:6px 10px;font-size:13px}.btn:disabled{opacity:.5}'\n+'.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}.pst{background:#fff;border:1px solid #d9d9d6;border-radius:10px;padding:8px 6px;text-align:center}.pst b{display:block;font-size:18px;line-height:1.2}.pst span{font-size:12px;color:#555}.pst.ok{border-color:#b9dfc1;background:#f1faf2}.pst.warn{border-color:#f2d398;background:#fff8ea}.pst.bad{border-color:#e9b6b1;background:#fdf1f0}@media(max-width:560px){.strip{grid-template-columns:repeat(2,1fr)}}'\n+'.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;margin-bottom:10px;padding:12px 14px}.card.ok{border-left:5px solid #5fae6e}.card.open{border-left:5px solid #d9534f}.card.warn{border-left:5px solid #e6a23c}.card.done{background:#f1faf2;border-color:#b9dfc1}'\n+'.t{font-weight:600}.m{color:#555;font-size:14px;margin-top:2px}.b{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center}ul.li{margin:6px 0 0;padding-left:20px;font-size:14px;color:#333}ul.li li{margin:2px 0}'\n+'.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:20px;padding:1px 8px;margin-left:6px;vertical-align:middle}.tag.ok{background:#e3f4e6;color:#1d6b2c}.tag.open{background:#fde3e1;color:#b3261e}.tag.warn{background:#fff1d6;color:#8a5a00}'\n+'h3{font-size:15px;margin:18px 0 8px;color:#3d4043}.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}'\n+'.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;overflow:auto;z-index:20}.dlg{background:#fff;border-radius:14px;max-width:580px;width:100%;padding:16px}.dlg h2{margin:0 0 10px;font-size:18px}'\n+'label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}.dlg textarea{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;min-height:90px}'\n+'.chk{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid #eee}.chk input{width:20px;height:20px;flex:0 0 auto}.chk.sub{padding-left:30px}.note{font-size:13px;color:#6b6e70;margin-top:6px}.msg{font-size:14px;color:#8a5a00;margin-top:8px;min-height:18px}';\nconst nav='<div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a>'+(job?'<a class=\"hub\" href=\"/webhook/cbs-job-file?job='+encodeURIComponent(job)+'\">Job File</a>':'')+'</div>';\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Close-out - Job '+e(job)+'</title><script src=\"/webhook/cbs-guard\"></script><style>'+CSS+'</style><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script></head><body><header>'+nav+'<h1>Close-out'+(job?' \\u00b7 Job '+e(job):'')+'</h1><p id=\"sub\">Chelmsford Building Services</p></header><div class=\"wrap\" id=\"app\">'+(job?'<div class=\"empty\">Checking the job\\u2026</div>':'<div class=\"empty\">Open close-out from a job.</div>')+'</div><script>window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+';</script>'+(job?'<script>('+client.toString()+')();</script>':'')+'</body></html>';\nreturn [{json:{html:html}}];\n\nfunction client(){\nvar D=window.D,JOB=D.job,app=document.getElementById('app'),X=null,LOGO=null,AUTO=D.close;\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction n(v){var x=Number(v);return isNaN(x)?0:x;}\nfunction gbp(v){var neg=n(v)<0;return (neg?'-':'')+'\\u00a3'+Math.abs(n(v)).toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g,',');}\nfunction dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})(?:T(\\d{2}:\\d{2}))?/);return m?m[3]+'/'+m[2]+'/'+m[1]+(m[4]?' '+m[4]:''):s(d);}\nfunction today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction who(){var x='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)x=m.name;}catch(z){}if(!x){try{x=localStorage.getItem('cbs_name')||'';}catch(z){}}if(!x){x=(prompt('Your name:')||'').trim();if(x){try{localStorage.setItem('cbs_name',x);}catch(z){}}}return x;}\nfunction dlg(h){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg\">'+h+'</div>';document.body.appendChild(o);o.close=function(){o.remove();};return o;}\nfunction guard(o,isDirty){o.addEventListener('click',function(ev){if(ev.target!==o)return;if(isDirty&&isDirty()&&!confirm('Close without saving your changes?'))return;o.close();});}\nfunction load(){return fetch('/webhook/cbs-closeout-data?job='+encodeURIComponent(JOB),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){if(!d||!d.ok)throw 0;X=d;\n var sb=[X.name,X.site,X.client].filter(Boolean).join(' \\u00b7 ');document.getElementById('sub').textContent=sb||'Chelmsford Building Services';render();\n if(AUTO){AUTO=false;if(!X.closed)closeDlg();}}).catch(function(){app.innerHTML='<div class=\"empty\">Could not load the close-out checks. Refresh to try again.</div>';});}\nfunction openItems(){var L=[];(X.checks||[]).forEach(function(c){if(c.warn||!c.n)return;c.items.forEach(function(i){L.push(c.l+': '+i);});if(c.more)L.push(c.l+': and '+c.more+' more');});return L;}\nfunction render(){var C=X.checks||[],co=X.closeout||{},V=X.variations||{},K=X.costs||{},h='';\n h+='<div class=\"strip\"><div class=\"pst '+(X.closed?'ok':'')+'\"><b>'+(X.closed?'Closed':'Open')+'</b><span>Job status</span></div>'\n +'<div class=\"pst '+(X.open?'bad':'ok')+'\"><b>'+X.open+'</b><span>Open items</span></div>'\n +'<div class=\"pst '+(V.final==null?'warn':'')+'\"><b>'+(V.final==null?'Not set':gbp(V.final))+'</b><span>Final account</span></div>'\n +'<div class=\"pst '+(K.margin==null?'':(K.margin<0?'bad':'ok'))+'\"><b>'+(K.margin==null?'\\u2013':gbp(K.margin))+'</b><span>Forecast margin'+(K.pct!=null?' ('+K.pct+'%)':'')+'</span></div></div>';\n if(X.closed||co.closed_at){h+='<div class=\"card '+(X.closed?'done':'')+'\"><div class=\"t\">'+(X.closed?'Closed out':'Previously closed out')+(co.closed_at?' on '+dmy(co.closed_at):'')+(co.by?' by '+e(co.by):'')+'</div>'\n  +(co.reason?'<div class=\"m\">Reason: '+e(co.reason)+'</div>':'')\n  +((co.open||[]).length?'<details><summary class=\"m\" style=\"cursor:pointer\">'+co.open.length+' item'+(co.open.length===1?' was':'s were')+' still open when it was closed</summary><ul class=\"li\">'+co.open.map(function(x){return '<li>'+e(x)+'</li>';}).join('')+'</ul></details>':'<div class=\"m\">Everything was clear when it was closed.</div>')\n  +(co.report_url?'<div class=\"m\">Close-out report saved to the site file '+dmy(co.report_at)+(co.report_by?' by '+e(co.report_by):'')+' \\u00b7 <a href=\"/webhook/cbs-file?u='+encodeURIComponent(co.report_url)+'\" target=\"_blank\" rel=\"noopener\">Open</a></div>':'<div class=\"m\">No close-out report saved to the site file yet.</div>')\n  +(X.closed?'<div class=\"note\">To reopen the job, create the job file again from the Job File page. Nothing was deleted.</div>':'')+'</div>';}\n h+='<div class=\"tools\">'+(X.closed?'':'<button class=\"btn\" id=\"cl\">Close out this job</button>')+'<button class=\"btn '+(X.closed?'':'ghost')+'\" id=\"rp\">Close-out report PDF</button><a class=\"btn ghost\" id=\"pk\" href=\"/webhook/cbs-cdm?job='+encodeURIComponent(JOB)+'&a=pack&f=13\">Download close-out pack</a>'+(X.cdm||co.was_mode==='cdm'?'<a class=\"btn ghost\" id=\"sf\" href=\"/webhook/cbs-cdm?job='+encodeURIComponent(JOB)+'&a=pack\">Full CDM site file</a>':'')+'</div>';\n h+='<div class=\"note\" id=\"pkm\" style=\"margin:-4px 0 10px\">The close-out pack is folder 13 of the site file: the close-out report, snag register, variations and RFI logs, programme as-built and the handover documents.</div>';\n h+='<h3>Close-out checklist</h3>';\n C.forEach(function(c){var st=c.n?(c.warn?'warn':'open'):'ok';\n  h+='<div class=\"card '+st+'\"><div class=\"t\">'+e(c.l)+'<span class=\"tag '+st+'\">'+(c.n?(c.warn?'Check':c.n+' open'):'\\u2713 Clear')+'</span></div>';\n  if(c.n){var first=c.items.slice(0,5),rest=c.items.slice(5);h+='<ul class=\"li\">'+first.map(function(i){return '<li>'+e(i)+'</li>';}).join('')+'</ul>';\n   if(rest.length||c.more)h+='<details><summary class=\"m\" style=\"cursor:pointer\">Show '+(rest.length+c.more)+' more</summary><ul class=\"li\">'+rest.map(function(i){return '<li>'+e(i)+'</li>';}).join('')+(c.more?'<li>and '+c.more+' more</li>':'')+'</ul></details>';\n   if(c.link)h+='<div class=\"b\"><a class=\"btn ghost sm\" href=\"'+e(c.link)+'\">'+e(c.al||'Open')+'</a></div>';}\n  h+='</div>';});\n app.innerHTML=h;\n var cl=document.getElementById('cl');if(cl)cl.onclick=closeDlg;document.getElementById('rp').onclick=function(){reportDlg(false);};\n [document.getElementById('pk'),document.getElementById('sf')].forEach(function(a){if(a)a.addEventListener('click',function(){document.getElementById('pkm').textContent='Building the zip. A big job can take up to a minute; the download starts automatically.';});});}\nfunction closeDlg(){var L=openItems(),C=(X.checks||[]).filter(function(c){return c.n&&!c.warn;}),W=(X.checks||[]).filter(function(c){return c.n&&c.warn;});\n var o=dlg('<h2>Close out job '+e(JOB)+'</h2>'\n  +(L.length?'<div class=\"m\"><b>'+L.length+' item'+(L.length===1?' is':'s are')+' still open:</b></div><ul class=\"li\">'+C.map(function(c){return '<li>'+e(c.l)+': '+c.n+'</li>';}).join('')+'</ul><label class=\"f\">Reason for closing with items open</label><textarea id=\"rs\" placeholder=\"e.g. Client accepted the remaining snags; final RFI no longer needed\"></textarea><div class=\"note\">The open items and your reason are recorded with the close-out.</div>':'<div class=\"m\">Everything on the checklist is clear.</div><label class=\"f\">Note (optional)</label><textarea id=\"rs\" style=\"min-height:60px\"></textarea>')\n  +(W.length?'<div class=\"note\">Also worth checking: '+W.map(function(c){return e(c.l);}).join(', ')+'.</div>':'')\n  +'<div class=\"note\">Closing removes the job from the job files list. Nothing is deleted. You can then create the close-out report.</div><div class=\"msg\" id=\"cm\"></div><div class=\"b\"><button class=\"btn\" id=\"cg\">Close out job</button><button class=\"btn ghost\" id=\"cx\">Cancel</button></div>');\n var rs=o.querySelector('#rs');guard(o,function(){return rs.value.trim()!=='';});o.querySelector('#cx').onclick=function(){if(rs.value.trim()&&!confirm('Close without saving your changes?'))return;o.close();};\n o.querySelector('#cg').onclick=function(){var r=rs.value.trim();if(L.length&&!r){o.querySelector('#cm').textContent='Give a reason for closing with items still open.';rs.focus();return;}\n  if(!confirm('Close out job '+JOB+'?'+(L.length?'\\n\\n'+L.length+' item'+(L.length===1?' is':'s are')+' still open.':'')+'\\n\\nIt will be removed from the job files list. Nothing is deleted.'))return;\n  if(!confirm('Are you sure? Close out job '+JOB+'.'))return;\n  var by=who();if(!by)return;var b=this;b.disabled=true;b.textContent='Closing\\u2026';\n  fetch('/webhook/cbs-closeout-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({a:'close',job:JOB,by:by,reason:r,open:L})}).then(function(x){if(!x.ok)throw 0;return x.json();})\n  .then(function(){o.close();return load().then(function(){reportDlg(true);});})\n  .catch(function(){b.disabled=false;b.textContent='Close out job';o.querySelector('#cm').textContent='Could not close the job. Check your connection and try again.';});};}\nvar SECS=[['sum','Summary and final account',1],['check','Close-out checklist',1],['prog','Programme as-built',1],['snags','Snag register',1],['photos','Snag photos (before and after)',1,1],['vars','Variations log',1],['rfis','RFI log',1],['hs','Health and safety file summary',1],['docs','Handover documents',1],['costs','Costs and margin (internal)',0],['sign','Practical completion sign-off',1]];\nfunction reportDlg(after){var o=dlg('<h2>Close-out report</h2>'+(after?'<div class=\"m\">Job '+e(JOB)+' is closed. Create the close-out report now.</div>':'<div class=\"m\">Choose what goes in the report.</div>')\n  +SECS.map(function(x){var off=(x[0]==='snags'||x[0]==='photos')&&!(X.snags||[]).length||x[0]==='vars'&&!(X.variations.rows||[]).length||x[0]==='rfis'&&!(X.rfis||[]).length||x[0]==='prog'&&!(X.programme.rows||[]).length;\n   return '<label class=\"chk'+(x[3]?' sub':'')+'\"><input type=\"checkbox\" class=\"rs\" value=\"'+x[0]+'\"'+(x[2]&&!off?' checked':'')+(off?' disabled':'')+'><span>'+x[1]+(off?' (none on this job)':'')+'</span></label>';}).join('')\n  +'<label class=\"chk\" style=\"margin-top:8px;border-top:2px solid #ddd\"><input type=\"checkbox\" id=\"sv\" checked><span>Also save a copy to the job\\u2019s site file (close-out folder)</span></label><div class=\"note\">Costs are left out by default as the report usually goes to the client.</div><div class=\"msg\" id=\"rm\"></div><div class=\"b\"><button class=\"btn\" id=\"rg\">Create PDF</button><button class=\"btn ghost\" id=\"rx\">'+(after?'Later':'Cancel')+'</button></div>');\n guard(o);o.querySelector('#rx').onclick=o.close;\n o.querySelector('#rg').onclick=function(){var on={};[].forEach.call(o.querySelectorAll('.rs'),function(x){on[x.value]=x.checked;});if(!Object.keys(on).some(function(k){return on[k];})){alert('Tick at least one section.');return;}\n  if(!window.jspdf){alert('The PDF tool did not load. Refresh and try again.');return;}\n  var sv=o.querySelector('#sv').checked,by='';if(sv){by=who();if(!by)return;}var b=this,m=o.querySelector('#rm');b.disabled=true;m.textContent='Building the report\\u2026';\n  build(on,function(t){m.textContent=t;}).then(function(doc){var name='Job '+JOB+' - Close-out report - '+today()+'.pdf';\n   if(!sv){doc.save(name);o.close();return;}\n   m.textContent='Saving a copy to the site file\\u2026';\n   return fetch('/webhook/cbs-closeout-pdf',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({job:JOB,by:by,b64:doc.output('datauristring')})}).then(function(r){if(!r.ok)throw 0;return r.json();})\n    .then(function(){doc.save(name);o.close();load();}).catch(function(){doc.save(name);b.disabled=false;m.textContent='The PDF downloaded, but the copy could not be saved to the site file. Try again.';});})\n  .catch(function(){b.disabled=false;m.textContent='Could not build the report. Try again.';});};}\nfunction getLogo(){if(LOGO!==null)return Promise.resolve(LOGO);return fetch('/webhook/cbs-programme-logo').then(function(r){return r.json();}).then(function(d){LOGO=(d&&d.lg)||'';return LOGO;}).catch(function(){LOGO='';return '';});}\nfunction imgData(u){return fetch('/webhook/cbs-file?u='+encodeURIComponent(u)).then(function(r){if(!r.ok)throw 0;return r.blob();}).then(function(bl){return new Promise(function(res){var url=URL.createObjectURL(bl),im=new Image();\n im.onload=function(){var mx=900,sc=Math.min(1,mx/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*sc));c.height=Math.max(1,Math.round(im.height*sc));var g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(url);res({d:c.toDataURL('image/jpeg',0.72),w:c.width,h:c.height});};\n im.onerror=function(){URL.revokeObjectURL(url);res(null);};im.src=url;});}).catch(function(){return null;});}\nfunction build(on,say){return getLogo().then(function(lg){\n var P=[];if(on.photos&&on.snags!==false){(X.snags||[]).forEach(function(sn){sn.before.slice(0,2).concat(sn.after.slice(0,2)).forEach(function(u){P.push(u);});});}\n var IM={},done=0;say(P.length?'Loading snag photos (0 of '+P.length+')\\u2026':'Building the report\\u2026');\n return P.reduce(function(pr,u){return pr.then(function(){return imgData(u).then(function(d){IM[u]=d;done++;say('Loading snag photos ('+done+' of '+P.length+')\\u2026');});});},Promise.resolve()).then(function(){return make(on,lg,IM);});});}\nfunction make(on,lg,IM){var jsPDF=window.jspdf.jsPDF,doc=new jsPDF({unit:'mm',format:'a4'}),W=210,HH=297,M=14,y=0,co=X.closeout||{},V=X.variations||{},K=X.costs||{},PRG=X.programme||{};\n function head(){doc.setFillColor(244,121,32);doc.rect(0,0,W,3,'F');var lx=M;if(lg){try{var pr=doc.getImageProperties(lg),hh=13,ww=pr.width*hh/pr.height;if(ww>48){ww=48;hh=pr.height*ww/pr.width;}doc.addImage(lg,'PNG',M,7,ww,hh);lx=M+ww+5;}catch(z){}}\n  doc.setTextColor(30);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text('Close-out report - Job '+JOB,lx,12);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text(([X.site,X.client].filter(Boolean).join('  |  ')||'Chelmsford Building Services').slice(0,100),lx,17.5);y=28;}\n function np(){doc.addPage();y=18;}\n function need(h){if(y+h>HH-18)np();}\n function h2(t){need(16);y+=4;doc.setFont('helvetica','bold');doc.setFontSize(12.5);doc.setTextColor(30);doc.text(t,M,y);doc.setDrawColor(244,121,32);doc.setLineWidth(0.6);doc.line(M,y+1.6,W-M,y+1.6);doc.setLineWidth(0.2);y+=8;}\n function para(t,sz,col){doc.setFont('helvetica','normal');doc.setFontSize(sz||9.5);doc.setTextColor(col==null?30:col);doc.splitTextToSize(s(t),W-2*M).forEach(function(l){need(5);doc.text(l,M,y);y+=4.6;});}\n function kv(k,v,bold){if(!s(v))return;doc.setFontSize(9.5);var L=doc.splitTextToSize(s(v),W-2*M-52);need(L.length*4.6+1.5);doc.setFont('helvetica','bold');doc.setTextColor(80);doc.text(k,M,y);doc.setFont('helvetica',bold?'bold':'normal');doc.setTextColor(20);doc.text(L,M+52,y);y+=Math.max(5.6,L.length*4.6+1.2);}\n function table(cols,rows){var tw=cols.reduce(function(m,c){return m+c.w;},0),sc=(W-2*M)/tw;cols.forEach(function(c){c.w*=sc;});\n  function hdr(){need(10);var x=M;doc.setFillColor(244,121,32);doc.rect(M,y-4.5,W-2*M,7,'F');doc.setTextColor(255);doc.setFont('helvetica','bold');doc.setFontSize(8.5);cols.forEach(function(c){doc.text(c.l,c.r?x+c.w-1.5:x+1.5,y,c.r?{align:'right'}:undefined);x+=c.w;});y+=6;doc.setFont('helvetica','normal');}\n  hdr();rows.forEach(function(r){doc.setFontSize(8.5);var lines=[],hg=1;cols.forEach(function(c,i){var t=s(r[i]);lines[i]=doc.splitTextToSize(t,c.w-3-(c.ind?(r.lv||0)*3:0)).slice(0,10);hg=Math.max(hg,lines[i].length);});var rh=hg*3.8+2.5;\n   if(y+rh>HH-18){np();hdr();}var x=M;doc.setTextColor(25);cols.forEach(function(c,i){if(r.bold&&i===0)doc.setFont('helvetica','bold');if(c.r)doc.text(lines[i],x+c.w-1.5,y,{align:'right'});else doc.text(lines[i],x+1.5+(c.ind?(r.lv||0)*3:0),y);doc.setFont('helvetica','normal');x+=c.w;});y+=rh;doc.setDrawColor(225);doc.line(M,y-3.2,W-M,y-3.2);});y+=3;}\n head();\n if(on.sum){h2('Summary');kv('Job',JOB+(X.name?' - '+X.name:''));kv('Site',X.site);kv('Client',X.client);kv('Project manager',X.pm);\n  var st=PRG.start||X.starts_on,en=PRG.end||X.ends_on;kv('Programme',st||en?[dmy(st),dmy(en)].filter(Boolean).join(' to '):'');if(PRG.pct!=null)kv('Programme complete',PRG.pct+'%');\n  kv('Status',X.closed||co.closed_at?'Closed out '+dmy(co.closed_at)+(co.by?' by '+co.by:''):'Open');if(co.reason)kv('Close-out note',co.reason);\n  y+=2;h2('Final account');kv('Contract value',V.contract==null?'Not set':gbp(V.contract));var ap=(V.rows||[]).filter(function(v){return v.status==='Approved';});kv('Approved variations',gbp(V.approved)+' ('+ap.length+')');\n  kv('Final account',V.final==null?'Contract value not set':gbp(V.final),1);var pd=(V.rows||[]).filter(function(v){return /^(raised|priced|submitted)$/i.test(v.status);});if(pd.length)kv('Variations not decided',gbp(V.pending)+' ('+pd.length+')');if(V.days)kv('Time added by variations',V.days+' working day'+(V.days===1?'':'s'));\n  y+=2;h2('At a glance');var sn=X.snags||[],sd=sn.filter(function(x){return /^(closed|signed off|complete|completed)$/i.test(x.status)||x.signed_at;}).length,rf=X.rfis||[];\n  kv('Snags',sn.length?sn.length+' raised, '+sd+' signed off':'None raised');kv('RFIs',rf.length?rf.length+' raised, '+rf.filter(function(r){return /^(answered|closed)$/i.test(r.status);}).length+' answered or closed':'None raised');kv('Variations',(V.rows||[]).length?(V.rows||[]).length+' logged':'None');}\n if(on.check){h2('Close-out checklist');var CK=X.checks||[];if(co.closed_at)para('Checked when the report was created. '+((co.open||[]).length?co.open.length+' item'+(co.open.length===1?' was':'s were')+' open when the job was closed out.':'Everything was clear when the job was closed out.'),9,70);y+=1;\n  table([{l:'Check',w:60},{l:'Result',w:24},{l:'Detail',w:100}],CK.map(function(c){return [c.l,c.n?(c.warn?'Check':c.n+' open'):'Clear',c.n?c.items.slice(0,6).join('; ')+(c.items.length>6||c.more?' (and '+(c.items.length-6+c.more)+' more)':''):''];}));\n  if((co.open||[]).length&&co.reason){kv('Reason given',co.reason);}}\n if(on.prog&&(PRG.rows||[]).length){h2('Programme as-built');table([{l:'Phase / task',w:80,ind:1},{l:'Start',w:22},{l:'Finish',w:22},{l:'Status',w:26},{l:'Completed',w:22}],PRG.rows.map(function(r){var x=[r.name,dmy(r.start),dmy(r.end),r.status+(r.pct>0&&r.pct<100?' ('+r.pct+'%)':''),dmy(r.done_on)];x.lv=r.lv;x.bold=r.lv===0;return x;}));}\n if(on.snags&&(X.snags||[]).length){h2('Snag register');table([{l:'No.',w:16},{l:'Area',w:28},{l:'Description',w:70},{l:'Status',w:26},{l:'Fixed',w:30},{l:'Signed off',w:32}],X.snags.map(function(x){return [x.no,x.area,x.desc,x.status,[x.fixed_by,dmy(x.fixed_at)].filter(Boolean).join(', '),[x.signed_by,dmy(x.signed_at)].filter(Boolean).join(', ')];}));\n  if(on.photos){var withP=X.snags.filter(function(x){return x.before.length||x.after.length;});if(withP.length){h2('Snag photos');\n   withP.forEach(function(x){need(60);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(30);doc.text((x.no+(x.area?' - '+x.area:'')+': '+x.desc).slice(0,110),M,y);y+=5;\n    [['Before',x.before.slice(0,2)],['After',x.after.slice(0,2)]].forEach(function(g){if(!g[1].length)return;need(48);doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(90);doc.text(g[0],M,y);var x0=M+16,th=40;\n     g[1].forEach(function(u){var im=IM[u];if(im){var ww=Math.min(80,im.w*th/im.h);try{doc.addImage(im.d,'JPEG',x0,y-3,ww,th);}catch(z){}x0+=ww+4;}else{doc.setDrawColor(200);doc.rect(x0,y-3,40,th);doc.text('Photo not available',x0+3,y+8);x0+=44;}});y+=th+3;});y+=2;});}}}\n if(on.vars&&(V.rows||[]).length){h2('Variations log');table([{l:'No.',w:18},{l:'Variation',w:70},{l:'Status',w:22},{l:'Decision',w:40},{l:'Cost',w:24,r:1}],V.rows.map(function(v){return [v.no,v.title,v.status,/^(approved|rejected)$/i.test(v.status)?[v.decided_by,dmy(v.decided_on)].filter(Boolean).join(', '):'',v.cost==null?'TBC':gbp(v.cost)];}));\n  kv('Approved variations',gbp(V.approved));if(V.final!=null)kv('Final account',gbp(V.final),1);}\n if(on.rfis&&(X.rfis||[]).length){h2('RFI log');table([{l:'No.',w:16},{l:'Subject',w:50},{l:'To',w:30},{l:'Status',w:20},{l:'Answer',w:62}],X.rfis.map(function(r){return [r.no,r.subject,r.to,r.status,r.response?(r.responded_on?dmy(r.responded_on)+': ':'')+r.response:''];}));}\n if(on.hs){h2('Health and safety file summary');if((X.hs||[]).length){table([{l:'Folder',w:70},{l:'Items',w:16,r:1},{l:'Contents',w:100}],X.hs.map(function(f){return [f.no+'.0 '+f.name,String(f.count),f.count?f.items.slice(0,4).map(function(i){return i.title;}).join('; ')+(f.items.length>4?' (and '+(f.items.length-4)+' more)':''):(f.note||'None')];}));para('The full documents are in the job\\u2019s site file.',8.5,90);}else para('The site file summary could not be loaded.',9,90);}\n if(on.docs){h2('Handover documents');var DC=X.docs||[];if(!DC.length)para('No handover documents are recorded on the Job File.',9,90);\n  else table([{l:'Document',w:60},{l:'Status',w:24},{l:'Files',w:100}],DC.map(function(d){return [d.label+(d.ref&&d.ref!==d.label?' ('+d.ref+')':''),d.status,d.files.length?d.files.map(function(f){return f.name||'File';}).join('; '):'No file attached'];}));}\n if(on.costs){h2('Costs and margin (internal)');kv('Final account',K.income==null?'Contract value not set':gbp(K.income));kv('Costs to date',gbp(K.costs)+' ('+K.count+' cost'+(K.count===1?'':'s')+', ex VAT)');kv('Committed (POs not billed)',gbp(K.committed));kv('Forecast final cost',gbp(K.forecast));kv('Forecast margin',K.margin==null?'-':gbp(K.margin)+(K.pct!=null?' ('+K.pct+'%)':''),1);\n  var ct=Object.keys(K.cats||{});if(ct.length){y+=2;table([{l:'Category',w:80},{l:'Cost (ex VAT)',w:40,r:1}],ct.map(function(c){return [c,gbp(K.cats[c])];}));}}\n if(on.sign){need(80);h2('Practical completion');para('Chelmsford Building Services confirm the works at the above site are complete'+((co.open||[]).length?', with the items listed in the close-out checklist,':'')+' and have been handed over. Signing below confirms the client accepts practical completion.',9.5);y+=8;\n  doc.setDrawColor(150);doc.setFontSize(9);doc.setTextColor(60);[['For the client',M],['For Chelmsford Building Services',M+98]].forEach(function(c){doc.text(c[0],c[1],y);doc.line(c[1],y+14,c[1]+84,y+14);doc.text('Signed',c[1],y+18);doc.line(c[1],y+28,c[1]+84,y+28);doc.text('Name',c[1],y+32);doc.line(c[1],y+42,c[1]+84,y+42);doc.text('Date',c[1],y+46);});y+=50;}\n var np2=doc.getNumberOfPages();for(var i=1;i<=np2;i++){doc.setPage(i);doc.setFontSize(7.5);doc.setTextColor(120);doc.text('Chelmsford Building Services Ltd  |  Job '+JOB+' close-out report  |  '+new Date().toLocaleDateString('en-GB'),M,HH-8);doc.text('Page '+i+' of '+np2,W-M,HH-8,{align:'right'});}\n return doc;}\nload();\n}\n"
+        }
+      },
+      {
+        "id": "b06868bf-f724-44c4-ac82-3ad2561c9eb4",
+        "name": "Send Page",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "32854a1d-b271-49b0-80c8-7904cd5f66fa",
+        "name": "Data Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          224
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-closeout-data",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "c488ee69-d609-4c3c-af5d-644dee5cefeb"
+      },
+      {
+        "id": "584c7ec0-4748-4079-b3d3-4033f57322b6",
+        "name": "Close-out Data",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          224
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* CBS close-out data for one job: open-items checklist, close-out record, and the registers used by the close-out report and site file folder 13. */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nif(!job)return [{json:{ok:false,message:'No job number.'}}];\nconst J=jk(job),JQ=encodeURIComponent(job);\nconst list=async t=>{try{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t+'&k='+K,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);}catch(e){return [];}};\nconst [SN,VA,RF,PI,PG,PO,JC,JT,JR]=await Promise.all(['snags','variations','rfis','progitems','programmes','pos','jobcosts','jobtasks','jobrows'].map(list));\nconst mine=(L,k)=>L.filter(r=>jk(r[k||'job_no'])===J);\nconst pj=v=>{try{const a=JSON.parse(S(v)||'[]');return Array.isArray(a)?a:[];}catch(e){return [];}};\nconst purl=x=>typeof x==='string'?S(x):S(x&&(x.url||x.u||x.webUrl||x.src));\nconst d10=v=>S(v).slice(0,10);\nconst gbp=v=>'\\u00a3'+num(v).toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g,',');\nconst byNo=(k)=>(a,b)=>num(S(a[k]).replace(/\\D/g,''))-num(S(b[k]).replace(/\\D/g,''))||num(a.id)-num(b.id);\n/* job record */\nconst jr=mine(JR,'ref').sort((a,b)=>num(b.id)-num(a.id))[0]||{};\nlet co={};try{co=JSON.parse(S(jr.closeout_json)||'{}')||{};}catch(e){co={};}\n/* snags */\nconst snags=mine(SN).sort(byNo('snag_no')).map(r=>({id:r.id,no:S(r.snag_no),area:S(r.area),desc:S(r.description),assigned:S(r.assigned_to),status:S(r.status)||'Open',raised_by:S(r.raised_by),raised_at:d10(r.raised_at),fixed_by:S(r.fixed_by),fixed_at:d10(r.fixed_at),fix_notes:S(r.fix_notes),signed_by:S(r.signed_off_by),signed_at:d10(r.signed_off_at),before:pj(r.before_json).map(purl).filter(Boolean),after:pj(r.after_json).map(purl).filter(Boolean)}));\nconst snDone=x=>/^(closed|signed off|complete|completed)$/i.test(x.status)||!!x.signed_at;\n/* variations */\nconst vars=mine(VA).sort(byNo('var_no')).map(r=>({no:S(r.var_no),title:S(r.title),desc:S(r.description),status:S(r.status)||'Raised',cost:S(r.cost)===''?null:num(r.cost),days:S(r.time_days)===''?null:num(r.time_days),instructed_by:S(r.instructed_by),instructed_on:d10(r.instructed_on),via:S(r.instruction_via),decided_by:S(r.decided_by),decided_on:d10(r.decided_on)}));\nconst vsum=st=>vars.filter(v=>v.status===st).reduce((m,v)=>m+num(v.cost),0);\nconst contract=S(jr.contract_value)===''?null:num(jr.contract_value);\nconst approved=vsum('Approved'),pending=vsum('Raised')+vsum('Priced')+vsum('Submitted');\n/* RFIs */\nconst rfis=mine(RF).sort(byNo('rfi_no')).map(r=>({no:S(r.rfi_no),subject:S(r.subject),question:S(r.question),to:S(r.sent_to),status:S(r.status)||'Draft',sent_on:d10(r.sent_on),needed_by:d10(r.needed_by),response:S(r.response),responded_on:d10(r.responded_on)}));\n/* programme */\nconst prog=mine(PG).sort((a,b)=>num(b.id)-num(a.id));const pr=prog.find(p=>/open/i.test(S(p.status)))||prog.find(p=>/closed/i.test(S(p.status)))||prog[0]||null;\nconst items=mine(PI);const kids={};items.forEach(i=>{const p=S(i.parent_id);(kids[p]=kids[p]||[]).push(i);});\nconst srt=(a,b)=>num(a.sort)-num(b.sort)||S(a.start_on).localeCompare(S(b.start_on))||num(a.id)-num(b.id);\nconst iDone=i=>/^(done|complete|completed)$/i.test(S(i.status))||num(i.pct)>=100;\nconst leaves=items.filter(i=>!(kids[S(i.id)]||[]).length&&S(i.kind)!=='phase');\nconst span=i=>{let s=S(i.start_on),e=S(i.end_on||i.start_on);(kids[S(i.id)]||[]).forEach(c=>{const x=span(c);if(x.s&&(!s||x.s<s))s=x.s;if(x.e&&(!e||x.e>e))e=x.e;});return {s:s,e:e};};\nconst rollPct=i=>{const k=kids[S(i.id)]||[];if(!k.length)return iDone(i)?100:Math.max(0,Math.min(100,num(i.pct)));return Math.round(k.reduce((m,c)=>m+rollPct(c),0)/k.length);};\nconst progRows=[];const walk=(i,lv)=>{const sp=span(i),pc=rollPct(i),dn=pc>=100;progRows.push({lv:lv,name:S(i.name),start:d10(sp.s),end:d10(sp.e),status:dn?'Done':(S(i.status)||(pc>0?'In progress':'Not started')),pct:pc,done_on:dn&&!(kids[S(i.id)]||[]).length?d10(i.updated_at):'',assigned:S(i.assigned_to)});(kids[S(i.id)]||[]).sort(srt).forEach(c=>walk(c,lv+1));};\nitems.filter(i=>S(i.kind)==='phase'||!S(i.parent_id)||!items.some(p=>S(p.id)===S(i.parent_id))).sort(srt).forEach(i=>walk(i,0));\nconst progPct=leaves.length?Math.round(leaves.reduce((m,i)=>m+(iDone(i)?100:Math.max(0,Math.min(100,num(i.pct)))),0)/leaves.length):null;\n/* costs and POs */\nconst costs=mine(JC);const costNet=costs.reduce((m,c)=>m+num(c.net),0);\nconst cats={};costs.forEach(c=>{const k=S(c.category)||'Other';cats[k]=(cats[k]||0)+num(c.net);});\nconst billed={};costs.forEach(c=>{const p=S(c.po_no).toLowerCase();if(p)billed[p]=(billed[p]||0)+num(c.net);});\nconst pos=mine(PO).filter(p=>S(p.po_no)).map(p=>{const tot=num(S(p.subtotal)!==''?p.subtotal:p.total),bl=billed[S(p.po_no).toLowerCase()]||0;return {no:S(p.po_no),supplier:S(p.supplier),type:S(p.po_type),status:S(p.status),total:tot,billed:bl,hire_end:d10(p.hire_end),offhired:d10(p.offhired_on)};});\nconst cancelled=p=>/cancel/i.test(p.status);\nconst committed=pos.filter(p=>!cancelled(p)).reduce((m,p)=>m+Math.max(0,p.total-p.billed),0);\nconst income=contract==null?null:contract+approved;\nconst forecast=costNet+committed;\nconst margin=income==null?null:income-forecast;\n/* handover documents on the Job File */\nconst HO=/o&m|o and m|operation|maintenance|as[- ]?built|test cert|certificate|handover|warrant|guarantee/i;\nconst docs=mine(JT).filter(r=>S(r.req)==='docs').map(r=>({id:r.id,label:S(r.label)||S(r.ref_name)||'Document',ref:S(r.ref_name),status:S(r.status)||'Not started',notes:S(r.notes),date:d10(r.done_at||r.created_at),handover:HO.test(S(r.label)+' '+S(r.ref_name)),files:pj(r.files_json).map(f=>({name:S(f&&(f.n||f.name||f.title)),url:purl(f)})).filter(f=>f.url)}));\nconst docDone=d=>/^(issued|approved|done|complete|completed|received)$/i.test(d.status);\n/* job requirements still outstanding (cards on the Actions board) */\nlet jrq=[];try{const x=await h.httpRequest({method:'POST',url:H+'cbs-job-reqs-data',body:{},json:true,timeout:45000});jrq=(x&&Array.isArray(x.items)?x.items:[]).filter(i=>jk(i.job)===J);}catch(e){}\nconst docKeys={};docs.forEach(d=>{docKeys['task'+d.id]=1;});\njrq=jrq.filter(i=>!/^(var_|rfi_|snag|prog)/i.test(S(i.k))&&!docKeys[S(i.k)]);\n/* H&S file sections (site file folders 1-12) */\nlet hs=[];if(S(q.nosf)!=='1'){try{const x=await h.httpRequest({url:H+'cbs-cdm?job='+JQ+'&nocx=1',json:true,timeout:60000});hs=((x&&x.sections)||[]).filter(s=>num(s.no)<=12).map(s=>({no:s.no,name:S(s.name),count:num(s.count),rag:S(s.rag),note:S(s.note),items:(s.items||[]).map(i=>({title:S(i.title),date:S(i.date)}))}));}catch(e){}}\n/* checklist */\nconst C=[];const add=(k,l,arr,link,al,warn)=>C.push({k:k,l:l,n:arr.length,items:arr.slice(0,40),more:Math.max(0,arr.length-40),link:link?'/webhook/'+link+JQ:'',al:al||'',warn:!!warn});\nadd('snags','Snags not signed off',snags.filter(x=>!snDone(x)).map(x=>x.no+(x.area?' ('+x.area+')':'')+': '+x.desc.slice(0,90)+' - '+x.status),'cbs-snags?job=','Open snagging');\nadd('prog','Programme tasks not complete',leaves.filter(i=>!iDone(i)).sort(srt).map(i=>S(i.name)+(S(i.end_on)?' - due '+d10(i.end_on).split('-').reverse().join('/'):'')+' ('+Math.round(num(i.pct))+'%)'),'cbs-programme?job=','Open programme');\nadd('rfis','RFIs still open',rfis.filter(r=>/^(draft|sent)$/i.test(r.status)).map(r=>r.no+': '+r.subject+' - '+r.status+(r.to?' to '+r.to:'')),'cbs-rfis?job=','Open RFIs');\nadd('vars','Variations not decided',vars.filter(v=>/^(raised|priced|submitted)$/i.test(v.status)).map(v=>v.no+': '+v.title+' - '+v.status+(v.cost!=null?' ('+gbp(v.cost)+')':'')),'cbs-variations?job=','Open variations');\nadd('pos','Purchase orders not fully received',pos.filter(p=>!cancelled(p)&&!/^(received|delivered|complete|completed|closed)$/i.test(p.status)&&!/plant|hire/i.test(p.type)).map(p=>p.no+' '+p.supplier+' - '+(p.status||'Ordered')),'cbs-job-file?job=','Open job file');\nadd('plant','Hire not off-hired',pos.filter(p=>!cancelled(p)&&/plant|hire/i.test(p.type)&&!p.offhired).map(p=>p.no+' '+p.supplier+(p.hire_end?' - hire end '+p.hire_end.split('-').reverse().join('/'):'')),'cbs-job-file?job=','Open job file');\nadd('bills','Purchase orders not billed yet',pos.filter(p=>!cancelled(p)&&p.total>0&&p.billed<p.total-0.5).map(p=>p.no+' '+p.supplier+': '+gbp(p.total-p.billed)+' of '+gbp(p.total)+' still to bill'),'cbs-costs?job=','Open job costing',true);\nconst hoList=docs.filter(d=>!docDone(d)).map(d=>d.label+(d.ref&&d.ref!==d.label?' ('+d.ref+')':'')+' - '+d.status);\nif(!docs.some(d=>d.handover))hoList.unshift('No O&M manual, as-built drawings, test certificates or handover pack added to the Job File yet');\nadd('docs','Handover documents',hoList,'cbs-job-file?job=','Open job file');\nadd('reqs','Job File requirements outstanding',jrq.map(i=>S(i.l)+(S(i.note)?' - '+S(i.note):'')),'cbs-job-file?job=','Open job file');\nadd('cv','Final account',contract==null?['Contract value not set, so the final account and margin cannot be worked out']:[],'cbs-costs?job=','Open job costing',true);\nconst open=C.filter(c=>!c.warn).reduce((m,c)=>m+c.n,0);\nreturn [{json:{ok:true,job:job,name:S(jr.name),site:S(jr.site),client:S(jr.client),pm:S(jr.pm),starts_on:d10(jr.starts_on),ends_on:d10(jr.ends_on),mode:S(jr.mode),cdm:S(jr.mode)==='cdm',closed:S(jr.mode)==='closed',hasJob:!!jr.id,closeout:co,checks:C,open:open,\n snags:snags,variations:{rows:vars,contract:contract,approved:approved,pending:pending,final:income,days:vars.filter(v=>v.status==='Approved').reduce((m,v)=>m+num(v.days),0)},\n rfis:rfis,programme:{status:pr?S(pr.status):'',pct:progPct,rows:progRows,start:progRows.reduce((m,r)=>r.start&&(!m||r.start<m)?r.start:m,''),end:progRows.reduce((m,r)=>r.end&&r.end>m?r.end:m,'')},\n costs:{income:income,contract:contract,approved:approved,costs:costNet,committed:committed,forecast:forecast,margin:margin,pct:income?Math.round(margin/income*1000)/10:null,cats:cats,count:costs.length},\n pos:pos,docs:docs,hs:hs}}];\n"
+        }
+      },
+      {
+        "id": "e59e7b47-bad3-45dc-8e16-5a283e47524b",
+        "name": "Send Data",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          224
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "898d4d3c-a290-44fc-baa6-e3bec7252a25",
+        "name": "Act Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          448
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-closeout-act",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "341c987e-2ee3-4307-a865-9eebdac7d352"
+      },
+      {
+        "id": "c8f293f1-334b-4045-a028-c0ab5714c3b7",
+        "name": "Close-out Act",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          448
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* Close a job out: records who, when, why and what was still open, then:\n   1. ServiceM8: status Completed and moved to the Works completed folder (cbs-enquiry-move action complete). If ServiceM8 is not updated, nothing\n      is closed and the page shows its error, so the job is never left half closed. Already Completed = fine (pressing Close out again finishes it).\n   2. Hub: closes the job file through cbs-cdm-set (mode closed). Output feeds the cbs_jobs upsert. */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst b=$input.first().json.body||{};const job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by).slice(0,80),reason=S(b.reason).slice(0,2000);\nif(S(b.a)!=='close')throw new Error('Unknown action.');\nif(!job)throw new Error('No job number.');if(!by)throw new Error('Enter your name.');\nconst open=(Array.isArray(b.open)?b.open:[]).map(x=>S(x).slice(0,240)).filter(Boolean).slice(0,200);\nif(open.length&&!reason)throw new Error('Give a reason for closing with items still open.');\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=jobrows&k='+K,body:{},json:true,timeout:30000});\nconst jr=(Array.isArray(L)?L:[]).filter(r=>r&&jk(r.ref)===jk(job)).sort((x,y)=>num(y.id)-num(x.id))[0]||{};\nlet old={};try{old=JSON.parse(S(jr.closeout_json)||'{}')||{};}catch(e){old={};}\nlet sm=null;try{sm=await h.httpRequest({method:'POST',url:H+'cbs-enquiry-move',body:{job:job,action:'complete',note:reason,by:by},json:true,timeout:60000});}catch(e){sm={ok:false,error:'ServiceM8 could not be reached'};}\nif(!sm||sm.ok!==true)throw new Error('ServiceM8 was not updated ('+S(sm&&sm.error||'no answer')+'). Nothing was closed. Try again.');\nconst co=Object.assign({},old,{closed_at:now,by:by,reason:reason,open:open,open_count:open.length,was_mode:S(jr.mode),sm8_completed:now});\nco.log=(Array.isArray(old.log)?old.log:[]).concat([{at:now,by:by,ev:'Closed out (ServiceM8 set to Completed, Works completed folder)',reason:reason,open:open.length}]).slice(-20);\nawait h.httpRequest({method:'POST',url:H+'cbs-cdm-set',body:{job_no:job,mode:'closed',by:by},json:true,timeout:30000});\nreturn [{json:{ref:job,closeout_json:JSON.stringify(co)}}];\n"
+        }
+      },
+      {
+        "id": "261b45c6-1322-472c-9f6f-3026920dd520",
+        "name": "Save Close-out",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          448
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "5dgWt9kYzCb49m5h"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "ref",
+                "condition": "eq",
+                "keyValue": "={{ $json.ref }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null,
+            "matchingColumns": []
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "da159c95-a357-4db5-9254-ebe0865e9aef",
+        "name": "Send Act",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          448
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify({ ok: true }) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "b3e01faf-8f9d-45a1-9b47-4a045988b534",
+        "name": "PDF Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          672
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-closeout-pdf",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "60211c9f-f4cf-47f1-be20-5d244a276efd"
+      },
+      {
+        "id": "640af348-2a9e-43f7-b2fe-dcedb2a4b845",
+        "name": "PDF Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          672
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* Close-out report PDF from the page: makes the file for the SharePoint upload (Job N/Close-out). */\nconst S=v=>v==null?'':String(v).trim();\nconst b=$input.first().json.body||{};const job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by).slice(0,80);\nlet b64=S(b.b64).replace(/^data:[^,]*,/,'');\nif(!job)throw new Error('No job number.');if(!by)throw new Error('Enter your name.');\nif(!b64||b64.length>40000000)throw new Error('The report file is missing or too large.');\nconst day=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).slice(0,10);\nconst fname=('Job '+job+' - Close-out report - '+day+'.pdf').replace(/[\\\\/:*?\"<>|#%]+/g,' ');\nconst path=['CBS System','Operations','Jobs','Job '+job,'Close-out',fname].map(encodeURIComponent).join('/');\nconst bin=await this.helpers.prepareBinaryData(Buffer.from(b64,'base64'),fname,'application/pdf');\nreturn [{json:{job:job,by:by,fname:fname,path:path},binary:{data:bin}}];\n"
+        }
+      },
+      {
+        "id": "116cb239-51bf-43f3-8e59-9487d5213a6a",
+        "name": "Upload PDF",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          448,
+          672
+        ],
+        "parameters": {
+          "method": "PUT",
+          "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.path }}:/content?@microsoft.graph.conflictBehavior=replace",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "sendBody": true,
+          "contentType": "binaryData",
+          "inputDataFieldName": "data",
+          "options": {
+            "timeout": 120000
+          }
+        }
+      },
+      {
+        "id": "82cbd8e3-755c-4c3c-81b0-4cd079d40f0e",
+        "name": "Store Report Link",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          672
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* Stores the uploaded close-out report link on the job's close-out record. */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst u=$input.first().json||{};const p=$('PDF Prep').first().json;\nif(!S(u.webUrl))throw new Error('SharePoint did not return a link for the report.');\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=jobrows&k='+K,body:{},json:true,timeout:30000});\nconst jr=(Array.isArray(L)?L:[]).filter(r=>r&&jk(r.ref)===jk(p.job)).sort((x,y)=>num(y.id)-num(x.id))[0]||{};\nlet co={};try{co=JSON.parse(S(jr.closeout_json)||'{}')||{};}catch(e){co={};}\nObject.assign(co,{report_url:S(u.webUrl),report_at:now,report_by:p.by,report_name:p.fname});\nco.log=(Array.isArray(co.log)?co.log:[]).concat([{at:now,by:p.by,ev:'Close-out report saved to the site file'}]).slice(-20);\nreturn [{json:{ref:p.job,closeout_json:JSON.stringify(co)}}];\n"
+        }
+      },
+      {
+        "id": "b04fc8b7-714c-4a1f-a4e2-d2445c9433b7",
+        "name": "Save Report Link",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          672
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "5dgWt9kYzCb49m5h"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "ref",
+                "condition": "eq",
+                "keyValue": "={{ $json.ref }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null,
+            "matchingColumns": []
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "cc7fd900-3676-4694-a8ed-40ce35d10cab",
+        "name": "Send PDF Result",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1120,
+          672
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify({ ok: true, url: $('Upload PDF').first().json.webUrl }) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "02a3de94-9e34-4b30-86cd-499c5af30f4e",
+        "name": "Scope Close",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          336,
+          340
+        ],
+        "parameters": {
+          "jsCode": "/* Close-out: scope of works (22/10/2026). Adds the job's scope to the close-out data for the \"Works completed\" report section.\n   The \"Scope of works items not confirmed complete\" check was removed with Build programme from scope (most jobs have no programme).\n   Any failure leaves the close-out data exactly as it was. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v).trim();\nconst j=Object.assign({},$input.first().json);\nif(!j.ok||!j.job)return [{json:j}];\ntry{\n const d=await h.httpRequest({url:H+'cbs-scope-data?job='+encodeURIComponent(j.job),json:true,timeout:25000});\n const secs=(d&&d.ok&&d.scope&&Array.isArray(d.scope.sections))?d.scope.sections:[];\n const total=secs.reduce((m,s)=>m+(s.items||[]).length,0);\n if(!total)return [{json:j}];\n let vars=0;\n const sc=secs.map((s,si)=>({name:S(s.name),items:(s.items||[]).map((it,ii)=>{if(S(it.var))vars++;return {ref:(si+1)+'.'+(ii+1),text:S(it.text),who:S(it.who)||'CBS',var:S(it.var)};})}));\n j.scope={sections:sc,total:total,vars:vars,locked:!!(d.scope&&d.scope.locked_at)};\n return [{json:j}];\n}catch(e){return [{json:j}];}\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "8f089747-ad71-4299-9e18-d166862c5bd3",
+        "name": "Scope Report",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          336,
+          120
+        ],
+        "parameters": {
+          "jsCode": "/* Close-out report: \"Works completed\" section from the scope of works (19/10/2026). Exact-once anchors; a miss leaves the page as it was. */\nlet html=String($input.first().json.html||'');const rep=[];\nfunction one(a,b,tag){const c=html.split(a).length-1;if(c===1){html=html.split(a).join(b);rep.push(tag+':ok');}else rep.push(tag+':missing('+c+')');}\none(String.raw`['check','Close-out checklist',1]`,String.raw`['scope','Works completed (scope of works)',1],['check','Close-out checklist',1]`,'sec');\none(String.raw`||x[0]==='prog'&&!(X.programme.rows||[]).length;`,String.raw`||x[0]==='prog'&&!(X.programme.rows||[]).length||x[0]==='scope'&&!((X.scope||{}).total);`,'off');\none(String.raw` if(on.check){h2('Close-out checklist');`,String.raw` if(on.scope&&X.scope&&X.scope.total){h2('Works completed');para('The works carried out under this job, from the agreed scope of works'+(X.scope.vars?', including variations (marked in the Var. column).':'.'),9,70);y+=1;\n  table([{l:'Ref',w:14},{l:'Section',w:36},{l:'Works',w:96},{l:'By',w:34},{l:'Var.',w:14}],[].concat.apply([],X.scope.sections.map(function(sc){return sc.items.map(function(i,ii){return [i.ref,ii?'':sc.name,i.text,i.who==='CBS'?'CBS':i.who,i.var||''];});})));}\n if(on.check){h2('Close-out checklist');`,'make');\nreturn [{json:{html:html,scopeRules:rep.join(' ')}}];\n",
+          "mode": "runOnceForAllItems"
+        }
+      }
+    ],
+    "connections": {
+      "Page Hook": {
+        "main": [
+          [
+            {
+              "node": "Close-out Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data Hook": {
+        "main": [
+          [
+            {
+              "node": "Close-out Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Act Hook": {
+        "main": [
+          [
+            {
+              "node": "Close-out Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Close-out Act": {
+        "main": [
+          [
+            {
+              "node": "Save Close-out",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Save Close-out": {
+        "main": [
+          [
+            {
+              "node": "Send Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PDF Hook": {
+        "main": [
+          [
+            {
+              "node": "PDF Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "PDF Prep": {
+        "main": [
+          [
+            {
+              "node": "Upload PDF",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upload PDF": {
+        "main": [
+          [
+            {
+              "node": "Store Report Link",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Store Report Link": {
+        "main": [
+          [
+            {
+              "node": "Save Report Link",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Save Report Link": {
+        "main": [
+          [
+            {
+              "node": "Send PDF Result",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Close-out Data": {
+        "main": [
+          [
+            {
+              "node": "Scope Close",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Scope Close": {
+        "main": [
+          [
+            {
+              "node": "Send Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Close-out Page": {
+        "main": [
+          [
+            {
+              "node": "Scope Report",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Scope Report": {
+        "main": [
+          [
+            {
+              "node": "Send Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS job close-out: GET cbs-closeout?job=N (page: checklist, close out with reason, report PDF), GET cbs-closeout-data (checks + registers; also feeds site file folder 13), POST cbs-closeout-act (close), POST cbs-closeout-pdf (report to SharePoint Job N/Cl",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

@@ -1,0 +1,138 @@
+{
+  "id": "pVnjfADWQlCzCXqq",
+  "name": "CBS - Nearest Hospital",
+  "active": true,
+  "isArchived": false,
+  "versionId": "7afe7d62-c72d-4724-9136-82e0b075e0bf",
+  "activeVersionId": "7afe7d62-c72d-4724-9136-82e0b075e0bf",
+  "triggerCount": 1,
+  "createdAt": "2026-10-06T09:50:35.339Z",
+  "updatedAt": "2026-10-06T09:55:46.717Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Hook": {
+      "main": [
+        [
+          {
+            "node": "Find Hospitals",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "8c1c574e-8a9b-4c48-b94b-933d45476cfb",
+      "name": "Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-nearest-hospital",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "webhookId": "c607781b-1b86-4754-8124-4b0930689450"
+    },
+    {
+      "id": "9d347e10-a21a-4311-a508-25b5c13016de",
+      "name": "Find Hospitals",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const Q = ($('Hook').first().json.query) || {};\nconst q = String(Q.q || '').trim();\nconst H = this.helpers;\nconst UA = { 'User-Agent': 'CBS-Operations-Hub/1.0 (contact4@example.com)' };\nasync function get(url, headers){ return await H.httpRequest({ method:'GET', url, headers: headers||{}, json:true, timeout:25000 }); }\nfunction miles(a,b,c,d){ const R=3958.8, r=x=>x*Math.PI/180; const dl=r(c-a), dn=r(d-b); const h=Math.sin(dl/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(dn/2)**2; return 2*R*Math.asin(Math.sqrt(h)); }\nif (!q) return [{ json:{ ok:false, error:'Add the site address first.' } }];\n\nlet lat=null, lon=null, where='';\nconst m = q.toUpperCase().match(/\\b([A-Z]{1,2}\\d[A-Z\\d]?)\\s*(\\d[A-Z]{2})\\b/);\nif (m) {\n  const pc = m[1]+' '+m[2];\n  try { const r = await get('https://api.postcodes.io/postcodes/'+encodeURIComponent(pc)); if (r && r.result) { lat=r.result.latitude; lon=r.result.longitude; where=pc; } } catch(e) {}\n  if (lat==null) { try { const r = await get('https://api.postcodes.io/outcodes/'+encodeURIComponent(m[1])); if (r && r.result) { lat=r.result.latitude; lon=r.result.longitude; where=m[1]; } } catch(e) {} }\n}\nif (lat==null) {\n  const parts = q.split(/[,\\n]+/).map(s=>s.trim()).filter(Boolean);\n  const tries = []; for (let i=0;i<parts.length;i++) tries.push(parts.slice(i).join(', '));\n  const words = q.replace(/[,\\n]+/g,' ').trim().split(/\\s+/); if (words.length>2) { tries.push(words.slice(-2).join(' ')); tries.push(words.slice(-1)[0]); }\n  for (const t of tries) {\n    if (lat!=null || t.length<3) continue;\n    try { const r = await get('https://nominatim.openstreetmap.org/search?format=json&countrycodes=gb&limit=1&q='+encodeURIComponent(t), UA); if (r && r[0]) { lat=Number(r[0].lat); lon=Number(r[0].lon); where=t; } } catch(e) {}\n  }\n}\nif (lat==null) return [{ json:{ ok:false, error:\"Couldn't place that address. Add the site postcode and try again.\" } }];\n\nconst ERR=[];\nasync function overpass(radius){\n  const ql = '[out:json][timeout:20];nwr[\"amenity\"=\"hospital\"][\"emergency\"=\"yes\"](around:'+radius+','+lat+','+lon+');out center tags;';\n  const urls = ['https://overpass-api.de/api/interpreter','https://overpass.private.coffee/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter','https://overpass.kumi.systems/api/interpreter'];\n  for (const u of urls) {\n    try { let r = await H.httpRequest({ method:'GET', url:u+'?data='+encodeURIComponent(ql), headers:UA, timeout:25000 }); if (typeof r==='string') r=JSON.parse(r); if (r && Array.isArray(r.elements)) return r.elements; ERR.push(u+': no elements'); } catch(e) { ERR.push(u+': '+String(e.message||e).slice(0,160)); }\n  }\n  return null;\n}\nlet els = await overpass(40000);\nif (els && !els.length) els = await overpass(80000);\nif (els === null) return [{ json:{ ok:false, error:'The hospital lookup service is busy. Try again in a minute.', debug:ERR } }];\n\nconst seen = {};\nlet list = els.map(e => {\n  const t = e.tags||{}; const la = e.lat!=null?e.lat:(e.center&&e.center.lat); const lo = e.lon!=null?e.lon:(e.center&&e.center.lon);\n  if (la==null || !t.name) return null;\n  return { name:t.name, lat:la, lon:lo, street:[t['addr:housenumber'],t['addr:street']].filter(Boolean).join(' '), town:t['addr:city']||t['addr:town']||'', postcode:t['addr:postcode']||'', phone:t.phone||t['contact:phone']||'', dist:miles(lat,lon,la,lo) };\n}).filter(Boolean).sort((a,b)=>a.dist-b.dist).filter(h => { const k=h.name.toLowerCase(); if (seen[k]) return false; seen[k]=1; return true; }).slice(0,3);\n\nconst need = list.filter(h=>!h.postcode);\nif (need.length) {\n  try {\n    const r = await H.httpRequest({ method:'POST', url:'https://api.postcodes.io/postcodes', body:{ geolocations: need.map(h=>({ latitude:h.lat, longitude:h.lon, limit:1, radius:1000 })) }, json:true, timeout:20000 });\n    (r.result||[]).forEach((x,i)=>{ const p = x.result && x.result[0]; if (p) { need[i].postcode=p.postcode; if(!need[i].town) need[i].town=p.admin_district||''; } });\n  } catch(e) {}\n}\nlist = list.map(h => {\n  const addr = [h.street, h.town, h.postcode].filter(Boolean).join(', ');\n  const mi = Math.round(h.dist*10)/10;\n  return { name:h.name, address:addr, phone:h.phone, miles:mi,\n    text: h.name+(addr?', '+addr:'')+' ('+mi+' miles in a straight line)',\n    maps: 'https://www.google.com/maps/dir/?api=1&origin='+lat+','+lon+'&destination='+encodeURIComponent(h.name+(h.postcode?' '+h.postcode:'')) };\n});\nreturn [{ json:{ ok:true, from:where, lat, lon, hospitals:list } }];\n"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "8c1c574e-8a9b-4c48-b94b-933d45476cfb",
+        "name": "Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-nearest-hospital",
+          "responseMode": "lastNode",
+          "options": {}
+        },
+        "webhookId": "c607781b-1b86-4754-8124-4b0930689450"
+      },
+      {
+        "id": "9d347e10-a21a-4311-a508-25b5c13016de",
+        "name": "Find Hospitals",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const Q = ($('Hook').first().json.query) || {};\nconst q = String(Q.q || '').trim();\nconst H = this.helpers;\nconst UA = { 'User-Agent': 'CBS-Operations-Hub/1.0 (contact4@example.com)' };\nasync function get(url, headers){ return await H.httpRequest({ method:'GET', url, headers: headers||{}, json:true, timeout:25000 }); }\nfunction miles(a,b,c,d){ const R=3958.8, r=x=>x*Math.PI/180; const dl=r(c-a), dn=r(d-b); const h=Math.sin(dl/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(dn/2)**2; return 2*R*Math.asin(Math.sqrt(h)); }\nif (!q) return [{ json:{ ok:false, error:'Add the site address first.' } }];\n\nlet lat=null, lon=null, where='';\nconst m = q.toUpperCase().match(/\\b([A-Z]{1,2}\\d[A-Z\\d]?)\\s*(\\d[A-Z]{2})\\b/);\nif (m) {\n  const pc = m[1]+' '+m[2];\n  try { const r = await get('https://api.postcodes.io/postcodes/'+encodeURIComponent(pc)); if (r && r.result) { lat=r.result.latitude; lon=r.result.longitude; where=pc; } } catch(e) {}\n  if (lat==null) { try { const r = await get('https://api.postcodes.io/outcodes/'+encodeURIComponent(m[1])); if (r && r.result) { lat=r.result.latitude; lon=r.result.longitude; where=m[1]; } } catch(e) {} }\n}\nif (lat==null) {\n  const parts = q.split(/[,\\n]+/).map(s=>s.trim()).filter(Boolean);\n  const tries = []; for (let i=0;i<parts.length;i++) tries.push(parts.slice(i).join(', '));\n  const words = q.replace(/[,\\n]+/g,' ').trim().split(/\\s+/); if (words.length>2) { tries.push(words.slice(-2).join(' ')); tries.push(words.slice(-1)[0]); }\n  for (const t of tries) {\n    if (lat!=null || t.length<3) continue;\n    try { const r = await get('https://nominatim.openstreetmap.org/search?format=json&countrycodes=gb&limit=1&q='+encodeURIComponent(t), UA); if (r && r[0]) { lat=Number(r[0].lat); lon=Number(r[0].lon); where=t; } } catch(e) {}\n  }\n}\nif (lat==null) return [{ json:{ ok:false, error:\"Couldn't place that address. Add the site postcode and try again.\" } }];\n\nconst ERR=[];\nasync function overpass(radius){\n  const ql = '[out:json][timeout:20];nwr[\"amenity\"=\"hospital\"][\"emergency\"=\"yes\"](around:'+radius+','+lat+','+lon+');out center tags;';\n  const urls = ['https://overpass-api.de/api/interpreter','https://overpass.private.coffee/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter','https://overpass.kumi.systems/api/interpreter'];\n  for (const u of urls) {\n    try { let r = await H.httpRequest({ method:'GET', url:u+'?data='+encodeURIComponent(ql), headers:UA, timeout:25000 }); if (typeof r==='string') r=JSON.parse(r); if (r && Array.isArray(r.elements)) return r.elements; ERR.push(u+': no elements'); } catch(e) { ERR.push(u+': '+String(e.message||e).slice(0,160)); }\n  }\n  return null;\n}\nlet els = await overpass(40000);\nif (els && !els.length) els = await overpass(80000);\nif (els === null) return [{ json:{ ok:false, error:'The hospital lookup service is busy. Try again in a minute.', debug:ERR } }];\n\nconst seen = {};\nlet list = els.map(e => {\n  const t = e.tags||{}; const la = e.lat!=null?e.lat:(e.center&&e.center.lat); const lo = e.lon!=null?e.lon:(e.center&&e.center.lon);\n  if (la==null || !t.name) return null;\n  return { name:t.name, lat:la, lon:lo, street:[t['addr:housenumber'],t['addr:street']].filter(Boolean).join(' '), town:t['addr:city']||t['addr:town']||'', postcode:t['addr:postcode']||'', phone:t.phone||t['contact:phone']||'', dist:miles(lat,lon,la,lo) };\n}).filter(Boolean).sort((a,b)=>a.dist-b.dist).filter(h => { const k=h.name.toLowerCase(); if (seen[k]) return false; seen[k]=1; return true; }).slice(0,3);\n\nconst need = list.filter(h=>!h.postcode);\nif (need.length) {\n  try {\n    const r = await H.httpRequest({ method:'POST', url:'https://api.postcodes.io/postcodes', body:{ geolocations: need.map(h=>({ latitude:h.lat, longitude:h.lon, limit:1, radius:1000 })) }, json:true, timeout:20000 });\n    (r.result||[]).forEach((x,i)=>{ const p = x.result && x.result[0]; if (p) { need[i].postcode=p.postcode; if(!need[i].town) need[i].town=p.admin_district||''; } });\n  } catch(e) {}\n}\nlist = list.map(h => {\n  const addr = [h.street, h.town, h.postcode].filter(Boolean).join(', ');\n  const mi = Math.round(h.dist*10)/10;\n  return { name:h.name, address:addr, phone:h.phone, miles:mi,\n    text: h.name+(addr?', '+addr:'')+' ('+mi+' miles in a straight line)',\n    maps: 'https://www.google.com/maps/dir/?api=1&origin='+lat+','+lon+'&destination='+encodeURIComponent(h.name+(h.postcode?' '+h.postcode:'')) };\n});\nreturn [{ json:{ ok:true, from:where, lat, lon, hospitals:list } }];\n"
+        }
+      }
+    ],
+    "connections": {
+      "Hook": {
+        "main": [
+          [
+            {
+              "node": "Find Hospitals",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "GET cbs-nearest-hospital?q=<site address>. Postcode → postcodes.io, fallback Nominatim; nearest 3 emergency hospitals from OpenStreetMap (Overpass). Used by the RAMS builder.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

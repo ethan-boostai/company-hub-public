@@ -1,0 +1,68 @@
+{
+  "table": "cbs_diary",
+  "n8n_id": "0ujWfxU1dlaQQ55d",
+  "columns": [
+    {
+      "name": "day",
+      "type": "string"
+    },
+    {
+      "name": "delay_cause",
+      "type": "string"
+    },
+    {
+      "name": "delay_hours",
+      "type": "number"
+    },
+    {
+      "name": "delays",
+      "type": "string"
+    },
+    {
+      "name": "history",
+      "type": "string"
+    },
+    {
+      "name": "instructions",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "locked_at",
+      "type": "string"
+    },
+    {
+      "name": "locked_by",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "on_site",
+      "type": "string"
+    },
+    {
+      "name": "snapshot_json",
+      "type": "string"
+    },
+    {
+      "name": "updated_at",
+      "type": "string"
+    },
+    {
+      "name": "updated_by",
+      "type": "string"
+    },
+    {
+      "name": "weather_json",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [],
+  "note": "no sample found (CBS - Daily Diary has no saved executions; Job Safety Pages 'T diary' read for job in exec 1325121 returned empty)"
+}

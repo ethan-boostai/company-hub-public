@@ -1,0 +1,957 @@
+{
+  "id": "FXNExEnldxEZcFBO",
+  "name": "CBS - Excel to ServiceM8 (Create Job)",
+  "active": true,
+  "isArchived": false,
+  "versionId": "5e59e8a6-4355-46f2-8b86-6d557a50e855",
+  "activeVersionId": "5e59e8a6-4355-46f2-8b86-6d557a50e855",
+  "triggerCount": 1,
+  "createdAt": "2026-09-25T14:13:10.171Z",
+  "updatedAt": "2026-10-19T11:16:39.797Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "binaryMode": "separate"
+  },
+  "connections": {
+    "Every 10 Minutes": {
+      "main": [
+        [
+          {
+            "node": "Sheets to Watch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sheets to Watch": {
+      "main": [
+        [
+          {
+            "node": "Read Sheet Used Range",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Sheet Used Range": {
+      "main": [
+        [
+          {
+            "node": "Parse Sheet Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Sheet Rows": {
+      "main": [
+        [
+          {
+            "node": "Only Create Job Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Only Create Job Rows": {
+      "main": [
+        [
+          {
+            "node": "Validate and Map Client",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate and Map Client": {
+      "main": [
+        [
+          {
+            "node": "Ready or Blocked",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ready or Blocked": {
+      "main": [
+        [
+          {
+            "node": "Create ServiceM8 Job",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build Blocked Writes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create ServiceM8 Job": {
+      "main": [
+        [
+          {
+            "node": "Read Job Back",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Build Contact Notes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Blocked Writes": {
+      "main": [
+        [
+          {
+            "node": "Write Back to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Job Back": {
+      "main": [
+        [
+          {
+            "node": "Build Success Writes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Success Writes": {
+      "main": [
+        [
+          {
+            "node": "Write Back to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Contact Notes": {
+      "main": [
+        [
+          {
+            "node": "Add Contact Note",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      },
+      "id": "c6147ee5-7369-4e9b-a47e-57b4c1d77e16",
+      "name": "Every 10 Minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Tab names EXACTLY as Excel stores them. ZZ Client P dropped 7 Oct 2026.\n// The trailing spaces on 'ZZ Client B' and 'Others' were removed on 28 Sep 2026.\n// A rename here means that tab fails to read (the run will error), so keep\n// this in step with the workbook - or swap to a worksheet lookup by ID.\nconst sheets = ['ZZ Client A', 'ZZ Client B', 'ZZ Client C', 'ZZ Client D', 'Others'];\n\nreturn sheets.map(function (name) {\n  return { json: { sheetName: name } };\n});"
+      },
+      "id": "f4cb82b1-99ea-4157-b344-5f5d3b0715cf",
+      "name": "Sheets to Watch",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/01ZZZZZZ000000000000000000000000H7/workbook/worksheets('{{ encodeURIComponent($json.sheetName) }}')/usedRange?$select=address,values",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {}
+      },
+      "id": "e0b8c10c-05d4-4bad-9e59-c0ac7a426647",
+      "name": "Read Sheet Used Range",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        448,
+        192
+      ],
+      "onError": "stopWorkflow",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "jsCode": "function colToNum(s) {\n  let n = 0;\n  for (let i = 0; i < s.length; i++) { n = n * 26 + (s.charCodeAt(i) - 64); }\n  return n;\n}\n\nfunction numToCol(n) {\n  let s = '';\n  while (n > 0) { const r = (n - 1) % 26; s = String.fromCharCode(65 + r) + s; n = Math.floor((n - 1) / 26); }\n  return s;\n}\n\nfunction norm(s) {\n  return String(s == null ? '' : s).toLowerCase().replace(/[^a-z0-9]/g, '');\n}\n\nconst out = [];\n\nfor (const item of $input.all()) {\n  const res = item.json;\n  const address = String(res.address || '');\n  const values = res.values || [];\n\n  if (!values.length || !address) { continue; }\n\n  const sheetName = address.indexOf('!') >= 0 ? address.split('!')[0].replace(/^'|'$/g, '') : '';\n  const ref = address.indexOf('!') >= 0 ? address.split('!')[1] : address;\n  const start = ref.split(':')[0];\n  const m = start.match(/([A-Z]+)(\\d+)/);\n  if (!m) { continue; }\n\n  const startColNum = colToNum(m[1]);\n  const startRow = parseInt(m[2], 10);\n\n  const headers = (values[0] || []).map(function (h) { return String(h == null ? '' : h).trim(); });\n\n  const cols = {};\n  const byNorm = {};\n  headers.forEach(function (h, j) {\n    if (h) {\n      const letter = numToCol(startColNum + j);\n      cols[h] = letter;\n      byNorm[norm(h)] = { header: h, letter: letter };\n    }\n  });\n\n  function findCol(aliases) {\n    for (const a of aliases) {\n      const hit = byNorm[norm(a)];\n      if (hit) { return hit; }\n    }\n    return null;\n  }\n\n  // Column G is still labelled 'Add to Fergus?' in the workbook - left alone on purpose\n  // so CBS staff keep using the dropdown they know. Aliases cover a later rename.\n  const flagCol = findCol(['Add to Fergus?', 'Add to Fergus', 'Add to ServiceM8?', 'Add to ServiceM8', 'Create Job?']);\n  const statusCol = findCol(['Fergus Status', 'ServiceM8 Status', 'Job Status', 'Fergus Result', 'Result']);\n  const jobNoCol = findCol(['ServiceM8 Job No', 'Fergus Job No', 'Fergus Job Number', 'Job No (System)']);\n  const linkCol = findCol(['Link to job', 'Job Link', 'ServiceM8 Link', 'Fergus Link']);\n  const jobNumberCol = findCol(['Job Number', 'Job No', 'Job Ref']);\n\n  if (!flagCol || !statusCol) { continue; }\n\n  for (let i = 1; i < values.length; i++) {\n    const row = {};\n    headers.forEach(function (h, j) { if (h) { row[h] = values[i][j]; } });\n\n    row._sheetName = sheetName;\n    row._sheetKey = sheetName.trim();\n    row._rowNumber = startRow + i;\n    row._flagCol = flagCol.letter;\n    row._statusCol = statusCol.letter;\n    row._jobNoCol = jobNoCol ? jobNoCol.letter : null;\n    row._linkCol = linkCol ? linkCol.letter : null;\n    row._flag = String(row[flagCol.header] == null ? '' : row[flagCol.header]).trim();\n    row._status = String(row[statusCol.header] == null ? '' : row[statusCol.header]).trim();\n    row._jobNumber = jobNumberCol ? String(row[jobNumberCol.header] == null ? '' : row[jobNumberCol.header]).trim() : '';\n\n    out.push({ json: row });\n  }\n}\n\nreturn out;"
+      },
+      "id": "a3677387-6ef8-48de-b8e0-bcac2a2be0ab",
+      "name": "Parse Sheet Rows",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "flagged",
+              "leftValue": "={{ $json._flag }}",
+              "operator": {
+                "operation": "equals",
+                "type": "string"
+              },
+              "rightValue": "Create Job"
+            },
+            {
+              "id": "notdone",
+              "leftValue": "={{ $json._status }}",
+              "operator": {
+                "operation": "empty",
+                "singleValue": true,
+                "type": "string"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "974b792a-bf20-47c0-bef0-b7c717621b21",
+      "name": "Only Create Job Rows",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        896,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Tabs don't share a schema - ZZ Client B calls it 'Reference' where ZZ Client A says\n// 'Job Number', and ZZ Client C / Others say 'Client' where ZZ Client A says 'Site'.\n// Resolve by alias rather than by one literal header name.\nfunction pick(row, aliases) {\n  for (const a of aliases) {\n    const v = row[a];\n    if (v !== undefined && v !== null && String(v).trim() !== '') {\n      return String(v).trim();\n    }\n  }\n  return '';\n}\n\nconst JOB_NUMBER_ALIASES = ['Job Number', 'Job Number ', 'Reference', 'Job No', 'Job Ref'];\nconst SITE_ALIASES = ['Site', 'Client'];\nconst AREA_ALIASES = ['Area'];\nconst DESC_ALIASES = ['Description'];\nconst ORIGINATOR_ALIASES = ['Originator', 'Originator '];\n\n// Keys are '<tab>||<site or client cell>', tab name trimmed.\n// UUIDs come from the 'CBS - ServiceM8 Client Lookup' workflow.\nconst MAP = {\n  'ZZ Client A||ZZ Client A - Site 1': {\n    companyUuid: '01a0d8de-53ff-79fe-9530-912d0415ee4b',\n    jobAddress: '1 Sample Road, Sampletown E, London, ZZ99 3ZZ',\n    siteContact: 'ZZ Client Contact A'\n  },\n  'ZZ Client A||ZZ Client A - Site 3': {\n    companyUuid: '01a0d8df-bd2e-79fe-9530-b74e1d90811b',\n    jobAddress: '2 Sample Street, Sampletown F, Greater London ZZ99 4ZZ',\n    siteContact: 'ZZ Client Contact F'\n  },\n  'ZZ Client A||ZZ Client A - Site 2': {\n    companyUuid: '01a0d8e0-4c53-79fe-9530-80609ba07c4b',\n    jobAddress: 'Sample Drive, Blakelands, Sampletown A ZZ99 6ZZ',\n    siteContact: 'ZZ Client Contact D'\n  },\n  'ZZ Client B||ZZ Client B Site 3': {\n    companyUuid: '01a0e790-57fa-79fe-9530-faa1ce75766b',\n    jobAddress: '',\n    siteContact: ''\n  },\n  'ZZ Client B||ZZ Client B Site 1': {\n    companyUuid: '01a0e790-1ea1-79fe-9530-7a71fca26d1b',\n    jobAddress: '',\n    siteContact: ''\n  },\n  'ZZ Client B||ZZ Client B Site 2': {\n    companyUuid: '01a0e78f-aafe-79fe-9530-389f343ce6ab',\n    jobAddress: '',\n    siteContact: ''\n  }\n};\n\n// Fallback for tabs where the tab itself identifies the client.\nconst SHEET_DEFAULTS = {\n  'ZZ Client C': {\n    companyUuid: '01a115b7-6176-79fe-9531-6e8aec63a0eb',\n    jobAddress: 'ZZ Client C, Sample Avenue, Sampletown B, Ashford, Kent, ZZ99 2ZZ',\n    siteContact: 'ZZ Client Contact G'\n  }\n};\n\nconst out = [];\n\nfor (const item of $input.all()) {\n  const row = item.json;\n  const sheetName = row._sheetName || '';\n  const sheetKey = row._sheetKey || sheetName.trim();\n\n  const jobNumber = pick(row, JOB_NUMBER_ALIASES);\n  const site = pick(row, SITE_ALIASES);\n  const area = pick(row, AREA_ALIASES);\n  const description = pick(row, DESC_ALIASES);\n  const originator = pick(row, ORIGINATOR_ALIASES);\n\n  const base = {\n    jobNumber: jobNumber,\n    sheetName: sheetName,\n    rowNumber: row._rowNumber,\n    statusCol: row._statusCol,\n    jobNoCol: row._jobNoCol,\n    linkCol: row._linkCol\n  };\n\n  const missing = [];\n  if (!jobNumber) { missing.push('Job Number'); }\n  if (!site) { missing.push('Site'); }\n  if (!area) { missing.push('Area'); }\n  if (!description) { missing.push('Description'); }\n\n  if (missing.length) {\n    out.push({ json: Object.assign({}, base, { outcome: 'blocked', statusValue: 'Missing info: ' + missing.join(', ') }) });\n    continue;\n  }\n\n  const key = sheetKey + '||' + site;\n  const match = MAP[key] || SHEET_DEFAULTS[sheetKey];\n\n  if (!match) {\n    out.push({ json: Object.assign({}, base, { outcome: 'blocked', statusValue: 'Not mapped yet: ' + key }) });\n    continue;\n  }\n\n  if (!match.companyUuid) {\n    out.push({ json: Object.assign({}, base, { outcome: 'blocked', statusValue: 'No ServiceM8 client for ' + site + ' - create it, then add the UUID to the map' }) });\n    continue;\n  }\n\n  // ServiceM8 has no separate job title field, so the job card headline is\n  // the first line of job_description: '<sheet job number> <description>'.\n  // Then Area and Raised by only (Site and Source dropped 19 Oct 2026).\n  let fullDescription = jobNumber + ' ' + description;\n  const details = [];\n  if (area) { details.push('Area: ' + area); }\n  if (originator) { details.push('Raised by: ' + originator); }\n  if (details.length) { fullDescription += '\\n\\n' + details.join('\\n'); }\n\n  out.push({\n    json: Object.assign({}, base, {\n      outcome: 'ok',\n      companyUuid: match.companyUuid,\n      jobAddress: match.jobAddress || site,\n      siteContact: match.siteContact || '',\n      originator: originator,\n      jobDescription: fullDescription,\n      purchaseOrderNumber: jobNumber\n    })\n  });\n}\n\nreturn out;"
+      },
+      "id": "fa934424-92d8-42a5-a527-320de322cf80",
+      "name": "Validate and Map Client",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.outcome }}",
+                    "rightValue": "ok",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.outcome }}",
+                    "rightValue": "ok",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "eca27d3c-88f4-40b8-97dd-a98827cf93e1",
+      "name": "Ready or Blocked",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1344,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "job",
+        "operation": "create",
+        "fields": {
+          "field": [
+            {
+              "field": "job_description",
+              "value": "={{ $json.jobDescription }}"
+            },
+            {
+              "field": "company_uuid",
+              "value": "={{ $json.companyUuid }}"
+            },
+            {
+              "field": "job_address",
+              "value": "={{ $json.jobAddress }}"
+            },
+            {
+              "field": "purchase_order_number",
+              "value": "={{ $json.purchaseOrderNumber }}"
+            }
+          ]
+        }
+      },
+      "id": "e697fe25-61bf-4557-97c7-324768b11aa7",
+      "name": "Create ServiceM8 Job",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const out = [];\n\n$input.all().forEach(function (item) {\n  const j = item.json;\n\n  if (j.statusCol) {\n    out.push({ json: { sheetName: j.sheetName, address: j.statusCol + j.rowNumber, field: 'values', value: j.statusValue } });\n  }\n});\n\nreturn out;"
+      },
+      "id": "393c324c-7e7e-4fe0-b2ea-de24c3f6deb1",
+      "name": "Build Blocked Writes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2016,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/01ZZZZZZ000000000000000000000000H7/workbook/worksheets('{{ encodeURIComponent($json.sheetName) }}')/range(address='{{ $json.address }}')",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ [$json.field]: [[$json.value]] }) }}",
+        "options": {}
+      },
+      "id": "6f581571-558a-4c61-a8ea-5eda36279218",
+      "name": "Write Back to Sheet",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2336,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "job",
+        "operation": "get",
+        "uuid": "={{ $json.uuid }}",
+        "includeContacts": false
+      },
+      "id": "3166b787-6455-4e59-bc6f-968ffe3cabcc",
+      "name": "Read Job Back",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ServiceM8's documented deep link to a job card.\nconst JOB_URL = 'https://go.servicem8.com/openjob/';\n\nconst sources = $('Validate and Map Client').all().filter(function (r) {\n  return r.json.outcome === 'ok';\n});\n\nconst out = [];\n\n$input.all().forEach(function (item, i) {\n  const job = item.json;\n  const source = (sources[i] && sources[i].json) || {};\n  const row = source.rowNumber;\n  const sheet = source.sheetName;\n\n  // generated_job_id is ServiceM8's own job number, separate from CBS's sheet number.\n  const jobNo = job.generated_job_id || '';\n  const uuid = job.uuid;\n\n  if (source.statusCol) {\n    out.push({ json: { sheetName: sheet, address: source.statusCol + row, field: 'values', value: 'Created' } });\n  }\n  if (source.jobNoCol) {\n    out.push({ json: { sheetName: sheet, address: source.jobNoCol + row, field: 'values', value: String(jobNo) } });\n  }\n  if (source.linkCol) {\n    const label = jobNo ? String(jobNo) : 'Open job';\n    out.push({ json: { sheetName: sheet, address: source.linkCol + row, field: 'formulas', value: '=HYPERLINK(\"' + JOB_URL + uuid + '\",\"' + label + '\")' } });\n  }\n});\n\nreturn out;"
+      },
+      "id": "b8a0d361-1e73-4dc4-8f84-3debb6237080",
+      "name": "Build Success Writes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2016,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function norm(s) {\n  return String(s == null ? '' : s).toLowerCase().replace(/[^a-z]/g, '');\n}\n\nconst sources = $('Validate and Map Client').all().filter(function (r) {\n  return r.json.outcome === 'ok';\n});\n\nconst out = [];\n\n$input.all().forEach(function (item, i) {\n  const job = item.json;\n  const s = (sources[i] && sources[i].json) || {};\n\n  if (!s.originator) { return; }\n  // No known default contact for this site yet - nothing to compare against,\n  // so stay quiet rather than noting every job.\n  if (!s.siteContact) { return; }\n  if (norm(s.originator) === norm(s.siteContact)) { return; }\n\n  out.push({\n    json: {\n      jobUuid: job.uuid,\n      note: 'Check job contact: raised by ' + s.originator + ', but the site default contact is ' + s.siteContact + '. Update the contact on this job if needed. (Sheet row ' + s.rowNumber + ')'\n    }\n  });\n});\n\nreturn out;"
+      },
+      "id": "505c48d8-9641-4a19-b0f4-101e04d2e81c",
+      "name": "Build Contact Notes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1792,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "job",
+        "operation": "addNoteToJob",
+        "fields": {
+          "note": "={{ $json.note }}",
+          "related_object_uuid": "={{ $json.jobUuid }}"
+        }
+      },
+      "id": "9ccdb0c4-80f2-4370-ba8a-83ef353810ab",
+      "name": "Add Contact Note",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8",
+      "typeVersion": 1,
+      "position": [
+        2016,
+        192
+      ]
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes",
+                "minutesInterval": 10
+              }
+            ]
+          }
+        },
+        "id": "c6147ee5-7369-4e9b-a47e-57b4c1d77e16",
+        "name": "Every 10 Minutes",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          0,
+          192
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// Tab names EXACTLY as Excel stores them. ZZ Client P dropped 7 Oct 2026.\n// The trailing spaces on 'ZZ Client B' and 'Others' were removed on 28 Sep 2026.\n// A rename here means that tab fails to read (the run will error), so keep\n// this in step with the workbook - or swap to a worksheet lookup by ID.\nconst sheets = ['ZZ Client A', 'ZZ Client B', 'ZZ Client C', 'ZZ Client D', 'Others'];\n\nreturn sheets.map(function (name) {\n  return { json: { sheetName: name } };\n});"
+        },
+        "id": "f4cb82b1-99ea-4157-b344-5f5d3b0715cf",
+        "name": "Sheets to Watch",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          192
+        ]
+      },
+      {
+        "parameters": {
+          "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/01ZZZZZZ000000000000000000000000H7/workbook/worksheets('{{ encodeURIComponent($json.sheetName) }}')/usedRange?$select=address,values",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {}
+        },
+        "id": "e0b8c10c-05d4-4bad-9e59-c0ac7a426647",
+        "name": "Read Sheet Used Range",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          448,
+          192
+        ],
+        "onError": "stopWorkflow",
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 5000
+      },
+      {
+        "parameters": {
+          "jsCode": "function colToNum(s) {\n  let n = 0;\n  for (let i = 0; i < s.length; i++) { n = n * 26 + (s.charCodeAt(i) - 64); }\n  return n;\n}\n\nfunction numToCol(n) {\n  let s = '';\n  while (n > 0) { const r = (n - 1) % 26; s = String.fromCharCode(65 + r) + s; n = Math.floor((n - 1) / 26); }\n  return s;\n}\n\nfunction norm(s) {\n  return String(s == null ? '' : s).toLowerCase().replace(/[^a-z0-9]/g, '');\n}\n\nconst out = [];\n\nfor (const item of $input.all()) {\n  const res = item.json;\n  const address = String(res.address || '');\n  const values = res.values || [];\n\n  if (!values.length || !address) { continue; }\n\n  const sheetName = address.indexOf('!') >= 0 ? address.split('!')[0].replace(/^'|'$/g, '') : '';\n  const ref = address.indexOf('!') >= 0 ? address.split('!')[1] : address;\n  const start = ref.split(':')[0];\n  const m = start.match(/([A-Z]+)(\\d+)/);\n  if (!m) { continue; }\n\n  const startColNum = colToNum(m[1]);\n  const startRow = parseInt(m[2], 10);\n\n  const headers = (values[0] || []).map(function (h) { return String(h == null ? '' : h).trim(); });\n\n  const cols = {};\n  const byNorm = {};\n  headers.forEach(function (h, j) {\n    if (h) {\n      const letter = numToCol(startColNum + j);\n      cols[h] = letter;\n      byNorm[norm(h)] = { header: h, letter: letter };\n    }\n  });\n\n  function findCol(aliases) {\n    for (const a of aliases) {\n      const hit = byNorm[norm(a)];\n      if (hit) { return hit; }\n    }\n    return null;\n  }\n\n  // Column G is still labelled 'Add to Fergus?' in the workbook - left alone on purpose\n  // so CBS staff keep using the dropdown they know. Aliases cover a later rename.\n  const flagCol = findCol(['Add to Fergus?', 'Add to Fergus', 'Add to ServiceM8?', 'Add to ServiceM8', 'Create Job?']);\n  const statusCol = findCol(['Fergus Status', 'ServiceM8 Status', 'Job Status', 'Fergus Result', 'Result']);\n  const jobNoCol = findCol(['ServiceM8 Job No', 'Fergus Job No', 'Fergus Job Number', 'Job No (System)']);\n  const linkCol = findCol(['Link to job', 'Job Link', 'ServiceM8 Link', 'Fergus Link']);\n  const jobNumberCol = findCol(['Job Number', 'Job No', 'Job Ref']);\n\n  if (!flagCol || !statusCol) { continue; }\n\n  for (let i = 1; i < values.length; i++) {\n    const row = {};\n    headers.forEach(function (h, j) { if (h) { row[h] = values[i][j]; } });\n\n    row._sheetName = sheetName;\n    row._sheetKey = sheetName.trim();\n    row._rowNumber = startRow + i;\n    row._flagCol = flagCol.letter;\n    row._statusCol = statusCol.letter;\n    row._jobNoCol = jobNoCol ? jobNoCol.letter : null;\n    row._linkCol = linkCol ? linkCol.letter : null;\n    row._flag = String(row[flagCol.header] == null ? '' : row[flagCol.header]).trim();\n    row._status = String(row[statusCol.header] == null ? '' : row[statusCol.header]).trim();\n    row._jobNumber = jobNumberCol ? String(row[jobNumberCol.header] == null ? '' : row[jobNumberCol.header]).trim() : '';\n\n    out.push({ json: row });\n  }\n}\n\nreturn out;"
+        },
+        "id": "a3677387-6ef8-48de-b8e0-bcac2a2be0ab",
+        "name": "Parse Sheet Rows",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          192
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "flagged",
+                "leftValue": "={{ $json._flag }}",
+                "operator": {
+                  "operation": "equals",
+                  "type": "string"
+                },
+                "rightValue": "Create Job"
+              },
+              {
+                "id": "notdone",
+                "leftValue": "={{ $json._status }}",
+                "operator": {
+                  "operation": "empty",
+                  "singleValue": true,
+                  "type": "string"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "974b792a-bf20-47c0-bef0-b7c717621b21",
+        "name": "Only Create Job Rows",
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.3,
+        "position": [
+          896,
+          192
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// Tabs don't share a schema - ZZ Client B calls it 'Reference' where ZZ Client A says\n// 'Job Number', and ZZ Client C / Others say 'Client' where ZZ Client A says 'Site'.\n// Resolve by alias rather than by one literal header name.\nfunction pick(row, aliases) {\n  for (const a of aliases) {\n    const v = row[a];\n    if (v !== undefined && v !== null && String(v).trim() !== '') {\n      return String(v).trim();\n    }\n  }\n  return '';\n}\n\nconst JOB_NUMBER_ALIASES = ['Job Number', 'Job Number ', 'Reference', 'Job No', 'Job Ref'];\nconst SITE_ALIASES = ['Site', 'Client'];\nconst AREA_ALIASES = ['Area'];\nconst DESC_ALIASES = ['Description'];\nconst ORIGINATOR_ALIASES = ['Originator', 'Originator '];\n\n// Keys are '<tab>||<site or client cell>', tab name trimmed.\n// UUIDs come from the 'CBS - ServiceM8 Client Lookup' workflow.\nconst MAP = {\n  'ZZ Client A||ZZ Client A - Site 1': {\n    companyUuid: '01a0d8de-53ff-79fe-9530-912d0415ee4b',\n    jobAddress: '1 Sample Road, Sampletown E, London, ZZ99 3ZZ',\n    siteContact: 'ZZ Client Contact A'\n  },\n  'ZZ Client A||ZZ Client A - Site 3': {\n    companyUuid: '01a0d8df-bd2e-79fe-9530-b74e1d90811b',\n    jobAddress: '2 Sample Street, Sampletown F, Greater London ZZ99 4ZZ',\n    siteContact: 'ZZ Client Contact F'\n  },\n  'ZZ Client A||ZZ Client A - Site 2': {\n    companyUuid: '01a0d8e0-4c53-79fe-9530-80609ba07c4b',\n    jobAddress: 'Sample Drive, Blakelands, Sampletown A ZZ99 6ZZ',\n    siteContact: 'ZZ Client Contact D'\n  },\n  'ZZ Client B||ZZ Client B Site 3': {\n    companyUuid: '01a0e790-57fa-79fe-9530-faa1ce75766b',\n    jobAddress: '',\n    siteContact: ''\n  },\n  'ZZ Client B||ZZ Client B Site 1': {\n    companyUuid: '01a0e790-1ea1-79fe-9530-7a71fca26d1b',\n    jobAddress: '',\n    siteContact: ''\n  },\n  'ZZ Client B||ZZ Client B Site 2': {\n    companyUuid: '01a0e78f-aafe-79fe-9530-389f343ce6ab',\n    jobAddress: '',\n    siteContact: ''\n  }\n};\n\n// Fallback for tabs where the tab itself identifies the client.\nconst SHEET_DEFAULTS = {\n  'ZZ Client C': {\n    companyUuid: '01a115b7-6176-79fe-9531-6e8aec63a0eb',\n    jobAddress: 'ZZ Client C, Sample Avenue, Sampletown B, Ashford, Kent, ZZ99 2ZZ',\n    siteContact: 'ZZ Client Contact G'\n  }\n};\n\nconst out = [];\n\nfor (const item of $input.all()) {\n  const row = item.json;\n  const sheetName = row._sheetName || '';\n  const sheetKey = row._sheetKey || sheetName.trim();\n\n  const jobNumber = pick(row, JOB_NUMBER_ALIASES);\n  const site = pick(row, SITE_ALIASES);\n  const area = pick(row, AREA_ALIASES);\n  const description = pick(row, DESC_ALIASES);\n  const originator = pick(row, ORIGINATOR_ALIASES);\n\n  const base = {\n    jobNumber: jobNumber,\n    sheetName: sheetName,\n    rowNumber: row._rowNumber,\n    statusCol: row._statusCol,\n    jobNoCol: row._jobNoCol,\n    linkCol: row._linkCol\n  };\n\n  const missing = [];\n  if (!jobNumber) { missing.push('Job Number'); }\n  if (!site) { missing.push('Site'); }\n  if (!area) { missing.push('Area'); }\n  if (!description) { missing.push('Description'); }\n\n  if (missing.length) {\n    out.push({ json: Object.assign({}, base, { outcome: 'blocked', statusValue: 'Missing info: ' + missing.join(', ') }) });\n    continue;\n  }\n\n  const key = sheetKey + '||' + site;\n  const match = MAP[key] || SHEET_DEFAULTS[sheetKey];\n\n  if (!match) {\n    out.push({ json: Object.assign({}, base, { outcome: 'blocked', statusValue: 'Not mapped yet: ' + key }) });\n    continue;\n  }\n\n  if (!match.companyUuid) {\n    out.push({ json: Object.assign({}, base, { outcome: 'blocked', statusValue: 'No ServiceM8 client for ' + site + ' - create it, then add the UUID to the map' }) });\n    continue;\n  }\n\n  // ServiceM8 has no separate job title field, so the job card headline is\n  // the first line of job_description: '<sheet job number> <description>'.\n  // Then Area and Raised by only (Site and Source dropped 19 Oct 2026).\n  let fullDescription = jobNumber + ' ' + description;\n  const details = [];\n  if (area) { details.push('Area: ' + area); }\n  if (originator) { details.push('Raised by: ' + originator); }\n  if (details.length) { fullDescription += '\\n\\n' + details.join('\\n'); }\n\n  out.push({\n    json: Object.assign({}, base, {\n      outcome: 'ok',\n      companyUuid: match.companyUuid,\n      jobAddress: match.jobAddress || site,\n      siteContact: match.siteContact || '',\n      originator: originator,\n      jobDescription: fullDescription,\n      purchaseOrderNumber: jobNumber\n    })\n  });\n}\n\nreturn out;"
+        },
+        "id": "fa934424-92d8-42a5-a527-320de322cf80",
+        "name": "Validate and Map Client",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          192
+        ]
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.outcome }}",
+                      "rightValue": "ok",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "loose",
+                    "version": 1
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.outcome }}",
+                      "rightValue": "ok",
+                      "operator": {
+                        "type": "string",
+                        "operation": "notEquals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "eca27d3c-88f4-40b8-97dd-a98827cf93e1",
+        "name": "Ready or Blocked",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          1344,
+          192
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "job",
+          "operation": "create",
+          "fields": {
+            "field": [
+              {
+                "field": "job_description",
+                "value": "={{ $json.jobDescription }}"
+              },
+              {
+                "field": "company_uuid",
+                "value": "={{ $json.companyUuid }}"
+              },
+              {
+                "field": "job_address",
+                "value": "={{ $json.jobAddress }}"
+              },
+              {
+                "field": "purchase_order_number",
+                "value": "={{ $json.purchaseOrderNumber }}"
+              }
+            ]
+          }
+        },
+        "id": "e697fe25-61bf-4557-97c7-324768b11aa7",
+        "name": "Create ServiceM8 Job",
+        "type": "@servicem8/n8n-nodes-servicem8.serviceM8",
+        "typeVersion": 1,
+        "position": [
+          1568,
+          96
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const out = [];\n\n$input.all().forEach(function (item) {\n  const j = item.json;\n\n  if (j.statusCol) {\n    out.push({ json: { sheetName: j.sheetName, address: j.statusCol + j.rowNumber, field: 'values', value: j.statusValue } });\n  }\n});\n\nreturn out;"
+        },
+        "id": "393c324c-7e7e-4fe0-b2ea-de24c3f6deb1",
+        "name": "Build Blocked Writes",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2016,
+          384
+        ]
+      },
+      {
+        "parameters": {
+          "method": "PATCH",
+          "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/01ZZZZZZ000000000000000000000000H7/workbook/worksheets('{{ encodeURIComponent($json.sheetName) }}')/range(address='{{ $json.address }}')",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify({ [$json.field]: [[$json.value]] }) }}",
+          "options": {}
+        },
+        "id": "6f581571-558a-4c61-a8ea-5eda36279218",
+        "name": "Write Back to Sheet",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          2336,
+          192
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "job",
+          "operation": "get",
+          "uuid": "={{ $json.uuid }}",
+          "includeContacts": false
+        },
+        "id": "3166b787-6455-4e59-bc6f-968ffe3cabcc",
+        "name": "Read Job Back",
+        "type": "@servicem8/n8n-nodes-servicem8.serviceM8",
+        "typeVersion": 1,
+        "position": [
+          1792,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// ServiceM8's documented deep link to a job card.\nconst JOB_URL = 'https://go.servicem8.com/openjob/';\n\nconst sources = $('Validate and Map Client').all().filter(function (r) {\n  return r.json.outcome === 'ok';\n});\n\nconst out = [];\n\n$input.all().forEach(function (item, i) {\n  const job = item.json;\n  const source = (sources[i] && sources[i].json) || {};\n  const row = source.rowNumber;\n  const sheet = source.sheetName;\n\n  // generated_job_id is ServiceM8's own job number, separate from CBS's sheet number.\n  const jobNo = job.generated_job_id || '';\n  const uuid = job.uuid;\n\n  if (source.statusCol) {\n    out.push({ json: { sheetName: sheet, address: source.statusCol + row, field: 'values', value: 'Created' } });\n  }\n  if (source.jobNoCol) {\n    out.push({ json: { sheetName: sheet, address: source.jobNoCol + row, field: 'values', value: String(jobNo) } });\n  }\n  if (source.linkCol) {\n    const label = jobNo ? String(jobNo) : 'Open job';\n    out.push({ json: { sheetName: sheet, address: source.linkCol + row, field: 'formulas', value: '=HYPERLINK(\"' + JOB_URL + uuid + '\",\"' + label + '\")' } });\n  }\n});\n\nreturn out;"
+        },
+        "id": "b8a0d361-1e73-4dc4-8f84-3debb6237080",
+        "name": "Build Success Writes",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2016,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "function norm(s) {\n  return String(s == null ? '' : s).toLowerCase().replace(/[^a-z]/g, '');\n}\n\nconst sources = $('Validate and Map Client').all().filter(function (r) {\n  return r.json.outcome === 'ok';\n});\n\nconst out = [];\n\n$input.all().forEach(function (item, i) {\n  const job = item.json;\n  const s = (sources[i] && sources[i].json) || {};\n\n  if (!s.originator) { return; }\n  // No known default contact for this site yet - nothing to compare against,\n  // so stay quiet rather than noting every job.\n  if (!s.siteContact) { return; }\n  if (norm(s.originator) === norm(s.siteContact)) { return; }\n\n  out.push({\n    json: {\n      jobUuid: job.uuid,\n      note: 'Check job contact: raised by ' + s.originator + ', but the site default contact is ' + s.siteContact + '. Update the contact on this job if needed. (Sheet row ' + s.rowNumber + ')'\n    }\n  });\n});\n\nreturn out;"
+        },
+        "id": "505c48d8-9641-4a19-b0f4-101e04d2e81c",
+        "name": "Build Contact Notes",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1792,
+          192
+        ]
+      },
+      {
+        "parameters": {
+          "resource": "job",
+          "operation": "addNoteToJob",
+          "fields": {
+            "note": "={{ $json.note }}",
+            "related_object_uuid": "={{ $json.jobUuid }}"
+          }
+        },
+        "id": "9ccdb0c4-80f2-4370-ba8a-83ef353810ab",
+        "name": "Add Contact Note",
+        "type": "@servicem8/n8n-nodes-servicem8.serviceM8",
+        "typeVersion": 1,
+        "position": [
+          2016,
+          192
+        ]
+      }
+    ],
+    "connections": {
+      "Every 10 Minutes": {
+        "main": [
+          [
+            {
+              "node": "Sheets to Watch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Sheets to Watch": {
+        "main": [
+          [
+            {
+              "node": "Read Sheet Used Range",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Read Sheet Used Range": {
+        "main": [
+          [
+            {
+              "node": "Parse Sheet Rows",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Parse Sheet Rows": {
+        "main": [
+          [
+            {
+              "node": "Only Create Job Rows",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Only Create Job Rows": {
+        "main": [
+          [
+            {
+              "node": "Validate and Map Client",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Validate and Map Client": {
+        "main": [
+          [
+            {
+              "node": "Ready or Blocked",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ready or Blocked": {
+        "main": [
+          [
+            {
+              "node": "Create ServiceM8 Job",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Build Blocked Writes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create ServiceM8 Job": {
+        "main": [
+          [
+            {
+              "node": "Read Job Back",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Build Contact Notes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Build Blocked Writes": {
+        "main": [
+          [
+            {
+              "node": "Write Back to Sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Read Job Back": {
+        "main": [
+          [
+            {
+              "node": "Build Success Writes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Build Success Writes": {
+        "main": [
+          [
+            {
+              "node": "Write Back to Sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Build Contact Notes": {
+        "main": [
+          [
+            {
+              "node": "Add Contact Note",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "ServiceM8 port of CBS - Excel to Fergus. Polls the six client tabs in the SharePoint Master Estimates and Jobs List every 10 min; rows flagged Create Job with an empty status become ServiceM8 Quote jobs, then status, job no and a job link are written back",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

@@ -1,0 +1,351 @@
+<!--cbs-baked--><!doctype html><html lang="en-GB"><head><script id="cbsDl">(function(){if(window.__cbsDl)return;window.__cbsDl=1;
+var ua=navigator.userAgent||'',fr=false;try{fr=window.top!==window.self;}catch(e){fr=true;}
+var ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+var wv=(ios&&ua.indexOf('Safari/')<0)||ua.indexOf('; wv)')>-1||/ServiceM8/i.test(ua);
+window.__cbsDlPost=fr||wv;
+var oc=HTMLAnchorElement.prototype.click,od=HTMLAnchorElement.prototype.dispatchEvent;
+function want(a){if(!window.__cbsDlPost||!a||!a.download)return false;var h=String(a.href||'');return (h.indexOf('blob:')===0||h.indexOf('data:application/pdf')===0)&&(/[.]pdf$/i.test(a.download)||h.indexOf('data:application/pdf')===0);}
+function b64(href){return fetch(href).then(function(r){return r.blob();}).then(function(b){return new Promise(function(res,rej){var f=new FileReader();f.onload=function(){res(String(f.result).split(',')[1]);};f.onerror=rej;f.readAsDataURL(b);});});}
+function css(){if(document.getElementById('cbsDlCss'))return;var s=document.createElement('style');s.id='cbsDlCss';s.textContent='#cbsDlOv{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px;font-family:inherit}#cbsDlOv .bx{background:#fff;border-radius:12px;padding:20px;max-width:360px;width:100%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.25)}#cbsDlOv b{display:block;font-size:18px;margin-bottom:6px}#cbsDlOv p{margin:0 0 14px;color:#555;font-size:14px;word-break:break-word}#cbsDlOv button{display:block;width:100%;border:0;border-radius:8px;padding:13px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;margin-top:8px}#cbsDlGo{background:#F47920;color:#fff}#cbsDlX{background:#eef0f2;color:#1f2328}';document.head.appendChild(s);}
+function show(name,data){css();var o=document.getElementById('cbsDlOv');if(o)o.remove();o=document.createElement('div');o.id='cbsDlOv';
+ var bx=document.createElement('div');bx.className='bx';var t=document.createElement('b');t.textContent='Your PDF is ready';var p=document.createElement('p');p.textContent=name;
+ var f=document.createElement('form');f.method='POST';f.action='/webhook/cbs-pdf-out';f.target='_blank';f.style.margin='0';
+ [['name',name],['data',data]].forEach(function(x){var i=document.createElement('input');i.type='hidden';i.name=x[0];i.value=x[1];f.appendChild(i);});
+ var g=document.createElement('button');g.type='submit';g.id='cbsDlGo';g.textContent='Open PDF';f.appendChild(g);
+ var x=document.createElement('button');x.type='button';x.id='cbsDlX';x.textContent='Close';x.onclick=function(){o.remove();};
+ f.onsubmit=function(){setTimeout(function(){o.remove();},1500);};
+ bx.appendChild(t);bx.appendChild(p);bx.appendChild(f);bx.appendChild(x);o.appendChild(bx);document.body.appendChild(o);}
+function go(a){var n=a.download||'document.pdf';b64(a.href).then(function(d){show(n,d);})['catch'](function(){try{window.open(a.href,'_blank');}catch(e){}});}
+HTMLAnchorElement.prototype.click=function(){if(want(this)){go(this);return;}return oc.apply(this,arguments);};
+HTMLAnchorElement.prototype.dispatchEvent=function(e){if(e&&e.type==='click'&&want(this)){go(this);return true;}return od.apply(this,arguments);};
+})();</script><script id="cbsSp">(function(){if(window.__cbsSP)return;window.__cbsSP=1;var R=/^https:\/\/chelmsfordbuildingservices(-my)?\.sharepoint\.com\//i;function px(u){u=String(u||"");return R.test(u)?"/webhook/cbs-file?u="+encodeURIComponent(u):u;}window.__cbsPx=px;document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(!a)return;var h=a.getAttribute("href"),v=px(h);if(v!==h){a.setAttribute("href",v);a.setAttribute("target","_blank");a.setAttribute("rel","noopener");}},true);var wo=window.open;window.open=function(u){var a=[].slice.call(arguments);a[0]=px(u);return wo.apply(window,a);};})();</script><script id="cbsSaveGuard">(function(){if(window.__cbsSG)return;window.__cbsSG=1;var F=window.fetch.bind(window),P={},R={},IDS={};
+function isSave(u){return /\/webhook\/cbs-[a-z0-9-]*(save|record|upload|receive|loaded|pdf)(\?|$)/.test(u)&&!/[?&]a=del/.test(u);}
+function isDoc(u){return /\/webhook\/cbs-[a-z0-9-]*-save(\?|$)/.test(u)&&!/cbs-admin-save/.test(u);}
+window.fetch=function(u,o){o=o||{};var url=String(u&&u.url||u),m=String(o.method||'GET').toUpperCase();
+ if(m!=='POST'||!isSave(url))return F(u,o);
+ var body=o.body,key=url.split('?')[0]+location.pathname;
+ if(isDoc(url)&&typeof body==='string'&&IDS[key]){try{var j=JSON.parse(body);if(!Number(j.id)){j.id=IDS[key];body=JSON.stringify(j);o=Object.assign({},o,{body:body});}}catch(e){}}
+ var k=url+'|'+(typeof body==='string'?body:Math.random());
+ if(P[k])return P[k].then(function(r){return r.clone();});
+ if(R[k]&&Date.now()-R[k].t<15000)return Promise.resolve(R[k].r.clone());
+ var p=F(u,o).then(function(r){var c=r.clone();R[k]={t:Date.now(),r:r.clone()};delete P[k];
+   if(isDoc(url)&&r.ok)c.json().then(function(d){if(d&&Number(d.id))IDS[key]=Number(d.id);}).catch(function(){});return r;},
+  function(e){delete P[k];throw e;});
+ P[k]=p.then(function(r){return r.clone();});return p;};
+document.addEventListener('click',function(e){var b=e.target&&e.target.closest&&e.target.closest('button');if(!b||!/save|submit|issue/i.test(b.textContent||''))return;if(b.__cbsLock){e.stopImmediatePropagation();e.preventDefault();return;}b.__cbsLock=1;setTimeout(function(){b.__cbsLock=0;},1500);},true);
+})();</script><script id="cbsRoute">(function(){if(window.__cbsRT)return;window.__cbsRT=1;var M={"swms-save":"cbs-rams-save","sssp-save":"cbs-cphsp-save","swms-builder":"cbs-rams-builder","sssp-builder":"cbs-cphsp-builder","embr-builder-kit":"cbs-builder-kit","site-form-save":"cbs-site-inspection-save","embr-logo":"cbs-logo"},T=[["Embr Operations","Operations Hub"],["Embr Projects","Chelmsford Building Services"],["Embr - ","CBS - "],["embr-ops","cbs-ops"],["embr-toolbox-saved","cbs-toolbox-saved"],["embr_","cbs_"],["embr-","cbs-"],["Google Drive","SharePoint"],["WorkSafe","HSE"],["lang=\"en-NZ\"","lang=\"en-GB\""],["\"en-NZ\"","\"en-GB\""],["Pacific/Auckland","Europe/London"],["($\"+","(£\"+"]],TK={"swms":"rams","sssp":"cphsp"};function nm(n){return n.indexOf('cbs-')===0?n:(M[n]||('cbs-'+n));}function fx(u){try{var s=String(u);var x=new URL(s,location.href);if(x.origin!==location.origin)return u;var p=x.pathname.split('/');if(p.length!==3||p[1]!=='webhook'||!p[2])return u;var n=nm(p[2]);if(n===p[2])return u;return '/webhook/'+n+x.search+x.hash;}catch(e){return u;}}function lst(u){try{var x=new URL(String(u),location.href);if(x.origin!==location.origin)return null;if(x.pathname!=='/webhook/admin'&&x.pathname!=='/webhook/cbs-admin')return null;if(x.searchParams.get('a')!=='list')return null;return x.searchParams.get('t')||'';}catch(e){return null;}}window.__cbsUrl=fx;window.__cbsFix=function(h){h=String(h).replace(new RegExp('/webhook/(?!cbs-)([A-Za-z0-9-]+)','g'),function(a,n){return '/webhook/'+nm(n);});T.forEach(function(r){h=h.split(r[0]).join(r[1]);});return h;};var F=window.fetch;window.fetch=function(u,o){var q=u&&typeof u==='object'&&u.url;var t=lst(q?u.url:u);if(t!==null){var k=TK[t]||t;return F.call(window,'/webhook/cbs-admin-data?t='+encodeURIComponent(k)).then(function(r){return r.json();}).then(function(d){var a=(d&&Array.isArray(d[k]))?d[k]:[];return new Response(JSON.stringify(a),{status:200,headers:{'Content-Type':'application/json'}});});}if(q){var v=fx(u.url);if(v!==u.url)u=new Request(v,u);}else{u=fx(u);}return F.call(window,u,o);};var XO=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(m,u){var t=lst(u);if(t!==null){arguments[1]='/webhook/cbs-admin-data?t='+encodeURIComponent(TK[t]||t);}else{arguments[1]=fx(u);}return XO.apply(this,arguments);};document.addEventListener('click',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href]');if(a){var h=a.getAttribute('href'),v=fx(h);if(v!==h)a.setAttribute('href',v);}},true);})();</script><style id="cbsLogoFix">.topbar .logo,.topbar img,#topLogo,#cbsLogo,header img,img.logo{background:transparent!important;box-shadow:none!important;border:0!important;padding:0!important;border-radius:0!important;filter:none!important}</style><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CBS - Equipment & Materials Sheet</title><style>:root{--bg:#f2f2f0;--panel:#fff;--text:#161616;--muted:#6b6e70;--border:#d9d9d6;--brand:#F47920;--brand-deep:#d4650f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;font-size:15px;padding-bottom:40px}
+.topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 14px;background:#fff;border-bottom:3px solid var(--brand);position:sticky;top:0;z-index:30}
+.topbar .logo{height:22px;width:auto;}
+.topbar h1{font-size:15px;margin:0;font-weight:600}
+.topbar .sub{color:var(--muted);font-size:11.5px}
+.topbar .spacer{flex:1}
+.btn{background:#f7f7f6;border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;font-family:inherit;text-decoration:none;display:inline-block}
+.btn:hover{border-color:var(--brand-deep)}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.primary{background:#F47920;border-color:#F47920;color:#fff;font-weight:600}
+@media(max-width:560px){.topbar .sub{display:none}.topbar .btn{padding:6px 9px;font-size:12.5px}}
+#statusLine{max-width:760px;margin:0 auto;padding:6px 14px 0;font-size:13px;color:var(--muted);min-height:6px}
+.wrap{max-width:760px;margin:0 auto;padding:12px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px}
+.card h3{margin:0 0 10px;font-size:15px}
+.card h3 small{font-weight:400;color:var(--muted);font-size:12px;margin-left:6px}
+.f{display:block;margin-bottom:10px}
+.f span{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px}
+input,select,textarea{width:100%;font:inherit;padding:10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:inherit}
+textarea{resize:vertical;min-height:70px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+@media(max-width:520px){.g2{grid-template-columns:1fr}}
+.note{font-size:12.5px;color:#5a4a2a;background:#fff4e0;border:1px solid #f0d7a6;border-radius:8px;padding:9px 10px;margin:6px 0 8px;line-height:1.4}
+.pill{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:700}
+.pill.draft{background:#fff4e0;color:#8a5a00}.pill.done{background:#e3f3e8;color:#1a7f37}
+.muted{color:var(--muted);font-size:13px}
+.lbl{display:block;font-size:12px;font-weight:600;color:var(--muted);margin:2px 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.chip{display:flex;align-items:center;gap:6px;border:1px solid var(--border);border-radius:16px;padding:6px 12px;font-size:13px;cursor:pointer;background:#fff}
+.chip input{width:16px;height:16px;margin:0}.chip.on{background:#F47920;color:#fff;border-color:#F47920}
+.it{border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-bottom:6px;background:#fff}
+.it.off{background:#f2f2f0}
+.it label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}.it label input{width:20px;height:20px;flex:0 0 auto;margin-top:1px}
+.it b{font-weight:600;font-size:14px;display:block}.it small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.tabs{display:flex;gap:8px;max-width:760px;margin:8px auto 0;padding:0 12px}.tabs .btn{flex:1;padding:9px}.tabs .btn[aria-selected=true]{background:#F47920;border-color:#F47920;color:#fff;font-weight:600}
+#prev{display:none;max-width:840px;margin:0 auto;padding:12px}body.show-prev #form{display:none}body.show-prev #prev{display:block}
+.pv{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12),0 8px 24px rgba(0,0,0,.06);padding:28px 26px;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#000;line-height:1.35}
+.pv .hd{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:4px solid #F47920;padding-bottom:8px;margin-bottom:10px}.pv .hd img{height:30px;width:auto}.pv .hd div{text-align:right}.pv .hd b{font-size:19px;display:block}.pv .hd span{font-size:10px;color:#444}
+.pv .st{background:#3d4043;color:#fff;font-weight:700;padding:5px 8px;margin-top:12px;font-size:12.5px}.pv table{width:100%;border-collapse:collapse}.pv th,.pv td{border:1px solid #000;padding:5px 7px;vertical-align:top;text-align:left;font-size:11.5px;white-space:pre-wrap}
+.pv tbody th{background:#f2f2f2;width:32%}.pv thead th{background:#fde4d0}.pv .li{border:1px solid #000;border-top:none;padding:6px 8px}.pv .li small{color:#555;display:block;white-space:pre-wrap}.pv .none{border:1px solid #000;border-top:none;padding:6px 8px;color:#777}.pv .ft{margin-top:14px;border-top:1px solid #000;padding-top:4px;font-size:9.5px;color:#555}
+@media(min-width:1100px){.wrap{max-width:1500px;display:grid;grid-template-columns:minmax(520px,640px) 1fr;gap:20px;align-items:start}.tabs{display:none}#prev{display:block!important;position:sticky;top:64px;max-height:calc(100vh - 80px);overflow:auto;padding:0}body.show-prev #form{display:block}#statusLine{max-width:1500px}}
+.sheet{display:block;text-decoration:none;color:inherit}.tk{display:flex;gap:10px;align-items:center;border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;background:#fff;cursor:pointer}
+.tk.on{background:#f1f8f3;border-color:#9fd3ae}.tk input[type=checkbox]{width:24px;height:24px;flex:0 0 auto}.tk small{display:block;color:var(--muted);font-size:12px}.tk .q{width:70px;text-align:right;padding:8px}
+.big{width:100%;padding:14px;font-size:16px}
+</style></head><body><div class="topbar"><img class="logo" id="topLogo" alt="Chelmsford Building Services"><div><h1>Equipment &amp; Materials Sheet</h1><div class="sub">What the crew needs for the job, checked against stock</div></div><div class="spacer"></div><a class="btn" href="/webhook/cbs-admin?open=ptmsheets">&#8249; Operations Hub</a><a class="btn" id="cbsJf" href="/webhook/cbs-job-file" style="display:none">Job File</a><button class="btn" id="saveBtn">Save to Operations Hub</button><button class="btn primary" id="pdfBtn">Download PDF</button></div><div class="tabs"><button class="btn" id="tabEdit" aria-selected="true">Edit</button><button class="btn" id="tabPrev" aria-selected="false">Preview</button></div><div id="statusLine"><span id="status">Loading&#8230;</span></div><main class="wrap"><section id="form"></section><section id="prev"></section></main><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><script>(function patch(){
+  var J = window.jspdf && window.jspdf.jsPDF;
+  if (!J || J.__cbsNorm) return;
+  function N(s){
+    if (typeof s !== 'string') return s;
+    s = s.normalize('NFD');
+    var o = '';
+    for (var i = 0; i < s.length; i++) {
+      var c = s.charCodeAt(i), ch = s.charAt(i);
+      if (c >= 768 && c <= 879) continue;
+      if (c === 8216 || c === 8217 || c === 8218 || c === 8242) ch = String.fromCharCode(39);
+      else if (c === 8220 || c === 8221 || c === 8222 || c === 8243) ch = String.fromCharCode(34);
+      else if (c === 8211 || c === 8212 || c === 8722) ch = '-';
+      else if (c === 8230) ch = '...';
+      else if (c === 160) ch = ' ';
+      else if (c > 255 && c !== 8364 && c !== 8226 && c !== 8482) ch = '';
+      o += ch;
+    }
+    return o;
+  }
+  function W(){
+    var a = [null].concat([].slice.call(arguments));
+    var d = new (Function.prototype.bind.apply(J, a))();
+    ['text', 'splitTextToSize', 'getTextWidth', 'getStringUnitWidth'].forEach(function(k){
+      var f = d[k]; if (typeof f !== 'function') return;
+      d[k] = function(){ var x = [].slice.call(arguments); x[0] = Array.isArray(x[0]) ? x[0].map(N) : N(x[0]); return f.apply(d, x); };
+    });
+    return d;
+  }
+  Object.keys(J).forEach(function(k){ W[k] = J[k]; });
+  W.API = J.API; W.prototype = J.prototype; W.__cbsNorm = true;
+  window.jspdf.jsPDF = W;
+})();</script><script>(function(){
+var Q=new URLSearchParams(location.search),REC_ID=Number(Q.get("id")||0),REC_PDF="",LOGO="",D={},W=[];
+var PPE=["Safety boots","Hi-vis","Gloves","Safety glasses","Hearing protection","P2/P3 respirator","Harness","Hard hat","Coveralls"];
+function blank(){return {date:today(),job_no:"",site:"",client:"",desc:"",crew:[],vehicle:"",plant:[],plantExtra:"",custom:[],mats:[],ppe:["Safety boots","Hi-vis","Gloves","Safety glasses"],notes:"",prepared_by:"",status:"Issued"};}
+var S=blank();
+function vname(r){if(!r)return "";var v=(D.vehicles||[]).filter(function(x){return x.reg===r;})[0],n=v?String(v.assigned_to||"").trim():"";return r+(n?" - "+n:"");}
+function $(s){return document.querySelector(s);}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function status(m){$("#status").textContent=m||"";}
+function today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}
+function nz(d){d=String(d||"").slice(0,10);if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return d;var m=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];return Number(d.slice(8))+" "+m[Number(d.slice(5,7))-1]+" "+d.slice(0,4);}
+function num(v){var x=parseFloat(String(v==null?"":v).replace(/[^0-9.\-]/g,""));return isNaN(x)?0:x;}
+function f2(x){return String(Math.round(x*100)/100);}
+function cl(v){return String(v==null?"":v).split("").map(function(c){var k=c.charCodeAt(0);return [47,92,58,42,63,34,60,62,124,10,13,9].indexOf(k)>-1?" ":c;}).join("").split(" ").filter(Boolean).join(" ");}
+function fileBase(){return [S.date,S.site,S.job_no,"Equipment & Materials Sheet"].map(cl).filter(Boolean).join(" - ").slice(0,150);}
+var EQQ="",EQR={g:{},list:[]},EQS=0;
+function eqRank(id){var a=asset(id);if(!a)return 9;return (warn(a)?2:0)+(String(a.status||"").toLowerCase()==="in yard"?0:1);}
+function eqGroups(){var g={},seen={},list=[];assets().forEach(function(a){var c=a.category||"Other",k=c+"|"+String(a.name).trim().toLowerCase(),o=seen[k];if(!o){o=seen[k]={i:list.length,name:String(a.name).trim(),cat:c,ids:[]};list.push(o);(g[c]=g[c]||[]).push(o);}o.ids.push(String(a.id));});
+ list.forEach(function(o){o.ids.sort(function(x,y){return eqRank(x)-eqRank(y);});});EQR={g:g,list:list};return EQR;}
+function eqPicked(o){return o.ids.filter(function(id){return S.plant.indexOf(id)>-1;});}
+function eqWarn(ids){var w="";ids.some(function(id){var a=asset(id);w=a?warn(a):"";return !!w;});return w;}
+function eqRows(){var R=eqGroups(),g=R.g,q=String(EQQ||"").trim().toLowerCase(),h="",sel=[];
+ function hdr(t){return "<div style='position:sticky;top:0;background:#f4f4f2;padding:6px 10px;font-size:12px;font-weight:700;border-bottom:1px solid #e3e3e0;z-index:1'>"+esc(t)+"</div>";}
+ function row(o){var p=eqPicked(o),ck=p.length>0,n=o.ids.length,w=ck?eqWarn(p):(o.ids.every(function(id){var a=asset(id);return a&&warn(a);})?eqWarn(o.ids):"");
+  return "<label style='display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:1px solid #ececea;font-size:13.5px;cursor:pointer;margin:0;font-weight:400;"+(ck?"background:#fff4e0;":"")+"'><input type='checkbox' data-eqg='"+o.i+"'"+(ck?" checked":"")+" style='width:18px;height:18px;flex:0 0 auto;margin:0'><span style='flex:1;color:inherit;font-size:13.5px'>"+esc(o.name)+(n>1?" <span style='color:#6b6e70;font-size:12px'>\u00d7"+n+" in register</span>":"")+(w?" <span style='color:#b3261e;font-size:12px;font-weight:600'>"+esc(w)+"</span>":"")+"</span>"+(ck&&n>1?"<input data-eqn='"+o.i+"' type='number' min='1' max='"+n+"' value='"+p.length+"' inputmode='numeric' title='How many' style='width:58px;flex:0 0 auto;padding:4px 6px;margin:0;text-align:right'>":"")+"<span style='color:#6b6e70;font-size:12px;flex:0 0 auto'>"+esc(o.cat)+"</span></label>";}
+ R.list.forEach(function(o){if(eqPicked(o).length)sel.push(o);});
+ if(sel.length&&!q){h+=hdr("Selected ("+sel.length+")");sel.forEach(function(o){h+=row(o);});}
+ Object.keys(g).sort().forEach(function(c){var rows=g[c].filter(function(o){return q?(o.name+" "+c).toLowerCase().indexOf(q)>-1:!eqPicked(o).length;});if(!rows.length)return;rows.sort(function(a,b){return a.name.localeCompare(b.name);});h+=hdr(c);rows.forEach(function(o){h+=row(o);});});
+ if(!h)h="<div style='padding:10px;font-size:12.5px;color:#6b6e70'>"+(q?"Nothing matches that search.":"Nothing left to pick.")+"</div>";return h;}
+function EQH(){if(!assets().length)return "";return "<input type='search' id='eqQ' placeholder='Search equipment\u2026' autocomplete='off' value='"+esc(EQQ).replace(/'/g,"&#39;")+"' style='width:100%;padding:8px 10px;border:1px solid #d9d9d6;border-radius:8px;font-size:14px;box-sizing:border-box;margin:0'><div id='eqList' data-nosearch style='max-height:420px;overflow:auto;border:1px solid #d9d9d6;border-radius:8px;background:#fff;margin-top:6px'>"+eqRows()+"</div>";}
+function EQB(){
+ Array.prototype.forEach.call(document.querySelectorAll("[data-eqg]"),function(e){e.onchange=function(){var o=EQR.list[Number(e.getAttribute("data-eqg"))];if(!o)return;var l=$("#eqList");EQS=l?l.scrollTop:0;S.plant=S.plant.filter(function(x){return o.ids.indexOf(x)<0;});if(e.checked){var id=o.ids[0];S.plant.push(id);var a=asset(id),w=a?warn(a):"";if(w)alert(a.name+": "+w+". Sort this out before the job.");}render();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-eqn]"),function(e){e.onclick=function(ev){ev.stopPropagation();};e.onchange=function(){var o=EQR.list[Number(e.getAttribute("data-eqn"))];if(!o)return;var l=$("#eqList");EQS=l?l.scrollTop:0;var n=Math.max(1,Math.min(o.ids.length,Math.round(num(e.value))||1)),p=eqPicked(o),keep=p.slice(0,n);o.ids.forEach(function(id){if(keep.length<n&&keep.indexOf(id)<0)keep.push(id);});S.plant=S.plant.filter(function(x){return o.ids.indexOf(x)<0;}).concat(keep);var bad=keep.filter(function(id){return p.indexOf(id)<0;}).map(function(id){var a=asset(id),w=a?warn(a):"";return w?a.name+": "+w:"";}).filter(Boolean);if(bad.length)alert(bad.join(", ")+". Sort this out before the job.");render();};});}
+function EQW(){var qi=$("#eqQ"),l=$("#eqList");if(l&&EQS){l.scrollTop=EQS;EQS=0;}if(qi)qi.oninput=function(){EQQ=qi.value;var L=$("#eqList");if(L){L.innerHTML=eqRows();L.scrollTop=0;EQB();}};EQB();}
+function assets(){return (D.assets||[]).filter(function(a){return String(a.name||"").trim()&&a.status!=="Retired"&&a.status!=="Lost";}).sort(function(a,b){return String(a.name).localeCompare(String(b.name));});}
+function mats(){return (D.materials||[]).filter(function(m){return m.status!=="Discontinued"&&String(m.name||"").trim();}).sort(function(a,b){return String(a.name).localeCompare(String(b.name));});}
+function asset(id){return (D.assets||[]).filter(function(a){return String(a.id)===String(id);})[0];}
+function mat(id){return (D.materials||[]).filter(function(a){return String(a.id)===String(id);})[0];}
+function warn(a){var w=[],t=today();if(a.status==="Needs repair")w.push("Needs repair");if(a.test_tag_due&&String(a.test_tag_due).slice(0,10)<t)w.push("PAT test overdue");if(a.next_service&&String(a.next_service).slice(0,10)<t)w.push("Service overdue");return w.join(", ");}
+function matCheck(r){var m=mat(r.id);if(!m)return {cls:"",txt:""};var on=num(m.qty_on_hand),q=num(r.qty),mn=m.min_level===""||m.min_level==null?null:num(m.min_level);
+ if(q>on)return {cls:"bad",txt:"Only "+f2(on)+" "+(m.unit||"")+" on hand ("+f2(q-on)+" short). Add an order task on the job if needed."};
+ if(mn!==null&&on-q<=mn)return {cls:"warn",txt:"Leaves "+f2(on-q)+" on hand (min "+f2(mn)+")."};
+ return {cls:"ok",txt:"On hand "+f2(on)+" "+(m.unit||"")};}
+function shortages(){return [];var L=[];S.mats.forEach(function(r){var m=mat(r.id);if(!m||!num(r.qty))return;var c=matCheck(r);if(c.cls==="bad"||c.cls==="warn")L.push((m.name||"Material")+": "+c.txt);});(S.custom||[]).forEach(function(c){if(c&&c.kind==="mat"&&c.order&&String(c.name||"").trim())L.push(String(c.name).trim()+": "+(String(c.qty||"").trim()?String(c.qty).trim()+" "+(c.unit||"")+" ":"")+"(custom item). Order needed.");});return L;}
+function lc(s){return String(s==null?"":s).trim().toLowerCase();}
+function regHas(c){var n=lc(c.name);if(!n)return false;return (c.kind==="mat"?(D.materials||[]):(D.assets||[])).some(function(x){return lc(x.name)===n;});}
+function MIG(){S.custom=Array.isArray(S.custom)?S.custom:[];var ex=String(S.plantExtra||"").split("\n").map(function(s){return s.trim();}).filter(Boolean);ex.forEach(function(e){if(!S.custom.some(function(c){return c.kind==="plant"&&lc(c.name)===lc(e);}))S.custom.push({kind:"plant",name:e,qty:"",unit:"",order:false,reviewed:false});});S.plantExtra="";}
+function cLabel(c){var q=String(c.qty||"").trim();return String(c.name||"").trim()+(c.kind==="plant"&&q&&q!=="1"?" x "+q:"")+" (custom)";}
+function CX(k){return (S.custom||[]).filter(function(c){return c&&c.kind===k&&String(c.name||"").trim();});}
+function MR(){var L=S.mats.filter(function(r){return r.id&&mat(r.id);}).map(function(r){var m=mat(r.id);return {name:m.name,qty:r.qty,unit:m.unit||""};});CX("mat").forEach(function(c){if(c.buy)return;L.push({name:String(c.name||"").trim()+" (not from stock)",qty:c.qty,unit:c.unit||"",c:1});});return L;}
+function BUY(){return CX("mat").filter(function(c){return c.buy;});}
+function buyLine(c){var q=String(c.qty||"").trim();return String(c.name||"").trim()+(q?" - "+q+(c.unit?" "+c.unit:""):"");}
+function buyWhere(c){return [String(c.buy_from||"").trim()||"Any merchant",String(c.buy_note||"").trim()].filter(Boolean).join(" - ");}
+function CUS(k){var h="<div class='lbl' style='margin-top:12px'>"+(k==="mat"?"Custom materials (not in stock)":"Custom equipment (not in the register)")+"</div>";
+ (S.custom||[]).forEach(function(c,i){if(c.kind!==k)return;var inReg=regHas(c),nm=String(c.name||"").trim();
+  h+="<div class='it' style='opacity:1'><div style='display:flex;gap:6px;align-items:center;flex-wrap:wrap'><input data-cn='"+i+"' value='"+esc(c.name)+"' placeholder='"+(k==="mat"?"Material name":"Item name")+"' style='flex:1;min-width:160px'><input data-cq='"+i+"' inputmode='decimal' value='"+esc(c.qty)+"' placeholder='Qty' style='width:70px;text-align:right'>"+(k==="mat"?"<input data-cu='"+i+"' value='"+esc(c.unit)+"' placeholder='Unit' style='width:70px'>":"")+"<button class='btn' data-cdel='"+i+"' type='button' title='Remove'>\u2715</button></div>";
+  h+="<div style='display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:6px;font-size:13px'>"+(k==="mat"?"<span style='display:inline-flex;border:1px solid #ccc;border-radius:8px;overflow:hidden'><button type='button' class='btn' data-cbuy='"+i+"' data-v='0' style='border:0;border-radius:0;padding:5px 10px;"+(c.buy?"":"background:#eee;font-weight:700")+"'>From the yard</button><button type='button' class='btn' data-cbuy='"+i+"' data-v='1' style='border:0;border-radius:0;padding:5px 10px;"+(c.buy?"background:#fff1d6;font-weight:700":"")+"'>Buy on the way</button></span>":"")+"<label style='display:flex;gap:6px;align-items:center'><input type='checkbox' data-cr='"+i+"'"+(c.reviewed?" checked":"")+">Office reviewed (keep as a one-off)</label>";
+  if(nm)h+=inReg?"<small style='color:#1a7f37;font-weight:600'>Matches an item in the register</small><button type='button' class='btn' data-cuse='"+i+"' style='padding:5px 10px'>Use the register item</button>":(c.reviewed?"":"<small style='color:#8a5a00;font-weight:600'>Flagged in Needs attention</small>");
+  h+="</div>"+(k==="mat"&&c.buy?"<div class='g2' style='margin-top:6px'><input data-cbw='"+i+"' value='"+esc(c.buy_from||"").replace(/'/g,"&#39;")+"' placeholder='Where from (optional)'><input data-cbn='"+i+"' value='"+esc(c.buy_note||"").replace(/'/g,"&#39;")+"' placeholder='Note, e.g. on account (optional)'></div>":"")+"</div>";});
+ return h+"<button class='btn' data-cadd='"+k+"' type='button'>+ Add custom "+(k==="mat"?"material":"item")+"</button>";}
+function render(){var h="";
+ h+="<div class='card'><h3>Job</h3><div class='g2'><label class='f'><span>Date</span><input type='date' data-k='date' value='"+esc(S.date)+"'></label>";
+ h+="<label class='f'><span>ServiceM8 job number</span><div style='display:flex;gap:6px'><input data-k='job_no' inputmode='numeric' value='"+esc(S.job_no)+"'><button class='btn' id='lookBtn' type='button'>Look up</button></div></label></div>";
+ h+="<label class='f'><span>Site</span><input data-k='site' value='"+esc(S.site)+"'></label><div class='g2'><label class='f'><span>Client</span><input data-k='client' value='"+esc(S.client)+"'></label>";
+ h+="<label class='f'><span>Vehicle</span><select data-k='vehicle'><option value=''>Choose\u2026</option>"+(D.vehicles||[]).filter(function(v){return String(v.fleet_only||"")!=="Yes"||v.reg===S.vehicle;}).map(function(v){var dn=String(v.assigned_to||"").trim();return "<option value='"+esc(v.reg)+"'"+(v.reg===S.vehicle?" selected":"")+">"+esc(v.reg)+(dn?" - "+esc(dn):"")+"</option>";}).join("")+"</select></label></div>";
+ h+="<label class='f'><span>Equipment due back to yard</span><input type='date' data-k='due_back' value='"+esc(S.due_back||"")+"'></label>";h+="<label class='f'><span>Job description</span><textarea data-k='desc'>"+esc(S.desc)+"</textarea></label>";
+ var crewOpts=W.slice();S.crew.forEach(function(c){if(crewOpts.indexOf(c)<0)crewOpts.push(c);});
+ if(0)h+="<span class='lbl'>Crew</span><div class='chips'>"+crewOpts.map(function(w){var on=S.crew.indexOf(w)>-1;return "<label class='chip"+(on?" on":"")+"'><input type='checkbox' data-crew='"+esc(w)+"'"+(on?" checked":"")+">"+esc(w)+"</label>";}).join("")+"</div>";
+ h+="<label class='f'><span>Prepared by</span><select data-k='prepared_by'><option value=''>Choose\u2026</option>"+W.map(function(w){return "<option"+(w===S.prepared_by?" selected":"")+">"+esc(w)+"</option>";}).join("")+"</select></label></div>";
+ var A=assets(),g={};A.forEach(function(a){var c=a.category||"Other";(g[c]=g[c]||[]).push(a);});
+ h+="<div class='card'><h3>Equipment <small>"+S.plant.length+" picked</small></h3><div style='margin-bottom:8px'><button class='btn' id='ramsBtn' type='button'>Fill from this job's RAMS</button></div>";
+ if(!A.length)h+="<p class='muted'>No items in the equipment register yet.</p>";
+ h+=EQH();if(0)Object.keys(g).sort().forEach(function(c){h+="<div class='lbl' style='margin-top:6px'>"+esc(c)+"</div>";g[c].forEach(function(a){var on=S.plant.indexOf(String(a.id))>-1,w=warn(a);h+="<div class='it"+(on?"":" off")+"' style='opacity:1'><label><input type='checkbox' data-plant='"+a.id+"'"+(on?" checked":"")+"><span><b style='text-decoration:none'>"+esc(a.name)+"</b>"+(w?"<small style='color:#b3261e;font-weight:600'>"+esc(w)+"</small>":"")+"</span></label></div>";});});
+ h+=CUS("plant")+"</div>";
+ var M=mats();
+ h+="<div class='card'><h3>Materials <small>"+S.mats.filter(function(r){return r.id;}).length+" lines</small></h3>";
+ if(!M.length)h+="<p class='muted'>No materials in stock yet. Add them in Operations Hub under Equipment and Materials.</p>";
+ S.mats.forEach(function(r,i){var c=matCheck(r);h+="<div class='it' style='opacity:1'><div style='display:flex;gap:6px;align-items:center'><select data-mat='"+i+"' style='flex:1'><option value=''>Choose material\u2026</option>"+M.map(function(m){return "<option value='"+m.id+"'"+(String(m.id)===String(r.id)?" selected":"")+">"+esc(m.name)+" ("+esc(m.unit||"each")+")</option>";}).join("")+"</select><input data-qty='"+i+"' inputmode='decimal' value='"+esc(r.qty)+"' placeholder='Qty' style='width:80px;text-align:right'><button class='btn' data-mdel='"+i+"' type='button' title='Remove'>\u2715</button></div>"+(c.txt?"<small style='margin-top:4px;color:"+(c.cls==="bad"?"#b3261e":c.cls==="warn"?"#8a5a00":"#1a7f37")+";font-weight:600'>"+esc(c.txt)+"</small>":"")+"</div>";});
+ h+="<button class='btn' id='addMat' type='button'>+ Add material</button>";h+=CUS("mat");
+ 
+ h+="</div>";
+ h+="<div class='card'><h3>PPE</h3><div class='chips'>"+PPE.map(function(p){var on=S.ppe.indexOf(p)>-1;return "<label class='chip"+(on?" on":"")+"'><input type='checkbox' data-ppe='"+esc(p)+"'"+(on?" checked":"")+">"+esc(p)+"</label>";}).join("")+"</div>";
+ h+="<label class='f'><span>Notes for the crew</span><textarea data-k='notes'>"+esc(S.notes)+"</textarea></label></div>";
+ h+="<div class='card'><h3>Status</h3><p class='muted' style='margin:0'>"+(S.status==="Loaded"?"Loaded by "+esc(S.loaded_by||"the crew")+(S.loaded_at?" on "+nz(S.loaded_at):"")+". Materials taken have come off stock.":"Once saved, the crew open it on the team page, tick off what they take, and mark it loaded. Materials then come off stock.")+(REC_ID?" <a href='/webhook/cbs-ptm-crew?id="+REC_ID+"' target='_blank'>Open crew checklist</a>":"")+"</p></div>";
+ $("#form").innerHTML=h;bind();livePrev();}
+function bind(){
+ Array.prototype.forEach.call(document.querySelectorAll("[data-k]"),function(e){e.oninput=e.onchange=function(){S[e.getAttribute("data-k")]=e.value;if(e.tagName==="SELECT")render();else livePrev();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-crew]"),function(e){e.onchange=function(){var v=e.getAttribute("data-crew");S.crew=S.crew.filter(function(x){return x!==v;});if(e.checked)S.crew.push(v);render();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-ppe]"),function(e){e.onchange=function(){var v=e.getAttribute("data-ppe");S.ppe=S.ppe.filter(function(x){return x!==v;});if(e.checked)S.ppe.push(v);render();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-plant]"),function(e){e.onchange=function(){var v=e.getAttribute("data-plant");S.plant=S.plant.filter(function(x){return x!==v;});if(e.checked){S.plant.push(v);var a=asset(v),w=a?warn(a):"";if(w)alert(a.name+": "+w+". Sort this out before the job.");}render();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-mat]"),function(e){e.onchange=function(){var i=Number(e.getAttribute("data-mat"));var j=-1;S.mats.forEach(function(x,k){if(j<0&&k!==i&&x.id&&String(x.id)===e.value)j=k;});if(j>-1){S.mats[j].qty=f2(num(S.mats[j].qty)+(num(S.mats[i].qty)||1));S.mats.splice(i,1);status("That material is already on the sheet, so the quantity was added to that line.");render();return;}S.mats[i].id=e.value;if(!S.mats[i].qty)S.mats[i].qty="1";render();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-qty]"),function(e){e.onchange=function(){S.mats[Number(e.getAttribute("data-qty"))].qty=e.value;render();};e.oninput=function(){S.mats[Number(e.getAttribute("data-qty"))].qty=e.value;};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-mdel]"),function(e){e.onclick=function(){S.mats.splice(Number(e.getAttribute("data-mdel")),1);render();};});
+ function ci(e,a){return Number(e.getAttribute(a));}
+ function cm(i){var c=S.custom[i];return c&&c.kind==="mat"&&c.order;}
+ Array.prototype.forEach.call(document.querySelectorAll("[data-cbuy]"),function(e){e.onclick=function(){var c=S.custom[ci(e,"data-cbuy")];if(c){c.buy=e.getAttribute("data-v")==="1";render();}};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-cbw]"),function(e){e.oninput=function(){var c=S.custom[ci(e,"data-cbw")];if(c){c.buy_from=e.value;livePrev();}};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-cbn]"),function(e){e.oninput=function(){var c=S.custom[ci(e,"data-cbn")];if(c){c.buy_note=e.value;livePrev();}};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-cuse]"),function(e){e.onclick=function(){var i=ci(e,"data-cuse"),c=S.custom[i];if(!c)return;var n=lc(c.name);
+  if(c.kind==="mat"){var m=(D.materials||[]).filter(function(x){return lc(x.name)===n;})[0];if(!m)return;S.mats.push({id:m.id,qty:String(c.qty||"").trim()||"1"});}
+  else{var a=(D.assets||[]).filter(function(x){return lc(x.name)===n&&S.plant.indexOf(String(x.id))<0&&S.plant.indexOf(x.id)<0&&!/^(retired|lost)$/i.test(String(x.status||""));})[0];if(!a){e.textContent="All of these are already on the sheet";return;}S.plant.push(String(a.id));}
+  S.custom.splice(i,1);render();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-cn]"),function(e){e.oninput=function(){S.custom[ci(e,"data-cn")].name=e.value;livePrev();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-cq]"),function(e){e.oninput=function(){S.custom[ci(e,"data-cq")].qty=e.value;livePrev();};e.onchange=function(){if(cm(ci(e,"data-cq")))render();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-cu]"),function(e){e.oninput=function(){S.custom[ci(e,"data-cu")].unit=e.value;livePrev();};e.onchange=function(){if(cm(ci(e,"data-cu")))render();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-co]"),function(e){e.onchange=function(){S.custom[ci(e,"data-co")].order=e.checked;render();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-cr]"),function(e){e.onchange=function(){S.custom[ci(e,"data-cr")].reviewed=e.checked;render();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-cdel]"),function(e){e.onclick=function(){S.custom.splice(ci(e,"data-cdel"),1);render();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-cadd]"),function(e){e.onclick=function(){var k=e.getAttribute("data-cadd");S.custom=S.custom||[];S.custom.push({kind:k,name:"",qty:"1",unit:k==="mat"?"each":"",order:false,reviewed:false});render();var f=document.querySelector("[data-cn='"+(S.custom.length-1)+"']");if(f)f.focus();};});
+ var am=$("#addMat");if(am)am.onclick=function(){S.mats.push({id:"",qty:""});render();};
+ var lb=$("#lookBtn");if(lb)lb.onclick=lookup;
+ var sb=$("#ramsBtn");if(sb)sb.onclick=fromRams;EQW();}
+function lookup(){var no=String(S.job_no||"").trim();if(!no){alert("Type the job number first.");return;}status("Looking up job "+no+" in ServiceM8\u2026");var b=$("#lookBtn");if(b)b.disabled=true;
+ fetch("/webhook/cbs-sm8-job?no="+encodeURIComponent(no)).then(function(r){return r.json();}).then(function(j){if(!j||!j.found){status("Job "+no+" wasn't found in ServiceM8.");return;}
+  S.site=j.site||S.site;S.client=j.client||S.client;S.desc=j.description||S.desc;(j.crew||[]).forEach(function(c){if(S.crew.indexOf(c)<0)S.crew.push(c);});
+  status("Filled in from ServiceM8 job "+no+(j.booked&&j.booked.length?" (booked "+j.booked.map(nz).join(", ")+")":"")+".");render();})
+ ["catch"](function(){status("Couldn't reach ServiceM8. Fill in the details by hand.");}).then(function(){var b=$("#lookBtn");if(b)b.disabled=false;});}
+function fromRams(){var no=String(S.job_no||"").trim();if(!no){alert("Enter the job number first.");return;}
+ var rec=(D.rams||[]).filter(function(s){var j={};try{j=JSON.parse(s.job_json||"{}");}catch(e){}return String((j.meta||{}).jobNo||s.job_no||"").trim()===no;}).sort(function(a,b){return b.id-a.id;})[0];
+ if(!rec){alert("No saved RAMS has job number "+no+".");return;}
+ var j={};try{j=JSON.parse(rec.job_json||"{}");}catch(e){}var lines=String((j.res||{}).plant||"").split(/\n|,(?![^(]*\))/).map(function(s){return s.trim().replace(/\.$/,"");}).filter(Boolean);
+ var A=assets(),got=0,extra=[];lines.forEach(function(l){var a=A.filter(function(x){return String(x.name).toLowerCase()===l.toLowerCase();})[0];if(a){if(S.plant.indexOf(String(a.id))<0){S.plant.push(String(a.id));got++;}}else extra.push(l);});
+ MIG();extra.forEach(function(e){if(!S.custom.some(function(c){return c.kind==="plant"&&lc(c.name)===lc(e);}))S.custom.push({kind:"plant",name:e,qty:"",unit:"",order:false,reviewed:false});});
+ status("From RAMS #"+rec.id+": "+got+" register items ticked, "+extra.length+" added as custom items.");render();}
+function pvHtml(){var h="<div class='pv'><div class='hd'>"+(LOGO?"<img src='"+LOGO+"' alt='Chelmsford Building Services'>":"<b>Chelmsford Building Services</b>")+"<div><b>Equipment &amp; Materials Sheet</b><span>"+esc(fileBase())+"</span></div></div>";
+ function kv(rows){return "<table><tbody>"+rows.map(function(r){return "<tr><th>"+esc(r[0])+"</th><td>"+esc(r[1]||"-")+"</td></tr>";}).join("")+"</tbody></table>";}
+ h+="<div class='st'>Job</div>"+kv([["Date",nz(S.date)],["Job number",S.job_no],["Site",S.site],["Client",S.client],["Vehicle",vname(S.vehicle)],["Prepared by",S.prepared_by]].concat(S.due_back?[["Tools due back",nz(S.due_back)]]:[]));
+ var P=S.plant.map(asset).filter(Boolean),X=CX("plant").map(cLabel);
+ h+="<div class='st'>Equipment</div>";if(!P.length&&!X.length)h+="<div class='none'>None listed.</div>";else h+="<table><thead><tr><th>Item</th><th>Category</th></tr></thead><tbody>"+P.map(function(a){return "<tr><td>"+esc(a.name)+"</td><td>"+esc(a.category||"")+"</td></tr>";}).join("")+X.map(function(x){return "<tr style='background:#fff1d6'><td>"+esc(x)+"</td><td>Not in register</td></tr>";}).join("")+"</tbody></table>";
+ var Mx=MR();
+ h+="<div class='st'>Materials</div>";if(!Mx.length)h+="<div class='none'>None listed.</div>";else h+="<table><thead><tr><th>Material</th><th style='width:60px'>Qty</th><th style='width:60px'>Unit</th></tr></thead><tbody>"+Mx.map(function(r){return "<tr"+(r.c?" style='background:#fff1d6'":"")+"><td>"+esc(r.name)+"</td><td>"+esc(r.qty)+"</td><td>"+esc(r.unit||"")+"</td></tr>";}).join("")+"</tbody></table>";
+ var BY=BUY();if(BY.length)h+="<div class='st' style='background:#8a5a00'>Buy on the way</div><table><thead><tr><th>Item</th><th>Where from / note</th></tr></thead><tbody>"+BY.map(function(c){return "<tr><td>"+esc(buyLine(c))+"</td><td>"+esc(buyWhere(c))+"</td></tr>";}).join("")+"</tbody></table>";
+ var sh=shortages();if(sh.length)h+="<div class='st' style='background:#8a5a00'>Order needed</div><div class='li'><small>"+sh.map(esc).join("<br>")+"</small></div>";
+ h+="<div class='st'>PPE</div><div class='li'><small>"+esc(S.ppe.join(", ")||"-")+"</small></div><div class='st'>Notes</div><div class='li'><small>"+esc(S.notes||"-")+"</small></div>";
+ return h+"<div class='ft'>Chelmsford Building Services | Equipment &amp; Materials Sheet</div></div>";}
+var pvT=null;function livePrev(){clearTimeout(pvT);pvT=setTimeout(function(){if(window.matchMedia("(min-width:1100px)").matches||document.body.classList.contains("show-prev"))$("#prev").innerHTML=pvHtml();},250);}
+function showTab(p){if(p)$("#prev").innerHTML=pvHtml();document.body.classList.toggle("show-prev",!!p);$("#tabEdit").setAttribute("aria-selected",p?"false":"true");$("#tabPrev").setAttribute("aria-selected",p?"true":"false");window.scrollTo(0,0);}
+$("#tabEdit").onclick=function(){showTab(false);};$("#tabPrev").onclick=function(){showTab(true);};window.addEventListener("resize",livePrev);
+function makePdf(){var J=window.jspdf&&window.jspdf.jsPDF;if(!J)throw new Error("libs");
+ var d=new J({unit:"mm",format:"a4"}),M=12,WD=186,y=0,LW=40;
+ function head(){if(LOGO){try{d.addImage(LOGO,"PNG",M,9,44,8.5);}catch(e){}}d.setFont("helvetica","bold");d.setFontSize(14);d.setTextColor(0);d.text("Equipment & Materials Sheet",198,14.5,{align:"right"});d.setFont("helvetica","normal");d.setFontSize(8);d.setTextColor(70);(function(){var t=cl(S.site)||"",b=t,f=8;d.setFontSize(f);while(f>6&&d.getTextWidth(t)>140){f-=0.5;d.setFontSize(f);}while(b.length>4&&d.getTextWidth(t)>140){b=b.slice(0,-1);t=b.trim()+"...";}d.text(t,198,19,{align:"right"});})();d.setFillColor(244,121,32);d.rect(M,21.5,WD,1.3,"F");y=26;}
+ function ensure(h){if(y+h>281){d.addPage();head();}}
+ function secT(t,dark){ensure(16);if(dark)d.setFillColor(138,90,0);else d.setFillColor(61,64,67);d.rect(M,y,WD,6.5,"F");d.setFont("helvetica","bold");d.setFontSize(10);d.setTextColor(255);d.text(t,M+2,y+4.6);d.setTextColor(0);y+=6.5;}
+ function kv(k,v){d.setFontSize(8.8);d.setFont("helvetica","normal");var L=d.splitTextToSize(String(v||"-"),WD-LW-4);var h=Math.max(6.2,L.length*4+2.4);ensure(h);d.setDrawColor(0);d.setLineWidth(0.25);d.setFillColor(242,242,242);d.rect(M,y,LW,h,"FD");d.rect(M+LW,y,WD-LW,h,"S");d.setFont("helvetica","bold");d.text(k,M+1.6,y+4.3);d.setFont("helvetica","normal");d.text(L,M+LW+2,y+4.3);y+=h;}
+ function table(cols,heads,rows,boxCols){ensure(12);var x=M;d.setFont("helvetica","bold");d.setFontSize(8.5);heads.forEach(function(t,i){d.setFillColor(244,121,32);d.setDrawColor(0);d.setLineWidth(0.25);d.rect(x,y,cols[i],6,"FD");d.text(t,x+1.5,y+4.1);x+=cols[i];});y+=6;d.setFont("helvetica","normal");
+  rows.forEach(function(r){var L=d.splitTextToSize(String(r[0]),cols[0]-3),h=Math.max(7,L.length*4+3);ensure(h);var x=M;r.forEach(function(v,i){d.rect(x,y,cols[i],h,"S");if(boxCols.indexOf(i)>-1){d.rect(x+cols[i]/2-2,y+h/2-2,4,4,"S");}else d.text(i===0?L:String(v),x+1.5,y+4.6);x+=cols[i];});y+=h;});}
+ function para(t){d.setFontSize(8.8);d.setFont("helvetica","normal");var L=d.splitTextToSize(t||"-",WD-4);ensure(L.length*4.2+4);d.setDrawColor(0);d.rect(M,y,WD,L.length*4.2+3,"S");d.text(L,M+2,y+4.3);y+=L.length*4.2+3;}
+ head();secT("Job");kv("Date",nz(S.date));kv("Job number",S.job_no);kv("Site",S.site);kv("Client",S.client);kv("Vehicle",vname(S.vehicle));kv("Prepared by",S.prepared_by);if(S.due_back)kv("Tools due back",nz(S.due_back));y+=4;
+ var P=S.plant.map(asset).filter(Boolean),X=CX("plant").map(cLabel);
+ secT("Equipment");if(!P.length&&!X.length){para("None listed.");}else table([136,50],["Item","Category"],P.map(function(a){return [a.name,a.category||""];}).concat(X.map(function(x){return [x,"Not in register"];})),[]);y+=4;
+ var Mx=MR();
+ secT("Materials");if(!Mx.length){para("None listed.");}else table([138,22,26],["Material","Qty","Unit"],Mx.map(function(r){return [r.name,String(r.qty||""),r.unit||""];}),[]);y+=4;
+ var BY=BUY();if(BY.length){secT("Buy on the way",true);table([96,90],["Item","Where from / note"],BY.map(function(c){return [buyLine(c),buyWhere(c)];}),[]);y+=4;}
+ var sh=shortages();if(sh.length){secT("Order needed",true);para(sh.join("\n"));y+=4;}
+ secT("PPE");para(S.ppe.join(", "));y+=4;secT("Notes");para(S.notes||"-");
+ var n=d.getNumberOfPages();for(var i=1;i<=n;i++){d.setPage(i);d.setDrawColor(0);d.setLineWidth(0.3);d.line(M,287,M+WD,287);d.setFont("helvetica","normal");d.setFontSize(7.6);d.setTextColor(80);d.text("Chelmsford Building Services | Equipment & Materials Sheet",M,291);d.text("Page "+i+" of "+n,M+WD,291,{align:"right"});}
+ return d.output("blob");}
+function b64(blob){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(String(r.result).split(",")[1]);};r.onerror=rej;r.readAsDataURL(blob);});}
+function save(){if(!S.site&&!S.job_no){alert("Add the job number or site first.");return;}var bt=$("#saveBtn");bt.disabled=true;status("Building the PDF\u2026");var blob;try{blob=makePdf();}catch(e){status("The PDF tools didn't load. Check your connection and try again.");bt.disabled=false;return;}
+ b64(blob).then(function(p){status("Saving\u2026");var sh=shortages();
+  var row={sheet_date:S.date,job_no:S.job_no,site:S.site,client:S.client,job_desc:S.desc,crew:S.crew.join(", "),vehicle:S.vehicle,status:S.status==="Loaded"?"Loaded":((window.__ptmReady||window.__ptmWasReady||S.status==="Ready to load")?"Ready to load":"Issued"),shortages:sh.join("\n"),items_json:JSON.stringify(S),notes:S.notes,prepared_by:S.prepared_by,loaded_by:S.loaded_by||"",loaded_at:S.loaded_at||""};
+  return fetch("/webhook/cbs-ptm-save",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:REC_ID,filename:fileBase()+".pdf",pdf:p,existing_pdf_url:REC_PDF,row:row,notify_ready:!!window.__ptmReady})});})
+ .then(function(r){return r.json();}).then(function(d){if(!d||!d.ok)throw new Error("save");REC_ID=d.id;REC_PDF=d.pdf_url||REC_PDF;try{history.replaceState(null,"","?id="+REC_ID);}catch(e){}var sh=shortages();status((REC_PDF?"Saved to Operations Hub and SharePoint.":"Saved to Operations Hub. The SharePoint upload didn't complete - save again to retry.")+(sh.length?" "+sh.length+" item"+(sh.length>1?"s":"")+" flagged to order.":""));render();})
+ ["catch"](function(){status("Couldn't save. Check your connection and try again.");}).then(function(){bt.disabled=false;});}
+$("#saveBtn").onclick=save;
+$("#pdfBtn").onclick=function(){try{var bl=makePdf(),u=URL.createObjectURL(bl),a=document.createElement("a");a.href=u;a.download=fileBase()+".pdf";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},4000);}catch(e){status("The PDF tools didn't load. Check your connection and try again.");}};
+fetch("/webhook/cbs-team").then(function(r){return r.text();}).then(function(t){var m=t.match(/src="(data:image\/png;base64,[^"]+)"/);if(m){LOGO=m[1];var l=$("#topLogo");if(l)l.src=LOGO;livePrev();}})["catch"](function(){});
+status("Loading\u2026");
+fetch("/webhook/cbs-admin-data?t=assets,materials,vehicles,workers,rams,ptmsheets").then(function(r){return r.json();}).then(function(d){D=d||{};W=(D.workers||[]).filter(function(w){return w.active!==false;}).map(function(w){return w.name;}).filter(Boolean);
+ if(REC_ID){var rec=(D.ptmsheets||[]).filter(function(x){return Number(x.id)===REC_ID;})[0];if(rec){REC_PDF=rec.pdf_url||"";try{S=Object.assign(blank(),JSON.parse(rec.items_json||"{}"));}catch(e){}MIG();S.status=rec.status||S.status;S.loaded_by=rec.loaded_by||S.loaded_by;S.loaded_at=rec.loaded_at||S.loaded_at;status("Loaded sheet #"+REC_ID+" ("+(rec.status||"Issued")+").");}else{status("Sheet #"+REC_ID+" wasn't found. Starting a new one.");REC_ID=0;}}
+ else status("New sheet. Enter the job number and tap Look up.");
+ if(!S.mats.length)S.mats.push({id:"",qty:""});render();})["catch"](function(){status("Couldn't load the registers. Check your connection and refresh.");render();});
+})();
+</script><script>(function(){var q=new URLSearchParams(location.search),no=(q.get("job")||"").replace(/[^0-9A-Za-z-]/g,"");if(!no||q.get("id"))return;
+var SEL={"job": ["[data-k=\"job_no\"]"], "look": "#lookBtn"};
+function set(sels,v){if(!v)return;(sels||[]).forEach(function(s){var e=document.querySelector(s);if(e&&!String(e.value||"").trim()){e.value=v;e.dispatchEvent(new Event("input",{bubbles:true}));e.dispatchEvent(new Event("change",{bubbles:true}));}});}
+var tries=0;(function wait(){if(!document.querySelector(SEL.job[0])){if(++tries<100)setTimeout(wait,150);return;}
+set(SEL.job,no);
+if(SEL.look){var b=document.querySelector(SEL.look);if(b){setTimeout(function(){b.click();},50);return;}}
+var bar=document.createElement("div");bar.style.cssText="background:#fff4e0;border:1px solid #f0d7a6;color:#5a4a2a;padding:8px 12px;margin:8px 12px;border-radius:8px;font:13px system-ui,sans-serif;position:relative;z-index:40";bar.textContent="Loading job "+no+" from ServiceM8\u2026";var top=document.querySelector(".topbar");if(top&&top.parentNode)top.parentNode.insertBefore(bar,top.nextSibling);else document.body.insertBefore(bar,document.body.firstChild);
+fetch("/webhook/cbs-sm8-job?no="+encodeURIComponent(no)).then(function(r){return r.json();}).then(function(j){if(!j||!j.found){bar.textContent="Job "+no+" wasn't found in ServiceM8. Fill in the details by hand.";return;}
+ set(SEL.site,j.site);set(SEL.client,j.client);bar.textContent="Filled in from ServiceM8 job "+no+(j.client?" ("+j.client+")":"")+". Check the details.";setTimeout(function(){if(bar.parentNode)bar.parentNode.removeChild(bar);},9000);})["catch"](function(){bar.textContent="Couldn't reach ServiceM8. Fill in the details by hand.";});})();})();
+</script><script>(function(){var t=0,armed=0;
+(function w(){var s=document.getElementById("saveBtn");if(!s){if(++t<80)setTimeout(w,150);return;}if(document.getElementById("readyBtn"))return;
+ var b=document.createElement("button");b.className="btn";b.id="readyBtn";b.type="button";b.textContent="Send to crew (ready to load)";b.style.cssText="background:#1a7f37;color:#fff;border-color:#1a7f37";s.parentNode.insertBefore(b,s.nextSibling);
+ b.onclick=function(){var j=document.querySelector('[data-k="job_no"]'),no=j?String(j.value||"").replace(/[^0-9]/g,""):"";
+  if(!no){alert("Add the ServiceM8 job number first, so the crew get the loading link on the job.");return;}
+  if(!confirm("Send this load-up sheet to the crew?\n\nIt will be saved, marked Ready to load, and a note with the loading link will be posted on ServiceM8 job "+no+"."))return;
+  window.__ptmReady=true;armed=Date.now();s.click();setTimeout(function(){if(armed&&Date.now()-armed>=29000){window.__ptmReady=false;armed=0;}},30000);};})();
+var of=window.fetch;window.fetch=function(u){var p=of.apply(this,arguments);
+ if(String(u).indexOf("/webhook/cbs-ptm-save")>-1&&window.__ptmReady){armed=0;p.then(function(r){return r.clone().json();}).then(function(j){window.__ptmReady=false;if(j&&j.ok)window.__ptmWasReady=true;var st=document.getElementById("status");if(st)st.textContent=(j&&j.ok)?"Sent to the crew. Marked Ready to load and the loading link was posted on the ServiceM8 job.":"Couldn't send. Try again.";})["catch"](function(){window.__ptmReady=false;});}
+ return p;};
+})();
+</script><script>window.__CBS_HDR={"custom":"send to crew"}</script><script src="/webhook/cbs-std"></script><script id="cbsDelGuard">(function(){
+if(window.__cbsDelGuard)return;window.__cbsDelGuard=1;
+var ok=false,SEL='#delBtn,.std-del,button[data-hub],button[data-rm]';
+var css=document.createElement('style');
+css.textContent='#delModal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:99999;padding:16px}#delModal .bx{background:#fff;border-radius:14px;max-width:380px;width:100%;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.3);font-family:inherit;text-align:left}#delModal h3{margin:0 0 8px;font-size:19px;color:#000}#delModal p{margin:0 0 6px;color:#333;font-size:15px}#delModal .what{font-weight:700;color:#000;margin:10px 0 4px;word-break:break-word}#delModal .row2{display:flex;gap:10px;margin-top:18px}#delModal button{flex:1;padding:12px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer}#delModal .cx{background:#F47920;color:#fff;border:0}#delModal .yes{background:#fff;color:#b3261e;border:2px solid #b3261e}';
+document.head.appendChild(css);
+function tgt(e){var t=e.target;if(!t||!t.closest)return null;var b=t.closest(SEL);if(!b||b.tagName!=='BUTTON'||b.disabled)return null;if(b.hasAttribute('data-hub')&&!/^delete/i.test((b.textContent||'').trim()))return null;return b;}
+function clean(el){if(!el)return '';var c=el.cloneNode(true);Array.prototype.forEach.call(c.querySelectorAll('button,a,input,select,textarea,script,style'),function(x){x.parentNode.removeChild(x);});return (c.textContent||'').replace(/\s+/g,' ').trim();}
+function what(b){var s='';if(b.hasAttribute('data-rm')){var p=b.parentElement;for(var i=0;i<4&&p&&!s;i++){s=clean(p);p=p.parentElement;}}
+ if(!s){var po=document.getElementById('po_no');s=po&&po.value?po.value:'';}
+ if(!s)s=clean(document.querySelector('h1,h2,h3'))||document.title||'this record';return s.slice(0,160);}
+function note(rm){var p=location.pathname;if(/cbs-coshh/.test(p))return 'It stays on the CoSHH register.';if(/cbs-pci/.test(p))return 'The file stays in SharePoint.';return rm?'':'Any PDF already saved stays in SharePoint.';}
+function ask(b){var rm=/^remove/i.test((b.textContent||'').trim());
+ var m=document.createElement('div');m.id='delModal';
+ m.innerHTML='<div class="bx" role="dialog" aria-modal="true"><h3>Are you sure?</h3><p>'+(rm?'This will remove it from the job:':'This will permanently delete:')+'</p><div class="what"></div><p class="xtra"></p>'+(rm?'':'<p>It cannot be undone.</p>')+'<div class="row2"><button class="cx" type="button">Cancel</button><button class="yes" type="button">Yes, '+(rm?'remove':'delete')+'</button></div></div>';
+ m.querySelector('.what').textContent=what(b);var n=note(rm);if(n)m.querySelector('.xtra').textContent=n;
+ document.body.appendChild(m);var cx=m.querySelector('.cx'),yes=m.querySelector('.yes');cx.focus();
+ function close(){if(m.parentNode)m.parentNode.removeChild(m);document.removeEventListener('keydown',key,true);}
+ function key(e){if(e.key==='Escape'){e.preventDefault();close();}}
+ document.addEventListener('keydown',key,true);
+ cx.onclick=close;m.onclick=function(e){if(e.target===m)close();};
+ yes.onclick=function(){close();ok=true;try{b.click();}finally{ok=false;}};}
+document.addEventListener('click',function(e){if(ok)return;var b=tgt(e);if(!b)return;e.preventDefault();e.stopImmediatePropagation();ask(b);},true);
+var _c=window.confirm;window.confirm=function(){if(ok)return true;return _c.apply(window,arguments);};
+})();</script><script id="cbsJfScr">(function(){
+var a=document.getElementById("cbsJf");if(!a)return;var hub=a.previousElementSibling;
+var GEN={"10871":1,"10885":1};
+function clean(v){return String(v||"").replace(/[^0-9A-Za-z-]/g,"");}
+function fromInputs(){var els=document.querySelectorAll("input,select");for(var i=0;i<els.length;i++){var el=els[i];if(el.type==="hidden"||el.type==="checkbox")continue;
+ var k=[el.id,el.name,el.getAttribute("data-k"),el.getAttribute("data-bind")].join(" ").toLowerCase();
+ if(!/(^|[\s._-])(job|jobno|job_no|sm8_job)($|[\s._-])/.test(k)&&!/jobno|job_no|sm8_job/.test(k))continue;
+ var m=String(el.value||"").match(/\b\d{3,}\b/);if(m)return m[0];}return "";}
+function fromQuery(){var m=location.search.match(/[?&]job=([^&#]+)/);if(!m)return "";try{return clean(decodeURIComponent(m[1]));}catch(e){return clean(m[1]);}}
+function fromLinks(){var l=document.querySelectorAll("a[href*='job=']");for(var i=0;i<l.length;i++){if(l[i]===a)continue;var h=l[i].getAttribute("href")||"";if(!/cbs-(job-file|permit|visit|pci)\?/.test(h))continue;var m=h.match(/[?&]job=([0-9A-Za-z-]+)/);if(m)return m[1];}return "";}
+function upd(){var j=fromInputs()||fromQuery()||fromLinks();var n=(j.match(/\d{3,}/)||[""])[0];
+ var hidden=hub&&hub.style&&hub.style.display==="none";
+ if(!n||GEN[n]||hidden){a.style.display="none";return;}
+ var href="/webhook/cbs-job-file?job="+encodeURIComponent(j);if(a.getAttribute("href")!==href){a.setAttribute("href",href);a.title="Open the Job File for job "+j;}a.style.display="";}
+upd();setInterval(upd,1500);document.addEventListener("input",upd,true);document.addEventListener("change",upd,true);
+})();
+</script><script id="cbsItemPrefill">(function(){/* ITEM PREFILL (keep): Plan load-up on a task's load-up item opens the sheet for that job with ?date= set. */
+var q=new URLSearchParams(location.search),dt=(q.get("date")||"").trim();if(!/^\d{4}-\d{2}-\d{2}$/.test(dt)||q.get("id"))return;
+var n=0;function go(){var e=document.querySelector('[data-k="date"]')||document.querySelector('input[type="date"]');if(!e){if(++n<40)setTimeout(go,250);return;}e.value=dt;e.dispatchEvent(new Event("input",{bubbles:true}));e.dispatchEvent(new Event("change",{bubbles:true}));}
+setTimeout(go,600);})();
+</script></body></html>

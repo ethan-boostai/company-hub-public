@@ -1,0 +1,75 @@
+{
+  "table": "cbs_incident_reports",
+  "n8n_id": "19HFiSBMOKK9bVz4",
+  "columns": [
+    {
+      "name": "corrective_action",
+      "type": "string"
+    },
+    {
+      "name": "first_aid",
+      "type": "string"
+    },
+    {
+      "name": "hazard_register_done_on",
+      "type": "string"
+    },
+    {
+      "name": "incident_id",
+      "type": "string"
+    },
+    {
+      "name": "investigate",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "occurred_at",
+      "type": "string"
+    },
+    {
+      "name": "pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "person",
+      "type": "string"
+    },
+    {
+      "name": "report_json",
+      "type": "string"
+    },
+    {
+      "name": "review_hazard_register",
+      "type": "string"
+    },
+    {
+      "name": "riddor_required",
+      "type": "string"
+    },
+    {
+      "name": "signed_by",
+      "type": "string"
+    },
+    {
+      "name": "signed_on",
+      "type": "string"
+    },
+    {
+      "name": "site",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "update_hazard_register",
+      "type": "string"
+    }
+  ],
+  "sample_rows": []
+}

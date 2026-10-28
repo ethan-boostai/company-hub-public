@@ -1,0 +1,51 @@
+{
+  "table": "cbs_stock_moves",
+  "n8n_id": "i1dOh6PyUvWAZTBI",
+  "columns": [
+    {
+      "name": "at",
+      "type": "string"
+    },
+    {
+      "name": "by",
+      "type": "string"
+    },
+    {
+      "name": "change",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "location",
+      "type": "string"
+    },
+    {
+      "name": "material",
+      "type": "string"
+    },
+    {
+      "name": "material_id",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "qty_after",
+      "type": "string"
+    },
+    {
+      "name": "reason",
+      "type": "string"
+    },
+    {
+      "name": "ref",
+      "type": "string"
+    }
+  ],
+  "sample_rows": []
+}

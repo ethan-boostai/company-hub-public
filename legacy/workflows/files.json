@@ -1,0 +1,3518 @@
+{
+  "id": "9crB0oGCv8DQI3BT",
+  "name": "CBS - Files",
+  "active": true,
+  "isArchived": false,
+  "versionId": "08777fc7-8cdc-4184-842a-ce76a3853fe4",
+  "activeVersionId": "08777fc7-8cdc-4184-842a-ce76a3853fe4",
+  "triggerCount": 9,
+  "createdAt": "2026-10-05T15:08:43.400Z",
+  "updatedAt": "2026-10-22T14:25:31.595Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "File Hook": {
+      "main": [
+        [
+          {
+            "node": "Share Id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Share Id": {
+      "main": [
+        [
+          {
+            "node": "Valid Link?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Valid Link?": {
+      "main": [
+        [
+          {
+            "node": "Download",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Not Found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download": {
+      "main": [
+        [
+          {
+            "node": "Got File?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Got File?": {
+      "main": [
+        [
+          {
+            "node": "File OK?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File OK?": {
+      "main": [
+        [
+          {
+            "node": "Send File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Not Found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Receipt Hook": {
+      "main": [
+        [
+          {
+            "node": "Receipt Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Receipt Prep": {
+      "main": [
+        [
+          {
+            "node": "Receipt Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Receipt Upload": {
+      "main": [
+        [
+          {
+            "node": "Receipt Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Folders Hook": {
+      "main": [
+        [
+          {
+            "node": "Folders Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Training Hook": {
+      "main": [
+        [
+          {
+            "node": "Training Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Training Prep": {
+      "main": [
+        [
+          {
+            "node": "Training Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Training Upload": {
+      "main": [
+        [
+          {
+            "node": "Training Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Accred Hook": {
+      "main": [
+        [
+          {
+            "node": "Accred Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Accred Prep": {
+      "main": [
+        [
+          {
+            "node": "Accred Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Accred Upload": {
+      "main": [
+        [
+          {
+            "node": "Accred Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Docs Zip Hook": {
+      "main": [
+        [
+          {
+            "node": "Docs Plan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Docs Plan": {
+      "main": [
+        [
+          {
+            "node": "Docs Any?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Docs Any?": {
+      "main": [
+        [
+          {
+            "node": "Docs Download",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Docs None",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Docs Download": {
+      "main": [
+        [
+          {
+            "node": "Docs Build",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Docs Build": {
+      "main": [
+        [
+          {
+            "node": "Docs Single?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Docs Single?": {
+      "main": [
+        [
+          {
+            "node": "Docs Send File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Docs Zip",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Docs Zip": {
+      "main": [
+        [
+          {
+            "node": "Docs Send Zip",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Del Hook": {
+      "main": [
+        [
+          {
+            "node": "Del Plan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Del Plan": {
+      "main": [
+        [
+          {
+            "node": "Del Look",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Del Look": {
+      "main": [
+        [
+          {
+            "node": "Del Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Del Check": {
+      "main": [
+        [
+          {
+            "node": "Del Item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Del Item": {
+      "main": [
+        [
+          {
+            "node": "Del Done",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Del Done": {
+      "main": [
+        [
+          {
+            "node": "Del Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Hook": {
+      "main": [
+        [
+          {
+            "node": "Move Plan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Plan": {
+      "main": [
+        [
+          {
+            "node": "Move Look",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Look": {
+      "main": [
+        [
+          {
+            "node": "Move Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Check": {
+      "main": [
+        [
+          {
+            "node": "Move Mk Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Mk Job": {
+      "main": [
+        [
+          {
+            "node": "Move Mk Folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Mk Folder": {
+      "main": [
+        [
+          {
+            "node": "Move Target",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Target": {
+      "main": [
+        [
+          {
+            "node": "Move Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Prep": {
+      "main": [
+        [
+          {
+            "node": "Move Item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Item": {
+      "main": [
+        [
+          {
+            "node": "Move Done",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Done": {
+      "main": [
+        [
+          {
+            "node": "Move Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rename Hook": {
+      "main": [
+        [
+          {
+            "node": "Rename Plan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rename Plan": {
+      "main": [
+        [
+          {
+            "node": "Rename Look",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rename Look": {
+      "main": [
+        [
+          {
+            "node": "Rename Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rename Check": {
+      "main": [
+        [
+          {
+            "node": "Rename Item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rename Item": {
+      "main": [
+        [
+          {
+            "node": "Rename Done",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rename Done": {
+      "main": [
+        [
+          {
+            "node": "Rename Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "045c41f4-0adc-4950-ade6-538a56e832d7",
+      "name": "File Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        128
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-file",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "d028f26d-509b-4d91-8ae7-99ce0720431b"
+    },
+    {
+      "id": "4baf919d-e694-4269-a1b9-5f87c4a966c0",
+      "name": "Share Id",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        128
+      ],
+      "parameters": {
+        "jsCode": "/* cbs-file: streams a CBS SharePoint file by its link (?u=). When a browser asks for a picture to show inside a page (sec-fetch-dest image,\n   e.g. the hub file viewer), it gets SharePoint's screen-sized copy (up to 1600px, a few hundred KB) instead of the full original,\n   so phone photos open quickly. Full screen / Download / direct links still get the original. */\nvar it=$input.first().json,q=it.query||{},hd=it.headers||{};var u=String(q.u||'').trim();var ok=/^https:\\/\\/chelmsfordbuildingservices(-my)?\\.sharepoint\\.com\\//i.test(u);\nif(!ok)return [{json:{ok:false}}];\nvar id='u!'+Buffer.from(u,'utf8').toString('base64').replace(/=+$/,'').replace(/\\//g,'_').replace(/\\+/g,'-');\nvar nm=decodeURIComponent(u.split('?')[0].split('/').pop()||'document');\nvar thumb=String(hd['sec-fetch-dest']||'')==='image'&&/\\.(jpe?g|png|webp|gif|bmp|heic|heif)$/i.test(nm)&&String(q.full||'')!=='1';\nreturn [{json:{ok:true,id:id,name:nm,thumb:thumb}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "62415f1b-420d-4887-be01-625f7e6a3b28",
+      "name": "Valid Link?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        128
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.ok }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "e8d86902-a00d-4a2f-b208-513993bc89c9",
+      "name": "Download",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        672,
+        48
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "=https://graph.microsoft.com/v1.0/shares/{{ $json.id }}/driveItem/{{ $json.thumb ? 'thumbnails/0/c1600x1600/content' : 'content' }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "data"
+            }
+          },
+          "timeout": 60000
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "44af29cc-8ab7-4c23-9d70-624382c07d92",
+      "name": "Got File?",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        48
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var it=$input.first();var b=it.binary&&it.binary.data;var nm=$('Share Id').first().json.name;\nif(!b)return [{json:{ok:false,name:nm}}];\nvar mt=b.mimeType||'';if(!mt||mt==='application/octet-stream'){if(/\\.pdf$/i.test(nm))mt='application/pdf';else if(/\\.jpe?g$/i.test(nm))mt='image/jpeg';else if(/\\.png$/i.test(nm))mt='image/png';}\nb.mimeType=mt||'application/octet-stream';b.fileName=nm;\nreturn [{json:{ok:true,name:nm,mime:b.mimeType},binary:{data:b}}];"
+      }
+    },
+    {
+      "id": "63b4e430-0d0c-4b31-a64f-7ee9b7ecb830",
+      "name": "File OK?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1120,
+        48
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.ok }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "af9dfcee-d821-4486-ae36-8187497101b5",
+      "name": "Send File",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        0
+      ],
+      "parameters": {
+        "respondWith": "binary",
+        "inputDataFieldName": "data",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "={{ $json.mime }}"
+              },
+              {
+                "name": "Content-Disposition",
+                "value": "=inline; filename=\"{{ $json.name.replace(/[^A-Za-z0-9 ._()&-]/g, \"_\") }}\""
+              },
+              {
+                "name": "Cache-Control",
+                "value": "private, max-age=300"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "fec47931-095e-4a3d-914e-f6fb45d4c7c5",
+      "name": "Not Found",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        224
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "<!doctype html><meta name=viewport content='width=device-width,initial-scale=1'><body style='font:16px system-ui;padding:30px;color:#1f2328'><h2>Document not available</h2><p>This file could not be opened. It may have been moved or deleted in SharePoint. Go back to the Operations Hub and try again, or contact the CBS office.</p></body>",
+        "options": {
+          "responseCode": 404,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "8e329c9d-4517-475c-991f-08067458823a",
+      "name": "Receipt Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        448
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-vehicle-receipt",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "be5d4e98-66dd-4acf-a413-bdc67093515b"
+    },
+    {
+      "id": "3642c02f-b80e-49e7-999c-fa5ae05433c8",
+      "name": "Receipt Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        448
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var b=$input.first().json.body||{};function seg(v){return String(v||'').replace(/[\\\\\\/:*?\"<>|#%]/g,' ').replace(/\\s+/g,' ').trim();}\nvar data=String(b.data||'').replace(/^data:[^,]*,/,'');if(!data)throw new Error('No file');\nvar lab=seg(b.label||b.reg||'Vehicle').toUpperCase();var d=seg(b.serviced_on)||new Date().toISOString().slice(0,10);\nvar ext=String(b.ext||'pdf').replace(/[^a-z0-9]/gi,'')||'pdf';var fn=seg(d+' - Service'+(b.workshop?' - '+b.workshop:''))+'.'+ext;\nvar path=['CBS System','Fleet',lab,'Service History',fn].map(encodeURIComponent).join('/');\nreturn [{json:{path:path,name:fn},binary:{data:{data:data,mimeType:b.mime||'application/pdf',fileName:fn}}}];"
+      }
+    },
+    {
+      "id": "a5ead57f-4b7e-47c6-a3c5-374532fa8d5c",
+      "name": "Receipt Upload",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        448
+      ],
+      "parameters": {
+        "method": "PUT",
+        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.path }}:/content?@microsoft.graph.conflictBehavior=rename",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {
+          "timeout": 120000
+        }
+      }
+    },
+    {
+      "id": "c82d1364-0d0e-41e4-9b51-f3063d4ae07c",
+      "name": "Receipt Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        448
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ ok: !!$json.webUrl, url: $json.webUrl || \"\" }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ebe818db-1eb7-4f3d-90d1-e7ae975bf9c0",
+      "name": "Folders Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        672
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-vehicle-folders",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "f7344126-f26c-4a22-8f11-fb4d8e984684"
+    },
+    {
+      "id": "eba9bfd9-57c2-4e5d-b0bd-2605d74fbd89",
+      "name": "Folders Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        672
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "{\"ok\":true}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "457e8659-897b-48fb-a219-c9e8a1914b33",
+      "name": "Training Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        896
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-training-upload",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "258d0bd2-50f3-464b-973c-c96757efead6"
+    },
+    {
+      "id": "034dcb49-ff2e-434a-a06f-52190150699d",
+      "name": "Training Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        896
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var b=$input.first().json.body||{};function seg(v){return String(v||'').replace(/[\\\\\\/:*?\"<>|#%]/g,' ').replace(/\\s+/g,' ').trim();}\nvar data=String(b.data||'').replace(/^data:[^,]*,/,'');if(!data)throw new Error('No file');\nvar mime=String(b.mime||'application/octet-stream');var fn=seg(b.filename)||'document';if(mime==='image/jpeg'&&!/\\.jpe?g$/i.test(fn))fn=fn.replace(/\\.[a-z0-9]+$/i,'')+'.jpg';\nvar who=seg(b.person)||'Unassigned';var q=seg(b.qualification);if(q)fn=seg(q+' - '+fn);\nvar path=['CBS System','H&S','Training',who,fn].map(encodeURIComponent).join('/');\nreturn [{json:{path:path,name:fn},binary:{data:{data:data,mimeType:mime,fileName:fn}}}];"
+      }
+    },
+    {
+      "id": "0d7bcd85-192e-42e9-ae5b-170f15980626",
+      "name": "Training Upload",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        896
+      ],
+      "parameters": {
+        "method": "PUT",
+        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.path }}:/content?@microsoft.graph.conflictBehavior=rename",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {
+          "timeout": 120000
+        }
+      }
+    },
+    {
+      "id": "7cf46be7-3488-420b-84ed-17d8d9fbc819",
+      "name": "Training Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        896
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ ok: !!$json.webUrl, url: $json.webUrl || \"\", name: $json.name || $(\"Training Prep\").first().json.name, uploaded_at: new Date().toISOString() }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "8876737b-2fa9-4e75-b3c6-7b8d44ed9549",
+      "name": "Accred Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        1120
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "options": {},
+        "path": "cbs-accreditation-upload",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "38134a36-0a6a-40d2-b955-b4a73d925ce5"
+    },
+    {
+      "id": "a89294b7-3b9c-4bd2-b885-31c52fcec0cc",
+      "name": "Accred Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        1120
+      ],
+      "parameters": {
+        "jsCode": "var b=$input.first().json.body||{};function seg(v){return String(v||'').replace(/[\\\\\\/:*?\"<>|#%]/g,' ').replace(/\\s+/g,' ').trim();}\nvar data=String(b.data||'').replace(/^data:[^,]*,/,'');if(!data)throw new Error('No file');\nvar mime=String(b.mime||'application/octet-stream');var fn=seg(b.filename)||'document';if(mime==='image/jpeg'&&!/\\.jpe?g$/i.test(fn))fn=fn.replace(/\\.[a-z0-9]+$/i,'')+'.jpg';\nvar acc=seg(b.accreditation)||'Other';var d=new Date().toISOString().slice(0,10);fn=seg(d+' - '+fn);\nvar path=['CBS System','Operations','Accreditations',acc,fn].map(encodeURIComponent).join('/');\nreturn [{json:{path:path,name:fn},binary:{data:{data:data,mimeType:mime,fileName:fn}}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "38426a3d-e97d-4877-83d9-f403a2417544",
+      "name": "Accred Upload",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        1120
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "method": "PUT",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "timeout": 120000
+        },
+        "sendBody": true,
+        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.path }}:/content?@microsoft.graph.conflictBehavior=rename"
+      }
+    },
+    {
+      "id": "2f6d9085-9ebe-4aa3-b5f3-ed954f2a3588",
+      "name": "Accred Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        1120
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ ok: !!$json.webUrl, url: $json.webUrl || \"\", name: $json.name || $(\"Accred Prep\").first().json.name, uploaded_at: new Date().toISOString() }) }}"
+      }
+    },
+    {
+      "id": "137ed3aa-2beb-4eea-9f6e-5f4af3d41123",
+      "name": "Docs Zip Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        1400
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "options": {},
+        "path": "cbs-docs-zip",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "bce90dca-666c-4192-8524-9fa5a1a316e2"
+    },
+    {
+      "id": "2893612b-5b8f-4a05-864f-44bb2bf5c9fc",
+      "name": "Docs Plan",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        1400
+      ],
+      "parameters": {
+        "jsCode": "var b=$input.first().json.body||{};var raw=b.d;var D={};\ntry{D=typeof raw==='string'?JSON.parse(raw):(raw||b);}catch(e){D={};}\nfunction seg(v){return String(v==null?'':v).replace(/[\\\\\\/:*?\"<>|#%\\r\\n\\t]+/g,' ').replace(/\\s+/g,' ').trim();}\nfunction segp(v){return String(v==null?'':v).split('/').map(seg).filter(Boolean).slice(0,3).join('/');}\nvar job=seg(D.job).slice(0,30),label=seg(D.label).slice(0,80)||'Documents';\nvar R=/^https:\\/\\/chelmsfordbuildingservices(-my)?\\.sharepoint\\.com\\//i;\nvar seen={},list=[];(Array.isArray(D.files)?D.files:[]).forEach(function(f){var u=String(f&&f.u||'').trim();if(!R.test(u)||seen[u])return;seen[u]=1;list.push({u:u,n:seg(f.n),f:segp(f.f)});});\nlist=list.slice(0,80);\nvar gen=(Array.isArray(D.gen)?D.gen:[]).slice(0,5).map(function(g){return {n:seg(g&&g.n).slice(0,80)||'Summary',f:segp(g&&g.f),lines:(Array.isArray(g&&g.lines)?g.lines:[]).slice(0,3000).map(function(l){return {t:String(l&&l.t==null?'':l.t).slice(0,400),s:Math.min(24,Math.max(6,Number(l&&l.s)||9.5)),b:!!(l&&l.b),i:Math.min(60,Math.max(0,Number(l&&l.i)||0)),pre:Math.min(30,Math.max(0,Number(l&&l.pre)||0))};})};}).filter(function(g){return g.lines.length;});\nvar folders={};list.forEach(function(x){folders[x.f||'Documents']=1;});var multi=Object.keys(folders).length>1||!!D.keepFolders;\nvar used={},out=[];\nlist.forEach(function(x){var p='';try{p=decodeURIComponent(x.u.split('?')[0].split('/').pop()||'');}catch(e){}\n var m=p.match(/\\.([a-z0-9]{2,5})$/i),ext=m?m[1].toLowerCase():'pdf';\n var nm=(x.n||seg(p.replace(/\\.[a-z0-9]{2,5}$/i,''))||'Document').slice(0,120);if(!new RegExp('\\\\.'+ext+'$','i').test(nm))nm+='.'+ext;\n var path=(multi?(x.f||'Documents')+'/':'')+nm,base=path,k=2;while(used[path.toLowerCase()]){path=base.replace(/(\\.[^.\\/]+)$/,' ('+k+')$1');k++;}used[path.toLowerCase()]=1;\n var share='u!'+Buffer.from(x.u,'utf8').toString('base64').replace(/=+$/,'').replace(/\\//g,'_').replace(/\\+/g,'-');\n out.push({json:{share:share,path:path,title:x.n||nm,ext:ext,job:job,label:label}});});\nif(out.length){out[0].json.gen=gen;return out;}\nreturn [{json:{share:'',genOnly:gen.length>0,gen:gen,job:job,label:label}}];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "79940c3b-4eba-4739-b930-ea5578884438",
+      "name": "Docs Any?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        1400
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{ $json.share || ($json.genOnly ? 'gen' : '') }}",
+              "operator": {
+                "operation": "notEmpty",
+                "singleValue": true,
+                "type": "string"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          }
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "c8ae5e2b-8e88-4cd0-9175-df35f526819e",
+      "name": "Docs Download",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        672,
+        1320
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "GET",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "outputPropertyName": "data",
+              "responseFormat": "file"
+            }
+          },
+          "timeout": 60000
+        },
+        "url": "=https://graph.microsoft.com/v1.0/shares/{{ $json.share }}/driveItem/content"
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "3b97c6fe-4ea3-41b1-8aa3-ad332640e29f",
+      "name": "Docs Build",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        1320
+      ],
+      "parameters": {
+        "jsCode": "var plan=$('Docs Plan').all(),dl=$input.all();var j0=plan[0].json;\nfunction pdf(lines,footer){var W=595,H=842,M=42,y=0,pages=[],cur=[];function np(){if(cur.length)pages.push(cur);cur=[];y=H-M;}np();\n lines.forEach(function(l){var sz=l.s||9.5;var maxc=Math.floor((W-2*M-(l.i||0))/(sz*0.5));var t=String(l.t==null?'':l.t);var parts=[];while(t.length>maxc){var k=t.lastIndexOf(' ',maxc);if(k<10)k=maxc;parts.push(t.slice(0,k));t=t.slice(k).trim();}parts.push(t);\n  if(l.pre)y-=l.pre;parts.forEach(function(p){if(y<M+sz+14)np();y-=sz*1.35;cur.push({x:M+(l.i||0),y:y,s:sz,b:l.b,t:p});});});pages.push(cur);\n function esc(t){var o='';for(var i=0;i<t.length;i++){var c=t.charCodeAt(i);if(c===163)o+='\\\\243';else if(c===8211||c===8212)o+='-';else if(c>126||c<32)o+='?';else if(c===40||c===41||c===92)o+='\\\\'+t[i];else o+=t[i];}return o;}\n var n=pages.length,objs=[],kids=[];for(var i=0;i<n;i++)kids.push((5+i*2)+' 0 R');\n objs[1]='<< /Type /Catalog /Pages 2 0 R >>';objs[2]='<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+n+' >>';\n objs[3]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>';objs[4]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>';\n pages.forEach(function(p,i){var c='0.957 0.475 0.125 rg '+M+' '+(H-30)+' '+(W-2*M)+' 3 re f\\n0 0 0 rg\\n'+p.map(function(l){return 'BT /'+(l.b?'F2':'F1')+' '+l.s+' Tf '+l.x+' '+l.y.toFixed(1)+' Td ('+esc(l.t)+') Tj ET';}).join('\\n');\n  c+='\\nBT /F1 7.5 Tf '+M+' 22 Td ('+esc(footer+'   |   Page '+(i+1)+' of '+n)+') Tj ET';\n  objs[5+i*2]='<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+W+' '+H+'] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents '+(6+i*2)+' 0 R >>';\n  objs[6+i*2]='<< /Length '+c.length+' >>\\nstream\\n'+c+'\\nendstream';});\n var out='%PDF-1.4\\n',off=[];for(var k=1;k<objs.length;k++){off[k]=out.length;out+=k+' 0 obj\\n'+objs[k]+'\\nendobj\\n';}\n var x=out.length;out+='xref\\n0 '+objs.length+'\\n0000000000 65535 f \\n';for(k=1;k<objs.length;k++)out+=('0000000000'+off[k]).slice(-10)+' 00000 n \\n';\n out+='trailer\\n<< /Size '+objs.length+' /Root 1 0 R >>\\nstartxref\\n'+x+'\\n%%EOF';return Buffer.from(out,'latin1').toString('base64');}\nvar item={json:{},binary:{}},k=0,miss=[];\nfor(var i=0;i<plan.length;i++){var p=plan[i].json;if(p.genOnly||!p.share)continue;var b=dl[i]&&dl[i].binary&&dl[i].binary.data;if(!b){miss.push(p.title||p.path);continue;}\n var o={};Object.keys(b).forEach(function(z){o[z]=b[z];});o.fileName=p.path;\n if(!o.mimeType||o.mimeType==='application/octet-stream'){o.mimeType=p.ext==='pdf'?'application/pdf':(/jpe?g/.test(p.ext)?'image/jpeg':(p.ext==='png'?'image/png':'application/octet-stream'));}\n item.binary['f'+(k++)]=o;}\nvar d=new Date(new Date().toLocaleString('en-US',{timeZone:'Europe/London'}));function p2(n){return ('0'+n).slice(-2);}var D=d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());\n(j0.gen||[]).forEach(function(g){item.binary['f'+(k++)]={data:pdf(g.lines,'Chelmsford Building Services Ltd'+(j0.job?' - Job '+j0.job:'')+' - '+g.n+' - '+D),mimeType:'application/pdf',fileName:(g.f?g.f+'/':'')+'_'+g.n+'.pdf'};});\nvar base=((j0.job?'Job '+j0.job+' - ':'')+j0.label).replace(/[\\\\\\/:*?\"<>|]+/g,' ').replace(/\\s+/g,' ').trim();\nif(k===1&&!miss.length){var only=item.binary.f0;var nm=String(only.fileName).split('/').pop().replace(/^_/,'');\n return [{json:{single:true,name:nm,mime:only.mimeType},binary:{data:only}}];}\nif(miss.length)item.binary['f'+(k++)]={data:Buffer.from('These documents could not be downloaded from SharePoint. They may have been moved or deleted:\\r\\n\\r\\n'+miss.join('\\r\\n')+'\\r\\n','utf8').toString('base64'),mimeType:'text/plain',fileName:'_Missing documents.txt'};\nitem.json={single:false,zipName:base+' - '+D+'.zip',keys:Object.keys(item.binary).join(','),got:k};\nreturn [item];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "c7adab2f-e487-48ac-9577-d52dff9c91be",
+      "name": "Docs Single?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1120,
+        1320
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{ $json.single }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          }
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "64797344-017b-4886-b5d1-b0610e9936bb",
+      "name": "Docs Send File",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        1240
+      ],
+      "parameters": {
+        "inputDataFieldName": "data",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "={{ $json.mime }}"
+              },
+              {
+                "name": "Content-Disposition",
+                "value": "=attachment; filename=\"{{ $json.name.replace(/[^A-Za-z0-9 ._()&-]/g, \"_\") }}\""
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        },
+        "respondWith": "binary"
+      }
+    },
+    {
+      "id": "cb35e2e2-063a-4bc1-94d9-e9f8bd019a27",
+      "name": "Docs Zip",
+      "type": "n8n-nodes-base.compression",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        1400
+      ],
+      "parameters": {
+        "binaryPropertyName": "={{ $json.keys }}",
+        "binaryPropertyOutput": "data",
+        "fileName": "={{ $json.zipName }}",
+        "operation": "compress",
+        "outputFormat": "zip"
+      }
+    },
+    {
+      "id": "da952834-d5e1-4d22-93e4-5551e95205a5",
+      "name": "Docs Send Zip",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1568,
+        1400
+      ],
+      "parameters": {
+        "inputDataFieldName": "data",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/zip"
+              },
+              {
+                "name": "Content-Disposition",
+                "value": "=attachment; filename=\"{{ $('Docs Build').first().json.zipName.replace(/[^A-Za-z0-9 ._()&-]/g, \"_\") }}\""
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        },
+        "respondWith": "binary"
+      }
+    },
+    {
+      "id": "37ee2f1b-e8d6-4752-a3ac-4fbd85b468ec",
+      "name": "Docs None",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        1520
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "<!doctype html><meta name=viewport content='width=device-width,initial-scale=1'><body style='font:16px system-ui;padding:30px;color:#1f2328'><h2>Nothing to download</h2><p>None of the selected items are documents stored in SharePoint. Go back to the job file and pick at least one document.</p></body>"
+      }
+    },
+    {
+      "id": "1c6e91bc-2a61-4307-9dbf-acf103de151a",
+      "name": "Del Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        1750
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "options": {},
+        "path": "cbs-job-file-del",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "f146a6f0-0b50-4b15-b9bf-d369f76bc3e8"
+    },
+    {
+      "id": "4b67638a-d873-4018-ba1e-7be6e7f707df",
+      "name": "Del Plan",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        1750
+      ],
+      "parameters": {
+        "jsCode": "/* POST cbs-job-file-del {job, files:[SharePoint URL...], by}: deletes job files from SharePoint (they go to the SharePoint recycle bin).\n   Only CBS SharePoint links inside that job's own folders are accepted: CBS System/Operations/Jobs/Job N/... or\n   CBS System/Operations/Enquiries/Job N/... The folder is checked again against SharePoint's own record before anything is deleted. */\nvar b = $input.first().json.body || {}; if (typeof b === 'string') { try { b = JSON.parse(b); } catch (e) { b = {}; } }\nvar job = String(b.job || '').replace(/^#/, '').trim();\nif (!/^[A-Za-z0-9-]{1,20}$/.test(job)) return [{ json: { go: false, share: '', job: '', err: 'Job number missing.' } }];\nvar esc = job.replace(/[-]/g, '\\\\-');\nvar IN = new RegExp('/Operations/(Jobs|Enquiries)/Job ' + esc + '/', 'i');\nvar R = /^https:\\/\\/chelmsfordbuildingservices(-my)?\\.sharepoint\\.com\\//i, seen = {}, out = [];\n(Array.isArray(b.files) ? b.files : []).slice(0, 50).forEach(function (u) {\n  u = String(u || '').trim(); if (!R.test(u) || seen[u]) return; seen[u] = 1;\n  var d = ''; try { d = decodeURIComponent(u.split('?')[0]); } catch (e) { d = u; }\n  if (!IN.test(d)) return;\n  var share = 'u!' + Buffer.from(u, 'utf8').toString('base64').replace(/=+$/, '').replace(/\\//g, '_').replace(/\\+/g, '-');\n  out.push({ json: { go: true, share: share, u: u, job: job, by: String(b.by || '').slice(0, 80) } });\n});\nif (!out.length) return [{ json: { go: false, share: '', job: job, err: 'No files from this job were selected.' } }];\nreturn out;\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "59a38533-8975-4592-bb8f-de342e435ac1",
+      "name": "Del Look",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        1750
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "GET",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        },
+        "url": "={{ $json.go ? 'https://graph.microsoft.com/v1.0/shares/' + $json.share + '/driveItem?$select=id,name,parentReference' : 'https://graph.microsoft.com/v1.0/shares/none/driveItem' }}"
+      }
+    },
+    {
+      "id": "421b8e21-9241-44f1-8f0b-d22a364e9e38",
+      "name": "Del Check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        1750
+      ],
+      "parameters": {
+        "jsCode": "/* Confirms each file sits in one of the job's own folders in SharePoint (Operations/Jobs/Job N or Operations/Enquiries/Job N,\n   or a subfolder) before it is deleted. */\nvar plan = $('Del Plan').all(), look = $input.all();\nreturn plan.map(function (p, i) {\n  var j = p.json, r = (look[i] && look[i].json) || {}, pr = r.parentReference || {};\n  var path = String(pr.path || ''); try { path = decodeURIComponent(path); } catch (e) {}\n  var esc = String(j.job || '').replace(/[-]/g, '\\\\-');\n  var IN = new RegExp('/Operations/(Jobs|Enquiries)/Job ' + esc + '(/|$)', 'i');\n  var ok = !!(j.go && r.id && pr.driveId && IN.test(path));\n  return { json: { go: ok, name: r.name || '', url: ok ? 'https://graph.microsoft.com/v1.0/drives/' + pr.driveId + '/items/' + r.id : 'https://graph.microsoft.com/v1.0/drives/none/items/none', why: ok ? '' : (j.err || 'Not found in this job\\'s folders') } };\n});\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "8961715a-cd0d-4659-b539-904234254b11",
+      "name": "Del Item",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        896,
+        1750
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "={{ $json.go ? 'DELETE' : 'GET' }}",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 30000
+        },
+        "url": "={{ $json.url }}"
+      }
+    },
+    {
+      "id": "83adcea9-b17d-4f7c-bd9f-630811e7c328",
+      "name": "Del Done",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        1750
+      ],
+      "parameters": {
+        "jsCode": "var chk = $('Del Check').all(), res = $input.all(), done = 0, failed = [];\nchk.forEach(function (c, i) { var j = c.json, r = (res[i] && res[i].json) || {}; if (!j.go) { if (j.name) failed.push(j.name + ' (' + j.why + ')'); return; }\n  var sc = Number(r.statusCode || 0); if (sc === 204 || sc === 200) done++; else failed.push((j.name || 'file') + ' (SharePoint said ' + (sc || 'no reply') + ')'); });\nvar err = done ? '' : (($('Del Plan').first().json.err) || (failed.length ? 'Nothing was deleted.' : 'Nothing was deleted.'));\nreturn [{ json: { ok: done > 0, deleted: done, failed: failed, error: err } }];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "e5feaaa8-782e-4368-8c34-d436a7f339a2",
+      "name": "Del Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        1750
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}"
+      }
+    },
+    {
+      "id": "e5a762dc-d12a-4b49-82af-c1e2f50b49bf",
+      "name": "Move Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        2000
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "options": {},
+        "path": "cbs-job-file-move",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "123e69ea-c79a-4035-95e6-440499d55b34"
+    },
+    {
+      "id": "64670d5e-b16a-4f92-a7ab-2ee5fb1f3682",
+      "name": "Move Plan",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        2000
+      ],
+      "parameters": {
+        "jsCode": "/* POST cbs-job-file-move {job, files:[SharePoint URL...], ids:[driveItem id...], folder, by}: changes the category of job files (and\n   folders) by moving them to CBS System/Operations/Jobs/Job N/<folder> in SharePoint (same file, name and version history; a name\n   clash is renamed). Files are found by their SharePoint item id when the page sends it (works for every file type, including\n   Office files whose links do not show the folder); otherwise by link. Either way Move Check confirms with SharePoint's own record\n   that the item sits in this job's folders (Jobs/Job N or Enquiries/Job N) before anything moves. */\nvar b=$input.first().json.body||{};if(typeof b==='string'){try{b=JSON.parse(b);}catch(e){b={};}}\nvar job=String(b.job||'').replace(/^#/,'').trim();\nvar folder=String(b.folder||'').trim().slice(0,60).replace(/[^A-Za-z0-9 &().,_-]+/g,' ').replace(/ {2,}/g,' ').trim();\nif(!/^[A-Za-z0-9-]{1,20}$/.test(job))return [{json:{go:false,share:'',id:'',job:'',folder:'',err:'Job number missing.'}}];\nif(!folder)return [{json:{go:false,share:'',id:'',job:job,folder:'',err:'Pick a category.'}}];\nvar F=Array.isArray(b.files)?b.files:[],I=Array.isArray(b.ids)?b.ids:[],seen={},out=[];\nF.slice(0,50).forEach(function(u,i){u=String(u||'').trim();var id=String(I[i]||'').trim().replace(/[^A-Za-z0-9!_-]/g,'');var key=id||u;if(!key||seen[key])return;seen[key]=1;\n if(id){out.push({json:{go:true,share:'',id:id,u:u,job:job,folder:folder,by:String(b.by||'').slice(0,80)}});return;}\n if(u.indexOf('https://chelmsfordbuildingservices')!==0||u.indexOf('.sharepoint.com/')<0)return;\n var share='u!'+Buffer.from(u,'utf8').toString('base64').replace(/=+$/,'').split('/').join('_').split('+').join('-');\n out.push({json:{go:true,share:share,id:'',u:u,job:job,folder:folder,by:String(b.by||'').slice(0,80)}});});\nif(!out.length)return [{json:{go:false,share:'',id:'',job:job,folder:folder,err:'No files were selected.'}}];\nreturn out;",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "224ee2c5-ba2c-40fa-b0ea-f24297abb97d",
+      "name": "Move Look",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        2000
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "GET",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        },
+        "url": "={{ !$json.go ? 'https://graph.microsoft.com/v1.0/shares/none/driveItem' : ($json.id ? 'https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/' + $json.id + '?$select=id,name,parentReference' : 'https://graph.microsoft.com/v1.0/shares/' + $json.share + '/driveItem?$select=id,name,parentReference') }}"
+      }
+    },
+    {
+      "id": "6449b4e8-1506-489d-888e-d898e736a1df",
+      "name": "Move Check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        2000
+      ],
+      "parameters": {
+        "jsCode": "/* Confirms each file sits in one of the job's own folders in SharePoint before it is moved. Files already in the chosen category are\n   left where they are (same). */\nvar plan=$('Move Plan').all(),look=$input.all();\nreturn plan.map(function(p,i){var j=p.json,r=(look[i]&&look[i].json)||{},pr=r.parentReference||{};\n var path=String(pr.path||'');try{path=decodeURIComponent(path);}catch(e){}\n var IN=new RegExp('/Operations/(Jobs|Enquiries)/Job '+String(j.job||'')+'(/|$)','i');\n var tail=('/operations/jobs/job '+j.job+'/'+j.folder).toLowerCase(),here=path.toLowerCase().slice(-tail.length)===tail;\n var ok=!!(j.go&&r.id&&pr.driveId&&IN.test(path));\n return {json:{go:ok&&!here,same:ok&&here,id:r.id||'',driveId:pr.driveId||'',name:r.name||'',why:ok?'':(j.err||\"Not found in this job's folders\")}};});",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "cec51206-a93b-4552-8ebb-f26dc705db6e",
+      "name": "Move Mk Job",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        896,
+        2000
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "jsonBody": "={{ JSON.stringify({ name: 'Job ' + $('Move Plan').first().json.job, folder: {}, '@microsoft.graph.conflictBehavior': 'fail' }) }}",
+        "method": "POST",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "url": "={{ $('Move Check').all().some(i => i.json.go) ? 'https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/CBS%20System/Operations/Jobs:/children' : 'https://graph.microsoft.com/v1.0/drives/none/root:/none:/children' }}"
+      }
+    },
+    {
+      "id": "84558130-9530-44c3-91b3-100b21ba7ba2",
+      "name": "Move Mk Folder",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1120,
+        2000
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "jsonBody": "={{ JSON.stringify({ name: $('Move Plan').first().json.folder, folder: {}, '@microsoft.graph.conflictBehavior': 'fail' }) }}",
+        "method": "POST",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "url": "={{ $('Move Check').all().some(i => i.json.go) ? 'https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/CBS%20System/Operations/Jobs/' + encodeURIComponent('Job ' + $('Move Plan').first().json.job) + ':/children' : 'https://graph.microsoft.com/v1.0/drives/none/root:/none:/children' }}"
+      }
+    },
+    {
+      "id": "fd4fa261-5221-4aea-9bcd-90a2ef930d98",
+      "name": "Move Target",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1344,
+        2000
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "GET",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        },
+        "url": "={{ $('Move Check').all().some(i => i.json.go) ? 'https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/CBS%20System/Operations/Jobs/' + encodeURIComponent('Job ' + $('Move Plan').first().json.job) + '/' + encodeURIComponent($('Move Plan').first().json.folder) + '?$select=id,name' : 'https://graph.microsoft.com/v1.0/drives/none/root:/none' }}"
+      }
+    },
+    {
+      "id": "75072996-f8fd-4e50-a528-5f1806b74d7c",
+      "name": "Move Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1568,
+        2000
+      ],
+      "parameters": {
+        "jsCode": "/* One PATCH per file to move into the category folder (id from Move Target). Nothing to move: one placeholder call that does nothing. */\nvar t=$input.first().json||{},tid=String(t.id||'');\nvar out=$('Move Check').all().map(function(i){return i.json;}).filter(function(c){return c.go&&tid;}).map(function(c){return {json:{url:'https://graph.microsoft.com/v1.0/drives/'+c.driveId+'/items/'+c.id+'?@microsoft.graph.conflictBehavior=rename',body:{parentReference:{driveId:c.driveId,id:tid}},name:c.name}};});\nif(!out.length)return [{json:{none:true,url:'https://graph.microsoft.com/v1.0/drives/none/items/none',body:{}}}];\nreturn out;",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "9f09c877-b742-4c79-afbc-9de14c3f4b9f",
+      "name": "Move Item",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1792,
+        2000
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "jsonBody": "={{ JSON.stringify($json.body || {}) }}",
+        "method": "PATCH",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "url": "={{ $json.url }}"
+      }
+    },
+    {
+      "id": "11382510-92ab-4896-bfe5-849d803ef2b1",
+      "name": "Move Done",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2016,
+        2000
+      ],
+      "parameters": {
+        "jsCode": "var C=$('Move Check').all().map(function(i){return i.json;}),P=$('Move Prep').all().map(function(i){return i.json;}),R=$input.all().map(function(i){return i.json;});\nvar tid=String(($('Move Target').first().json||{}).id||''),moved=0,same=0,failed=[];\nC.forEach(function(c){if(c.same){same++;return;}if(!c.go&&c.name)failed.push(c.name+' ('+c.why+')');});\nif(C.some(function(c){return c.go;})&&!tid)failed.push('the category folder could not be found or created in SharePoint');\nP.forEach(function(p,i){if(p.none)return;var r=R[i]||{},sc=Number(r.statusCode||0);if(sc===200||sc===201)moved++;else failed.push((p.name||'file')+' (SharePoint said '+(sc||'no reply')+')');});\nvar pl=$('Move Plan').first().json,ok=moved>0||(same>0&&!failed.length);\nreturn [{json:{ok:ok,moved:moved,same:same,failed:failed,error:ok?'':(pl.err||(failed.length?'Nothing was moved: '+failed.join(', '):'Nothing was moved.'))}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "d0e112fe-ea49-4488-8a0a-58bcfa4f78ef",
+      "name": "Move Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2240,
+        2000
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}"
+      }
+    },
+    {
+      "id": "1c8a61dc-458c-4c18-b96a-856fd63b60b1",
+      "name": "Rename Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        2300
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "options": {},
+        "path": "cbs-job-file-rename",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "f7f24b48-3013-4458-90b4-579244bee624"
+    },
+    {
+      "id": "011a0031-e063-4e1b-a064-70c4a55b3f43",
+      "name": "Rename Plan",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        2300
+      ],
+      "parameters": {
+        "jsCode": "/* POST cbs-job-file-rename {job, file:<SharePoint URL>, id:<driveItem id>, name, by}: renames one job file or folder in SharePoint\n   (same file, link history kept). The extension is kept even if it is left off the new name. Rename Check confirms with SharePoint\n   that the item sits in this job's folders (Jobs/Job N or Enquiries/Job N) first; a name already used in that category is refused. */\nvar b=$input.first().json.body||{};if(typeof b==='string'){try{b=JSON.parse(b);}catch(e){b={};}}\nvar job=String(b.job||'').replace(/^#/,'').trim(),u=String(b.file||'').trim(),id=String(b.id||'').trim().replace(/[^A-Za-z0-9!_-]/g,'');\nvar name=String(b.name||'').replace(/[\\\\/:*?\"<>|#%]+/g,' ').replace(/\\s{2,}/g,' ').trim().replace(/^\\.+|\\.+$/g,'').slice(0,150);\nif(!/^[A-Za-z0-9-]{1,20}$/.test(job))return [{json:{go:false,err:'Job number missing.'}}];\nif(!name)return [{json:{go:false,job:job,err:'Enter a new name.'}}];\nvar share='';if(!id){if(u.indexOf('https://chelmsfordbuildingservices')!==0||u.indexOf('.sharepoint.com/')<0)return [{json:{go:false,job:job,err:'That file could not be found.'}}];share='u!'+Buffer.from(u,'utf8').toString('base64').replace(/=+$/,'').split('/').join('_').split('+').join('-');}\nreturn [{json:{go:true,job:job,id:id,share:share,name:name,by:String(b.by||'').slice(0,80)}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "e6528042-116a-48b3-9d55-cdb1430ea82d",
+      "name": "Rename Look",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        2300
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "GET",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        },
+        "url": "={{ !$json.go ? 'https://graph.microsoft.com/v1.0/shares/none/driveItem' : ($json.id ? 'https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/' + $json.id + '?$select=id,name,parentReference,folder' : 'https://graph.microsoft.com/v1.0/shares/' + $json.share + '/driveItem?$select=id,name,parentReference,folder') }}"
+      }
+    },
+    {
+      "id": "dbb4f683-a7b6-4b16-957b-223950252864",
+      "name": "Rename Check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        2300
+      ],
+      "parameters": {
+        "jsCode": "var p=$('Rename Plan').first().json,r=$input.first().json||{},pr=r.parentReference||{};\nvar path=String(pr.path||'');try{path=decodeURIComponent(path);}catch(e){}\nvar IN=new RegExp('/Operations/(Jobs|Enquiries)/Job '+String(p.job||'')+'(/|$)','i');\nvar ok=!!(p.go&&r.id&&pr.driveId&&IN.test(path));\nvar old=String(r.name||''),nn=String(p.name||'');\nif(ok&&!r.folder){var m=old.match(/\\.[A-Za-z0-9]{1,8}$/);if(m&&nn.toLowerCase().slice(-m[0].length)!==m[0].toLowerCase())nn=nn+m[0];}\nvar same=ok&&nn===old;\nreturn [{json:{go:ok&&!same,same:same,id:r.id||'',driveId:pr.driveId||'',old:old,name:nn,err:ok?'':(p.err||\"That file isn't in this job's folders.\")}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "2c0233e3-6950-4626-a4d1-4618fa1c3ef2",
+      "name": "Rename Item",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        896,
+        2300
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "jsonBody": "={{ JSON.stringify({ name: $json.name || 'x' }) }}",
+        "method": "PATCH",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "url": "={{ $json.go ? 'https://graph.microsoft.com/v1.0/drives/' + $json.driveId + '/items/' + $json.id + '?@microsoft.graph.conflictBehavior=fail' : 'https://graph.microsoft.com/v1.0/drives/none/items/none' }}"
+      }
+    },
+    {
+      "id": "066322de-9015-435f-b0dd-1261f5746271",
+      "name": "Rename Done",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        2300
+      ],
+      "parameters": {
+        "jsCode": "var c=$('Rename Check').first().json,r=$input.first().json||{},sc=Number(r.statusCode||0),b=r.body||{};\nif(c.same)return [{json:{ok:true,same:true,name:c.name}}];\nif(!c.go)return [{json:{ok:false,error:c.err||'Nothing was renamed.'}}];\nif(sc===200)return [{json:{ok:true,name:b.name||c.name,url:b.webUrl||''}}];\nif(sc===409)return [{json:{ok:false,error:'A file called '+c.name+' is already in that category. Pick another name.'}}];\nreturn [{json:{ok:false,error:'SharePoint did not rename it ('+(sc||'no reply')+'). Try again.'}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "297c054c-637b-4df0-9861-756eb4112743",
+      "name": "Rename Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        2300
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "045c41f4-0adc-4950-ade6-538a56e832d7",
+        "name": "File Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          128
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-file",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "d028f26d-509b-4d91-8ae7-99ce0720431b"
+      },
+      {
+        "id": "4baf919d-e694-4269-a1b9-5f87c4a966c0",
+        "name": "Share Id",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          128
+        ],
+        "parameters": {
+          "jsCode": "/* cbs-file: streams a CBS SharePoint file by its link (?u=). When a browser asks for a picture to show inside a page (sec-fetch-dest image,\n   e.g. the hub file viewer), it gets SharePoint's screen-sized copy (up to 1600px, a few hundred KB) instead of the full original,\n   so phone photos open quickly. Full screen / Download / direct links still get the original. */\nvar it=$input.first().json,q=it.query||{},hd=it.headers||{};var u=String(q.u||'').trim();var ok=/^https:\\/\\/chelmsfordbuildingservices(-my)?\\.sharepoint\\.com\\//i.test(u);\nif(!ok)return [{json:{ok:false}}];\nvar id='u!'+Buffer.from(u,'utf8').toString('base64').replace(/=+$/,'').replace(/\\//g,'_').replace(/\\+/g,'-');\nvar nm=decodeURIComponent(u.split('?')[0].split('/').pop()||'document');\nvar thumb=String(hd['sec-fetch-dest']||'')==='image'&&/\\.(jpe?g|png|webp|gif|bmp|heic|heif)$/i.test(nm)&&String(q.full||'')!=='1';\nreturn [{json:{ok:true,id:id,name:nm,thumb:thumb}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "62415f1b-420d-4887-be01-625f7e6a3b28",
+        "name": "Valid Link?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          448,
+          128
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.ok }}",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                },
+                "rightValue": ""
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "e8d86902-a00d-4a2f-b208-513993bc89c9",
+        "name": "Download",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          672,
+          48
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://graph.microsoft.com/v1.0/shares/{{ $json.id }}/driveItem/{{ $json.thumb ? 'thumbnails/0/c1600x1600/content' : 'content' }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {
+            "response": {
+              "response": {
+                "responseFormat": "file",
+                "outputPropertyName": "data"
+              }
+            },
+            "timeout": 60000
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "44af29cc-8ab7-4c23-9d70-624382c07d92",
+        "name": "Got File?",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          896,
+          48
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var it=$input.first();var b=it.binary&&it.binary.data;var nm=$('Share Id').first().json.name;\nif(!b)return [{json:{ok:false,name:nm}}];\nvar mt=b.mimeType||'';if(!mt||mt==='application/octet-stream'){if(/\\.pdf$/i.test(nm))mt='application/pdf';else if(/\\.jpe?g$/i.test(nm))mt='image/jpeg';else if(/\\.png$/i.test(nm))mt='image/png';}\nb.mimeType=mt||'application/octet-stream';b.fileName=nm;\nreturn [{json:{ok:true,name:nm,mime:b.mimeType},binary:{data:b}}];"
+        }
+      },
+      {
+        "id": "63b4e430-0d0c-4b31-a64f-7ee9b7ecb830",
+        "name": "File OK?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1120,
+          48
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.ok }}",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                },
+                "rightValue": ""
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "af9dfcee-d821-4486-ae36-8187497101b5",
+        "name": "Send File",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1344,
+          0
+        ],
+        "parameters": {
+          "respondWith": "binary",
+          "inputDataFieldName": "data",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "={{ $json.mime }}"
+                },
+                {
+                  "name": "Content-Disposition",
+                  "value": "=inline; filename=\"{{ $json.name.replace(/[^A-Za-z0-9 ._()&-]/g, \"_\") }}\""
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "private, max-age=300"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "fec47931-095e-4a3d-914e-f6fb45d4c7c5",
+        "name": "Not Found",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1344,
+          224
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "<!doctype html><meta name=viewport content='width=device-width,initial-scale=1'><body style='font:16px system-ui;padding:30px;color:#1f2328'><h2>Document not available</h2><p>This file could not be opened. It may have been moved or deleted in SharePoint. Go back to the Operations Hub and try again, or contact the CBS office.</p></body>",
+          "options": {
+            "responseCode": 404,
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "8e329c9d-4517-475c-991f-08067458823a",
+        "name": "Receipt Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          448
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-vehicle-receipt",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "be5d4e98-66dd-4acf-a413-bdc67093515b"
+      },
+      {
+        "id": "3642c02f-b80e-49e7-999c-fa5ae05433c8",
+        "name": "Receipt Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          448
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var b=$input.first().json.body||{};function seg(v){return String(v||'').replace(/[\\\\\\/:*?\"<>|#%]/g,' ').replace(/\\s+/g,' ').trim();}\nvar data=String(b.data||'').replace(/^data:[^,]*,/,'');if(!data)throw new Error('No file');\nvar lab=seg(b.label||b.reg||'Vehicle').toUpperCase();var d=seg(b.serviced_on)||new Date().toISOString().slice(0,10);\nvar ext=String(b.ext||'pdf').replace(/[^a-z0-9]/gi,'')||'pdf';var fn=seg(d+' - Service'+(b.workshop?' - '+b.workshop:''))+'.'+ext;\nvar path=['CBS System','Fleet',lab,'Service History',fn].map(encodeURIComponent).join('/');\nreturn [{json:{path:path,name:fn},binary:{data:{data:data,mimeType:b.mime||'application/pdf',fileName:fn}}}];"
+        }
+      },
+      {
+        "id": "a5ead57f-4b7e-47c6-a3c5-374532fa8d5c",
+        "name": "Receipt Upload",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          448,
+          448
+        ],
+        "parameters": {
+          "method": "PUT",
+          "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.path }}:/content?@microsoft.graph.conflictBehavior=rename",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "sendBody": true,
+          "contentType": "binaryData",
+          "inputDataFieldName": "data",
+          "options": {
+            "timeout": 120000
+          }
+        }
+      },
+      {
+        "id": "c82d1364-0d0e-41e4-9b51-f3063d4ae07c",
+        "name": "Receipt Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          448
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify({ ok: !!$json.webUrl, url: $json.webUrl || \"\" }) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "ebe818db-1eb7-4f3d-90d1-e7ae975bf9c0",
+        "name": "Folders Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          672
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-vehicle-folders",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "f7344126-f26c-4a22-8f11-fb4d8e984684"
+      },
+      {
+        "id": "eba9bfd9-57c2-4e5d-b0bd-2605d74fbd89",
+        "name": "Folders Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          672
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "{\"ok\":true}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "457e8659-897b-48fb-a219-c9e8a1914b33",
+        "name": "Training Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          896
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-training-upload",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "258d0bd2-50f3-464b-973c-c96757efead6"
+      },
+      {
+        "id": "034dcb49-ff2e-434a-a06f-52190150699d",
+        "name": "Training Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          896
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var b=$input.first().json.body||{};function seg(v){return String(v||'').replace(/[\\\\\\/:*?\"<>|#%]/g,' ').replace(/\\s+/g,' ').trim();}\nvar data=String(b.data||'').replace(/^data:[^,]*,/,'');if(!data)throw new Error('No file');\nvar mime=String(b.mime||'application/octet-stream');var fn=seg(b.filename)||'document';if(mime==='image/jpeg'&&!/\\.jpe?g$/i.test(fn))fn=fn.replace(/\\.[a-z0-9]+$/i,'')+'.jpg';\nvar who=seg(b.person)||'Unassigned';var q=seg(b.qualification);if(q)fn=seg(q+' - '+fn);\nvar path=['CBS System','H&S','Training',who,fn].map(encodeURIComponent).join('/');\nreturn [{json:{path:path,name:fn},binary:{data:{data:data,mimeType:mime,fileName:fn}}}];"
+        }
+      },
+      {
+        "id": "0d7bcd85-192e-42e9-ae5b-170f15980626",
+        "name": "Training Upload",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          448,
+          896
+        ],
+        "parameters": {
+          "method": "PUT",
+          "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.path }}:/content?@microsoft.graph.conflictBehavior=rename",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "sendBody": true,
+          "contentType": "binaryData",
+          "inputDataFieldName": "data",
+          "options": {
+            "timeout": 120000
+          }
+        }
+      },
+      {
+        "id": "7cf46be7-3488-420b-84ed-17d8d9fbc819",
+        "name": "Training Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          896
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify({ ok: !!$json.webUrl, url: $json.webUrl || \"\", name: $json.name || $(\"Training Prep\").first().json.name, uploaded_at: new Date().toISOString() }) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "8876737b-2fa9-4e75-b3c6-7b8d44ed9549",
+        "name": "Accred Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          1120
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "options": {},
+          "path": "cbs-accreditation-upload",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "38134a36-0a6a-40d2-b955-b4a73d925ce5"
+      },
+      {
+        "id": "a89294b7-3b9c-4bd2-b885-31c52fcec0cc",
+        "name": "Accred Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          1120
+        ],
+        "parameters": {
+          "jsCode": "var b=$input.first().json.body||{};function seg(v){return String(v||'').replace(/[\\\\\\/:*?\"<>|#%]/g,' ').replace(/\\s+/g,' ').trim();}\nvar data=String(b.data||'').replace(/^data:[^,]*,/,'');if(!data)throw new Error('No file');\nvar mime=String(b.mime||'application/octet-stream');var fn=seg(b.filename)||'document';if(mime==='image/jpeg'&&!/\\.jpe?g$/i.test(fn))fn=fn.replace(/\\.[a-z0-9]+$/i,'')+'.jpg';\nvar acc=seg(b.accreditation)||'Other';var d=new Date().toISOString().slice(0,10);fn=seg(d+' - '+fn);\nvar path=['CBS System','Operations','Accreditations',acc,fn].map(encodeURIComponent).join('/');\nreturn [{json:{path:path,name:fn},binary:{data:{data:data,mimeType:mime,fileName:fn}}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "38426a3d-e97d-4877-83d9-f403a2417544",
+        "name": "Accred Upload",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          448,
+          1120
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "contentType": "binaryData",
+          "inputDataFieldName": "data",
+          "method": "PUT",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {
+            "timeout": 120000
+          },
+          "sendBody": true,
+          "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/{{ $json.path }}:/content?@microsoft.graph.conflictBehavior=rename"
+        }
+      },
+      {
+        "id": "2f6d9085-9ebe-4aa3-b5f3-ed954f2a3588",
+        "name": "Accred Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          1120
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify({ ok: !!$json.webUrl, url: $json.webUrl || \"\", name: $json.name || $(\"Accred Prep\").first().json.name, uploaded_at: new Date().toISOString() }) }}"
+        }
+      },
+      {
+        "id": "137ed3aa-2beb-4eea-9f6e-5f4af3d41123",
+        "name": "Docs Zip Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          1400
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "options": {},
+          "path": "cbs-docs-zip",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "bce90dca-666c-4192-8524-9fa5a1a316e2"
+      },
+      {
+        "id": "2893612b-5b8f-4a05-864f-44bb2bf5c9fc",
+        "name": "Docs Plan",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          1400
+        ],
+        "parameters": {
+          "jsCode": "var b=$input.first().json.body||{};var raw=b.d;var D={};\ntry{D=typeof raw==='string'?JSON.parse(raw):(raw||b);}catch(e){D={};}\nfunction seg(v){return String(v==null?'':v).replace(/[\\\\\\/:*?\"<>|#%\\r\\n\\t]+/g,' ').replace(/\\s+/g,' ').trim();}\nfunction segp(v){return String(v==null?'':v).split('/').map(seg).filter(Boolean).slice(0,3).join('/');}\nvar job=seg(D.job).slice(0,30),label=seg(D.label).slice(0,80)||'Documents';\nvar R=/^https:\\/\\/chelmsfordbuildingservices(-my)?\\.sharepoint\\.com\\//i;\nvar seen={},list=[];(Array.isArray(D.files)?D.files:[]).forEach(function(f){var u=String(f&&f.u||'').trim();if(!R.test(u)||seen[u])return;seen[u]=1;list.push({u:u,n:seg(f.n),f:segp(f.f)});});\nlist=list.slice(0,80);\nvar gen=(Array.isArray(D.gen)?D.gen:[]).slice(0,5).map(function(g){return {n:seg(g&&g.n).slice(0,80)||'Summary',f:segp(g&&g.f),lines:(Array.isArray(g&&g.lines)?g.lines:[]).slice(0,3000).map(function(l){return {t:String(l&&l.t==null?'':l.t).slice(0,400),s:Math.min(24,Math.max(6,Number(l&&l.s)||9.5)),b:!!(l&&l.b),i:Math.min(60,Math.max(0,Number(l&&l.i)||0)),pre:Math.min(30,Math.max(0,Number(l&&l.pre)||0))};})};}).filter(function(g){return g.lines.length;});\nvar folders={};list.forEach(function(x){folders[x.f||'Documents']=1;});var multi=Object.keys(folders).length>1||!!D.keepFolders;\nvar used={},out=[];\nlist.forEach(function(x){var p='';try{p=decodeURIComponent(x.u.split('?')[0].split('/').pop()||'');}catch(e){}\n var m=p.match(/\\.([a-z0-9]{2,5})$/i),ext=m?m[1].toLowerCase():'pdf';\n var nm=(x.n||seg(p.replace(/\\.[a-z0-9]{2,5}$/i,''))||'Document').slice(0,120);if(!new RegExp('\\\\.'+ext+'$','i').test(nm))nm+='.'+ext;\n var path=(multi?(x.f||'Documents')+'/':'')+nm,base=path,k=2;while(used[path.toLowerCase()]){path=base.replace(/(\\.[^.\\/]+)$/,' ('+k+')$1');k++;}used[path.toLowerCase()]=1;\n var share='u!'+Buffer.from(x.u,'utf8').toString('base64').replace(/=+$/,'').replace(/\\//g,'_').replace(/\\+/g,'-');\n out.push({json:{share:share,path:path,title:x.n||nm,ext:ext,job:job,label:label}});});\nif(out.length){out[0].json.gen=gen;return out;}\nreturn [{json:{share:'',genOnly:gen.length>0,gen:gen,job:job,label:label}}];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "79940c3b-4eba-4739-b930-ea5578884438",
+        "name": "Docs Any?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          448,
+          1400
+        ],
+        "parameters": {
+          "conditions": {
+            "combinator": "and",
+            "conditions": [
+              {
+                "leftValue": "={{ $json.share || ($json.genOnly ? 'gen' : '') }}",
+                "operator": {
+                  "operation": "notEmpty",
+                  "singleValue": true,
+                  "type": "string"
+                },
+                "rightValue": ""
+              }
+            ],
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            }
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "c8ae5e2b-8e88-4cd0-9175-df35f526819e",
+        "name": "Docs Download",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          672,
+          1320
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "method": "GET",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {
+            "response": {
+              "response": {
+                "outputPropertyName": "data",
+                "responseFormat": "file"
+              }
+            },
+            "timeout": 60000
+          },
+          "url": "=https://graph.microsoft.com/v1.0/shares/{{ $json.share }}/driveItem/content"
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "3b97c6fe-4ea3-41b1-8aa3-ad332640e29f",
+        "name": "Docs Build",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          896,
+          1320
+        ],
+        "parameters": {
+          "jsCode": "var plan=$('Docs Plan').all(),dl=$input.all();var j0=plan[0].json;\nfunction pdf(lines,footer){var W=595,H=842,M=42,y=0,pages=[],cur=[];function np(){if(cur.length)pages.push(cur);cur=[];y=H-M;}np();\n lines.forEach(function(l){var sz=l.s||9.5;var maxc=Math.floor((W-2*M-(l.i||0))/(sz*0.5));var t=String(l.t==null?'':l.t);var parts=[];while(t.length>maxc){var k=t.lastIndexOf(' ',maxc);if(k<10)k=maxc;parts.push(t.slice(0,k));t=t.slice(k).trim();}parts.push(t);\n  if(l.pre)y-=l.pre;parts.forEach(function(p){if(y<M+sz+14)np();y-=sz*1.35;cur.push({x:M+(l.i||0),y:y,s:sz,b:l.b,t:p});});});pages.push(cur);\n function esc(t){var o='';for(var i=0;i<t.length;i++){var c=t.charCodeAt(i);if(c===163)o+='\\\\243';else if(c===8211||c===8212)o+='-';else if(c>126||c<32)o+='?';else if(c===40||c===41||c===92)o+='\\\\'+t[i];else o+=t[i];}return o;}\n var n=pages.length,objs=[],kids=[];for(var i=0;i<n;i++)kids.push((5+i*2)+' 0 R');\n objs[1]='<< /Type /Catalog /Pages 2 0 R >>';objs[2]='<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+n+' >>';\n objs[3]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>';objs[4]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>';\n pages.forEach(function(p,i){var c='0.957 0.475 0.125 rg '+M+' '+(H-30)+' '+(W-2*M)+' 3 re f\\n0 0 0 rg\\n'+p.map(function(l){return 'BT /'+(l.b?'F2':'F1')+' '+l.s+' Tf '+l.x+' '+l.y.toFixed(1)+' Td ('+esc(l.t)+') Tj ET';}).join('\\n');\n  c+='\\nBT /F1 7.5 Tf '+M+' 22 Td ('+esc(footer+'   |   Page '+(i+1)+' of '+n)+') Tj ET';\n  objs[5+i*2]='<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+W+' '+H+'] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents '+(6+i*2)+' 0 R >>';\n  objs[6+i*2]='<< /Length '+c.length+' >>\\nstream\\n'+c+'\\nendstream';});\n var out='%PDF-1.4\\n',off=[];for(var k=1;k<objs.length;k++){off[k]=out.length;out+=k+' 0 obj\\n'+objs[k]+'\\nendobj\\n';}\n var x=out.length;out+='xref\\n0 '+objs.length+'\\n0000000000 65535 f \\n';for(k=1;k<objs.length;k++)out+=('0000000000'+off[k]).slice(-10)+' 00000 n \\n';\n out+='trailer\\n<< /Size '+objs.length+' /Root 1 0 R >>\\nstartxref\\n'+x+'\\n%%EOF';return Buffer.from(out,'latin1').toString('base64');}\nvar item={json:{},binary:{}},k=0,miss=[];\nfor(var i=0;i<plan.length;i++){var p=plan[i].json;if(p.genOnly||!p.share)continue;var b=dl[i]&&dl[i].binary&&dl[i].binary.data;if(!b){miss.push(p.title||p.path);continue;}\n var o={};Object.keys(b).forEach(function(z){o[z]=b[z];});o.fileName=p.path;\n if(!o.mimeType||o.mimeType==='application/octet-stream'){o.mimeType=p.ext==='pdf'?'application/pdf':(/jpe?g/.test(p.ext)?'image/jpeg':(p.ext==='png'?'image/png':'application/octet-stream'));}\n item.binary['f'+(k++)]=o;}\nvar d=new Date(new Date().toLocaleString('en-US',{timeZone:'Europe/London'}));function p2(n){return ('0'+n).slice(-2);}var D=d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());\n(j0.gen||[]).forEach(function(g){item.binary['f'+(k++)]={data:pdf(g.lines,'Chelmsford Building Services Ltd'+(j0.job?' - Job '+j0.job:'')+' - '+g.n+' - '+D),mimeType:'application/pdf',fileName:(g.f?g.f+'/':'')+'_'+g.n+'.pdf'};});\nvar base=((j0.job?'Job '+j0.job+' - ':'')+j0.label).replace(/[\\\\\\/:*?\"<>|]+/g,' ').replace(/\\s+/g,' ').trim();\nif(k===1&&!miss.length){var only=item.binary.f0;var nm=String(only.fileName).split('/').pop().replace(/^_/,'');\n return [{json:{single:true,name:nm,mime:only.mimeType},binary:{data:only}}];}\nif(miss.length)item.binary['f'+(k++)]={data:Buffer.from('These documents could not be downloaded from SharePoint. They may have been moved or deleted:\\r\\n\\r\\n'+miss.join('\\r\\n')+'\\r\\n','utf8').toString('base64'),mimeType:'text/plain',fileName:'_Missing documents.txt'};\nitem.json={single:false,zipName:base+' - '+D+'.zip',keys:Object.keys(item.binary).join(','),got:k};\nreturn [item];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "c7adab2f-e487-48ac-9577-d52dff9c91be",
+        "name": "Docs Single?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1120,
+          1320
+        ],
+        "parameters": {
+          "conditions": {
+            "combinator": "and",
+            "conditions": [
+              {
+                "leftValue": "={{ $json.single }}",
+                "operator": {
+                  "operation": "true",
+                  "singleValue": true,
+                  "type": "boolean"
+                },
+                "rightValue": ""
+              }
+            ],
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            }
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "64797344-017b-4886-b5d1-b0610e9936bb",
+        "name": "Docs Send File",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1344,
+          1240
+        ],
+        "parameters": {
+          "inputDataFieldName": "data",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "={{ $json.mime }}"
+                },
+                {
+                  "name": "Content-Disposition",
+                  "value": "=attachment; filename=\"{{ $json.name.replace(/[^A-Za-z0-9 ._()&-]/g, \"_\") }}\""
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          },
+          "respondWith": "binary"
+        }
+      },
+      {
+        "id": "cb35e2e2-063a-4bc1-94d9-e9f8bd019a27",
+        "name": "Docs Zip",
+        "type": "n8n-nodes-base.compression",
+        "typeVersion": 1.1,
+        "position": [
+          1344,
+          1400
+        ],
+        "parameters": {
+          "binaryPropertyName": "={{ $json.keys }}",
+          "binaryPropertyOutput": "data",
+          "fileName": "={{ $json.zipName }}",
+          "operation": "compress",
+          "outputFormat": "zip"
+        }
+      },
+      {
+        "id": "da952834-d5e1-4d22-93e4-5551e95205a5",
+        "name": "Docs Send Zip",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1568,
+          1400
+        ],
+        "parameters": {
+          "inputDataFieldName": "data",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/zip"
+                },
+                {
+                  "name": "Content-Disposition",
+                  "value": "=attachment; filename=\"{{ $('Docs Build').first().json.zipName.replace(/[^A-Za-z0-9 ._()&-]/g, \"_\") }}\""
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          },
+          "respondWith": "binary"
+        }
+      },
+      {
+        "id": "37ee2f1b-e8d6-4752-a3ac-4fbd85b468ec",
+        "name": "Docs None",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          1520
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "<!doctype html><meta name=viewport content='width=device-width,initial-scale=1'><body style='font:16px system-ui;padding:30px;color:#1f2328'><h2>Nothing to download</h2><p>None of the selected items are documents stored in SharePoint. Go back to the job file and pick at least one document.</p></body>"
+        }
+      },
+      {
+        "id": "1c6e91bc-2a61-4307-9dbf-acf103de151a",
+        "name": "Del Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          1750
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "options": {},
+          "path": "cbs-job-file-del",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "f146a6f0-0b50-4b15-b9bf-d369f76bc3e8"
+      },
+      {
+        "id": "4b67638a-d873-4018-ba1e-7be6e7f707df",
+        "name": "Del Plan",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          1750
+        ],
+        "parameters": {
+          "jsCode": "/* POST cbs-job-file-del {job, files:[SharePoint URL...], by}: deletes job files from SharePoint (they go to the SharePoint recycle bin).\n   Only CBS SharePoint links inside that job's own folders are accepted: CBS System/Operations/Jobs/Job N/... or\n   CBS System/Operations/Enquiries/Job N/... The folder is checked again against SharePoint's own record before anything is deleted. */\nvar b = $input.first().json.body || {}; if (typeof b === 'string') { try { b = JSON.parse(b); } catch (e) { b = {}; } }\nvar job = String(b.job || '').replace(/^#/, '').trim();\nif (!/^[A-Za-z0-9-]{1,20}$/.test(job)) return [{ json: { go: false, share: '', job: '', err: 'Job number missing.' } }];\nvar esc = job.replace(/[-]/g, '\\\\-');\nvar IN = new RegExp('/Operations/(Jobs|Enquiries)/Job ' + esc + '/', 'i');\nvar R = /^https:\\/\\/chelmsfordbuildingservices(-my)?\\.sharepoint\\.com\\//i, seen = {}, out = [];\n(Array.isArray(b.files) ? b.files : []).slice(0, 50).forEach(function (u) {\n  u = String(u || '').trim(); if (!R.test(u) || seen[u]) return; seen[u] = 1;\n  var d = ''; try { d = decodeURIComponent(u.split('?')[0]); } catch (e) { d = u; }\n  if (!IN.test(d)) return;\n  var share = 'u!' + Buffer.from(u, 'utf8').toString('base64').replace(/=+$/, '').replace(/\\//g, '_').replace(/\\+/g, '-');\n  out.push({ json: { go: true, share: share, u: u, job: job, by: String(b.by || '').slice(0, 80) } });\n});\nif (!out.length) return [{ json: { go: false, share: '', job: job, err: 'No files from this job were selected.' } }];\nreturn out;\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "59a38533-8975-4592-bb8f-de342e435ac1",
+        "name": "Del Look",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          448,
+          1750
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "method": "GET",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            },
+            "timeout": 30000
+          },
+          "url": "={{ $json.go ? 'https://graph.microsoft.com/v1.0/shares/' + $json.share + '/driveItem?$select=id,name,parentReference' : 'https://graph.microsoft.com/v1.0/shares/none/driveItem' }}"
+        }
+      },
+      {
+        "id": "421b8e21-9241-44f1-8f0b-d22a364e9e38",
+        "name": "Del Check",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          1750
+        ],
+        "parameters": {
+          "jsCode": "/* Confirms each file sits in one of the job's own folders in SharePoint (Operations/Jobs/Job N or Operations/Enquiries/Job N,\n   or a subfolder) before it is deleted. */\nvar plan = $('Del Plan').all(), look = $input.all();\nreturn plan.map(function (p, i) {\n  var j = p.json, r = (look[i] && look[i].json) || {}, pr = r.parentReference || {};\n  var path = String(pr.path || ''); try { path = decodeURIComponent(path); } catch (e) {}\n  var esc = String(j.job || '').replace(/[-]/g, '\\\\-');\n  var IN = new RegExp('/Operations/(Jobs|Enquiries)/Job ' + esc + '(/|$)', 'i');\n  var ok = !!(j.go && r.id && pr.driveId && IN.test(path));\n  return { json: { go: ok, name: r.name || '', url: ok ? 'https://graph.microsoft.com/v1.0/drives/' + pr.driveId + '/items/' + r.id : 'https://graph.microsoft.com/v1.0/drives/none/items/none', why: ok ? '' : (j.err || 'Not found in this job\\'s folders') } };\n});\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "8961715a-cd0d-4659-b539-904234254b11",
+        "name": "Del Item",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          896,
+          1750
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "method": "={{ $json.go ? 'DELETE' : 'GET' }}",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {
+            "response": {
+              "response": {
+                "fullResponse": true,
+                "neverError": true,
+                "responseFormat": "text"
+              }
+            },
+            "timeout": 30000
+          },
+          "url": "={{ $json.url }}"
+        }
+      },
+      {
+        "id": "83adcea9-b17d-4f7c-bd9f-630811e7c328",
+        "name": "Del Done",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          1750
+        ],
+        "parameters": {
+          "jsCode": "var chk = $('Del Check').all(), res = $input.all(), done = 0, failed = [];\nchk.forEach(function (c, i) { var j = c.json, r = (res[i] && res[i].json) || {}; if (!j.go) { if (j.name) failed.push(j.name + ' (' + j.why + ')'); return; }\n  var sc = Number(r.statusCode || 0); if (sc === 204 || sc === 200) done++; else failed.push((j.name || 'file') + ' (SharePoint said ' + (sc || 'no reply') + ')'); });\nvar err = done ? '' : (($('Del Plan').first().json.err) || (failed.length ? 'Nothing was deleted.' : 'Nothing was deleted.'));\nreturn [{ json: { ok: done > 0, deleted: done, failed: failed, error: err } }];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "e5feaaa8-782e-4368-8c34-d436a7f339a2",
+        "name": "Del Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1344,
+          1750
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}"
+        }
+      },
+      {
+        "id": "e5a762dc-d12a-4b49-82af-c1e2f50b49bf",
+        "name": "Move Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          2000
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "options": {},
+          "path": "cbs-job-file-move",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "123e69ea-c79a-4035-95e6-440499d55b34"
+      },
+      {
+        "id": "64670d5e-b16a-4f92-a7ab-2ee5fb1f3682",
+        "name": "Move Plan",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          2000
+        ],
+        "parameters": {
+          "jsCode": "/* POST cbs-job-file-move {job, files:[SharePoint URL...], ids:[driveItem id...], folder, by}: changes the category of job files (and\n   folders) by moving them to CBS System/Operations/Jobs/Job N/<folder> in SharePoint (same file, name and version history; a name\n   clash is renamed). Files are found by their SharePoint item id when the page sends it (works for every file type, including\n   Office files whose links do not show the folder); otherwise by link. Either way Move Check confirms with SharePoint's own record\n   that the item sits in this job's folders (Jobs/Job N or Enquiries/Job N) before anything moves. */\nvar b=$input.first().json.body||{};if(typeof b==='string'){try{b=JSON.parse(b);}catch(e){b={};}}\nvar job=String(b.job||'').replace(/^#/,'').trim();\nvar folder=String(b.folder||'').trim().slice(0,60).replace(/[^A-Za-z0-9 &().,_-]+/g,' ').replace(/ {2,}/g,' ').trim();\nif(!/^[A-Za-z0-9-]{1,20}$/.test(job))return [{json:{go:false,share:'',id:'',job:'',folder:'',err:'Job number missing.'}}];\nif(!folder)return [{json:{go:false,share:'',id:'',job:job,folder:'',err:'Pick a category.'}}];\nvar F=Array.isArray(b.files)?b.files:[],I=Array.isArray(b.ids)?b.ids:[],seen={},out=[];\nF.slice(0,50).forEach(function(u,i){u=String(u||'').trim();var id=String(I[i]||'').trim().replace(/[^A-Za-z0-9!_-]/g,'');var key=id||u;if(!key||seen[key])return;seen[key]=1;\n if(id){out.push({json:{go:true,share:'',id:id,u:u,job:job,folder:folder,by:String(b.by||'').slice(0,80)}});return;}\n if(u.indexOf('https://chelmsfordbuildingservices')!==0||u.indexOf('.sharepoint.com/')<0)return;\n var share='u!'+Buffer.from(u,'utf8').toString('base64').replace(/=+$/,'').split('/').join('_').split('+').join('-');\n out.push({json:{go:true,share:share,id:'',u:u,job:job,folder:folder,by:String(b.by||'').slice(0,80)}});});\nif(!out.length)return [{json:{go:false,share:'',id:'',job:job,folder:folder,err:'No files were selected.'}}];\nreturn out;",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "224ee2c5-ba2c-40fa-b0ea-f24297abb97d",
+        "name": "Move Look",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          448,
+          2000
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "method": "GET",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            },
+            "timeout": 30000
+          },
+          "url": "={{ !$json.go ? 'https://graph.microsoft.com/v1.0/shares/none/driveItem' : ($json.id ? 'https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/' + $json.id + '?$select=id,name,parentReference' : 'https://graph.microsoft.com/v1.0/shares/' + $json.share + '/driveItem?$select=id,name,parentReference') }}"
+        }
+      },
+      {
+        "id": "6449b4e8-1506-489d-888e-d898e736a1df",
+        "name": "Move Check",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          2000
+        ],
+        "parameters": {
+          "jsCode": "/* Confirms each file sits in one of the job's own folders in SharePoint before it is moved. Files already in the chosen category are\n   left where they are (same). */\nvar plan=$('Move Plan').all(),look=$input.all();\nreturn plan.map(function(p,i){var j=p.json,r=(look[i]&&look[i].json)||{},pr=r.parentReference||{};\n var path=String(pr.path||'');try{path=decodeURIComponent(path);}catch(e){}\n var IN=new RegExp('/Operations/(Jobs|Enquiries)/Job '+String(j.job||'')+'(/|$)','i');\n var tail=('/operations/jobs/job '+j.job+'/'+j.folder).toLowerCase(),here=path.toLowerCase().slice(-tail.length)===tail;\n var ok=!!(j.go&&r.id&&pr.driveId&&IN.test(path));\n return {json:{go:ok&&!here,same:ok&&here,id:r.id||'',driveId:pr.driveId||'',name:r.name||'',why:ok?'':(j.err||\"Not found in this job's folders\")}};});",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "cec51206-a93b-4552-8ebb-f26dc705db6e",
+        "name": "Move Mk Job",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          896,
+          2000
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "jsonBody": "={{ JSON.stringify({ name: 'Job ' + $('Move Plan').first().json.job, folder: {}, '@microsoft.graph.conflictBehavior': 'fail' }) }}",
+          "method": "POST",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {
+            "response": {
+              "response": {
+                "fullResponse": true,
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            },
+            "timeout": 30000
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "url": "={{ $('Move Check').all().some(i => i.json.go) ? 'https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/CBS%20System/Operations/Jobs:/children' : 'https://graph.microsoft.com/v1.0/drives/none/root:/none:/children' }}"
+        }
+      },
+      {
+        "id": "84558130-9530-44c3-91b3-100b21ba7ba2",
+        "name": "Move Mk Folder",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1120,
+          2000
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "jsonBody": "={{ JSON.stringify({ name: $('Move Plan').first().json.folder, folder: {}, '@microsoft.graph.conflictBehavior': 'fail' }) }}",
+          "method": "POST",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {
+            "response": {
+              "response": {
+                "fullResponse": true,
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            },
+            "timeout": 30000
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "url": "={{ $('Move Check').all().some(i => i.json.go) ? 'https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/CBS%20System/Operations/Jobs/' + encodeURIComponent('Job ' + $('Move Plan').first().json.job) + ':/children' : 'https://graph.microsoft.com/v1.0/drives/none/root:/none:/children' }}"
+        }
+      },
+      {
+        "id": "fd4fa261-5221-4aea-9bcd-90a2ef930d98",
+        "name": "Move Target",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1344,
+          2000
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "method": "GET",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            },
+            "timeout": 30000
+          },
+          "url": "={{ $('Move Check').all().some(i => i.json.go) ? 'https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/root:/CBS%20System/Operations/Jobs/' + encodeURIComponent('Job ' + $('Move Plan').first().json.job) + '/' + encodeURIComponent($('Move Plan').first().json.folder) + '?$select=id,name' : 'https://graph.microsoft.com/v1.0/drives/none/root:/none' }}"
+        }
+      },
+      {
+        "id": "75072996-f8fd-4e50-a528-5f1806b74d7c",
+        "name": "Move Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1568,
+          2000
+        ],
+        "parameters": {
+          "jsCode": "/* One PATCH per file to move into the category folder (id from Move Target). Nothing to move: one placeholder call that does nothing. */\nvar t=$input.first().json||{},tid=String(t.id||'');\nvar out=$('Move Check').all().map(function(i){return i.json;}).filter(function(c){return c.go&&tid;}).map(function(c){return {json:{url:'https://graph.microsoft.com/v1.0/drives/'+c.driveId+'/items/'+c.id+'?@microsoft.graph.conflictBehavior=rename',body:{parentReference:{driveId:c.driveId,id:tid}},name:c.name}};});\nif(!out.length)return [{json:{none:true,url:'https://graph.microsoft.com/v1.0/drives/none/items/none',body:{}}}];\nreturn out;",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "9f09c877-b742-4c79-afbc-9de14c3f4b9f",
+        "name": "Move Item",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1792,
+          2000
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "jsonBody": "={{ JSON.stringify($json.body || {}) }}",
+          "method": "PATCH",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {
+            "response": {
+              "response": {
+                "fullResponse": true,
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            },
+            "timeout": 30000
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "url": "={{ $json.url }}"
+        }
+      },
+      {
+        "id": "11382510-92ab-4896-bfe5-849d803ef2b1",
+        "name": "Move Done",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2016,
+          2000
+        ],
+        "parameters": {
+          "jsCode": "var C=$('Move Check').all().map(function(i){return i.json;}),P=$('Move Prep').all().map(function(i){return i.json;}),R=$input.all().map(function(i){return i.json;});\nvar tid=String(($('Move Target').first().json||{}).id||''),moved=0,same=0,failed=[];\nC.forEach(function(c){if(c.same){same++;return;}if(!c.go&&c.name)failed.push(c.name+' ('+c.why+')');});\nif(C.some(function(c){return c.go;})&&!tid)failed.push('the category folder could not be found or created in SharePoint');\nP.forEach(function(p,i){if(p.none)return;var r=R[i]||{},sc=Number(r.statusCode||0);if(sc===200||sc===201)moved++;else failed.push((p.name||'file')+' (SharePoint said '+(sc||'no reply')+')');});\nvar pl=$('Move Plan').first().json,ok=moved>0||(same>0&&!failed.length);\nreturn [{json:{ok:ok,moved:moved,same:same,failed:failed,error:ok?'':(pl.err||(failed.length?'Nothing was moved: '+failed.join(', '):'Nothing was moved.'))}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "d0e112fe-ea49-4488-8a0a-58bcfa4f78ef",
+        "name": "Move Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          2240,
+          2000
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}"
+        }
+      },
+      {
+        "id": "1c8a61dc-458c-4c18-b96a-856fd63b60b1",
+        "name": "Rename Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          2300
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "options": {},
+          "path": "cbs-job-file-rename",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "f7f24b48-3013-4458-90b4-579244bee624"
+      },
+      {
+        "id": "011a0031-e063-4e1b-a064-70c4a55b3f43",
+        "name": "Rename Plan",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          2300
+        ],
+        "parameters": {
+          "jsCode": "/* POST cbs-job-file-rename {job, file:<SharePoint URL>, id:<driveItem id>, name, by}: renames one job file or folder in SharePoint\n   (same file, link history kept). The extension is kept even if it is left off the new name. Rename Check confirms with SharePoint\n   that the item sits in this job's folders (Jobs/Job N or Enquiries/Job N) first; a name already used in that category is refused. */\nvar b=$input.first().json.body||{};if(typeof b==='string'){try{b=JSON.parse(b);}catch(e){b={};}}\nvar job=String(b.job||'').replace(/^#/,'').trim(),u=String(b.file||'').trim(),id=String(b.id||'').trim().replace(/[^A-Za-z0-9!_-]/g,'');\nvar name=String(b.name||'').replace(/[\\\\/:*?\"<>|#%]+/g,' ').replace(/\\s{2,}/g,' ').trim().replace(/^\\.+|\\.+$/g,'').slice(0,150);\nif(!/^[A-Za-z0-9-]{1,20}$/.test(job))return [{json:{go:false,err:'Job number missing.'}}];\nif(!name)return [{json:{go:false,job:job,err:'Enter a new name.'}}];\nvar share='';if(!id){if(u.indexOf('https://chelmsfordbuildingservices')!==0||u.indexOf('.sharepoint.com/')<0)return [{json:{go:false,job:job,err:'That file could not be found.'}}];share='u!'+Buffer.from(u,'utf8').toString('base64').replace(/=+$/,'').split('/').join('_').split('+').join('-');}\nreturn [{json:{go:true,job:job,id:id,share:share,name:name,by:String(b.by||'').slice(0,80)}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "e6528042-116a-48b3-9d55-cdb1430ea82d",
+        "name": "Rename Look",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          448,
+          2300
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "method": "GET",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            },
+            "timeout": 30000
+          },
+          "url": "={{ !$json.go ? 'https://graph.microsoft.com/v1.0/shares/none/driveItem' : ($json.id ? 'https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/' + $json.id + '?$select=id,name,parentReference,folder' : 'https://graph.microsoft.com/v1.0/shares/' + $json.share + '/driveItem?$select=id,name,parentReference,folder') }}"
+        }
+      },
+      {
+        "id": "dbb4f683-a7b6-4b16-957b-223950252864",
+        "name": "Rename Check",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          2300
+        ],
+        "parameters": {
+          "jsCode": "var p=$('Rename Plan').first().json,r=$input.first().json||{},pr=r.parentReference||{};\nvar path=String(pr.path||'');try{path=decodeURIComponent(path);}catch(e){}\nvar IN=new RegExp('/Operations/(Jobs|Enquiries)/Job '+String(p.job||'')+'(/|$)','i');\nvar ok=!!(p.go&&r.id&&pr.driveId&&IN.test(path));\nvar old=String(r.name||''),nn=String(p.name||'');\nif(ok&&!r.folder){var m=old.match(/\\.[A-Za-z0-9]{1,8}$/);if(m&&nn.toLowerCase().slice(-m[0].length)!==m[0].toLowerCase())nn=nn+m[0];}\nvar same=ok&&nn===old;\nreturn [{json:{go:ok&&!same,same:same,id:r.id||'',driveId:pr.driveId||'',old:old,name:nn,err:ok?'':(p.err||\"That file isn't in this job's folders.\")}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "2c0233e3-6950-4626-a4d1-4618fa1c3ef2",
+        "name": "Rename Item",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          896,
+          2300
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "jsonBody": "={{ JSON.stringify({ name: $json.name || 'x' }) }}",
+          "method": "PATCH",
+          "nodeCredentialType": "microsoftOAuth2Api",
+          "options": {
+            "response": {
+              "response": {
+                "fullResponse": true,
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            },
+            "timeout": 30000
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "url": "={{ $json.go ? 'https://graph.microsoft.com/v1.0/drives/' + $json.driveId + '/items/' + $json.id + '?@microsoft.graph.conflictBehavior=fail' : 'https://graph.microsoft.com/v1.0/drives/none/items/none' }}"
+        }
+      },
+      {
+        "id": "066322de-9015-435f-b0dd-1261f5746271",
+        "name": "Rename Done",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          2300
+        ],
+        "parameters": {
+          "jsCode": "var c=$('Rename Check').first().json,r=$input.first().json||{},sc=Number(r.statusCode||0),b=r.body||{};\nif(c.same)return [{json:{ok:true,same:true,name:c.name}}];\nif(!c.go)return [{json:{ok:false,error:c.err||'Nothing was renamed.'}}];\nif(sc===200)return [{json:{ok:true,name:b.name||c.name,url:b.webUrl||''}}];\nif(sc===409)return [{json:{ok:false,error:'A file called '+c.name+' is already in that category. Pick another name.'}}];\nreturn [{json:{ok:false,error:'SharePoint did not rename it ('+(sc||'no reply')+'). Try again.'}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "297c054c-637b-4df0-9861-756eb4112743",
+        "name": "Rename Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1344,
+          2300
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}"
+        }
+      }
+    ],
+    "connections": {
+      "File Hook": {
+        "main": [
+          [
+            {
+              "node": "Share Id",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Share Id": {
+        "main": [
+          [
+            {
+              "node": "Valid Link?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Valid Link?": {
+        "main": [
+          [
+            {
+              "node": "Download",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Not Found",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Download": {
+        "main": [
+          [
+            {
+              "node": "Got File?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Got File?": {
+        "main": [
+          [
+            {
+              "node": "File OK?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "File OK?": {
+        "main": [
+          [
+            {
+              "node": "Send File",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Not Found",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Receipt Hook": {
+        "main": [
+          [
+            {
+              "node": "Receipt Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Receipt Prep": {
+        "main": [
+          [
+            {
+              "node": "Receipt Upload",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Receipt Upload": {
+        "main": [
+          [
+            {
+              "node": "Receipt Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Folders Hook": {
+        "main": [
+          [
+            {
+              "node": "Folders Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Training Hook": {
+        "main": [
+          [
+            {
+              "node": "Training Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Training Prep": {
+        "main": [
+          [
+            {
+              "node": "Training Upload",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Training Upload": {
+        "main": [
+          [
+            {
+              "node": "Training Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Accred Hook": {
+        "main": [
+          [
+            {
+              "node": "Accred Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Accred Prep": {
+        "main": [
+          [
+            {
+              "node": "Accred Upload",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Accred Upload": {
+        "main": [
+          [
+            {
+              "node": "Accred Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Docs Zip Hook": {
+        "main": [
+          [
+            {
+              "node": "Docs Plan",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Docs Plan": {
+        "main": [
+          [
+            {
+              "node": "Docs Any?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Docs Any?": {
+        "main": [
+          [
+            {
+              "node": "Docs Download",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Docs None",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Docs Download": {
+        "main": [
+          [
+            {
+              "node": "Docs Build",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Docs Build": {
+        "main": [
+          [
+            {
+              "node": "Docs Single?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Docs Single?": {
+        "main": [
+          [
+            {
+              "node": "Docs Send File",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Docs Zip",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Docs Zip": {
+        "main": [
+          [
+            {
+              "node": "Docs Send Zip",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Del Hook": {
+        "main": [
+          [
+            {
+              "node": "Del Plan",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Del Plan": {
+        "main": [
+          [
+            {
+              "node": "Del Look",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Del Look": {
+        "main": [
+          [
+            {
+              "node": "Del Check",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Del Check": {
+        "main": [
+          [
+            {
+              "node": "Del Item",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Del Item": {
+        "main": [
+          [
+            {
+              "node": "Del Done",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Del Done": {
+        "main": [
+          [
+            {
+              "node": "Del Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Move Hook": {
+        "main": [
+          [
+            {
+              "node": "Move Plan",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Move Plan": {
+        "main": [
+          [
+            {
+              "node": "Move Look",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Move Look": {
+        "main": [
+          [
+            {
+              "node": "Move Check",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Move Check": {
+        "main": [
+          [
+            {
+              "node": "Move Mk Job",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Move Mk Job": {
+        "main": [
+          [
+            {
+              "node": "Move Mk Folder",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Move Mk Folder": {
+        "main": [
+          [
+            {
+              "node": "Move Target",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Move Target": {
+        "main": [
+          [
+            {
+              "node": "Move Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Move Prep": {
+        "main": [
+          [
+            {
+              "node": "Move Item",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Move Item": {
+        "main": [
+          [
+            {
+              "node": "Move Done",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Move Done": {
+        "main": [
+          [
+            {
+              "node": "Move Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Rename Hook": {
+        "main": [
+          [
+            {
+              "node": "Rename Plan",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Rename Plan": {
+        "main": [
+          [
+            {
+              "node": "Rename Look",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Rename Look": {
+        "main": [
+          [
+            {
+              "node": "Rename Check",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Rename Check": {
+        "main": [
+          [
+            {
+              "node": "Rename Item",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Rename Item": {
+        "main": [
+          [
+            {
+              "node": "Rename Done",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Rename Done": {
+        "main": [
+          [
+            {
+              "node": "Rename Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS hub file services: cbs-file (stream), cbs-docs-zip, cbs-job-file-del (delete), cbs-job-file-move (change category: move to Jobs/Job N/<folder>), uploads (vehicle receipt, training, accreditation).",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

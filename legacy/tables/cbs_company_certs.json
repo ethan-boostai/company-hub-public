@@ -1,0 +1,100 @@
+{
+  "table": "cbs_company_certs",
+  "n8n_id": "JtJMHxXtn3dB9uia",
+  "columns": [
+    {
+      "name": "contact",
+      "type": "string"
+    },
+    {
+      "name": "cost",
+      "type": "string"
+    },
+    {
+      "name": "docs_json",
+      "type": "string"
+    },
+    {
+      "name": "expires_on",
+      "type": "string"
+    },
+    {
+      "name": "issued_on",
+      "type": "string"
+    },
+    {
+      "name": "issuer",
+      "type": "string"
+    },
+    {
+      "name": "level",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "other_name",
+      "type": "string"
+    },
+    {
+      "name": "reference",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "name": "CHAS",
+      "other_name": "",
+      "issuer": "CHAS",
+      "reference": "00000000-0000-4000-8000-000000000001",
+      "level": "Approved ",
+      "issued_on": "2025-10-22",
+      "expires_on": "2026-10-18",
+      "cost": "",
+      "contact": "",
+      "docs_json": "[{\"name\":\"2026-10-06 - Chas Cert 18102025 Chelmsford Building Services LTD.pdf\",\"url\":\"https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-1.pdf\",\"uploaded_at\":\"2026-10-06T09:19:34.436Z\"}]",
+      "notes": "",
+      "id": 1,
+      "createdAt": "2026-10-06T08:36:39.723Z",
+      "updatedAt": "2026-10-06T13:27:04.693Z"
+    },
+    {
+      "name": "SafeContractor",
+      "other_name": "",
+      "issuer": "Safe Contractor ",
+      "reference": "ZZ-CERT-0002",
+      "level": "Approved",
+      "issued_on": "2026-10-16",
+      "expires_on": "2027-10-18",
+      "cost": "",
+      "contact": "",
+      "docs_json": "[{\"name\":\"2026-10-19 - SC Certificate - 16102026.pdf\",\"url\":\"https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-2.pdf\",\"uploaded_at\":\"2026-10-19T10:33:51.961Z\"}]",
+      "notes": "",
+      "id": 2,
+      "createdAt": "2026-10-06T08:39:27.626Z",
+      "updatedAt": "2026-10-19T10:34:12.999Z"
+    },
+    {
+      "name": "Waste Carriers Licence",
+      "other_name": "",
+      "issuer": "",
+      "reference": "ZZ-LIC-0003",
+      "level": "Approved",
+      "issued_on": "2025-07-07",
+      "expires_on": "2028-11-14",
+      "cost": "",
+      "contact": "",
+      "docs_json": "[{\"name\":\"2026-10-06 - Waste Carrier licence 14 Aug 2028.pdf\",\"url\":\"https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-3.pdf\",\"uploaded_at\":\"2026-10-06T09:17:55.005Z\"}]",
+      "notes": "",
+      "id": 3,
+      "createdAt": "2026-10-06T08:50:46.943Z",
+      "updatedAt": "2026-10-06T13:26:51.817Z"
+    }
+  ]
+}

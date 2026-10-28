@@ -1,0 +1,88 @@
+{
+  "table": "cbs_vehicle_accidents",
+  "n8n_id": "rN0tkhyp5UwvQCRR",
+  "columns": [
+    {
+      "name": "claim_no",
+      "type": "string"
+    },
+    {
+      "name": "damage",
+      "type": "string"
+    },
+    {
+      "name": "description",
+      "type": "string"
+    },
+    {
+      "name": "doc_url",
+      "type": "string"
+    },
+    {
+      "name": "driver",
+      "type": "string"
+    },
+    {
+      "name": "injuries",
+      "type": "string"
+    },
+    {
+      "name": "location",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "occurred_at",
+      "type": "string"
+    },
+    {
+      "name": "police_event_no",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "third_party",
+      "type": "string"
+    },
+    {
+      "name": "third_party_insurer",
+      "type": "string"
+    },
+    {
+      "name": "third_party_reg",
+      "type": "string"
+    },
+    {
+      "name": "vehicle",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "occurred_at": "2026-10-20T16:25",
+      "vehicle": "ZZ02ZZB",
+      "driver": "ZZ Person H",
+      "location": "M11",
+      "description": "Stone hit windscreen for Lorry in front.",
+      "damage": "Chipped windscreen ",
+      "injuries": "N/A",
+      "third_party": "",
+      "third_party_reg": "",
+      "third_party_insurer": "",
+      "police_event_no": "",
+      "claim_no": "",
+      "status": "Reported",
+      "doc_url": "",
+      "notes": "Submitted from the team page",
+      "id": 1,
+      "createdAt": "2026-10-20T15:25:51.240Z",
+      "updatedAt": "2026-10-21T11:06:39.440Z"
+    }
+  ]
+}

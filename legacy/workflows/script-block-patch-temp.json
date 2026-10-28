@@ -1,0 +1,327 @@
+{
+  "id": "6S2qYucH0o1y1eA0",
+  "name": "CBS - Script Block Patch (temp)",
+  "active": false,
+  "isArchived": false,
+  "versionId": "5726b0d0-d341-44ad-b284-046a74643cac",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "createdAt": "2026-10-06T15:25:06.298Z",
+  "updatedAt": "2026-10-06T15:25:06.298Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Patch Hook": {
+      "main": [
+        [
+          {
+            "node": "Get Pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Pages": {
+      "main": [
+        [
+          {
+            "node": "Build",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build": {
+      "main": [
+        [
+          {
+            "node": "Apply?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apply?": {
+      "main": [
+        [
+          {
+            "node": "Backup Page",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Dry Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Backup Page": {
+      "main": [
+        [
+          {
+            "node": "Save Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Page": {
+      "main": [
+        [
+          {
+            "node": "Done",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "feb7bb31-9b2f-4011-bfa6-b645b63b75a6",
+      "name": "Patch Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        96
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-block-patch-temp",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "webhookId": "44acdf46-9c7d-47d9-9a05-0320af8f79bd"
+    },
+    {
+      "id": "b6dfdbf4-c45e-442f-a63d-9f90150ab2ee",
+      "name": "Get Pages",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        96
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HOHWTBOJHrHF0TvB"
+        },
+        "returnAll": true
+      }
+    },
+    {
+      "id": "81bab52d-9445-49c5-8637-f0073995501c",
+      "name": "Build",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        96
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const b=$('Patch Hook').first().json.body||{};\nconst rows=$input.all().map(i=>i.json);\nconst page=b.page||'page:cbs-admin';const id=String(b.id||'');\nif(!/^[A-Za-z0-9_-]+$/.test(id))return [{json:{apply:false,err:'bad id'}}];\nconst row=rows.find(r=>r.name===page);\nif(!row)return [{json:{apply:false,err:'no page'}}];\nconst o=JSON.parse(row.content);let h=o.b;\nlet js=String(b.script||'');\nif(!js||js.indexOf('</script')>-1)return [{json:{apply:false,err:'bad script'}}];\nlet syntax='ok';try{new Function(js);}catch(e){syntax='ERR '+e.message;}\nif(syntax!=='ok')return [{json:{apply:false,err:'syntax',syntax}}];\nif(js.indexOf('__LG__')>-1){const m=h.match(/var LG='(data:image\\/png;base64,[^']+)'/)||h.match(/var LG=\"(data:image\\/png;base64,[^\"]+)\"/);if(!m)return [{json:{apply:false,err:'no logo'}}];js=js.split('__LG__').join(m[1]);}\nconst open='<script id=\"'+id+'\">';const n=h.split(open).length-1;\nlet mode='';\nif(n===1){const re=new RegExp('<script id=\"'+id+'\">[\\\\s\\\\S]*?<\\\\/script>');h=h.replace(re,()=>open+js+'</script>');mode='replaced';}\nelse if(n===0&&b.before){const k=h.split(b.before).length-1;if(k!==1)return [{json:{apply:false,err:'anchor count '+k}}];h=h.split(b.before).join(open+js+'</script>'+b.before);mode='inserted';}\nelse return [{json:{apply:false,err:'block count '+n}}];\no.b=h;const apply=b.dry===false;\nreturn [{json:{apply,mode,syntax,id:row.id,bakName:'_bak_'+id+'_'+page,before:row.content.length,after:JSON.stringify(o).length,scriptLen:js.length,bak:apply?row.content:'',content:apply?JSON.stringify(o):''}}];"
+      }
+    },
+    {
+      "id": "c503c9a6-89e0-4b89-8b26-81aa0f920612",
+      "name": "Apply?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        96
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.apply }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "71d76a68-015b-42ca-86fa-44c4d630b244",
+      "name": "Backup Page",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HOHWTBOJHrHF0TvB"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "name": "={{ $json.bakName }}",
+            "content": "={{ $json.bak }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "content",
+              "displayName": "content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "d28d5e93-6db8-42d6-a94a-f15cce2e5b99",
+      "name": "Save Page",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HOHWTBOJHrHF0TvB"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Build').first().json.id }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "content": "={{ $('Build').first().json.content }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "content",
+              "displayName": "content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "46981b79-edf3-4d21-aa52-af8e4d5baad8",
+      "name": "Done",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const b=$('Build').first().json;return [{json:{saved:true,mode:b.mode,before:b.before,after:b.after,scriptLen:b.scriptLen,backup:b.bakName}}];"
+      }
+    },
+    {
+      "id": "dd14b270-29bb-4157-81f9-69a1fe8cd8cf",
+      "name": "Dry Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        192
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const b=$('Build').first().json;return [{json:{dry:true,err:b.err||'',mode:b.mode||'',syntax:b.syntax||'',before:b.before,after:b.after,scriptLen:b.scriptLen}}];"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": null,
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Temporary: replaces (or inserts before an anchor) a <script id> block on a cbs_page_parts page; __LG__ becomes the CBS logo; syntax check, backup first, dry-run by default.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

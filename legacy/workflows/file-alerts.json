@@ -1,0 +1,1377 @@
+{
+  "id": "z1OsHfwjoLSvkazZ",
+  "name": "CBS - File Alerts",
+  "active": true,
+  "isArchived": false,
+  "versionId": "56ecc368-0c08-43a4-afc1-ccab0a0389ac",
+  "activeVersionId": "56ecc368-0c08-43a4-afc1-ccab0a0389ac",
+  "triggerCount": 5,
+  "createdAt": "2026-10-19T10:49:09.013Z",
+  "updatedAt": "2026-10-27T17:34:30.675Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none"
+  },
+  "connections": {
+    "Every 15 min": {
+      "main": [
+        [
+          {
+            "node": "All Alerts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "New row?": {
+      "main": [
+        [
+          {
+            "node": "Insert Alert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Clear Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST cbs-file-alerts-scan": {
+      "main": [
+        [
+          {
+            "node": "All Alerts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET Alerts": {
+      "main": [
+        [
+          {
+            "node": "Alerts All",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alerts All": {
+      "main": [
+        [
+          {
+            "node": "List Open",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Open": {
+      "main": [
+        [
+          {
+            "node": "Respond Alerts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST Act": {
+      "main": [
+        [
+          {
+            "node": "Act Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Act Prep": {
+      "main": [
+        [
+          {
+            "node": "Dismiss",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dismiss": {
+      "main": [
+        [
+          {
+            "node": "Respond Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET UI": {
+      "main": [
+        [
+          {
+            "node": "Serve UI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "All Alerts": {
+      "main": [
+        [
+          {
+            "node": "Scan Tasks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scan Tasks": {
+      "main": [
+        [
+          {
+            "node": "Scan Plan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scan Plan": {
+      "main": [
+        [
+          {
+            "node": "Scan Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scan Files": {
+      "main": [
+        [
+          {
+            "node": "Scan Build",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scan Build": {
+      "main": [
+        [
+          {
+            "node": "New row?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "7da01cae-4c78-44f3-8008-dc8c21322d80",
+      "name": "Every 15 min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "disabled": false
+    },
+    {
+      "id": "0d04cee4-7231-4797-a19b-e48fdbc99013",
+      "name": "All Alerts",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        96
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "ToEQhWQUtoC9ImCB"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "3be5f503-a19f-4b0e-86f2-41d74a390c09",
+      "name": "New row?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        96
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.id ? \"\" : \"new\" }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              },
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "eb9cd52d-7348-446e-ac93-dee8cd8b0887",
+      "name": "Insert Alert",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "ToEQhWQUtoC9ImCB"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null,
+          "matchingColumns": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "4cade6c6-92ff-4ae3-bb8f-589d8fd8d282",
+      "name": "Clear Alert",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        192
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "ToEQhWQUtoC9ImCB"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "={{ $json.status }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "status",
+              "displayName": "status",
+              "type": "string",
+              "display": true,
+              "required": false,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "f5d7b54d-1096-475f-a471-c94629d92056",
+      "name": "POST cbs-file-alerts-scan",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        192
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-file-alerts-scan",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "webhookId": "4d974a3f-b601-4494-b923-9fbe7db4a830"
+    },
+    {
+      "id": "576245c2-ecce-44f9-b778-7f93fffa4ad4",
+      "name": "GET Alerts",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        416
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-file-alerts",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "9cda8787-bcb3-4874-bb41-3cc5fe1b2967"
+    },
+    {
+      "id": "704b918b-fd04-4d3f-ae96-ac3ed3cad601",
+      "name": "Alerts All",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        416
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "ToEQhWQUtoC9ImCB"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "82dda313-4ac2-4563-9a89-02efceefdf74",
+      "name": "List Open",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        416
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const q=$('GET Alerts').first().json.query||{};const job=String(q.job||'').replace(/[^0-9A-Za-z-]/g,'');\nlet R=[];try{R=$('Alerts All').all().map(i=>i.json);}catch(e){}\nconst A=R.filter(r=>r&&r.id!=null&&r.status==='open'&&(!job||String(r.job)===job)).map(r=>({id:r.id,job:r.job,req:r.req,title:r.task_title,folder:r.folder,n:r.file_name,u:r.file_url,at:r.file_at}));\nreturn [{json:{ok:true,alerts:A}}];\n"
+      }
+    },
+    {
+      "id": "fc7ea2f0-c220-4e92-ba86-17234e83fb92",
+      "name": "Respond Alerts",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        416
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "f7a413cf-b4b4-42f0-80f6-460806157fb1",
+      "name": "POST Act",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        640
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-file-alerts-act",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "a4d94a61-4a76-4114-b711-e25166633733"
+    },
+    {
+      "id": "5de2ea66-a316-46f4-bac7-3d6a41725f10",
+      "name": "Act Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        640
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "let b=$input.first().json.body||{};if(typeof b==='string'){try{b=JSON.parse(b);}catch(e){b={};}}\nconst ids=(Array.isArray(b.ids)?b.ids:[]).map(Number).filter(n=>n>0).slice(0,50),by=String(b.by||'').slice(0,80);\nif(String(b.a||'dismiss')!=='dismiss'||!ids.length)return [{json:{id:-1,status:'dismissed',dismissed_by:''}}];\nreturn ids.map(id=>({json:{id:id,status:'dismissed',dismissed_by:by}}));\n"
+      }
+    },
+    {
+      "id": "eaa2a7df-442f-442a-b770-0056c0d9d195",
+      "name": "Dismiss",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        640
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "ToEQhWQUtoC9ImCB"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "={{ $json.status }}",
+            "dismissed_by": "={{ $json.dismissed_by }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "status",
+              "displayName": "status",
+              "type": "string",
+              "display": true,
+              "required": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "dismissed_by",
+              "displayName": "dismissed_by",
+              "type": "string",
+              "display": true,
+              "required": false,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "4fec2f51-396d-43b2-aee9-24b163a8b8ac",
+      "name": "Respond Act",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        640
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "{\"ok\":true}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "c52de1dd-2807-46ea-afb4-97ecf2653737",
+      "name": "GET UI",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        864
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-file-alerts-ui",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "3e7a8087-e0ef-49bf-a9c6-4243430b335e"
+    },
+    {
+      "id": "4a481131-9b1d-4efc-9e01-928257129d57",
+      "name": "Serve UI",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        864
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "/* CBS file alerts (CBS - File Alerts, GET cbs-file-alerts-ui). Loaded on the job page and the Actions board.\n   A task whose job folder got a new file shows a \"New file\" badge on its row / card, and a note at the top of the task drawer\n   asking the office to review and complete the task. Nothing completes itself. Dismiss clears the note (cbs-file-alerts-act). */\n(function () {\n  if (window.__cbsFA) return; window.__cbsFA = 1;\n  var PJ = (new URLSearchParams(location.search).get('job') || '').replace(/[^0-9A-Za-z-]/g, '');\n  var A = [], busy = false, tm = null;\n  function E(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); }\n  function norm(s) { return String(s || '').replace(/\\s+/g, ' ').trim().toLowerCase(); }\n  var css = document.createElement('style');\n  css.textContent = '.fabadge{display:inline-block;margin-left:6px;font-size:11px;font-weight:700;line-height:1.5;background:#fff1d6;color:#7a4b00;border:1px solid #f0c36d;border-radius:10px;padding:0 7px;vertical-align:middle;white-space:nowrap}'\n    + '.fabn{margin:10px 16px;padding:10px 12px;border:1px solid #f0c36d;background:#fff8e6;border-radius:10px;font:14px system-ui,-apple-system,\"Segoe UI\",sans-serif;color:#3d4043;line-height:1.4}'\n    + '.fabn b{display:block;margin-bottom:4px;color:#7a4b00}.fabn ul{margin:4px 0 6px;padding-left:18px}.fabn a{color:#1f4f86}'\n    + '.fabn .fa-r{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:6px;font-size:13px;color:#5c5f62}'\n    + '.fabn button{font:inherit;font-size:13px;font-weight:600;border:1px solid #c4c6c8;background:#fff;border-radius:8px;padding:5px 12px;cursor:pointer;white-space:nowrap}';\n  document.head.appendChild(css);\n  function forTask(job, title) { title = norm(title); if (!job || !title) return []; return A.filter(function (a) { return String(a.job) === String(job) && norm(a.title) === title; }); }\n  function jobIn(t) { var m = String(t || '').match(/Job ([0-9A-Za-z-]+)/); return m ? m[1] : PJ; }\n  function titleOf(b) { var t = ''; [].forEach.call(b.childNodes, function (n) { if (!(n.nodeType === 1 && n.classList && n.classList.contains('fabadge'))) t += n.textContent; }); return t; }\n  function paint() {\n    [].forEach.call(document.querySelectorAll('.tki,.cd'), function (el) {\n      var b = el.querySelector('b'); if (!b) return;\n      var sm = el.querySelector('small'), job = el.classList.contains('cd') ? jobIn(sm ? sm.textContent : '') : PJ;\n      var L = el.classList.contains('dn') ? [] : forTask(job, titleOf(b)), bd = b.querySelector('.fabadge');\n      if (L.length) { if (!bd) { bd = document.createElement('span'); bd.className = 'fabadge'; b.appendChild(bd); } var tx = '\\uD83D\\uDCCE New file' + (L.length > 1 ? 's (' + L.length + ')' : ''); if (bd.textContent !== tx) bd.textContent = tx; bd.title = 'A file was uploaded for this task. Open the task to review and complete it.'; }\n      else if (bd) bd.remove();\n    });\n    [].forEach.call(document.querySelectorAll('#ctd,#tkd,[role=dialog]'), function (d) {\n      if (d.id === 'cbsTT') return;\n      var hd = d.querySelector('.dh') || d.firstElementChild; if (!hd) return;\n      var te = hd.querySelector('div[style*=\"font-size:18px\"]') || hd.querySelector('h2,h3,b'); if (!te) return;\n      var tt = te.tagName === 'INPUT' ? te.value : te.textContent, job = jobIn(hd.textContent);\n      var L = forTask(job, tt), bn = d.querySelector('.fabn');\n      if (!L.length) { if (bn) bn.remove(); return; }\n      var key = L.map(function (a) { return a.id; }).join(',');\n      if (bn && bn.getAttribute('data-k') === key) return; if (bn) bn.remove();\n      bn = document.createElement('div'); bn.className = 'fabn'; bn.setAttribute('data-k', key);\n      bn.innerHTML = '<b>\\uD83D\\uDCCE New file uploaded for this task</b><ul>' + L.map(function (a) { return '<li><a href=\"/webhook/cbs-file?u=' + encodeURIComponent(a.u) + '\" target=\"_blank\" rel=\"noopener\">' + E(a.n) + '</a> <span style=\"color:#6b6e70\">\\u00b7 ' + E(a.folder) + (a.at ? ' \\u00b7 ' + E(String(a.at).slice(8, 10) + '/' + String(a.at).slice(5, 7)) : '') + '</span></li>'; }).join('') + '</ul>'\n        + '<div class=\"fa-r\"><span>Check it and, if it finishes the task, complete the task below.</span><button type=\"button\" class=\"fa-x\">Dismiss</button></div>';\n      hd.parentNode.insertBefore(bn, hd.nextSibling);\n      bn.querySelector('.fa-x').onclick = function () {\n        var btn = this; btn.disabled = true; var nm = ''; try { nm = localStorage.getItem('cbs_name') || ''; } catch (x) {}\n        var ids = L.map(function (a) { return a.id; });\n        fetch('/webhook/cbs-file-alerts-act', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ a: 'dismiss', ids: ids, by: nm }) })\n          .then(function (r) { return r.json(); }).then(function (r) { if (!r || !r.ok) throw 0; A = A.filter(function (a) { return ids.indexOf(a.id) < 0; }); bn.remove(); paint(); })\n          .catch(function () { btn.disabled = false; btn.textContent = 'Could not dismiss, try again'; });\n      };\n    });\n  }\n  function load() {\n    if (busy) return; busy = true;\n    fetch('/webhook/cbs-file-alerts' + (PJ ? '?job=' + encodeURIComponent(PJ) : ''), { cache: 'no-store' }).then(function (r) { return r.json(); })\n      .then(function (d) { A = (d && d.alerts) || []; busy = false; paint(); }).catch(function () { busy = false; });\n  }\n  function later() { if (tm) return; tm = setTimeout(function () { tm = null; paint(); }, 120); }\n  function start() { load(); setInterval(load, 60000); new MutationObserver(function (M) { for (var i = 0; i < M.length; i++) { var t = M[i].target; if (t && t.classList && (t.classList.contains('fabadge') || t.classList.contains('fabn'))) continue; later(); return; } }).observe(document.body, { childList: true, subtree: true }); }\n  if (document.body) start(); else document.addEventListener('DOMContentLoaded', start);\n})();\n",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/javascript; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "c114d77f-f5e9-4454-8b34-d3eceb5a481f",
+      "name": "Scan Tasks",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        96
+      ],
+      "parameters": {
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "outputPropertyName": "data",
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 60000
+        },
+        "url": "https://old-hub.example/webhook/cbs-tasks-data"
+      },
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "dd51a53a-7737-43e9-8900-4ce0d236c7f3",
+      "name": "Scan Plan",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        96
+      ],
+      "parameters": {
+        "jsCode": "/* Scan Plan: which jobs' files to list. Jobs with an open task that files can finish (same MAP as Scan Build). No fetching here:\n   the task list comes from Scan Tasks and the file lists from Scan Files (HTTP Request nodes), so no Code step holds a Code slot. */\nconst H='https://old-hub.example/webhook/';const S=v=>v==null?'':String(v).trim();\nconst REQ={survey:1,estimate:1,supq:1,subq:1,docs:1,drawings:1,rams:1,subrams:1,pos:1,subpos:1,hire:1,inspection:1,scaffold:1,permits:1,cphsp:1,pci:1,inductions:1,toolbox:1,programme:1};\nlet D=null;try{const raw=$('Scan Tasks').first().json.data;D=typeof raw==='string'?JSON.parse(raw):raw;}catch(e){D=null;}\nif(!D||!Array.isArray(D.tasks))return [];\nconst jobs={};D.tasks.forEach(t=>{const j=S(t.job),r=S(t.req);if(!j||!REQ[r])return;if(t.status==='Done'||t.status==='Verified')return;jobs[j]=1;});\nconst L=Object.keys(jobs).map(j=>({json:{job:j,u:H+'cbs-job-files?job='+encodeURIComponent(j)}}));\n/* no jobs to check: one empty item so Scan Build still runs and clears alerts whose task is done */\nreturn L.length?L:[{json:{job:'',u:''}}];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "302612ce-33ab-47ff-98d8-4974f6ca8303",
+      "name": "Scan Files",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        672,
+        96
+      ],
+      "parameters": {
+        "options": {
+          "batching": {
+            "batch": {
+              "batchInterval": 500,
+              "batchSize": 3
+            }
+          },
+          "response": {
+            "response": {
+              "neverError": true,
+              "outputPropertyName": "data",
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 90000
+        },
+        "url": "={{ $json.u }}"
+      },
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true
+    },
+    {
+      "id": "c9e01678-d157-4eac-ac76-5e4df08e83f1",
+      "name": "Scan Build",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        784,
+        96
+      ],
+      "parameters": {
+        "jsCode": "/* Scan Build (was Scan): every 15 minutes (and POST cbs-file-alerts-scan): for each job with an open task that files can finish (survey,\n   quotes, RAMS, POs...), the job's files (listed by Scan Files) are checked and any file not seen before is logged in cbs_file_alerts. A file\n   in a task's folder (e.g. Site Surveys -> Site survey) uploaded in the last 14 days while that task is open becomes an open alert (badge +\n   note on the task, nothing closes itself). Everything else is logged as seen so it never alerts later. Open alerts whose task is now done\n   or gone are cleared. Same rules as before; only the fetching moved to HTTP Request nodes (Scan Tasks, Scan Files). */\nconst S=v=>v==null?'':String(v).trim();\nconst MAP={'site surveys':['survey'],'surveys':['survey'],'estimate':['estimate'],'quotes':['supq','subq'],'documents':['docs'],'documentation':['docs'],'rfis':['drawings'],'drawings':['drawings'],'rams':['rams','subrams'],'subcontractor rams':['subrams'],'purchase orders':['pos','subpos','hire'],'inspections':['inspection','scaffold'],'permits':['permits'],'cdm':['cphsp','pci'],'inductions':['inductions'],'toolbox talks':['toolbox'],'programme':['programme']};\nconst REQ={};Object.keys(MAP).forEach(k=>MAP[k].forEach(r=>REQ[r]=1));\nconst pj=raw=>{if(raw&&typeof raw==='object')return raw;if(typeof raw!=='string'||!raw.trim())return null;try{return JSON.parse(raw);}catch(e){return null;}};\nlet ex=[];try{ex=$('All Alerts').all().map(i=>i.json).filter(r=>r&&r.id!=null);}catch(e){}\nconst seen={};ex.forEach(r=>{seen[S(r.file_id)+'|'+S(r.req)]=1;});\nlet D=null;try{D=pj($('Scan Tasks').first().json.data);}catch(e){D=null;}\nif(!D||!Array.isArray(D.tasks))return [];\nconst openT={};\nD.tasks.forEach(t=>{const j=S(t.job),r=S(t.req);if(!j||!REQ[r])return;if(t.status==='Done'||t.status==='Verified')return;(openT[j+'|'+r]=openT[j+'|'+r]||[]).push(t);});\nconst out=[];\nex.forEach(r=>{if(S(r.status)==='open'&&!openT[S(r.job)+'|'+S(r.req)])out.push({json:{id:r.id,status:'cleared'}});});\nconst cut=new Date(Date.now()-14*864e5).toISOString(),now=new Date().toISOString();\nconst P=$('Scan Plan').all().map(i=>i.json||{});\n$input.all().forEach(function(it,idx){\n const pi=(it.pairedItem&&typeof it.pairedItem.item==='number')?it.pairedItem.item:idx;const j=S((P[pi]||{}).job);if(!j)return;\n const x=it.json||{};if(x.error)return;const F=pj(x.data);\n if(!F||!F.ok||!Array.isArray(F.folders))return;\n F.folders.forEach(fd=>{const reqs=MAP[S(fd.name).toLowerCase()];if(!reqs)return;\n  (fd.files||[]).forEach(f=>{const fid=S(f.id)||S(f.u);if(!fid)return;\n   reqs.forEach(r=>{const k=fid+'|'+r;if(seen[k])return;seen[k]=1;const ot=openT[j+'|'+r],fresh=S(f.at)>=cut;\n    out.push({json:{job:j,req:r,task_title:ot?S(ot[0].title):'',folder:S(fd.name),file_id:fid,file_name:S(f.n),file_url:S(f.u),file_at:S(f.at),status:(ot&&fresh)?'open':'seen',created_at:now,dismissed_by:''}});});});});});\nreturn out;\n",
+        "mode": "runOnceForAllItems"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "7da01cae-4c78-44f3-8008-dc8c21322d80",
+        "name": "Every 15 min",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes",
+                "minutesInterval": 15
+              }
+            ]
+          }
+        },
+        "disabled": false
+      },
+      {
+        "id": "0d04cee4-7231-4797-a19b-e48fdbc99013",
+        "name": "All Alerts",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          96
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "ToEQhWQUtoC9ImCB"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "3be5f503-a19f-4b0e-86f2-41d74a390c09",
+        "name": "New row?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          896,
+          96
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.id ? \"\" : \"new\" }}",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                },
+                "rightValue": ""
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "eb9cd52d-7348-446e-ac93-dee8cd8b0887",
+        "name": "Insert Alert",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1120,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "insert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "ToEQhWQUtoC9ImCB"
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null,
+            "matchingColumns": []
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "4cade6c6-92ff-4ae3-bb8f-589d8fd8d282",
+        "name": "Clear Alert",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1120,
+          192
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "ToEQhWQUtoC9ImCB"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $json.id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "status": "={{ $json.status }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "status",
+                "displayName": "status",
+                "type": "string",
+                "display": true,
+                "required": false,
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "f5d7b54d-1096-475f-a471-c94629d92056",
+        "name": "POST cbs-file-alerts-scan",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          192
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-file-alerts-scan",
+          "responseMode": "onReceived",
+          "options": {}
+        },
+        "webhookId": "4d974a3f-b601-4494-b923-9fbe7db4a830"
+      },
+      {
+        "id": "576245c2-ecce-44f9-b778-7f93fffa4ad4",
+        "name": "GET Alerts",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          416
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-file-alerts",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "9cda8787-bcb3-4874-bb41-3cc5fe1b2967"
+      },
+      {
+        "id": "704b918b-fd04-4d3f-ae96-ac3ed3cad601",
+        "name": "Alerts All",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          416
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "ToEQhWQUtoC9ImCB"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "82dda313-4ac2-4563-9a89-02efceefdf74",
+        "name": "List Open",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          416
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const q=$('GET Alerts').first().json.query||{};const job=String(q.job||'').replace(/[^0-9A-Za-z-]/g,'');\nlet R=[];try{R=$('Alerts All').all().map(i=>i.json);}catch(e){}\nconst A=R.filter(r=>r&&r.id!=null&&r.status==='open'&&(!job||String(r.job)===job)).map(r=>({id:r.id,job:r.job,req:r.req,title:r.task_title,folder:r.folder,n:r.file_name,u:r.file_url,at:r.file_at}));\nreturn [{json:{ok:true,alerts:A}}];\n"
+        }
+      },
+      {
+        "id": "fc7ea2f0-c220-4e92-ba86-17234e83fb92",
+        "name": "Respond Alerts",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          416
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "f7a413cf-b4b4-42f0-80f6-460806157fb1",
+        "name": "POST Act",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          640
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-file-alerts-act",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "a4d94a61-4a76-4114-b711-e25166633733"
+      },
+      {
+        "id": "5de2ea66-a316-46f4-bac7-3d6a41725f10",
+        "name": "Act Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          640
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "let b=$input.first().json.body||{};if(typeof b==='string'){try{b=JSON.parse(b);}catch(e){b={};}}\nconst ids=(Array.isArray(b.ids)?b.ids:[]).map(Number).filter(n=>n>0).slice(0,50),by=String(b.by||'').slice(0,80);\nif(String(b.a||'dismiss')!=='dismiss'||!ids.length)return [{json:{id:-1,status:'dismissed',dismissed_by:''}}];\nreturn ids.map(id=>({json:{id:id,status:'dismissed',dismissed_by:by}}));\n"
+        }
+      },
+      {
+        "id": "eaa2a7df-442f-442a-b770-0056c0d9d195",
+        "name": "Dismiss",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          640
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "ToEQhWQUtoC9ImCB"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $json.id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "status": "={{ $json.status }}",
+              "dismissed_by": "={{ $json.dismissed_by }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "status",
+                "displayName": "status",
+                "type": "string",
+                "display": true,
+                "required": false,
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "dismissed_by",
+                "displayName": "dismissed_by",
+                "type": "string",
+                "display": true,
+                "required": false,
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "4fec2f51-396d-43b2-aee9-24b163a8b8ac",
+        "name": "Respond Act",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          640
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "{\"ok\":true}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ]
+            }
+          }
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "c52de1dd-2807-46ea-afb4-97ecf2653737",
+        "name": "GET UI",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          864
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-file-alerts-ui",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "3e7a8087-e0ef-49bf-a9c6-4243430b335e"
+      },
+      {
+        "id": "4a481131-9b1d-4efc-9e01-928257129d57",
+        "name": "Serve UI",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          864
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "/* CBS file alerts (CBS - File Alerts, GET cbs-file-alerts-ui). Loaded on the job page and the Actions board.\n   A task whose job folder got a new file shows a \"New file\" badge on its row / card, and a note at the top of the task drawer\n   asking the office to review and complete the task. Nothing completes itself. Dismiss clears the note (cbs-file-alerts-act). */\n(function () {\n  if (window.__cbsFA) return; window.__cbsFA = 1;\n  var PJ = (new URLSearchParams(location.search).get('job') || '').replace(/[^0-9A-Za-z-]/g, '');\n  var A = [], busy = false, tm = null;\n  function E(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); }\n  function norm(s) { return String(s || '').replace(/\\s+/g, ' ').trim().toLowerCase(); }\n  var css = document.createElement('style');\n  css.textContent = '.fabadge{display:inline-block;margin-left:6px;font-size:11px;font-weight:700;line-height:1.5;background:#fff1d6;color:#7a4b00;border:1px solid #f0c36d;border-radius:10px;padding:0 7px;vertical-align:middle;white-space:nowrap}'\n    + '.fabn{margin:10px 16px;padding:10px 12px;border:1px solid #f0c36d;background:#fff8e6;border-radius:10px;font:14px system-ui,-apple-system,\"Segoe UI\",sans-serif;color:#3d4043;line-height:1.4}'\n    + '.fabn b{display:block;margin-bottom:4px;color:#7a4b00}.fabn ul{margin:4px 0 6px;padding-left:18px}.fabn a{color:#1f4f86}'\n    + '.fabn .fa-r{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:6px;font-size:13px;color:#5c5f62}'\n    + '.fabn button{font:inherit;font-size:13px;font-weight:600;border:1px solid #c4c6c8;background:#fff;border-radius:8px;padding:5px 12px;cursor:pointer;white-space:nowrap}';\n  document.head.appendChild(css);\n  function forTask(job, title) { title = norm(title); if (!job || !title) return []; return A.filter(function (a) { return String(a.job) === String(job) && norm(a.title) === title; }); }\n  function jobIn(t) { var m = String(t || '').match(/Job ([0-9A-Za-z-]+)/); return m ? m[1] : PJ; }\n  function titleOf(b) { var t = ''; [].forEach.call(b.childNodes, function (n) { if (!(n.nodeType === 1 && n.classList && n.classList.contains('fabadge'))) t += n.textContent; }); return t; }\n  function paint() {\n    [].forEach.call(document.querySelectorAll('.tki,.cd'), function (el) {\n      var b = el.querySelector('b'); if (!b) return;\n      var sm = el.querySelector('small'), job = el.classList.contains('cd') ? jobIn(sm ? sm.textContent : '') : PJ;\n      var L = el.classList.contains('dn') ? [] : forTask(job, titleOf(b)), bd = b.querySelector('.fabadge');\n      if (L.length) { if (!bd) { bd = document.createElement('span'); bd.className = 'fabadge'; b.appendChild(bd); } var tx = '\\uD83D\\uDCCE New file' + (L.length > 1 ? 's (' + L.length + ')' : ''); if (bd.textContent !== tx) bd.textContent = tx; bd.title = 'A file was uploaded for this task. Open the task to review and complete it.'; }\n      else if (bd) bd.remove();\n    });\n    [].forEach.call(document.querySelectorAll('#ctd,#tkd,[role=dialog]'), function (d) {\n      if (d.id === 'cbsTT') return;\n      var hd = d.querySelector('.dh') || d.firstElementChild; if (!hd) return;\n      var te = hd.querySelector('div[style*=\"font-size:18px\"]') || hd.querySelector('h2,h3,b'); if (!te) return;\n      var tt = te.tagName === 'INPUT' ? te.value : te.textContent, job = jobIn(hd.textContent);\n      var L = forTask(job, tt), bn = d.querySelector('.fabn');\n      if (!L.length) { if (bn) bn.remove(); return; }\n      var key = L.map(function (a) { return a.id; }).join(',');\n      if (bn && bn.getAttribute('data-k') === key) return; if (bn) bn.remove();\n      bn = document.createElement('div'); bn.className = 'fabn'; bn.setAttribute('data-k', key);\n      bn.innerHTML = '<b>\\uD83D\\uDCCE New file uploaded for this task</b><ul>' + L.map(function (a) { return '<li><a href=\"/webhook/cbs-file?u=' + encodeURIComponent(a.u) + '\" target=\"_blank\" rel=\"noopener\">' + E(a.n) + '</a> <span style=\"color:#6b6e70\">\\u00b7 ' + E(a.folder) + (a.at ? ' \\u00b7 ' + E(String(a.at).slice(8, 10) + '/' + String(a.at).slice(5, 7)) : '') + '</span></li>'; }).join('') + '</ul>'\n        + '<div class=\"fa-r\"><span>Check it and, if it finishes the task, complete the task below.</span><button type=\"button\" class=\"fa-x\">Dismiss</button></div>';\n      hd.parentNode.insertBefore(bn, hd.nextSibling);\n      bn.querySelector('.fa-x').onclick = function () {\n        var btn = this; btn.disabled = true; var nm = ''; try { nm = localStorage.getItem('cbs_name') || ''; } catch (x) {}\n        var ids = L.map(function (a) { return a.id; });\n        fetch('/webhook/cbs-file-alerts-act', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ a: 'dismiss', ids: ids, by: nm }) })\n          .then(function (r) { return r.json(); }).then(function (r) { if (!r || !r.ok) throw 0; A = A.filter(function (a) { return ids.indexOf(a.id) < 0; }); bn.remove(); paint(); })\n          .catch(function () { btn.disabled = false; btn.textContent = 'Could not dismiss, try again'; });\n      };\n    });\n  }\n  function load() {\n    if (busy) return; busy = true;\n    fetch('/webhook/cbs-file-alerts' + (PJ ? '?job=' + encodeURIComponent(PJ) : ''), { cache: 'no-store' }).then(function (r) { return r.json(); })\n      .then(function (d) { A = (d && d.alerts) || []; busy = false; paint(); }).catch(function () { busy = false; });\n  }\n  function later() { if (tm) return; tm = setTimeout(function () { tm = null; paint(); }, 120); }\n  function start() { load(); setInterval(load, 60000); new MutationObserver(function (M) { for (var i = 0; i < M.length; i++) { var t = M[i].target; if (t && t.classList && (t.classList.contains('fabadge') || t.classList.contains('fabn'))) continue; later(); return; } }).observe(document.body, { childList: true, subtree: true }); }\n  if (document.body) start(); else document.addEventListener('DOMContentLoaded', start);\n})();\n",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/javascript; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "c114d77f-f5e9-4454-8b34-d3eceb5a481f",
+        "name": "Scan Tasks",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          448,
+          96
+        ],
+        "parameters": {
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "outputPropertyName": "data",
+                "responseFormat": "text"
+              }
+            },
+            "timeout": 60000
+          },
+          "url": "https://old-hub.example/webhook/cbs-tasks-data"
+        },
+        "onError": "continueRegularOutput",
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "dd51a53a-7737-43e9-8900-4ce0d236c7f3",
+        "name": "Scan Plan",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          560,
+          96
+        ],
+        "parameters": {
+          "jsCode": "/* Scan Plan: which jobs' files to list. Jobs with an open task that files can finish (same MAP as Scan Build). No fetching here:\n   the task list comes from Scan Tasks and the file lists from Scan Files (HTTP Request nodes), so no Code step holds a Code slot. */\nconst H='https://old-hub.example/webhook/';const S=v=>v==null?'':String(v).trim();\nconst REQ={survey:1,estimate:1,supq:1,subq:1,docs:1,drawings:1,rams:1,subrams:1,pos:1,subpos:1,hire:1,inspection:1,scaffold:1,permits:1,cphsp:1,pci:1,inductions:1,toolbox:1,programme:1};\nlet D=null;try{const raw=$('Scan Tasks').first().json.data;D=typeof raw==='string'?JSON.parse(raw):raw;}catch(e){D=null;}\nif(!D||!Array.isArray(D.tasks))return [];\nconst jobs={};D.tasks.forEach(t=>{const j=S(t.job),r=S(t.req);if(!j||!REQ[r])return;if(t.status==='Done'||t.status==='Verified')return;jobs[j]=1;});\nconst L=Object.keys(jobs).map(j=>({json:{job:j,u:H+'cbs-job-files?job='+encodeURIComponent(j)}}));\n/* no jobs to check: one empty item so Scan Build still runs and clears alerts whose task is done */\nreturn L.length?L:[{json:{job:'',u:''}}];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "302612ce-33ab-47ff-98d8-4974f6ca8303",
+        "name": "Scan Files",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          672,
+          96
+        ],
+        "parameters": {
+          "options": {
+            "batching": {
+              "batch": {
+                "batchInterval": 500,
+                "batchSize": 3
+              }
+            },
+            "response": {
+              "response": {
+                "neverError": true,
+                "outputPropertyName": "data",
+                "responseFormat": "text"
+              }
+            },
+            "timeout": 90000
+          },
+          "url": "={{ $json.u }}"
+        },
+        "onError": "continueRegularOutput",
+        "alwaysOutputData": true
+      },
+      {
+        "id": "c9e01678-d157-4eac-ac76-5e4df08e83f1",
+        "name": "Scan Build",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          784,
+          96
+        ],
+        "parameters": {
+          "jsCode": "/* Scan Build (was Scan): every 15 minutes (and POST cbs-file-alerts-scan): for each job with an open task that files can finish (survey,\n   quotes, RAMS, POs...), the job's files (listed by Scan Files) are checked and any file not seen before is logged in cbs_file_alerts. A file\n   in a task's folder (e.g. Site Surveys -> Site survey) uploaded in the last 14 days while that task is open becomes an open alert (badge +\n   note on the task, nothing closes itself). Everything else is logged as seen so it never alerts later. Open alerts whose task is now done\n   or gone are cleared. Same rules as before; only the fetching moved to HTTP Request nodes (Scan Tasks, Scan Files). */\nconst S=v=>v==null?'':String(v).trim();\nconst MAP={'site surveys':['survey'],'surveys':['survey'],'estimate':['estimate'],'quotes':['supq','subq'],'documents':['docs'],'documentation':['docs'],'rfis':['drawings'],'drawings':['drawings'],'rams':['rams','subrams'],'subcontractor rams':['subrams'],'purchase orders':['pos','subpos','hire'],'inspections':['inspection','scaffold'],'permits':['permits'],'cdm':['cphsp','pci'],'inductions':['inductions'],'toolbox talks':['toolbox'],'programme':['programme']};\nconst REQ={};Object.keys(MAP).forEach(k=>MAP[k].forEach(r=>REQ[r]=1));\nconst pj=raw=>{if(raw&&typeof raw==='object')return raw;if(typeof raw!=='string'||!raw.trim())return null;try{return JSON.parse(raw);}catch(e){return null;}};\nlet ex=[];try{ex=$('All Alerts').all().map(i=>i.json).filter(r=>r&&r.id!=null);}catch(e){}\nconst seen={};ex.forEach(r=>{seen[S(r.file_id)+'|'+S(r.req)]=1;});\nlet D=null;try{D=pj($('Scan Tasks').first().json.data);}catch(e){D=null;}\nif(!D||!Array.isArray(D.tasks))return [];\nconst openT={};\nD.tasks.forEach(t=>{const j=S(t.job),r=S(t.req);if(!j||!REQ[r])return;if(t.status==='Done'||t.status==='Verified')return;(openT[j+'|'+r]=openT[j+'|'+r]||[]).push(t);});\nconst out=[];\nex.forEach(r=>{if(S(r.status)==='open'&&!openT[S(r.job)+'|'+S(r.req)])out.push({json:{id:r.id,status:'cleared'}});});\nconst cut=new Date(Date.now()-14*864e5).toISOString(),now=new Date().toISOString();\nconst P=$('Scan Plan').all().map(i=>i.json||{});\n$input.all().forEach(function(it,idx){\n const pi=(it.pairedItem&&typeof it.pairedItem.item==='number')?it.pairedItem.item:idx;const j=S((P[pi]||{}).job);if(!j)return;\n const x=it.json||{};if(x.error)return;const F=pj(x.data);\n if(!F||!F.ok||!Array.isArray(F.folders))return;\n F.folders.forEach(fd=>{const reqs=MAP[S(fd.name).toLowerCase()];if(!reqs)return;\n  (fd.files||[]).forEach(f=>{const fid=S(f.id)||S(f.u);if(!fid)return;\n   reqs.forEach(r=>{const k=fid+'|'+r;if(seen[k])return;seen[k]=1;const ot=openT[j+'|'+r],fresh=S(f.at)>=cut;\n    out.push({json:{job:j,req:r,task_title:ot?S(ot[0].title):'',folder:S(fd.name),file_id:fid,file_name:S(f.n),file_url:S(f.u),file_at:S(f.at),status:(ot&&fresh)?'open':'seen',created_at:now,dismissed_by:''}});});});});});\nreturn out;\n",
+          "mode": "runOnceForAllItems"
+        }
+      }
+    ],
+    "connections": {
+      "Every 15 min": {
+        "main": [
+          [
+            {
+              "node": "All Alerts",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "New row?": {
+        "main": [
+          [
+            {
+              "node": "Insert Alert",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Clear Alert",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "POST cbs-file-alerts-scan": {
+        "main": [
+          [
+            {
+              "node": "All Alerts",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET Alerts": {
+        "main": [
+          [
+            {
+              "node": "Alerts All",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Alerts All": {
+        "main": [
+          [
+            {
+              "node": "List Open",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "List Open": {
+        "main": [
+          [
+            {
+              "node": "Respond Alerts",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "POST Act": {
+        "main": [
+          [
+            {
+              "node": "Act Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Act Prep": {
+        "main": [
+          [
+            {
+              "node": "Dismiss",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Dismiss": {
+        "main": [
+          [
+            {
+              "node": "Respond Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET UI": {
+        "main": [
+          [
+            {
+              "node": "Serve UI",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "All Alerts": {
+        "main": [
+          [
+            {
+              "node": "Scan Tasks",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Scan Tasks": {
+        "main": [
+          [
+            {
+              "node": "Scan Plan",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Scan Plan": {
+        "main": [
+          [
+            {
+              "node": "Scan Files",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Scan Files": {
+        "main": [
+          [
+            {
+              "node": "Scan Build",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Scan Build": {
+        "main": [
+          [
+            {
+              "node": "New row?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS file alerts: every 15 min scans open jobs' files; a new file in a task's folder flags that task (badge + drawer note with Dismiss). Never completes tasks. Endpoints: cbs-file-alerts, cbs-file-alerts-act, cbs-file-alerts-ui, cbs-file-alerts-scan.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

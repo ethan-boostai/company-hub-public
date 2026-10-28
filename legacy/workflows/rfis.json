@@ -1,0 +1,540 @@
+{
+  "id": "rOjYjPEVpdzqGaZ3",
+  "name": "CBS - RFIs",
+  "active": true,
+  "isArchived": false,
+  "versionId": "7aad4220-df90-47d0-98f3-379334ac1b1c",
+  "activeVersionId": "7aad4220-df90-47d0-98f3-379334ac1b1c",
+  "triggerCount": 3,
+  "createdAt": "2026-10-10T17:17:45.336Z",
+  "updatedAt": "2026-10-10T17:19:53.032Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Page Hook": {
+      "main": [
+        [
+          {
+            "node": "RFI Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RFI Page": {
+      "main": [
+        [
+          {
+            "node": "Send Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Hook": {
+      "main": [
+        [
+          {
+            "node": "RFI Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RFI Data": {
+      "main": [
+        [
+          {
+            "node": "Send Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Act Hook": {
+      "main": [
+        [
+          {
+            "node": "RFI Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RFI Act": {
+      "main": [
+        [
+          {
+            "node": "Send Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "8bf8886b-6613-423e-8aab-889da141fb4b",
+      "name": "Page Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-rfis",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "7dc31e01-d5f5-44ff-ac65-1b97ff8a9c27"
+    },
+    {
+      "id": "56837d63-7645-4b26-8c48-7a6b0ca78c6d",
+      "name": "RFI Page",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* CBS RFI page (admin): cbs-rfis?job=N. Data from cbs-rfis-data, saves to cbs-rfi-act. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v);const e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nlet info={};if(job){try{info=await h.httpRequest({url:H+'cbs-sm8-job?no='+encodeURIComponent(job),json:true,timeout:15000})||{};}catch(x){info={};}}\nconst D={job:job,site:S(info.site),client:S(info.client)};\nconst CSS='*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n+'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n+'.wrap{max-width:860px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}'\n+'.btn{background:#F47920;color:#fff;text-decoration:none;font-weight:600;border-radius:8px;padding:8px 14px;font-size:14px;border:0;font-family:inherit;cursor:pointer}.btn.ghost{background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}.btn.sm{padding:6px 10px;font-size:13px}.btn:disabled{opacity:.5}.btn.red{background:#fff;color:#b3261e;border:1px solid #e9b6b1}'\n+'.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}.pst{background:#fff;border:1px solid #d9d9d6;border-radius:10px;padding:8px 6px;text-align:center}.pst b{display:block;font-size:18px;line-height:1.2}.pst span{font-size:12px;color:#555}.pst.ed{cursor:pointer}.pst.ed:hover{border-color:#F47920}.pst.ok{border-color:#b9dfc1;background:#f1faf2}.pst.warn{border-color:#f2d398;background:#fff8ea}@media(max-width:560px){.strip{grid-template-columns:repeat(2,1fr)}}'\n+'.flt{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.flt button{border:1px solid #d9d9d6;background:#fff;border-radius:20px;padding:5px 11px;font:inherit;font-size:13px;cursor:pointer}.flt button.on{background:#F47920;color:#fff;border-color:#F47920}.srch{width:100%;font:inherit;padding:10px 12px;border:1px solid #ccc;border-radius:10px;margin-bottom:10px}'\n+'.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;margin-bottom:10px;padding:12px 14px}.t{font-weight:600}.m{color:#555;font-size:14px;margin-top:2px}.ds{white-space:pre-wrap;font-size:14px;margin-top:6px;color:#333}.b{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center}.amt{float:right;font-weight:700}'\n+'.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:20px;padding:1px 8px;margin-left:6px;background:#eee;color:#333;vertical-align:middle}.tag.Draft{background:#eee}.tag.Sent{background:#e6efff;color:#1f5fbf}.tag.Answered{background:#e3f4e6;color:#1d6b2c}.tag.Closed{background:#e9e9e7;color:#555}.tag.od{background:#fde3e1;color:#b3261e}.ans{white-space:pre-wrap;font-size:14px;margin-top:8px;padding:8px 10px;background:#f1faf2;border-left:3px solid #1d6b2c;border-radius:6px}'\n+'select.st{font:inherit;font-size:13px;padding:5px 6px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}'\n+'.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}'\n+'.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;overflow:auto;z-index:20}.dlg{background:#fff;border-radius:14px;max-width:560px;width:100%;padding:16px}.dlg h2{margin:0 0 10px;font-size:18px}'\n+'label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}.dlg input[type=text],.dlg input[type=date],.dlg input[type=number],.dlg textarea,.dlg select{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}.dlg textarea{min-height:90px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}'\n+'.chk{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid #eee}.chk input{width:20px;height:20px;flex:0 0 auto}.note{font-size:13px;color:#6b6e70;margin-top:6px}.hist{white-space:pre-wrap;font-size:12px;color:#6b6e70;margin-top:8px}.msg{font-size:14px;color:#8a5a00;margin-top:8px;min-height:18px}'\n+'.opr{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid #eee}.opr span{flex:1}';\nconst nav='<div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a>'+(job?'<a class=\"hub\" href=\"/webhook/cbs-job-file?job='+encodeURIComponent(job)+'\">Job File</a>':'')+'</div>';\nconst sub=e([D.site,D.client].filter(Boolean).join(' \\u00b7 ')||'Chelmsford Building Services');\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>RFIs - Job '+e(job)+'</title><script src=\"/webhook/cbs-guard\"></script><style>'+CSS+'</style><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script></head><body><header>'+nav+'<h1>RFIs'+(job?' \\u00b7 Job '+e(job):'')+'</h1><p>'+sub+'</p></header><div class=\"wrap\" id=\"app\">'+(job?'<div class=\"empty\">Loading\\u2026</div>':'<div class=\"empty\">Open RFIs from a job.</div>')+'</div><script>window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+';</script>'+(job?'<script>('+client.toString()+')();</script>':'')+'</body></html>';\nreturn [{json:{html:html}}];\n\nfunction client(){\nvar D=window.D,JOB=D.job,app=document.getElementById('app'),DATA=null,FILTER='open',Q='',LOGO=null;\nvar STS=['Draft','Sent','Answered','Closed'];\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:s(d);}\nfunction today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction plus(n){var d=new Date();d.setDate(d.getDate()+n);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction who(){var x='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)x=m.name;}catch(z){}if(!x){try{x=localStorage.getItem('cbs_name')||'';}catch(z){}}if(!x){x=(prompt('Your name:')||'').trim();if(x){try{localStorage.setItem('cbs_name',x);}catch(z){}}}return x;}\nfunction post(body){var by=who();if(!by)return Promise.resolve({ok:false,message:'',cancel:true});body.job=JOB;body.by=by;\n return fetch('/webhook/cbs-rfi-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw 0;return r.json();}).catch(function(){return {ok:false,message:'Could not save. Check your connection and try again.'};});}\nfunction load(){return fetch('/webhook/cbs-rfis-data?job='+encodeURIComponent(JOB),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){DATA=d;if(!D.site&&d.site){D.site=d.site;D.client=d.client;var hp=document.querySelector('header p');if(hp)hp.textContent=[d.site,d.client].filter(Boolean).join(' \\u00b7 ');}render();}).catch(function(){app.innerHTML='<div class=\"empty\">Could not load the RFIs. Refresh to try again.</div>';});}\nfunction dlg(html){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg\">'+html+'</div>';document.body.appendChild(o);o.close=function(){o.remove();};return o;}\nfunction guard(o,isDirty){o.addEventListener('click',function(ev){if(ev.target!==o)return;if(isDirty&&isDirty()&&!confirm('Close without saving your changes?'))return;o.close();});}\nfunction rows(){return (DATA&&DATA.rows)||[];}\nfunction isOpen(r){return r.status==='Draft'||r.status==='Sent';}\nfunction vis(){var q=Q.toLowerCase();return rows().filter(function(r){if(FILTER==='open'&&!isOpen(r))return false;if(FILTER==='overdue'&&!r.overdue)return false;if(FILTER!=='all'&&FILTER!=='open'&&FILTER!=='overdue'&&s(r.status)!==FILTER)return false;if(!q)return true;return [r.rfi_no,r.subject,r.question,r.sent_to,r.response].join(' ').toLowerCase().indexOf(q)>-1;});}\nfunction render(){var C=DATA.counts||{},h='';\n var open=(C.Draft||0)+(C.Sent||0);\n h+='<div class=\"strip\"><div class=\"pst\"><b>'+(C.Draft||0)+'</b><span>Drafts</span></div><div class=\"pst'+(DATA.overdue?' warn':'')+'\"><b>'+(C.Sent||0)+'</b><span>Awaiting reply'+(DATA.overdue?' ('+DATA.overdue+' overdue)':'')+'</span></div><div class=\"pst ok\"><b>'+(C.Answered||0)+'</b><span>Answered</span></div><div class=\"pst\"><b>'+(C.Closed||0)+'</b><span>Closed</span></div></div>';\n h+='<div class=\"tools\"><button class=\"btn\" id=\"add\">+ New RFI</button><button class=\"btn ghost\" id=\"log\">RFI log PDF</button></div>';\n var F=[['open','Open',open],['overdue','Overdue',DATA.overdue||0],['all','All',rows().length]].concat(STS.map(function(k){return [k,k,C[k]||0];}));\n h+='<div class=\"flt\">'+F.map(function(f){return '<button data-f=\"'+f[0]+'\" class=\"'+(FILTER===f[0]?'on':'')+'\">'+f[1]+' ('+f[2]+')</button>';}).join('')+'</div>';\n h+='<input class=\"srch\" id=\"q\" placeholder=\"Search RFIs\" value=\"'+e(Q)+'\">';\n var L=vis();\n if(!rows().length)h+='<div class=\"empty\">No RFIs on this job yet. Tap + New RFI to raise one.</div>';\n else if(!L.length)h+='<div class=\"empty\">Nothing here'+(FILTER==='open'?' \\u2013 no open RFIs. Tap All to see the rest.':'.')+'</div>';\n L.forEach(function(r){var st=s(r.status)||'Draft';\n  h+='<div class=\"card\" data-id=\"'+r.id+'\"><div class=\"t\">'+e(r.rfi_no)+' \\u00b7 '+e(r.subject)+'<span class=\"tag '+e(st)+'\">'+e(st)+'</span>'+(r.overdue?'<span class=\"tag od\">Overdue</span>':'')+'</div>'\n  +'<div class=\"m\">'+[r.sent_to?'To '+e(r.sent_to):'No recipient yet',r.sent_on?'sent '+dmy(r.sent_on):'',r.needed_by?'needed by '+dmy(r.needed_by):'',r.responded_on?'answered '+dmy(r.responded_on):''].filter(Boolean).join(' \\u00b7 ')+'</div>'\n  +'<div class=\"ds\">'+e(r.question)+'</div>'\n  +(r.response?'<div class=\"ans\"><b>Answer:</b> '+e(r.response)+'</div>':'')\n  +'<div class=\"b\">'\n  +(st==='Draft'?'<button class=\"btn sm\" data-a=\"send\">Mark sent</button>':'')\n  +(st==='Sent'?'<button class=\"btn sm\" data-a=\"answer\">Record answer</button>':'')\n  +(st==='Answered'?'<button class=\"btn sm\" data-a=\"close\">Close</button><button class=\"btn ghost sm\" data-a=\"ansedit\">Edit answer</button><button class=\"btn ghost sm\" data-a=\"more\">Ask again</button>':'')\n  +(st==='Closed'?'<button class=\"btn ghost sm\" data-a=\"reopen\">Reopen</button>':'')\n  +(st==='Sent'?'<button class=\"btn ghost sm\" data-a=\"back\">Back to draft</button>':'')\n  +((st==='Draft'||st==='Sent')?'<button class=\"btn ghost sm\" data-a=\"mail\">Email it</button>':'')\n  +'<button class=\"btn ghost sm\" data-a=\"edit\">Edit</button><button class=\"btn ghost sm\" data-a=\"pdf\">RFI PDF</button><button class=\"btn red sm\" data-a=\"del\">Delete</button></div>'\n  +(r.history?'<details><summary class=\"m\" style=\"cursor:pointer\">History</summary><div class=\"hist\">'+e(r.history)+'</div></details>':'')+'</div>';});\n app.innerHTML=h;\n document.getElementById('add').onclick=function(){editDlg(null);};document.getElementById('log').onclick=logDlg;\n app.querySelectorAll('[data-f]').forEach(function(b){b.onclick=function(){FILTER=b.getAttribute('data-f');render();};});\n var qi=document.getElementById('q');qi.oninput=function(){Q=qi.value;var p=qi.selectionStart;render();var x=document.getElementById('q');x.focus();try{x.setSelectionRange(p,p);}catch(z){}};\n app.querySelectorAll('[data-a]').forEach(function(el){var id=el.closest('.card').getAttribute('data-id');var r=rows().filter(function(x){return String(x.id)===id;})[0];var a=el.getAttribute('data-a');\n  el.onclick=function(){if(a==='edit')editDlg(r);else if(a==='send')sendDlg(r);else if(a==='answer')answerDlg(r,'Answered');else if(a==='ansedit')answerDlg(r,'edit');else if(a==='close')simple(r,'Closed','Close '+r.rfi_no+'?');else if(a==='reopen')simple(r,r.response?'Answered':'Sent','Reopen '+r.rfi_no+'?');else if(a==='back')simple(r,'Draft','Move '+r.rfi_no+' back to draft? The sent date is cleared.');else if(a==='more')simple(r,'Sent','Send '+r.rfi_no+' back to awaiting a reply? The current answer is moved into the history.');else if(a==='mail')mail(r);else if(a==='pdf')sheet(r);else if(a==='del')delR(r);};});}\nfunction simple(r,st,q){if(!confirm(q))return;post({a:'status',id:r.id,status:st}).then(function(x){if(!x.ok&&!x.cancel)alert(x.message||'Could not save.');load();});}\nfunction editDlg(r){r=r||{};var CT=DATA.contacts||[];\n var o=dlg('<h2>'+(r.id?'Edit '+e(r.rfi_no):'New RFI')+'</h2><label class=\"f\">Subject</label><input type=\"text\" id=\"fs\" value=\"'+e(r.subject)+'\" placeholder=\"e.g. Finish to rear elevation\">'\n +'<label class=\"f\">Question</label><textarea id=\"fq\" style=\"min-height:140px\" placeholder=\"What you need answered, with any drawing or location references\">'+e(r.question)+'</textarea>'\n +'<label class=\"f\">To</label>'+(CT.length?'<select id=\"fp\"><option value=\"\">Pick from Subcontractors and Suppliers, or type below\\u2026</option>'+CT.map(function(c,i){return '<option value=\"'+i+'\">'+e(c.label)+(c.email?' \\u2013 '+e(c.email):'')+'</option>';}).join('')+'</select>':'')\n +'<div class=\"row2\" style=\"margin-top:6px\"><input type=\"text\" id=\"ft\" value=\"'+e(r.sent_to)+'\" placeholder=\"Name or company\"><input type=\"text\" id=\"fe\" value=\"'+e(r.sent_to_email)+'\" placeholder=\"Email (optional)\"></div>'\n +'<label class=\"f\">Answer needed by</label><input type=\"date\" id=\"fn\" value=\"'+e(r.needed_by||(r.id?'':plus(7)))+'\">'\n +'<div class=\"msg\" id=\"fm\"></div><div class=\"b\"><button class=\"btn\" id=\"fsv\">Save</button><button class=\"btn ghost\" id=\"fx\">Cancel</button></div>');\n var fp=o.querySelector('#fp');if(fp)fp.onchange=function(){var c=CT[Number(fp.value)];if(!c)return;o.querySelector('#ft').value=c.label;o.querySelector('#fe').value=c.email||'';};\n var ids=['fs','fq','ft','fe','fn'],st=ids.map(function(i){return o.querySelector('#'+i).value;}).join('|');\n function dirty(){return ids.map(function(i){return o.querySelector('#'+i).value;}).join('|')!==st;}\n guard(o,dirty);o.querySelector('#fx').onclick=function(){if(dirty()&&!confirm('Close without saving your changes?'))return;o.close();};\n o.querySelector('#fsv').onclick=function(){var sj=o.querySelector('#fs').value.trim(),q=o.querySelector('#fq').value.trim();if(!sj||!q){alert('Add a subject and the question.');return;}var b=this;b.disabled=true;\n  post({a:'save',id:r.id||0,subject:sj,question:q,sent_to:o.querySelector('#ft').value,sent_to_email:o.querySelector('#fe').value,needed_by:o.querySelector('#fn').value})\n  .then(function(x){if(x.ok){o.close();load();}else{b.disabled=false;if(!x.cancel)o.querySelector('#fm').textContent=x.message||'Could not save.';}});};}\nfunction sendDlg(r){if(!r.sent_to){alert('Add who it is going to first (Edit).');return;}\n var o=dlg('<h2>Mark '+e(r.rfi_no)+' as sent</h2><div class=\"m\">To '+e(r.sent_to)+(r.sent_to_email?' ('+e(r.sent_to_email)+')':'')+'</div><label class=\"f\">Date sent</label><input type=\"date\" id=\"sd\" value=\"'+today()+'\"><div class=\"note\">Tip: use Email it to open your email with the RFI filled in, and attach the RFI PDF.</div><div class=\"msg\" id=\"sm\"></div><div class=\"b\"><button class=\"btn\" id=\"sg\">Mark sent</button><button class=\"btn ghost\" id=\"sx\">Cancel</button></div>');\n guard(o);o.querySelector('#sx').onclick=o.close;\n o.querySelector('#sg').onclick=function(){var b=this;b.disabled=true;post({a:'status',id:r.id,status:'Sent',sent_on:o.querySelector('#sd').value}).then(function(x){if(x.ok){o.close();load();}else{b.disabled=false;if(!x.cancel)o.querySelector('#sm').textContent=x.message||'Could not save.';}});};}\nfunction answerDlg(r,mode){\n var o=dlg('<h2>'+(mode==='edit'?'Edit answer':'Answer received')+': '+e(r.rfi_no)+'</h2><div class=\"m\">'+e(r.subject)+'</div><label class=\"f\">Answer</label><textarea id=\"aa\" style=\"min-height:140px\">'+e(r.response)+'</textarea><label class=\"f\">Date answered</label><input type=\"date\" id=\"ad\" value=\"'+e(r.responded_on||today())+'\">'+(mode==='edit'?'':'<label class=\"chk\"><input type=\"checkbox\" id=\"ac\"><span>Close the RFI now as well</span></label>')+'<div class=\"msg\" id=\"am\"></div><div class=\"b\"><button class=\"btn\" id=\"ag\">Save</button><button class=\"btn ghost\" id=\"ax\">Cancel</button></div>');\n var start=o.querySelector('#aa').value;function dirty(){return o.querySelector('#aa').value!==start;}\n guard(o,dirty);o.querySelector('#ax').onclick=function(){if(dirty()&&!confirm('Close without saving your changes?'))return;o.close();};\n o.querySelector('#ag').onclick=function(){var t=o.querySelector('#aa').value.trim();if(!t){alert('Enter the answer.');return;}var b=this;b.disabled=true;var c=o.querySelector('#ac');\n  var body=mode==='edit'?{a:'answer',id:r.id,response:t,responded_on:o.querySelector('#ad').value}:{a:'status',id:r.id,status:(c&&c.checked)?'Closed':'Answered',response:t,responded_on:o.querySelector('#ad').value};\n  post(body).then(function(x){if(x.ok){o.close();load();}else{b.disabled=false;if(!x.cancel)o.querySelector('#am').textContent=x.message||'Could not save.';}});};}\nfunction mail(r){var sub='Job '+JOB+' - '+r.rfi_no+': '+r.subject;var body='Hello,\\n\\nRequest for information '+r.rfi_no+' for job '+JOB+(D.site?' ('+D.site+')':'')+'.\\n\\n'+r.question+'\\n\\n'+(r.needed_by?'Please reply by '+dmy(r.needed_by)+'.\\n\\n':'')+'Thank you,\\nChelmsford Building Services';\n location.href='mailto:'+encodeURIComponent(s(r.sent_to_email))+'?subject='+encodeURIComponent(sub)+'&body='+encodeURIComponent(body);}\nfunction delR(r){if(!confirm('Delete '+r.rfi_no+' ('+r.subject+')?'))return;if(!confirm('Are you sure? This permanently removes the RFI, its answer and its history.'))return;\n post({a:'delete',id:r.id}).then(function(x){if(!x.ok&&!x.cancel)alert(x.message||'Could not delete.');load();});}\nfunction getLogo(){if(LOGO!==null)return Promise.resolve(LOGO);return fetch('/webhook/cbs-programme-logo').then(function(r){return r.json();}).then(function(d){LOGO=(d&&d.lg)||'';return LOGO;}).catch(function(){LOGO='';return '';});}\nfunction head(doc,lg,title,W){doc.setFillColor(244,121,32);doc.rect(0,0,W,3,'F');var lx=14;if(lg){try{var pr=doc.getImageProperties(lg),hh=13,ww=pr.width*hh/pr.height;if(ww>48){ww=48;hh=pr.height*ww/pr.width;}doc.addImage(lg,'PNG',14,7,ww,hh);lx=14+ww+5;}catch(z){}}\n doc.setTextColor(30);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text(title,lx,12);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text(([D.site,D.client].filter(Boolean).join('  |  ')||'Chelmsford Building Services').slice(0,110),lx,17.5);doc.text('Chelmsford Building Services Ltd  |  '+new Date().toLocaleDateString('en-GB'),W-14,12,{align:'right'});return 28;}\nfunction foot(doc,W,HH){var np=doc.getNumberOfPages();for(var i=1;i<=np;i++){doc.setPage(i);doc.setFontSize(7.5);doc.setTextColor(120);doc.text('Job '+JOB+'  |  Page '+i+' of '+np,W-14,HH-8,{align:'right'});}}\nfunction sheet(r){if(!window.jspdf){alert('The PDF tool did not load. Refresh and try again.');return;}getLogo().then(function(lg){var doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'}),W=210,HH=297,y=head(doc,lg,'Request for information '+r.rfi_no,W);\n function rowL(k,v){if(!s(v))return;doc.setFont('helvetica','bold');doc.setFontSize(9.5);doc.setTextColor(80);doc.text(k,14,y);doc.setFont('helvetica','normal');doc.setTextColor(20);var L=doc.splitTextToSize(s(v),130);doc.text(L,60,y);y+=Math.max(6,L.length*4.6+1.5);}\n function block(t,v){if(!s(v))return;y+=2;if(y>255){doc.addPage();y=20;}doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(40);doc.text(t,14,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(20);doc.splitTextToSize(s(v),182).forEach(function(l){if(y>272){doc.addPage();y=20;}doc.text(l,14,y);y+=4.8;});}\n doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(20);var tl=doc.splitTextToSize(s(r.subject),182);doc.text(tl,14,y);y+=tl.length*6+3;\n rowL('Job','Job '+JOB+(D.site?' - '+D.site:''));rowL('To',[r.sent_to,r.sent_to_email].filter(Boolean).join(' - '));rowL('From','Chelmsford Building Services Ltd');rowL('Date sent',dmy(r.sent_on)||'Not sent yet');rowL('Answer needed by',dmy(r.needed_by));rowL('Status',r.status);\n block('Question',r.question);\n if(r.response){block('Answer'+(r.responded_on?' ('+dmy(r.responded_on)+')':''),r.response);}\n else{y+=4;if(y>220){doc.addPage();y=20;}doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(40);doc.text('Answer',14,y);doc.setDrawColor(170);doc.rect(14,y+3,182,55);y+=64;doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(60);doc.text('Answered by',14,y);doc.line(40,y,110,y);doc.text('Date',118,y);doc.line(128,y,196,y);}\n foot(doc,W,HH);doc.save('Job '+JOB+' - '+r.rfi_no+' - '+s(r.subject).replace(/[\\\\/:*?\"<>|]+/g,' ').slice(0,60)+'.pdf');});}\nfunction logDlg(){if(!rows().length){alert('There are no RFIs to put in the log yet.');return;}var C=DATA.counts||{};\n var o=dlg('<h2>RFI log PDF</h2><div class=\"m\">Choose what goes in the log.</div><label class=\"f\">Statuses</label>'+STS.map(function(k){return '<label class=\"chk\"><input type=\"checkbox\" class=\"ls\" value=\"'+k+'\"'+(C[k]?' checked':' disabled')+'><span>'+k+' ('+(C[k]||0)+')</span></label>';}).join('')\n +'<label class=\"f\">Columns</label>'+[['q','Question'],['a','Answer'],['to','Sent to'],['dates','Dates (sent, needed by, answered)']].map(function(c){return '<label class=\"chk\"><input type=\"checkbox\" class=\"lc\" value=\"'+c[0]+'\" checked><span>'+c[1]+'</span></label>';}).join('')\n +'<div class=\"b\"><button class=\"btn\" id=\"lg\">Download PDF</button><button class=\"btn ghost\" id=\"lx\">Cancel</button></div>');\n guard(o);o.querySelector('#lx').onclick=o.close;\n o.querySelector('#lg').onclick=function(){var ss=[].filter.call(o.querySelectorAll('.ls'),function(x){return x.checked;}).map(function(x){return x.value;});if(!ss.length){alert('Tick at least one status.');return;}\n  var cs={};[].forEach.call(o.querySelectorAll('.lc'),function(x){cs[x.value]=x.checked;});if(!window.jspdf){alert('The PDF tool did not load. Refresh and try again.');return;}\n  getLogo().then(function(lg){var doc=new window.jspdf.jsPDF({orientation:'landscape',unit:'mm',format:'a4'}),W=297,HH=210,y=head(doc,lg,'RFI log - Job '+JOB,W);\n   var L=rows().filter(function(r){return ss.indexOf(r.status)>-1;});\n   var cols=[{k:'no',l:'No.',w:18},{k:'sub',l:'Subject',w:45}];if(cs.q)cols.push({k:'q',l:'Question',w:70});if(cs.to)cols.push({k:'to',l:'Sent to',w:35});if(cs.dates)cols.push({k:'dates',l:'Dates',w:38});cols.push({k:'st',l:'Status',w:20});if(cs.a)cols.push({k:'a',l:'Answer',w:70});\n   var tw=cols.reduce(function(m,c){return m+c.w;},0),sc=(W-28)/tw;cols.forEach(function(c){c.w*=sc;});\n   function hdr(){var x=14;doc.setFillColor(244,121,32);doc.rect(14,y-4.5,W-28,7,'F');doc.setTextColor(255);doc.setFont('helvetica','bold');doc.setFontSize(8.5);cols.forEach(function(c){doc.text(c.l,x+1.5,y);x+=c.w;});y+=6;}\n   hdr();doc.setFont('helvetica','normal');\n   L.forEach(function(r){var V={no:s(r.rfi_no),sub:s(r.subject),q:s(r.question),to:s(r.sent_to),dates:[r.sent_on?'Sent '+dmy(r.sent_on):'Not sent',r.needed_by?'Needed '+dmy(r.needed_by):'',r.responded_on?'Answered '+dmy(r.responded_on):''].filter(Boolean).join('\\n'),st:s(r.status)+(r.overdue?' (overdue)':''),a:s(r.response)};\n    doc.setFontSize(8.5);var lines={},hgt=0;cols.forEach(function(c){lines[c.k]=doc.splitTextToSize(V[c.k]||'',c.w-3).slice(0,12);hgt=Math.max(hgt,lines[c.k].length);});var rh=hgt*3.8+2.5;\n    if(y+rh>HH-18){doc.addPage();y=20;hdr();doc.setFont('helvetica','normal');}\n    var x=14;doc.setTextColor(25);cols.forEach(function(c){doc.text(lines[c.k],x+1.5,y);x+=c.w;});y+=rh;doc.setDrawColor(225);doc.line(14,y-3.2,W-14,y-3.2);});\n   foot(doc,W,HH);doc.save('Job '+JOB+' - RFI log - '+today()+'.pdf');o.close();});};}\nload();\n}\n"
+      }
+    },
+    {
+      "id": "2c24ee91-c002-489c-82e9-2e3d081da04d",
+      "name": "Send Page",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "25c1cde0-7ca7-42fa-bd40-4e19aa18e36e",
+      "name": "Data Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        224
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-rfis-data",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "27fb5de3-7096-472e-84a7-3047028c1293"
+    },
+    {
+      "id": "5e77a2d9-493a-4ba3-a4a5-03b51c472b6e",
+      "name": "RFI Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        224
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* RFI data for one job: the log, counts, contacts from Subcontractors and Suppliers, and the job's site/client. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nconst list=async t=>{try{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);}catch(e){return [];}};\nif(!job)return [{json:{ok:false,message:'No job number.'}}];\nconst [V,J,SB,SU]=await Promise.all([list('rfis'),list('jobrows'),list('subbies'),list('suppliers')]);\nconst today=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).slice(0,10);\nconst rows=V.filter(r=>jk(r.job_no)===jk(job)).sort((x,y)=>num(S(x.rfi_no).replace(/\\D/g,''))-num(S(y.rfi_no).replace(/\\D/g,''))||num(x.id)-num(y.id));\nrows.forEach(r=>{r.overdue=S(r.status)==='Sent'&&/^\\d{4}-\\d{2}-\\d{2}$/.test(S(r.needed_by))&&S(r.needed_by)<today;});\nconst jr=J.filter(r=>jk(r.ref)===jk(job)).sort((x,y)=>num(y.id)-num(x.id))[0]||null;\nconst seen={},contacts=[];\nfunction add(name,company,email){const n=[S(name),S(company)].filter(Boolean);if(!n.length)return;const label=S(name)&&S(company)&&S(name)!==S(company)?S(name)+' ('+S(company)+')':(S(company)||S(name));const k=(label+'|'+S(email)).toLowerCase();if(seen[k])return;seen[k]=1;contacts.push({label:label,email:S(email)});}\nSB.forEach(s=>add(s.contact,s.company,s.email));SU.forEach(s=>add(s.contact,s.name,s.email));\nif(jr&&S(jr.client))add(S(jr.client_contact),S(jr.client),'');\ncontacts.sort((a,b)=>a.label.localeCompare(b.label));\nconst counts={};rows.forEach(r=>{const s=S(r.status)||'Draft';counts[s]=(counts[s]||0)+1;});\nreturn [{json:{ok:true,job:job,today:today,site:S(jr&&jr.site),client:S(jr&&jr.client),rows:rows,counts:counts,overdue:rows.filter(r=>r.overdue).length,contacts:contacts}}];\n"
+      }
+    },
+    {
+      "id": "f6109b47-c338-48e5-8921-530db4558c1d",
+      "name": "Send Data",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        224
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "98a81689-cf76-426d-aea6-c767e4e1525f",
+      "name": "Act Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        448
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-rfi-act",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "feba58ab-b662-41ec-9b8b-3b173efc46e2"
+    },
+    {
+      "id": "1b7d015c-3d7b-4547-8aae-2d33cbdb9fe2",
+      "name": "RFI Act",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        448
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* CBS RFIs: save, status (sent / answered / closed), delete. */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst b=$input.first().json.body||{};const a=S(b.a),job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by).slice(0,80);\nconst R=(ok,x)=>[{json:Object.assign({ok:ok},x||{})}];\nif(!job)return R(false,{message:'No job number.'});if(!by)return R(false,{message:'Enter your name.'});\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst stamp=now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16);\nconst list=async t=>{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);};\nconst save=(t,id,row,p)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t='+t+'&id='+(id||0)+'&k='+K+(p?'&partial=1':''),body:row,json:true,timeout:20000});\nconst del=(t,id)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=del&t='+t+'&id='+id+'&k='+K,body:{},json:true,timeout:20000});\nconst isD=v=>/^\\d{4}-\\d{2}-\\d{2}$/.test(S(v));const uk=v=>isD(v)?S(v).slice(8,10)+'/'+S(v).slice(5,7)+'/'+S(v).slice(0,4):S(v);\nconst okMail=v=>!S(v)||/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(S(v));\nconst STS=['Draft','Sent','Answered','Closed'];\nconst V=(await list('rfis')).filter(r=>jk(r.job_no)===jk(job));\nconst find=id=>V.find(r=>String(r.id)===S(id));\nconst hist=(r,line)=>[S(r&&r.history),stamp+' - '+line].filter(Boolean).join(String.fromCharCode(10));\nif(a==='save'){\n const subject=S(b.subject).slice(0,160);if(!subject)return R(false,{message:'Give the RFI a subject.'});\n const question=S(b.question).slice(0,6000);if(!question)return R(false,{message:'Write the question.'});\n if(!okMail(b.sent_to_email))return R(false,{message:'Check the email address.'});\n if(S(b.needed_by)&&!isD(b.needed_by))return R(false,{message:'Check the needed-by date.'});\n const row={subject:subject,question:question,sent_to:S(b.sent_to).slice(0,160),sent_to_email:S(b.sent_to_email).slice(0,160),needed_by:isD(b.needed_by)?S(b.needed_by):''};\n const id=num(b.id);\n if(id){const r=find(id);if(!r)return R(false,{message:'That RFI was not found. Refresh the page.'});\n  let line='Edited by '+by;if(S(r.needed_by)!==row.needed_by)line+=' (needed by '+(r.needed_by?uk(r.needed_by):'not set')+' to '+(row.needed_by?uk(row.needed_by):'not set')+')';\n  row.history=hist(r,line);await save('rfis',id,row,true);return R(true,{id:id});}\n const n=V.reduce((m,r)=>Math.max(m,num(S(r.rfi_no).replace(/\\D/g,''))),0)+1;\n Object.assign(row,{job_no:job,rfi_no:'RFI-'+String(n).padStart(3,'0'),status:'Draft',sent_on:'',response:'',responded_on:'',files_json:'[]',pdf_url:'',created_by:by,created_at:now,history:stamp+' - Drafted by '+by});\n const res=await save('rfis',0,row,false);return R(true,{id:num(res&&res.id),rfi_no:row.rfi_no});\n}\nconst r=find(b.id);if(!r)return R(false,{message:'That RFI was not found. Refresh the page.'});\nif(a==='status'){\n const st=S(b.status);if(STS.indexOf(st)<0)return R(false,{message:'Unknown status.'});\n const was=S(r.status)||'Draft';const row={status:st};let line=was+' to '+st+' by '+by;\n if(st==='Sent'){if(!S(r.sent_to))return R(false,{message:'Add who it is going to before marking it sent.'});\n  const d=isD(b.sent_on)?S(b.sent_on):now.slice(0,10);row.sent_on=d;line+=' (sent '+uk(d)+' to '+S(r.sent_to)+')';}\n if(st==='Answered'||(st==='Closed'&&S(b.response))){const resp=S(b.response).slice(0,6000);\n  if(st==='Answered'&&!resp)return R(false,{message:'Enter the answer you received.'});\n  if(resp){row.response=resp;row.responded_on=isD(b.responded_on)?S(b.responded_on):now.slice(0,10);line+=' (answered '+uk(row.responded_on)+')';}\n  if(!S(r.sent_on))row.sent_on=row.responded_on||now.slice(0,10);}\n if(st==='Draft'){row.sent_on='';row.response='';row.responded_on='';}\n if(st==='Sent'&&(was==='Answered'||was==='Closed')&&S(r.response)){row.response='';row.responded_on='';line+=', previous answer'+(r.responded_on?' ('+uk(r.responded_on)+')':'')+': '+S(r.response).slice(0,1500);}\n if(S(b.note))line+=': '+S(b.note).slice(0,300);\n row.history=hist(r,line);await save('rfis',r.id,row,true);return R(true);\n}\nif(a==='answer'){const resp=S(b.response).slice(0,6000);if(!resp)return R(false,{message:'Enter the answer.'});\n const d=isD(b.responded_on)?S(b.responded_on):(S(r.responded_on)||now.slice(0,10));\n await save('rfis',r.id,{response:resp,responded_on:d,history:hist(r,'Answer edited by '+by)},true);return R(true);}\nif(a==='delete'){await del('rfis',r.id);return R(true);}\nreturn R(false,{message:'Unknown action.'});\n"
+      }
+    },
+    {
+      "id": "d2da8122-09ff-4ed7-9eae-5cffe6bf958f",
+      "name": "Send Act",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        448
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "8bf8886b-6613-423e-8aab-889da141fb4b",
+        "name": "Page Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-rfis",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "7dc31e01-d5f5-44ff-ac65-1b97ff8a9c27"
+      },
+      {
+        "id": "56837d63-7645-4b26-8c48-7a6b0ca78c6d",
+        "name": "RFI Page",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* CBS RFI page (admin): cbs-rfis?job=N. Data from cbs-rfis-data, saves to cbs-rfi-act. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v);const e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nlet info={};if(job){try{info=await h.httpRequest({url:H+'cbs-sm8-job?no='+encodeURIComponent(job),json:true,timeout:15000})||{};}catch(x){info={};}}\nconst D={job:job,site:S(info.site),client:S(info.client)};\nconst CSS='*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n+'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n+'.wrap{max-width:860px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}'\n+'.btn{background:#F47920;color:#fff;text-decoration:none;font-weight:600;border-radius:8px;padding:8px 14px;font-size:14px;border:0;font-family:inherit;cursor:pointer}.btn.ghost{background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}.btn.sm{padding:6px 10px;font-size:13px}.btn:disabled{opacity:.5}.btn.red{background:#fff;color:#b3261e;border:1px solid #e9b6b1}'\n+'.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}.pst{background:#fff;border:1px solid #d9d9d6;border-radius:10px;padding:8px 6px;text-align:center}.pst b{display:block;font-size:18px;line-height:1.2}.pst span{font-size:12px;color:#555}.pst.ed{cursor:pointer}.pst.ed:hover{border-color:#F47920}.pst.ok{border-color:#b9dfc1;background:#f1faf2}.pst.warn{border-color:#f2d398;background:#fff8ea}@media(max-width:560px){.strip{grid-template-columns:repeat(2,1fr)}}'\n+'.flt{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.flt button{border:1px solid #d9d9d6;background:#fff;border-radius:20px;padding:5px 11px;font:inherit;font-size:13px;cursor:pointer}.flt button.on{background:#F47920;color:#fff;border-color:#F47920}.srch{width:100%;font:inherit;padding:10px 12px;border:1px solid #ccc;border-radius:10px;margin-bottom:10px}'\n+'.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;margin-bottom:10px;padding:12px 14px}.t{font-weight:600}.m{color:#555;font-size:14px;margin-top:2px}.ds{white-space:pre-wrap;font-size:14px;margin-top:6px;color:#333}.b{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center}.amt{float:right;font-weight:700}'\n+'.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:20px;padding:1px 8px;margin-left:6px;background:#eee;color:#333;vertical-align:middle}.tag.Draft{background:#eee}.tag.Sent{background:#e6efff;color:#1f5fbf}.tag.Answered{background:#e3f4e6;color:#1d6b2c}.tag.Closed{background:#e9e9e7;color:#555}.tag.od{background:#fde3e1;color:#b3261e}.ans{white-space:pre-wrap;font-size:14px;margin-top:8px;padding:8px 10px;background:#f1faf2;border-left:3px solid #1d6b2c;border-radius:6px}'\n+'select.st{font:inherit;font-size:13px;padding:5px 6px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}'\n+'.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}'\n+'.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;overflow:auto;z-index:20}.dlg{background:#fff;border-radius:14px;max-width:560px;width:100%;padding:16px}.dlg h2{margin:0 0 10px;font-size:18px}'\n+'label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}.dlg input[type=text],.dlg input[type=date],.dlg input[type=number],.dlg textarea,.dlg select{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}.dlg textarea{min-height:90px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}'\n+'.chk{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid #eee}.chk input{width:20px;height:20px;flex:0 0 auto}.note{font-size:13px;color:#6b6e70;margin-top:6px}.hist{white-space:pre-wrap;font-size:12px;color:#6b6e70;margin-top:8px}.msg{font-size:14px;color:#8a5a00;margin-top:8px;min-height:18px}'\n+'.opr{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid #eee}.opr span{flex:1}';\nconst nav='<div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a>'+(job?'<a class=\"hub\" href=\"/webhook/cbs-job-file?job='+encodeURIComponent(job)+'\">Job File</a>':'')+'</div>';\nconst sub=e([D.site,D.client].filter(Boolean).join(' \\u00b7 ')||'Chelmsford Building Services');\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>RFIs - Job '+e(job)+'</title><script src=\"/webhook/cbs-guard\"></script><style>'+CSS+'</style><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script></head><body><header>'+nav+'<h1>RFIs'+(job?' \\u00b7 Job '+e(job):'')+'</h1><p>'+sub+'</p></header><div class=\"wrap\" id=\"app\">'+(job?'<div class=\"empty\">Loading\\u2026</div>':'<div class=\"empty\">Open RFIs from a job.</div>')+'</div><script>window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+';</script>'+(job?'<script>('+client.toString()+')();</script>':'')+'</body></html>';\nreturn [{json:{html:html}}];\n\nfunction client(){\nvar D=window.D,JOB=D.job,app=document.getElementById('app'),DATA=null,FILTER='open',Q='',LOGO=null;\nvar STS=['Draft','Sent','Answered','Closed'];\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:s(d);}\nfunction today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction plus(n){var d=new Date();d.setDate(d.getDate()+n);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction who(){var x='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)x=m.name;}catch(z){}if(!x){try{x=localStorage.getItem('cbs_name')||'';}catch(z){}}if(!x){x=(prompt('Your name:')||'').trim();if(x){try{localStorage.setItem('cbs_name',x);}catch(z){}}}return x;}\nfunction post(body){var by=who();if(!by)return Promise.resolve({ok:false,message:'',cancel:true});body.job=JOB;body.by=by;\n return fetch('/webhook/cbs-rfi-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw 0;return r.json();}).catch(function(){return {ok:false,message:'Could not save. Check your connection and try again.'};});}\nfunction load(){return fetch('/webhook/cbs-rfis-data?job='+encodeURIComponent(JOB),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){DATA=d;if(!D.site&&d.site){D.site=d.site;D.client=d.client;var hp=document.querySelector('header p');if(hp)hp.textContent=[d.site,d.client].filter(Boolean).join(' \\u00b7 ');}render();}).catch(function(){app.innerHTML='<div class=\"empty\">Could not load the RFIs. Refresh to try again.</div>';});}\nfunction dlg(html){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg\">'+html+'</div>';document.body.appendChild(o);o.close=function(){o.remove();};return o;}\nfunction guard(o,isDirty){o.addEventListener('click',function(ev){if(ev.target!==o)return;if(isDirty&&isDirty()&&!confirm('Close without saving your changes?'))return;o.close();});}\nfunction rows(){return (DATA&&DATA.rows)||[];}\nfunction isOpen(r){return r.status==='Draft'||r.status==='Sent';}\nfunction vis(){var q=Q.toLowerCase();return rows().filter(function(r){if(FILTER==='open'&&!isOpen(r))return false;if(FILTER==='overdue'&&!r.overdue)return false;if(FILTER!=='all'&&FILTER!=='open'&&FILTER!=='overdue'&&s(r.status)!==FILTER)return false;if(!q)return true;return [r.rfi_no,r.subject,r.question,r.sent_to,r.response].join(' ').toLowerCase().indexOf(q)>-1;});}\nfunction render(){var C=DATA.counts||{},h='';\n var open=(C.Draft||0)+(C.Sent||0);\n h+='<div class=\"strip\"><div class=\"pst\"><b>'+(C.Draft||0)+'</b><span>Drafts</span></div><div class=\"pst'+(DATA.overdue?' warn':'')+'\"><b>'+(C.Sent||0)+'</b><span>Awaiting reply'+(DATA.overdue?' ('+DATA.overdue+' overdue)':'')+'</span></div><div class=\"pst ok\"><b>'+(C.Answered||0)+'</b><span>Answered</span></div><div class=\"pst\"><b>'+(C.Closed||0)+'</b><span>Closed</span></div></div>';\n h+='<div class=\"tools\"><button class=\"btn\" id=\"add\">+ New RFI</button><button class=\"btn ghost\" id=\"log\">RFI log PDF</button></div>';\n var F=[['open','Open',open],['overdue','Overdue',DATA.overdue||0],['all','All',rows().length]].concat(STS.map(function(k){return [k,k,C[k]||0];}));\n h+='<div class=\"flt\">'+F.map(function(f){return '<button data-f=\"'+f[0]+'\" class=\"'+(FILTER===f[0]?'on':'')+'\">'+f[1]+' ('+f[2]+')</button>';}).join('')+'</div>';\n h+='<input class=\"srch\" id=\"q\" placeholder=\"Search RFIs\" value=\"'+e(Q)+'\">';\n var L=vis();\n if(!rows().length)h+='<div class=\"empty\">No RFIs on this job yet. Tap + New RFI to raise one.</div>';\n else if(!L.length)h+='<div class=\"empty\">Nothing here'+(FILTER==='open'?' \\u2013 no open RFIs. Tap All to see the rest.':'.')+'</div>';\n L.forEach(function(r){var st=s(r.status)||'Draft';\n  h+='<div class=\"card\" data-id=\"'+r.id+'\"><div class=\"t\">'+e(r.rfi_no)+' \\u00b7 '+e(r.subject)+'<span class=\"tag '+e(st)+'\">'+e(st)+'</span>'+(r.overdue?'<span class=\"tag od\">Overdue</span>':'')+'</div>'\n  +'<div class=\"m\">'+[r.sent_to?'To '+e(r.sent_to):'No recipient yet',r.sent_on?'sent '+dmy(r.sent_on):'',r.needed_by?'needed by '+dmy(r.needed_by):'',r.responded_on?'answered '+dmy(r.responded_on):''].filter(Boolean).join(' \\u00b7 ')+'</div>'\n  +'<div class=\"ds\">'+e(r.question)+'</div>'\n  +(r.response?'<div class=\"ans\"><b>Answer:</b> '+e(r.response)+'</div>':'')\n  +'<div class=\"b\">'\n  +(st==='Draft'?'<button class=\"btn sm\" data-a=\"send\">Mark sent</button>':'')\n  +(st==='Sent'?'<button class=\"btn sm\" data-a=\"answer\">Record answer</button>':'')\n  +(st==='Answered'?'<button class=\"btn sm\" data-a=\"close\">Close</button><button class=\"btn ghost sm\" data-a=\"ansedit\">Edit answer</button><button class=\"btn ghost sm\" data-a=\"more\">Ask again</button>':'')\n  +(st==='Closed'?'<button class=\"btn ghost sm\" data-a=\"reopen\">Reopen</button>':'')\n  +(st==='Sent'?'<button class=\"btn ghost sm\" data-a=\"back\">Back to draft</button>':'')\n  +((st==='Draft'||st==='Sent')?'<button class=\"btn ghost sm\" data-a=\"mail\">Email it</button>':'')\n  +'<button class=\"btn ghost sm\" data-a=\"edit\">Edit</button><button class=\"btn ghost sm\" data-a=\"pdf\">RFI PDF</button><button class=\"btn red sm\" data-a=\"del\">Delete</button></div>'\n  +(r.history?'<details><summary class=\"m\" style=\"cursor:pointer\">History</summary><div class=\"hist\">'+e(r.history)+'</div></details>':'')+'</div>';});\n app.innerHTML=h;\n document.getElementById('add').onclick=function(){editDlg(null);};document.getElementById('log').onclick=logDlg;\n app.querySelectorAll('[data-f]').forEach(function(b){b.onclick=function(){FILTER=b.getAttribute('data-f');render();};});\n var qi=document.getElementById('q');qi.oninput=function(){Q=qi.value;var p=qi.selectionStart;render();var x=document.getElementById('q');x.focus();try{x.setSelectionRange(p,p);}catch(z){}};\n app.querySelectorAll('[data-a]').forEach(function(el){var id=el.closest('.card').getAttribute('data-id');var r=rows().filter(function(x){return String(x.id)===id;})[0];var a=el.getAttribute('data-a');\n  el.onclick=function(){if(a==='edit')editDlg(r);else if(a==='send')sendDlg(r);else if(a==='answer')answerDlg(r,'Answered');else if(a==='ansedit')answerDlg(r,'edit');else if(a==='close')simple(r,'Closed','Close '+r.rfi_no+'?');else if(a==='reopen')simple(r,r.response?'Answered':'Sent','Reopen '+r.rfi_no+'?');else if(a==='back')simple(r,'Draft','Move '+r.rfi_no+' back to draft? The sent date is cleared.');else if(a==='more')simple(r,'Sent','Send '+r.rfi_no+' back to awaiting a reply? The current answer is moved into the history.');else if(a==='mail')mail(r);else if(a==='pdf')sheet(r);else if(a==='del')delR(r);};});}\nfunction simple(r,st,q){if(!confirm(q))return;post({a:'status',id:r.id,status:st}).then(function(x){if(!x.ok&&!x.cancel)alert(x.message||'Could not save.');load();});}\nfunction editDlg(r){r=r||{};var CT=DATA.contacts||[];\n var o=dlg('<h2>'+(r.id?'Edit '+e(r.rfi_no):'New RFI')+'</h2><label class=\"f\">Subject</label><input type=\"text\" id=\"fs\" value=\"'+e(r.subject)+'\" placeholder=\"e.g. Finish to rear elevation\">'\n +'<label class=\"f\">Question</label><textarea id=\"fq\" style=\"min-height:140px\" placeholder=\"What you need answered, with any drawing or location references\">'+e(r.question)+'</textarea>'\n +'<label class=\"f\">To</label>'+(CT.length?'<select id=\"fp\"><option value=\"\">Pick from Subcontractors and Suppliers, or type below\\u2026</option>'+CT.map(function(c,i){return '<option value=\"'+i+'\">'+e(c.label)+(c.email?' \\u2013 '+e(c.email):'')+'</option>';}).join('')+'</select>':'')\n +'<div class=\"row2\" style=\"margin-top:6px\"><input type=\"text\" id=\"ft\" value=\"'+e(r.sent_to)+'\" placeholder=\"Name or company\"><input type=\"text\" id=\"fe\" value=\"'+e(r.sent_to_email)+'\" placeholder=\"Email (optional)\"></div>'\n +'<label class=\"f\">Answer needed by</label><input type=\"date\" id=\"fn\" value=\"'+e(r.needed_by||(r.id?'':plus(7)))+'\">'\n +'<div class=\"msg\" id=\"fm\"></div><div class=\"b\"><button class=\"btn\" id=\"fsv\">Save</button><button class=\"btn ghost\" id=\"fx\">Cancel</button></div>');\n var fp=o.querySelector('#fp');if(fp)fp.onchange=function(){var c=CT[Number(fp.value)];if(!c)return;o.querySelector('#ft').value=c.label;o.querySelector('#fe').value=c.email||'';};\n var ids=['fs','fq','ft','fe','fn'],st=ids.map(function(i){return o.querySelector('#'+i).value;}).join('|');\n function dirty(){return ids.map(function(i){return o.querySelector('#'+i).value;}).join('|')!==st;}\n guard(o,dirty);o.querySelector('#fx').onclick=function(){if(dirty()&&!confirm('Close without saving your changes?'))return;o.close();};\n o.querySelector('#fsv').onclick=function(){var sj=o.querySelector('#fs').value.trim(),q=o.querySelector('#fq').value.trim();if(!sj||!q){alert('Add a subject and the question.');return;}var b=this;b.disabled=true;\n  post({a:'save',id:r.id||0,subject:sj,question:q,sent_to:o.querySelector('#ft').value,sent_to_email:o.querySelector('#fe').value,needed_by:o.querySelector('#fn').value})\n  .then(function(x){if(x.ok){o.close();load();}else{b.disabled=false;if(!x.cancel)o.querySelector('#fm').textContent=x.message||'Could not save.';}});};}\nfunction sendDlg(r){if(!r.sent_to){alert('Add who it is going to first (Edit).');return;}\n var o=dlg('<h2>Mark '+e(r.rfi_no)+' as sent</h2><div class=\"m\">To '+e(r.sent_to)+(r.sent_to_email?' ('+e(r.sent_to_email)+')':'')+'</div><label class=\"f\">Date sent</label><input type=\"date\" id=\"sd\" value=\"'+today()+'\"><div class=\"note\">Tip: use Email it to open your email with the RFI filled in, and attach the RFI PDF.</div><div class=\"msg\" id=\"sm\"></div><div class=\"b\"><button class=\"btn\" id=\"sg\">Mark sent</button><button class=\"btn ghost\" id=\"sx\">Cancel</button></div>');\n guard(o);o.querySelector('#sx').onclick=o.close;\n o.querySelector('#sg').onclick=function(){var b=this;b.disabled=true;post({a:'status',id:r.id,status:'Sent',sent_on:o.querySelector('#sd').value}).then(function(x){if(x.ok){o.close();load();}else{b.disabled=false;if(!x.cancel)o.querySelector('#sm').textContent=x.message||'Could not save.';}});};}\nfunction answerDlg(r,mode){\n var o=dlg('<h2>'+(mode==='edit'?'Edit answer':'Answer received')+': '+e(r.rfi_no)+'</h2><div class=\"m\">'+e(r.subject)+'</div><label class=\"f\">Answer</label><textarea id=\"aa\" style=\"min-height:140px\">'+e(r.response)+'</textarea><label class=\"f\">Date answered</label><input type=\"date\" id=\"ad\" value=\"'+e(r.responded_on||today())+'\">'+(mode==='edit'?'':'<label class=\"chk\"><input type=\"checkbox\" id=\"ac\"><span>Close the RFI now as well</span></label>')+'<div class=\"msg\" id=\"am\"></div><div class=\"b\"><button class=\"btn\" id=\"ag\">Save</button><button class=\"btn ghost\" id=\"ax\">Cancel</button></div>');\n var start=o.querySelector('#aa').value;function dirty(){return o.querySelector('#aa').value!==start;}\n guard(o,dirty);o.querySelector('#ax').onclick=function(){if(dirty()&&!confirm('Close without saving your changes?'))return;o.close();};\n o.querySelector('#ag').onclick=function(){var t=o.querySelector('#aa').value.trim();if(!t){alert('Enter the answer.');return;}var b=this;b.disabled=true;var c=o.querySelector('#ac');\n  var body=mode==='edit'?{a:'answer',id:r.id,response:t,responded_on:o.querySelector('#ad').value}:{a:'status',id:r.id,status:(c&&c.checked)?'Closed':'Answered',response:t,responded_on:o.querySelector('#ad').value};\n  post(body).then(function(x){if(x.ok){o.close();load();}else{b.disabled=false;if(!x.cancel)o.querySelector('#am').textContent=x.message||'Could not save.';}});};}\nfunction mail(r){var sub='Job '+JOB+' - '+r.rfi_no+': '+r.subject;var body='Hello,\\n\\nRequest for information '+r.rfi_no+' for job '+JOB+(D.site?' ('+D.site+')':'')+'.\\n\\n'+r.question+'\\n\\n'+(r.needed_by?'Please reply by '+dmy(r.needed_by)+'.\\n\\n':'')+'Thank you,\\nChelmsford Building Services';\n location.href='mailto:'+encodeURIComponent(s(r.sent_to_email))+'?subject='+encodeURIComponent(sub)+'&body='+encodeURIComponent(body);}\nfunction delR(r){if(!confirm('Delete '+r.rfi_no+' ('+r.subject+')?'))return;if(!confirm('Are you sure? This permanently removes the RFI, its answer and its history.'))return;\n post({a:'delete',id:r.id}).then(function(x){if(!x.ok&&!x.cancel)alert(x.message||'Could not delete.');load();});}\nfunction getLogo(){if(LOGO!==null)return Promise.resolve(LOGO);return fetch('/webhook/cbs-programme-logo').then(function(r){return r.json();}).then(function(d){LOGO=(d&&d.lg)||'';return LOGO;}).catch(function(){LOGO='';return '';});}\nfunction head(doc,lg,title,W){doc.setFillColor(244,121,32);doc.rect(0,0,W,3,'F');var lx=14;if(lg){try{var pr=doc.getImageProperties(lg),hh=13,ww=pr.width*hh/pr.height;if(ww>48){ww=48;hh=pr.height*ww/pr.width;}doc.addImage(lg,'PNG',14,7,ww,hh);lx=14+ww+5;}catch(z){}}\n doc.setTextColor(30);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text(title,lx,12);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text(([D.site,D.client].filter(Boolean).join('  |  ')||'Chelmsford Building Services').slice(0,110),lx,17.5);doc.text('Chelmsford Building Services Ltd  |  '+new Date().toLocaleDateString('en-GB'),W-14,12,{align:'right'});return 28;}\nfunction foot(doc,W,HH){var np=doc.getNumberOfPages();for(var i=1;i<=np;i++){doc.setPage(i);doc.setFontSize(7.5);doc.setTextColor(120);doc.text('Job '+JOB+'  |  Page '+i+' of '+np,W-14,HH-8,{align:'right'});}}\nfunction sheet(r){if(!window.jspdf){alert('The PDF tool did not load. Refresh and try again.');return;}getLogo().then(function(lg){var doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'}),W=210,HH=297,y=head(doc,lg,'Request for information '+r.rfi_no,W);\n function rowL(k,v){if(!s(v))return;doc.setFont('helvetica','bold');doc.setFontSize(9.5);doc.setTextColor(80);doc.text(k,14,y);doc.setFont('helvetica','normal');doc.setTextColor(20);var L=doc.splitTextToSize(s(v),130);doc.text(L,60,y);y+=Math.max(6,L.length*4.6+1.5);}\n function block(t,v){if(!s(v))return;y+=2;if(y>255){doc.addPage();y=20;}doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(40);doc.text(t,14,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(20);doc.splitTextToSize(s(v),182).forEach(function(l){if(y>272){doc.addPage();y=20;}doc.text(l,14,y);y+=4.8;});}\n doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(20);var tl=doc.splitTextToSize(s(r.subject),182);doc.text(tl,14,y);y+=tl.length*6+3;\n rowL('Job','Job '+JOB+(D.site?' - '+D.site:''));rowL('To',[r.sent_to,r.sent_to_email].filter(Boolean).join(' - '));rowL('From','Chelmsford Building Services Ltd');rowL('Date sent',dmy(r.sent_on)||'Not sent yet');rowL('Answer needed by',dmy(r.needed_by));rowL('Status',r.status);\n block('Question',r.question);\n if(r.response){block('Answer'+(r.responded_on?' ('+dmy(r.responded_on)+')':''),r.response);}\n else{y+=4;if(y>220){doc.addPage();y=20;}doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(40);doc.text('Answer',14,y);doc.setDrawColor(170);doc.rect(14,y+3,182,55);y+=64;doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(60);doc.text('Answered by',14,y);doc.line(40,y,110,y);doc.text('Date',118,y);doc.line(128,y,196,y);}\n foot(doc,W,HH);doc.save('Job '+JOB+' - '+r.rfi_no+' - '+s(r.subject).replace(/[\\\\/:*?\"<>|]+/g,' ').slice(0,60)+'.pdf');});}\nfunction logDlg(){if(!rows().length){alert('There are no RFIs to put in the log yet.');return;}var C=DATA.counts||{};\n var o=dlg('<h2>RFI log PDF</h2><div class=\"m\">Choose what goes in the log.</div><label class=\"f\">Statuses</label>'+STS.map(function(k){return '<label class=\"chk\"><input type=\"checkbox\" class=\"ls\" value=\"'+k+'\"'+(C[k]?' checked':' disabled')+'><span>'+k+' ('+(C[k]||0)+')</span></label>';}).join('')\n +'<label class=\"f\">Columns</label>'+[['q','Question'],['a','Answer'],['to','Sent to'],['dates','Dates (sent, needed by, answered)']].map(function(c){return '<label class=\"chk\"><input type=\"checkbox\" class=\"lc\" value=\"'+c[0]+'\" checked><span>'+c[1]+'</span></label>';}).join('')\n +'<div class=\"b\"><button class=\"btn\" id=\"lg\">Download PDF</button><button class=\"btn ghost\" id=\"lx\">Cancel</button></div>');\n guard(o);o.querySelector('#lx').onclick=o.close;\n o.querySelector('#lg').onclick=function(){var ss=[].filter.call(o.querySelectorAll('.ls'),function(x){return x.checked;}).map(function(x){return x.value;});if(!ss.length){alert('Tick at least one status.');return;}\n  var cs={};[].forEach.call(o.querySelectorAll('.lc'),function(x){cs[x.value]=x.checked;});if(!window.jspdf){alert('The PDF tool did not load. Refresh and try again.');return;}\n  getLogo().then(function(lg){var doc=new window.jspdf.jsPDF({orientation:'landscape',unit:'mm',format:'a4'}),W=297,HH=210,y=head(doc,lg,'RFI log - Job '+JOB,W);\n   var L=rows().filter(function(r){return ss.indexOf(r.status)>-1;});\n   var cols=[{k:'no',l:'No.',w:18},{k:'sub',l:'Subject',w:45}];if(cs.q)cols.push({k:'q',l:'Question',w:70});if(cs.to)cols.push({k:'to',l:'Sent to',w:35});if(cs.dates)cols.push({k:'dates',l:'Dates',w:38});cols.push({k:'st',l:'Status',w:20});if(cs.a)cols.push({k:'a',l:'Answer',w:70});\n   var tw=cols.reduce(function(m,c){return m+c.w;},0),sc=(W-28)/tw;cols.forEach(function(c){c.w*=sc;});\n   function hdr(){var x=14;doc.setFillColor(244,121,32);doc.rect(14,y-4.5,W-28,7,'F');doc.setTextColor(255);doc.setFont('helvetica','bold');doc.setFontSize(8.5);cols.forEach(function(c){doc.text(c.l,x+1.5,y);x+=c.w;});y+=6;}\n   hdr();doc.setFont('helvetica','normal');\n   L.forEach(function(r){var V={no:s(r.rfi_no),sub:s(r.subject),q:s(r.question),to:s(r.sent_to),dates:[r.sent_on?'Sent '+dmy(r.sent_on):'Not sent',r.needed_by?'Needed '+dmy(r.needed_by):'',r.responded_on?'Answered '+dmy(r.responded_on):''].filter(Boolean).join('\\n'),st:s(r.status)+(r.overdue?' (overdue)':''),a:s(r.response)};\n    doc.setFontSize(8.5);var lines={},hgt=0;cols.forEach(function(c){lines[c.k]=doc.splitTextToSize(V[c.k]||'',c.w-3).slice(0,12);hgt=Math.max(hgt,lines[c.k].length);});var rh=hgt*3.8+2.5;\n    if(y+rh>HH-18){doc.addPage();y=20;hdr();doc.setFont('helvetica','normal');}\n    var x=14;doc.setTextColor(25);cols.forEach(function(c){doc.text(lines[c.k],x+1.5,y);x+=c.w;});y+=rh;doc.setDrawColor(225);doc.line(14,y-3.2,W-14,y-3.2);});\n   foot(doc,W,HH);doc.save('Job '+JOB+' - RFI log - '+today()+'.pdf');o.close();});};}\nload();\n}\n"
+        }
+      },
+      {
+        "id": "2c24ee91-c002-489c-82e9-2e3d081da04d",
+        "name": "Send Page",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "25c1cde0-7ca7-42fa-bd40-4e19aa18e36e",
+        "name": "Data Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          224
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-rfis-data",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "27fb5de3-7096-472e-84a7-3047028c1293"
+      },
+      {
+        "id": "5e77a2d9-493a-4ba3-a4a5-03b51c472b6e",
+        "name": "RFI Data",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          224
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* RFI data for one job: the log, counts, contacts from Subcontractors and Suppliers, and the job's site/client. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nconst list=async t=>{try{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);}catch(e){return [];}};\nif(!job)return [{json:{ok:false,message:'No job number.'}}];\nconst [V,J,SB,SU]=await Promise.all([list('rfis'),list('jobrows'),list('subbies'),list('suppliers')]);\nconst today=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).slice(0,10);\nconst rows=V.filter(r=>jk(r.job_no)===jk(job)).sort((x,y)=>num(S(x.rfi_no).replace(/\\D/g,''))-num(S(y.rfi_no).replace(/\\D/g,''))||num(x.id)-num(y.id));\nrows.forEach(r=>{r.overdue=S(r.status)==='Sent'&&/^\\d{4}-\\d{2}-\\d{2}$/.test(S(r.needed_by))&&S(r.needed_by)<today;});\nconst jr=J.filter(r=>jk(r.ref)===jk(job)).sort((x,y)=>num(y.id)-num(x.id))[0]||null;\nconst seen={},contacts=[];\nfunction add(name,company,email){const n=[S(name),S(company)].filter(Boolean);if(!n.length)return;const label=S(name)&&S(company)&&S(name)!==S(company)?S(name)+' ('+S(company)+')':(S(company)||S(name));const k=(label+'|'+S(email)).toLowerCase();if(seen[k])return;seen[k]=1;contacts.push({label:label,email:S(email)});}\nSB.forEach(s=>add(s.contact,s.company,s.email));SU.forEach(s=>add(s.contact,s.name,s.email));\nif(jr&&S(jr.client))add(S(jr.client_contact),S(jr.client),'');\ncontacts.sort((a,b)=>a.label.localeCompare(b.label));\nconst counts={};rows.forEach(r=>{const s=S(r.status)||'Draft';counts[s]=(counts[s]||0)+1;});\nreturn [{json:{ok:true,job:job,today:today,site:S(jr&&jr.site),client:S(jr&&jr.client),rows:rows,counts:counts,overdue:rows.filter(r=>r.overdue).length,contacts:contacts}}];\n"
+        }
+      },
+      {
+        "id": "f6109b47-c338-48e5-8921-530db4558c1d",
+        "name": "Send Data",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          224
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "98a81689-cf76-426d-aea6-c767e4e1525f",
+        "name": "Act Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          448
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-rfi-act",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "feba58ab-b662-41ec-9b8b-3b173efc46e2"
+      },
+      {
+        "id": "1b7d015c-3d7b-4547-8aae-2d33cbdb9fe2",
+        "name": "RFI Act",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          448
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* CBS RFIs: save, status (sent / answered / closed), delete. */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst b=$input.first().json.body||{};const a=S(b.a),job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by).slice(0,80);\nconst R=(ok,x)=>[{json:Object.assign({ok:ok},x||{})}];\nif(!job)return R(false,{message:'No job number.'});if(!by)return R(false,{message:'Enter your name.'});\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst stamp=now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16);\nconst list=async t=>{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);};\nconst save=(t,id,row,p)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t='+t+'&id='+(id||0)+'&k='+K+(p?'&partial=1':''),body:row,json:true,timeout:20000});\nconst del=(t,id)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=del&t='+t+'&id='+id+'&k='+K,body:{},json:true,timeout:20000});\nconst isD=v=>/^\\d{4}-\\d{2}-\\d{2}$/.test(S(v));const uk=v=>isD(v)?S(v).slice(8,10)+'/'+S(v).slice(5,7)+'/'+S(v).slice(0,4):S(v);\nconst okMail=v=>!S(v)||/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(S(v));\nconst STS=['Draft','Sent','Answered','Closed'];\nconst V=(await list('rfis')).filter(r=>jk(r.job_no)===jk(job));\nconst find=id=>V.find(r=>String(r.id)===S(id));\nconst hist=(r,line)=>[S(r&&r.history),stamp+' - '+line].filter(Boolean).join(String.fromCharCode(10));\nif(a==='save'){\n const subject=S(b.subject).slice(0,160);if(!subject)return R(false,{message:'Give the RFI a subject.'});\n const question=S(b.question).slice(0,6000);if(!question)return R(false,{message:'Write the question.'});\n if(!okMail(b.sent_to_email))return R(false,{message:'Check the email address.'});\n if(S(b.needed_by)&&!isD(b.needed_by))return R(false,{message:'Check the needed-by date.'});\n const row={subject:subject,question:question,sent_to:S(b.sent_to).slice(0,160),sent_to_email:S(b.sent_to_email).slice(0,160),needed_by:isD(b.needed_by)?S(b.needed_by):''};\n const id=num(b.id);\n if(id){const r=find(id);if(!r)return R(false,{message:'That RFI was not found. Refresh the page.'});\n  let line='Edited by '+by;if(S(r.needed_by)!==row.needed_by)line+=' (needed by '+(r.needed_by?uk(r.needed_by):'not set')+' to '+(row.needed_by?uk(row.needed_by):'not set')+')';\n  row.history=hist(r,line);await save('rfis',id,row,true);return R(true,{id:id});}\n const n=V.reduce((m,r)=>Math.max(m,num(S(r.rfi_no).replace(/\\D/g,''))),0)+1;\n Object.assign(row,{job_no:job,rfi_no:'RFI-'+String(n).padStart(3,'0'),status:'Draft',sent_on:'',response:'',responded_on:'',files_json:'[]',pdf_url:'',created_by:by,created_at:now,history:stamp+' - Drafted by '+by});\n const res=await save('rfis',0,row,false);return R(true,{id:num(res&&res.id),rfi_no:row.rfi_no});\n}\nconst r=find(b.id);if(!r)return R(false,{message:'That RFI was not found. Refresh the page.'});\nif(a==='status'){\n const st=S(b.status);if(STS.indexOf(st)<0)return R(false,{message:'Unknown status.'});\n const was=S(r.status)||'Draft';const row={status:st};let line=was+' to '+st+' by '+by;\n if(st==='Sent'){if(!S(r.sent_to))return R(false,{message:'Add who it is going to before marking it sent.'});\n  const d=isD(b.sent_on)?S(b.sent_on):now.slice(0,10);row.sent_on=d;line+=' (sent '+uk(d)+' to '+S(r.sent_to)+')';}\n if(st==='Answered'||(st==='Closed'&&S(b.response))){const resp=S(b.response).slice(0,6000);\n  if(st==='Answered'&&!resp)return R(false,{message:'Enter the answer you received.'});\n  if(resp){row.response=resp;row.responded_on=isD(b.responded_on)?S(b.responded_on):now.slice(0,10);line+=' (answered '+uk(row.responded_on)+')';}\n  if(!S(r.sent_on))row.sent_on=row.responded_on||now.slice(0,10);}\n if(st==='Draft'){row.sent_on='';row.response='';row.responded_on='';}\n if(st==='Sent'&&(was==='Answered'||was==='Closed')&&S(r.response)){row.response='';row.responded_on='';line+=', previous answer'+(r.responded_on?' ('+uk(r.responded_on)+')':'')+': '+S(r.response).slice(0,1500);}\n if(S(b.note))line+=': '+S(b.note).slice(0,300);\n row.history=hist(r,line);await save('rfis',r.id,row,true);return R(true);\n}\nif(a==='answer'){const resp=S(b.response).slice(0,6000);if(!resp)return R(false,{message:'Enter the answer.'});\n const d=isD(b.responded_on)?S(b.responded_on):(S(r.responded_on)||now.slice(0,10));\n await save('rfis',r.id,{response:resp,responded_on:d,history:hist(r,'Answer edited by '+by)},true);return R(true);}\nif(a==='delete'){await del('rfis',r.id);return R(true);}\nreturn R(false,{message:'Unknown action.'});\n"
+        }
+      },
+      {
+        "id": "d2da8122-09ff-4ed7-9eae-5cffe6bf958f",
+        "name": "Send Act",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          448
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Page Hook": {
+        "main": [
+          [
+            {
+              "node": "RFI Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "RFI Page": {
+        "main": [
+          [
+            {
+              "node": "Send Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data Hook": {
+        "main": [
+          [
+            {
+              "node": "RFI Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "RFI Data": {
+        "main": [
+          [
+            {
+              "node": "Send Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Act Hook": {
+        "main": [
+          [
+            {
+              "node": "RFI Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "RFI Act": {
+        "main": [
+          [
+            {
+              "node": "Send Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS RFI log per job: GET cbs-rfis?job=N (admin page), GET cbs-rfis-data, POST cbs-rfi-act (save, sent / answered / closed, edit answer, delete).",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

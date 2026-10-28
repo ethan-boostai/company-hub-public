@@ -1,0 +1,40 @@
+{
+  "table": "cbs_signin",
+  "n8n_id": "TmqJHfrY5RRIMFet",
+  "columns": [
+    {
+      "name": "active",
+      "type": "string"
+    },
+    {
+      "name": "created_at",
+      "type": "string"
+    },
+    {
+      "name": "device",
+      "type": "string"
+    },
+    {
+      "name": "kind",
+      "type": "string"
+    },
+    {
+      "name": "last_seen",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "pin_hash",
+      "type": "string"
+    },
+    {
+      "name": "token",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [],
+  "note": "private: PIN hashes and tokens"
+}

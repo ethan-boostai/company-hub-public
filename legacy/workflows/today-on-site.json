@@ -1,0 +1,702 @@
+{
+  "id": "sQVvL5VMobaaATjM",
+  "name": "CBS - Today On Site",
+  "active": true,
+  "isArchived": false,
+  "versionId": "d83e60eb-968e-4045-ba4d-e115c641f17d",
+  "activeVersionId": "d83e60eb-968e-4045-ba4d-e115c641f17d",
+  "triggerCount": 4,
+  "createdAt": "2026-10-17T13:25:19.055Z",
+  "updatedAt": "2026-10-19T13:59:57.337Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Today Data Hook": {
+      "main": [
+        [
+          {
+            "node": "Today Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Today Data": {
+      "main": [
+        [
+          {
+            "node": "Send Today Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Today UI Hook": {
+      "main": [
+        [
+          {
+            "node": "Today UI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Today UI": {
+      "main": [
+        [
+          {
+            "node": "Send Today UI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crew Name Hook": {
+      "main": [
+        [
+          {
+            "node": "Crew Name JS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crew Name JS": {
+      "main": [
+        [
+          {
+            "node": "Send Crew Name JS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Today Page Hook": {
+      "main": [
+        [
+          {
+            "node": "Today Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Today Page": {
+      "main": [
+        [
+          {
+            "node": "Send Today Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "13573b89-7185-4627-a6f3-29ab66ffd8a4",
+      "name": "Today Data Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-today-data",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "94dfaba7-3bb3-46d8-8012-23e83c14c8d0"
+    },
+    {
+      "id": "27f5604c-e05a-42b2-ace8-4d6d195fcaba",
+      "name": "Today Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* GET cbs-today-data?job=N: the \"Today on site\" panel on the job page (site manager / office). One job, today only.\n   Sections: people, safety, programme, deliveries, snags, diary. Each line: {t (title), s (sub), u (page to open), b (button), f ('r' urgent | 'a' due today)}.\n   Reads the same registers the job pages use; nothing is written here. show:false while the job is still an enquiry. */\nfunction sha256h(s){var K=[],H=[],i,j,p=2;for(;K.length<64;p++){for(j=2;j*j<=p&&p%j;j++);if(j*j>p){if(H.length<8)H.push((Math.pow(p,1/2)*4294967296)|0);K.push((Math.pow(p,1/3)*4294967296)|0);}}\n var b=unescape(encodeURIComponent(s)),l=b.length*8,w=[];for(i=0;i<b.length;i++)w[i>>2]|=b.charCodeAt(i)<<(24-(i%4)*8);w[l>>5]|=0x80<<(24-l%32);w[((l+64>>9)<<4)+15]=l;\n for(i=0;i<w.length;i+=16){var a=H.slice(0),W=[];for(j=0;j<64;j++){if(j<16)W[j]=w[i+j]|0;else{var x=W[j-15],y=W[j-2];W[j]=(((x>>>7|x<<25)^(x>>>18|x<<14)^(x>>>3))+W[j-7]+((y>>>17|y<<15)^(y>>>19|y<<13)^(y>>>10))+W[j-16])|0;}\n  var e=a[4],t1=a[7]+((e>>>6|e<<26)^(e>>>11|e<<21)^(e>>>25|e<<7))+((e&a[5])^(~e&a[6]))+K[j]+W[j],c=a[0],t2=((c>>>2|c<<30)^(c>>>13|c<<19)^(c>>>22|c<<10))+((c&a[1])^(c&a[2])^(a[1]&a[2]));a=[(t1+t2)|0].concat(a);a[4]=(a[4]+t1)|0;a.pop();}\n  for(j=0;j<8;j++)H[j]=(H[j]+a[j])|0;}\n return H.map(function(v){return ('00000000'+(v>>>0).toString(16)).slice(-8);}).join('');}\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/^#/,'').replace(/[^0-9A-Za-z]/g,'').toLowerCase();\nconst job=S(($input.first().json.query||{}).job).replace(/[^0-9A-Za-z-]/g,'');\nif(!job)return [{json:{ok:false,show:false}}];\nconst E=encodeURIComponent(job);\nconst today=new Date().toLocaleDateString('en-CA',{timeZone:'Europe/London'});\nconst MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];\nconst ukToday=Number(today.slice(8,10))+' '+MO[+today.slice(5,7)-1]+' '+today.slice(0,4);\nconst dm=d=>{const m=S(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})(?:[T ](\\d{2}:\\d{2}))?/);return m?Number(m[3])+' '+MO[+m[2]-1]+(m[4]?' '+m[4]:''):S(d);};\nconst tm=d=>{const m=S(d).match(/[T ](\\d{2}:\\d{2})/);return m?m[1]:'';};\nconst get=(u,ms)=>h.httpRequest({url:H+u,json:true,timeout:ms||30000}).catch(()=>null);\nconst post=(u,b)=>h.httpRequest({method:'POST',url:H+u,body:b||{},json:true,timeout:30000}).catch(()=>null);\n/* Mode first: enquiries (no Job File yet) stop here, so they cost one light call instead of twelve. */\nconst CD=await get('cbs-cdm?job='+E);\nconst mode=S(CD&&CD.mode).toLowerCase();\nif(!/^(project|cdm)$/.test(mode))return [{json:{ok:true,show:false,mode:mode}}];\nconst [AD,TD,PL,SM,SUM,PM,VI,SN,DW,VA,SC,TB]=await Promise.all([\n get('cbs-admin-data?t=rams,cphsp,prestarts,toolbox,signons,ptmsheets,incidents,pos,workers',60000),\n null, /* tasks feed not needed here (it waits on the all-jobs requirements feed) */\n post('cbs-admin-save?a=list&t=progitems',{}),\n get('cbs-sm8-job?no='+E,15000),\n get('cbs-job-reg-data?job='+E+'&k=summary'),\n get('cbs-job-reg-data?job='+E+'&k=permits'),\n get('cbs-job-reg-data?job='+E+'&k=visitors'),\n get('cbs-snags-data?job='+E),\n get('cbs-drawings-data?job='+E),\n get('cbs-variations-data?job='+E),\n get('cbs-job-sched-data?job='+E+'&k=scaffold'),\n get('cbs-job-sched-data?job='+E+'&k=toolbox')\n]);\nconst cdm=mode==='cdm'||!!(SUM&&SUM.cdm);\nconst A=AD||{};const mine=k=>(Array.isArray(A[k])?A[k]:[]).filter(r=>r&&jk(r.job_no)===jk(job));\nconst pg=(p,extra)=>'/webhook/'+p+(p.indexOf('?')>-1?'&':'?')+'job='+E+(extra||'');\nconst sm=SM&&SM.found?SM:{};const booked=Array.isArray(sm.booked)?sm.booked:[];const bookedToday=booked.indexOf(today)>-1;\nconst SO=mine('signons');const low=v=>S(v).toLowerCase();\nconst live=st=>!/(draft|superseded|withdrawn|cancel|archived)/i.test(S(st));\nconst CP=mine('cphsp').filter(r=>live(r.status)).sort((a,b)=>S(b.dated).localeCompare(S(a.dated))||Number(b.id)-Number(a.id));const cp=CP[0]||null;\nconst RAMS=mine('rams').filter(r=>live(r.status)&&S(r.pdf_url));\nconst PS=mine('prestarts').filter(r=>S(r.held_on).slice(0,10)===today).sort((a,b)=>Number(b.id)-Number(a.id));const ps=PS[0]||null;\nconst TBT=mine('toolbox').filter(r=>S(r.held_on).slice(0,10)===today);\nconst signedDoc=(types,id,rev)=>SO.filter(s=>types.indexOf(S(s.doc_type))>-1&&S(s.doc_id)===String(id)&&(!rev||!S(s.doc_rev)||S(s.doc_rev)===rev)).map(s=>low(s.name));\n/* Signing today's pre-start is the sign-on for the day (no separate site sign-in). */\nconst PSO=ps?SO.filter(s=>S(s.doc_type)==='prestart'&&S(s.doc_id)===String(ps.id)):[];\n/* People: booked in ServiceM8 today, or signed today's pre-start. */\nconst ppl={};const addP=(n,co,src)=>{n=S(n);if(!n)return;const k=low(n);if(!ppl[k])ppl[k]={n:n,co:S(co),src:{}};ppl[k].src[src]=1;if(co&&!ppl[k].co)ppl[k].co=S(co);};\nif(bookedToday)(sm.crew||[]).forEach(n=>addP(n,'CBS','booked'));\nPSO.forEach(s=>addP(s.name,s.company,'ps'));\nconst cpS=cp?signedDoc(['cphsp','sssp'],cp.id,S(cp.revision||cp.version)):[];const psS=ps?signedDoc(['prestart'],ps.id,''):[];\nconst ramsS=RAMS.map(r=>signedDoc(['rams','swms'],r.id,S(r.revision||r.version)));\nconst inTime={};PSO.forEach(s=>{inTime[low(s.name)]=tm(s.signed_at);});\nconst people=Object.keys(ppl).map(k=>{const p=ppl[k];const c=[];const sub=/(^|\\b)cbs\\b|chelmsford/i.test(p.co)||!p.co;\n c.push([p.src.ps?'Signed on'+(inTime[k]?' '+inTime[k]:''):'Not signed on',!!p.src.ps]);\n if(cdm&&cp)c.push(['Induction',cpS.indexOf(k)>-1]);\n if(RAMS.length&&sub)c.push(['RAMS',ramsS.every(a=>a.indexOf(k)>-1)]);\n return {n:p.n,co:p.co||'CBS',chips:c,bad:c.some(x=>!x[1])};}).sort((a,b)=>(b.bad?1:0)-(a.bad?1:0)||a.n.localeCompare(b.n));\nconst vis=((VI&&VI.sections&&VI.sections[0]&&VI.sections[0].items)||[]).filter(x=>x.st==='On site'&&(x.m||[]).join(' ').indexOf(ukToday)>-1).map(x=>({t:S(x.t),s:(x.m||[]).filter(Boolean).slice(0,2).join(' \\u00b7 '),u:pg('cbs-job-visitors'),b:'Sign out'}));\n/* Safety due */\nconst safety=[];\n((PM&&PM.sections&&PM.sections[0]&&PM.sections[0].items)||[]).forEach(x=>{const m=(x.m||[]).join(' \\u00b7 ');\n if(/(requested|submitted|awaiting|pending)/i.test(x.st))safety.push({t:'Permit: '+S(x.t),s:m||S(x.st),u:pg('cbs-job-permits'),b:'Review',f:'r'});\n else if(/(live|approved|issued|active)/i.test(x.st)&&new RegExp('to '+ukToday).test(m))safety.push({t:'Permit '+S(x.t),s:'Live \\u00b7 expires today',u:pg('cbs-job-permits'),b:'Close',f:'a'});});\nif(!ps&&bookedToday)safety.push({t:'Daily pre-start',s:'Not done yet today',u:pg('cbs-prestart'),b:'Start',f:'r'});\n/* Inspections and toolbox talks: same due rule as their job pages (freq + last done gives the next due, else due_on). */\nconst addF=(d0,f)=>{const m0=S(d0).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);if(!m0||!f)return '';f=S(f).toLowerCase();let n=0,mo=0,m;if(f==='daily')n=1;else if(f==='weekly')n=7;else if(f==='fortnightly')n=14;else if(f==='monthly')mo=1;else if((m=f.match(/every\\s+(\\d+)\\s*day/)))n=+m[1];else return '';const dt=new Date(Date.UTC(+m0[1],+m0[2]-1,+m0[3]));if(mo)dt.setUTCMonth(dt.getUTCMonth()+1);else dt.setUTCDate(dt.getUTCDate()+n);return dt.toISOString().slice(0,10);};\nconst schedDue=(R,label,page,btn,fin)=>((R&&R.items)||[]).forEach(it=>{const st=S(it.status),f=S(it.freq),ld=S(it.last_done).slice(0,10);const due=(f&&ld)?addF(ld,f):S(it.due_on).slice(0,10);const nm=S(it.ref_name)||S(it.label);\n if(st==='Re-inspection needed'){safety.push({t:label+(nm?': '+nm:''),s:'Re-inspection needed',u:pg(page),b:btn,f:'r'});return;}\n if(st===fin&&!f)return;if(!due||due>today)return;\n safety.push({t:label+(nm?': '+nm:''),s:due<today?'Overdue since '+dm(due):'Due today',u:pg(page),b:btn,f:due<today?'r':'a'});});\nschedDue(SC,'Inspection','cbs-job-inspections','Upload','Inspected');schedDue(TB,'Toolbox talk','cbs-job-toolbox','Start','Held');\n(Array.isArray(A.incidents)?A.incidents:[]).filter(r=>jk(r.sm8_job)===jk(job)&&!/closed/i.test(S(r.status))).forEach(r=>safety.push({t:(S(r.kind)||'Incident')+(r.ref?' '+S(r.ref):'')+' \\u00b7 open',s:[dm(r.occurred_at),S(r.reported_by)?'by '+S(r.reported_by):''].filter(Boolean).join(' '),u:pg('cbs-job-incidents'),b:'Open'}));\n/* Programme today */\nconst P=(Array.isArray(PL)?PL:[]).filter(r=>r&&jk(r.job_no)===jk(job));const kid={};P.forEach(r=>{if(S(r.parent_id))kid[S(r.parent_id)]=1;});\nconst leaves=P.filter(r=>!kid[String(r.id)]&&S(r.status)!=='Done');const ck=r=>{try{const a=JSON.parse(S(r.checklist_json)||'[]');return Array.isArray(a)?a.filter(i=>i&&S(i.t)):[];}catch(x){return [];}};\nconst prog=[];\nleaves.filter(r=>S(r.end_on||r.start_on).slice(0,10)&&S(r.end_on||r.start_on).slice(0,10)<today).slice(0,4).forEach(r=>prog.push({t:S(r.name),s:'Behind plan \\u00b7 was due '+dm(S(r.end_on||r.start_on)),u:'/webhook/cbs-programme?job='+E,b:'Reschedule',f:'a'}));\nleaves.filter(r=>{const s=S(r.start_on).slice(0,10),e=S(r.end_on).slice(0,10)||s;return s&&s<=today&&e>=today;}).slice(0,8).forEach(r=>{const c=ck(r);prog.push({t:S(r.name),s:[S(r.assigned_to),c.length?c.filter(i=>i.done).length+' of '+c.length+' ticked':(S(r.start_on).slice(0,10)===today?'Starts today':'')].filter(Boolean).join(' \\u00b7 '),u:'/webhook/cbs-programme?job='+E,b:'Open'});});\nconst nxt=leaves.filter(r=>S(r.start_on).slice(0,10)>today).sort((a,b)=>S(a.start_on).localeCompare(S(b.start_on))).slice(0,3);\nif(nxt.length)prog.push({t:'Coming up',s:nxt.map(r=>S(r.name)+' '+dm(r.start_on)).join(' \\u00b7 '),u:'/webhook/cbs-programme?job='+E,b:'Look-ahead'});\n/* Deliveries and plant */\nconst deliv=[];\nmine('pos').forEach(r=>{const st=S(r.status);const nb=S(r.needed_by).slice(0,10);\n if(nb&&nb<=today&&!/(received|delivered|closed|complete|cancel|off.?hired)/i.test(st)&&!/hire/i.test(S(r.po_type)))deliv.push({t:(S(r.po_no)?S(r.po_no)+' \\u00b7 ':'')+(S(r.supplier)||'Delivery'),s:nb<today?'Was due '+dm(nb)+' \\u00b7 not received':'Due today',u:'/webhook/cbs-po?id='+encodeURIComponent(r.id),b:'Received',f:nb<today?'r':'a'});\n if(/hire/i.test(S(r.po_type))&&!S(r.offhired_on)&&S(r.hire_end).slice(0,10)&&S(r.hire_end).slice(0,10)<=today)deliv.push({t:(S(r.supplier)||'Hire')+(S(r.po_no)?' \\u00b7 '+S(r.po_no):''),s:'Off-hire due '+(S(r.hire_end).slice(0,10)===today?'today':dm(r.hire_end)),u:pg('cbs-job-plantlist'),b:'Off-hire',f:'a'});});\nmine('ptmsheets').filter(r=>!/^loaded$/i.test(S(r.status))&&!S(r.loaded_at)&&!/cancel/i.test(S(r.status))).forEach(r=>deliv.push({t:'Load-up'+(S(r.vehicle)?' \\u00b7 '+S(r.vehicle):''),s:'Planned, not loaded'+(S(r.sheet_date)?' \\u00b7 '+dm(r.sheet_date):''),u:pg('cbs-job-materials'),b:'Open',f:'a'}));\n/* Snags and queries */\nconst snags=[];const SNL=(SN&&Array.isArray(SN.snags))?SN.snags:[];\nSNL.forEach(r=>{const st=S(r.status);const no=S(r.snag_no||r.no||r.id);const ds=S(r.description||r.title);\n if(/^fixed/i.test(st))snags.push({t:'Snag '+no+' fixed'+(S(r.fixed_by)?' by '+S(r.fixed_by):''),s:ds,u:'/webhook/cbs-snags?job='+E,b:'Verify'});\n else if(/^open/i.test(st)&&S(r.created_at||r.raised_at||r.at).slice(0,10)===today)snags.push({t:'Snag '+no+' new',s:ds,u:'/webhook/cbs-snags?job='+E,b:'Open',f:'a'});});\n((DW&&DW.items)||[]).filter(x=>x.t==='rfi'&&!/^(answered|closed)$/i.test(S(x.status))&&x.c==='r').forEach(x=>snags.push({t:(S(x.no)||'RFI')+' \\u00b7 '+S(x.title),s:'Overdue \\u00b7 '+S(x.status),u:'/webhook/cbs-rfis?job='+E,b:'Chase',f:'r'}));\n((VA&&VA.rows)||[]).filter(r=>/(pending|submitted|awaiting|raised|sent)/i.test(S(r.status))).slice(0,4).forEach(r=>snags.push({t:(S(r.vo_no||r.ref||r.no)||'Variation')+(S(r.title||r.description)?' \\u00b7 '+S(r.title||r.description):''),s:'Awaiting client instruction',u:'/webhook/cbs-variations?job='+E,b:'Open'}));\n/* Diary */\nconst dd=SUM&&SUM.sum&&SUM.sum.diary;const diaryDone=!!(dd&&dd.l==='g');\nconst diary=diaryDone?[]:[{t:'Today\\u2019s diary',s:'Weather and labour filled in \\u00b7 add notes and lock',u:'/webhook/cbs-diary?job='+E,b:'Complete',f:''}];\n/* Quick actions for the People card */\nconst portal=H+'cbs-crew?t='+encodeURIComponent(job+'.'+sha256h('[redacted-secret]:'+job).slice(0,20));\nconst signDocs=[];if(cp&&cdm)signDocs.push({k:'cphsp',id:String(cp.id),n:'Site induction (CPHSP)'});\nRAMS.forEach(r=>signDocs.push({k:'rams',id:String(r.id),n:'RAMS: '+(S(r.activity)||S(r.task)||'RAMS')}));\nif(ps)signDocs.push({k:'prestart',id:String(ps.id),n:'Today\\u2019s pre-start'});TBT.forEach(r=>signDocs.push({k:'toolbox',id:String(r.id),n:(S(r.topic)||'Toolbox talk')}));\nconst urgent=safety.concat(prog,deliv,snags).filter(x=>x.f==='r').length;\nconst todo=safety.length+prog.filter(x=>x.b!=='Look-ahead').length+deliv.length+snags.length+diary.length;\nreturn [{json:{ok:true,show:true,job:job,today:today,cdm:cdm,mode:mode,people:people,visitors:vis,safety:safety,prog:prog,deliv:deliv,snags:snags,diary:diary,\n signDocs:signDocs,portal:portal,visitUrl:H+'cbs-visit?job='+E,induction:cp&&cdm?'/webhook/cbs-sign?doc=cphsp&id='+encodeURIComponent(cp.id):'',\n counts:{on:people.filter(p=>p.chips[0]&&p.chips[0][1]).length,urgent:urgent,todo:todo,visitors:vis.length}}}];\n"
+      }
+    },
+    {
+      "id": "a7a2d960-0e0b-485b-b6d7-03418e936e3e",
+      "name": "Send Today Data",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "25b6cdfe-31ab-4ef5-945c-5b90b1c3563e",
+      "name": "Today UI Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        224
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-today-ui",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "c11e23a6-bb83-459c-baef-fccae5c161e2"
+    },
+    {
+      "id": "74c90515-f74f-41fe-9804-26b2dfbe243f",
+      "name": "Today UI",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        224
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "function TODAYPAGE(){\nif(window.__tos)return;window.__tos=1;\nvar Q=new URLSearchParams(location.search);var JOB=(Q.get('job')||'').replace(/[^0-9A-Za-z-]/g,'');\nif(!/\\/webhook\\/cbs-today(\\/|$)/.test(location.pathname)||!JOB)return;\nvar D=null,root=document.getElementById('tosRoot');if(!root)return;\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction openPage(u,title){var o=document.createElement('div');o.id='tosOv';\n o.innerHTML='<div class=\"tos-oh\"><button type=\"button\" id=\"tosX\">\\u2039 Today</button><div class=\"tos-tl\">'+e(title)+'</div><a href=\"'+e(u)+'\" target=\"_blank\" rel=\"noopener\" aria-label=\"Open full screen in a new tab\">\\u2922</a></div><iframe src=\"'+e(u)+'\" title=\"'+e(title)+'\"></iframe>';\n document.body.appendChild(o);document.body.style.overflow='hidden';\n o.querySelector('#tosX').onclick=function(){o.remove();document.body.style.overflow='';load();};}\nfunction modal(html){var m=document.createElement('div');m.id='tosMd';m.innerHTML='<div class=\"tos-bx\" role=\"dialog\">'+html+'<button type=\"button\" class=\"tos-bt\" id=\"tosMdX\" style=\"margin-top:14px\">Close</button></div>';document.body.appendChild(m);\n m.addEventListener('click',function(ev){if(ev.target===m)m.remove();});m.querySelector('#tosMdX').onclick=function(){m.remove();};return m;}\nfunction signSheet(){if(!D.signDocs.length){modal('<h3>Sign-on sheet</h3><p>Nothing to sign on this job today. Save a RAMS, pre-start or toolbox talk first.</p>');return;}\n var m=modal('<h3>Sign-on sheet</h3><p class=\"tos-mu\">Pick the document, then hand the phone to each person to sign.</p>'+D.signDocs.map(function(d,i){return '<button type=\"button\" class=\"tos-op\" data-i=\"'+i+'\">'+e(d.n)+'</button>';}).join(''));\n m.querySelectorAll('[data-i]').forEach(function(b){b.onclick=function(){var d=D.signDocs[+b.getAttribute('data-i')];m.remove();openPage('/webhook/cbs-sign?doc='+d.k+'&id='+encodeURIComponent(d.id),d.n);};});}\nfunction qr(url,title,note){var m=modal('<h3>'+e(title)+'</h3><p class=\"tos-mu\">'+e(note)+'</p><div class=\"tos-qr\" id=\"tosQr\"></div><div class=\"tos-lk\">'+e(url)+'</div><button type=\"button\" class=\"tos-bt\" id=\"tosCp\" style=\"margin-top:10px\">Copy link</button>');\n function draw(){try{new window.QRCode(m.querySelector('#tosQr'),{text:url,width:240,height:240,correctLevel:window.QRCode.CorrectLevel.M});}catch(x){m.querySelector('#tosQr').textContent='QR code could not load. Use the link below.';}}\n if(window.QRCode)draw();else{var sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';sc.onload=draw;sc.onerror=draw;document.head.appendChild(sc);}\n m.querySelector('#tosCp').onclick=function(){var b=this;function fb(){prompt('Copy this link:',url);}if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(url).then(function(){b.textContent='Copied';},fb);else fb();};}\nfunction row(x){return '<div class=\"tos-rw\"><span class=\"tos-dt'+(x.f?' tos-'+x.f:'')+'\"></span><div class=\"tos-rx\"><div class=\"tos-rt\">'+e(x.t)+'</div>'+(x.s?'<div class=\"tos-rs\">'+e(x.s)+'</div>':'')+'</div>'+(x.u?'<button type=\"button\" class=\"tos-bt'+(x.f==='r'?' tos-p':'')+'\" data-u=\"'+e(x.u)+'\" data-t=\"'+e(x.t)+'\">'+e(x.b||'Open')+'</button>':'')+'</div>';}\nfunction card(title,meta,inner){return '<section class=\"tos-cd\"><div class=\"tos-ch\"><b>'+e(title)+'</b><span>'+e(meta||'')+'</span></div>'+inner+'</section>';}\nfunction render(){if(!D)return;var c=D.counts,J=encodeURIComponent(JOB);\n var h='<div class=\"tos-top\"><div class=\"tos-sum\">'+[c.on?c.on+' on site':'',c.urgent?'<b class=\"tos-red\">'+c.urgent+' urgent</b>':'',c.todo?c.todo+' to do today':'Nothing outstanding',c.visitors?c.visitors+' visitor'+(c.visitors===1?'':'s'):''].filter(Boolean).join(' \\u00b7 ')+'</div>'\n  +'<div class=\"tos-qa\"><button type=\"button\" class=\"tos-bt\" data-u=\"/webhook/cbs-snags?job='+e(J)+'\" data-t=\"Snagging\">+ Snag</button><button type=\"button\" class=\"tos-bt\" data-u=\"/webhook/cbs-diary?job='+e(J)+'\" data-t=\"Daily diary\">+ Diary</button><button type=\"button\" class=\"tos-bt\" data-u=\"/webhook/cbs-admin?new=incidents&job='+e(J)+'\" data-t=\"Report incident\">+ Incident</button><button type=\"button\" class=\"tos-bt\" data-u=\"'+e(D.portal)+'\" data-t=\"Crew portal\">Crew portal</button></div></div><div class=\"tos-gr\">';\n var pp=D.people.map(function(p){return '<div class=\"tos-pp\"><div class=\"tos-pn\"><b>'+e(p.n)+'</b><span>'+e(p.co)+'</span></div><div class=\"tos-cp\">'+p.chips.map(function(x){return '<span class=\"tos-c '+(x[1]?'tos-y':'tos-n')+'\">'+e(x[0])+'</span>';}).join('')+'</div></div>';}).join('');\n var ab='<div class=\"tos-ab\">'+(D.induction?'<button type=\"button\" class=\"tos-bt tos-p\" id=\"tosInd\">Run induction</button>':'')+'<button type=\"button\" class=\"tos-bt'+(D.induction?'':' tos-p')+'\" id=\"tosSheet\">Sign-on sheet</button><button type=\"button\" class=\"tos-bt\" id=\"tosQrB\">Show QR</button>'\n  +(D.cdm?'<button type=\"button\" class=\"tos-bt\" data-u=\"'+e(D.visitUrl)+'\" data-t=\"Visitor sign-in\">Sign visitor in</button><button type=\"button\" class=\"tos-bt\" id=\"tosVq\">Visitor QR</button>':'')+'</div>';\n h+=card(D.cdm?'People':'Crew today',[c.on?c.on+' signed on':'',D.visitors.length?D.visitors.length+' visitor'+(D.visitors.length===1?'':'s'):''].filter(Boolean).join(' \\u00b7 '),(pp||'<div class=\"tos-em\">Nobody booked or signed on yet today. Crew sign on by signing today\\u2019s pre-start.</div>')+D.visitors.map(row).join('')+ab);\n function sec(t,L){return L.length?card(t,L.length+'',L.map(row).join('')):'';}\n h+=sec('Safety due',D.safety)+sec('Programme today',D.prog)+sec('Deliveries and plant',D.deliv)+sec('Snags and queries',D.snags)+sec('Diary',D.diary);\n if(!D.safety.length&&!D.prog.length&&!D.deliv.length&&!D.snags.length&&!D.diary.length)h+=card('All clear','','<div class=\"tos-em\">Nothing else needs you today.</div>');\n h+='</div><div class=\"tos-ft\">Red dot = urgent, amber = due today. Lines drop off when they are done. Refreshes every 2 minutes.</div>';\n root.innerHTML=h;\n root.querySelectorAll('[data-u]').forEach(function(b){b.onclick=function(){openPage(b.getAttribute('data-u'),b.getAttribute('data-t')||'');};});\n var i1=root.querySelector('#tosInd');if(i1)i1.onclick=function(){openPage(D.induction,'Site induction');};\n root.querySelector('#tosSheet').onclick=signSheet;\n root.querySelector('#tosQrB').onclick=function(){qr(D.portal,'Crew sign-on QR','Scan to open this job\\u2019s crew portal: sign the pre-start, induction and RAMS. Works for subcontractors and new starters.');};\n var vq=root.querySelector('#tosVq');if(vq)vq.onclick=function(){qr(D.visitUrl,'Visitor sign-in QR','Visitors scan this to sign in to the site.');};}\nvar BUSY=false;\nfunction load(){if(BUSY)return;BUSY=true;fetch('/webhook/cbs-today-data?job='+encodeURIComponent(JOB)+'&_='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){BUSY=false;\n if(!d||!d.show){root.innerHTML='<div class=\"tos-cd tos-em\" style=\"padding:18px\">Today on site starts once the job is Approved and has a Job File (Project or CDM).</div>';return;}D=d;render();})\n .catch(function(){BUSY=false;if(!D)root.innerHTML='<div class=\"tos-cd tos-em\" style=\"padding:18px\">Could not load. <button type=\"button\" class=\"tos-bt\" id=\"tosRt\">Try again</button></div>';var r=document.getElementById('tosRt');if(r)r.onclick=load;});}\nload();\nsetInterval(function(){if(document.visibilityState==='visible'&&!document.getElementById('tosOv')&&!document.getElementById('tosMd'))load();},120000);\n}\n\nreturn [{json:{js:'('+TODAYPAGE.toString()+')();'}}];\n"
+      }
+    },
+    {
+      "id": "69e6dc50-e89f-4de1-888c-0e174c52b713",
+      "name": "Send Today UI",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        224
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.js }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/javascript; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-cache"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "3a708389-68ab-4d9d-9399-d549f34bfb62",
+      "name": "Crew Name Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        448
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-crew-me",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "c1562943-f4e1-4ecb-91b5-7acbe6602793"
+    },
+    {
+      "id": "3e7351b9-8c1a-421f-af24-04b3ba42554a",
+      "name": "Crew Name JS",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        448
+      ],
+      "parameters": {
+        "jsCode": "/* GET cbs-crew-me: one saved name for the crew pages. Loaded on the sign-on and load-up crew pages.\n   Only acts when the page was opened from the crew portal (?me=1): fills an empty name box with the name saved on this phone\n   (cbs_name, the same key the crew portal and task checklists use) and saves a name typed there back to it.\n   Hand-round sheets on the site manager's phone (no me=1) are left alone. */\nfunction CREWME(){\nvar Q=new URLSearchParams(location.search);if(!Q.get('me'))return;\nfunction g(){try{var n=localStorage.getItem('cbs_name')||'';if(!n){var o=JSON.parse(localStorage.getItem('cbs_me')||'null');if(o&&o.name)n=o.name;}return n;}catch(x){return '';}}\nfunction set(n){n=String(n||'').trim();if(!n)return;try{localStorage.setItem('cbs_name',n);var o={};try{o=JSON.parse(localStorage.getItem('cbs_me')||'{}')||{};}catch(x){}o.name=n;localStorage.setItem('cbs_me',JSON.stringify(o));}catch(x){}}\nvar SEL='input#nm,input[autocomplete=\"name\"],input[name=\"name\"],input[id*=\"name\" i],input[placeholder*=\"your name\" i]';\nvar done=false;\nfunction fill(){var n=g();[].forEach.call(document.querySelectorAll(SEL),function(i){if(i.__cbsme)return;i.__cbsme=1;\n  if(n&&!i.value&&!done){i.value=n;done=true;i.dispatchEvent(new Event('input',{bubbles:true}));i.dispatchEvent(new Event('change',{bubbles:true}));}\n  i.addEventListener('change',function(){set(i.value);});});}\nfill();new MutationObserver(fill).observe(document.documentElement,{childList:true,subtree:true});\n}\nreturn [{json:{js:'('+CREWME.toString()+')();'}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "2ba829b3-808d-4af9-aa3c-f8a4101c8914",
+      "name": "Send Crew Name JS",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        448
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/javascript; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-cache"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ $json.js }}"
+      }
+    },
+    {
+      "id": "670704d4-0bf4-4c04-a0ab-a37160ec4603",
+      "name": "Today Page Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        672
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-today",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "8c4c3900-21ea-47c2-b093-6f725cbf0adf"
+    },
+    {
+      "id": "b4f127da-8939-4601-965b-bc7f9fdad20f",
+      "name": "Today Page",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        672
+      ],
+      "parameters": {
+        "jsCode": "/* GET cbs-today?job=N: Today on site as its own page (job menu, Site manager section). Shell only; the cards come from GET cbs-today-ui\n   (script) and GET cbs-today-data (data). cbs-guard in <head> handles sign-in and loads the job menu. */\nconst q=$input.first().json.query||{};const job=String(q.job||'').replace(/[^0-9A-Za-z-]/g,'');\nconst e=t=>String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst CSS='*{box-sizing:border-box}html,body{margin:0}body{background:#f3f2ef;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:15px;line-height:1.4}'\n+'body>header{background:#3d4043;color:#fff;padding:14px 18px;border-bottom:4px solid #F47920}body>header h1{margin:0;font-size:20px}body>header p{margin:2px 0 0;color:#d9d9d6;font-size:13px}'\n+'.wrap{max-width:1500px;margin:0 auto;padding:14px 16px 40px}'\n+'.tos-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}.tos-sum{font-size:14px;color:#3a3936}.tos-red{color:#a3322a}.tos-qa{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}'\n+'.tos-bt{min-height:38px;padding:0 12px;border-radius:8px;font:inherit;font-size:13px;font-weight:700;white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #c4c1ba;color:#161616;display:inline-flex;align-items:center;flex:0 0 auto}.tos-bt.tos-p{background:#F47920;border-color:#F47920}'\n+'.tos-gr{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px;align-items:start}'\n+'.tos-cd{background:#fff;border:1px solid #e0ddd7;border-radius:12px;padding:10px 14px;min-width:0}.tos-ch{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding-bottom:4px}.tos-ch b{font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:#3a3936}.tos-ch span{font-size:12px;color:#5c5a56}'\n+'.tos-rw{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid #eee}.tos-dt{width:8px;height:8px;border-radius:50%;flex:0 0 auto}.tos-dt.tos-r{background:#c0392b}.tos-dt.tos-a{background:#e0a100}'\n+'.tos-rx{flex:1;min-width:0}.tos-rt{font-weight:600;font-size:14px}.tos-rs{font-size:12.5px;color:#5c5a56}'\n+'.tos-pp{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #eee}.tos-pn{flex:0 0 150px;min-width:0}.tos-pn b{display:block;font-size:14px}.tos-pn span{display:block;font-size:11.5px;color:#5c5a56}'\n+'.tos-cp{display:flex;flex-wrap:wrap;gap:4px}.tos-c{font-size:11.5px;font-weight:600;border-radius:6px;padding:2px 7px;white-space:nowrap}.tos-c.tos-y{background:#e6f4ea;color:#1a6b33}.tos-c.tos-n{background:#fde7e5;color:#a3322a}'\n+'.tos-ab{display:flex;flex-wrap:wrap;gap:6px;padding-top:10px;margin-top:4px;border-top:1px solid #eee}.tos-em{color:#5c5a56;font-size:14px;padding:6px 0}.tos-ft{font-size:12.5px;color:#6b6e70;margin-top:14px}'\n+'#tosOv{position:fixed;inset:0;z-index:2147483000;background:#f3f2ef;display:flex;flex-direction:column}.tos-oh{background:#3d4043;color:#fff;padding:10px 12px;display:flex;align-items:center;gap:10px;border-bottom:4px solid #F47920}'\n+'.tos-oh button,.tos-oh a{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:9px 12px;font:inherit;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;white-space:nowrap}.tos-tl{flex:1;min-width:0;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#tosOv iframe{flex:1;border:0;width:100%;background:#fff}'\n+'#tosMd{position:fixed;inset:0;z-index:2147483100;background:rgba(30,32,34,.55);display:flex;align-items:center;justify-content:center;padding:16px}.tos-bx{background:#fff;border-radius:16px;max-width:460px;width:100%;padding:20px;max-height:90vh;overflow:auto}.tos-bx h3{margin:0 0 6px;font-size:19px}.tos-mu{margin:0;color:#5c5a56;font-size:14px}'\n+'.tos-op{display:block;width:100%;text-align:left;padding:13px 12px;border:1px solid #e0ddd7;border-radius:10px;background:#fff;font:inherit;font-size:15px;margin-top:8px;cursor:pointer}.tos-qr{display:flex;justify-content:center;margin:14px 0}.tos-lk{word-break:break-all;font-size:12.5px;color:#3d4043;background:#f7f7f6;border-radius:8px;padding:8px}'\n+'@media(max-width:760px){.wrap{padding:10px 10px 30px}.tos-gr{grid-template-columns:1fr}.tos-qa{margin-left:0}.tos-pn{flex-basis:118px}.tos-bt{min-height:42px}}';\nconst body=job?'<div class=\"wrap\"><div id=\"tosRoot\"><div class=\"tos-cd tos-em\" style=\"padding:18px\">Loading today\\u2026</div></div></div><script src=\"/webhook/cbs-today-ui?page=1\" defer></script>'\n :'<div class=\"wrap\"><div class=\"tos-cd tos-em\" style=\"padding:18px\">Open this page from a job.</div></div>';\nreturn [{json:{html:'<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><script src=\"/webhook/cbs-guard\"></script><meta name=\"viewport\" content=\"width=device-width,initial-scale=1,viewport-fit=cover\"><meta name=\"robots\" content=\"noindex\"><title>Today on site'+(job?' \\u00b7 Job '+e(job):'')+'</title><style>'+CSS+'</style></head><body><header><h1>Today on site</h1><p>'+(job?'Job '+e(job):'')+'</p></header>'+body+'</body></html>'}}];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "34f35149-4450-4080-a8dd-5b6a13434f6c",
+      "name": "Send Today Page",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        672
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "13573b89-7185-4627-a6f3-29ab66ffd8a4",
+        "name": "Today Data Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-today-data",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "94dfaba7-3bb3-46d8-8012-23e83c14c8d0"
+      },
+      {
+        "id": "27f5604c-e05a-42b2-ace8-4d6d195fcaba",
+        "name": "Today Data",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* GET cbs-today-data?job=N: the \"Today on site\" panel on the job page (site manager / office). One job, today only.\n   Sections: people, safety, programme, deliveries, snags, diary. Each line: {t (title), s (sub), u (page to open), b (button), f ('r' urgent | 'a' due today)}.\n   Reads the same registers the job pages use; nothing is written here. show:false while the job is still an enquiry. */\nfunction sha256h(s){var K=[],H=[],i,j,p=2;for(;K.length<64;p++){for(j=2;j*j<=p&&p%j;j++);if(j*j>p){if(H.length<8)H.push((Math.pow(p,1/2)*4294967296)|0);K.push((Math.pow(p,1/3)*4294967296)|0);}}\n var b=unescape(encodeURIComponent(s)),l=b.length*8,w=[];for(i=0;i<b.length;i++)w[i>>2]|=b.charCodeAt(i)<<(24-(i%4)*8);w[l>>5]|=0x80<<(24-l%32);w[((l+64>>9)<<4)+15]=l;\n for(i=0;i<w.length;i+=16){var a=H.slice(0),W=[];for(j=0;j<64;j++){if(j<16)W[j]=w[i+j]|0;else{var x=W[j-15],y=W[j-2];W[j]=(((x>>>7|x<<25)^(x>>>18|x<<14)^(x>>>3))+W[j-7]+((y>>>17|y<<15)^(y>>>19|y<<13)^(y>>>10))+W[j-16])|0;}\n  var e=a[4],t1=a[7]+((e>>>6|e<<26)^(e>>>11|e<<21)^(e>>>25|e<<7))+((e&a[5])^(~e&a[6]))+K[j]+W[j],c=a[0],t2=((c>>>2|c<<30)^(c>>>13|c<<19)^(c>>>22|c<<10))+((c&a[1])^(c&a[2])^(a[1]&a[2]));a=[(t1+t2)|0].concat(a);a[4]=(a[4]+t1)|0;a.pop();}\n  for(j=0;j<8;j++)H[j]=(H[j]+a[j])|0;}\n return H.map(function(v){return ('00000000'+(v>>>0).toString(16)).slice(-8);}).join('');}\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/^#/,'').replace(/[^0-9A-Za-z]/g,'').toLowerCase();\nconst job=S(($input.first().json.query||{}).job).replace(/[^0-9A-Za-z-]/g,'');\nif(!job)return [{json:{ok:false,show:false}}];\nconst E=encodeURIComponent(job);\nconst today=new Date().toLocaleDateString('en-CA',{timeZone:'Europe/London'});\nconst MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];\nconst ukToday=Number(today.slice(8,10))+' '+MO[+today.slice(5,7)-1]+' '+today.slice(0,4);\nconst dm=d=>{const m=S(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})(?:[T ](\\d{2}:\\d{2}))?/);return m?Number(m[3])+' '+MO[+m[2]-1]+(m[4]?' '+m[4]:''):S(d);};\nconst tm=d=>{const m=S(d).match(/[T ](\\d{2}:\\d{2})/);return m?m[1]:'';};\nconst get=(u,ms)=>h.httpRequest({url:H+u,json:true,timeout:ms||30000}).catch(()=>null);\nconst post=(u,b)=>h.httpRequest({method:'POST',url:H+u,body:b||{},json:true,timeout:30000}).catch(()=>null);\n/* Mode first: enquiries (no Job File yet) stop here, so they cost one light call instead of twelve. */\nconst CD=await get('cbs-cdm?job='+E);\nconst mode=S(CD&&CD.mode).toLowerCase();\nif(!/^(project|cdm)$/.test(mode))return [{json:{ok:true,show:false,mode:mode}}];\nconst [AD,TD,PL,SM,SUM,PM,VI,SN,DW,VA,SC,TB]=await Promise.all([\n get('cbs-admin-data?t=rams,cphsp,prestarts,toolbox,signons,ptmsheets,incidents,pos,workers',60000),\n null, /* tasks feed not needed here (it waits on the all-jobs requirements feed) */\n post('cbs-admin-save?a=list&t=progitems',{}),\n get('cbs-sm8-job?no='+E,15000),\n get('cbs-job-reg-data?job='+E+'&k=summary'),\n get('cbs-job-reg-data?job='+E+'&k=permits'),\n get('cbs-job-reg-data?job='+E+'&k=visitors'),\n get('cbs-snags-data?job='+E),\n get('cbs-drawings-data?job='+E),\n get('cbs-variations-data?job='+E),\n get('cbs-job-sched-data?job='+E+'&k=scaffold'),\n get('cbs-job-sched-data?job='+E+'&k=toolbox')\n]);\nconst cdm=mode==='cdm'||!!(SUM&&SUM.cdm);\nconst A=AD||{};const mine=k=>(Array.isArray(A[k])?A[k]:[]).filter(r=>r&&jk(r.job_no)===jk(job));\nconst pg=(p,extra)=>'/webhook/'+p+(p.indexOf('?')>-1?'&':'?')+'job='+E+(extra||'');\nconst sm=SM&&SM.found?SM:{};const booked=Array.isArray(sm.booked)?sm.booked:[];const bookedToday=booked.indexOf(today)>-1;\nconst SO=mine('signons');const low=v=>S(v).toLowerCase();\nconst live=st=>!/(draft|superseded|withdrawn|cancel|archived)/i.test(S(st));\nconst CP=mine('cphsp').filter(r=>live(r.status)).sort((a,b)=>S(b.dated).localeCompare(S(a.dated))||Number(b.id)-Number(a.id));const cp=CP[0]||null;\nconst RAMS=mine('rams').filter(r=>live(r.status)&&S(r.pdf_url));\nconst PS=mine('prestarts').filter(r=>S(r.held_on).slice(0,10)===today).sort((a,b)=>Number(b.id)-Number(a.id));const ps=PS[0]||null;\nconst TBT=mine('toolbox').filter(r=>S(r.held_on).slice(0,10)===today);\nconst signedDoc=(types,id,rev)=>SO.filter(s=>types.indexOf(S(s.doc_type))>-1&&S(s.doc_id)===String(id)&&(!rev||!S(s.doc_rev)||S(s.doc_rev)===rev)).map(s=>low(s.name));\n/* Signing today's pre-start is the sign-on for the day (no separate site sign-in). */\nconst PSO=ps?SO.filter(s=>S(s.doc_type)==='prestart'&&S(s.doc_id)===String(ps.id)):[];\n/* People: booked in ServiceM8 today, or signed today's pre-start. */\nconst ppl={};const addP=(n,co,src)=>{n=S(n);if(!n)return;const k=low(n);if(!ppl[k])ppl[k]={n:n,co:S(co),src:{}};ppl[k].src[src]=1;if(co&&!ppl[k].co)ppl[k].co=S(co);};\nif(bookedToday)(sm.crew||[]).forEach(n=>addP(n,'CBS','booked'));\nPSO.forEach(s=>addP(s.name,s.company,'ps'));\nconst cpS=cp?signedDoc(['cphsp','sssp'],cp.id,S(cp.revision||cp.version)):[];const psS=ps?signedDoc(['prestart'],ps.id,''):[];\nconst ramsS=RAMS.map(r=>signedDoc(['rams','swms'],r.id,S(r.revision||r.version)));\nconst inTime={};PSO.forEach(s=>{inTime[low(s.name)]=tm(s.signed_at);});\nconst people=Object.keys(ppl).map(k=>{const p=ppl[k];const c=[];const sub=/(^|\\b)cbs\\b|chelmsford/i.test(p.co)||!p.co;\n c.push([p.src.ps?'Signed on'+(inTime[k]?' '+inTime[k]:''):'Not signed on',!!p.src.ps]);\n if(cdm&&cp)c.push(['Induction',cpS.indexOf(k)>-1]);\n if(RAMS.length&&sub)c.push(['RAMS',ramsS.every(a=>a.indexOf(k)>-1)]);\n return {n:p.n,co:p.co||'CBS',chips:c,bad:c.some(x=>!x[1])};}).sort((a,b)=>(b.bad?1:0)-(a.bad?1:0)||a.n.localeCompare(b.n));\nconst vis=((VI&&VI.sections&&VI.sections[0]&&VI.sections[0].items)||[]).filter(x=>x.st==='On site'&&(x.m||[]).join(' ').indexOf(ukToday)>-1).map(x=>({t:S(x.t),s:(x.m||[]).filter(Boolean).slice(0,2).join(' \\u00b7 '),u:pg('cbs-job-visitors'),b:'Sign out'}));\n/* Safety due */\nconst safety=[];\n((PM&&PM.sections&&PM.sections[0]&&PM.sections[0].items)||[]).forEach(x=>{const m=(x.m||[]).join(' \\u00b7 ');\n if(/(requested|submitted|awaiting|pending)/i.test(x.st))safety.push({t:'Permit: '+S(x.t),s:m||S(x.st),u:pg('cbs-job-permits'),b:'Review',f:'r'});\n else if(/(live|approved|issued|active)/i.test(x.st)&&new RegExp('to '+ukToday).test(m))safety.push({t:'Permit '+S(x.t),s:'Live \\u00b7 expires today',u:pg('cbs-job-permits'),b:'Close',f:'a'});});\nif(!ps&&bookedToday)safety.push({t:'Daily pre-start',s:'Not done yet today',u:pg('cbs-prestart'),b:'Start',f:'r'});\n/* Inspections and toolbox talks: same due rule as their job pages (freq + last done gives the next due, else due_on). */\nconst addF=(d0,f)=>{const m0=S(d0).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);if(!m0||!f)return '';f=S(f).toLowerCase();let n=0,mo=0,m;if(f==='daily')n=1;else if(f==='weekly')n=7;else if(f==='fortnightly')n=14;else if(f==='monthly')mo=1;else if((m=f.match(/every\\s+(\\d+)\\s*day/)))n=+m[1];else return '';const dt=new Date(Date.UTC(+m0[1],+m0[2]-1,+m0[3]));if(mo)dt.setUTCMonth(dt.getUTCMonth()+1);else dt.setUTCDate(dt.getUTCDate()+n);return dt.toISOString().slice(0,10);};\nconst schedDue=(R,label,page,btn,fin)=>((R&&R.items)||[]).forEach(it=>{const st=S(it.status),f=S(it.freq),ld=S(it.last_done).slice(0,10);const due=(f&&ld)?addF(ld,f):S(it.due_on).slice(0,10);const nm=S(it.ref_name)||S(it.label);\n if(st==='Re-inspection needed'){safety.push({t:label+(nm?': '+nm:''),s:'Re-inspection needed',u:pg(page),b:btn,f:'r'});return;}\n if(st===fin&&!f)return;if(!due||due>today)return;\n safety.push({t:label+(nm?': '+nm:''),s:due<today?'Overdue since '+dm(due):'Due today',u:pg(page),b:btn,f:due<today?'r':'a'});});\nschedDue(SC,'Inspection','cbs-job-inspections','Upload','Inspected');schedDue(TB,'Toolbox talk','cbs-job-toolbox','Start','Held');\n(Array.isArray(A.incidents)?A.incidents:[]).filter(r=>jk(r.sm8_job)===jk(job)&&!/closed/i.test(S(r.status))).forEach(r=>safety.push({t:(S(r.kind)||'Incident')+(r.ref?' '+S(r.ref):'')+' \\u00b7 open',s:[dm(r.occurred_at),S(r.reported_by)?'by '+S(r.reported_by):''].filter(Boolean).join(' '),u:pg('cbs-job-incidents'),b:'Open'}));\n/* Programme today */\nconst P=(Array.isArray(PL)?PL:[]).filter(r=>r&&jk(r.job_no)===jk(job));const kid={};P.forEach(r=>{if(S(r.parent_id))kid[S(r.parent_id)]=1;});\nconst leaves=P.filter(r=>!kid[String(r.id)]&&S(r.status)!=='Done');const ck=r=>{try{const a=JSON.parse(S(r.checklist_json)||'[]');return Array.isArray(a)?a.filter(i=>i&&S(i.t)):[];}catch(x){return [];}};\nconst prog=[];\nleaves.filter(r=>S(r.end_on||r.start_on).slice(0,10)&&S(r.end_on||r.start_on).slice(0,10)<today).slice(0,4).forEach(r=>prog.push({t:S(r.name),s:'Behind plan \\u00b7 was due '+dm(S(r.end_on||r.start_on)),u:'/webhook/cbs-programme?job='+E,b:'Reschedule',f:'a'}));\nleaves.filter(r=>{const s=S(r.start_on).slice(0,10),e=S(r.end_on).slice(0,10)||s;return s&&s<=today&&e>=today;}).slice(0,8).forEach(r=>{const c=ck(r);prog.push({t:S(r.name),s:[S(r.assigned_to),c.length?c.filter(i=>i.done).length+' of '+c.length+' ticked':(S(r.start_on).slice(0,10)===today?'Starts today':'')].filter(Boolean).join(' \\u00b7 '),u:'/webhook/cbs-programme?job='+E,b:'Open'});});\nconst nxt=leaves.filter(r=>S(r.start_on).slice(0,10)>today).sort((a,b)=>S(a.start_on).localeCompare(S(b.start_on))).slice(0,3);\nif(nxt.length)prog.push({t:'Coming up',s:nxt.map(r=>S(r.name)+' '+dm(r.start_on)).join(' \\u00b7 '),u:'/webhook/cbs-programme?job='+E,b:'Look-ahead'});\n/* Deliveries and plant */\nconst deliv=[];\nmine('pos').forEach(r=>{const st=S(r.status);const nb=S(r.needed_by).slice(0,10);\n if(nb&&nb<=today&&!/(received|delivered|closed|complete|cancel|off.?hired)/i.test(st)&&!/hire/i.test(S(r.po_type)))deliv.push({t:(S(r.po_no)?S(r.po_no)+' \\u00b7 ':'')+(S(r.supplier)||'Delivery'),s:nb<today?'Was due '+dm(nb)+' \\u00b7 not received':'Due today',u:'/webhook/cbs-po?id='+encodeURIComponent(r.id),b:'Received',f:nb<today?'r':'a'});\n if(/hire/i.test(S(r.po_type))&&!S(r.offhired_on)&&S(r.hire_end).slice(0,10)&&S(r.hire_end).slice(0,10)<=today)deliv.push({t:(S(r.supplier)||'Hire')+(S(r.po_no)?' \\u00b7 '+S(r.po_no):''),s:'Off-hire due '+(S(r.hire_end).slice(0,10)===today?'today':dm(r.hire_end)),u:pg('cbs-job-plantlist'),b:'Off-hire',f:'a'});});\nmine('ptmsheets').filter(r=>!/^loaded$/i.test(S(r.status))&&!S(r.loaded_at)&&!/cancel/i.test(S(r.status))).forEach(r=>deliv.push({t:'Load-up'+(S(r.vehicle)?' \\u00b7 '+S(r.vehicle):''),s:'Planned, not loaded'+(S(r.sheet_date)?' \\u00b7 '+dm(r.sheet_date):''),u:pg('cbs-job-materials'),b:'Open',f:'a'}));\n/* Snags and queries */\nconst snags=[];const SNL=(SN&&Array.isArray(SN.snags))?SN.snags:[];\nSNL.forEach(r=>{const st=S(r.status);const no=S(r.snag_no||r.no||r.id);const ds=S(r.description||r.title);\n if(/^fixed/i.test(st))snags.push({t:'Snag '+no+' fixed'+(S(r.fixed_by)?' by '+S(r.fixed_by):''),s:ds,u:'/webhook/cbs-snags?job='+E,b:'Verify'});\n else if(/^open/i.test(st)&&S(r.created_at||r.raised_at||r.at).slice(0,10)===today)snags.push({t:'Snag '+no+' new',s:ds,u:'/webhook/cbs-snags?job='+E,b:'Open',f:'a'});});\n((DW&&DW.items)||[]).filter(x=>x.t==='rfi'&&!/^(answered|closed)$/i.test(S(x.status))&&x.c==='r').forEach(x=>snags.push({t:(S(x.no)||'RFI')+' \\u00b7 '+S(x.title),s:'Overdue \\u00b7 '+S(x.status),u:'/webhook/cbs-rfis?job='+E,b:'Chase',f:'r'}));\n((VA&&VA.rows)||[]).filter(r=>/(pending|submitted|awaiting|raised|sent)/i.test(S(r.status))).slice(0,4).forEach(r=>snags.push({t:(S(r.vo_no||r.ref||r.no)||'Variation')+(S(r.title||r.description)?' \\u00b7 '+S(r.title||r.description):''),s:'Awaiting client instruction',u:'/webhook/cbs-variations?job='+E,b:'Open'}));\n/* Diary */\nconst dd=SUM&&SUM.sum&&SUM.sum.diary;const diaryDone=!!(dd&&dd.l==='g');\nconst diary=diaryDone?[]:[{t:'Today\\u2019s diary',s:'Weather and labour filled in \\u00b7 add notes and lock',u:'/webhook/cbs-diary?job='+E,b:'Complete',f:''}];\n/* Quick actions for the People card */\nconst portal=H+'cbs-crew?t='+encodeURIComponent(job+'.'+sha256h('[redacted-secret]:'+job).slice(0,20));\nconst signDocs=[];if(cp&&cdm)signDocs.push({k:'cphsp',id:String(cp.id),n:'Site induction (CPHSP)'});\nRAMS.forEach(r=>signDocs.push({k:'rams',id:String(r.id),n:'RAMS: '+(S(r.activity)||S(r.task)||'RAMS')}));\nif(ps)signDocs.push({k:'prestart',id:String(ps.id),n:'Today\\u2019s pre-start'});TBT.forEach(r=>signDocs.push({k:'toolbox',id:String(r.id),n:(S(r.topic)||'Toolbox talk')}));\nconst urgent=safety.concat(prog,deliv,snags).filter(x=>x.f==='r').length;\nconst todo=safety.length+prog.filter(x=>x.b!=='Look-ahead').length+deliv.length+snags.length+diary.length;\nreturn [{json:{ok:true,show:true,job:job,today:today,cdm:cdm,mode:mode,people:people,visitors:vis,safety:safety,prog:prog,deliv:deliv,snags:snags,diary:diary,\n signDocs:signDocs,portal:portal,visitUrl:H+'cbs-visit?job='+E,induction:cp&&cdm?'/webhook/cbs-sign?doc=cphsp&id='+encodeURIComponent(cp.id):'',\n counts:{on:people.filter(p=>p.chips[0]&&p.chips[0][1]).length,urgent:urgent,todo:todo,visitors:vis.length}}}];\n"
+        }
+      },
+      {
+        "id": "a7a2d960-0e0b-485b-b6d7-03418e936e3e",
+        "name": "Send Today Data",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "25b6cdfe-31ab-4ef5-945c-5b90b1c3563e",
+        "name": "Today UI Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          224
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-today-ui",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "c11e23a6-bb83-459c-baef-fccae5c161e2"
+      },
+      {
+        "id": "74c90515-f74f-41fe-9804-26b2dfbe243f",
+        "name": "Today UI",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          224
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "function TODAYPAGE(){\nif(window.__tos)return;window.__tos=1;\nvar Q=new URLSearchParams(location.search);var JOB=(Q.get('job')||'').replace(/[^0-9A-Za-z-]/g,'');\nif(!/\\/webhook\\/cbs-today(\\/|$)/.test(location.pathname)||!JOB)return;\nvar D=null,root=document.getElementById('tosRoot');if(!root)return;\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction openPage(u,title){var o=document.createElement('div');o.id='tosOv';\n o.innerHTML='<div class=\"tos-oh\"><button type=\"button\" id=\"tosX\">\\u2039 Today</button><div class=\"tos-tl\">'+e(title)+'</div><a href=\"'+e(u)+'\" target=\"_blank\" rel=\"noopener\" aria-label=\"Open full screen in a new tab\">\\u2922</a></div><iframe src=\"'+e(u)+'\" title=\"'+e(title)+'\"></iframe>';\n document.body.appendChild(o);document.body.style.overflow='hidden';\n o.querySelector('#tosX').onclick=function(){o.remove();document.body.style.overflow='';load();};}\nfunction modal(html){var m=document.createElement('div');m.id='tosMd';m.innerHTML='<div class=\"tos-bx\" role=\"dialog\">'+html+'<button type=\"button\" class=\"tos-bt\" id=\"tosMdX\" style=\"margin-top:14px\">Close</button></div>';document.body.appendChild(m);\n m.addEventListener('click',function(ev){if(ev.target===m)m.remove();});m.querySelector('#tosMdX').onclick=function(){m.remove();};return m;}\nfunction signSheet(){if(!D.signDocs.length){modal('<h3>Sign-on sheet</h3><p>Nothing to sign on this job today. Save a RAMS, pre-start or toolbox talk first.</p>');return;}\n var m=modal('<h3>Sign-on sheet</h3><p class=\"tos-mu\">Pick the document, then hand the phone to each person to sign.</p>'+D.signDocs.map(function(d,i){return '<button type=\"button\" class=\"tos-op\" data-i=\"'+i+'\">'+e(d.n)+'</button>';}).join(''));\n m.querySelectorAll('[data-i]').forEach(function(b){b.onclick=function(){var d=D.signDocs[+b.getAttribute('data-i')];m.remove();openPage('/webhook/cbs-sign?doc='+d.k+'&id='+encodeURIComponent(d.id),d.n);};});}\nfunction qr(url,title,note){var m=modal('<h3>'+e(title)+'</h3><p class=\"tos-mu\">'+e(note)+'</p><div class=\"tos-qr\" id=\"tosQr\"></div><div class=\"tos-lk\">'+e(url)+'</div><button type=\"button\" class=\"tos-bt\" id=\"tosCp\" style=\"margin-top:10px\">Copy link</button>');\n function draw(){try{new window.QRCode(m.querySelector('#tosQr'),{text:url,width:240,height:240,correctLevel:window.QRCode.CorrectLevel.M});}catch(x){m.querySelector('#tosQr').textContent='QR code could not load. Use the link below.';}}\n if(window.QRCode)draw();else{var sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';sc.onload=draw;sc.onerror=draw;document.head.appendChild(sc);}\n m.querySelector('#tosCp').onclick=function(){var b=this;function fb(){prompt('Copy this link:',url);}if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(url).then(function(){b.textContent='Copied';},fb);else fb();};}\nfunction row(x){return '<div class=\"tos-rw\"><span class=\"tos-dt'+(x.f?' tos-'+x.f:'')+'\"></span><div class=\"tos-rx\"><div class=\"tos-rt\">'+e(x.t)+'</div>'+(x.s?'<div class=\"tos-rs\">'+e(x.s)+'</div>':'')+'</div>'+(x.u?'<button type=\"button\" class=\"tos-bt'+(x.f==='r'?' tos-p':'')+'\" data-u=\"'+e(x.u)+'\" data-t=\"'+e(x.t)+'\">'+e(x.b||'Open')+'</button>':'')+'</div>';}\nfunction card(title,meta,inner){return '<section class=\"tos-cd\"><div class=\"tos-ch\"><b>'+e(title)+'</b><span>'+e(meta||'')+'</span></div>'+inner+'</section>';}\nfunction render(){if(!D)return;var c=D.counts,J=encodeURIComponent(JOB);\n var h='<div class=\"tos-top\"><div class=\"tos-sum\">'+[c.on?c.on+' on site':'',c.urgent?'<b class=\"tos-red\">'+c.urgent+' urgent</b>':'',c.todo?c.todo+' to do today':'Nothing outstanding',c.visitors?c.visitors+' visitor'+(c.visitors===1?'':'s'):''].filter(Boolean).join(' \\u00b7 ')+'</div>'\n  +'<div class=\"tos-qa\"><button type=\"button\" class=\"tos-bt\" data-u=\"/webhook/cbs-snags?job='+e(J)+'\" data-t=\"Snagging\">+ Snag</button><button type=\"button\" class=\"tos-bt\" data-u=\"/webhook/cbs-diary?job='+e(J)+'\" data-t=\"Daily diary\">+ Diary</button><button type=\"button\" class=\"tos-bt\" data-u=\"/webhook/cbs-admin?new=incidents&job='+e(J)+'\" data-t=\"Report incident\">+ Incident</button><button type=\"button\" class=\"tos-bt\" data-u=\"'+e(D.portal)+'\" data-t=\"Crew portal\">Crew portal</button></div></div><div class=\"tos-gr\">';\n var pp=D.people.map(function(p){return '<div class=\"tos-pp\"><div class=\"tos-pn\"><b>'+e(p.n)+'</b><span>'+e(p.co)+'</span></div><div class=\"tos-cp\">'+p.chips.map(function(x){return '<span class=\"tos-c '+(x[1]?'tos-y':'tos-n')+'\">'+e(x[0])+'</span>';}).join('')+'</div></div>';}).join('');\n var ab='<div class=\"tos-ab\">'+(D.induction?'<button type=\"button\" class=\"tos-bt tos-p\" id=\"tosInd\">Run induction</button>':'')+'<button type=\"button\" class=\"tos-bt'+(D.induction?'':' tos-p')+'\" id=\"tosSheet\">Sign-on sheet</button><button type=\"button\" class=\"tos-bt\" id=\"tosQrB\">Show QR</button>'\n  +(D.cdm?'<button type=\"button\" class=\"tos-bt\" data-u=\"'+e(D.visitUrl)+'\" data-t=\"Visitor sign-in\">Sign visitor in</button><button type=\"button\" class=\"tos-bt\" id=\"tosVq\">Visitor QR</button>':'')+'</div>';\n h+=card(D.cdm?'People':'Crew today',[c.on?c.on+' signed on':'',D.visitors.length?D.visitors.length+' visitor'+(D.visitors.length===1?'':'s'):''].filter(Boolean).join(' \\u00b7 '),(pp||'<div class=\"tos-em\">Nobody booked or signed on yet today. Crew sign on by signing today\\u2019s pre-start.</div>')+D.visitors.map(row).join('')+ab);\n function sec(t,L){return L.length?card(t,L.length+'',L.map(row).join('')):'';}\n h+=sec('Safety due',D.safety)+sec('Programme today',D.prog)+sec('Deliveries and plant',D.deliv)+sec('Snags and queries',D.snags)+sec('Diary',D.diary);\n if(!D.safety.length&&!D.prog.length&&!D.deliv.length&&!D.snags.length&&!D.diary.length)h+=card('All clear','','<div class=\"tos-em\">Nothing else needs you today.</div>');\n h+='</div><div class=\"tos-ft\">Red dot = urgent, amber = due today. Lines drop off when they are done. Refreshes every 2 minutes.</div>';\n root.innerHTML=h;\n root.querySelectorAll('[data-u]').forEach(function(b){b.onclick=function(){openPage(b.getAttribute('data-u'),b.getAttribute('data-t')||'');};});\n var i1=root.querySelector('#tosInd');if(i1)i1.onclick=function(){openPage(D.induction,'Site induction');};\n root.querySelector('#tosSheet').onclick=signSheet;\n root.querySelector('#tosQrB').onclick=function(){qr(D.portal,'Crew sign-on QR','Scan to open this job\\u2019s crew portal: sign the pre-start, induction and RAMS. Works for subcontractors and new starters.');};\n var vq=root.querySelector('#tosVq');if(vq)vq.onclick=function(){qr(D.visitUrl,'Visitor sign-in QR','Visitors scan this to sign in to the site.');};}\nvar BUSY=false;\nfunction load(){if(BUSY)return;BUSY=true;fetch('/webhook/cbs-today-data?job='+encodeURIComponent(JOB)+'&_='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){BUSY=false;\n if(!d||!d.show){root.innerHTML='<div class=\"tos-cd tos-em\" style=\"padding:18px\">Today on site starts once the job is Approved and has a Job File (Project or CDM).</div>';return;}D=d;render();})\n .catch(function(){BUSY=false;if(!D)root.innerHTML='<div class=\"tos-cd tos-em\" style=\"padding:18px\">Could not load. <button type=\"button\" class=\"tos-bt\" id=\"tosRt\">Try again</button></div>';var r=document.getElementById('tosRt');if(r)r.onclick=load;});}\nload();\nsetInterval(function(){if(document.visibilityState==='visible'&&!document.getElementById('tosOv')&&!document.getElementById('tosMd'))load();},120000);\n}\n\nreturn [{json:{js:'('+TODAYPAGE.toString()+')();'}}];\n"
+        }
+      },
+      {
+        "id": "69e6dc50-e89f-4de1-888c-0e174c52b713",
+        "name": "Send Today UI",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          224
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.js }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/javascript; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-cache"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "3a708389-68ab-4d9d-9399-d549f34bfb62",
+        "name": "Crew Name Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          448
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-crew-me",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "c1562943-f4e1-4ecb-91b5-7acbe6602793"
+      },
+      {
+        "id": "3e7351b9-8c1a-421f-af24-04b3ba42554a",
+        "name": "Crew Name JS",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          448
+        ],
+        "parameters": {
+          "jsCode": "/* GET cbs-crew-me: one saved name for the crew pages. Loaded on the sign-on and load-up crew pages.\n   Only acts when the page was opened from the crew portal (?me=1): fills an empty name box with the name saved on this phone\n   (cbs_name, the same key the crew portal and task checklists use) and saves a name typed there back to it.\n   Hand-round sheets on the site manager's phone (no me=1) are left alone. */\nfunction CREWME(){\nvar Q=new URLSearchParams(location.search);if(!Q.get('me'))return;\nfunction g(){try{var n=localStorage.getItem('cbs_name')||'';if(!n){var o=JSON.parse(localStorage.getItem('cbs_me')||'null');if(o&&o.name)n=o.name;}return n;}catch(x){return '';}}\nfunction set(n){n=String(n||'').trim();if(!n)return;try{localStorage.setItem('cbs_name',n);var o={};try{o=JSON.parse(localStorage.getItem('cbs_me')||'{}')||{};}catch(x){}o.name=n;localStorage.setItem('cbs_me',JSON.stringify(o));}catch(x){}}\nvar SEL='input#nm,input[autocomplete=\"name\"],input[name=\"name\"],input[id*=\"name\" i],input[placeholder*=\"your name\" i]';\nvar done=false;\nfunction fill(){var n=g();[].forEach.call(document.querySelectorAll(SEL),function(i){if(i.__cbsme)return;i.__cbsme=1;\n  if(n&&!i.value&&!done){i.value=n;done=true;i.dispatchEvent(new Event('input',{bubbles:true}));i.dispatchEvent(new Event('change',{bubbles:true}));}\n  i.addEventListener('change',function(){set(i.value);});});}\nfill();new MutationObserver(fill).observe(document.documentElement,{childList:true,subtree:true});\n}\nreturn [{json:{js:'('+CREWME.toString()+')();'}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "2ba829b3-808d-4af9-aa3c-f8a4101c8914",
+        "name": "Send Crew Name JS",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          448
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/javascript; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-cache"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ $json.js }}"
+        }
+      },
+      {
+        "id": "670704d4-0bf4-4c04-a0ab-a37160ec4603",
+        "name": "Today Page Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          672
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-today",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "8c4c3900-21ea-47c2-b093-6f725cbf0adf"
+      },
+      {
+        "id": "b4f127da-8939-4601-965b-bc7f9fdad20f",
+        "name": "Today Page",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          672
+        ],
+        "parameters": {
+          "jsCode": "/* GET cbs-today?job=N: Today on site as its own page (job menu, Site manager section). Shell only; the cards come from GET cbs-today-ui\n   (script) and GET cbs-today-data (data). cbs-guard in <head> handles sign-in and loads the job menu. */\nconst q=$input.first().json.query||{};const job=String(q.job||'').replace(/[^0-9A-Za-z-]/g,'');\nconst e=t=>String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst CSS='*{box-sizing:border-box}html,body{margin:0}body{background:#f3f2ef;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:15px;line-height:1.4}'\n+'body>header{background:#3d4043;color:#fff;padding:14px 18px;border-bottom:4px solid #F47920}body>header h1{margin:0;font-size:20px}body>header p{margin:2px 0 0;color:#d9d9d6;font-size:13px}'\n+'.wrap{max-width:1500px;margin:0 auto;padding:14px 16px 40px}'\n+'.tos-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}.tos-sum{font-size:14px;color:#3a3936}.tos-red{color:#a3322a}.tos-qa{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}'\n+'.tos-bt{min-height:38px;padding:0 12px;border-radius:8px;font:inherit;font-size:13px;font-weight:700;white-space:nowrap;cursor:pointer;background:#fff;border:1px solid #c4c1ba;color:#161616;display:inline-flex;align-items:center;flex:0 0 auto}.tos-bt.tos-p{background:#F47920;border-color:#F47920}'\n+'.tos-gr{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px;align-items:start}'\n+'.tos-cd{background:#fff;border:1px solid #e0ddd7;border-radius:12px;padding:10px 14px;min-width:0}.tos-ch{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding-bottom:4px}.tos-ch b{font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:#3a3936}.tos-ch span{font-size:12px;color:#5c5a56}'\n+'.tos-rw{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid #eee}.tos-dt{width:8px;height:8px;border-radius:50%;flex:0 0 auto}.tos-dt.tos-r{background:#c0392b}.tos-dt.tos-a{background:#e0a100}'\n+'.tos-rx{flex:1;min-width:0}.tos-rt{font-weight:600;font-size:14px}.tos-rs{font-size:12.5px;color:#5c5a56}'\n+'.tos-pp{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #eee}.tos-pn{flex:0 0 150px;min-width:0}.tos-pn b{display:block;font-size:14px}.tos-pn span{display:block;font-size:11.5px;color:#5c5a56}'\n+'.tos-cp{display:flex;flex-wrap:wrap;gap:4px}.tos-c{font-size:11.5px;font-weight:600;border-radius:6px;padding:2px 7px;white-space:nowrap}.tos-c.tos-y{background:#e6f4ea;color:#1a6b33}.tos-c.tos-n{background:#fde7e5;color:#a3322a}'\n+'.tos-ab{display:flex;flex-wrap:wrap;gap:6px;padding-top:10px;margin-top:4px;border-top:1px solid #eee}.tos-em{color:#5c5a56;font-size:14px;padding:6px 0}.tos-ft{font-size:12.5px;color:#6b6e70;margin-top:14px}'\n+'#tosOv{position:fixed;inset:0;z-index:2147483000;background:#f3f2ef;display:flex;flex-direction:column}.tos-oh{background:#3d4043;color:#fff;padding:10px 12px;display:flex;align-items:center;gap:10px;border-bottom:4px solid #F47920}'\n+'.tos-oh button,.tos-oh a{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:9px 12px;font:inherit;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;white-space:nowrap}.tos-tl{flex:1;min-width:0;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#tosOv iframe{flex:1;border:0;width:100%;background:#fff}'\n+'#tosMd{position:fixed;inset:0;z-index:2147483100;background:rgba(30,32,34,.55);display:flex;align-items:center;justify-content:center;padding:16px}.tos-bx{background:#fff;border-radius:16px;max-width:460px;width:100%;padding:20px;max-height:90vh;overflow:auto}.tos-bx h3{margin:0 0 6px;font-size:19px}.tos-mu{margin:0;color:#5c5a56;font-size:14px}'\n+'.tos-op{display:block;width:100%;text-align:left;padding:13px 12px;border:1px solid #e0ddd7;border-radius:10px;background:#fff;font:inherit;font-size:15px;margin-top:8px;cursor:pointer}.tos-qr{display:flex;justify-content:center;margin:14px 0}.tos-lk{word-break:break-all;font-size:12.5px;color:#3d4043;background:#f7f7f6;border-radius:8px;padding:8px}'\n+'@media(max-width:760px){.wrap{padding:10px 10px 30px}.tos-gr{grid-template-columns:1fr}.tos-qa{margin-left:0}.tos-pn{flex-basis:118px}.tos-bt{min-height:42px}}';\nconst body=job?'<div class=\"wrap\"><div id=\"tosRoot\"><div class=\"tos-cd tos-em\" style=\"padding:18px\">Loading today\\u2026</div></div></div><script src=\"/webhook/cbs-today-ui?page=1\" defer></script>'\n :'<div class=\"wrap\"><div class=\"tos-cd tos-em\" style=\"padding:18px\">Open this page from a job.</div></div>';\nreturn [{json:{html:'<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><script src=\"/webhook/cbs-guard\"></script><meta name=\"viewport\" content=\"width=device-width,initial-scale=1,viewport-fit=cover\"><meta name=\"robots\" content=\"noindex\"><title>Today on site'+(job?' \\u00b7 Job '+e(job):'')+'</title><style>'+CSS+'</style></head><body><header><h1>Today on site</h1><p>'+(job?'Job '+e(job):'')+'</p></header>'+body+'</body></html>'}}];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "34f35149-4450-4080-a8dd-5b6a13434f6c",
+        "name": "Send Today Page",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          672
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}"
+        }
+      }
+    ],
+    "connections": {
+      "Today Data Hook": {
+        "main": [
+          [
+            {
+              "node": "Today Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Today Data": {
+        "main": [
+          [
+            {
+              "node": "Send Today Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Today UI Hook": {
+        "main": [
+          [
+            {
+              "node": "Today UI",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Today UI": {
+        "main": [
+          [
+            {
+              "node": "Send Today UI",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Crew Name Hook": {
+        "main": [
+          [
+            {
+              "node": "Crew Name JS",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Crew Name JS": {
+        "main": [
+          [
+            {
+              "node": "Send Crew Name JS",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Today Page Hook": {
+        "main": [
+          [
+            {
+              "node": "Today Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Today Page": {
+        "main": [
+          [
+            {
+              "node": "Send Today Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Job page Today on site panel: GET cbs-today-data?job=N (people, safety due, programme today, deliveries and plant, snags and queries, diary) and GET cbs-today-ui (panel script loaded on the job page).",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

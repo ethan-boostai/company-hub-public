@@ -1,0 +1,16 @@
+{
+  "table": "cbs_page_parts",
+  "n8n_id": "HOHWTBOJHrHF0TvB",
+  "columns": [
+    {
+      "name": "content",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [],
+  "note": "content saved in legacy/pages"
+}

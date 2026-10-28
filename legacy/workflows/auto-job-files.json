@@ -1,0 +1,1368 @@
+{
+  "id": "LXGbEu5HOULYwGMO",
+  "name": "CBS - Auto Job Files",
+  "active": true,
+  "isArchived": false,
+  "versionId": "622067b4-178f-485f-8c80-fd63d6e4b4b8",
+  "activeVersionId": "622067b4-178f-485f-8c80-fd63d6e4b4b8",
+  "triggerCount": 8,
+  "createdAt": "2026-10-09T11:43:51.710Z",
+  "updatedAt": "2026-10-27T11:23:46.886Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Every 5 minutes": {
+      "main": [
+        [
+          {
+            "node": "Create Missing Job Files",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SM8 Queues",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SM8 Queues": {
+      "main": [
+        [
+          {
+            "node": "SM8 Open Jobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SM8 Open Jobs": {
+      "main": [
+        [
+          {
+            "node": "Folder Keeper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Folder Keeper": {
+      "main": [
+        [
+          {
+            "node": "SM8 Set Folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On Job Created": {
+      "main": [
+        [
+          {
+            "node": "Hook Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On Job Updated": {
+      "main": [
+        [
+          {
+            "node": "Hook Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On Job Queued": {
+      "main": [
+        [
+          {
+            "node": "Hook Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On Job Status Changed": {
+      "main": [
+        [
+          {
+            "node": "Hook Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On Job Completed": {
+      "main": [
+        [
+          {
+            "node": "Hook Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On Client Created": {
+      "main": [
+        [
+          {
+            "node": "Hook Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On Client Updated": {
+      "main": [
+        [
+          {
+            "node": "Hook Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hook Prep": {
+      "main": [
+        [
+          {
+            "node": "SM8 Queues (hook)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Mark SM8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SM8 Queues (hook)": {
+      "main": [
+        [
+          {
+            "node": "Hook Decide",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hook Decide": {
+      "main": [
+        [
+          {
+            "node": "Restore?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Restore?": {
+      "main": [
+        [
+          {
+            "node": "SM8 Restore Folder (hook)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Refresh Jobs List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SM8 Restore Folder (hook)": {
+      "main": [
+        [
+          {
+            "node": "Refresh Jobs List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Refresh Jobs List": {
+      "main": [
+        [
+          {
+            "node": "Job File Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Job File Check": {
+      "main": [
+        [
+          {
+            "node": "Create Job File (hook)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "38e6aa56-6a14-499f-9953-3ff53c537b8e",
+      "name": "Every 5 minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cc0344c1-0fed-43d6-9b0d-2bf4c62dafd8",
+      "name": "Create Missing Job Files",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* Every job in the ServiceM8 Reactive or Maintenance folder (pipeline 'others') or Approved / Part Approved (pipeline 'jobs', kind approved) gets a Job File.\n   Jobs with no Job File in the hub get one created as Project, using the same creator as the Approve button in Enquiry prep (cbs-cdm-set).\n   Existing and closed Job Files are never touched. */\nvar H='https://old-hub.example/webhook/';\nfunction S(v){return v==null?'':String(v).trim();}\nvar pr=await this.helpers.httpRequest({url:H+'cbs-pipeline',json:true,timeout:60000});\nif(typeof pr==='string')pr=JSON.parse(pr);\nif(!pr||!pr.ok)throw new Error('cbs-pipeline did not load');\nvar rx=(pr.others||[]).filter(function(x){return /reactive|approved|maint/i.test(S(x.folder));}).map(function(x){var f=S(x.folder);return {no:S(x.no),mode:S(x.mode),src:/reactive/i.test(f)?'Reactive':/maint/i.test(f)?'Maintenance':'Approved'};});\nvar ap=(pr.jobs||[]).filter(function(x){return S(x.kind)==='approved';}).map(function(x){return {no:S(x.no),mode:S(x.mode),src:'Approved'};});\nvar seen={},all=[];rx.concat(ap).forEach(function(x){if(x.no&&!seen[x.no]){seen[x.no]=1;all.push(x);}});\nvar todo=all.filter(function(x){return !x.mode;});\nvar made=[],failed=[];\nfor(var i=0;i<todo.length;i++){var no=todo[i].no;\n try{var r=await this.helpers.httpRequest({method:'POST',url:H+'cbs-cdm-set',body:{job_no:no,mode:'project',create:true,by:'Auto: '+todo[i].src+' folder'},json:true,timeout:30000});\n  if(r&&(r.error||r.ok===false))failed.push(no+': '+S(r.error||'not created'));else made.push(no);}\n catch(e){failed.push(no+': '+S(e.message));}}\nreturn [{json:{reactive:rx.length,approved:ap.length,alreadyHadJobFile:all.length-todo.length,created:made,failed:failed}}];"
+      }
+    },
+    {
+      "id": "2c6e3aab-171c-47c4-ad37-a8ab13b36861",
+      "name": "SM8 Queues",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        220
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "GET",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "timeout": 30000
+        },
+        "url": "https://api.servicem8.com/api_1.0/queue.json"
+      }
+    },
+    {
+      "id": "b55c676f-43a0-4b17-92ec-7a513d3e9d77",
+      "name": "SM8 Open Jobs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        220
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "GET",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "timeout": 60000
+        },
+        "url": "https://api.servicem8.com/api_1.0/job.json?%24filter=status%20eq%20%27Work%20Order%27%20and%20active%20eq%201"
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "712d25d5-0acb-4d8f-9924-92be34541a16",
+      "name": "Folder Keeper",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        220
+      ],
+      "parameters": {
+        "jsCode": "/* Folder keeper (every 5 minutes). ServiceM8 drops a job out of its folder when the folder's expiry date passes.\n   For active Work Order jobs in Approved, Part Approved, Reactive or Maintenance:\n   - expiry less than 60 days away: pushed out to a year from now, so the job stays in its folder;\n   - job left with no folder but it was in one of those folders last time: put back into that folder (for a year).\n   Completed, estimate and other-folder jobs are never touched. Remembers each job's folder in this workflow's static data.\n   Output: one item per job to update (SM8 Set Folder), at most 40 per run. */\nvar KEEP=/^(approved|part approved)$|reactive|maint/i;\nvar Q={};$('SM8 Queues').all().forEach(function(i){var q=i.json;if(q&&q.uuid)Q[q.uuid]=String(q.name||'').trim();});\nvar J=$input.all().map(function(i){return i.json;}).filter(function(j){return j&&j.uuid&&String(j.active)==='1'&&j.status==='Work Order';});\nvar st=$getWorkflowStaticData('global');var prev=st.folders||{};var next={};\nfunction pad(n){return('0'+n).slice(-2);}\nfunction fmt(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());}\nvar now=Date.now(),YEAR=fmt(new Date(now+365*864e5)),SOON=now+60*864e5,out=[],kept=0,restored=[],extended=[];\nJ.forEach(function(j){var q=String(j.queue_uuid||''),name=Q[q]||'';\n if(q&&KEEP.test(name)){next[j.uuid]=q;var ex=Date.parse(String(j.queue_expiry_date||'').replace(' ','T'));\n  if(!(ex>SOON)){out.push({uuid:j.uuid,queue_uuid:q,queue_expiry_date:YEAR,job:j.generated_job_id,folder:name,why:'extend'});extended.push(j.generated_job_id);}else kept++;}\n else if(!q&&prev[j.uuid]&&KEEP.test(Q[prev[j.uuid]]||'')){next[j.uuid]=prev[j.uuid];out.push({uuid:j.uuid,queue_uuid:prev[j.uuid],queue_expiry_date:YEAR,job:j.generated_job_id,folder:Q[prev[j.uuid]],why:'restore'});restored.push(j.generated_job_id+' -> '+Q[prev[j.uuid]]);}\n});\nst.folders=next;st.last={at:new Date().toISOString(),jobs:J.length,kept:kept,extended:extended,restored:restored};\nout=out.slice(0,40);\nif(!out.length)return [];\nreturn out.map(function(o){return {json:o};});\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "a3490251-ecb1-4510-94a0-7f1896a7c967",
+      "name": "SM8 Set Folder",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        896,
+        220
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "jsonBody": "={{ JSON.stringify({ queue_uuid: $json.queue_uuid, queue_expiry_date: $json.queue_expiry_date }) }}",
+        "method": "POST",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          },
+          "timeout": 30000
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "url": "={{ 'https://api.servicem8.com/api_1.0/job/' + $json.uuid + '.json' }}"
+      }
+    },
+    {
+      "id": "686fbac7-b7ef-4221-aff6-2e2881c79ecd",
+      "name": "On Job Created",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8Trigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        700
+      ],
+      "parameters": {
+        "event": "job.created"
+      },
+      "webhookId": "b383fe89-5a54-447c-8f84-3a6dbcefa333"
+    },
+    {
+      "id": "22d9fb0a-0a41-452a-b5b5-e0f968ee0c15",
+      "name": "Refresh Jobs List",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1360,
+        900
+      ],
+      "parameters": {
+        "method": "GET",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          },
+          "timeout": 60000
+        },
+        "url": "https://old-hub.example/webhook/cbs-pipeline?fresh=1"
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "5ab5433b-4fb1-4327-ab1a-1a422c502aec",
+      "name": "On Job Updated",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8Trigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        820
+      ],
+      "parameters": {
+        "event": "job.updated"
+      },
+      "webhookId": "91429ff6-0b16-425b-8c70-915587303755"
+    },
+    {
+      "id": "5708469e-03fb-4ed6-a4f7-97e6f5259b9e",
+      "name": "On Job Queued",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8Trigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        940
+      ],
+      "parameters": {
+        "event": "job.queued"
+      },
+      "webhookId": "1bf6147f-693a-4643-94a0-0db0769c07df"
+    },
+    {
+      "id": "d5b660ce-53fd-4a5d-9dc9-35adb98ee6dc",
+      "name": "On Job Status Changed",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8Trigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1060
+      ],
+      "parameters": {
+        "event": "job.status_changed"
+      },
+      "webhookId": "2fb7705c-95e4-4588-86f0-5e686cdf8584"
+    },
+    {
+      "id": "7e145fe1-a722-4ced-b4d6-00d54a85d192",
+      "name": "On Job Completed",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8Trigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1180
+      ],
+      "parameters": {
+        "event": "job.completed"
+      },
+      "webhookId": "179aa007-65e8-430b-947b-ea4042d9f98d"
+    },
+    {
+      "id": "328f7059-7039-45de-86b3-cd96357b6ccf",
+      "name": "On Client Created",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8Trigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1300
+      ],
+      "parameters": {
+        "event": "company.created"
+      },
+      "webhookId": "1967761e-442c-4e16-9f02-42c797e278be"
+    },
+    {
+      "id": "b1bd3b11-1cd7-4a83-95e4-73915fec89e5",
+      "name": "On Client Updated",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8Trigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1420
+      ],
+      "parameters": {
+        "event": "company.updated"
+      },
+      "webhookId": "7574cf32-4411-4fc6-80ed-d2727b335a45"
+    },
+    {
+      "id": "63ad9475-e03d-4d65-8858-84d7f0af8ab8",
+      "name": "Hook Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        260,
+        900
+      ],
+      "parameters": {
+        "jsCode": "/* Hook Prep: one item per ServiceM8 webhook (job.created / updated / queued / status_changed / completed, company.created / updated).\n   Keeps the event type and, for job events, the job record from the payload. */\nreturn $input.all().map(function(i){var p=i.json||{};var ev=String(p.type||p.triggerEvent||'');var d=p.data||{};\n return {json:{ev:ev,isJob:/^job\\./.test(ev),job:/^job\\./.test(ev)?d:null,company:/^company\\./.test(ev)?(d.name||''):''}};});",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "9ec4a852-30ea-4b95-a114-2ffb28b8e796",
+      "name": "SM8 Queues (hook)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        900
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "GET",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "timeout": 30000
+        },
+        "url": "https://api.servicem8.com/api_1.0/queue.json"
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "4cc43fb8-a7b7-4b34-8a7c-91235b366ef6",
+      "name": "Hook Decide",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        900
+      ],
+      "parameters": {
+        "jsCode": "/* Hook Decide (instant version of the 5-minute Folder Keeper + Job File creator).\n   restore: a Work Order that was in Approved / Part Approved / Reactive / Maintenance and now has no folder (ServiceM8 drops it\n            when it is scheduled) goes straight back into that folder for a year. Uses the same static folder map as Folder Keeper.\n   jf:      a job placed in one of those folders (job.queued only, so one change does not create twice) gets checked for a Job File after the Jobs list refresh.\n   Quote jobs are never filed - the team picks their folder. */\nvar KEEP=/^(approved|part approved)$|reactive|maint/i;\nvar Q={};$('SM8 Queues (hook)').all().forEach(function(i){var q=i.json;if(q&&q.uuid)Q[q.uuid]=String(q.name||'').trim();});\nvar p=$('Hook Prep').first().json,j=p.job||{};\nvar st=$getWorkflowStaticData('global');st.folders=st.folders||{};\nfunction pad(n){return('0'+n).slice(-2);}\nvar d=new Date(Date.now()+365*864e5),YEAR=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());\nvar out={ev:p.ev,job:String(j.generated_job_id||''),restore:null,jf:false};\nif(p.isJob&&j.uuid&&String(j.active)==='1'){var q=String(j.queue_uuid||''),name=Q[q]||'';\n if(q&&KEEP.test(name)){if(j.status==='Work Order')st.folders[j.uuid]=q;if(p.ev==='job.queued')out.jf=true;}\n else if(!q&&j.status==='Work Order'&&st.folders[j.uuid]&&KEEP.test(Q[st.folders[j.uuid]]||'')){\n  out.restore={uuid:j.uuid,queue_uuid:st.folders[j.uuid],queue_expiry_date:YEAR,folder:Q[st.folders[j.uuid]]};out.jf=true;}}\nst.hookLast={at:new Date().toISOString(),ev:out.ev,job:out.job,restored:out.restore?out.restore.folder:'',jf:out.jf};\nreturn [{json:out}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "a82a3995-deb9-4c83-866f-c71c5ecba140",
+      "name": "Restore?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        920,
+        900
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "r1",
+              "leftValue": "={{ !!$json.restore }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              },
+              "rightValue": ""
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          }
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "4e712b78-b8c2-4e55-8771-09bbcd1ebfd1",
+      "name": "SM8 Restore Folder (hook)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1140,
+        820
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "jsonBody": "={{ JSON.stringify({ queue_uuid: $json.restore.queue_uuid, queue_expiry_date: $json.restore.queue_expiry_date }) }}",
+        "method": "POST",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          },
+          "timeout": 30000
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "url": "={{ 'https://api.servicem8.com/api_1.0/job/' + $json.restore.uuid + '.json' }}"
+      }
+    },
+    {
+      "id": "cc282a3a-59d3-4bf8-8650-8af5cddb49ee",
+      "name": "Job File Check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1580,
+        900
+      ],
+      "parameters": {
+        "jsCode": "/* Job File Check: after the fresh Jobs list, a job in Approved / Part Approved / Reactive / Maintenance with no Job File\n   gets one created as Project (same as the 5-minute poll; existing, CDM and closed Job Files are never touched). */\nvar D=$('Hook Decide').first().json;if(!D.jf||!D.job)return [];\nfunction S(v){return v==null?'':String(v).trim();}\nvar pr=$input.first().json;if(typeof pr==='string'){try{pr=JSON.parse(pr);}catch(e){pr={};}}if(!pr||!pr.ok)return [];\nvar hit=null;\n(pr.jobs||[]).forEach(function(x){if(S(x.no)===D.job&&S(x.kind)==='approved')hit={mode:S(x.mode),src:'Approved'};});\n(pr.others||[]).forEach(function(x){var f=S(x.folder);if(S(x.no)===D.job&&/reactive|approved|maint/i.test(f))hit={mode:S(x.mode),src:/reactive/i.test(f)?'Reactive':/maint/i.test(f)?'Maintenance':'Approved'};});\nif(!hit||hit.mode)return [];\nreturn [{json:{job_no:D.job,mode:'project',create:true,by:'Auto: '+hit.src+' folder'}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "b1b8ebbd-1c6e-48b4-bf97-eec436d1195e",
+      "name": "Create Job File (hook)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1800,
+        900
+      ],
+      "parameters": {
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "method": "POST",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          },
+          "timeout": 30000
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "url": "https://old-hub.example/webhook/cbs-cdm-set"
+      }
+    },
+    {
+      "id": "40e9307b-70ed-4868-9602-e7be06828696",
+      "name": "Mark SM8",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        1100
+      ],
+      "parameters": {
+        "columns": {
+          "mappingMode": "defineBelow",
+          "schema": [
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "key",
+              "id": "key",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "at",
+              "id": "at",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "value": {
+            "at": "={{ String(Date.now()) }}",
+            "key": "={{ 'dirty:' + 'sm8' + (function(j){j=String(j==null?'':j).replace(/[^0-9A-Za-z]/g,'').toLowerCase().replace(/^job/,'');return j?'@'+j:'';})($json.job && $json.job.generated_job_id) }}"
+          }
+        },
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "bSkjEWvTgJnP818K"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "key",
+              "keyValue": "={{ 'dirty:' + 'sm8' + (function(j){j=String(j==null?'':j).replace(/[^0-9A-Za-z]/g,'').toLowerCase().replace(/^job/,'');return j?'@'+j:'';})($json.job && $json.job.generated_job_id) }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "upsert",
+        "options": {},
+        "resource": "row"
+      },
+      "onError": "continueRegularOutput",
+      "executeOnce": true
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "38e6aa56-6a14-499f-9953-3ff53c537b8e",
+        "name": "Every 5 minutes",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes",
+                "minutesInterval": 5
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "cc0344c1-0fed-43d6-9b0d-2bf4c62dafd8",
+        "name": "Create Missing Job Files",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* Every job in the ServiceM8 Reactive or Maintenance folder (pipeline 'others') or Approved / Part Approved (pipeline 'jobs', kind approved) gets a Job File.\n   Jobs with no Job File in the hub get one created as Project, using the same creator as the Approve button in Enquiry prep (cbs-cdm-set).\n   Existing and closed Job Files are never touched. */\nvar H='https://old-hub.example/webhook/';\nfunction S(v){return v==null?'':String(v).trim();}\nvar pr=await this.helpers.httpRequest({url:H+'cbs-pipeline',json:true,timeout:60000});\nif(typeof pr==='string')pr=JSON.parse(pr);\nif(!pr||!pr.ok)throw new Error('cbs-pipeline did not load');\nvar rx=(pr.others||[]).filter(function(x){return /reactive|approved|maint/i.test(S(x.folder));}).map(function(x){var f=S(x.folder);return {no:S(x.no),mode:S(x.mode),src:/reactive/i.test(f)?'Reactive':/maint/i.test(f)?'Maintenance':'Approved'};});\nvar ap=(pr.jobs||[]).filter(function(x){return S(x.kind)==='approved';}).map(function(x){return {no:S(x.no),mode:S(x.mode),src:'Approved'};});\nvar seen={},all=[];rx.concat(ap).forEach(function(x){if(x.no&&!seen[x.no]){seen[x.no]=1;all.push(x);}});\nvar todo=all.filter(function(x){return !x.mode;});\nvar made=[],failed=[];\nfor(var i=0;i<todo.length;i++){var no=todo[i].no;\n try{var r=await this.helpers.httpRequest({method:'POST',url:H+'cbs-cdm-set',body:{job_no:no,mode:'project',create:true,by:'Auto: '+todo[i].src+' folder'},json:true,timeout:30000});\n  if(r&&(r.error||r.ok===false))failed.push(no+': '+S(r.error||'not created'));else made.push(no);}\n catch(e){failed.push(no+': '+S(e.message));}}\nreturn [{json:{reactive:rx.length,approved:ap.length,alreadyHadJobFile:all.length-todo.length,created:made,failed:failed}}];"
+        }
+      },
+      {
+        "id": "2c6e3aab-171c-47c4-ad37-a8ab13b36861",
+        "name": "SM8 Queues",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          224,
+          220
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "method": "GET",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "options": {
+            "timeout": 30000
+          },
+          "url": "https://api.servicem8.com/api_1.0/queue.json"
+        }
+      },
+      {
+        "id": "b55c676f-43a0-4b17-92ec-7a513d3e9d77",
+        "name": "SM8 Open Jobs",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          448,
+          220
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "method": "GET",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "options": {
+            "timeout": 60000
+          },
+          "url": "https://api.servicem8.com/api_1.0/job.json?%24filter=status%20eq%20%27Work%20Order%27%20and%20active%20eq%201"
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "712d25d5-0acb-4d8f-9924-92be34541a16",
+        "name": "Folder Keeper",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          220
+        ],
+        "parameters": {
+          "jsCode": "/* Folder keeper (every 5 minutes). ServiceM8 drops a job out of its folder when the folder's expiry date passes.\n   For active Work Order jobs in Approved, Part Approved, Reactive or Maintenance:\n   - expiry less than 60 days away: pushed out to a year from now, so the job stays in its folder;\n   - job left with no folder but it was in one of those folders last time: put back into that folder (for a year).\n   Completed, estimate and other-folder jobs are never touched. Remembers each job's folder in this workflow's static data.\n   Output: one item per job to update (SM8 Set Folder), at most 40 per run. */\nvar KEEP=/^(approved|part approved)$|reactive|maint/i;\nvar Q={};$('SM8 Queues').all().forEach(function(i){var q=i.json;if(q&&q.uuid)Q[q.uuid]=String(q.name||'').trim();});\nvar J=$input.all().map(function(i){return i.json;}).filter(function(j){return j&&j.uuid&&String(j.active)==='1'&&j.status==='Work Order';});\nvar st=$getWorkflowStaticData('global');var prev=st.folders||{};var next={};\nfunction pad(n){return('0'+n).slice(-2);}\nfunction fmt(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());}\nvar now=Date.now(),YEAR=fmt(new Date(now+365*864e5)),SOON=now+60*864e5,out=[],kept=0,restored=[],extended=[];\nJ.forEach(function(j){var q=String(j.queue_uuid||''),name=Q[q]||'';\n if(q&&KEEP.test(name)){next[j.uuid]=q;var ex=Date.parse(String(j.queue_expiry_date||'').replace(' ','T'));\n  if(!(ex>SOON)){out.push({uuid:j.uuid,queue_uuid:q,queue_expiry_date:YEAR,job:j.generated_job_id,folder:name,why:'extend'});extended.push(j.generated_job_id);}else kept++;}\n else if(!q&&prev[j.uuid]&&KEEP.test(Q[prev[j.uuid]]||'')){next[j.uuid]=prev[j.uuid];out.push({uuid:j.uuid,queue_uuid:prev[j.uuid],queue_expiry_date:YEAR,job:j.generated_job_id,folder:Q[prev[j.uuid]],why:'restore'});restored.push(j.generated_job_id+' -> '+Q[prev[j.uuid]]);}\n});\nst.folders=next;st.last={at:new Date().toISOString(),jobs:J.length,kept:kept,extended:extended,restored:restored};\nout=out.slice(0,40);\nif(!out.length)return [];\nreturn out.map(function(o){return {json:o};});\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "a3490251-ecb1-4510-94a0-7f1896a7c967",
+        "name": "SM8 Set Folder",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          896,
+          220
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "jsonBody": "={{ JSON.stringify({ queue_uuid: $json.queue_uuid, queue_expiry_date: $json.queue_expiry_date }) }}",
+          "method": "POST",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            },
+            "timeout": 30000
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "url": "={{ 'https://api.servicem8.com/api_1.0/job/' + $json.uuid + '.json' }}"
+        }
+      },
+      {
+        "id": "686fbac7-b7ef-4221-aff6-2e2881c79ecd",
+        "name": "On Job Created",
+        "type": "@servicem8/n8n-nodes-servicem8.serviceM8Trigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          700
+        ],
+        "parameters": {
+          "event": "job.created"
+        },
+        "webhookId": "b383fe89-5a54-447c-8f84-3a6dbcefa333"
+      },
+      {
+        "id": "22d9fb0a-0a41-452a-b5b5-e0f968ee0c15",
+        "name": "Refresh Jobs List",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1360,
+          900
+        ],
+        "parameters": {
+          "method": "GET",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            },
+            "timeout": 60000
+          },
+          "url": "https://old-hub.example/webhook/cbs-pipeline?fresh=1"
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "5ab5433b-4fb1-4327-ab1a-1a422c502aec",
+        "name": "On Job Updated",
+        "type": "@servicem8/n8n-nodes-servicem8.serviceM8Trigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          820
+        ],
+        "parameters": {
+          "event": "job.updated"
+        },
+        "webhookId": "91429ff6-0b16-425b-8c70-915587303755"
+      },
+      {
+        "id": "5708469e-03fb-4ed6-a4f7-97e6f5259b9e",
+        "name": "On Job Queued",
+        "type": "@servicem8/n8n-nodes-servicem8.serviceM8Trigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          940
+        ],
+        "parameters": {
+          "event": "job.queued"
+        },
+        "webhookId": "1bf6147f-693a-4643-94a0-0db0769c07df"
+      },
+      {
+        "id": "d5b660ce-53fd-4a5d-9dc9-35adb98ee6dc",
+        "name": "On Job Status Changed",
+        "type": "@servicem8/n8n-nodes-servicem8.serviceM8Trigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          1060
+        ],
+        "parameters": {
+          "event": "job.status_changed"
+        },
+        "webhookId": "2fb7705c-95e4-4588-86f0-5e686cdf8584"
+      },
+      {
+        "id": "7e145fe1-a722-4ced-b4d6-00d54a85d192",
+        "name": "On Job Completed",
+        "type": "@servicem8/n8n-nodes-servicem8.serviceM8Trigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          1180
+        ],
+        "parameters": {
+          "event": "job.completed"
+        },
+        "webhookId": "179aa007-65e8-430b-947b-ea4042d9f98d"
+      },
+      {
+        "id": "328f7059-7039-45de-86b3-cd96357b6ccf",
+        "name": "On Client Created",
+        "type": "@servicem8/n8n-nodes-servicem8.serviceM8Trigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          1300
+        ],
+        "parameters": {
+          "event": "company.created"
+        },
+        "webhookId": "1967761e-442c-4e16-9f02-42c797e278be"
+      },
+      {
+        "id": "b1bd3b11-1cd7-4a83-95e4-73915fec89e5",
+        "name": "On Client Updated",
+        "type": "@servicem8/n8n-nodes-servicem8.serviceM8Trigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          1420
+        ],
+        "parameters": {
+          "event": "company.updated"
+        },
+        "webhookId": "7574cf32-4411-4fc6-80ed-d2727b335a45"
+      },
+      {
+        "id": "63ad9475-e03d-4d65-8858-84d7f0af8ab8",
+        "name": "Hook Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          260,
+          900
+        ],
+        "parameters": {
+          "jsCode": "/* Hook Prep: one item per ServiceM8 webhook (job.created / updated / queued / status_changed / completed, company.created / updated).\n   Keeps the event type and, for job events, the job record from the payload. */\nreturn $input.all().map(function(i){var p=i.json||{};var ev=String(p.type||p.triggerEvent||'');var d=p.data||{};\n return {json:{ev:ev,isJob:/^job\\./.test(ev),job:/^job\\./.test(ev)?d:null,company:/^company\\./.test(ev)?(d.name||''):''}};});",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "9ec4a852-30ea-4b95-a114-2ffb28b8e796",
+        "name": "SM8 Queues (hook)",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          480,
+          900
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "method": "GET",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "options": {
+            "timeout": 30000
+          },
+          "url": "https://api.servicem8.com/api_1.0/queue.json"
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "4cc43fb8-a7b7-4b34-8a7c-91235b366ef6",
+        "name": "Hook Decide",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          700,
+          900
+        ],
+        "parameters": {
+          "jsCode": "/* Hook Decide (instant version of the 5-minute Folder Keeper + Job File creator).\n   restore: a Work Order that was in Approved / Part Approved / Reactive / Maintenance and now has no folder (ServiceM8 drops it\n            when it is scheduled) goes straight back into that folder for a year. Uses the same static folder map as Folder Keeper.\n   jf:      a job placed in one of those folders (job.queued only, so one change does not create twice) gets checked for a Job File after the Jobs list refresh.\n   Quote jobs are never filed - the team picks their folder. */\nvar KEEP=/^(approved|part approved)$|reactive|maint/i;\nvar Q={};$('SM8 Queues (hook)').all().forEach(function(i){var q=i.json;if(q&&q.uuid)Q[q.uuid]=String(q.name||'').trim();});\nvar p=$('Hook Prep').first().json,j=p.job||{};\nvar st=$getWorkflowStaticData('global');st.folders=st.folders||{};\nfunction pad(n){return('0'+n).slice(-2);}\nvar d=new Date(Date.now()+365*864e5),YEAR=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());\nvar out={ev:p.ev,job:String(j.generated_job_id||''),restore:null,jf:false};\nif(p.isJob&&j.uuid&&String(j.active)==='1'){var q=String(j.queue_uuid||''),name=Q[q]||'';\n if(q&&KEEP.test(name)){if(j.status==='Work Order')st.folders[j.uuid]=q;if(p.ev==='job.queued')out.jf=true;}\n else if(!q&&j.status==='Work Order'&&st.folders[j.uuid]&&KEEP.test(Q[st.folders[j.uuid]]||'')){\n  out.restore={uuid:j.uuid,queue_uuid:st.folders[j.uuid],queue_expiry_date:YEAR,folder:Q[st.folders[j.uuid]]};out.jf=true;}}\nst.hookLast={at:new Date().toISOString(),ev:out.ev,job:out.job,restored:out.restore?out.restore.folder:'',jf:out.jf};\nreturn [{json:out}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "a82a3995-deb9-4c83-866f-c71c5ecba140",
+        "name": "Restore?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          920,
+          900
+        ],
+        "parameters": {
+          "conditions": {
+            "combinator": "and",
+            "conditions": [
+              {
+                "id": "r1",
+                "leftValue": "={{ !!$json.restore }}",
+                "operator": {
+                  "operation": "true",
+                  "singleValue": true,
+                  "type": "boolean"
+                },
+                "rightValue": ""
+              }
+            ],
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            }
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "4e712b78-b8c2-4e55-8771-09bbcd1ebfd1",
+        "name": "SM8 Restore Folder (hook)",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1140,
+          820
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "jsonBody": "={{ JSON.stringify({ queue_uuid: $json.restore.queue_uuid, queue_expiry_date: $json.restore.queue_expiry_date }) }}",
+          "method": "POST",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            },
+            "timeout": 30000
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "url": "={{ 'https://api.servicem8.com/api_1.0/job/' + $json.restore.uuid + '.json' }}"
+        }
+      },
+      {
+        "id": "cc282a3a-59d3-4bf8-8650-8af5cddb49ee",
+        "name": "Job File Check",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1580,
+          900
+        ],
+        "parameters": {
+          "jsCode": "/* Job File Check: after the fresh Jobs list, a job in Approved / Part Approved / Reactive / Maintenance with no Job File\n   gets one created as Project (same as the 5-minute poll; existing, CDM and closed Job Files are never touched). */\nvar D=$('Hook Decide').first().json;if(!D.jf||!D.job)return [];\nfunction S(v){return v==null?'':String(v).trim();}\nvar pr=$input.first().json;if(typeof pr==='string'){try{pr=JSON.parse(pr);}catch(e){pr={};}}if(!pr||!pr.ok)return [];\nvar hit=null;\n(pr.jobs||[]).forEach(function(x){if(S(x.no)===D.job&&S(x.kind)==='approved')hit={mode:S(x.mode),src:'Approved'};});\n(pr.others||[]).forEach(function(x){var f=S(x.folder);if(S(x.no)===D.job&&/reactive|approved|maint/i.test(f))hit={mode:S(x.mode),src:/reactive/i.test(f)?'Reactive':/maint/i.test(f)?'Maintenance':'Approved'};});\nif(!hit||hit.mode)return [];\nreturn [{json:{job_no:D.job,mode:'project',create:true,by:'Auto: '+hit.src+' folder'}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "b1b8ebbd-1c6e-48b4-bf97-eec436d1195e",
+        "name": "Create Job File (hook)",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1800,
+          900
+        ],
+        "parameters": {
+          "jsonBody": "={{ JSON.stringify($json) }}",
+          "method": "POST",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            },
+            "timeout": 30000
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "url": "https://old-hub.example/webhook/cbs-cdm-set"
+        }
+      },
+      {
+        "id": "40e9307b-70ed-4868-9602-e7be06828696",
+        "name": "Mark SM8",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          480,
+          1100
+        ],
+        "parameters": {
+          "columns": {
+            "mappingMode": "defineBelow",
+            "schema": [
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "key",
+                "id": "key",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "at",
+                "id": "at",
+                "required": false,
+                "type": "string"
+              }
+            ],
+            "value": {
+              "at": "={{ String(Date.now()) }}",
+              "key": "={{ 'dirty:' + 'sm8' + (function(j){j=String(j==null?'':j).replace(/[^0-9A-Za-z]/g,'').toLowerCase().replace(/^job/,'');return j?'@'+j:'';})($json.job && $json.job.generated_job_id) }}"
+            }
+          },
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "bSkjEWvTgJnP818K"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "key",
+                "keyValue": "={{ 'dirty:' + 'sm8' + (function(j){j=String(j==null?'':j).replace(/[^0-9A-Za-z]/g,'').toLowerCase().replace(/^job/,'');return j?'@'+j:'';})($json.job && $json.job.generated_job_id) }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "upsert",
+          "options": {},
+          "resource": "row"
+        },
+        "onError": "continueRegularOutput",
+        "executeOnce": true
+      }
+    ],
+    "connections": {
+      "Every 5 minutes": {
+        "main": [
+          [
+            {
+              "node": "Create Missing Job Files",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "SM8 Queues",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SM8 Queues": {
+        "main": [
+          [
+            {
+              "node": "SM8 Open Jobs",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SM8 Open Jobs": {
+        "main": [
+          [
+            {
+              "node": "Folder Keeper",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Folder Keeper": {
+        "main": [
+          [
+            {
+              "node": "SM8 Set Folder",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "On Job Created": {
+        "main": [
+          [
+            {
+              "node": "Hook Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "On Job Updated": {
+        "main": [
+          [
+            {
+              "node": "Hook Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "On Job Queued": {
+        "main": [
+          [
+            {
+              "node": "Hook Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "On Job Status Changed": {
+        "main": [
+          [
+            {
+              "node": "Hook Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "On Job Completed": {
+        "main": [
+          [
+            {
+              "node": "Hook Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "On Client Created": {
+        "main": [
+          [
+            {
+              "node": "Hook Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "On Client Updated": {
+        "main": [
+          [
+            {
+              "node": "Hook Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Hook Prep": {
+        "main": [
+          [
+            {
+              "node": "SM8 Queues (hook)",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Mark SM8",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SM8 Queues (hook)": {
+        "main": [
+          [
+            {
+              "node": "Hook Decide",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Hook Decide": {
+        "main": [
+          [
+            {
+              "node": "Restore?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Restore?": {
+        "main": [
+          [
+            {
+              "node": "SM8 Restore Folder (hook)",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Refresh Jobs List",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SM8 Restore Folder (hook)": {
+        "main": [
+          [
+            {
+              "node": "Refresh Jobs List",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Refresh Jobs List": {
+        "main": [
+          [
+            {
+              "node": "Job File Check",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Job File Check": {
+        "main": [
+          [
+            {
+              "node": "Create Job File (hook)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "SM8 webhooks (job created/updated/queued/status/completed, client created/updated): instant folder restore, Job File creation and Jobs list refresh. 5-min poll kept as backstop.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

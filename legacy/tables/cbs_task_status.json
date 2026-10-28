@@ -1,0 +1,121 @@
+{
+  "table": "cbs_task_status",
+  "n8n_id": "79HTD2OG21IvSBZT",
+  "columns": [
+    {
+      "name": "assignee",
+      "type": "string"
+    },
+    {
+      "name": "changed_at",
+      "type": "string"
+    },
+    {
+      "name": "description",
+      "type": "string"
+    },
+    {
+      "name": "due_on",
+      "type": "string"
+    },
+    {
+      "name": "files_json",
+      "type": "string"
+    },
+    {
+      "name": "grp",
+      "type": "string"
+    },
+    {
+      "name": "note",
+      "type": "string"
+    },
+    {
+      "name": "note_by",
+      "type": "string"
+    },
+    {
+      "name": "note_date",
+      "type": "string"
+    },
+    {
+      "name": "ref_id",
+      "type": "string"
+    },
+    {
+      "name": "ref_table",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "task_key",
+      "type": "string"
+    },
+    {
+      "name": "title",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "task_key": "substances|6|Review SDS - Mapei Mapeflex PU 45 FT",
+      "title": "Review SDS - Mapei Mapeflex PU 45 FT",
+      "ref_table": "substances",
+      "ref_id": "6",
+      "grp": "Health and safety",
+      "status": "Done",
+      "changed_at": "2026-10-07T09:56:10.955Z",
+      "note": null,
+      "note_date": null,
+      "note_by": null,
+      "assignee": null,
+      "due_on": null,
+      "files_json": null,
+      "description": null,
+      "id": 1,
+      "createdAt": "2026-10-07T09:12:10.312Z",
+      "updatedAt": "2026-10-07T09:56:11.436Z"
+    },
+    {
+      "task_key": "substances|7|Review SDS - MasterEmaco T 1100 TIX",
+      "title": "Review SDS - MasterEmaco T 1100 TIX",
+      "ref_table": "substances",
+      "ref_id": "7",
+      "grp": "Health and safety",
+      "status": "Done",
+      "changed_at": "2026-10-07T10:27:10.555Z",
+      "note": null,
+      "note_date": null,
+      "note_by": null,
+      "assignee": null,
+      "due_on": null,
+      "files_json": null,
+      "description": null,
+      "id": 2,
+      "createdAt": "2026-10-07T09:12:10.348Z",
+      "updatedAt": "2026-10-07T10:27:11.095Z"
+    },
+    {
+      "task_key": "substances|9|Review SDS - Parex® Tecfast Concrete",
+      "title": "Review SDS - Parex® Tecfast Concrete",
+      "ref_table": "substances",
+      "ref_id": "9",
+      "grp": "Health and safety",
+      "status": "Done",
+      "changed_at": "2026-10-07T10:30:09.088Z",
+      "note": null,
+      "note_date": null,
+      "note_by": null,
+      "assignee": null,
+      "due_on": null,
+      "files_json": null,
+      "description": null,
+      "id": 3,
+      "createdAt": "2026-10-07T09:12:10.383Z",
+      "updatedAt": "2026-10-07T10:30:09.626Z"
+    }
+  ]
+}

@@ -1,0 +1,381 @@
+<!--cbs-baked--><!DOCTYPE html><html lang="en-GB"><head><script id="cbsDl">(function(){if(window.__cbsDl)return;window.__cbsDl=1;
+var ua=navigator.userAgent||'',fr=false;try{fr=window.top!==window.self;}catch(e){fr=true;}
+var ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+var wv=(ios&&ua.indexOf('Safari/')<0)||ua.indexOf('; wv)')>-1||/ServiceM8/i.test(ua);
+window.__cbsDlPost=fr||wv;
+var oc=HTMLAnchorElement.prototype.click,od=HTMLAnchorElement.prototype.dispatchEvent;
+function want(a){if(!window.__cbsDlPost||!a||!a.download)return false;var h=String(a.href||'');return (h.indexOf('blob:')===0||h.indexOf('data:application/pdf')===0)&&(/[.]pdf$/i.test(a.download)||h.indexOf('data:application/pdf')===0);}
+function b64(href){return fetch(href).then(function(r){return r.blob();}).then(function(b){return new Promise(function(res,rej){var f=new FileReader();f.onload=function(){res(String(f.result).split(',')[1]);};f.onerror=rej;f.readAsDataURL(b);});});}
+function css(){if(document.getElementById('cbsDlCss'))return;var s=document.createElement('style');s.id='cbsDlCss';s.textContent='#cbsDlOv{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px;font-family:inherit}#cbsDlOv .bx{background:#fff;border-radius:12px;padding:20px;max-width:360px;width:100%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.25)}#cbsDlOv b{display:block;font-size:18px;margin-bottom:6px}#cbsDlOv p{margin:0 0 14px;color:#555;font-size:14px;word-break:break-word}#cbsDlOv button{display:block;width:100%;border:0;border-radius:8px;padding:13px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;margin-top:8px}#cbsDlGo{background:#F47920;color:#fff}#cbsDlX{background:#eef0f2;color:#1f2328}';document.head.appendChild(s);}
+function show(name,data){css();var o=document.getElementById('cbsDlOv');if(o)o.remove();o=document.createElement('div');o.id='cbsDlOv';
+ var bx=document.createElement('div');bx.className='bx';var t=document.createElement('b');t.textContent='Your PDF is ready';var p=document.createElement('p');p.textContent=name;
+ var f=document.createElement('form');f.method='POST';f.action='/webhook/cbs-pdf-out';f.target='_blank';f.style.margin='0';
+ [['name',name],['data',data]].forEach(function(x){var i=document.createElement('input');i.type='hidden';i.name=x[0];i.value=x[1];f.appendChild(i);});
+ var g=document.createElement('button');g.type='submit';g.id='cbsDlGo';g.textContent='Open PDF';f.appendChild(g);
+ var x=document.createElement('button');x.type='button';x.id='cbsDlX';x.textContent='Close';x.onclick=function(){o.remove();};
+ f.onsubmit=function(){setTimeout(function(){o.remove();},1500);};
+ bx.appendChild(t);bx.appendChild(p);bx.appendChild(f);bx.appendChild(x);o.appendChild(bx);document.body.appendChild(o);}
+function go(a){var n=a.download||'document.pdf';b64(a.href).then(function(d){show(n,d);})['catch'](function(){try{window.open(a.href,'_blank');}catch(e){}});}
+HTMLAnchorElement.prototype.click=function(){if(want(this)){go(this);return;}return oc.apply(this,arguments);};
+HTMLAnchorElement.prototype.dispatchEvent=function(e){if(e&&e.type==='click'&&want(this)){go(this);return true;}return od.apply(this,arguments);};
+})();</script><script id="cbsSp">(function(){if(window.__cbsSP)return;window.__cbsSP=1;var R=/^https:\/\/chelmsfordbuildingservices(-my)?\.sharepoint\.com\//i;function px(u){u=String(u||"");return R.test(u)?"/webhook/cbs-file?u="+encodeURIComponent(u):u;}window.__cbsPx=px;document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(!a)return;var h=a.getAttribute("href"),v=px(h);if(v!==h){a.setAttribute("href",v);a.setAttribute("target","_blank");a.setAttribute("rel","noopener");}},true);var wo=window.open;window.open=function(u){var a=[].slice.call(arguments);a[0]=px(u);return wo.apply(window,a);};})();</script><script id="cbsSaveGuard">(function(){if(window.__cbsSG)return;window.__cbsSG=1;var F=window.fetch.bind(window),P={},R={},IDS={};
+function isSave(u){return /\/webhook\/cbs-[a-z0-9-]*(save|record|upload|receive|loaded|pdf)(\?|$)/.test(u)&&!/[?&]a=del/.test(u);}
+function isDoc(u){return /\/webhook\/cbs-[a-z0-9-]*-save(\?|$)/.test(u)&&!/cbs-admin-save/.test(u);}
+window.fetch=function(u,o){o=o||{};var url=String(u&&u.url||u),m=String(o.method||'GET').toUpperCase();
+ if(m!=='POST'||!isSave(url))return F(u,o);
+ var body=o.body,key=url.split('?')[0]+location.pathname;
+ if(isDoc(url)&&typeof body==='string'&&IDS[key]){try{var j=JSON.parse(body);if(!Number(j.id)){j.id=IDS[key];body=JSON.stringify(j);o=Object.assign({},o,{body:body});}}catch(e){}}
+ var k=url+'|'+(typeof body==='string'?body:Math.random());
+ if(P[k])return P[k].then(function(r){return r.clone();});
+ if(R[k]&&Date.now()-R[k].t<15000)return Promise.resolve(R[k].r.clone());
+ var p=F(u,o).then(function(r){var c=r.clone();R[k]={t:Date.now(),r:r.clone()};delete P[k];
+   if(isDoc(url)&&r.ok)c.json().then(function(d){if(d&&Number(d.id))IDS[key]=Number(d.id);}).catch(function(){});return r;},
+  function(e){delete P[k];throw e;});
+ P[k]=p.then(function(r){return r.clone();});return p;};
+document.addEventListener('click',function(e){var b=e.target&&e.target.closest&&e.target.closest('button');if(!b||!/save|submit|issue/i.test(b.textContent||''))return;if(b.__cbsLock){e.stopImmediatePropagation();e.preventDefault();return;}b.__cbsLock=1;setTimeout(function(){b.__cbsLock=0;},1500);},true);
+})();</script><script id="cbsRoute">(function(){if(window.__cbsRT)return;window.__cbsRT=1;var M={"swms-save":"cbs-rams-save","sssp-save":"cbs-cphsp-save","swms-builder":"cbs-rams-builder","sssp-builder":"cbs-cphsp-builder","embr-builder-kit":"cbs-builder-kit","site-form-save":"cbs-site-inspection-save","embr-logo":"cbs-logo"},T=[["Embr Operations","Operations Hub"],["Embr Projects","Chelmsford Building Services"],["Embr - ","CBS - "],["embr-ops","cbs-ops"],["embr-toolbox-saved","cbs-toolbox-saved"],["embr_","cbs_"],["embr-","cbs-"],["Google Drive","SharePoint"],["WorkSafe","HSE"],["lang=\"en-NZ\"","lang=\"en-GB\""],["\"en-NZ\"","\"en-GB\""],["Pacific/Auckland","Europe/London"],["($\"+","(£\"+"]],TK={"swms":"rams","sssp":"cphsp"};function nm(n){return n.indexOf('cbs-')===0?n:(M[n]||('cbs-'+n));}function fx(u){try{var s=String(u);var x=new URL(s,location.href);if(x.origin!==location.origin)return u;var p=x.pathname.split('/');if(p.length!==3||p[1]!=='webhook'||!p[2])return u;var n=nm(p[2]);if(n===p[2])return u;return '/webhook/'+n+x.search+x.hash;}catch(e){return u;}}function lst(u){try{var x=new URL(String(u),location.href);if(x.origin!==location.origin)return null;if(x.pathname!=='/webhook/admin'&&x.pathname!=='/webhook/cbs-admin')return null;if(x.searchParams.get('a')!=='list')return null;return x.searchParams.get('t')||'';}catch(e){return null;}}window.__cbsUrl=fx;window.__cbsFix=function(h){h=String(h).replace(new RegExp('/webhook/(?!cbs-)([A-Za-z0-9-]+)','g'),function(a,n){return '/webhook/'+nm(n);});T.forEach(function(r){h=h.split(r[0]).join(r[1]);});return h;};var F=window.fetch;window.fetch=function(u,o){var q=u&&typeof u==='object'&&u.url;var t=lst(q?u.url:u);if(t!==null){var k=TK[t]||t;return F.call(window,'/webhook/cbs-admin-data?t='+encodeURIComponent(k)).then(function(r){return r.json();}).then(function(d){var a=(d&&Array.isArray(d[k]))?d[k]:[];return new Response(JSON.stringify(a),{status:200,headers:{'Content-Type':'application/json'}});});}if(q){var v=fx(u.url);if(v!==u.url)u=new Request(v,u);}else{u=fx(u);}return F.call(window,u,o);};var XO=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(m,u){var t=lst(u);if(t!==null){arguments[1]='/webhook/cbs-admin-data?t='+encodeURIComponent(TK[t]||t);}else{arguments[1]=fx(u);}return XO.apply(this,arguments);};document.addEventListener('click',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href]');if(a){var h=a.getAttribute('href'),v=fx(h);if(v!==h)a.setAttribute('href',v);}},true);})();</script><style id="cbsLogoFix">.topbar .logo,.topbar img,#topLogo,#cbsLogo,header img,img.logo{background:transparent!important;box-shadow:none!important;border:0!important;padding:0!important;border-radius:0!important;filter:none!important}</style><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CBS Team</title><style>
+*{box-sizing:border-box}
+body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:16px;line-height:1.45;padding-bottom:env(safe-area-inset-bottom,0px)}
+header{background:#3d4043;color:#fff;padding:14px 16px;border-bottom:4px solid #F47920;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:5}
+header h1{margin:0;font-size:18px;flex:1}
+header button{background:none;border:0;color:#ffb37a;font-size:15px;font-weight:600;padding:4px}
+.wrap{max-width:560px;margin:0 auto;padding:16px}
+.big{display:block;width:100%;background:#F47920;color:#fff;border:0;border-radius:12px;padding:18px 16px;font-size:18px;font-weight:700;margin:0 0 10px;text-align:left;cursor:pointer}
+.big span{display:block;color:#ddd;font-size:13px;font-weight:400;margin-top:3px}
+.grp{font-size:12px;font-weight:700;color:#6b6e70;margin:18px 2px 8px;letter-spacing:.04em}
+label{display:block;margin:14px 0 0;font-size:14px;color:#555}
+input,select,textarea{width:100%;padding:12px;border:1px solid #ccc;border-radius:10px;font-size:16px;font-family:inherit;background:#fff}
+textarea{min-height:90px}
+.chk{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #ddd;border-radius:10px;padding:12px 14px;margin-top:8px;font-size:15px}
+.tg{display:flex;gap:6px}
+.tg button{border:1px solid #ccc;background:#fff;border-radius:8px;padding:7px 12px;font-size:14px;font-weight:600}
+.tg button.on.ok{background:#1a7f37;border-color:#1a7f37;color:#fff}
+.tg button.on.bad{background:#b3261e;border-color:#b3261e;color:#fff}
+.go{display:block;width:100%;background:#F47920;color:#fff;border:0;border-radius:12px;padding:16px;font-size:17px;font-weight:700;margin-top:22px}
+.go:disabled{opacity:.6}
+.msg{margin-top:12px;font-weight:600;color:#b3261e}
+.thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.thumbs img{width:78px;height:78px;object-fit:cover;border-radius:8px;border:1px solid #ccc}
+.done{text-align:center;padding:40px 10px}
+.done .tick{font-size:54px;color:#1a7f37}
+.warnbox{background:#fbdedb;border:1px solid #b3261e;border-radius:10px;padding:10px 12px;font-size:14px;margin-top:12px}
+</style></head><body>
+<header><button id="back" style="display:none">&#8249; Back</button><img id="cbsLogo" alt="Chelmsford Building Services" src="data:image/png;base64,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" style="height:26px;width:auto;flex:0 0 auto"><h1>Team</h1></header>
+<div class="wrap" id="app"></div>
+<script id="__d" type="application/json">eyJ3b3JrZXJzIjpbIkpha2UgQmxvdyIsIkpvZSBQYXJhaGEiLCJFdGhhbiBQYXJhaGEiLCJCcm9va2UgSGF5bmVzIl0sInZlaGljbGVzIjpbeyJyZWciOiJOS0c1NjAiLCJtYWtlX21vZGVsIjoiRm9yZCBUcmFuc2l0In0seyJyZWciOiJMQ0EyMjAiLCJtYWtlX21vZGVsIjoiRm9yZCBSYW5nZXIifV19</script><script id="cbsLive">(function(){try{var x=new XMLHttpRequest();x.open("GET","/webhook/cbs-team-data",false);x.send();if(x.status===200){var j=JSON.parse(x.responseText);var d=document.getElementById("__d");if(d&&j.d)d.textContent=j.d;window.__CBS_TOOLS=j.tools||[];}}catch(e){}})();</script>
+<script>
+var D=JSON.parse(atob(document.getElementById("__d").textContent));
+var P=location.pathname; var API=P.slice(0,P.lastIndexOf("/")+1)+"cbs-team-submit";
+var app=document.getElementById("app"), back=document.getElementById("back");
+var me=""; try{ me=localStorage.getItem("cbs_me")||""; }catch(e){}
+var photos=[];
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function el(id){return document.getElementById(id)}
+function opts(list,sel){var h="<option value=''></option>";list.forEach(function(o){h+="<option"+(o===sel?" selected":"")+">"+esc(o)+"</option>"});return h;}
+function opts2(list,sel){var h="";list.forEach(function(o){h+="<option"+(o===sel?" selected":"")+">"+esc(o)+"</option>"});return h;}
+function regos(){return D.vehicles.map(function(v){return v.reg+(v.make_model?" - "+v.make_model:"")});}
+function regoOf(label){return String(label||"").split(" - ")[0];}
+function nowLocal(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,16);}
+function home(){
+  back.style.display="none"; photos=[];
+  var h="<label>Your name<select id='me'>"+opts(D.workers,me)+"</select></label>";
+  h+="<div class='grp'>SAFETY</div>";
+  h+="<button class='big' id='bInc'>Report a near miss or incident<span>Near misses, injuries, damage, anything that could have gone wrong</span></button>";
+  h+="<div class='grp'>VEHICLES</div>";
+  h+="<button class='big' id='bCheck'>Vehicle check<span>Pre-start or weekly check</span></button>";
+  h+="<button class='big' id='bCrash'>Report a vehicle accident<span>Any damage or collision, however small</span></button>";
+  h+="<div class='grp'>REQUESTS</div>";
+  h+="<button class='big' id='bReq'>Make a request<span>Tools, PPE, lost fuel card, anything you need</span></button>";
+  app.innerHTML=h;
+  el("me").onchange=function(){me=this.value;try{localStorage.setItem("cbs_me",me);}catch(e){}};
+  el("bInc").onclick=function(){ if(!needMe())return; incident(); };
+  el("bCheck").onclick=function(){ if(!needMe())return; if(!D.vehicles.length){alert("No vehicles are set up yet. Ask the office.");return;} check(); };
+  el("bCrash").onclick=function(){ if(!needMe())return; if(!D.vehicles.length){alert("No vehicles are set up yet. Ask the office.");return;} crash(); };
+  el("bReq").onclick=function(){ if(!needMe())return; request(); };
+}
+function needMe(){ me=el("me").value; if(!me){alert("Pick your name first.");return false;} try{localStorage.setItem("cbs_me",me);}catch(e){} return true; }
+function incident(){
+  back.style.display="block"; photos=[];
+  var h="<label>What sort of event<select id='kind'>"+opts2(["Near miss","Injury","Property damage","Illness","Environmental"],"Near miss")+"</select></label>";
+  h+="<label>When<input id='when' type='datetime-local' value='"+nowLocal()+"'></label>";
+  h+="<label>Where<input id='where' placeholder='Site address or location'></label>";
+  h+="<label>Who was involved<select id='who'>"+opts(D.workers,me)+"</select></label>";
+  h+="<label>What happened<textarea id='what' placeholder='Describe what happened or nearly happened'></textarea></label>";
+  h+="<label>Injury details (if anyone was hurt)<textarea id='inj'></textarea></label>";
+  h+="<label>What did you do straight away<textarea id='act' placeholder='e.g. stopped work, taped off the area'></textarea></label>";
+  h+=photoField();
+  h+="<div class='warnbox'>If anyone is seriously hurt, call 999 first, then call the office.</div>";
+  h+="<button class='go' id='send'>Send report</button><div class='msg' id='msg'></div>";
+  app.innerHTML=h; bindPhotos();
+  el("send").onclick=function(){
+    if(!el("what").value.trim()){msg("Say what happened.");return;}
+    send({type:"incident",name:me,kind:el("kind").value,when:el("when").value,location:el("where").value,person:el("who").value,
+      description:el("what").value,injury_detail:el("inj").value,immediate_action:el("act").value,photos:photos},
+      "Report sent. Thanks for speaking up - the office will follow it up.");
+  };
+}
+var ITEMS=[["tyres_ok","Tyres and wheels"],["lights_ok","Lights and indicators"],["fluids_ok","Fluids, no leaks"],["body_ok","Body, glass and mirrors"],["first_aid_ok","First aid kit"],["extinguisher_ok","Fire extinguisher"],["restraints_ok","Load restraints"]];
+var state={};
+function check(){
+  back.style.display="block"; state={}; photos=[];
+  var h="<label>Vehicle<select id='veh'>"+opts(regos(),"")+"</select></label>";
+  h+="<label>Odometer (miles)<input id='odo' inputmode='numeric'></label>";
+  h+="<label>Checklist</label>";
+  ITEMS.forEach(function(it){ state[it[0]]=true;
+    h+="<div class='chk'><span>"+it[1]+"</span><span class='tg'><button class='on ok' data-k='"+it[0]+"' data-v='1'>OK</button><button class='bad' data-k='"+it[0]+"' data-v='0'>Fault</button></span></div>"; });
+  h+="<label>Faults or notes<textarea id='defects' placeholder='Describe anything not right'></textarea></label>";
+  h+="<label>Is the vehicle safe to drive?<select id='safe'><option value='yes'>Yes</option><option value='no'>No - take it off the road</option></select></label>";
+  h+=photoField();
+  h+="<button class='go' id='send'>Submit check</button><div class='msg' id='msg'></div>";
+  app.innerHTML=h; bindPhotos();
+  Array.prototype.forEach.call(document.querySelectorAll(".tg button"),function(b){b.onclick=function(){
+    var k=b.getAttribute("data-k"), v=b.getAttribute("data-v")==="1"; state[k]=v;
+    Array.prototype.forEach.call(document.querySelectorAll(".tg button[data-k='"+k+"']"),function(x){x.classList.remove("on")});
+    b.classList.add("on"); };});
+  el("send").onclick=function(){
+    var veh=regoOf(el("veh").value); if(!veh){msg("Pick a vehicle.");return;}
+    var body={type:"check",name:me,vehicle:veh,odometer:el("odo").value,defects:el("defects").value,safe:el("safe").value==="yes",photos:photos};
+    ITEMS.forEach(function(it){body[it[0]]=state[it[0]]!==false;});
+    var faults=ITEMS.filter(function(it){return state[it[0]]===false}).length;
+    if(faults&&!el("defects").value.trim()){msg("Describe the fault before submitting.");return;}
+    send(body,"Check submitted"+(faults?" - faults have been flagged to the office.":"."));
+  };
+}
+function crash(){
+  back.style.display="block"; photos=[];
+  var h="<label>Vehicle<select id='veh'>"+opts(regos(),"")+"</select></label>";
+  h+="<label>When<input id='when' type='datetime-local' value='"+nowLocal()+"'></label>";
+  h+="<label>Where<input id='where'></label>";
+  h+="<label>What happened<textarea id='what'></textarea></label>";
+  h+="<label>Damage to our vehicle<textarea id='damage'></textarea></label>";
+  h+="<label>Anyone hurt?<textarea id='inj' placeholder='If nobody was hurt, write none'></textarea></label>";
+  h+="<label>Other party name and phone<input id='tp'></label>";
+  h+="<label>Other party reg<input id='tprego'></label>";
+  h+="<label>Other party insurer<input id='tpins'></label>";
+  h+="<label>Police event number (if any)<input id='police'></label>";
+  h+=photoField();
+  h+="<div class='warnbox'>If anyone is seriously hurt, call 999 first.</div>";
+  h+="<button class='go' id='send'>Send report</button><div class='msg' id='msg'></div>";
+  app.innerHTML=h; bindPhotos();
+  el("send").onclick=function(){
+    var veh=regoOf(el("veh").value); if(!veh){msg("Pick a vehicle.");return;}
+    if(!el("what").value.trim()){msg("Say what happened.");return;}
+    send({type:"accident",name:me,vehicle:veh,when:el("when").value,location:el("where").value,description:el("what").value,
+      damage:el("damage").value,injuries:el("inj").value,third_party:el("tp").value,third_party_reg:el("tprego").value,
+      third_party_insurer:el("tpins").value,police_event_no:el("police").value,photos:photos},"Accident reported. The office has been notified.");
+  };
+}
+function request(){
+  back.style.display="block"; photos=[];
+  var h="<label>What is it for<select id='cat'>"+opts2(["Tools or equipment","PPE or uniform","Fuel card","Vehicle issue","Consumables","Other"],"Tools or equipment")+"</select></label>";
+  h+="<label>Details<textarea id='det' placeholder='e.g. lost the fuel card for van 2, need a new one'></textarea></label>";
+  h+="<label>How urgent<select id='urg'>"+opts2(["Today","This week","No rush"],"This week")+"</select></label>";
+  h+=photoField();
+  h+="<button class='go' id='send'>Send request</button><div class='msg' id='msg'></div>";
+  app.innerHTML=h; bindPhotos();
+  el("send").onclick=function(){
+    if(!el("det").value.trim()){msg("Add some details.");return;}
+    send({type:"request",name:me,category:el("cat").value,details:el("det").value,urgency:el("urg").value,photos:photos},"Request sent to the office.");
+  };
+}
+function photoField(){
+  return "<label>Take or choose photos (up to 4)<input id='ph' type='file' accept='image/*' multiple></label><div class='thumbs' id='thumbs'></div>";
+}
+function shrink(file){return new Promise(function(res){var fr=new FileReader();fr.onload=function(){var img=new Image();
+  img.onload=function(){var m=1600,w=img.width,h=img.height,s=Math.min(1,m/Math.max(w,h));var c=document.createElement("canvas");
+  c.width=Math.round(w*s);c.height=Math.round(h*s);c.getContext("2d").drawImage(img,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",0.82));};
+  img.onerror=function(){res(null)};img.src=fr.result;};fr.onerror=function(){res(null)};fr.readAsDataURL(file);});}
+function bindPhotos(){
+  el("ph").onchange=function(){
+    var files=Array.prototype.slice.call(this.files||[]).slice(0,4-photos.length);
+    Promise.all(files.map(shrink)).then(function(list){
+      list.forEach(function(p){if(p)photos.push(p);});
+      el("thumbs").innerHTML=photos.map(function(p){return "<img src='"+p+"'>"}).join("");
+    });
+  };
+}
+function msg(t){el("msg").textContent=t;}
+function send(body,ok){
+  var b=el("send"); b.disabled=true; b.textContent="Sending...";
+  fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})
+   .then(function(r){return r.json()}).then(function(d){
+     if(!d||!d.ok){throw new Error("bad");}
+     back.style.display="none";
+     app.innerHTML="<div class='done'><div class='tick'>&#10003;</div><h2>"+esc(ok)+"</h2><button class='go' id='again'>Done</button></div>";
+     el("again").onclick=home;
+   })["catch"](function(){ b.disabled=false; b.textContent="Try again"; msg("Could not send. Check your signal and try again."); });
+}
+back.onclick=home;
+home();
+</script><script>(function(){
+var _home=home;
+home=function(){
+  _home();
+  };
+function leave(){
+  back.style.display='block';photos=[];
+  var d0=nowLocal().slice(0,10);
+  var h="<label>Type of leave<select id='lk'>"+opts2(['Annual leave','Sick leave','Bereavement leave','Unpaid leave','Day in lieu','Other'],'Annual leave')+"</select></label>";
+  h+="<label>First day off<input id='lf' type='date' value='"+d0+"'></label>";
+  h+="<label>Last day off<input id='lt' type='date' value='"+d0+"'></label>";
+  h+="<label>Full or part day<select id='lp'>"+opts2(['Full days','Morning only','Afternoon only'],'Full days')+"</select></label>";
+  h+="<label>Notes (optional)<textarea id='ln' placeholder='Anything the office should know'></textarea></label>";
+  h+=photoField().replace('Take or choose photos (up to 4)','Attach a document or photo (optional)');
+  h+="<button class='go' id='send'>Send request</button><div class='msg' id='msg'></div>";
+  app.innerHTML=h;bindPhotos();
+  el('send').onclick=function(){
+    var f=el('lf').value,t=el('lt').value;
+    if(!f||!t){msg('Pick your dates.');return;}
+    if(t<f){msg('The last day is before the first day.');return;}
+    var old=API;API=old.replace('cbs-team-submit','cbs-team-leave');
+    send({type:'leave',name:me,kind:el('lk').value,from_date:f,to_date:t,part_day:el('lp').value,notes:el('ln').value,photos:photos},'Time off request sent to the office.');
+    API=old;
+  };
+}
+back.onclick=home;
+home();
+})();
+</script><script>(function(){
+var JOBQ="";try{JOBQ=(new URLSearchParams(location.search).get("job")||"").replace(/[^0-9]/g,"");}catch(e){}
+function look(){var i=el("sm8"),m=el("sm8Msg"),b=el("sm8Look");var no=String(i.value||"").replace(/[^0-9]/g,"");
+ if(!no){m.style.color="#b3261e";m.textContent="Type the job number first.";return;}
+ i.value=no;b.disabled=true;b.textContent="...";m.style.color="#6b6e70";m.textContent="Looking up job "+no+"...";
+ fetch("/webhook/cbs-sm8-job?no="+no).then(function(r){return r.json();}).then(function(j){
+  if(!j||!j.found){m.style.color="#b3261e";m.textContent="Job "+no+" wasn't found in ServiceM8. Check the number, or leave it blank.";return;}
+  var w=el("where"),site=String(j.site||"").trim(),cur=String(w.value||"").trim();
+  if(site&&cur!==site&&(!cur||confirm("Replace \""+cur+"\" with the job's site address \""+site+"\"?"))){w.value=site;}
+  m.style.color="#1a7f37";m.textContent="Job "+no+(j.client?" - "+j.client:"")+(site?" - "+site:"")+". The report will be added to this job.";
+ })["catch"](function(){m.style.color="#b3261e";m.textContent="Couldn't reach ServiceM8. You can still send the report.";}).then(function(){b.disabled=false;b.textContent="Look up";});}
+var _inc=incident;incident=function(){_inc();var w=el("where");if(!w||el("sm8"))return;
+ var d=document.createElement("div");
+ d.innerHTML="<label>ServiceM8 job (if it happened on a job)</label><div style='display:flex;gap:8px'><input id='sm8' inputmode='numeric' placeholder='e.g. 10840' style='flex:1;min-width:0'><button type='button' id='sm8Look' style='flex:0 0 auto;border:0;border-radius:10px;background:#F47920;color:#fff;font-weight:700;font-size:15px;padding:0 16px'>Look up</button></div><div id='sm8Msg' style='font-size:13px;margin-top:6px'></div>";
+ app.insertBefore(d,app.firstChild);
+ el("sm8Look").onclick=look;el("sm8").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();look();}});
+ if(JOBQ){el("sm8").value=JOBQ;JOBQ="";look();}};
+var _send=send;send=function(body,ok){if(body&&body.type==="incident"){var j=el("sm8");if(j)body.sm8_job=String(j.value||"").replace(/[^0-9]/g,"");}return _send(body,ok);};
+})();
+</script><script>(function(){var p=null;try{p=new URLSearchParams(location.search).get("open");}catch(e){}window.__CBS_OPEN=p||"";if(p){try{history.replaceState(null,"",location.pathname);}catch(e){}}})();</script><script>(function(){
+var TOOLS=window.__CBS_TOOLS||[];
+function opts3(list,sel){return list.map(function(o){return "<option"+(o===sel?" selected":"")+">"+esc(o)+"</option>";}).join("");}
+function addBtn(){var r=el("bReq");if(!r||el("bTool"))return;
+ var g=document.createElement("div");g.className="grp";g.textContent="TOOLS";
+ var b=document.createElement("button");b.className="big";b.id="bTool";
+ b.innerHTML="Report a lost, stolen or damaged tool<span>Report it and ask for a replacement</span>";
+ b.onclick=function(){if(!needMe())return;toolForm();};
+ r.parentNode.insertBefore(g,r.nextSibling);r.parentNode.insertBefore(b,g.nextSibling);}
+var _home=home;home=function(){_home();addBtn();};
+function show(id,on){var x=el(id);if(x)x.style.display=on?"block":"none";}
+function toolForm(){
+ back.style.display="block";photos=[];
+ var h="<label>What happened<select id='tk'>"+opts3(["Lost","Stolen","Damaged"],"Lost")+"</select></label>";
+ var o="<option value=''></option>";TOOLS.forEach(function(t){o+="<option value='"+t.id+"'>"+esc(t.label)+"</option>";});o+="<option value='other'>Not on the list</option>";
+ h+="<label>Which tool<select id='tsel'>"+o+"</select></label>";
+ h+="<div id='tnameBox' style='display:"+(TOOLS.length?"none":"block")+"'><label>Tool name<input id='tname' placeholder='e.g. Makita grinder'></label></div>";
+ h+="<label>When<input id='twhen' type='datetime-local' value='"+nowLocal()+"'></label>";
+ h+="<label>Where<input id='twhere' placeholder='Site address, van or location'></label>";
+ h+="<div id='tpolBox' style='display:none'><label>Police event number (if reported)<input id='tpol'></label></div>";
+ h+="<label>What happened / details<textarea id='tdet' placeholder='How it was lost, stolen or damaged'></textarea></label>";
+ h+=photoField();
+ h+="<div class='grp'>REPLACEMENT</div>";
+ h+="<label>Do you need it replaced or repaired?<select id='trep'><option value='no'>No</option><option value='yes'>Yes - request a replacement</option><option value='repair'>Repair it - it can be fixed</option></select></label><div id='trepairBox' style='display:none'><label>What needs repairing<textarea id='trpnote' placeholder='What is wrong with it and what needs fixing'></textarea></label><p style='font-size:13px;color:#6b6e70;margin:-4px 0 10px'>Add a photo of the damage using Photos above.</p></div>";
+ h+="<div id='trepBox' style='display:none'><label>How urgent<select id='turg'>"+opts3(["Today","This week","No rush"],"This week")+"</select></label>";
+ h+="<label>Anything else about it (optional)<textarea id='trnote' placeholder='e.g. same model, or a bigger size'></textarea></label></div>";
+ h+="<button class='go' id='send'>Send report</button><div class='msg' id='msg'></div>";
+ app.innerHTML=h;bindPhotos();
+ el("tsel").onchange=function(){show("tnameBox",this.value==="other"||!TOOLS.length);};
+ el("tk").onchange=function(){show("tpolBox",this.value==="Stolen");};
+ el("trep").onchange=function(){show("trepBox",this.value!=="no");show("trepairBox",this.value==="repair");};
+ el("send").onclick=function(){
+  var sv=el("tsel").value,name="",aid="";
+  if(sv&&sv!=="other"){var t=TOOLS.filter(function(x){return String(x.id)===sv;})[0];if(t){name=t.name;aid=String(t.id);}}
+  else{name=el("tname").value.trim();}
+  if(!name){msg(TOOLS.length&&!sv?"Pick the tool, or choose Not on the list.":"Type the tool name.");return;}
+  var rep=el("trep").value==="yes";
+  send({type:"tool",name:me,kind:el("tk").value,asset_id:aid,tool_name:name,when:el("twhen").value,location:el("twhere").value,
+   police_event_no:el("tk").value==="Stolen"?el("tpol").value:"",details:el("tdet").value,replace:rep,repair:el("trep").value==="repair",repair_notes:el("trep").value==="repair"?el("trpnote").value:"",
+   urgency:el("trep").value!=="no"?el("turg").value:"",replace_notes:el("trep").value!=="no"?el("trnote").value:"",photos:photos},
+   rep?"Report sent and a replacement has been requested.":(el("trep").value==="repair"?"Report sent and a repair has been requested.":"Report sent to the office."));
+ };
+}
+back.onclick=home;
+home();
+var p=null;try{p=new URLSearchParams(location.search).get("open");}catch(e){}
+if(p==="tool"){try{history.replaceState(null,"",location.pathname);}catch(e){}var b=el("bTool"),s=el("me");
+ if(b){if(s&&s.value){b.click();}else{b.scrollIntoView({block:"center"});b.style.outline="4px solid #F47920";var n=document.createElement("div");n.className="warnbox";n.textContent="Pick your name above, then tap the highlighted button.";b.parentNode.insertBefore(n,b);}}}
+})();
+</script><script>(function(){var N=null;
+function sub(){return N===null?'Tick off the plant, tools and materials you take':(N?N+' sheet'+(N>1?'s':'')+' waiting to be loaded':'No sheets waiting right now');}
+function mk(id,label,note,href){var b=document.createElement('button');b.className='big';b.id=id;b.innerHTML=label+'<span'+(id==='bLoad'?' id=\'loadSub\'':'')+'>'+note+'</span>';b.onclick=function(){location.href=href;};return b;}
+function grp(t){var g=document.createElement('div');g.className='grp';g.textContent=t;return g;}
+function add(){if(el('bLoad'))return;var s=document.querySelector('#app .grp');if(!s)return;var p=s.parentNode;
+p.insertBefore(grp('JOBS'),s);p.insertBefore(mk('bLoad','Load up for a job',sub(),'/webhook/cbs-ptm-crew'),s);
+}
+var _h=home;home=function(){_h();add();};try{add();}catch(e){}
+fetch('/webhook/cbs-admin-data?t=ptmsheets').then(function(r){return r.json();}).then(function(d){N=((d&&d.ptmsheets)||[]).filter(function(s){return s.status==='Issued';}).length;var x=el('loadSub');if(x)x.textContent=sub();})['catch'](function(){});
+})();</script><script>(function(){
+function tidy(){var g=document.querySelectorAll(".grp");Array.prototype.forEach.call(g,function(x){var n=x.nextElementSibling,vis=false;while(n&&!(n.classList&&n.classList.contains("grp"))){if(getComputedStyle(n).display!=="none"&&n.offsetParent!==null){vis=true;break;}n=n.nextElementSibling;}x.style.display=vis?"":"none";});}
+function hideInc(){var b=el("bInc");if(b&&!b.style.outline)b.style.display="none";var l=el("bLoad");if(l)l.style.display="none";tidy();}
+var _h=home;home=function(){_h();hideInc();};try{hideInc();}catch(e){}
+})();
+</script><script>
+(function(){
+function nameField(){ return "<label>Your name<select id='me2'>"+opts(D.workers,me)+"</select></label>"; }
+function inject(){ if(!app||el("me2"))return; var d=document.createElement("div"); d.innerHTML=nameField(); app.insertBefore(d,app.firstChild); var s=el("me2"); if(s)s.onchange=function(){ me=this.value; try{localStorage.setItem("cbs_me",me);}catch(e){} }; }
+function wrap(n){ var f=window[n]; if(typeof f!=="function")return; window[n]=function(){ var r=f.apply(this,arguments); try{inject();}catch(e){} return r; }; }
+["incident","check","crash","request","leave","toolForm"].forEach(wrap);
+var _send=send; send=function(body,ok){ var s=el("me2"); if(s){ var v=String(s.value||"").trim(); if(!v){ try{msg("Pick your name.");}catch(e){} return; } me=v; try{localStorage.setItem("cbs_me",me);}catch(e){} if(body)body.name=v; } return _send(body,ok); };
+function veh(){ return !!(D&&D.vehicles&&D.vehicles.length); }
+function unlock(){ var b; b=el("bInc"); if(b)b.onclick=function(){ incident(); }; b=el("bCheck"); if(b)b.onclick=function(){ if(!veh()){alert("No vehicles are set up yet. Ask the office.");return;} check(); }; b=el("bCrash"); if(b)b.onclick=function(){ if(!veh()){alert("No vehicles are set up yet. Ask the office.");return;} crash(); }; b=el("bReq"); if(b)b.onclick=function(){ request(); }; }
+var _h=home; home=function(){ _h(); try{unlock();}catch(e){} };
+try{unlock();}catch(e){}
+var p=window.__CBS_OPEN||"";
+var F={incident:"incident",check:"check",accident:"crash",request:"request",leave:"leave",tool:"toolForm"};
+if(F[p]&&typeof window[F[p]]==="function"){ if((p==="check"||p==="accident")&&!veh()){ alert("No vehicles are set up yet. Ask the office."); } else { try{ window[F[p]](); }catch(e){} } }
+})();
+</script><script id="cbsUploadBox">(function(){
+var st=document.createElement("style");st.textContent=".ubx{display:block!important;margin:8px 0 14px!important;border:2px dashed #F47920!important;background:#fffaf0!important;border-radius:10px!important;padding:18px 12px!important;text-align:center!important;cursor:pointer;box-sizing:border-box;width:100%;font-weight:400;color:inherit}.ubx.ov{background:#ffefc9!important}.ubx .ubx-b{display:inline-block;background:#F47920;color:#fff;border:0;border-radius:8px;padding:12px 22px;font-size:15px;font-weight:600;line-height:1.25}.ubx .ubx-h{display:block;font-size:12.5px;color:#6b6e70;margin-top:8px;font-weight:400}.ubx-save{color:#000!important;font-weight:600!important;background:#fff4ec;border-left:3px solid #F47920;padding:7px 9px;border-radius:4px}";document.head.appendChild(st);
+function kinds(inp){var a=(inp.getAttribute("accept")||"").toLowerCase(),im=a.indexOf("image")>-1,pd=a.indexOf("pdf")>-1;return im&&pd?"PDFs and photos":pd?"PDFs":im?"Photos":"Files";}
+function txt(l){var s=l.querySelector("span");var t=s?s.textContent:Array.prototype.filter.call(l.childNodes,function(n){return n.nodeType===3;}).map(function(n){return n.textContent;}).join(" ");return t.replace(/\s+/g," ").trim()||"Upload PDF or photo";}
+function box(inp){if(inp.getAttribute("data-ubx")||inp.closest("#acDrop"))return;var l=inp.closest("label");if(!l)return;inp.setAttribute("data-ubx","1");
+ var t=txt(l);l.className="ubx";l.removeAttribute("style");l.innerHTML="";
+ var b=document.createElement("span");b.className="ubx-b";b.innerHTML="&#8679; ";b.appendChild(document.createTextNode(t));
+ var h=document.createElement("span");h.className="ubx-h";h.innerHTML=(inp.multiple?"or drag files here":"or drag a file here")+" &middot; "+kinds(inp);
+ l.appendChild(b);l.appendChild(h);inp.style.display="none";l.appendChild(inp);
+ l.addEventListener("dragover",function(e){e.preventDefault();l.classList.add("ov");});
+ l.addEventListener("dragleave",function(){l.classList.remove("ov");});
+ l.addEventListener("drop",function(e){e.preventDefault();l.classList.remove("ov");var a=(inp.getAttribute("accept")||"").toLowerCase();
+  var fs=Array.prototype.slice.call((e.dataTransfer&&e.dataTransfer.files)||[]).filter(function(f){if(!a)return true;return (a.indexOf("image")>-1&&/^image\//.test(f.type))||(a.indexOf("pdf")>-1&&(f.type==="application/pdf"||/\.pdf$/i.test(f.name)));});
+  if(!fs.length)return;if(!inp.multiple)fs=fs.slice(0,1);
+  try{var dt=new DataTransfer();fs.forEach(function(f){dt.items.add(f);});inp.files=dt.files;}catch(x){return;}
+  inp.dispatchEvent(new Event("change",{bubbles:true}));});}
+function msgs(){Array.prototype.forEach.call(document.querySelectorAll("#acMsg,#trMsg,#ccMsg,#sjMsg,#rcMsg,#phMsg"),function(m){var on=/save/i.test(m.textContent||"");if(on!==m.classList.contains("ubx-save"))m.classList.toggle("ubx-save",on);});}
+function scan(){Array.prototype.forEach.call(document.querySelectorAll("input[type=file]"),box);msgs();}
+var q=0;new MutationObserver(function(){if(q)return;q=1;requestAnimationFrame(function(){q=0;scan();});}).observe(document.body,{childList:true,subtree:true,characterData:true});
+scan();
+})();</script><script id="cbsDelGuard">(function(){
+if(window.__cbsDelGuard)return;window.__cbsDelGuard=1;
+var ok=false,SEL='#delBtn,.std-del,button[data-hub],button[data-rm]';
+var css=document.createElement('style');
+css.textContent='#delModal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:99999;padding:16px}#delModal .bx{background:#fff;border-radius:14px;max-width:380px;width:100%;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.3);font-family:inherit;text-align:left}#delModal h3{margin:0 0 8px;font-size:19px;color:#000}#delModal p{margin:0 0 6px;color:#333;font-size:15px}#delModal .what{font-weight:700;color:#000;margin:10px 0 4px;word-break:break-word}#delModal .row2{display:flex;gap:10px;margin-top:18px}#delModal button{flex:1;padding:12px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer}#delModal .cx{background:#F47920;color:#fff;border:0}#delModal .yes{background:#fff;color:#b3261e;border:2px solid #b3261e}';
+document.head.appendChild(css);
+function tgt(e){var t=e.target;if(!t||!t.closest)return null;var b=t.closest(SEL);if(!b||b.tagName!=='BUTTON'||b.disabled)return null;if(b.hasAttribute('data-hub')&&!/^delete/i.test((b.textContent||'').trim()))return null;return b;}
+function clean(el){if(!el)return '';var c=el.cloneNode(true);Array.prototype.forEach.call(c.querySelectorAll('button,a,input,select,textarea,script,style'),function(x){x.parentNode.removeChild(x);});return (c.textContent||'').replace(/\s+/g,' ').trim();}
+function what(b){var s='';if(b.hasAttribute('data-rm')){var p=b.parentElement;for(var i=0;i<4&&p&&!s;i++){s=clean(p);p=p.parentElement;}}
+ if(!s){var po=document.getElementById('po_no');s=po&&po.value?po.value:'';}
+ if(!s)s=clean(document.querySelector('h1,h2,h3'))||document.title||'this record';return s.slice(0,160);}
+function note(rm){var p=location.pathname;if(/cbs-coshh/.test(p))return 'It stays on the CoSHH register.';if(/cbs-pci/.test(p))return 'The file stays in SharePoint.';return rm?'':'Any PDF already saved stays in SharePoint.';}
+function ask(b){var rm=/^remove/i.test((b.textContent||'').trim());
+ var m=document.createElement('div');m.id='delModal';
+ m.innerHTML='<div class="bx" role="dialog" aria-modal="true"><h3>Are you sure?</h3><p>'+(rm?'This will remove it from the job:':'This will permanently delete:')+'</p><div class="what"></div><p class="xtra"></p>'+(rm?'':'<p>It cannot be undone.</p>')+'<div class="row2"><button class="cx" type="button">Cancel</button><button class="yes" type="button">Yes, '+(rm?'remove':'delete')+'</button></div></div>';
+ m.querySelector('.what').textContent=what(b);var n=note(rm);if(n)m.querySelector('.xtra').textContent=n;
+ document.body.appendChild(m);var cx=m.querySelector('.cx'),yes=m.querySelector('.yes');cx.focus();
+ function close(){if(m.parentNode)m.parentNode.removeChild(m);document.removeEventListener('keydown',key,true);}
+ function key(e){if(e.key==='Escape'){e.preventDefault();close();}}
+ document.addEventListener('keydown',key,true);
+ cx.onclick=close;m.onclick=function(e){if(e.target===m)close();};
+ yes.onclick=function(){close();ok=true;try{b.click();}finally{ok=false;}};}
+document.addEventListener('click',function(e){if(ok)return;var b=tgt(e);if(!b)return;e.preventDefault();e.stopImmediatePropagation();ask(b);},true);
+var _c=window.confirm;window.confirm=function(){if(ok)return true;return _c.apply(window,arguments);};
+})();</script></body></html>

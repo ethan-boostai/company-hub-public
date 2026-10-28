@@ -1,0 +1,151 @@
+{
+  "table": "cbs_job_tasks",
+  "n8n_id": "Ae2mrJJkm7h94D1W",
+  "columns": [
+    {
+      "name": "applies_to",
+      "type": "string"
+    },
+    {
+      "name": "assignee",
+      "type": "string"
+    },
+    {
+      "name": "category",
+      "type": "string"
+    },
+    {
+      "name": "created_at",
+      "type": "string"
+    },
+    {
+      "name": "created_by",
+      "type": "string"
+    },
+    {
+      "name": "data_json",
+      "type": "string"
+    },
+    {
+      "name": "done_at",
+      "type": "string"
+    },
+    {
+      "name": "done_by",
+      "type": "string"
+    },
+    {
+      "name": "due_on",
+      "type": "string"
+    },
+    {
+      "name": "files_json",
+      "type": "string"
+    },
+    {
+      "name": "freq",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "kind",
+      "type": "string"
+    },
+    {
+      "name": "label",
+      "type": "string"
+    },
+    {
+      "name": "last_done",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "ref_id",
+      "type": "string"
+    },
+    {
+      "name": "ref_name",
+      "type": "string"
+    },
+    {
+      "name": "req",
+      "type": "string"
+    },
+    {
+      "name": "stage",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "job_no": "10148",
+      "req": "custom",
+      "kind": "custom",
+      "ref_id": null,
+      "ref_name": null,
+      "label": "Materials to order",
+      "due_on": "2026-10-22",
+      "status": "Done",
+      "done_by": "ZZ Person B",
+      "done_at": "2026-10-21T10:22",
+      "created_by": "ZZ Person B",
+      "created_at": "2026-10-20T12:52",
+      "notes": "",
+      "files_json": "",
+      "freq": null,
+      "last_done": null,
+      "stage": "Job",
+      "category": "Site",
+      "assignee": "ZZ Person B",
+      "applies_to": "",
+      "data_json": "{\"checklist\":[],\"checklist_old\":[{\"t\":\"MOT Type 1 - 4 tonnes\",\"done\":true}]}",
+      "id": 2
+    },
+    {
+      "job_no": "10236",
+      "req": "custom",
+      "kind": "custom",
+      "label": "Supplier POs",
+      "due_on": "2026-10-23",
+      "status": "Done",
+      "done_by": "ZZ Person F",
+      "done_at": "2026-10-21T16:03",
+      "created_by": "ZZ Person B",
+      "created_at": "2026-10-21T12:49",
+      "notes": "ZZ Barrier Supplier - Estimate Attached",
+      "files_json": "[{\"n\":\"Job 10236 - Purchase_Order_10236....pdf\",\"u\":\"https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-10.pdf\",\"at\":\"2026-10-21\",\"by\":\"ZZ Person F\"}]",
+      "stage": "Job",
+      "category": "Procurement",
+      "assignee": "ZZ Person F",
+      "data_json": "{\"checklist\":[]}",
+      "id": 5
+    },
+    {
+      "job_no": "",
+      "req": "custom",
+      "kind": "custom",
+      "label": "Arrange Vehicle Windscreen Repair - ZZ02ZZB",
+      "due_on": "2026-10-30",
+      "status": "To do",
+      "created_by": "ZZ Person B",
+      "created_at": "2026-10-21T12:05",
+      "stage": "Job",
+      "category": "Office",
+      "assignee": "ZZ Person C",
+      "data_json": "{\"checklist\":[]}",
+      "id": 4,
+      "_note": "office task with no job; stage values seen: Job, Enquiry; data_json.from_item links to a requirement (rams, pos, subpos); data_json.from_checklist = split from old checklist"
+    }
+  ]
+}

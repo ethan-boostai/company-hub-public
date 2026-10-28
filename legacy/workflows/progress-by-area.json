@@ -1,0 +1,602 @@
+{
+  "id": "jToremB2Tytp7Lko",
+  "name": "CBS - Progress by Area",
+  "active": true,
+  "isArchived": false,
+  "versionId": "a88734d3-0695-44f8-a108-f8eeb0e2a043",
+  "activeVersionId": "a88734d3-0695-44f8-a108-f8eeb0e2a043",
+  "triggerCount": 2,
+  "createdAt": "2026-10-10T19:36:25.239Z",
+  "updatedAt": "2026-10-10T19:37:00.489Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "UI Hook": {
+      "main": [
+        [
+          {
+            "node": "Area Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Area Script": {
+      "main": [
+        [
+          {
+            "node": "Send Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Area Save Hook": {
+      "main": [
+        [
+          {
+            "node": "Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check": {
+      "main": [
+        [
+          {
+            "node": "Valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Valid?": {
+      "main": [
+        [
+          {
+            "node": "Save Area",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Skip",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Area": {
+      "main": [
+        [
+          {
+            "node": "Respond OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "9e3124aa-eeae-4683-8d2c-6c4b1af365fd",
+      "name": "UI Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-area-ui",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "46a8672f-56d2-4661-be69-b985b5218fdf"
+    },
+    {
+      "id": "2023cf8d-68b7-45a3-936d-36f40aaf3129",
+      "name": "Area Script",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* Progress by location for the Programme page: adds \"Area / unit\" to the item editor (saved through cbs-prog-area after the normal save), area tags in the list, and a \"Progress by area\" panel. Loaded by CBS - Programme Page. */\nreturn [{json:{js:'(function(){var f='+cbsAreaUi.toString()+';if(document.readyState===\"loading\")document.addEventListener(\"DOMContentLoaded\",f);else f();})();'}}];\nfunction cbsAreaUi(){\n if(window.__cbsArea)return;window.__cbsArea=1;\n var D=window.D;if(!D||!D.job)return;var JOB=D.job,app=document.getElementById('app');if(!app)return;\n function s(v){return v==null?'':String(v);}\n function e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\n var css=document.createElement('style');css.textContent='#arP .arr{display:grid;grid-template-columns:minmax(90px,1.2fr) 3fr auto;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid #f0f0ee;font-size:14px}#arP .arr:last-child{border-bottom:0}#arP .arn{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#arP .arn.none{font-weight:400;color:#6b6e70}#arP .arb{height:10px;background:#ececea;border-radius:6px;overflow:hidden}#arP .arb i{display:block;height:100%;background:#F47920}#arP .arb i.dn{background:#5fae6e}#arP .arc{font-size:12.5px;color:#555;white-space:nowrap;text-align:right}#arP summary{cursor:pointer;font-weight:600}.tag.ar{background:#e8eef7;color:#2b4a7a}';document.head.appendChild(css);\n function tree(){var P=D.p||{},ph=P.phases||[],own={},eff={},leaves=[];\n  ph.forEach(function(p){var pa=s(p.area).trim();own[p.id]=pa;eff[p.id]=pa;var T=p.tasks||[];if(!T.length)leaves.push({r:p,a:pa});\n   T.forEach(function(t){var ta=s(t.area).trim();own[t.id]=ta;eff[t.id]=ta||pa;var U=t.subs||[];if(!U.length)leaves.push({r:t,a:ta||pa});\n    U.forEach(function(z){var za=s(z.area).trim();own[z.id]=za;eff[z.id]=za||ta||pa;leaves.push({r:z,a:za||ta||pa});});});});\n  return {own:own,eff:eff,leaves:leaves};}\n function names(){var T=tree(),seen={},out=[];Object.keys(T.own).forEach(function(k){var a=T.own[k];if(a&&!seen[a.toLowerCase()]){seen[a.toLowerCase()]=1;out.push(a);}});return out;}\n function stats(){var T=tree(),by={},order=[];T.leaves.forEach(function(x){var k=x.a||'';if(!by[k]){by[k]={n:k,c:0,sum:0,d:0,o:0};order.push(k);}var g=by[k];g.c++;g.sum+=Number(x.r.pct)||0;if(x.r.status_eff==='Done')g.d++;if(x.r.overdue)g.o++;});\n  var any=order.some(function(k){return k;});if(!any)return null;\n  var L=order.filter(function(k){return k;}).map(function(k){var g=by[k];g.pct=Math.round(g.sum/g.c);return g;});\n  if(by['']){var g=by[''];g.pct=Math.round(g.sum/g.c);g.none=1;L.push(g);}return L;}\n var OPEN=true;try{OPEN=localStorage.getItem('cbs_area_open')!=='0';}catch(x){}\n function panel(){var L=stats();if(!L)return '';\n  return '<details class=\"card\" id=\"arP\"'+(OPEN?' open':'')+'><summary>Progress by area</summary><div style=\"margin-top:6px\">'+L.map(function(g){return '<div class=\"arr\"><div class=\"arn'+(g.none?' none':'')+'\">'+(g.none?'No area set':e(g.n))+'</div><div class=\"arb\"><i class=\"'+(g.pct>=100?'dn':'')+'\" style=\"width:'+g.pct+'%\"></i></div><div class=\"arc\"><b>'+g.pct+'%</b> · '+g.d+' of '+g.c+' done'+(g.o?' · <span style=\"color:#b3261e\">'+g.o+' overdue</span>':'')+'</div></div>';}).join('')+'</div><div class=\"note\">Each area is the average of its tasks. A task with no area of its own counts under its phase\\'s area.</div></details>';}\n function paint(){var pg=(D.p||{}).programme;if(!pg||(pg.status!=='Open'&&pg.status!=='Draft'))return;\n  var old=document.getElementById('arP');var h=panel();\n  if(!old&&h){var at=app.querySelector('.strip')||app.querySelector('.tools');if(!at)return;var w=document.createElement('div');w.innerHTML=h;var el=w.firstChild;at.parentNode.insertBefore(el,at.nextSibling);el.addEventListener('toggle',function(){OPEN=el.open;try{localStorage.setItem('cbs_area_open',OPEN?'1':'0');}catch(x){}});}\n  var T=tree();app.querySelectorAll('.card[data-id] > .t, .task[data-id] > .t').forEach(function(t){if(t.querySelector('.tag.ar'))return;var id=t.parentNode.getAttribute('data-id');var a=T.own[id];if(a){var sp=document.createElement('span');sp.className='tag ar';sp.textContent=a;t.appendChild(sp);}});}\n var busy=false;new MutationObserver(function(){if(busy)return;busy=true;try{paint();}finally{setTimeout(function(){busy=false;},0);}}).observe(app,{childList:true});\n paint();\n /* which item a dialog is for */\n var CUR={id:0,parent:''},MENU=null;\n document.addEventListener('pointerdown',function(ev){var b=ev.target.closest&&ev.target.closest('.gb[data-g]');if(b)CUR={id:b.getAttribute('data-g'),parent:''};},true);\n document.addEventListener('click',function(ev){var t=ev.target;if(!t.closest)return;\n  if(t.closest('#ap')||t.closest('#gaddl')){CUR={id:0,parent:''};return;}\n  var m=t.closest('[data-m]');if(m&&MENU){var k=m.getAttribute('data-m');if(k==='edit')CUR={id:MENU,parent:''};else if(k==='task'||k==='sub')CUR={id:0,parent:MENU};return;}\n  var a=t.closest('[data-a]');if(!a)return;var host=a.closest('[data-id]');if(!host)return;var id=host.getAttribute('data-id'),k2=a.getAttribute('data-a');\n  if(k2==='edit')CUR={id:id,parent:''};else if(k2==='task'||k2==='sub')CUR={id:0,parent:id};else if(k2==='menu')MENU=id;},true);\n /* add the field to the edit dialog */\n new MutationObserver(function(){var dl=document.querySelector('.ov .dlg');if(!dl||dl.querySelector('#fArea')||!dl.querySelector('#fsv')||!dl.querySelector('#fn'))return;\n  var lab=[].filter.call(dl.querySelectorAll('label.f'),function(l){return l.textContent==='Notes';})[0];if(!lab)return;\n  var T=tree(),id=String(CUR.id||''),cur=id?(T.own[id]||''):'',kind=/phase/i.test((dl.querySelector('h2')||{}).textContent||'')?'phase':'x';\n  var pid=id?'':String(CUR.parent||'');var inh='';if(id&&!cur&&T.eff[id])inh=T.eff[id];else if(!id&&pid&&T.eff[pid])inh=T.eff[pid];\n  var w=document.createElement('div');w.innerHTML='<label class=\"f\">Area / unit</label><input type=\"text\" id=\"fArea\" list=\"arDL\" maxlength=\"60\" value=\"'+e(cur)+'\" placeholder=\"'+(kind==='phase'?'e.g. Plot 3, Ground floor, Flat 2':'Leave blank to use the phase\\'s area')+'\"><datalist id=\"arDL\">'+names().map(function(a){return '<option value=\"'+e(a)+'\">';}).join('')+'</datalist><div class=\"note\">'+(inh?'Blank uses <b>'+e(inh)+'</b> from the item above. ':'')+'Used for progress by area on this page and the TV.</div>';\n  while(w.firstChild)lab.parentNode.insertBefore(w.firstChild,lab);\n  dl.__arId=id;dl.__arOld=cur;}).observe(document.body,{childList:true});\n /* save it after the main save */\n var PEND=null;\n document.addEventListener('click',function(ev){var b=ev.target.closest&&ev.target.closest('#fsv');if(!b)return;PEND=null;var dl=b.closest('.dlg'),f=dl&&dl.querySelector('#fArea');if(!f)return;var v=f.value.trim().slice(0,60);if(dl.__arId&&v===dl.__arOld)return;if(!dl.__arId&&!v)return;PEND={area:v,id:dl.__arId||''};},true);\n var F0=window.fetch;window.fetch=function(u,o){var url=String(u&&u.url||u);\n  if(!PEND||!/\\/webhook\\/cbs-programme-act/.test(url)||!o||String(o.method||'').toUpperCase()!=='POST')return F0.apply(this,arguments);\n  var body={};try{body=JSON.parse(o.body);}catch(x){}if(body.a!=='save_item')return F0.apply(this,arguments);\n  var pend=PEND;PEND=null;\n  return F0.apply(this,arguments).then(function(r){if(!r.ok)return r;return r.clone().json().then(function(res){var id=(res&&res.id)||pend.id;if(!res||!res.ok||!id)return r;\n   return F0('/webhook/cbs-prog-area',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({job:JOB,id:id,area:pend.area,by:body.by||''})}).then(function(){return r;},function(){alert('The item saved but its area did not. Edit it again to set the area.');return r;});}).catch(function(){return r;});});};\n}\n"
+      }
+    },
+    {
+      "id": "615dc18d-bba5-4fa8-a3fd-1ff3f0ccd50e",
+      "name": "Send Script",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.js }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/javascript; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-cache"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "2480dc6f-2834-4809-bc98-39ae666389b5",
+      "name": "Area Save Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        320
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-prog-area",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "eac8e835-5264-4bb9-8811-81a11a2ce307"
+    },
+    {
+      "id": "22392aa1-014e-4e3e-ad39-9c3be8999515",
+      "name": "Check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        320
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const b=$input.first().json.body||{};const S=v=>v==null?'':String(v).trim();\nconst id=parseInt(S(b.id),10),job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),area=S(b.area).replace(/\\s+/g,' ').slice(0,60);\nif(!id||!job)return [{json:{ok:false,skip:true}}];\nreturn [{json:{ok:true,id:id,job:job,area:area,by:S(b.by).slice(0,80)}}];\n"
+      }
+    },
+    {
+      "id": "57129a26-9120-460e-916e-b47f10b5a1ff",
+      "name": "Valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        320
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.ok }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "c4dd515a-a8ae-49f0-b849-84daca1e043b",
+      "name": "Save Area",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        224
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "BdnMXEmq0R42HQYG"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "area": "={{ $json.area }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "area",
+              "displayName": "area",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "c49acd4f-609f-4692-b7c7-3fafe0533635",
+      "name": "Respond OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        224
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\"ok\":true}",
+        "options": {}
+      }
+    },
+    {
+      "id": "c8202bfa-436d-42df-98a6-830a348b5a6c",
+      "name": "Respond Skip",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        416
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\"ok\":false}",
+        "options": {}
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "9e3124aa-eeae-4683-8d2c-6c4b1af365fd",
+        "name": "UI Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-area-ui",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "46a8672f-56d2-4661-be69-b985b5218fdf"
+      },
+      {
+        "id": "2023cf8d-68b7-45a3-936d-36f40aaf3129",
+        "name": "Area Script",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* Progress by location for the Programme page: adds \"Area / unit\" to the item editor (saved through cbs-prog-area after the normal save), area tags in the list, and a \"Progress by area\" panel. Loaded by CBS - Programme Page. */\nreturn [{json:{js:'(function(){var f='+cbsAreaUi.toString()+';if(document.readyState===\"loading\")document.addEventListener(\"DOMContentLoaded\",f);else f();})();'}}];\nfunction cbsAreaUi(){\n if(window.__cbsArea)return;window.__cbsArea=1;\n var D=window.D;if(!D||!D.job)return;var JOB=D.job,app=document.getElementById('app');if(!app)return;\n function s(v){return v==null?'':String(v);}\n function e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\n var css=document.createElement('style');css.textContent='#arP .arr{display:grid;grid-template-columns:minmax(90px,1.2fr) 3fr auto;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid #f0f0ee;font-size:14px}#arP .arr:last-child{border-bottom:0}#arP .arn{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#arP .arn.none{font-weight:400;color:#6b6e70}#arP .arb{height:10px;background:#ececea;border-radius:6px;overflow:hidden}#arP .arb i{display:block;height:100%;background:#F47920}#arP .arb i.dn{background:#5fae6e}#arP .arc{font-size:12.5px;color:#555;white-space:nowrap;text-align:right}#arP summary{cursor:pointer;font-weight:600}.tag.ar{background:#e8eef7;color:#2b4a7a}';document.head.appendChild(css);\n function tree(){var P=D.p||{},ph=P.phases||[],own={},eff={},leaves=[];\n  ph.forEach(function(p){var pa=s(p.area).trim();own[p.id]=pa;eff[p.id]=pa;var T=p.tasks||[];if(!T.length)leaves.push({r:p,a:pa});\n   T.forEach(function(t){var ta=s(t.area).trim();own[t.id]=ta;eff[t.id]=ta||pa;var U=t.subs||[];if(!U.length)leaves.push({r:t,a:ta||pa});\n    U.forEach(function(z){var za=s(z.area).trim();own[z.id]=za;eff[z.id]=za||ta||pa;leaves.push({r:z,a:za||ta||pa});});});});\n  return {own:own,eff:eff,leaves:leaves};}\n function names(){var T=tree(),seen={},out=[];Object.keys(T.own).forEach(function(k){var a=T.own[k];if(a&&!seen[a.toLowerCase()]){seen[a.toLowerCase()]=1;out.push(a);}});return out;}\n function stats(){var T=tree(),by={},order=[];T.leaves.forEach(function(x){var k=x.a||'';if(!by[k]){by[k]={n:k,c:0,sum:0,d:0,o:0};order.push(k);}var g=by[k];g.c++;g.sum+=Number(x.r.pct)||0;if(x.r.status_eff==='Done')g.d++;if(x.r.overdue)g.o++;});\n  var any=order.some(function(k){return k;});if(!any)return null;\n  var L=order.filter(function(k){return k;}).map(function(k){var g=by[k];g.pct=Math.round(g.sum/g.c);return g;});\n  if(by['']){var g=by[''];g.pct=Math.round(g.sum/g.c);g.none=1;L.push(g);}return L;}\n var OPEN=true;try{OPEN=localStorage.getItem('cbs_area_open')!=='0';}catch(x){}\n function panel(){var L=stats();if(!L)return '';\n  return '<details class=\"card\" id=\"arP\"'+(OPEN?' open':'')+'><summary>Progress by area</summary><div style=\"margin-top:6px\">'+L.map(function(g){return '<div class=\"arr\"><div class=\"arn'+(g.none?' none':'')+'\">'+(g.none?'No area set':e(g.n))+'</div><div class=\"arb\"><i class=\"'+(g.pct>=100?'dn':'')+'\" style=\"width:'+g.pct+'%\"></i></div><div class=\"arc\"><b>'+g.pct+'%</b> · '+g.d+' of '+g.c+' done'+(g.o?' · <span style=\"color:#b3261e\">'+g.o+' overdue</span>':'')+'</div></div>';}).join('')+'</div><div class=\"note\">Each area is the average of its tasks. A task with no area of its own counts under its phase\\'s area.</div></details>';}\n function paint(){var pg=(D.p||{}).programme;if(!pg||(pg.status!=='Open'&&pg.status!=='Draft'))return;\n  var old=document.getElementById('arP');var h=panel();\n  if(!old&&h){var at=app.querySelector('.strip')||app.querySelector('.tools');if(!at)return;var w=document.createElement('div');w.innerHTML=h;var el=w.firstChild;at.parentNode.insertBefore(el,at.nextSibling);el.addEventListener('toggle',function(){OPEN=el.open;try{localStorage.setItem('cbs_area_open',OPEN?'1':'0');}catch(x){}});}\n  var T=tree();app.querySelectorAll('.card[data-id] > .t, .task[data-id] > .t').forEach(function(t){if(t.querySelector('.tag.ar'))return;var id=t.parentNode.getAttribute('data-id');var a=T.own[id];if(a){var sp=document.createElement('span');sp.className='tag ar';sp.textContent=a;t.appendChild(sp);}});}\n var busy=false;new MutationObserver(function(){if(busy)return;busy=true;try{paint();}finally{setTimeout(function(){busy=false;},0);}}).observe(app,{childList:true});\n paint();\n /* which item a dialog is for */\n var CUR={id:0,parent:''},MENU=null;\n document.addEventListener('pointerdown',function(ev){var b=ev.target.closest&&ev.target.closest('.gb[data-g]');if(b)CUR={id:b.getAttribute('data-g'),parent:''};},true);\n document.addEventListener('click',function(ev){var t=ev.target;if(!t.closest)return;\n  if(t.closest('#ap')||t.closest('#gaddl')){CUR={id:0,parent:''};return;}\n  var m=t.closest('[data-m]');if(m&&MENU){var k=m.getAttribute('data-m');if(k==='edit')CUR={id:MENU,parent:''};else if(k==='task'||k==='sub')CUR={id:0,parent:MENU};return;}\n  var a=t.closest('[data-a]');if(!a)return;var host=a.closest('[data-id]');if(!host)return;var id=host.getAttribute('data-id'),k2=a.getAttribute('data-a');\n  if(k2==='edit')CUR={id:id,parent:''};else if(k2==='task'||k2==='sub')CUR={id:0,parent:id};else if(k2==='menu')MENU=id;},true);\n /* add the field to the edit dialog */\n new MutationObserver(function(){var dl=document.querySelector('.ov .dlg');if(!dl||dl.querySelector('#fArea')||!dl.querySelector('#fsv')||!dl.querySelector('#fn'))return;\n  var lab=[].filter.call(dl.querySelectorAll('label.f'),function(l){return l.textContent==='Notes';})[0];if(!lab)return;\n  var T=tree(),id=String(CUR.id||''),cur=id?(T.own[id]||''):'',kind=/phase/i.test((dl.querySelector('h2')||{}).textContent||'')?'phase':'x';\n  var pid=id?'':String(CUR.parent||'');var inh='';if(id&&!cur&&T.eff[id])inh=T.eff[id];else if(!id&&pid&&T.eff[pid])inh=T.eff[pid];\n  var w=document.createElement('div');w.innerHTML='<label class=\"f\">Area / unit</label><input type=\"text\" id=\"fArea\" list=\"arDL\" maxlength=\"60\" value=\"'+e(cur)+'\" placeholder=\"'+(kind==='phase'?'e.g. Plot 3, Ground floor, Flat 2':'Leave blank to use the phase\\'s area')+'\"><datalist id=\"arDL\">'+names().map(function(a){return '<option value=\"'+e(a)+'\">';}).join('')+'</datalist><div class=\"note\">'+(inh?'Blank uses <b>'+e(inh)+'</b> from the item above. ':'')+'Used for progress by area on this page and the TV.</div>';\n  while(w.firstChild)lab.parentNode.insertBefore(w.firstChild,lab);\n  dl.__arId=id;dl.__arOld=cur;}).observe(document.body,{childList:true});\n /* save it after the main save */\n var PEND=null;\n document.addEventListener('click',function(ev){var b=ev.target.closest&&ev.target.closest('#fsv');if(!b)return;PEND=null;var dl=b.closest('.dlg'),f=dl&&dl.querySelector('#fArea');if(!f)return;var v=f.value.trim().slice(0,60);if(dl.__arId&&v===dl.__arOld)return;if(!dl.__arId&&!v)return;PEND={area:v,id:dl.__arId||''};},true);\n var F0=window.fetch;window.fetch=function(u,o){var url=String(u&&u.url||u);\n  if(!PEND||!/\\/webhook\\/cbs-programme-act/.test(url)||!o||String(o.method||'').toUpperCase()!=='POST')return F0.apply(this,arguments);\n  var body={};try{body=JSON.parse(o.body);}catch(x){}if(body.a!=='save_item')return F0.apply(this,arguments);\n  var pend=PEND;PEND=null;\n  return F0.apply(this,arguments).then(function(r){if(!r.ok)return r;return r.clone().json().then(function(res){var id=(res&&res.id)||pend.id;if(!res||!res.ok||!id)return r;\n   return F0('/webhook/cbs-prog-area',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({job:JOB,id:id,area:pend.area,by:body.by||''})}).then(function(){return r;},function(){alert('The item saved but its area did not. Edit it again to set the area.');return r;});}).catch(function(){return r;});});};\n}\n"
+        }
+      },
+      {
+        "id": "615dc18d-bba5-4fa8-a3fd-1ff3f0ccd50e",
+        "name": "Send Script",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.js }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/javascript; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-cache"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "2480dc6f-2834-4809-bc98-39ae666389b5",
+        "name": "Area Save Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          320
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-prog-area",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "eac8e835-5264-4bb9-8811-81a11a2ce307"
+      },
+      {
+        "id": "22392aa1-014e-4e3e-ad39-9c3be8999515",
+        "name": "Check",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          320
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "const b=$input.first().json.body||{};const S=v=>v==null?'':String(v).trim();\nconst id=parseInt(S(b.id),10),job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),area=S(b.area).replace(/\\s+/g,' ').slice(0,60);\nif(!id||!job)return [{json:{ok:false,skip:true}}];\nreturn [{json:{ok:true,id:id,job:job,area:area,by:S(b.by).slice(0,80)}}];\n"
+        }
+      },
+      {
+        "id": "57129a26-9120-460e-916e-b47f10b5a1ff",
+        "name": "Valid?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          448,
+          320
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.ok }}",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "c4dd515a-a8ae-49f0-b849-84daca1e043b",
+        "name": "Save Area",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          224
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "BdnMXEmq0R42HQYG"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $json.id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "area": "={{ $json.area }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "area",
+                "displayName": "area",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "c49acd4f-609f-4692-b7c7-3fafe0533635",
+        "name": "Respond OK",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          224
+        ],
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "{\"ok\":true}",
+          "options": {}
+        }
+      },
+      {
+        "id": "c8202bfa-436d-42df-98a6-830a348b5a6c",
+        "name": "Respond Skip",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          416
+        ],
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "{\"ok\":false}",
+          "options": {}
+        }
+      }
+    ],
+    "connections": {
+      "UI Hook": {
+        "main": [
+          [
+            {
+              "node": "Area Script",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Area Script": {
+        "main": [
+          [
+            {
+              "node": "Send Script",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Area Save Hook": {
+        "main": [
+          [
+            {
+              "node": "Check",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Check": {
+        "main": [
+          [
+            {
+              "node": "Valid?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Valid?": {
+        "main": [
+          [
+            {
+              "node": "Save Area",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Respond Skip",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Save Area": {
+        "main": [
+          [
+            {
+              "node": "Respond OK",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Progress by location: GET cbs-area-ui (Programme page script: Area / unit field, area tags, Progress by area panel); POST cbs-prog-area {job,id,area} saves cbs_prog_items.area. TV area strip lives in CBS - TV Dashboard.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

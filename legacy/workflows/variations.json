@@ -1,0 +1,590 @@
+{
+  "id": "cyLyYlSy809iclHz",
+  "name": "CBS - Variations",
+  "active": true,
+  "isArchived": false,
+  "versionId": "fa3f0347-5bd8-4db6-9749-8aaf8257de02",
+  "activeVersionId": "fa3f0347-5bd8-4db6-9749-8aaf8257de02",
+  "triggerCount": 3,
+  "createdAt": "2026-10-10T17:04:06.449Z",
+  "updatedAt": "2026-10-10T17:09:40.897Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Page Hook": {
+      "main": [
+        [
+          {
+            "node": "Variations Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Hook": {
+      "main": [
+        [
+          {
+            "node": "Variations Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Variations Data": {
+      "main": [
+        [
+          {
+            "node": "Send Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Act Hook": {
+      "main": [
+        [
+          {
+            "node": "Variation Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Variation Act": {
+      "main": [
+        [
+          {
+            "node": "Send Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Variations Page": {
+      "main": [
+        [
+          {
+            "node": "Page Fix",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Page Fix": {
+      "main": [
+        [
+          {
+            "node": "Send Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "d3fc8fb7-7873-4599-8733-b8001f5a4080",
+      "name": "Page Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-variations",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "937924be-f592-47c3-9444-d7a90f0799db"
+    },
+    {
+      "id": "63b42fa4-fc54-49c0-827b-552b95a5db4a",
+      "name": "Variations Page",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* CBS variations page (admin): cbs-variations?job=N. Data from cbs-variations-data, saves to cbs-variation-act. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v);const e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nlet info={};if(job){try{info=await h.httpRequest({url:H+'cbs-sm8-job?no='+encodeURIComponent(job),json:true,timeout:15000})||{};}catch(x){info={};}}\nconst D={job:job,site:S(info.site),client:S(info.client)};\nconst CSS='*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n+'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n+'.wrap{max-width:860px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}'\n+'.btn{background:#F47920;color:#fff;text-decoration:none;font-weight:600;border-radius:8px;padding:8px 14px;font-size:14px;border:0;font-family:inherit;cursor:pointer}.btn.ghost{background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}.btn.sm{padding:6px 10px;font-size:13px}.btn:disabled{opacity:.5}.btn.red{background:#fff;color:#b3261e;border:1px solid #e9b6b1}'\n+'.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}.pst{background:#fff;border:1px solid #d9d9d6;border-radius:10px;padding:8px 6px;text-align:center}.pst b{display:block;font-size:18px;line-height:1.2}.pst span{font-size:12px;color:#555}.pst.ed{cursor:pointer}.pst.ed:hover{border-color:#F47920}.pst.ok{border-color:#b9dfc1;background:#f1faf2}.pst.warn{border-color:#f2d398;background:#fff8ea}@media(max-width:560px){.strip{grid-template-columns:repeat(2,1fr)}}'\n+'.flt{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.flt button{border:1px solid #d9d9d6;background:#fff;border-radius:20px;padding:5px 11px;font:inherit;font-size:13px;cursor:pointer}.flt button.on{background:#F47920;color:#fff;border-color:#F47920}.srch{width:100%;font:inherit;padding:10px 12px;border:1px solid #ccc;border-radius:10px;margin-bottom:10px}'\n+'.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;margin-bottom:10px;padding:12px 14px}.t{font-weight:600}.m{color:#555;font-size:14px;margin-top:2px}.ds{white-space:pre-wrap;font-size:14px;margin-top:6px;color:#333}.b{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center}.amt{float:right;font-weight:700}'\n+'.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:20px;padding:1px 8px;margin-left:6px;background:#eee;color:#333;vertical-align:middle}.tag.Raised{background:#eee}.tag.Priced{background:#e6efff;color:#1f5fbf}.tag.Submitted{background:#fff1d6;color:#8a5a00}.tag.Approved{background:#e3f4e6;color:#1d6b2c}.tag.Rejected{background:#fde3e1;color:#b3261e}'\n+'select.st{font:inherit;font-size:13px;padding:5px 6px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}'\n+'.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}'\n+'.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;overflow:auto;z-index:20}.dlg{background:#fff;border-radius:14px;max-width:560px;width:100%;padding:16px}.dlg h2{margin:0 0 10px;font-size:18px}'\n+'label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}.dlg input[type=text],.dlg input[type=date],.dlg input[type=number],.dlg textarea,.dlg select{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}.dlg textarea{min-height:90px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}'\n+'.chk{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid #eee}.chk input{width:20px;height:20px;flex:0 0 auto}.note{font-size:13px;color:#6b6e70;margin-top:6px}.hist{white-space:pre-wrap;font-size:12px;color:#6b6e70;margin-top:8px}.msg{font-size:14px;color:#8a5a00;margin-top:8px;min-height:18px}'\n+'.opr{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid #eee}.opr span{flex:1}';\nconst nav='<div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a>'+(job?'<a class=\"hub\" href=\"/webhook/cbs-job-file?job='+encodeURIComponent(job)+'\">Job File</a>':'')+'</div>';\nconst sub=e([D.site,D.client].filter(Boolean).join(' \\u00b7 ')||'Chelmsford Building Services');\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Variations - Job '+e(job)+'</title><script src=\"/webhook/cbs-guard\"></script><style>'+CSS+'</style><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script></head><body><header>'+nav+'<h1>Variations'+(job?' \\u00b7 Job '+e(job):'')+'</h1><p>'+sub+'</p></header><div class=\"wrap\" id=\"app\">'+(job?'<div class=\"empty\">Loading\\u2026</div>':'<div class=\"empty\">Open variations from a job.</div>')+'</div><script>window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+';</script>'+(job?'<script>('+client.toString()+')();</script>':'')+'</body></html>';\nreturn [{json:{html:html}}];\n\nfunction client(){\nvar D=window.D,JOB=D.job,app=document.getElementById('app'),DATA=null,FILTER='all',Q='',LOGO=null;\nvar STS=['Raised','Priced','Submitted','Approved','Rejected'];\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction n(v){var x=Number(v);return isNaN(x)?0:x;}\nfunction gbp(v){var neg=n(v)<0;return (neg?'-':'')+'\\u00a3'+Math.abs(n(v)).toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g,',');}\nfunction dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:s(d);}\nfunction today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction who(){var x='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)x=m.name;}catch(z){}if(!x){try{x=localStorage.getItem('cbs_name')||'';}catch(z){}}if(!x){x=(prompt('Your name:')||'').trim();if(x){try{localStorage.setItem('cbs_name',x);}catch(z){}}}return x;}\nfunction post(body){var by=who();if(!by)return Promise.resolve({ok:false,message:'',cancel:true});body.job=JOB;body.by=by;\n return fetch('/webhook/cbs-variation-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw 0;return r.json();}).catch(function(){return {ok:false,message:'Could not save. Check your connection and try again.'};});}\nfunction load(){return fetch('/webhook/cbs-variations-data?job='+encodeURIComponent(JOB),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){DATA=d;render();}).catch(function(){app.innerHTML='<div class=\"empty\">Could not load the variations. Refresh to try again.</div>';});}\nfunction dlg(html){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg\">'+html+'</div>';document.body.appendChild(o);o.close=function(){o.remove();};return o;}\nfunction guard(o,isDirty){o.addEventListener('click',function(ev){if(ev.target!==o)return;if(isDirty&&isDirty()&&!confirm('Close without saving your changes?'))return;o.close();});}\nfunction rows(){return (DATA&&DATA.rows)||[];}\nfunction vis(){var q=Q.toLowerCase();return rows().filter(function(r){if(FILTER!=='all'&&s(r.status)!==FILTER)return false;if(!q)return true;return [r.var_no,r.title,r.description,r.instructed_by,r.instruction_via].join(' ').toLowerCase().indexOf(q)>-1;});}\nfunction render(){var T=DATA.totals||{},h='';\n h+='<div class=\"strip\"><div class=\"pst ed\" id=\"cv\"><b>'+(T.contract==null?'Set':gbp(T.contract))+'</b><span>Contract value \\u270e</span></div><div class=\"pst ok\"><b>'+gbp(T.approved)+'</b><span>Approved variations</span></div><div class=\"pst\"><b>'+(T.current==null?'\\u2013':gbp(T.current))+'</b><span>Current value</span></div><div class=\"pst warn\"><b>'+gbp(T.pending)+'</b><span>Awaiting decision</span></div></div>';\n if(T.days)h+='<p class=\"m\" style=\"margin:-4px 0 10px\">Approved variations add '+T.days+' day'+(T.days===1?'':'s')+' to the programme.</p>';\n h+='<div class=\"tools\"><button class=\"btn\" id=\"add\">+ Add variation</button><button class=\"btn ghost\" id=\"log\">Variations log PDF</button><button class=\"btn ghost\" id=\"opt\">Instruction options</button></div>';\n var C={};rows().forEach(function(r){C[r.status]=(C[r.status]||0)+1;});\n h+='<div class=\"flt\">'+['all'].concat(STS).map(function(k){var c=k==='all'?rows().length:(C[k]||0);return '<button data-f=\"'+k+'\" class=\"'+(FILTER===k?'on':'')+'\">'+(k==='all'?'All':k)+' ('+c+')</button>';}).join('')+'</div>';\n h+='<input class=\"srch\" id=\"q\" placeholder=\"Search variations\" value=\"'+e(Q)+'\">';\n var L=vis();\n if(!rows().length)h+='<div class=\"empty\">No variations on this job yet. Tap + Add variation to log one.</div>';\n else if(!L.length)h+='<div class=\"empty\">Nothing matches.</div>';\n L.forEach(function(r){var st=s(r.status)||'Raised',tk=s(r.prog_item_ids).split(',').filter(Boolean).length;\n  h+='<div class=\"card\" data-id=\"'+r.id+'\"><div class=\"t\">'+e(r.var_no)+' \\u00b7 '+e(r.title)+'<span class=\"tag '+e(st)+'\">'+e(st)+'</span>'+(s(r.cost)!==''?'<span class=\"amt\">'+gbp(r.cost)+'</span>':'')+'</div>'\n  +'<div class=\"m\">'+[r.instructed_by?'Instructed by '+e(r.instructed_by):'',r.instructed_on?dmy(r.instructed_on):'',r.instruction_via?'via '+e(r.instruction_via):'',s(r.time_days)!==''&&n(r.time_days)?(n(r.time_days)>0?'+':'')+n(r.time_days)+' day'+(Math.abs(n(r.time_days))===1?'':'s'):''].filter(Boolean).join(' \\u00b7 ')+'</div>'\n  +(r.description?'<div class=\"ds\">'+e(r.description)+'</div>':'')\n  +((st==='Approved'||st==='Rejected')&&r.decided_by?'<div class=\"m\">'+st+' by '+e(r.decided_by)+(r.decided_on?' on '+dmy(r.decided_on):'')+'</div>':'')\n  +(tk?'<div class=\"m\">'+tk+' programme task'+(tk===1?'':'s')+' added</div>':'')\n  +'<div class=\"b\"><select class=\"st\" data-a=\"st\">'+STS.map(function(x){return '<option'+(x===st?' selected':'')+'>'+x+'</option>';}).join('')+'</select><button class=\"btn ghost sm\" data-a=\"edit\">Edit</button>'\n  +(st==='Approved'?'<button class=\"btn ghost sm\" data-a=\"task\">+ Programme task</button>':'')\n  +'<button class=\"btn ghost sm\" data-a=\"pdf\">Variation sheet</button><button class=\"btn red sm\" data-a=\"del\">Delete</button></div>'\n  +(r.history?'<details><summary class=\"m\" style=\"cursor:pointer\">History</summary><div class=\"hist\">'+e(r.history)+'</div></details>':'')+'</div>';});\n app.innerHTML=h;\n document.getElementById('cv').onclick=contractDlg;document.getElementById('add').onclick=function(){editDlg(null);};document.getElementById('log').onclick=logDlg;document.getElementById('opt').onclick=optDlg;\n app.querySelectorAll('[data-f]').forEach(function(b){b.onclick=function(){FILTER=b.getAttribute('data-f');render();};});\n var qi=document.getElementById('q');qi.oninput=function(){Q=qi.value;var p=qi.selectionStart;render();var x=document.getElementById('q');x.focus();try{x.setSelectionRange(p,p);}catch(z){}};\n app.querySelectorAll('[data-a]').forEach(function(el){var id=el.closest('.card').getAttribute('data-id');var r=rows().filter(function(x){return String(x.id)===id;})[0];var a=el.getAttribute('data-a');\n  if(a==='st'){el.onchange=function(){statusDlg(r,el.value);};return;}\n  el.onclick=function(){if(a==='edit')editDlg(r);else if(a==='task')taskDlg(r);else if(a==='pdf')sheet(r);else if(a==='del')delVar(r);};});}\nfunction contractDlg(){var T=DATA.totals||{};if(!T.hasJob){alert('This job has no Job File record yet. Set up the Job File first.');return;}\n var o=dlg('<h2>Contract value</h2><div class=\"m\">The accepted quote value for this job. Approved variations are added to it to give the current value.</div><label class=\"f\">Contract value (\\u00a3)</label><input type=\"number\" step=\"0.01\" id=\"cvv\" value=\"'+(T.contract==null?'':T.contract)+'\"><div class=\"msg\" id=\"cvm\"></div><div class=\"b\"><button class=\"btn\" id=\"cvs\">Save</button><button class=\"btn ghost\" id=\"cvx\">Cancel</button></div>');\n var start=o.querySelector('#cvv').value;guard(o,function(){return o.querySelector('#cvv').value!==start;});o.querySelector('#cvx').onclick=o.close;\n o.querySelector('#cvs').onclick=function(){var b=this;b.disabled=true;post({a:'contract',value:o.querySelector('#cvv').value}).then(function(r){if(r.ok){o.close();load();}else{b.disabled=false;if(!r.cancel)o.querySelector('#cvm').textContent=r.message||'Could not save.';}});};}\nfunction optSel(cur){var O=(DATA.opts||[]).slice();if(cur&&O.indexOf(cur)<0)O.push(cur);return '<select id=\"fv\"><option value=\"\">Choose\\u2026</option>'+O.map(function(x){return '<option'+(x===cur?' selected':'')+'>'+e(x)+'</option>';}).join('')+'</select>';}\nfunction editDlg(r){r=r||{};\n var o=dlg('<h2>'+(r.id?'Edit '+e(r.var_no):'New variation')+'</h2><label class=\"f\">Title</label><input type=\"text\" id=\"ft\" value=\"'+e(r.title)+'\" placeholder=\"e.g. Extra socket outlets in kitchen\">'\n +'<label class=\"f\">Description</label><textarea id=\"fd\" placeholder=\"What was asked for and what it involves\">'+e(r.description)+'</textarea>'\n +'<div class=\"row2\"><div><label class=\"f\">Instructed by</label><input type=\"text\" id=\"fb\" value=\"'+e(r.instructed_by)+'\" placeholder=\"Client, architect\\u2026\"></div><div><label class=\"f\">Date instructed</label><input type=\"date\" id=\"fo\" value=\"'+e(r.instructed_on||(r.id?'':today()))+'\"></div></div>'\n +'<label class=\"f\">Instruction received via</label>'+optSel(s(r.instruction_via))\n +'<div class=\"row2\"><div><label class=\"f\">Cost (\\u00a3)</label><input type=\"number\" step=\"0.01\" id=\"fc\" value=\"'+e(r.cost)+'\" placeholder=\"Leave blank until priced\"></div><div><label class=\"f\">Time impact (days)</label><input type=\"number\" step=\"1\" id=\"fdays\" value=\"'+e(r.time_days)+'\" placeholder=\"0\"></div></div>'\n +'<div class=\"msg\" id=\"fm\"></div><div class=\"b\"><button class=\"btn\" id=\"fs\">Save</button><button class=\"btn ghost\" id=\"fx\">Cancel</button></div>');\n var ids=['ft','fd','fb','fo','fv','fc','fdays'],st=ids.map(function(i){return o.querySelector('#'+i).value;}).join('|');\n function dirty(){return ids.map(function(i){return o.querySelector('#'+i).value;}).join('|')!==st;}\n guard(o,dirty);o.querySelector('#fx').onclick=function(){if(dirty()&&!confirm('Close without saving your changes?'))return;o.close();};\n o.querySelector('#fs').onclick=function(){var t=o.querySelector('#ft').value.trim();if(!t){alert('Give the variation a title.');return;}var b=this;b.disabled=true;\n  post({a:'save',id:r.id||0,title:t,description:o.querySelector('#fd').value,instructed_by:o.querySelector('#fb').value,instructed_on:o.querySelector('#fo').value,instruction_via:o.querySelector('#fv').value,cost:o.querySelector('#fc').value,time_days:o.querySelector('#fdays').value})\n  .then(function(x){if(x.ok){o.close();load();}else{b.disabled=false;if(!x.cancel)o.querySelector('#fm').textContent=x.message||'Could not save.';}});};}\nfunction statusDlg(r,st){if(st===r.status)return;\n if(st!=='Approved'&&st!=='Rejected'){if(!confirm('Mark '+r.var_no+' as '+st+'?')){render();return;}post({a:'status',id:r.id,status:st}).then(function(x){if(!x.ok&&!x.cancel)alert(x.message||'Could not save.');load();});return;}\n var o=dlg('<h2>'+st+': '+e(r.var_no)+'</h2><div class=\"m\">'+e(r.title)+(s(r.cost)!==''?' \\u00b7 '+gbp(r.cost):'')+'</div><div class=\"row2\"><div><label class=\"f\">'+st+' by</label><input type=\"text\" id=\"db\" value=\"'+e(r.instructed_by)+'\" placeholder=\"Who decided\"></div><div><label class=\"f\">Date</label><input type=\"date\" id=\"dd\" value=\"'+today()+'\"></div></div><label class=\"f\">Note (optional)</label><textarea id=\"dn\" style=\"min-height:60px\"></textarea><div class=\"msg\" id=\"dm\"></div><div class=\"b\"><button class=\"btn\" id=\"dg\">Mark '+st.toLowerCase()+'</button><button class=\"btn ghost\" id=\"dx\">Cancel</button></div>');\n function cancel(){o.close();render();}o.addEventListener('click',function(ev){if(ev.target===o)cancel();});o.querySelector('#dx').onclick=cancel;\n o.querySelector('#dg').onclick=function(){var b=this;b.disabled=true;post({a:'status',id:r.id,status:st,decided_by:o.querySelector('#db').value,decided_on:o.querySelector('#dd').value,note:o.querySelector('#dn').value}).then(function(x){if(x.ok){o.close();load();}else{b.disabled=false;if(!x.cancel)o.querySelector('#dm').textContent=x.message||'Could not save.';}});};}\nfunction taskDlg(r){var P=DATA.phases||[];if(!P.length){alert('This job has no open programme with phases yet. Create the programme first.');return;}\n var o=dlg('<h2>Add to programme</h2><div class=\"m\">Adds a task for '+e(r.var_no)+' to the job programme.</div><label class=\"f\">Phase</label><select id=\"tp\">'+P.map(function(p){return '<option value=\"'+p.id+'\" data-e=\"'+e(p.end)+'\">'+e(p.name)+(p.start?' ('+dmy(p.start)+(p.end&&p.end!==p.start?' \\u2013 '+dmy(p.end):'')+')':'')+'</option>';}).join('')+'</select><label class=\"f\">Task name</label><input type=\"text\" id=\"tn\" value=\"'+e(r.var_no+' '+r.title)+'\"><div class=\"row2\"><div><label class=\"f\">Start</label><input type=\"date\" id=\"ts\"></div><div><label class=\"f\">End</label><input type=\"date\" id=\"te\"></div></div>'+(n(r.time_days)?'<div class=\"note\">This variation adds '+n(r.time_days)+' day'+(Math.abs(n(r.time_days))===1?'':'s')+'.</div>':'')+'<div class=\"msg\" id=\"tm\"></div><div class=\"b\"><button class=\"btn\" id=\"tg\">Add task</button><button class=\"btn ghost\" id=\"tx\">Cancel</button></div>');\n guard(o);o.querySelector('#tx').onclick=o.close;\n o.querySelector('#tg').onclick=function(){var b=this;b.disabled=true;post({a:'addtask',id:r.id,phase_id:o.querySelector('#tp').value,name:o.querySelector('#tn').value,start_on:o.querySelector('#ts').value,end_on:o.querySelector('#te').value}).then(function(x){if(x.ok){o.close();load();}else{b.disabled=false;if(!x.cancel)o.querySelector('#tm').textContent=x.message||'Could not add.';}});};}\nfunction delVar(r){if(!confirm('Delete '+r.var_no+' ('+r.title+')?'))return;if(!confirm('Are you sure? This permanently removes the variation and its history.'+(s(r.prog_item_ids)?' Programme tasks it added stay on the programme.':'')))return;\n post({a:'delete',id:r.id}).then(function(x){if(!x.ok&&!x.cancel)alert(x.message||'Could not delete.');load();});}\nfunction optDlg(){var o=dlg('<h2>Instruction options</h2><div class=\"m\">The choices for \\u201cInstruction received via\\u201d.</div><div id=\"ol\"></div><div class=\"row2\" style=\"margin-top:10px\"><input type=\"text\" id=\"on\" placeholder=\"Add an option\"><button class=\"btn ghost\" id=\"oa\">Add</button></div><div class=\"msg\" id=\"om\"></div><div class=\"b\"><button class=\"btn ghost\" id=\"ox\">Close</button></div>');\n function draw(){o.querySelector('#ol').innerHTML=(DATA.opts||[]).map(function(x){return '<div class=\"opr\"><span>'+e(x)+'</span><button class=\"btn red sm\" data-v=\"'+e(x)+'\">Remove</button></div>';}).join('');\n  o.querySelectorAll('[data-v]').forEach(function(b){b.onclick=function(){var v=b.getAttribute('data-v');if(!confirm('Are you sure you want to remove \\u201c'+v+'\\u201d? Variations already using it keep it.'))return;b.disabled=true;post({a:'opt',op:'del',value:v}).then(function(x){if(!x.ok&&!x.cancel)o.querySelector('#om').textContent=x.message||'Could not remove.';refresh();});};});}\n function refresh(){fetch('/webhook/cbs-variations-data?job='+encodeURIComponent(JOB),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){DATA=d;draw();render();});}\n draw();o.querySelector('#ox').onclick=o.close;guard(o);\n o.querySelector('#oa').onclick=function(){var v=o.querySelector('#on').value.trim();if(!v)return;var b=this;b.disabled=true;post({a:'opt',op:'add',value:v}).then(function(x){b.disabled=false;if(x.ok){o.querySelector('#on').value='';refresh();}else if(!x.cancel)o.querySelector('#om').textContent=x.message||'Could not add.';});};}\nfunction getLogo(){if(LOGO!==null)return Promise.resolve(LOGO);return fetch('/webhook/cbs-programme-logo').then(function(r){return r.json();}).then(function(d){LOGO=(d&&d.lg)||'';return LOGO;}).catch(function(){LOGO='';return '';});}\nfunction head(doc,lg,title,W){doc.setFillColor(244,121,32);doc.rect(0,0,W,3,'F');var lx=14;if(lg){try{var pr=doc.getImageProperties(lg),hh=13,ww=pr.width*hh/pr.height;if(ww>48){ww=48;hh=pr.height*ww/pr.width;}doc.addImage(lg,'PNG',14,7,ww,hh);lx=14+ww+5;}catch(z){}}\n doc.setTextColor(30);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text(title,lx,12);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text(([D.site,D.client].filter(Boolean).join('  |  ')||'Chelmsford Building Services').slice(0,110),lx,17.5);doc.text('Chelmsford Building Services Ltd  |  '+new Date().toLocaleDateString('en-GB'),W-14,12,{align:'right'});return 28;}\nfunction foot(doc,W,HH){var np=doc.getNumberOfPages();for(var i=1;i<=np;i++){doc.setPage(i);doc.setFontSize(7.5);doc.setTextColor(120);doc.text('Job '+JOB+'  |  Page '+i+' of '+np,W-14,HH-8,{align:'right'});}}\nfunction sheet(r){if(!window.jspdf){alert('The PDF tool did not load. Refresh and try again.');return;}getLogo().then(function(lg){var doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'}),W=210,HH=297,y=head(doc,lg,'Variation '+r.var_no+' - Job '+JOB,W);\n function rowL(k,v){if(!s(v))return;doc.setFont('helvetica','bold');doc.setFontSize(9.5);doc.setTextColor(80);doc.text(k,14,y);doc.setFont('helvetica','normal');doc.setTextColor(20);var L=doc.splitTextToSize(s(v),130);doc.text(L,60,y);y+=Math.max(6,L.length*4.6+1.5);}\n doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(20);var tl=doc.splitTextToSize(s(r.title),182);doc.text(tl,14,y);y+=tl.length*6+3;\n rowL('Status',r.status);rowL('Instructed by',r.instructed_by);rowL('Date instructed',dmy(r.instructed_on));rowL('Received via',r.instruction_via);rowL('Cost',s(r.cost)!==''?gbp(r.cost)+' (ex VAT)':'To be priced');rowL('Time impact',s(r.time_days)!==''?n(r.time_days)+' working day'+(Math.abs(n(r.time_days))===1?'':'s'):'');\n if(r.status==='Approved'||r.status==='Rejected')rowL(r.status+' by',[r.decided_by,dmy(r.decided_on)].filter(Boolean).join(', '));\n if(r.description){y+=2;doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(40);doc.text('Description',14,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(20);doc.splitTextToSize(s(r.description),182).forEach(function(l){if(y>270){doc.addPage();y=20;}doc.text(l,14,y);y+=4.8;});}\n if(y>235){doc.addPage();y=20;}y=Math.max(y+12,225);doc.setDrawColor(150);doc.setFontSize(9);doc.setTextColor(60);\n [['Client acceptance',14],['For Chelmsford Building Services',112]].forEach(function(c){doc.text(c[0],c[1],y);doc.line(c[1],y+14,c[1]+84,y+14);doc.text('Signed',c[1],y+18);doc.line(c[1],y+28,c[1]+84,y+28);doc.text('Name and date',c[1],y+32);});\n foot(doc,W,HH);doc.save('Job '+JOB+' - '+r.var_no+' - '+s(r.title).replace(/[\\\\/:*?\"<>|]+/g,' ').slice(0,60)+'.pdf');});}\nfunction logDlg(){if(!rows().length){alert('There are no variations to put in the log yet.');return;}var C={};rows().forEach(function(r){C[r.status]=(C[r.status]||0)+1;});\n var o=dlg('<h2>Variations log PDF</h2><div class=\"m\">Choose what goes in the log.</div><label class=\"f\">Statuses</label>'+STS.map(function(k){return '<label class=\"chk\"><input type=\"checkbox\" class=\"ls\" value=\"'+k+'\"'+(C[k]?(k==='Rejected'?'':' checked'):' disabled')+'><span>'+k+' ('+(C[k]||0)+')</span></label>';}).join('')\n +'<label class=\"f\">Columns</label>'+[['desc','Description',1],['instr','Instructed by, date and how',1],['time','Time impact',1],['dec','Decision (who and when)',1]].map(function(c){return '<label class=\"chk\"><input type=\"checkbox\" class=\"lc\" value=\"'+c[0]+'\"'+(c[2]?' checked':'')+'><span>'+c[1]+'</span></label>';}).join('')\n +'<label class=\"chk\"><input type=\"checkbox\" id=\"lt\" checked><span>Totals (contract value, approved variations, current value)</span></label><div class=\"b\"><button class=\"btn\" id=\"lg\">Download PDF</button><button class=\"btn ghost\" id=\"lx\">Cancel</button></div>');\n guard(o);o.querySelector('#lx').onclick=o.close;\n o.querySelector('#lg').onclick=function(){var ss=[].filter.call(o.querySelectorAll('.ls'),function(x){return x.checked;}).map(function(x){return x.value;});if(!ss.length){alert('Tick at least one status.');return;}\n  var cs={};[].forEach.call(o.querySelectorAll('.lc'),function(x){cs[x.value]=x.checked;});var tot=o.querySelector('#lt').checked;if(!window.jspdf){alert('The PDF tool did not load. Refresh and try again.');return;}\n  getLogo().then(function(lg){var doc=new window.jspdf.jsPDF({orientation:'landscape',unit:'mm',format:'a4'}),W=297,HH=210,y=head(doc,lg,'Variations log - Job '+JOB,W),T=DATA.totals||{};\n   var L=rows().filter(function(r){return ss.indexOf(r.status)>-1;});\n   var cols=[{k:'no',l:'No.',w:20},{k:'title',l:'Variation',w:cs.desc?60:110}];if(cs.desc)cols.push({k:'desc',l:'Description',w:70});if(cs.instr)cols.push({k:'instr',l:'Instructed',w:45});if(cs.time)cols.push({k:'time',l:'Days',w:12});cols.push({k:'st',l:'Status',w:22});if(cs.dec)cols.push({k:'dec',l:'Decision',w:34});cols.push({k:'cost',l:'Cost',w:24});\n   var tw=cols.reduce(function(m,c){return m+c.w;},0),sc=(W-28)/tw;cols.forEach(function(c){c.w*=sc;});\n   function hdr(){var x=14;doc.setFillColor(244,121,32);doc.rect(14,y-4.5,W-28,7,'F');doc.setTextColor(255);doc.setFont('helvetica','bold');doc.setFontSize(8.5);cols.forEach(function(c){doc.text(c.l,c.k==='cost'?x+c.w-1.5:x+1.5,y,c.k==='cost'?{align:'right'}:undefined);x+=c.w;});y+=6;}\n   hdr();doc.setFont('helvetica','normal');\n   L.forEach(function(r){var V={no:s(r.var_no),title:s(r.title),desc:s(r.description),instr:[r.instructed_by,dmy(r.instructed_on),r.instruction_via].filter(Boolean).join(', '),time:s(r.time_days)!==''?String(n(r.time_days)):'',st:s(r.status),dec:(r.status==='Approved'||r.status==='Rejected')?[r.decided_by,dmy(r.decided_on)].filter(Boolean).join(', '):'',cost:s(r.cost)!==''?gbp(r.cost):'TBC'};\n    doc.setFontSize(8.5);var lines={},hgt=0;cols.forEach(function(c){lines[c.k]=doc.splitTextToSize(V[c.k]||'',c.w-3).slice(0,8);hgt=Math.max(hgt,lines[c.k].length);});var rh=hgt*3.8+2.5;\n    if(y+rh>HH-22){doc.addPage();y=20;hdr();doc.setFont('helvetica','normal');}\n    var x=14;doc.setTextColor(25);cols.forEach(function(c){if(c.k==='cost')doc.text(lines[c.k],x+c.w-1.5,y,{align:'right'});else doc.text(lines[c.k],x+1.5,y);x+=c.w;});y+=rh;doc.setDrawColor(225);doc.line(14,y-3.2,W-14,y-3.2);});\n   if(tot){if(y>HH-40){doc.addPage();y=20;}y+=4;doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(30);\n    [['Contract value',T.contract==null?'Not set':gbp(T.contract)],['Approved variations',gbp(T.approved)],['Current value',T.current==null?'-':gbp(T.current)],['Awaiting decision',gbp(T.pending)]].forEach(function(p){doc.text(p[0],W-90,y);doc.text(p[1],W-14,y,{align:'right'});y+=6;});}\n   foot(doc,W,HH);doc.save('Job '+JOB+' - Variations log - '+today()+'.pdf');o.close();});};}\nload();\n}\n"
+      }
+    },
+    {
+      "id": "4965b94a-1adf-4439-bc72-8c5985d2807b",
+      "name": "Send Page",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cde3fdae-5aaf-4945-aff9-d3c51b9b3566",
+      "name": "Data Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        224
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-variations-data",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "c598bf5e-ace2-43ab-83f2-19ba477425ee"
+    },
+    {
+      "id": "55b939b9-71fd-4b83-9d9f-265fef1552d9",
+      "name": "Variations Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        224
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* Variations data for one job: the log, contract value, totals, instruction-via options and programme phases. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nconst list=async t=>{try{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);}catch(e){return [];}};\nif(!job)return [{json:{ok:false,message:'No job number.'}}];\nconst [V,J,O]=await Promise.all([list('variations'),list('jobrows'),list('selectopts')]);\nconst rows=V.filter(r=>jk(r.job_no)===jk(job)).sort((x,y)=>num(S(x.var_no).replace(/\\D/g,''))-num(S(y.var_no).replace(/\\D/g,''))||num(x.id)-num(y.id));\nconst jr=J.filter(r=>jk(r.ref)===jk(job)).sort((x,y)=>num(y.id)-num(x.id))[0]||null;\nlet opts=O.filter(o=>S(o.reg)==='variations'&&S(o.field)==='instruction_via').map(o=>S(o.value)).filter(Boolean);\nconst DEF=['Site instruction','Email','Verbal','Architect\\u2019s instruction','Drawing revision','Client request'];\nconst custom=opts.length>0;if(!custom)opts=DEF.slice();\nlet phases=[];try{const P=await h.httpRequest({url:H+'cbs-programme-data?job='+encodeURIComponent(job),json:true,timeout:20000});const st=S(P&&P.programme&&P.programme.status);if(st==='Open'||st==='Draft')phases=((P&&P.phases)||[]).map(p=>({id:p.id,name:S(p.name),start:S(p.start_eff),end:S(p.end_eff)}));}catch(e){}\nconst sum=st=>rows.filter(r=>S(r.status)===st).reduce((m,r)=>m+num(r.cost),0);\nconst cv=jr&&jr.contract_value!=null&&S(jr.contract_value)!==''?num(jr.contract_value):null;\nconst approved=sum('Approved');\nconst totals={contract:cv,approved:approved,current:cv==null?null:cv+approved,pending:sum('Priced')+sum('Submitted'),days:rows.filter(r=>S(r.status)==='Approved').reduce((m,r)=>m+num(r.time_days),0),hasJob:!!jr};\nreturn [{json:{ok:true,job:job,site:S(jr&&jr.site),client:S(jr&&jr.client),rows:rows,totals:totals,opts:opts,optsCustom:custom,phases:phases}}];\n"
+      }
+    },
+    {
+      "id": "9026a926-ea5f-4e4c-ae85-ec516e929bb6",
+      "name": "Send Data",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        224
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "27230b17-9337-4b29-9775-f84bc51f2cba",
+      "name": "Act Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        448
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-variation-act",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "9ad6755e-b458-462f-aebd-11bdf575665b"
+    },
+    {
+      "id": "6a0e6e11-33ae-4eda-a428-85d8244e1847",
+      "name": "Variation Act",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        448
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* CBS variations: save, status, delete, contract value, add programme task, instruction-via options. */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst b=$input.first().json.body||{};const a=S(b.a),job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by).slice(0,80);\nconst R=(ok,x)=>[{json:Object.assign({ok:ok},x||{})}];\nif(!job)return R(false,{message:'No job number.'});if(!by)return R(false,{message:'Enter your name.'});\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst stamp=now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16);\nconst list=async t=>{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);};\nconst save=(t,id,row,p)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t='+t+'&id='+(id||0)+'&k='+K+(p?'&partial=1':''),body:row,json:true,timeout:20000});\nconst del=(t,id)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=del&t='+t+'&id='+id+'&k='+K,body:{},json:true,timeout:20000});\nconst isD=v=>/^\\d{4}-\\d{2}-\\d{2}$/.test(S(v));\nconst money=v=>{const x=S(v).replace(/[£,\\s]/g,'');return x===''?'':(isNaN(Number(x))?null:String(Math.round(Number(x)*100)/100));};\nconst STS=['Raised','Priced','Submitted','Approved','Rejected'];\nconst fmt=v=>'£'+Number(v||0).toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g,',');\nif(a==='opt'){\n const val=S(b.value).slice(0,80);if(!val)return R(false,{message:'Type the option first.'});\n let O=(await list('selectopts')).filter(o=>S(o.reg)==='variations'&&S(o.field)==='instruction_via');\n if(!O.length){const DEF=['Site instruction','Email','Verbal','Architect\\u2019s instruction','Drawing revision','Client request'];for(const d of DEF){await save('selectopts',0,{reg:'variations',field:'instruction_via',value:d,added_by:by});}O=(await list('selectopts')).filter(o=>S(o.reg)==='variations'&&S(o.field)==='instruction_via');}\n if(S(b.op)==='del'){const o=O.find(x=>S(x.value).toLowerCase()===val.toLowerCase());if(o)await del('selectopts',o.id);return R(true);}\n if(O.some(x=>S(x.value).toLowerCase()===val.toLowerCase()))return R(true);\n await save('selectopts',0,{reg:'variations',field:'instruction_via',value:val,added_by:by});return R(true);\n}\nif(a==='contract'){\n const v=money(b.value);if(v===null)return R(false,{message:'Enter the contract value as a number.'});\n const J=(await list('jobrows')).filter(r=>jk(r.ref)===jk(job)).sort((x,y)=>num(y.id)-num(x.id));\n if(!J.length)return R(false,{message:'This job has no Job File record yet. Set it up first.'});\n await save('jobrows',J[0].id,{contract_value:v},true);return R(true);\n}\nconst V=(await list('variations')).filter(r=>jk(r.job_no)===jk(job));\nconst find=id=>V.find(r=>String(r.id)===S(id));\nconst hist=(r,line)=>[S(r&&r.history),stamp+' - '+line].filter(Boolean).join(String.fromCharCode(10));\nif(a==='save'){\n const title=S(b.title).slice(0,160);if(!title)return R(false,{message:'Give the variation a title.'});\n const cost=money(b.cost);if(cost===null)return R(false,{message:'Enter the cost as a number, or leave it blank.'});\n const td=S(b.time_days);if(td!==''&&isNaN(Number(td)))return R(false,{message:'Enter the time impact in days as a number.'});\n const row={title:title,description:S(b.description).slice(0,4000),instructed_by:S(b.instructed_by).slice(0,120),instructed_on:isD(b.instructed_on)?S(b.instructed_on):'',instruction_via:S(b.instruction_via).slice(0,80),cost:cost,time_days:td===''?'':String(Math.round(Number(td)))};\n const id=num(b.id);\n if(id){const r=find(id);if(!r)return R(false,{message:'That variation was not found. Refresh the page.'});\n  const was=S(r.status)||'Raised';let line='Edited by '+by;\n  if(S(r.cost)!==cost&&!(S(r.cost)===''&&cost==='')&&Number(S(r.cost))!==Number(cost))line+=' (cost '+(S(r.cost)===''?'not set':fmt(r.cost))+' to '+(cost===''?'not set':fmt(cost))+')';\n  if(was==='Raised'&&cost!==''){row.status='Priced';line+=', now Priced';}\n  else if(was==='Priced'&&cost===''){row.status='Raised';line+=', back to Raised';}\n  row.history=hist(r,line);await save('variations',id,row,true);return R(true,{id:id});}\n const n=V.reduce((m,r)=>Math.max(m,num(S(r.var_no).replace(/\\D/g,''))),0)+1;\n Object.assign(row,{job_no:job,var_no:'VAR-'+String(n).padStart(3,'0'),status:cost!==''?'Priced':'Raised',decided_by:'',decided_on:'',files_json:'[]',prog_item_ids:'',pdf_url:'',created_by:by,created_at:now,history:stamp+' - Raised by '+by+(cost!==''?' and priced at '+fmt(cost):'')});\n const res=await save('variations',0,row,false);return R(true,{id:num(res&&res.id),var_no:row.var_no});\n}\nconst r=find(b.id);if(!r)return R(false,{message:'That variation was not found. Refresh the page.'});\nif(a==='status'){\n const st=S(b.status);if(STS.indexOf(st)<0)return R(false,{message:'Unknown status.'});\n if(st!=='Raised'&&S(r.cost)==='')return R(false,{message:'Add the cost before marking it '+st.toLowerCase()+'.'});\n const row={status:st,history:hist(r,(S(r.status)||'Raised')+' to '+st+' by '+by+(S(b.note)?': '+S(b.note).slice(0,300):''))};\n if(st==='Approved'||st==='Rejected'){row.decided_by=S(b.decided_by).slice(0,120)||by;row.decided_on=isD(b.decided_on)?S(b.decided_on):now.slice(0,10);}else{row.decided_by='';row.decided_on='';}\n await save('variations',r.id,row,true);return R(true);\n}\nif(a==='delete'){await del('variations',r.id);return R(true);}\nif(a==='addtask'){\n if(S(r.status)!=='Approved')return R(false,{message:'Only approved variations can add programme tasks.'});\n const ph=S(b.phase_id);if(!ph)return R(false,{message:'Pick the phase for the new task.'});\n const st=S(b.start_on),en=S(b.end_on)||st;if((st&&!isD(st))||(en&&!isD(en))||(st&&en<st))return R(false,{message:'Check the dates.'});\n const name=(S(b.name)||(S(r.var_no)+' '+S(r.title))).slice(0,160);\n const res=await h.httpRequest({method:'POST',url:H+'cbs-programme-act',body:{a:'save_item',job:job,by:by,id:0,kind:'task',parent_id:ph,name:name,start_on:st,end_on:en,status:'Not started',assigned_to:'',blocked_by:'',notes:'From variation '+S(r.var_no)},json:true,timeout:30000});\n if(!res||!res.ok)return R(false,{message:(res&&res.message)||'Could not add the task to the programme.'});\n const ids=S(r.prog_item_ids).split(',').map(S).filter(Boolean);if(res.id)ids.push(String(res.id));\n await save('variations',r.id,{prog_item_ids:ids.join(','),history:hist(r,'Programme task \"'+name+'\" added by '+by)},true);\n return R(true,{task_id:res.id});\n}\nreturn R(false,{message:'Unknown action.'});\n"
+      }
+    },
+    {
+      "id": "f7941a26-288e-4de2-8f73-ef607cd4df3e",
+      "name": "Send Act",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        448
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "b64faf2d-c315-405e-b455-5e1ebd21dbe4",
+      "name": "Page Fix",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        0
+      ],
+      "parameters": {
+        "jsCode": "/* Fills the site and client from the hub job record when ServiceM8 has not supplied them. */\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();\nconst e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nlet html=$input.first().json.html;const job=S(($('Page Hook').first().json.query||{}).job);\nconst m=html.match(/window\\.D=(\\{.*?\\});<\\/script>/);\nif(job&&m){let D={};try{D=JSON.parse(m[1].replace(/\\\\u003c/g,'<'));}catch(x){}\n if(!D.site){try{const L=await this.helpers.httpRequest({method:'POST',url:'https://old-hub.example/webhook/cbs-admin-save?a=list&t=jobrows',body:{},json:true,timeout:20000});\n  const r=(Array.isArray(L)?L:[]).filter(x=>jk(x.ref)===jk(job)).sort((a,b)=>(Number(b.id)||0)-(Number(a.id)||0))[0];\n  if(r&&(S(r.site)||S(r.client))){D.site=S(r.site);D.client=S(r.client);\n   html=html.replace(m[0],'window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+';</script>');\n   html=html.replace(/(<\\/h1><p>)[^<]*(<\\/p>)/,'$1'+e([D.site,D.client].filter(Boolean).join(' \\u00b7 '))+'$2');}}catch(x){}}}\nreturn [{json:{html:html}}];\n",
+        "mode": "runOnceForAllItems"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "d3fc8fb7-7873-4599-8733-b8001f5a4080",
+        "name": "Page Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-variations",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "937924be-f592-47c3-9444-d7a90f0799db"
+      },
+      {
+        "id": "63b42fa4-fc54-49c0-827b-552b95a5db4a",
+        "name": "Variations Page",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* CBS variations page (admin): cbs-variations?job=N. Data from cbs-variations-data, saves to cbs-variation-act. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v);const e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nlet info={};if(job){try{info=await h.httpRequest({url:H+'cbs-sm8-job?no='+encodeURIComponent(job),json:true,timeout:15000})||{};}catch(x){info={};}}\nconst D={job:job,site:S(info.site),client:S(info.client)};\nconst CSS='*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n+'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n+'.wrap{max-width:860px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}'\n+'.btn{background:#F47920;color:#fff;text-decoration:none;font-weight:600;border-radius:8px;padding:8px 14px;font-size:14px;border:0;font-family:inherit;cursor:pointer}.btn.ghost{background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}.btn.sm{padding:6px 10px;font-size:13px}.btn:disabled{opacity:.5}.btn.red{background:#fff;color:#b3261e;border:1px solid #e9b6b1}'\n+'.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}.pst{background:#fff;border:1px solid #d9d9d6;border-radius:10px;padding:8px 6px;text-align:center}.pst b{display:block;font-size:18px;line-height:1.2}.pst span{font-size:12px;color:#555}.pst.ed{cursor:pointer}.pst.ed:hover{border-color:#F47920}.pst.ok{border-color:#b9dfc1;background:#f1faf2}.pst.warn{border-color:#f2d398;background:#fff8ea}@media(max-width:560px){.strip{grid-template-columns:repeat(2,1fr)}}'\n+'.flt{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.flt button{border:1px solid #d9d9d6;background:#fff;border-radius:20px;padding:5px 11px;font:inherit;font-size:13px;cursor:pointer}.flt button.on{background:#F47920;color:#fff;border-color:#F47920}.srch{width:100%;font:inherit;padding:10px 12px;border:1px solid #ccc;border-radius:10px;margin-bottom:10px}'\n+'.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;margin-bottom:10px;padding:12px 14px}.t{font-weight:600}.m{color:#555;font-size:14px;margin-top:2px}.ds{white-space:pre-wrap;font-size:14px;margin-top:6px;color:#333}.b{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center}.amt{float:right;font-weight:700}'\n+'.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:20px;padding:1px 8px;margin-left:6px;background:#eee;color:#333;vertical-align:middle}.tag.Raised{background:#eee}.tag.Priced{background:#e6efff;color:#1f5fbf}.tag.Submitted{background:#fff1d6;color:#8a5a00}.tag.Approved{background:#e3f4e6;color:#1d6b2c}.tag.Rejected{background:#fde3e1;color:#b3261e}'\n+'select.st{font:inherit;font-size:13px;padding:5px 6px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}'\n+'.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}'\n+'.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;overflow:auto;z-index:20}.dlg{background:#fff;border-radius:14px;max-width:560px;width:100%;padding:16px}.dlg h2{margin:0 0 10px;font-size:18px}'\n+'label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}.dlg input[type=text],.dlg input[type=date],.dlg input[type=number],.dlg textarea,.dlg select{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}.dlg textarea{min-height:90px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}'\n+'.chk{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid #eee}.chk input{width:20px;height:20px;flex:0 0 auto}.note{font-size:13px;color:#6b6e70;margin-top:6px}.hist{white-space:pre-wrap;font-size:12px;color:#6b6e70;margin-top:8px}.msg{font-size:14px;color:#8a5a00;margin-top:8px;min-height:18px}'\n+'.opr{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid #eee}.opr span{flex:1}';\nconst nav='<div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a>'+(job?'<a class=\"hub\" href=\"/webhook/cbs-job-file?job='+encodeURIComponent(job)+'\">Job File</a>':'')+'</div>';\nconst sub=e([D.site,D.client].filter(Boolean).join(' \\u00b7 ')||'Chelmsford Building Services');\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Variations - Job '+e(job)+'</title><script src=\"/webhook/cbs-guard\"></script><style>'+CSS+'</style><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script></head><body><header>'+nav+'<h1>Variations'+(job?' \\u00b7 Job '+e(job):'')+'</h1><p>'+sub+'</p></header><div class=\"wrap\" id=\"app\">'+(job?'<div class=\"empty\">Loading\\u2026</div>':'<div class=\"empty\">Open variations from a job.</div>')+'</div><script>window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+';</script>'+(job?'<script>('+client.toString()+')();</script>':'')+'</body></html>';\nreturn [{json:{html:html}}];\n\nfunction client(){\nvar D=window.D,JOB=D.job,app=document.getElementById('app'),DATA=null,FILTER='all',Q='',LOGO=null;\nvar STS=['Raised','Priced','Submitted','Approved','Rejected'];\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction n(v){var x=Number(v);return isNaN(x)?0:x;}\nfunction gbp(v){var neg=n(v)<0;return (neg?'-':'')+'\\u00a3'+Math.abs(n(v)).toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g,',');}\nfunction dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:s(d);}\nfunction today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction who(){var x='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)x=m.name;}catch(z){}if(!x){try{x=localStorage.getItem('cbs_name')||'';}catch(z){}}if(!x){x=(prompt('Your name:')||'').trim();if(x){try{localStorage.setItem('cbs_name',x);}catch(z){}}}return x;}\nfunction post(body){var by=who();if(!by)return Promise.resolve({ok:false,message:'',cancel:true});body.job=JOB;body.by=by;\n return fetch('/webhook/cbs-variation-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw 0;return r.json();}).catch(function(){return {ok:false,message:'Could not save. Check your connection and try again.'};});}\nfunction load(){return fetch('/webhook/cbs-variations-data?job='+encodeURIComponent(JOB),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){DATA=d;render();}).catch(function(){app.innerHTML='<div class=\"empty\">Could not load the variations. Refresh to try again.</div>';});}\nfunction dlg(html){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg\">'+html+'</div>';document.body.appendChild(o);o.close=function(){o.remove();};return o;}\nfunction guard(o,isDirty){o.addEventListener('click',function(ev){if(ev.target!==o)return;if(isDirty&&isDirty()&&!confirm('Close without saving your changes?'))return;o.close();});}\nfunction rows(){return (DATA&&DATA.rows)||[];}\nfunction vis(){var q=Q.toLowerCase();return rows().filter(function(r){if(FILTER!=='all'&&s(r.status)!==FILTER)return false;if(!q)return true;return [r.var_no,r.title,r.description,r.instructed_by,r.instruction_via].join(' ').toLowerCase().indexOf(q)>-1;});}\nfunction render(){var T=DATA.totals||{},h='';\n h+='<div class=\"strip\"><div class=\"pst ed\" id=\"cv\"><b>'+(T.contract==null?'Set':gbp(T.contract))+'</b><span>Contract value \\u270e</span></div><div class=\"pst ok\"><b>'+gbp(T.approved)+'</b><span>Approved variations</span></div><div class=\"pst\"><b>'+(T.current==null?'\\u2013':gbp(T.current))+'</b><span>Current value</span></div><div class=\"pst warn\"><b>'+gbp(T.pending)+'</b><span>Awaiting decision</span></div></div>';\n if(T.days)h+='<p class=\"m\" style=\"margin:-4px 0 10px\">Approved variations add '+T.days+' day'+(T.days===1?'':'s')+' to the programme.</p>';\n h+='<div class=\"tools\"><button class=\"btn\" id=\"add\">+ Add variation</button><button class=\"btn ghost\" id=\"log\">Variations log PDF</button><button class=\"btn ghost\" id=\"opt\">Instruction options</button></div>';\n var C={};rows().forEach(function(r){C[r.status]=(C[r.status]||0)+1;});\n h+='<div class=\"flt\">'+['all'].concat(STS).map(function(k){var c=k==='all'?rows().length:(C[k]||0);return '<button data-f=\"'+k+'\" class=\"'+(FILTER===k?'on':'')+'\">'+(k==='all'?'All':k)+' ('+c+')</button>';}).join('')+'</div>';\n h+='<input class=\"srch\" id=\"q\" placeholder=\"Search variations\" value=\"'+e(Q)+'\">';\n var L=vis();\n if(!rows().length)h+='<div class=\"empty\">No variations on this job yet. Tap + Add variation to log one.</div>';\n else if(!L.length)h+='<div class=\"empty\">Nothing matches.</div>';\n L.forEach(function(r){var st=s(r.status)||'Raised',tk=s(r.prog_item_ids).split(',').filter(Boolean).length;\n  h+='<div class=\"card\" data-id=\"'+r.id+'\"><div class=\"t\">'+e(r.var_no)+' \\u00b7 '+e(r.title)+'<span class=\"tag '+e(st)+'\">'+e(st)+'</span>'+(s(r.cost)!==''?'<span class=\"amt\">'+gbp(r.cost)+'</span>':'')+'</div>'\n  +'<div class=\"m\">'+[r.instructed_by?'Instructed by '+e(r.instructed_by):'',r.instructed_on?dmy(r.instructed_on):'',r.instruction_via?'via '+e(r.instruction_via):'',s(r.time_days)!==''&&n(r.time_days)?(n(r.time_days)>0?'+':'')+n(r.time_days)+' day'+(Math.abs(n(r.time_days))===1?'':'s'):''].filter(Boolean).join(' \\u00b7 ')+'</div>'\n  +(r.description?'<div class=\"ds\">'+e(r.description)+'</div>':'')\n  +((st==='Approved'||st==='Rejected')&&r.decided_by?'<div class=\"m\">'+st+' by '+e(r.decided_by)+(r.decided_on?' on '+dmy(r.decided_on):'')+'</div>':'')\n  +(tk?'<div class=\"m\">'+tk+' programme task'+(tk===1?'':'s')+' added</div>':'')\n  +'<div class=\"b\"><select class=\"st\" data-a=\"st\">'+STS.map(function(x){return '<option'+(x===st?' selected':'')+'>'+x+'</option>';}).join('')+'</select><button class=\"btn ghost sm\" data-a=\"edit\">Edit</button>'\n  +(st==='Approved'?'<button class=\"btn ghost sm\" data-a=\"task\">+ Programme task</button>':'')\n  +'<button class=\"btn ghost sm\" data-a=\"pdf\">Variation sheet</button><button class=\"btn red sm\" data-a=\"del\">Delete</button></div>'\n  +(r.history?'<details><summary class=\"m\" style=\"cursor:pointer\">History</summary><div class=\"hist\">'+e(r.history)+'</div></details>':'')+'</div>';});\n app.innerHTML=h;\n document.getElementById('cv').onclick=contractDlg;document.getElementById('add').onclick=function(){editDlg(null);};document.getElementById('log').onclick=logDlg;document.getElementById('opt').onclick=optDlg;\n app.querySelectorAll('[data-f]').forEach(function(b){b.onclick=function(){FILTER=b.getAttribute('data-f');render();};});\n var qi=document.getElementById('q');qi.oninput=function(){Q=qi.value;var p=qi.selectionStart;render();var x=document.getElementById('q');x.focus();try{x.setSelectionRange(p,p);}catch(z){}};\n app.querySelectorAll('[data-a]').forEach(function(el){var id=el.closest('.card').getAttribute('data-id');var r=rows().filter(function(x){return String(x.id)===id;})[0];var a=el.getAttribute('data-a');\n  if(a==='st'){el.onchange=function(){statusDlg(r,el.value);};return;}\n  el.onclick=function(){if(a==='edit')editDlg(r);else if(a==='task')taskDlg(r);else if(a==='pdf')sheet(r);else if(a==='del')delVar(r);};});}\nfunction contractDlg(){var T=DATA.totals||{};if(!T.hasJob){alert('This job has no Job File record yet. Set up the Job File first.');return;}\n var o=dlg('<h2>Contract value</h2><div class=\"m\">The accepted quote value for this job. Approved variations are added to it to give the current value.</div><label class=\"f\">Contract value (\\u00a3)</label><input type=\"number\" step=\"0.01\" id=\"cvv\" value=\"'+(T.contract==null?'':T.contract)+'\"><div class=\"msg\" id=\"cvm\"></div><div class=\"b\"><button class=\"btn\" id=\"cvs\">Save</button><button class=\"btn ghost\" id=\"cvx\">Cancel</button></div>');\n var start=o.querySelector('#cvv').value;guard(o,function(){return o.querySelector('#cvv').value!==start;});o.querySelector('#cvx').onclick=o.close;\n o.querySelector('#cvs').onclick=function(){var b=this;b.disabled=true;post({a:'contract',value:o.querySelector('#cvv').value}).then(function(r){if(r.ok){o.close();load();}else{b.disabled=false;if(!r.cancel)o.querySelector('#cvm').textContent=r.message||'Could not save.';}});};}\nfunction optSel(cur){var O=(DATA.opts||[]).slice();if(cur&&O.indexOf(cur)<0)O.push(cur);return '<select id=\"fv\"><option value=\"\">Choose\\u2026</option>'+O.map(function(x){return '<option'+(x===cur?' selected':'')+'>'+e(x)+'</option>';}).join('')+'</select>';}\nfunction editDlg(r){r=r||{};\n var o=dlg('<h2>'+(r.id?'Edit '+e(r.var_no):'New variation')+'</h2><label class=\"f\">Title</label><input type=\"text\" id=\"ft\" value=\"'+e(r.title)+'\" placeholder=\"e.g. Extra socket outlets in kitchen\">'\n +'<label class=\"f\">Description</label><textarea id=\"fd\" placeholder=\"What was asked for and what it involves\">'+e(r.description)+'</textarea>'\n +'<div class=\"row2\"><div><label class=\"f\">Instructed by</label><input type=\"text\" id=\"fb\" value=\"'+e(r.instructed_by)+'\" placeholder=\"Client, architect\\u2026\"></div><div><label class=\"f\">Date instructed</label><input type=\"date\" id=\"fo\" value=\"'+e(r.instructed_on||(r.id?'':today()))+'\"></div></div>'\n +'<label class=\"f\">Instruction received via</label>'+optSel(s(r.instruction_via))\n +'<div class=\"row2\"><div><label class=\"f\">Cost (\\u00a3)</label><input type=\"number\" step=\"0.01\" id=\"fc\" value=\"'+e(r.cost)+'\" placeholder=\"Leave blank until priced\"></div><div><label class=\"f\">Time impact (days)</label><input type=\"number\" step=\"1\" id=\"fdays\" value=\"'+e(r.time_days)+'\" placeholder=\"0\"></div></div>'\n +'<div class=\"msg\" id=\"fm\"></div><div class=\"b\"><button class=\"btn\" id=\"fs\">Save</button><button class=\"btn ghost\" id=\"fx\">Cancel</button></div>');\n var ids=['ft','fd','fb','fo','fv','fc','fdays'],st=ids.map(function(i){return o.querySelector('#'+i).value;}).join('|');\n function dirty(){return ids.map(function(i){return o.querySelector('#'+i).value;}).join('|')!==st;}\n guard(o,dirty);o.querySelector('#fx').onclick=function(){if(dirty()&&!confirm('Close without saving your changes?'))return;o.close();};\n o.querySelector('#fs').onclick=function(){var t=o.querySelector('#ft').value.trim();if(!t){alert('Give the variation a title.');return;}var b=this;b.disabled=true;\n  post({a:'save',id:r.id||0,title:t,description:o.querySelector('#fd').value,instructed_by:o.querySelector('#fb').value,instructed_on:o.querySelector('#fo').value,instruction_via:o.querySelector('#fv').value,cost:o.querySelector('#fc').value,time_days:o.querySelector('#fdays').value})\n  .then(function(x){if(x.ok){o.close();load();}else{b.disabled=false;if(!x.cancel)o.querySelector('#fm').textContent=x.message||'Could not save.';}});};}\nfunction statusDlg(r,st){if(st===r.status)return;\n if(st!=='Approved'&&st!=='Rejected'){if(!confirm('Mark '+r.var_no+' as '+st+'?')){render();return;}post({a:'status',id:r.id,status:st}).then(function(x){if(!x.ok&&!x.cancel)alert(x.message||'Could not save.');load();});return;}\n var o=dlg('<h2>'+st+': '+e(r.var_no)+'</h2><div class=\"m\">'+e(r.title)+(s(r.cost)!==''?' \\u00b7 '+gbp(r.cost):'')+'</div><div class=\"row2\"><div><label class=\"f\">'+st+' by</label><input type=\"text\" id=\"db\" value=\"'+e(r.instructed_by)+'\" placeholder=\"Who decided\"></div><div><label class=\"f\">Date</label><input type=\"date\" id=\"dd\" value=\"'+today()+'\"></div></div><label class=\"f\">Note (optional)</label><textarea id=\"dn\" style=\"min-height:60px\"></textarea><div class=\"msg\" id=\"dm\"></div><div class=\"b\"><button class=\"btn\" id=\"dg\">Mark '+st.toLowerCase()+'</button><button class=\"btn ghost\" id=\"dx\">Cancel</button></div>');\n function cancel(){o.close();render();}o.addEventListener('click',function(ev){if(ev.target===o)cancel();});o.querySelector('#dx').onclick=cancel;\n o.querySelector('#dg').onclick=function(){var b=this;b.disabled=true;post({a:'status',id:r.id,status:st,decided_by:o.querySelector('#db').value,decided_on:o.querySelector('#dd').value,note:o.querySelector('#dn').value}).then(function(x){if(x.ok){o.close();load();}else{b.disabled=false;if(!x.cancel)o.querySelector('#dm').textContent=x.message||'Could not save.';}});};}\nfunction taskDlg(r){var P=DATA.phases||[];if(!P.length){alert('This job has no open programme with phases yet. Create the programme first.');return;}\n var o=dlg('<h2>Add to programme</h2><div class=\"m\">Adds a task for '+e(r.var_no)+' to the job programme.</div><label class=\"f\">Phase</label><select id=\"tp\">'+P.map(function(p){return '<option value=\"'+p.id+'\" data-e=\"'+e(p.end)+'\">'+e(p.name)+(p.start?' ('+dmy(p.start)+(p.end&&p.end!==p.start?' \\u2013 '+dmy(p.end):'')+')':'')+'</option>';}).join('')+'</select><label class=\"f\">Task name</label><input type=\"text\" id=\"tn\" value=\"'+e(r.var_no+' '+r.title)+'\"><div class=\"row2\"><div><label class=\"f\">Start</label><input type=\"date\" id=\"ts\"></div><div><label class=\"f\">End</label><input type=\"date\" id=\"te\"></div></div>'+(n(r.time_days)?'<div class=\"note\">This variation adds '+n(r.time_days)+' day'+(Math.abs(n(r.time_days))===1?'':'s')+'.</div>':'')+'<div class=\"msg\" id=\"tm\"></div><div class=\"b\"><button class=\"btn\" id=\"tg\">Add task</button><button class=\"btn ghost\" id=\"tx\">Cancel</button></div>');\n guard(o);o.querySelector('#tx').onclick=o.close;\n o.querySelector('#tg').onclick=function(){var b=this;b.disabled=true;post({a:'addtask',id:r.id,phase_id:o.querySelector('#tp').value,name:o.querySelector('#tn').value,start_on:o.querySelector('#ts').value,end_on:o.querySelector('#te').value}).then(function(x){if(x.ok){o.close();load();}else{b.disabled=false;if(!x.cancel)o.querySelector('#tm').textContent=x.message||'Could not add.';}});};}\nfunction delVar(r){if(!confirm('Delete '+r.var_no+' ('+r.title+')?'))return;if(!confirm('Are you sure? This permanently removes the variation and its history.'+(s(r.prog_item_ids)?' Programme tasks it added stay on the programme.':'')))return;\n post({a:'delete',id:r.id}).then(function(x){if(!x.ok&&!x.cancel)alert(x.message||'Could not delete.');load();});}\nfunction optDlg(){var o=dlg('<h2>Instruction options</h2><div class=\"m\">The choices for \\u201cInstruction received via\\u201d.</div><div id=\"ol\"></div><div class=\"row2\" style=\"margin-top:10px\"><input type=\"text\" id=\"on\" placeholder=\"Add an option\"><button class=\"btn ghost\" id=\"oa\">Add</button></div><div class=\"msg\" id=\"om\"></div><div class=\"b\"><button class=\"btn ghost\" id=\"ox\">Close</button></div>');\n function draw(){o.querySelector('#ol').innerHTML=(DATA.opts||[]).map(function(x){return '<div class=\"opr\"><span>'+e(x)+'</span><button class=\"btn red sm\" data-v=\"'+e(x)+'\">Remove</button></div>';}).join('');\n  o.querySelectorAll('[data-v]').forEach(function(b){b.onclick=function(){var v=b.getAttribute('data-v');if(!confirm('Are you sure you want to remove \\u201c'+v+'\\u201d? Variations already using it keep it.'))return;b.disabled=true;post({a:'opt',op:'del',value:v}).then(function(x){if(!x.ok&&!x.cancel)o.querySelector('#om').textContent=x.message||'Could not remove.';refresh();});};});}\n function refresh(){fetch('/webhook/cbs-variations-data?job='+encodeURIComponent(JOB),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){DATA=d;draw();render();});}\n draw();o.querySelector('#ox').onclick=o.close;guard(o);\n o.querySelector('#oa').onclick=function(){var v=o.querySelector('#on').value.trim();if(!v)return;var b=this;b.disabled=true;post({a:'opt',op:'add',value:v}).then(function(x){b.disabled=false;if(x.ok){o.querySelector('#on').value='';refresh();}else if(!x.cancel)o.querySelector('#om').textContent=x.message||'Could not add.';});};}\nfunction getLogo(){if(LOGO!==null)return Promise.resolve(LOGO);return fetch('/webhook/cbs-programme-logo').then(function(r){return r.json();}).then(function(d){LOGO=(d&&d.lg)||'';return LOGO;}).catch(function(){LOGO='';return '';});}\nfunction head(doc,lg,title,W){doc.setFillColor(244,121,32);doc.rect(0,0,W,3,'F');var lx=14;if(lg){try{var pr=doc.getImageProperties(lg),hh=13,ww=pr.width*hh/pr.height;if(ww>48){ww=48;hh=pr.height*ww/pr.width;}doc.addImage(lg,'PNG',14,7,ww,hh);lx=14+ww+5;}catch(z){}}\n doc.setTextColor(30);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text(title,lx,12);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text(([D.site,D.client].filter(Boolean).join('  |  ')||'Chelmsford Building Services').slice(0,110),lx,17.5);doc.text('Chelmsford Building Services Ltd  |  '+new Date().toLocaleDateString('en-GB'),W-14,12,{align:'right'});return 28;}\nfunction foot(doc,W,HH){var np=doc.getNumberOfPages();for(var i=1;i<=np;i++){doc.setPage(i);doc.setFontSize(7.5);doc.setTextColor(120);doc.text('Job '+JOB+'  |  Page '+i+' of '+np,W-14,HH-8,{align:'right'});}}\nfunction sheet(r){if(!window.jspdf){alert('The PDF tool did not load. Refresh and try again.');return;}getLogo().then(function(lg){var doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'}),W=210,HH=297,y=head(doc,lg,'Variation '+r.var_no+' - Job '+JOB,W);\n function rowL(k,v){if(!s(v))return;doc.setFont('helvetica','bold');doc.setFontSize(9.5);doc.setTextColor(80);doc.text(k,14,y);doc.setFont('helvetica','normal');doc.setTextColor(20);var L=doc.splitTextToSize(s(v),130);doc.text(L,60,y);y+=Math.max(6,L.length*4.6+1.5);}\n doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(20);var tl=doc.splitTextToSize(s(r.title),182);doc.text(tl,14,y);y+=tl.length*6+3;\n rowL('Status',r.status);rowL('Instructed by',r.instructed_by);rowL('Date instructed',dmy(r.instructed_on));rowL('Received via',r.instruction_via);rowL('Cost',s(r.cost)!==''?gbp(r.cost)+' (ex VAT)':'To be priced');rowL('Time impact',s(r.time_days)!==''?n(r.time_days)+' working day'+(Math.abs(n(r.time_days))===1?'':'s'):'');\n if(r.status==='Approved'||r.status==='Rejected')rowL(r.status+' by',[r.decided_by,dmy(r.decided_on)].filter(Boolean).join(', '));\n if(r.description){y+=2;doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(40);doc.text('Description',14,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(20);doc.splitTextToSize(s(r.description),182).forEach(function(l){if(y>270){doc.addPage();y=20;}doc.text(l,14,y);y+=4.8;});}\n if(y>235){doc.addPage();y=20;}y=Math.max(y+12,225);doc.setDrawColor(150);doc.setFontSize(9);doc.setTextColor(60);\n [['Client acceptance',14],['For Chelmsford Building Services',112]].forEach(function(c){doc.text(c[0],c[1],y);doc.line(c[1],y+14,c[1]+84,y+14);doc.text('Signed',c[1],y+18);doc.line(c[1],y+28,c[1]+84,y+28);doc.text('Name and date',c[1],y+32);});\n foot(doc,W,HH);doc.save('Job '+JOB+' - '+r.var_no+' - '+s(r.title).replace(/[\\\\/:*?\"<>|]+/g,' ').slice(0,60)+'.pdf');});}\nfunction logDlg(){if(!rows().length){alert('There are no variations to put in the log yet.');return;}var C={};rows().forEach(function(r){C[r.status]=(C[r.status]||0)+1;});\n var o=dlg('<h2>Variations log PDF</h2><div class=\"m\">Choose what goes in the log.</div><label class=\"f\">Statuses</label>'+STS.map(function(k){return '<label class=\"chk\"><input type=\"checkbox\" class=\"ls\" value=\"'+k+'\"'+(C[k]?(k==='Rejected'?'':' checked'):' disabled')+'><span>'+k+' ('+(C[k]||0)+')</span></label>';}).join('')\n +'<label class=\"f\">Columns</label>'+[['desc','Description',1],['instr','Instructed by, date and how',1],['time','Time impact',1],['dec','Decision (who and when)',1]].map(function(c){return '<label class=\"chk\"><input type=\"checkbox\" class=\"lc\" value=\"'+c[0]+'\"'+(c[2]?' checked':'')+'><span>'+c[1]+'</span></label>';}).join('')\n +'<label class=\"chk\"><input type=\"checkbox\" id=\"lt\" checked><span>Totals (contract value, approved variations, current value)</span></label><div class=\"b\"><button class=\"btn\" id=\"lg\">Download PDF</button><button class=\"btn ghost\" id=\"lx\">Cancel</button></div>');\n guard(o);o.querySelector('#lx').onclick=o.close;\n o.querySelector('#lg').onclick=function(){var ss=[].filter.call(o.querySelectorAll('.ls'),function(x){return x.checked;}).map(function(x){return x.value;});if(!ss.length){alert('Tick at least one status.');return;}\n  var cs={};[].forEach.call(o.querySelectorAll('.lc'),function(x){cs[x.value]=x.checked;});var tot=o.querySelector('#lt').checked;if(!window.jspdf){alert('The PDF tool did not load. Refresh and try again.');return;}\n  getLogo().then(function(lg){var doc=new window.jspdf.jsPDF({orientation:'landscape',unit:'mm',format:'a4'}),W=297,HH=210,y=head(doc,lg,'Variations log - Job '+JOB,W),T=DATA.totals||{};\n   var L=rows().filter(function(r){return ss.indexOf(r.status)>-1;});\n   var cols=[{k:'no',l:'No.',w:20},{k:'title',l:'Variation',w:cs.desc?60:110}];if(cs.desc)cols.push({k:'desc',l:'Description',w:70});if(cs.instr)cols.push({k:'instr',l:'Instructed',w:45});if(cs.time)cols.push({k:'time',l:'Days',w:12});cols.push({k:'st',l:'Status',w:22});if(cs.dec)cols.push({k:'dec',l:'Decision',w:34});cols.push({k:'cost',l:'Cost',w:24});\n   var tw=cols.reduce(function(m,c){return m+c.w;},0),sc=(W-28)/tw;cols.forEach(function(c){c.w*=sc;});\n   function hdr(){var x=14;doc.setFillColor(244,121,32);doc.rect(14,y-4.5,W-28,7,'F');doc.setTextColor(255);doc.setFont('helvetica','bold');doc.setFontSize(8.5);cols.forEach(function(c){doc.text(c.l,c.k==='cost'?x+c.w-1.5:x+1.5,y,c.k==='cost'?{align:'right'}:undefined);x+=c.w;});y+=6;}\n   hdr();doc.setFont('helvetica','normal');\n   L.forEach(function(r){var V={no:s(r.var_no),title:s(r.title),desc:s(r.description),instr:[r.instructed_by,dmy(r.instructed_on),r.instruction_via].filter(Boolean).join(', '),time:s(r.time_days)!==''?String(n(r.time_days)):'',st:s(r.status),dec:(r.status==='Approved'||r.status==='Rejected')?[r.decided_by,dmy(r.decided_on)].filter(Boolean).join(', '):'',cost:s(r.cost)!==''?gbp(r.cost):'TBC'};\n    doc.setFontSize(8.5);var lines={},hgt=0;cols.forEach(function(c){lines[c.k]=doc.splitTextToSize(V[c.k]||'',c.w-3).slice(0,8);hgt=Math.max(hgt,lines[c.k].length);});var rh=hgt*3.8+2.5;\n    if(y+rh>HH-22){doc.addPage();y=20;hdr();doc.setFont('helvetica','normal');}\n    var x=14;doc.setTextColor(25);cols.forEach(function(c){if(c.k==='cost')doc.text(lines[c.k],x+c.w-1.5,y,{align:'right'});else doc.text(lines[c.k],x+1.5,y);x+=c.w;});y+=rh;doc.setDrawColor(225);doc.line(14,y-3.2,W-14,y-3.2);});\n   if(tot){if(y>HH-40){doc.addPage();y=20;}y+=4;doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(30);\n    [['Contract value',T.contract==null?'Not set':gbp(T.contract)],['Approved variations',gbp(T.approved)],['Current value',T.current==null?'-':gbp(T.current)],['Awaiting decision',gbp(T.pending)]].forEach(function(p){doc.text(p[0],W-90,y);doc.text(p[1],W-14,y,{align:'right'});y+=6;});}\n   foot(doc,W,HH);doc.save('Job '+JOB+' - Variations log - '+today()+'.pdf');o.close();});};}\nload();\n}\n"
+        }
+      },
+      {
+        "id": "4965b94a-1adf-4439-bc72-8c5985d2807b",
+        "name": "Send Page",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "cde3fdae-5aaf-4945-aff9-d3c51b9b3566",
+        "name": "Data Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          224
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-variations-data",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "c598bf5e-ace2-43ab-83f2-19ba477425ee"
+      },
+      {
+        "id": "55b939b9-71fd-4b83-9d9f-265fef1552d9",
+        "name": "Variations Data",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          224
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* Variations data for one job: the log, contract value, totals, instruction-via options and programme phases. */\nconst h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');\nconst list=async t=>{try{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);}catch(e){return [];}};\nif(!job)return [{json:{ok:false,message:'No job number.'}}];\nconst [V,J,O]=await Promise.all([list('variations'),list('jobrows'),list('selectopts')]);\nconst rows=V.filter(r=>jk(r.job_no)===jk(job)).sort((x,y)=>num(S(x.var_no).replace(/\\D/g,''))-num(S(y.var_no).replace(/\\D/g,''))||num(x.id)-num(y.id));\nconst jr=J.filter(r=>jk(r.ref)===jk(job)).sort((x,y)=>num(y.id)-num(x.id))[0]||null;\nlet opts=O.filter(o=>S(o.reg)==='variations'&&S(o.field)==='instruction_via').map(o=>S(o.value)).filter(Boolean);\nconst DEF=['Site instruction','Email','Verbal','Architect\\u2019s instruction','Drawing revision','Client request'];\nconst custom=opts.length>0;if(!custom)opts=DEF.slice();\nlet phases=[];try{const P=await h.httpRequest({url:H+'cbs-programme-data?job='+encodeURIComponent(job),json:true,timeout:20000});const st=S(P&&P.programme&&P.programme.status);if(st==='Open'||st==='Draft')phases=((P&&P.phases)||[]).map(p=>({id:p.id,name:S(p.name),start:S(p.start_eff),end:S(p.end_eff)}));}catch(e){}\nconst sum=st=>rows.filter(r=>S(r.status)===st).reduce((m,r)=>m+num(r.cost),0);\nconst cv=jr&&jr.contract_value!=null&&S(jr.contract_value)!==''?num(jr.contract_value):null;\nconst approved=sum('Approved');\nconst totals={contract:cv,approved:approved,current:cv==null?null:cv+approved,pending:sum('Priced')+sum('Submitted'),days:rows.filter(r=>S(r.status)==='Approved').reduce((m,r)=>m+num(r.time_days),0),hasJob:!!jr};\nreturn [{json:{ok:true,job:job,site:S(jr&&jr.site),client:S(jr&&jr.client),rows:rows,totals:totals,opts:opts,optsCustom:custom,phases:phases}}];\n"
+        }
+      },
+      {
+        "id": "9026a926-ea5f-4e4c-ae85-ec516e929bb6",
+        "name": "Send Data",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          224
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "27230b17-9337-4b29-9775-f84bc51f2cba",
+        "name": "Act Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          448
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-variation-act",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "9ad6755e-b458-462f-aebd-11bdf575665b"
+      },
+      {
+        "id": "6a0e6e11-33ae-4eda-a428-85d8244e1847",
+        "name": "Variation Act",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          448
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* CBS variations: save, status, delete, contract value, add programme task, instruction-via options. */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst b=$input.first().json.body||{};const a=S(b.a),job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),by=S(b.by).slice(0,80);\nconst R=(ok,x)=>[{json:Object.assign({ok:ok},x||{})}];\nif(!job)return R(false,{message:'No job number.'});if(!by)return R(false,{message:'Enter your name.'});\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst stamp=now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16);\nconst list=async t=>{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);};\nconst save=(t,id,row,p)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t='+t+'&id='+(id||0)+'&k='+K+(p?'&partial=1':''),body:row,json:true,timeout:20000});\nconst del=(t,id)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=del&t='+t+'&id='+id+'&k='+K,body:{},json:true,timeout:20000});\nconst isD=v=>/^\\d{4}-\\d{2}-\\d{2}$/.test(S(v));\nconst money=v=>{const x=S(v).replace(/[£,\\s]/g,'');return x===''?'':(isNaN(Number(x))?null:String(Math.round(Number(x)*100)/100));};\nconst STS=['Raised','Priced','Submitted','Approved','Rejected'];\nconst fmt=v=>'£'+Number(v||0).toFixed(2).replace(/\\B(?=(\\d{3})+(?!\\d))/g,',');\nif(a==='opt'){\n const val=S(b.value).slice(0,80);if(!val)return R(false,{message:'Type the option first.'});\n let O=(await list('selectopts')).filter(o=>S(o.reg)==='variations'&&S(o.field)==='instruction_via');\n if(!O.length){const DEF=['Site instruction','Email','Verbal','Architect\\u2019s instruction','Drawing revision','Client request'];for(const d of DEF){await save('selectopts',0,{reg:'variations',field:'instruction_via',value:d,added_by:by});}O=(await list('selectopts')).filter(o=>S(o.reg)==='variations'&&S(o.field)==='instruction_via');}\n if(S(b.op)==='del'){const o=O.find(x=>S(x.value).toLowerCase()===val.toLowerCase());if(o)await del('selectopts',o.id);return R(true);}\n if(O.some(x=>S(x.value).toLowerCase()===val.toLowerCase()))return R(true);\n await save('selectopts',0,{reg:'variations',field:'instruction_via',value:val,added_by:by});return R(true);\n}\nif(a==='contract'){\n const v=money(b.value);if(v===null)return R(false,{message:'Enter the contract value as a number.'});\n const J=(await list('jobrows')).filter(r=>jk(r.ref)===jk(job)).sort((x,y)=>num(y.id)-num(x.id));\n if(!J.length)return R(false,{message:'This job has no Job File record yet. Set it up first.'});\n await save('jobrows',J[0].id,{contract_value:v},true);return R(true);\n}\nconst V=(await list('variations')).filter(r=>jk(r.job_no)===jk(job));\nconst find=id=>V.find(r=>String(r.id)===S(id));\nconst hist=(r,line)=>[S(r&&r.history),stamp+' - '+line].filter(Boolean).join(String.fromCharCode(10));\nif(a==='save'){\n const title=S(b.title).slice(0,160);if(!title)return R(false,{message:'Give the variation a title.'});\n const cost=money(b.cost);if(cost===null)return R(false,{message:'Enter the cost as a number, or leave it blank.'});\n const td=S(b.time_days);if(td!==''&&isNaN(Number(td)))return R(false,{message:'Enter the time impact in days as a number.'});\n const row={title:title,description:S(b.description).slice(0,4000),instructed_by:S(b.instructed_by).slice(0,120),instructed_on:isD(b.instructed_on)?S(b.instructed_on):'',instruction_via:S(b.instruction_via).slice(0,80),cost:cost,time_days:td===''?'':String(Math.round(Number(td)))};\n const id=num(b.id);\n if(id){const r=find(id);if(!r)return R(false,{message:'That variation was not found. Refresh the page.'});\n  const was=S(r.status)||'Raised';let line='Edited by '+by;\n  if(S(r.cost)!==cost&&!(S(r.cost)===''&&cost==='')&&Number(S(r.cost))!==Number(cost))line+=' (cost '+(S(r.cost)===''?'not set':fmt(r.cost))+' to '+(cost===''?'not set':fmt(cost))+')';\n  if(was==='Raised'&&cost!==''){row.status='Priced';line+=', now Priced';}\n  else if(was==='Priced'&&cost===''){row.status='Raised';line+=', back to Raised';}\n  row.history=hist(r,line);await save('variations',id,row,true);return R(true,{id:id});}\n const n=V.reduce((m,r)=>Math.max(m,num(S(r.var_no).replace(/\\D/g,''))),0)+1;\n Object.assign(row,{job_no:job,var_no:'VAR-'+String(n).padStart(3,'0'),status:cost!==''?'Priced':'Raised',decided_by:'',decided_on:'',files_json:'[]',prog_item_ids:'',pdf_url:'',created_by:by,created_at:now,history:stamp+' - Raised by '+by+(cost!==''?' and priced at '+fmt(cost):'')});\n const res=await save('variations',0,row,false);return R(true,{id:num(res&&res.id),var_no:row.var_no});\n}\nconst r=find(b.id);if(!r)return R(false,{message:'That variation was not found. Refresh the page.'});\nif(a==='status'){\n const st=S(b.status);if(STS.indexOf(st)<0)return R(false,{message:'Unknown status.'});\n if(st!=='Raised'&&S(r.cost)==='')return R(false,{message:'Add the cost before marking it '+st.toLowerCase()+'.'});\n const row={status:st,history:hist(r,(S(r.status)||'Raised')+' to '+st+' by '+by+(S(b.note)?': '+S(b.note).slice(0,300):''))};\n if(st==='Approved'||st==='Rejected'){row.decided_by=S(b.decided_by).slice(0,120)||by;row.decided_on=isD(b.decided_on)?S(b.decided_on):now.slice(0,10);}else{row.decided_by='';row.decided_on='';}\n await save('variations',r.id,row,true);return R(true);\n}\nif(a==='delete'){await del('variations',r.id);return R(true);}\nif(a==='addtask'){\n if(S(r.status)!=='Approved')return R(false,{message:'Only approved variations can add programme tasks.'});\n const ph=S(b.phase_id);if(!ph)return R(false,{message:'Pick the phase for the new task.'});\n const st=S(b.start_on),en=S(b.end_on)||st;if((st&&!isD(st))||(en&&!isD(en))||(st&&en<st))return R(false,{message:'Check the dates.'});\n const name=(S(b.name)||(S(r.var_no)+' '+S(r.title))).slice(0,160);\n const res=await h.httpRequest({method:'POST',url:H+'cbs-programme-act',body:{a:'save_item',job:job,by:by,id:0,kind:'task',parent_id:ph,name:name,start_on:st,end_on:en,status:'Not started',assigned_to:'',blocked_by:'',notes:'From variation '+S(r.var_no)},json:true,timeout:30000});\n if(!res||!res.ok)return R(false,{message:(res&&res.message)||'Could not add the task to the programme.'});\n const ids=S(r.prog_item_ids).split(',').map(S).filter(Boolean);if(res.id)ids.push(String(res.id));\n await save('variations',r.id,{prog_item_ids:ids.join(','),history:hist(r,'Programme task \"'+name+'\" added by '+by)},true);\n return R(true,{task_id:res.id});\n}\nreturn R(false,{message:'Unknown action.'});\n"
+        }
+      },
+      {
+        "id": "f7941a26-288e-4de2-8f73-ef607cd4df3e",
+        "name": "Send Act",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          448
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "b64faf2d-c315-405e-b455-5e1ebd21dbe4",
+        "name": "Page Fix",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          336,
+          0
+        ],
+        "parameters": {
+          "jsCode": "/* Fills the site and client from the hub job record when ServiceM8 has not supplied them. */\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();\nconst e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nlet html=$input.first().json.html;const job=S(($('Page Hook').first().json.query||{}).job);\nconst m=html.match(/window\\.D=(\\{.*?\\});<\\/script>/);\nif(job&&m){let D={};try{D=JSON.parse(m[1].replace(/\\\\u003c/g,'<'));}catch(x){}\n if(!D.site){try{const L=await this.helpers.httpRequest({method:'POST',url:'https://old-hub.example/webhook/cbs-admin-save?a=list&t=jobrows',body:{},json:true,timeout:20000});\n  const r=(Array.isArray(L)?L:[]).filter(x=>jk(x.ref)===jk(job)).sort((a,b)=>(Number(b.id)||0)-(Number(a.id)||0))[0];\n  if(r&&(S(r.site)||S(r.client))){D.site=S(r.site);D.client=S(r.client);\n   html=html.replace(m[0],'window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+';</script>');\n   html=html.replace(/(<\\/h1><p>)[^<]*(<\\/p>)/,'$1'+e([D.site,D.client].filter(Boolean).join(' \\u00b7 '))+'$2');}}catch(x){}}}\nreturn [{json:{html:html}}];\n",
+          "mode": "runOnceForAllItems"
+        }
+      }
+    ],
+    "connections": {
+      "Page Hook": {
+        "main": [
+          [
+            {
+              "node": "Variations Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Data Hook": {
+        "main": [
+          [
+            {
+              "node": "Variations Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Variations Data": {
+        "main": [
+          [
+            {
+              "node": "Send Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Act Hook": {
+        "main": [
+          [
+            {
+              "node": "Variation Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Variation Act": {
+        "main": [
+          [
+            {
+              "node": "Send Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Variations Page": {
+        "main": [
+          [
+            {
+              "node": "Page Fix",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Page Fix": {
+        "main": [
+          [
+            {
+              "node": "Send Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS variations log per job: GET cbs-variations?job=N (admin page), GET cbs-variations-data, POST cbs-variation-act (save, status, delete, contract value, add programme task, instruction options).",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

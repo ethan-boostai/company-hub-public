@@ -1,0 +1,44 @@
+{
+  "table": "cbs_tv_settings",
+  "n8n_id": "fW8J9S88kqHYg2ob",
+  "columns": [
+    {
+      "name": "key",
+      "type": "string"
+    },
+    {
+      "name": "updated_at",
+      "type": "string"
+    },
+    {
+      "name": "value",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "key": "main",
+      "value": "{\"view\":\"board\",\"panels\":{\"act\":true,\"live\":true,\"pipe\":true,\"jt\":true,\"up\":true,\"exp\":true},\"cats\":{\"permits\":true,\"paperwork\":true,\"subrams\":true,\"plant\":true,\"incidents\":true,\"vehicles\":true,\"requests\":true,\"stock\":true,\"notices\":true,\"pipeline\":true,\"programme\":true,\"snags\":true,\"x_vehicle\":true,\"x_insurance\":true,\"x_subdocs\":true,\"x_accred\":true,\"x_training\":true,\"x_plant\":true,\"x_coshh\":true,\"x_hs\":true},\"upDays\":14,\"expDays\":30,\"chaseDays\":5,\"swap\":60,\"prog\":{\"on\":true,\"wb\":1,\"wa\":3},\"jv\":{\"mode\":\"rotate\",\"secs\":30}}",
+      "updated_at": "2026-10-23T13:37:51.241Z",
+      "id": 1,
+      "createdAt": "2026-10-06T11:54:44.159Z",
+      "updatedAt": "2026-10-23T13:37:51.282Z"
+    },
+    {
+      "key": "nudge",
+      "value": "2026-10-23T13:37:51.429Z",
+      "updated_at": "2026-10-23T13:37:51.429Z",
+      "id": 2,
+      "createdAt": "2026-10-08T17:11:50.834Z",
+      "updatedAt": "2026-10-23T13:37:51.485Z"
+    },
+    {
+      "key": "cast",
+      "value": "{}",
+      "updated_at": "2026-10-23T13:37:51.241Z",
+      "id": 3,
+      "createdAt": "2026-10-09T09:20:44.057Z",
+      "updatedAt": "2026-10-23T13:37:51.325Z"
+    }
+  ]
+}

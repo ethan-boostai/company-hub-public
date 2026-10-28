@@ -1,0 +1,92 @@
+{
+  "table": "cbs_snags",
+  "n8n_id": "4gH5wN0c86eACs0J",
+  "columns": [
+    {
+      "name": "after_json",
+      "type": "string"
+    },
+    {
+      "name": "area",
+      "type": "string"
+    },
+    {
+      "name": "assigned_to",
+      "type": "string"
+    },
+    {
+      "name": "before_json",
+      "type": "string"
+    },
+    {
+      "name": "description",
+      "type": "string"
+    },
+    {
+      "name": "due_on",
+      "type": "string"
+    },
+    {
+      "name": "fix_notes",
+      "type": "string"
+    },
+    {
+      "name": "fixed_at",
+      "type": "string"
+    },
+    {
+      "name": "fixed_by",
+      "type": "string"
+    },
+    {
+      "name": "history",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "phase",
+      "type": "string"
+    },
+    {
+      "name": "pushed_at",
+      "type": "string"
+    },
+    {
+      "name": "pushed_by",
+      "type": "string"
+    },
+    {
+      "name": "raised_at",
+      "type": "string"
+    },
+    {
+      "name": "raised_by",
+      "type": "string"
+    },
+    {
+      "name": "signed_off_at",
+      "type": "string"
+    },
+    {
+      "name": "signed_off_by",
+      "type": "string"
+    },
+    {
+      "name": "snag_no",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [],
+  "note": "no rows in table (backend list returned empty 2026-10-28)"
+}

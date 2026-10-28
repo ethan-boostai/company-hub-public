@@ -1,0 +1,529 @@
+{
+  "id": "iY2VrVUuWxqr62rP",
+  "name": "CBS - Hub Inspect (temp)",
+  "active": false,
+  "isArchived": false,
+  "versionId": "d9481c7b-854c-48b1-8c0e-cd730ce48bd8",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "createdAt": "2026-10-06T12:31:55.374Z",
+  "updatedAt": "2026-10-25T17:05:40.695Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Backup Hook": {
+      "main": [
+        [
+          {
+            "node": "All Pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "All Pages": {
+      "main": [
+        [
+          {
+            "node": "Bake",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bake": {
+      "main": [
+        [
+          {
+            "node": "Save Baked",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SM8 Co": {
+      "main": [
+        [
+          {
+            "node": "SM8 CC",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pages Read": {
+      "main": [
+        [
+          {
+            "node": "Find Terms",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Strip Scaff": {
+      "main": [
+        [
+          {
+            "node": "Backup Row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Backup Row": {
+      "main": [
+        [
+          {
+            "node": "Save Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SM8 CC": {
+      "main": [
+        [
+          {
+            "node": "Summarise SM8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inspect Hook": {
+      "main": [
+        [
+          {
+            "node": "Grab Snippets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "27f7a71a-9a9f-4c74-a201-7e0f8c7ec8c7",
+      "name": "Inspect Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-hub-inspect-temp",
+        "responseMode": "lastNode"
+      },
+      "webhookId": "ce324a4e-a7d4-47de-88b5-fb293e6e13f3",
+      "disabled": false
+    },
+    {
+      "id": "0f77d18b-5cfb-411b-bbdc-da4d8edb4fc7",
+      "name": "Grab Snippets",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const d=await this.helpers.httpRequest({method:'GET',url:'https://old-hub.example/webhook/cbs-closeout-data?job=99901',json:true,timeout:90000});\nconst o=typeof d==='string'?JSON.parse(d):d;\nreturn [{json:{keys:Object.keys(o||{}),sample:JSON.stringify(o).slice(0,3000)}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "25df2128-e41f-4b18-a642-2f85315f0c2d",
+      "name": "Backup Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        300
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-maint-backup-temp",
+        "responseMode": "lastNode"
+      },
+      "webhookId": "a304fcee-2b08-453d-8380-871223b9d221",
+      "disabled": true
+    },
+    {
+      "id": "78ce6321-f4f3-4bbc-a02a-db1720aaff55",
+      "name": "All Pages",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        300
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HOHWTBOJHrHF0TvB"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      }
+    },
+    {
+      "id": "17c1c9a0-c9b3-4fbf-80ab-63427c91c164",
+      "name": "Insert Backup",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        300
+      ],
+      "parameters": {
+        "columns": {
+          "mappingMode": "defineBelow",
+          "schema": [
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "name",
+              "id": "name",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "content",
+              "id": "content",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "value": {
+            "content": "={{ $json.content }}",
+            "name": "={{ $json.name }}"
+          }
+        },
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "PsatFoq0cDpQsRzp"
+        },
+        "operation": "insert",
+        "options": {
+          "optimizeBulk": true
+        },
+        "resource": "row"
+      }
+    },
+    {
+      "id": "df438fed-32dc-4b87-aa9c-7c36c2086fdb",
+      "name": "Bake",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        500
+      ],
+      "parameters": {
+        "jsCode": "const OLD='<style id=\"cbsHdrM\">@media (max-width:640px){header{flex-wrap:wrap;row-gap:8px}header h1{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#enqBtn,#tvBtn{flex:1 1 40%;margin:0!important;text-align:center}}</style>';\nconst CSS='@media (max-width:760px){'+\n'header{flex-wrap:wrap!important;row-gap:10px!important;column-gap:10px!important;padding:10px 12px!important}'+\n'#menuBtn{order:1}#cbsLogo{order:2}header h1#title{order:3;flex:1 1 0!important;min-width:0;margin:0!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:16px!important}#bellBtn{order:4}'+\n'header::after{content:\"\";order:5;flex-basis:100%;height:0}'+\n'#back{order:6;flex:0 0 auto;margin:0!important;padding:7px 10px!important;border:1px solid #6b6e70!important;border-radius:8px!important;white-space:nowrap}'+\n'#enqBtn{order:7}#tvBtn{order:8}'+\n'#enqBtn,#tvBtn{flex:1 1 0!important;margin:0!important;text-align:center;padding:8px 10px!important}'+\n'#qm,#nt{top:var(--cbsHdH,57px)!important}}';\nconst JS='(function(){var hd=document.querySelector(\"header\");if(!hd)return;function s(){try{document.documentElement.style.setProperty(\"--cbsHdH\",hd.getBoundingClientRect().height+\"px\");}catch(e){}}s();if(window.ResizeObserver){new ResizeObserver(s).observe(hd);}else{window.addEventListener(\"resize\",s);setInterval(s,1500);}})();';\ntry{new Function(JS);}catch(e){return [{json:{error:'syntax '+e.message}}];}\nconst NEW='<style id=\"cbsHdrM\">'+CSS+'</style><script id=\"cbsHdrMjs\">'+JS+'</script>';\nconst row=$input.all().map(i=>i.json).filter(r=>r.name==='page:cbs-admin')[0];\nconst o=JSON.parse(row.content);const n=o.b.split(OLD).length-1;if(n!==1)return [{json:{error:'old style found '+n+'x'}}];\no.b=o.b.split(OLD).join(NEW);return [{json:{id:row.id,content:JSON.stringify(o),ok:true}}];"
+      }
+    },
+    {
+      "id": "e7d7917a-7e39-4be6-a5a0-f12f57e6fa14",
+      "name": "Save Baked",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        500
+      ],
+      "parameters": {
+        "columns": {
+          "mappingMode": "defineBelow",
+          "schema": [
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "content",
+              "id": "content",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "value": {
+            "content": "={{ $json.content }}"
+          }
+        },
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HOHWTBOJHrHF0TvB"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "id",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "update",
+        "resource": "row"
+      }
+    },
+    {
+      "id": "c752acec-f500-4959-a254-d058d461fcce",
+      "name": "SM8 Co",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        200,
+        400
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "GET",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        },
+        "url": "https://api.servicem8.com/api_1.0/queue.json"
+      }
+    },
+    {
+      "id": "0950f4df-aaa9-4b07-86f5-027efdff0fc4",
+      "name": "SM8 CC",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        400
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "GET",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json",
+              "fullResponse": false
+            }
+          },
+          "timeout": 30000
+        },
+        "url": "https://api.servicem8.com/api_1.0/job.json?%24filter=status%20eq%20%27Work%20Order%27%20and%20active%20eq%201"
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "a4f2f492-1f7e-4fb6-9ce5-739803aea08a",
+      "name": "Pages Read",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        150
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HOHWTBOJHrHF0TvB"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      }
+    },
+    {
+      "id": "31c18e23-1eb5-48d2-bb68-d27a24f58257",
+      "name": "Find Terms",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        150
+      ],
+      "parameters": {
+        "jsCode": "/* read-only: snippets around terms in stored pages. body: {page, terms:[], ctx, max} */\nconst rows=$input.all().map(i=>i.json);const q=($('Inspect Hook').first().json.body)||{};\nconst pg=q.page||'page:cbs-admin';const row=rows.filter(r=>r.name===pg)[0];if(!row)return [{json:{error:'no page '+pg,names:rows.map(r=>r.name).filter(n=>!/^_bak/.test(n))}}];\nlet b=String(row.content);try{const o=JSON.parse(row.content);b=String(o.b||row.content);}catch(e){}\nconst ctx=q.ctx||220,max=q.max||12;const out={page:pg,len:b.length,hits:{}};\n(q.terms||[]).forEach(t=>{const arr=[];let i=-1;let c=0;while((i=b.indexOf(t,i+1))>=0){c++;if(arr.length<max)arr.push(i+': '+b.slice(Math.max(0,i-ctx),i+t.length+ctx));}out.hits[t]={count:c,snips:arr};});\nreturn [{json:out}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "607276f1-3b10-4a53-a06e-034240903a8a",
+      "name": "Strip Scaff",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        700
+      ],
+      "parameters": {
+        "jsCode": "/* Patch cbsKeep: only restore the last hub section on reload / browser back-forward, never on a fresh visit. Runs only when body.patch==='keepnav'. Any problem throws (nothing saved). */\nconst q=($('Inspect Hook').first().json.body)||{};if(q.patch!=='keepnav')return [];\nconst row=$input.all().map(i=>i.json).filter(r=>r.name==='page:cbs-admin')[0];\nif(!row)throw new Error('page:cbs-admin not found');\nconst o=JSON.parse(row.content);const b=String(o.b);\nconst A='if(!deep){try{var hs=history.state;';const Z='saved={cbs:ss.cbs,d:0};}catch(e){}}}';\nif(b.split(A).length-1!==1)throw new Error('start found '+(b.split(A).length-1)+'x');\nconst s=b.indexOf(A),e=b.indexOf(Z,s);if(e<0||e-s>400)throw new Error('end not found near start');\nconst NEW='var nt=\"\";try{var ne=performance.getEntriesByType(\"navigation\")[0];if(ne)nt=ne.type;}catch(e){}\\n'+\n'if(!nt){try{var pn=performance.navigation.type;nt=pn===1?\"reload\":pn===2?\"back_forward\":\"navigate\";}catch(e){}}\\n'+\n'if(nt===\"navigate\"){try{sessionStorage.removeItem(K);}catch(e){}}\\n'+\n'if(!deep&&nt!==\"navigate\"){try{var hs=history.state;if(hs&&hs.cbs)saved={cbs:hs.cbs,d:hs.d||0};}catch(e){}\\n'+\n' if(!saved&&nt===\"reload\"){try{var ss=JSON.parse(sessionStorage.getItem(K)||\"null\");if(ss&&ss.cbs)saved={cbs:ss.cbs,d:0};}catch(e){}}}';\nconst nb=b.slice(0,s)+NEW+b.slice(e+Z.length);\nconst ks=nb.indexOf('<script id=\"cbsKeep\">');const ke=nb.indexOf('</script>',ks);\nnew Function(nb.slice(ks+21,ke));\nif(nb.length<b.length)throw new Error('new page shorter than old - aborting');\no.b=nb;\nreturn [{json:{id:row.id,original:row.content,content:JSON.stringify(o),oldBlock:b.slice(s,e+Z.length),newBlock:NEW,ok:true}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "5d83aac9-0539-48ae-802c-9b5be8f64e49",
+      "name": "Backup Row",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        700
+      ],
+      "parameters": {
+        "columns": {
+          "mappingMode": "defineBelow",
+          "schema": [
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "name",
+              "id": "name",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "content",
+              "id": "content",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "value": {
+            "content": "={{ $json.original }}",
+            "name": "_bak_keepnav_20261022_page:cbs-admin"
+          }
+        },
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HOHWTBOJHrHF0TvB"
+        },
+        "operation": "insert",
+        "resource": "row"
+      }
+    },
+    {
+      "id": "129392f3-8d65-495d-88e6-bb33037f51c3",
+      "name": "Save Page",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        700
+      ],
+      "parameters": {
+        "columns": {
+          "mappingMode": "defineBelow",
+          "schema": [
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "content",
+              "id": "content",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "value": {
+            "content": "={{ $('Strip Scaff').first().json.content }}"
+          }
+        },
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HOHWTBOJHrHF0TvB"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "id",
+              "keyValue": "={{ $('Strip Scaff').first().json.id }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "update",
+        "resource": "row"
+      }
+    },
+    {
+      "id": "5b8cb747-2c49-492b-b32d-c731998d2378",
+      "name": "Summarise SM8",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        600,
+        400
+      ],
+      "parameters": {
+        "jsCode": "const Q=$('SM8 Co').all().map(i=>i.json);const J=$input.all().map(i=>i.json);const qn={};Q.forEach(q=>qn[q.uuid]=String(q.name).trim());\nconst ex={};J.forEach(j=>{const k=(qn[j.queue_uuid]||'(no folder)')+' expires '+String(j.queue_expiry_date||'').slice(0,7);ex[k]=(ex[k]||0)+1;});\nreturn [{json:{workOrders:J.length,byFolderAndExpiry:ex}}];",
+        "mode": "runOnceForAllItems"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": null,
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Temporary read-only helper: fetches the CBS hub page and returns snippets around given terms.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

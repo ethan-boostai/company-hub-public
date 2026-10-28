@@ -1,0 +1,283 @@
+{
+  "id": "QSrDXFk65ZFTW8A3",
+  "name": "CBS - ServiceM8 Connection Test",
+  "active": false,
+  "isArchived": false,
+  "versionId": "0d87389b-8f36-4f5e-a397-dd0d945792c9",
+  "activeVersionId": null,
+  "triggerCount": 1,
+  "createdAt": "2026-09-25T13:47:57.344Z",
+  "updatedAt": "2026-10-05T08:56:17.831Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "binaryMode": "separate"
+  },
+  "connections": {
+    "Start Test": {
+      "main": [
+        [
+          {
+            "node": "Get Clients",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Clients": {
+      "main": [
+        [
+          {
+            "node": "Pick Client",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick Client": {
+      "main": [
+        [
+          {
+            "node": "Create Test Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Test Job": {
+      "main": [
+        [
+          {
+            "node": "Add Job Note",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Job Note": {
+      "main": [
+        [
+          {
+            "node": "Read Job Back",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On Job Created": {
+      "main": [
+        [
+          {
+            "node": "Log Event Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "2756a6ab-36b2-43cb-8465-4f715a4cd24d",
+      "name": "Start Test",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "limit": 5,
+        "advancedOptions": {}
+      },
+      "id": "2346b270-1e55-431a-a42a-55463b60509b",
+      "name": "Get Clients",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8",
+      "typeVersion": 1,
+      "position": [
+        224,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "client-uuid",
+              "name": "companyUuid",
+              "value": "={{ $json.uuid }}",
+              "type": "string"
+            },
+            {
+              "id": "client-name",
+              "name": "companyName",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "job-desc",
+              "name": "jobDescription",
+              "value": "n8n test job - created via ServiceM8 node",
+              "type": "string"
+            },
+            {
+              "id": "job-addr",
+              "name": "jobAddress",
+              "value": "Test Site, Chelmsford",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4e51e11f-9dfc-4f1b-938d-bf16a4f76f55",
+      "name": "Pick Client",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "job",
+        "operation": "create",
+        "fields": {
+          "field": [
+            {
+              "field": "job_description",
+              "value": "={{ $json.jobDescription }}"
+            },
+            {
+              "field": "company_uuid",
+              "value": "={{ $json.companyUuid }}"
+            },
+            {
+              "field": "job_address",
+              "value": "={{ $json.jobAddress }}"
+            }
+          ]
+        }
+      },
+      "id": "68ede366-6293-4ef2-aa77-a67e28f37caa",
+      "name": "Create Test Job",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8",
+      "typeVersion": 1,
+      "position": [
+        672,
+        0
+      ],
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "resource": "job",
+        "operation": "addNoteToJob",
+        "fields": {
+          "note": "Created by n8n test workflow",
+          "related_object_uuid": "={{ $json.uuid }}"
+        }
+      },
+      "id": "f12ebef8-cb89-44c3-b201-c172468883e9",
+      "name": "Add Job Note",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8",
+      "typeVersion": 1,
+      "position": [
+        896,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "job",
+        "operation": "get",
+        "uuid": "={{ $('Create Test Job').item.json.uuid }}"
+      },
+      "id": "3eca750b-11e4-4cec-a12a-d9373af37cf0",
+      "name": "Read Job Back",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "event": "job.created"
+      },
+      "id": "613d536c-1d47-4d07-ac7f-a126a5f3e64f",
+      "name": "On Job Created",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8Trigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        224
+      ],
+      "webhookId": "2baab471-84fa-4fb5-b3ee-0fc55e647f37"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "received-at",
+              "name": "receivedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "867110fd-7696-4150-a387-98ea28816387",
+      "name": "Log Event Payload",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        224
+      ]
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": null,
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "ServiceM8 connection test for CBS. Manual branch proves read + write (list clients, create Quote job, add note, read job back). Second branch tests the job.created webhook trigger. Add the ServiceM8 API key credential (Full Access) before running.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

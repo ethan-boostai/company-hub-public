@@ -1,0 +1,99 @@
+{
+  "table": "cbs_purchase_orders",
+  "n8n_id": "Z1lGdRMfPFALqbCR",
+  "columns": [
+    {
+      "name": "client",
+      "type": "string"
+    },
+    {
+      "name": "deliver_to",
+      "type": "string"
+    },
+    {
+      "name": "hire_end",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "lines_json",
+      "type": "string"
+    },
+    {
+      "name": "needed_by",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "offhired_on",
+      "type": "string"
+    },
+    {
+      "name": "ordered_by",
+      "type": "string"
+    },
+    {
+      "name": "ordered_on",
+      "type": "string"
+    },
+    {
+      "name": "pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "po_no",
+      "type": "string"
+    },
+    {
+      "name": "po_type",
+      "type": "string"
+    },
+    {
+      "name": "qbo_po_id",
+      "type": "string"
+    },
+    {
+      "name": "received_json",
+      "type": "string"
+    },
+    {
+      "name": "site",
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "subtotal",
+      "type": "string"
+    },
+    {
+      "name": "supplier",
+      "type": "string"
+    },
+    {
+      "name": "supplier_id",
+      "type": "string"
+    },
+    {
+      "name": "total",
+      "type": "string"
+    },
+    {
+      "name": "vat",
+      "type": "string"
+    }
+  ],
+  "sample_rows": []
+}

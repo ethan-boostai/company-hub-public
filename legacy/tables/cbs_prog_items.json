@@ -1,0 +1,98 @@
+{
+  "table": "cbs_prog_items",
+  "n8n_id": "BdnMXEmq0R42HQYG",
+  "columns": [
+    {
+      "name": "area",
+      "type": "string"
+    },
+    {
+      "name": "assigned_to",
+      "type": "string"
+    },
+    {
+      "name": "blocked_by",
+      "type": "string"
+    },
+    {
+      "name": "check_token",
+      "type": "string"
+    },
+    {
+      "name": "checklist_json",
+      "type": "string"
+    },
+    {
+      "name": "end_on",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "kind",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "parent_id",
+      "type": "string"
+    },
+    {
+      "name": "pct",
+      "type": "number"
+    },
+    {
+      "name": "sort",
+      "type": "string"
+    },
+    {
+      "name": "start_on",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "updated_at",
+      "type": "string"
+    },
+    {
+      "name": "updated_by",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "job_no": "12",
+      "kind": "phase",
+      "parent_id": "",
+      "sort": "1",
+      "name": "DEMO",
+      "start_on": "2026-10-19",
+      "end_on": "2026-11-08",
+      "status": "Not started",
+      "assigned_to": "",
+      "blocked_by": "",
+      "notes": "",
+      "updated_by": "Ethan Paraha",
+      "updated_at": "2026-10-21T22:17",
+      "checklist_json": null,
+      "pct": null,
+      "check_token": null,
+      "area": null,
+      "id": 1,
+      "createdAt": "2026-10-21T21:17:45.462Z",
+      "updatedAt": "2026-10-21T21:17:45.462Z"
+    }
+  ]
+}

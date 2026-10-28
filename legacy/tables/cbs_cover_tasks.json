@@ -1,0 +1,35 @@
+{
+  "table": "cbs_cover_tasks",
+  "n8n_id": "EqArJk9NBswgBxOf",
+  "columns": [
+    {
+      "name": "action",
+      "type": "string"
+    },
+    {
+      "name": "cover",
+      "type": "string"
+    },
+    {
+      "name": "done_on",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "raised_on",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "target",
+      "type": "string"
+    }
+  ],
+  "sample_rows": []
+}

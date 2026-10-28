@@ -1,0 +1,99 @@
+{
+  "table": "cbs_incidents",
+  "n8n_id": "vZXrt8GrhPBPSqQH",
+  "columns": [
+    {
+      "name": "action_due",
+      "type": "string"
+    },
+    {
+      "name": "action_owner",
+      "type": "string"
+    },
+    {
+      "name": "closed_at",
+      "type": "string"
+    },
+    {
+      "name": "corrective_actions",
+      "type": "string"
+    },
+    {
+      "name": "description",
+      "type": "string"
+    },
+    {
+      "name": "immediate_action",
+      "type": "string"
+    },
+    {
+      "name": "injury_detail",
+      "type": "string"
+    },
+    {
+      "name": "investigation",
+      "type": "string"
+    },
+    {
+      "name": "kind",
+      "type": "string"
+    },
+    {
+      "name": "location",
+      "type": "string"
+    },
+    {
+      "name": "notifiable",
+      "type": "boolean"
+    },
+    {
+      "name": "occurred_at",
+      "type": "string"
+    },
+    {
+      "name": "person",
+      "type": "string"
+    },
+    {
+      "name": "record_pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "ref",
+      "type": "string"
+    },
+    {
+      "name": "reported_by",
+      "type": "string"
+    },
+    {
+      "name": "requires_investigation",
+      "type": "string"
+    },
+    {
+      "name": "riddor_notified_at",
+      "type": "string"
+    },
+    {
+      "name": "root_cause",
+      "type": "string"
+    },
+    {
+      "name": "severity",
+      "type": "string"
+    },
+    {
+      "name": "sm8_job",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "treatment",
+      "type": "string"
+    }
+  ],
+  "sample_rows": []
+}

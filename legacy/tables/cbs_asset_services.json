@@ -1,0 +1,35 @@
+{
+  "table": "cbs_asset_services",
+  "n8n_id": "9w65GkpM5Psif5aC",
+  "columns": [
+    {
+      "name": "asset",
+      "type": "string"
+    },
+    {
+      "name": "cost",
+      "type": "string"
+    },
+    {
+      "name": "next_due",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "serviced_by",
+      "type": "string"
+    },
+    {
+      "name": "serviced_on",
+      "type": "string"
+    },
+    {
+      "name": "work_done",
+      "type": "string"
+    }
+  ],
+  "sample_rows": []
+}

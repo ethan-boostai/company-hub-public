@@ -1,0 +1,28 @@
+{
+  "table": "cbs_job_coshh",
+  "n8n_id": "lbcr2s3CoCpLwIni",
+  "columns": [
+    {
+      "name": "added_at",
+      "type": "string"
+    },
+    {
+      "name": "added_by",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "product",
+      "type": "string"
+    },
+    {
+      "name": "substance_id",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [],
+  "note": "no rows: Get Links in CBS - CoSHH exec 1326628 (2026-10-28) returned empty"
+}

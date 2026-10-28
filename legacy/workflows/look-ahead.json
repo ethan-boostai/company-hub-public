@@ -1,0 +1,218 @@
+{
+  "id": "S7bFR2eTTBK0SgEZ",
+  "name": "CBS - Look-ahead",
+  "active": true,
+  "isArchived": false,
+  "versionId": "ee28639f-32bf-407e-9d7a-c481364ce55b",
+  "activeVersionId": "ee28639f-32bf-407e-9d7a-c481364ce55b",
+  "triggerCount": 1,
+  "createdAt": "2026-10-10T18:44:01.417Z",
+  "updatedAt": "2026-10-10T18:44:36.113Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "UI Hook": {
+      "main": [
+        [
+          {
+            "node": "Look-ahead Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Look-ahead Script": {
+      "main": [
+        [
+          {
+            "node": "Send Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "404d78f3-4215-4287-afe6-f5e15890ab6d",
+      "name": "UI Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-lookahead-ui",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "958b1fc4-b8d6-473a-88bc-9d3be2c765df"
+    },
+    {
+      "id": "da85e8a6-14ee-40a0-ba2b-dd267d8659f6",
+      "name": "Look-ahead Script",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* Serves the Programme page look-ahead script (Look-ahead button next to Print Gantt). */\nreturn [{json:{js:'(function(){var f='+cbsLookahead.toString()+';if(document.readyState===\"loading\")document.addEventListener(\"DOMContentLoaded\",f);else f();})();'}}];\n/* Look-ahead button for the Programme page (served as JS at cbs-lookahead-ui). Uses the page's programme data (window.D.p). */\nfunction cbsLookahead(){\n if(window.__cbsLA)return;window.__cbsLA=1;\n var D=window.D||{},LOGO=null;\n function s(v){return v==null?'':String(v);}\n function e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\n function pd(x){return new Date(x+'T00:00:00Z');}function ds(d){return d.toISOString().slice(0,10);}\n function addD(x,n){var d=pd(x);d.setUTCDate(d.getUTCDate()+n);return ds(d);}\n function dd(a,b){return Math.round((pd(b)-pd(a))/86400000);}\n var DW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];\n function dmy(x){var m=s(x).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:s(x);}\n function monday(x){var d=pd(x),w=d.getUTCDay();return addD(x,w===0?-6:1-w);}\n function today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\n function leaves(){var out=[],P=(D.p||{}).phases||[];P.forEach(function(p){if(!(p.tasks||[]).length){out.push({r:p,phase:p.name,path:p.name});return;}p.tasks.forEach(function(t){if(!(t.subs||[]).length){out.push({r:t,phase:p.name,path:t.name});return;}t.subs.forEach(function(x){out.push({r:x,phase:p.name,path:t.name+' \\u203a '+x.name});});});});return out;}\n function add(){var pr=document.getElementById('pr');if(!pr||document.getElementById('laBtn'))return;var b=document.createElement('button');b.className='btn ghost';b.id='laBtn';b.textContent='Look-ahead';b.onclick=dlgLA;pr.parentNode.insertBefore(b,pr.nextSibling);}\n new MutationObserver(add).observe(document.body,{childList:true,subtree:true});add();\n function dlg(h){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg\">'+h+'</div>';document.body.appendChild(o);o.addEventListener('click',function(ev){if(ev.target===o)o.remove();});o.close=function(){o.remove();};return o;}\n function dlgLA(){var L=leaves();if(!L.length){alert('Add some tasks to the programme first.');return;}\n  var st=monday(today());var people={};L.forEach(function(x){if(x.r.assigned_to)people[x.r.assigned_to]=1;});var P=Object.keys(people).sort();\n  var o=dlg('<h2>Look-ahead</h2><div class=\"m\">The work coming up, by day, for site and subcontractors.</div>'\n   +'<div class=\"row2\"><div><label class=\"f\">Starting</label><input type=\"date\" id=\"las\" value=\"'+st+'\"></div><div><label class=\"f\">Length</label><select id=\"law\"><option value=\"1\">1 week</option><option value=\"2\" selected>2 weeks</option><option value=\"3\">3 weeks</option><option value=\"4\">4 weeks</option></select></div></div>'\n   +'<label class=\"f\">Who</label><select id=\"lap\"><option value=\"\">Everyone</option>'+P.map(function(p){return '<option>'+e(p)+'</option>';}).join('')+'</select>'\n   +'<label class=\"chk\"><input type=\"checkbox\" id=\"lawe\"><span>Include weekends</span></label>'\n   +'<label class=\"chk\"><input type=\"checkbox\" id=\"lad\" checked><span>Leave out work already done</span></label>'\n   +'<label class=\"chk\"><input type=\"checkbox\" id=\"lal\" checked><span>Add a day-by-day list after the chart</span></label>'\n   +'<div class=\"note\" id=\"lam\"></div><div class=\"b\"><button class=\"btn\" id=\"lag\">Download PDF</button><button class=\"btn ghost\" id=\"lax\">Cancel</button></div>');\n  o.querySelector('#lax').onclick=o.close;\n  o.querySelector('#lag').onclick=function(){var a=o.querySelector('#las').value;if(!a){alert('Pick the start date.');return;}if(!window.jspdf){alert('The PDF tool did not load. Refresh and try again.');return;}\n   var opt={from:a,weeks:Number(o.querySelector('#law').value)||2,who:o.querySelector('#lap').value,we:o.querySelector('#lawe').checked,hideDone:o.querySelector('#lad').checked,list:o.querySelector('#lal').checked};\n   var b=this;b.disabled=true;getLogo().then(function(lg){var n=build(opt,lg);if(!n){b.disabled=false;o.querySelector('#lam').textContent='Nothing is planned in that window'+(opt.who?' for '+opt.who:'')+'.';return;}o.close();});};}\n function getLogo(){if(LOGO!==null)return Promise.resolve(LOGO);return fetch('/webhook/cbs-programme-logo').then(function(r){return r.json();}).then(function(d){LOGO=(d&&d.lg)||'';return LOGO;}).catch(function(){LOGO='';return '';});}\n function build(opt,lg){var to=addD(opt.from,opt.weeks*7-1),days=[],i;for(i=0;i<opt.weeks*7;i++){var d=addD(opt.from,i),w=pd(d).getUTCDay();if(opt.we||(w>0&&w<6))days.push(d);}\n  var rows=leaves().filter(function(x){var r=x.r,a=r.start_eff,b=r.end_eff||a;if(!a||b<opt.from||a>to)return false;if(opt.hideDone&&r.status_eff==='Done')return false;if(opt.who&&s(r.assigned_to)!==opt.who)return false;return true;})\n   .sort(function(x,y){return s(x.r.start_eff).localeCompare(s(y.r.start_eff))||s(x.phase).localeCompare(s(y.phase));});\n  if(!rows.length)return 0;\n  var doc=new window.jspdf.jsPDF({orientation:'landscape',unit:'mm',format:'a4'}),W=297,HH=210,M=10,LW=92,X0=M+LW,X1=W-M,cw=(X1-X0)/days.length,TD=today(),y;\n  var where=[D.site,D.client].filter(Boolean).join('  |  ');\n  function head(){doc.setFillColor(244,121,32);doc.rect(0,0,W,3,'F');var lx=M;if(lg){try{var pr=doc.getImageProperties(lg),hh=13,ww=pr.width*hh/pr.height;if(ww>48){ww=48;hh=pr.height*ww/pr.width;}doc.addImage(lg,'PNG',M,7,ww,hh);lx=M+ww+5;}catch(z){}}\n   doc.setTextColor(30);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text(opt.weeks+'-week look-ahead - Job '+D.job,lx,12);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text((where||'Chelmsford Building Services').slice(0,110)+(opt.who?'  |  '+opt.who:''),lx,17.5);\n   doc.text(dmy(opt.from)+' to '+dmy(to),X1,12,{align:'right'});doc.text('Chelmsford Building Services Ltd  |  Printed '+new Date().toLocaleDateString('en-GB'),X1,17.5,{align:'right'});\n   var ty=24;doc.setFontSize(7.5);days.forEach(function(d,k){var x=X0+k*cw,w=pd(d).getUTCDay();if(w===1||k===0){doc.setDrawColor(150);doc.setLineWidth(0.3);doc.line(x,ty,x,HH-14);}\n    if(w===0||w===6){doc.setFillColor(243,243,241);doc.rect(x,ty+9,cw,HH-14-(ty+9),'F');}if(d===TD){doc.setFillColor(253,228,208);doc.rect(x,ty,cw,9,'F');}\n    doc.setFont('helvetica','bold');doc.setTextColor(60);doc.text(DW[w],x+cw/2,ty+3.6,{align:'center'});doc.setFont('helvetica','normal');doc.setTextColor(100);doc.text(d.slice(8,10)+'/'+d.slice(5,7),x+cw/2,ty+7.4,{align:'center'});});\n   doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(80);doc.text('Task (phase)',M+1,ty+5.5);doc.text('Who',M+62,ty+5.5);doc.setDrawColor(150);doc.setLineWidth(0.3);doc.line(M,ty+9,X1,ty+9);doc.line(X0,ty,X0,HH-14);doc.setLineWidth(0.2);return ty+9;}\n  y=head();var lastPh='';\n  rows.forEach(function(x){var r=x.r,rh=7;if(y+rh>HH-14){doc.addPage();y=head();lastPh='';}\n   if(x.phase!==lastPh){if(y+12>HH-14){doc.addPage();y=head();}doc.setFillColor(250,250,248);doc.rect(M,y,X1-M,5.5,'F');doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(40);doc.text(s(x.phase),M+1,y+3.9);y+=5.5;lastPh=x.phase;}\n   doc.setFont('helvetica','normal');doc.setFontSize(7.8);doc.setTextColor(25);doc.text((doc.splitTextToSize(x.path,58)[0]||''),M+3,y+4.6);doc.setTextColor(80);doc.text((doc.splitTextToSize(s(r.assigned_to),28)[0]||''),M+62,y+4.6);\n   var c=r.status_eff==='Done'?[95,174,110]:(r.status_eff==='In progress'?[244,121,32]:[150,152,154]);\n   days.forEach(function(d,k){if(d>=r.start_eff&&d<=(r.end_eff||r.start_eff)){doc.setFillColor(c[0],c[1],c[2]);doc.rect(X0+k*cw+0.4,y+1.6,cw-0.8,3.8,'F');}});\n   if(r.overdue){doc.setTextColor(179,38,30);doc.setFontSize(6.5);doc.text('overdue',M+88,y+4.6,{align:'right'});}\n   doc.setDrawColor(232);doc.line(M,y+rh,X1,y+rh);y+=rh;});\n  if(opt.list){doc.addPage();y=18;doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(30);doc.text('Day by day',M,y);y+=6;\n   days.forEach(function(d){var on=rows.filter(function(x){return d>=x.r.start_eff&&d<=(x.r.end_eff||x.r.start_eff);});if(!on.length)return;\n    if(y>HH-24){doc.addPage();y=18;}doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(30);doc.text(DW[pd(d).getUTCDay()]+' '+dmy(d),M,y);y+=5;\n    on.forEach(function(x){var r=x.r,tag=d===r.start_eff?'Starts':(d===(r.end_eff||r.start_eff)?'Finishes':'Continues');if(y>HH-14){doc.addPage();y=18;}\n     doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(40);doc.text('- '+tag+': '+x.path+' ('+x.phase+')'+(r.assigned_to?'  -  '+r.assigned_to:''),M+3,y);y+=4.4;});y+=2;});}\n  var np=doc.getNumberOfPages();for(var k=1;k<=np;k++){doc.setPage(k);doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(90);var lx=M,ly=HH-7;\n   [[[150,152,154],'Not started'],[[244,121,32],'In progress'],[[95,174,110],'Done']].forEach(function(q){doc.setFillColor(q[0][0],q[0][1],q[0][2]);doc.rect(lx,ly-2.6,5,3,'F');doc.text(q[1],lx+6.5,ly);lx+=doc.getTextWidth(q[1])+14;});\n   doc.text('Page '+k+' of '+np,X1,ly,{align:'right'});}\n  doc.save('Job '+D.job+' - Look-ahead '+opt.from+'.pdf');return rows.length;}\n}\n"
+      }
+    },
+    {
+      "id": "a78283e1-38be-4b8c-96c3-58565a287a2d",
+      "name": "Send Script",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.js }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/javascript; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-cache"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "404d78f3-4215-4287-afe6-f5e15890ab6d",
+        "name": "UI Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-lookahead-ui",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "958b1fc4-b8d6-473a-88bc-9d3be2c765df"
+      },
+      {
+        "id": "da85e8a6-14ee-40a0-ba2b-dd267d8659f6",
+        "name": "Look-ahead Script",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* Serves the Programme page look-ahead script (Look-ahead button next to Print Gantt). */\nreturn [{json:{js:'(function(){var f='+cbsLookahead.toString()+';if(document.readyState===\"loading\")document.addEventListener(\"DOMContentLoaded\",f);else f();})();'}}];\n/* Look-ahead button for the Programme page (served as JS at cbs-lookahead-ui). Uses the page's programme data (window.D.p). */\nfunction cbsLookahead(){\n if(window.__cbsLA)return;window.__cbsLA=1;\n var D=window.D||{},LOGO=null;\n function s(v){return v==null?'':String(v);}\n function e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\n function pd(x){return new Date(x+'T00:00:00Z');}function ds(d){return d.toISOString().slice(0,10);}\n function addD(x,n){var d=pd(x);d.setUTCDate(d.getUTCDate()+n);return ds(d);}\n function dd(a,b){return Math.round((pd(b)-pd(a))/86400000);}\n var DW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];\n function dmy(x){var m=s(x).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:s(x);}\n function monday(x){var d=pd(x),w=d.getUTCDay();return addD(x,w===0?-6:1-w);}\n function today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\n function leaves(){var out=[],P=(D.p||{}).phases||[];P.forEach(function(p){if(!(p.tasks||[]).length){out.push({r:p,phase:p.name,path:p.name});return;}p.tasks.forEach(function(t){if(!(t.subs||[]).length){out.push({r:t,phase:p.name,path:t.name});return;}t.subs.forEach(function(x){out.push({r:x,phase:p.name,path:t.name+' \\u203a '+x.name});});});});return out;}\n function add(){var pr=document.getElementById('pr');if(!pr||document.getElementById('laBtn'))return;var b=document.createElement('button');b.className='btn ghost';b.id='laBtn';b.textContent='Look-ahead';b.onclick=dlgLA;pr.parentNode.insertBefore(b,pr.nextSibling);}\n new MutationObserver(add).observe(document.body,{childList:true,subtree:true});add();\n function dlg(h){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg\">'+h+'</div>';document.body.appendChild(o);o.addEventListener('click',function(ev){if(ev.target===o)o.remove();});o.close=function(){o.remove();};return o;}\n function dlgLA(){var L=leaves();if(!L.length){alert('Add some tasks to the programme first.');return;}\n  var st=monday(today());var people={};L.forEach(function(x){if(x.r.assigned_to)people[x.r.assigned_to]=1;});var P=Object.keys(people).sort();\n  var o=dlg('<h2>Look-ahead</h2><div class=\"m\">The work coming up, by day, for site and subcontractors.</div>'\n   +'<div class=\"row2\"><div><label class=\"f\">Starting</label><input type=\"date\" id=\"las\" value=\"'+st+'\"></div><div><label class=\"f\">Length</label><select id=\"law\"><option value=\"1\">1 week</option><option value=\"2\" selected>2 weeks</option><option value=\"3\">3 weeks</option><option value=\"4\">4 weeks</option></select></div></div>'\n   +'<label class=\"f\">Who</label><select id=\"lap\"><option value=\"\">Everyone</option>'+P.map(function(p){return '<option>'+e(p)+'</option>';}).join('')+'</select>'\n   +'<label class=\"chk\"><input type=\"checkbox\" id=\"lawe\"><span>Include weekends</span></label>'\n   +'<label class=\"chk\"><input type=\"checkbox\" id=\"lad\" checked><span>Leave out work already done</span></label>'\n   +'<label class=\"chk\"><input type=\"checkbox\" id=\"lal\" checked><span>Add a day-by-day list after the chart</span></label>'\n   +'<div class=\"note\" id=\"lam\"></div><div class=\"b\"><button class=\"btn\" id=\"lag\">Download PDF</button><button class=\"btn ghost\" id=\"lax\">Cancel</button></div>');\n  o.querySelector('#lax').onclick=o.close;\n  o.querySelector('#lag').onclick=function(){var a=o.querySelector('#las').value;if(!a){alert('Pick the start date.');return;}if(!window.jspdf){alert('The PDF tool did not load. Refresh and try again.');return;}\n   var opt={from:a,weeks:Number(o.querySelector('#law').value)||2,who:o.querySelector('#lap').value,we:o.querySelector('#lawe').checked,hideDone:o.querySelector('#lad').checked,list:o.querySelector('#lal').checked};\n   var b=this;b.disabled=true;getLogo().then(function(lg){var n=build(opt,lg);if(!n){b.disabled=false;o.querySelector('#lam').textContent='Nothing is planned in that window'+(opt.who?' for '+opt.who:'')+'.';return;}o.close();});};}\n function getLogo(){if(LOGO!==null)return Promise.resolve(LOGO);return fetch('/webhook/cbs-programme-logo').then(function(r){return r.json();}).then(function(d){LOGO=(d&&d.lg)||'';return LOGO;}).catch(function(){LOGO='';return '';});}\n function build(opt,lg){var to=addD(opt.from,opt.weeks*7-1),days=[],i;for(i=0;i<opt.weeks*7;i++){var d=addD(opt.from,i),w=pd(d).getUTCDay();if(opt.we||(w>0&&w<6))days.push(d);}\n  var rows=leaves().filter(function(x){var r=x.r,a=r.start_eff,b=r.end_eff||a;if(!a||b<opt.from||a>to)return false;if(opt.hideDone&&r.status_eff==='Done')return false;if(opt.who&&s(r.assigned_to)!==opt.who)return false;return true;})\n   .sort(function(x,y){return s(x.r.start_eff).localeCompare(s(y.r.start_eff))||s(x.phase).localeCompare(s(y.phase));});\n  if(!rows.length)return 0;\n  var doc=new window.jspdf.jsPDF({orientation:'landscape',unit:'mm',format:'a4'}),W=297,HH=210,M=10,LW=92,X0=M+LW,X1=W-M,cw=(X1-X0)/days.length,TD=today(),y;\n  var where=[D.site,D.client].filter(Boolean).join('  |  ');\n  function head(){doc.setFillColor(244,121,32);doc.rect(0,0,W,3,'F');var lx=M;if(lg){try{var pr=doc.getImageProperties(lg),hh=13,ww=pr.width*hh/pr.height;if(ww>48){ww=48;hh=pr.height*ww/pr.width;}doc.addImage(lg,'PNG',M,7,ww,hh);lx=M+ww+5;}catch(z){}}\n   doc.setTextColor(30);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text(opt.weeks+'-week look-ahead - Job '+D.job,lx,12);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text((where||'Chelmsford Building Services').slice(0,110)+(opt.who?'  |  '+opt.who:''),lx,17.5);\n   doc.text(dmy(opt.from)+' to '+dmy(to),X1,12,{align:'right'});doc.text('Chelmsford Building Services Ltd  |  Printed '+new Date().toLocaleDateString('en-GB'),X1,17.5,{align:'right'});\n   var ty=24;doc.setFontSize(7.5);days.forEach(function(d,k){var x=X0+k*cw,w=pd(d).getUTCDay();if(w===1||k===0){doc.setDrawColor(150);doc.setLineWidth(0.3);doc.line(x,ty,x,HH-14);}\n    if(w===0||w===6){doc.setFillColor(243,243,241);doc.rect(x,ty+9,cw,HH-14-(ty+9),'F');}if(d===TD){doc.setFillColor(253,228,208);doc.rect(x,ty,cw,9,'F');}\n    doc.setFont('helvetica','bold');doc.setTextColor(60);doc.text(DW[w],x+cw/2,ty+3.6,{align:'center'});doc.setFont('helvetica','normal');doc.setTextColor(100);doc.text(d.slice(8,10)+'/'+d.slice(5,7),x+cw/2,ty+7.4,{align:'center'});});\n   doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(80);doc.text('Task (phase)',M+1,ty+5.5);doc.text('Who',M+62,ty+5.5);doc.setDrawColor(150);doc.setLineWidth(0.3);doc.line(M,ty+9,X1,ty+9);doc.line(X0,ty,X0,HH-14);doc.setLineWidth(0.2);return ty+9;}\n  y=head();var lastPh='';\n  rows.forEach(function(x){var r=x.r,rh=7;if(y+rh>HH-14){doc.addPage();y=head();lastPh='';}\n   if(x.phase!==lastPh){if(y+12>HH-14){doc.addPage();y=head();}doc.setFillColor(250,250,248);doc.rect(M,y,X1-M,5.5,'F');doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(40);doc.text(s(x.phase),M+1,y+3.9);y+=5.5;lastPh=x.phase;}\n   doc.setFont('helvetica','normal');doc.setFontSize(7.8);doc.setTextColor(25);doc.text((doc.splitTextToSize(x.path,58)[0]||''),M+3,y+4.6);doc.setTextColor(80);doc.text((doc.splitTextToSize(s(r.assigned_to),28)[0]||''),M+62,y+4.6);\n   var c=r.status_eff==='Done'?[95,174,110]:(r.status_eff==='In progress'?[244,121,32]:[150,152,154]);\n   days.forEach(function(d,k){if(d>=r.start_eff&&d<=(r.end_eff||r.start_eff)){doc.setFillColor(c[0],c[1],c[2]);doc.rect(X0+k*cw+0.4,y+1.6,cw-0.8,3.8,'F');}});\n   if(r.overdue){doc.setTextColor(179,38,30);doc.setFontSize(6.5);doc.text('overdue',M+88,y+4.6,{align:'right'});}\n   doc.setDrawColor(232);doc.line(M,y+rh,X1,y+rh);y+=rh;});\n  if(opt.list){doc.addPage();y=18;doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(30);doc.text('Day by day',M,y);y+=6;\n   days.forEach(function(d){var on=rows.filter(function(x){return d>=x.r.start_eff&&d<=(x.r.end_eff||x.r.start_eff);});if(!on.length)return;\n    if(y>HH-24){doc.addPage();y=18;}doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(30);doc.text(DW[pd(d).getUTCDay()]+' '+dmy(d),M,y);y+=5;\n    on.forEach(function(x){var r=x.r,tag=d===r.start_eff?'Starts':(d===(r.end_eff||r.start_eff)?'Finishes':'Continues');if(y>HH-14){doc.addPage();y=18;}\n     doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(40);doc.text('- '+tag+': '+x.path+' ('+x.phase+')'+(r.assigned_to?'  -  '+r.assigned_to:''),M+3,y);y+=4.4;});y+=2;});}\n  var np=doc.getNumberOfPages();for(var k=1;k<=np;k++){doc.setPage(k);doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(90);var lx=M,ly=HH-7;\n   [[[150,152,154],'Not started'],[[244,121,32],'In progress'],[[95,174,110],'Done']].forEach(function(q){doc.setFillColor(q[0][0],q[0][1],q[0][2]);doc.rect(lx,ly-2.6,5,3,'F');doc.text(q[1],lx+6.5,ly);lx+=doc.getTextWidth(q[1])+14;});\n   doc.text('Page '+k+' of '+np,X1,ly,{align:'right'});}\n  doc.save('Job '+D.job+' - Look-ahead '+opt.from+'.pdf');return rows.length;}\n}\n"
+        }
+      },
+      {
+        "id": "a78283e1-38be-4b8c-96c3-58565a287a2d",
+        "name": "Send Script",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.js }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/javascript; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-cache"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "connections": {
+      "UI Hook": {
+        "main": [
+          [
+            {
+              "node": "Look-ahead Script",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Look-ahead Script": {
+        "main": [
+          [
+            {
+              "node": "Send Script",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Look-ahead PDF for the Programme page: GET cbs-lookahead-ui returns the script that adds a Look-ahead button (1-4 weeks, by person, day-by-day list). The TV programme view's Next 2 weeks panel lives in CBS - TV Dashboard.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

@@ -1,0 +1,1541 @@
+{
+  "id": "YjsdiqBYJWsunUUt",
+  "name": "CBS - Job Regs",
+  "active": true,
+  "isArchived": false,
+  "versionId": "283c6b36-c82f-4e73-b058-a1e0b904c05a",
+  "activeVersionId": "283c6b36-c82f-4e73-b058-a1e0b904c05a",
+  "triggerCount": 1,
+  "createdAt": "2026-10-17T10:22:28.951Z",
+  "updatedAt": "2026-10-27T17:29:56.574Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none"
+  },
+  "connections": {
+    "Regs Hook": {
+      "main": [
+        [
+          {
+            "node": "Get rams",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get rams": {
+      "main": [
+        [
+          {
+            "node": "Get cphsp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get cphsp": {
+      "main": [
+        [
+          {
+            "node": "Get prestarts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get prestarts": {
+      "main": [
+        [
+          {
+            "node": "Get toolbox",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get toolbox": {
+      "main": [
+        [
+          {
+            "node": "Get signons",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get signons": {
+      "main": [
+        [
+          {
+            "node": "Get incidents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get incidents": {
+      "main": [
+        [
+          {
+            "node": "Get subjobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get subjobs": {
+      "main": [
+        [
+          {
+            "node": "Get pos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get pos": {
+      "main": [
+        [
+          {
+            "node": "Get ptmsheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get ptmsheets": {
+      "main": [
+        [
+          {
+            "node": "Get scaffinsp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get scaffinsp": {
+      "main": [
+        [
+          {
+            "node": "Get subbies",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get subbies": {
+      "main": [
+        [
+          {
+            "node": "Get subdocs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get subdocs": {
+      "main": [
+        [
+          {
+            "node": "Get assets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get assets": {
+      "main": [
+        [
+          {
+            "node": "Get materials",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get materials": {
+      "main": [
+        [
+          {
+            "node": "Get suppliers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get suppliers": {
+      "main": [
+        [
+          {
+            "node": "Get workers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get workers": {
+      "main": [
+        [
+          {
+            "node": "Get stockmoves",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get stockmoves": {
+      "main": [
+        [
+          {
+            "node": "Combine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "995914cf-3d48-4ac2-9754-614b6aa3d389",
+      "name": "Regs Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-job-regs",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "6c353138-e7a9-4502-bae8-a9b5d83c8827"
+    },
+    {
+      "id": "044ad07b-028e-4210-9771-2a5c793128c4",
+      "name": "Get rams",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "b2FkFIy27taH73i9"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "ilike",
+              "keyName": "job_no",
+              "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "40638d7e-76af-478b-b853-afd3dbb1f950",
+      "name": "Get cphsp",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "VrPaSgrY1W6zm3HN"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "ilike",
+              "keyName": "job_no",
+              "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "4adf904b-9907-4a03-bd1a-3dff3c68c566",
+      "name": "Get prestarts",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        660,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "Wg8zT3VHAzrdt8Sw"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "ilike",
+              "keyName": "job_no",
+              "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "42d7d1d4-c767-489b-8309-9f07ce686d5f",
+      "name": "Get toolbox",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "yzh0N48ZuMVkpQk4"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "ilike",
+              "keyName": "job_no",
+              "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "12b5b510-dba9-4165-9588-3bf5bf0b21f0",
+      "name": "Get signons",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "7mnxJyfK2DSbq7J4"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "ilike",
+              "keyName": "job_no",
+              "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "1695505d-04d3-454a-a912-a36b23dc26ea",
+      "name": "Get incidents",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1320,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "vZXrt8GrhPBPSqQH"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "ilike",
+              "keyName": "sm8_job",
+              "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "e7cf0d24-e719-479f-824c-ae343f00e5b5",
+      "name": "Get subjobs",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1540,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "0KkYwJ3A3fi1wGXd"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "ilike",
+              "keyName": "job_no",
+              "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "86ac3f4a-2a8d-427e-bddd-6cfea26e44f4",
+      "name": "Get pos",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1760,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "Z1lGdRMfPFALqbCR"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "ilike",
+              "keyName": "job_no",
+              "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "a3adace8-7cc6-4f8b-affa-b69e3e2cfcc1",
+      "name": "Get ptmsheets",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1980,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "9HztIXJq3gqHZMFK"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "ilike",
+              "keyName": "job_no",
+              "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "1d4446b6-32c3-4a7c-9baa-1af8da9a3eae",
+      "name": "Get scaffinsp",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2200,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "lMecsHQvsqOwDED3"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "ilike",
+              "keyName": "job_no",
+              "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "7adc6bb4-2ed8-408c-979e-f51139eccc5c",
+      "name": "Get subbies",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2420,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "ibSO7Sf8VzGU4jsS"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "8261322f-0c30-455f-9284-983fe8d647e6",
+      "name": "Get subdocs",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2640,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "ePhwDX0yjxjLQ9AR"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "cf59635d-b36c-42b6-a72f-15ac11bf4ef2",
+      "name": "Get assets",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2860,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "8CWS3fZeytjpf4HX"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "02c1a3ec-91ec-49eb-905e-f8a2e9a44642",
+      "name": "Get materials",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3080,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "cISot2CtqSItFj93"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "885de4cf-88b2-4ba8-910d-0d74fa510fa7",
+      "name": "Get suppliers",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3300,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "iFTLTgEAxiTHNTgA"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "d8fa7b90-df22-4a90-98e7-3ba6af792718",
+      "name": "Get workers",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3520,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "pNNkwGO5VvlhEsnP"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "76dad9ca-c26e-47e8-b41c-90a81487650e",
+      "name": "Get stockmoves",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3740,
+        0
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "i1dOh6PyUvWAZTBI"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "0ac02100-2836-4960-a62d-bd9b8d8673a9",
+      "name": "Combine",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3960,
+        0
+      ],
+      "parameters": {
+        "jsCode": "/* Same shape as cbs-admin-data for these registers, so the Job File reads it unchanged. Per-job registers were read with a loose\n   'contains the job number' filter; the Job File matches the job exactly itself. Sign-on signature images are left out. */\nconst K = ['rams','cphsp','prestarts','toolbox','signons','incidents','subjobs','pos','ptmsheets','scaffinsp','subbies','subdocs','assets','materials','suppliers','workers','stockmoves'];\nconst out = {};\nK.forEach(k => { let a = []; try { a = $('Get ' + k).all().map(i => i.json).filter(r => r && r.id); } catch (e) {} out[k] = a; });\nout.signons = out.signons.map(r => { const o = Object.assign({}, r); o.has_signature = r.signature ? 'Yes' : 'No'; delete o.signature; return o; });\nout.hsmeet = out.toolbox;\nreturn [{ json: out }];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "36b8d9bb-57f5-41a4-bdc9-21a95df1acf6",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        4180,
+        0
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "995914cf-3d48-4ac2-9754-614b6aa3d389",
+        "name": "Regs Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-job-regs",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "6c353138-e7a9-4502-bae8-a9b5d83c8827"
+      },
+      {
+        "id": "044ad07b-028e-4210-9771-2a5c793128c4",
+        "name": "Get rams",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          220,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "b2FkFIy27taH73i9"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "ilike",
+                "keyName": "job_no",
+                "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "40638d7e-76af-478b-b853-afd3dbb1f950",
+        "name": "Get cphsp",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "VrPaSgrY1W6zm3HN"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "ilike",
+                "keyName": "job_no",
+                "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "4adf904b-9907-4a03-bd1a-3dff3c68c566",
+        "name": "Get prestarts",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          660,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Wg8zT3VHAzrdt8Sw"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "ilike",
+                "keyName": "job_no",
+                "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "42d7d1d4-c767-489b-8309-9f07ce686d5f",
+        "name": "Get toolbox",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          880,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "yzh0N48ZuMVkpQk4"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "ilike",
+                "keyName": "job_no",
+                "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "12b5b510-dba9-4165-9588-3bf5bf0b21f0",
+        "name": "Get signons",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1100,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "7mnxJyfK2DSbq7J4"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "ilike",
+                "keyName": "job_no",
+                "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "1695505d-04d3-454a-a912-a36b23dc26ea",
+        "name": "Get incidents",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1320,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "vZXrt8GrhPBPSqQH"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "ilike",
+                "keyName": "sm8_job",
+                "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "e7cf0d24-e719-479f-824c-ae343f00e5b5",
+        "name": "Get subjobs",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1540,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "0KkYwJ3A3fi1wGXd"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "ilike",
+                "keyName": "job_no",
+                "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "86ac3f4a-2a8d-427e-bddd-6cfea26e44f4",
+        "name": "Get pos",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1760,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Z1lGdRMfPFALqbCR"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "ilike",
+                "keyName": "job_no",
+                "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "a3adace8-7cc6-4f8b-affa-b69e3e2cfcc1",
+        "name": "Get ptmsheets",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1980,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "9HztIXJq3gqHZMFK"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "ilike",
+                "keyName": "job_no",
+                "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "1d4446b6-32c3-4a7c-9baa-1af8da9a3eae",
+        "name": "Get scaffinsp",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2200,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "lMecsHQvsqOwDED3"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "ilike",
+                "keyName": "job_no",
+                "keyValue": "={{ '%' + String($('Regs Hook').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') + '%' }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "7adc6bb4-2ed8-408c-979e-f51139eccc5c",
+        "name": "Get subbies",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2420,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "ibSO7Sf8VzGU4jsS"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "8261322f-0c30-455f-9284-983fe8d647e6",
+        "name": "Get subdocs",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2640,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "ePhwDX0yjxjLQ9AR"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "cf59635d-b36c-42b6-a72f-15ac11bf4ef2",
+        "name": "Get assets",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2860,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "8CWS3fZeytjpf4HX"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "02c1a3ec-91ec-49eb-905e-f8a2e9a44642",
+        "name": "Get materials",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3080,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "cISot2CtqSItFj93"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "885de4cf-88b2-4ba8-910d-0d74fa510fa7",
+        "name": "Get suppliers",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3300,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "iFTLTgEAxiTHNTgA"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "d8fa7b90-df22-4a90-98e7-3ba6af792718",
+        "name": "Get workers",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3520,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "pNNkwGO5VvlhEsnP"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "76dad9ca-c26e-47e8-b41c-90a81487650e",
+        "name": "Get stockmoves",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3740,
+          0
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "i1dOh6PyUvWAZTBI"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "0ac02100-2836-4960-a62d-bd9b8d8673a9",
+        "name": "Combine",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          3960,
+          0
+        ],
+        "parameters": {
+          "jsCode": "/* Same shape as cbs-admin-data for these registers, so the Job File reads it unchanged. Per-job registers were read with a loose\n   'contains the job number' filter; the Job File matches the job exactly itself. Sign-on signature images are left out. */\nconst K = ['rams','cphsp','prestarts','toolbox','signons','incidents','subjobs','pos','ptmsheets','scaffinsp','subbies','subdocs','assets','materials','suppliers','workers','stockmoves'];\nconst out = {};\nK.forEach(k => { let a = []; try { a = $('Get ' + k).all().map(i => i.json).filter(r => r && r.id); } catch (e) {} out[k] = a; });\nout.signons = out.signons.map(r => { const o = Object.assign({}, r); o.has_signature = r.signature ? 'Yes' : 'No'; delete o.signature; return o; });\nout.hsmeet = out.toolbox;\nreturn [{ json: out }];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "36b8d9bb-57f5-41a4-bdc9-21a95df1acf6",
+        "name": "Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          4180,
+          0
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}"
+        }
+      }
+    ],
+    "connections": {
+      "Regs Hook": {
+        "main": [
+          [
+            {
+              "node": "Get rams",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get rams": {
+        "main": [
+          [
+            {
+              "node": "Get cphsp",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get cphsp": {
+        "main": [
+          [
+            {
+              "node": "Get prestarts",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get prestarts": {
+        "main": [
+          [
+            {
+              "node": "Get toolbox",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get toolbox": {
+        "main": [
+          [
+            {
+              "node": "Get signons",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get signons": {
+        "main": [
+          [
+            {
+              "node": "Get incidents",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get incidents": {
+        "main": [
+          [
+            {
+              "node": "Get subjobs",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get subjobs": {
+        "main": [
+          [
+            {
+              "node": "Get pos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get pos": {
+        "main": [
+          [
+            {
+              "node": "Get ptmsheets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get ptmsheets": {
+        "main": [
+          [
+            {
+              "node": "Get scaffinsp",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get scaffinsp": {
+        "main": [
+          [
+            {
+              "node": "Get subbies",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get subbies": {
+        "main": [
+          [
+            {
+              "node": "Get subdocs",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get subdocs": {
+        "main": [
+          [
+            {
+              "node": "Get assets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get assets": {
+        "main": [
+          [
+            {
+              "node": "Get materials",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get materials": {
+        "main": [
+          [
+            {
+              "node": "Get suppliers",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get suppliers": {
+        "main": [
+          [
+            {
+              "node": "Get workers",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get workers": {
+        "main": [
+          [
+            {
+              "node": "Get stockmoves",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get stockmoves": {
+        "main": [
+          [
+            {
+              "node": "Combine",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Combine": {
+        "main": [
+          [
+            {
+              "node": "Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Records for one job page (GET cbs-job-regs?job=N): per-job registers read for that job only, look-up lists in full. Same shape as cbs-admin-data so the Job File reads it unchanged.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

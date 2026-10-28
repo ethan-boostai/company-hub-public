@@ -1,0 +1,205 @@
+{
+  "table": "cbs_drawings",
+  "n8n_id": "e0S80HKaojWw1Sdn",
+  "columns": [
+    {
+      "name": "at",
+      "type": "string"
+    },
+    {
+      "name": "by",
+      "type": "string"
+    },
+    {
+      "name": "discipline",
+      "type": "string"
+    },
+    {
+      "name": "doc_type",
+      "type": "string"
+    },
+    {
+      "name": "drawing_id",
+      "type": "string"
+    },
+    {
+      "name": "file_name",
+      "type": "string"
+    },
+    {
+      "name": "file_url",
+      "type": "string"
+    },
+    {
+      "name": "geo",
+      "type": "string"
+    },
+    {
+      "name": "history",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "kind",
+      "type": "string"
+    },
+    {
+      "name": "label",
+      "type": "string"
+    },
+    {
+      "name": "mime",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "number",
+      "type": "string"
+    },
+    {
+      "name": "page",
+      "type": "number"
+    },
+    {
+      "name": "ref_id",
+      "type": "string"
+    },
+    {
+      "name": "ref_type",
+      "type": "string"
+    },
+    {
+      "name": "rev",
+      "type": "string"
+    },
+    {
+      "name": "rot",
+      "type": "number"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "supersedes",
+      "type": "string"
+    },
+    {
+      "name": "tags",
+      "type": "string"
+    },
+    {
+      "name": "title",
+      "type": "string"
+    },
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    }
+  ],
+  "sample_rows": [
+    {
+      "job_no": "12",
+      "kind": "drawing",
+      "number": "1",
+      "title": "Floor-plan-of-the-reference-house-and-principal-dimensions-The-numbers-in-squares",
+      "discipline": "Architectural",
+      "rev": "",
+      "status": "Current",
+      "file_url": "https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-4.webp",
+      "file_name": "1 - Floor-plan-of-the-reference-house-and-principal-dimensions-The-numbers-in-squares (Floor-plan-of-the-reference-house-and-principal-dimensions-The-.webp",
+      "mime": "image/webp",
+      "drawing_id": null,
+      "supersedes": "",
+      "ref_type": null,
+      "ref_id": null,
+      "page": null,
+      "x": null,
+      "y": null,
+      "label": null,
+      "notes": "",
+      "by": "ZZ Person B",
+      "at": "2026-10-20T09:25",
+      "history": "20/10/2026 09:25 - Uploaded by ZZ Person B",
+      "doc_type": "Drawing",
+      "geo": null,
+      "tags": null,
+      "rot": null,
+      "id": 1,
+      "createdAt": "2026-10-20T08:25:06.883Z",
+      "updatedAt": "2026-10-20T08:25:06.883Z"
+    },
+    {
+      "job_no": "12",
+      "kind": "scale",
+      "number": null,
+      "title": null,
+      "discipline": null,
+      "rev": null,
+      "status": null,
+      "file_url": null,
+      "file_name": null,
+      "mime": null,
+      "drawing_id": "1",
+      "supersedes": null,
+      "ref_type": null,
+      "ref_id": null,
+      "page": 1,
+      "x": null,
+      "y": null,
+      "label": "Measured 6.44 m",
+      "notes": "0.010091160224523884",
+      "by": "ZZ Person B",
+      "at": "2026-10-20T09:26",
+      "history": null,
+      "doc_type": null,
+      "geo": null,
+      "tags": null,
+      "rot": null,
+      "id": 2,
+      "createdAt": "2026-10-20T08:26:04.557Z",
+      "updatedAt": "2026-10-20T08:26:04.557Z"
+    },
+    {
+      "job_no": "12",
+      "kind": "markup",
+      "number": null,
+      "title": null,
+      "discipline": null,
+      "rev": null,
+      "status": "Shared",
+      "file_url": null,
+      "file_name": null,
+      "mime": null,
+      "drawing_id": "1",
+      "supersedes": null,
+      "ref_type": "area",
+      "ref_id": "",
+      "page": 1,
+      "x": null,
+      "y": null,
+      "label": "#F47920",
+      "notes": "Bedroom 1",
+      "by": "Ethan Paraha",
+      "at": "2026-10-21T22:31",
+      "history": null,
+      "doc_type": null,
+      "geo": "[[14.7,11.94],[14.57,42.01],[45.05,42.3],[44.94,11.89]]",
+      "tags": null,
+      "rot": null,
+      "id": 3,
+      "createdAt": "2026-10-20T08:26:57.878Z",
+      "updatedAt": "2026-10-21T21:31:59.665Z"
+    }
+  ]
+}

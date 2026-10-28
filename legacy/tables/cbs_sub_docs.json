@@ -1,0 +1,53 @@
+{
+  "table": "cbs_sub_docs",
+  "n8n_id": "ePhwDX0yjxjLQ9AR",
+  "columns": [
+    {
+      "name": "company",
+      "type": "string"
+    },
+    {
+      "name": "custom_name",
+      "type": "string"
+    },
+    {
+      "name": "doc_url",
+      "type": "string"
+    },
+    {
+      "name": "expires_on",
+      "type": "string"
+    },
+    {
+      "name": "issued_on",
+      "type": "string"
+    },
+    {
+      "name": "item",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "reference",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "company": "ZZ Fabrication Ltd",
+      "item": "Public liability insurance",
+      "custom_name": "",
+      "reference": "ZZ-POL-0004",
+      "issued_on": "2026-08-19",
+      "expires_on": "2027-08-18",
+      "notes": "",
+      "doc_url": "https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-24).pdf",
+      "id": 1,
+      "createdAt": "2026-10-06T15:47:13.044Z",
+      "updatedAt": "2026-10-06T15:53:02.697Z"
+    }
+  ]
+}

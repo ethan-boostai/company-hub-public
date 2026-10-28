@@ -1,0 +1,159 @@
+{
+  "table": "cbs_jobs",
+  "n8n_id": "5dgWt9kYzCb49m5h",
+  "columns": [
+    {
+      "name": "cdm",
+      "type": "boolean"
+    },
+    {
+      "name": "cdm_by",
+      "type": "string"
+    },
+    {
+      "name": "cdm_since",
+      "type": "string"
+    },
+    {
+      "name": "client",
+      "type": "string"
+    },
+    {
+      "name": "client_contact",
+      "type": "string"
+    },
+    {
+      "name": "closeout_json",
+      "type": "string"
+    },
+    {
+      "name": "contract_value",
+      "type": "number"
+    },
+    {
+      "name": "ends_on",
+      "type": "string"
+    },
+    {
+      "name": "enq_json",
+      "type": "string"
+    },
+    {
+      "name": "mode",
+      "type": "string"
+    },
+    {
+      "name": "moves_json",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "pm",
+      "type": "string"
+    },
+    {
+      "name": "project_by",
+      "type": "string"
+    },
+    {
+      "name": "project_since",
+      "type": "string"
+    },
+    {
+      "name": "qbo_ref",
+      "type": "string"
+    },
+    {
+      "name": "ref",
+      "type": "string"
+    },
+    {
+      "name": "reqs_json",
+      "type": "string"
+    },
+    {
+      "name": "scope",
+      "type": "string"
+    },
+    {
+      "name": "site",
+      "type": "string"
+    },
+    {
+      "name": "sm8_desc",
+      "type": "string"
+    },
+    {
+      "name": "starts_on",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "tv_show",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "ref": "99901",
+      "name": "",
+      "client": "",
+      "client_contact": "",
+      "site": "",
+      "starts_on": "",
+      "ends_on": "",
+      "pm": "",
+      "status": null,
+      "scope": "Test job for the hub (safe to ignore)",
+      "notes": "",
+      "cdm": false,
+      "cdm_since": "",
+      "cdm_by": "",
+      "mode": "project",
+      "project_since": "2026-10-24",
+      "project_by": "Ethan Paraha (test job)",
+      "reqs_json": "",
+      "tv_show": "",
+      "enq_json": "{\"reqs\":[],\"updated_at\":\"2026-10-26T22:34:20.126Z\"}",
+      "moves_json": "",
+      "contract_value": null,
+      "qbo_ref": "",
+      "closeout_json": "",
+      "sm8_desc": null,
+      "id": 1
+    },
+    {
+      "ref": "10000",
+      "name": "",
+      "client": "",
+      "notes": "Site: ZZ Client A - Site 1\nArea: Line 1 and 6\nRaised by: ZZ Client Contact A",
+      "cdm": null,
+      "mode": null,
+      "enq_json": "{\"reqs\":[\"estimate\",\"subq\"],\"jobtype\":\"\",\"st\":{\"estimate\":\"Complete\",\"programme\":\"Not started\"},\"surveys\":[],\"dwg\":[],\"docs\":[],\"estimate\":{\"by\":\"\",\"due\":\"\",\"files\":[]},\"quotes\":[],\"subquotes\":[{\"company\":\"ZZ Drainage Ltd\",\"who\":\"ZZ Person B\",\"due\":\"2026-10-21\",\"for\":\"Drainage\",\"requested_on\":\"2026-10-19\",\"received_on\":\"2026-10-20\",\"files\":[{\"n\":\"Job 10000 - Subcontractor quote ... .pdf\",\"u\":\"https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-11\",\"i\":\"<sharepoint item id>\"}]}],\"tasks\":[],\"next\":\"\",\"notes\":\"\"}",
+      "sm8_desc": "Site: ZZ Client A - Site 1\nArea: Line 1 and 6\nRaised by: ZZ Client Contact A",
+      "id": 15,
+      "_note": "columns not shown were null"
+    },
+    {
+      "ref": "10156",
+      "cdm": false,
+      "mode": "closed",
+      "project_since": "2026-10-19",
+      "project_by": "Auto: Reactive folder",
+      "notes": "invoiced",
+      "closeout_json": "{\"closed_at\":\"2026-10-21T14:23\",\"by\":\"ZZ Person E\",\"reason\":\"Supplier invoice only - Invoiced ZZ-INV-0001\",\"open\":[\"Handover documents: No O&M manual ...\"],\"open_count\":1,\"was_mode\":\"project\",\"sm8_completed\":\"2026-10-21T14:23\",\"log\":[{\"at\":\"2026-10-21T14:23\",\"by\":\"ZZ Person E\",\"ev\":\"Closed out (ServiceM8 set to Completed, Works completed folder)\"}],\"report_url\":\"https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-12 report.pdf\"}",
+      "id": 19,
+      "_note": "columns not shown were null; moves_json example: [{\"t\":\"approved\",\"src\":\"hub\",\"by\":\"ZZ Person B\",\"at\":\"...\"},{\"t\":\"back\",\"note\":\"test\"}]; reqs_json example: {\"on\":[\"prestart\",\"rams\",\"ptm\",\"programme\",\"scope\",\"service\"]}"
+    }
+  ]
+}

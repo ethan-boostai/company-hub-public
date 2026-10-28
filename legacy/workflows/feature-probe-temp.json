@@ -1,0 +1,90 @@
+{
+  "id": "RsheT2o8IjagY4wk",
+  "name": "CBS - Feature Probe (temp)",
+  "active": false,
+  "isArchived": false,
+  "versionId": "87e813f9-e11e-4b44-8690-79ca13542fd6",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "createdAt": "2026-10-10T18:34:17.508Z",
+  "updatedAt": "2026-10-10T18:34:17.508Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Probe Hook": {
+      "main": [
+        [
+          {
+            "node": "Probe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "4be9a421-7418-4b44-84d2-16d055477ce2",
+      "name": "Probe Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-probe-fw",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "webhookId": "7427e5f3-5075-4e4b-91e8-0c4d9a932102"
+    },
+    {
+      "id": "34ea62fd-2958-4a62-a124-1c9d42f71da2",
+      "name": "Probe",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const b=$input.first().json.body||{};const H='https://old-hub.example/webhook/';const out=[];\nfor(const u of (b.urls||[])){try{const t0=Date.now();const r=await this.helpers.httpRequest({method:u.m||'GET',url:H+u.u,body:u.body,json:!u.raw,timeout:120000,returnFullResponse:!!u.raw,encoding:u.raw?'arraybuffer':undefined});\n if(u.raw){const buf=Buffer.from(r.body);const t=buf.toString('utf8');out.push({u:u.u,ms:Date.now()-t0,status:r.statusCode,ct:r.headers['content-type'],len:buf.length,find:(u.find||[]).map(f=>[f,t.indexOf(f)>-1])});}\n else{let v=r;if(u.pick)v=u.pick.reduce((m,k)=>{m[k]=r[k];return m;},{});if(u.days&&r.days)v.days=r.days.slice(0,u.days).map(d=>({day:d.day,activity:d.activity,planned:d.planned,weather:d.weather,entry:d.entry?{delay_cause:d.entry.delay_cause,delay_hours:d.entry.delay_hours,locked_at:d.entry.locked_at,history:d.entry.history}:null,people:d.auto&&d.auto.people}));out.push({u:u.u,ms:Date.now()-t0,body:v});}}catch(e){out.push({u:u.u,error:String(e.message).slice(0,300)});}}\nreturn [{json:{out:out}}];"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": null,
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

@@ -1,0 +1,32 @@
+JetqVLnTuPKOdkD1	CBS - Page Patcher	true	page-patcher	cbs-page-patcher,cbs-patch-hzicons,cbs-patch-replace	HOHWTBOJHrHF0TvB,ibSO7Sf8VzGU4jsS	old-hub.example
+i3WbYiE5vjQhWp1h	CBS - Page Read (temp)	false	page-read-temp	cbs-page-read-temp	HOHWTBOJHrHF0TvB	
+9Y8IYjM8jsKTtQTH	CBS - Pages	true	pages	cbs-admin,cbs-rams-builder,cbs-cphsp-builder,cbs-toolbox-builder,cbs-team-meeting,cbs-incident-report,cbs-ptm-sheet,cbs-ptm-crew,cbs-prestart,cbs-po,cbs-sign,cbs-team,cbs-subjobs-board,cbs-site-inspection,cbs-builder-kit,cbs-hz-icons,cbs-std,cbs-po-board,cbs-logo,cbs-permit,cbs-visit,cbs-hs,cbs-pci,cbs-coshh-builder,cbs-guard,cbs-search,cbs-viewer	HOHWTBOJHrHF0TvB,DPgv7Nm5Q4Vx8uVv	
+KaXapjCytuAglb1B	CBS - Programme	true	programme	cbs-programme-data,cbs-programme-act,cbs-prog-start-ui	cbs_programmes,cbs_prog_items,cbs_jobs	
+E27jR1VZBg3ozg2C	CBS - Programme Page	true	programme-page	cbs-programme,cbs-programme-logo	HOHWTBOJHrHF0TvB	
+jToremB2Tytp7Lko	CBS - Progress by Area	true	progress-by-area	cbs-area-ui,cbs-prog-area	BdnMXEmq0R42HQYG	
+psVaoRiUJ3I85XJm	CBS - QuickBooks PO	true	quickbooks-po	cbs-qbpo,cbs-qbpo-read		openrouter.ai
+ZrhvZ6pFdysQl2HD	CBS - QuickBooks Sync	false	quickbooks-sync	cbs-qbo-run		
+rOjYjPEVpdzqGaZ3	CBS - RFIs	true	rfis	cbs-rfis,cbs-rfis-data,cbs-rfi-act		
+UGCGBGuLDH6doU6F	CBS - Scope	true	scope	cbs-scope,cbs-scope-data,cbs-scope-act,cbs-scope-crew,cbs-scope-sm8		api.servicem8.com
+6S2qYucH0o1y1eA0	CBS - Script Block Patch (temp)	false	script-block-patch-temp	cbs-block-patch-temp	HOHWTBOJHrHF0TvB	
+sov4PuqmRM3mt2QD	CBS - Service Sheets	true	service-sheets	cbs-service-sheet,cbs-service-data,cbs-service-save,cbs-service-del,cbs-service-pdf	G3mYDjQqWyYiCx0W	api.servicem8.com,graph.microsoft.com
+hgoUBoTtC1TVQE7F	CBS - ServiceM8 Client Lookup	false	servicem8-client-lookup			
+QSrDXFk65ZFTW8A3	CBS - ServiceM8 Connection Test	false	servicem8-connection-test			
+0nSnjdVd4P7oKYSe	CBS - ServiceM8 Job Lookup & Attach	true	servicem8-job-lookup-attach	cbs-sm8-job,cbs-sm8-attach,cbs-work-ahead,cbs-ptm-loaded,cbs-po-receive,cbs-po-save,cbs-incident-record,cbs-incident-report-save,cbs-sign-data,cbs-sign-save,cbs-pdf-out		api.servicem8.com,graph.microsoft.com
+wTE7KdfOAgMn3TOF	CBS - SharePoint Browse (read only)	false	sharepoint-browse-read-only	cbs-sp-browse		
+voGONRD39vL0mjWo	CBS - SharePoint Crawl (read only)	false	sharepoint-crawl-read-only	cbs-sp-crawl		
+aZ2zvdT0Rtf7ArGL	CBS - Sign-on Stamp	true	sign-on-stamp	cbs-sign-restamp	7mnxJyfK2DSbq7J4,VrPaSgrY1W6zm3HN	graph.microsoft.com
+nICVHkas7Ztqvo9Y	CBS - Site Survey	true	site-survey	cbs-survey,cbs-survey-save,cbs-survey-job,cbs-survey-photo,cbs-survey-list,cbs-survey-get,cbs-survey-photo-get	B0EZyoMvE4g9W20E,HOHWTBOJHrHF0TvB,5dgWt9kYzCb49m5h	graph.microsoft.com,old-hub.example,api.servicem8.com
+esJ5f1xamBaulg4D	CBS - Site Tasks	true	site-tasks	cbs-site-task		
+R9eivHS8pvMpl1bi	CBS - SM8 Historic Load (one-off)	false	sm8-historic-load-one-off			api.servicem8.com,graph.microsoft.com
+rlwv04vr3db1ygfl	CBS - SM8 Job Title Backfill (temp)	false	sm8-job-title-backfill-temp			
+3XPdXnHLZUQYjR1o	CBS - Snagging	true	snagging	cbs-snags,cbs-snags-crew,cbs-snags-data,cbs-snag-photo,cbs-snag-act,cbs-snag-push		graph.microsoft.com
+96d6xcxhYO4r8apl	CBS - Support	true	support	cbs-support,cbs-support-data,cbs-support-photo,cbs-support-act		graph.microsoft.com
+RpNYYkhlSJel3Uwr	CBS - Task Checklist	true	task-checklist	cbs-task,cbs-task-act,cbs-task-ui		
+0wybDwYIoyULQEn6	CBS - Task Status	true	task-status	cbs-task-status	79HTD2OG21IvSBZT	
+IpkvQwFhcjXBdJXp	CBS - Tasks	true	tasks	cbs-tasks-data,cbs-tasks-act,cbs-task-db,cbs-board,cbs-crew-link,cbs-crew-act,cbs-crew,cbs-job-files,cbs-job-files-up,cbs-job-details,cbs-job-details,cbs-people,cbs-tasks-ui-base,cbs-crew-go,cbs-tasks-ui	Ae2mrJJkm7h94D1W,5dgWt9kYzCb49m5h,79HTD2OG21IvSBZT,4gH5wN0c86eACs0J,pNNkwGO5VvlhEsnP	graph.microsoft.com,api.servicem8.com
+sfBs7BLPmvLNMacJ	CBS - Team	true	team	cbs-team-data,cbs-team-submit,cbs-team-leave	pNNkwGO5VvlhEsnP,chFjXqeuWU1vB1l6,8CWS3fZeytjpf4HX,={{ $('Prepare').first().json.table }},vcQV6GSFEmjZkxxy,iTWIDSrGauy7iKM9	
+sQVvL5VMobaaATjM	CBS - Today On Site	true	today-on-site	cbs-today-data,cbs-today-ui,cbs-crew-me,cbs-today		
+858dnmntgDj4e17q	CBS - TV Dashboard	true	tv-dashboard	cbs-tv,cbs-tv-data,cbs-tv-settings,cbs-tv-settings-save,cbs-tv-nudge,cbs-tv-ping,cbs-tv-cast,cbs-castbar	5dgWt9kYzCb49m5h,bPr02oOPEg6icX8g,5ET1OUDUv4D2u9o6,bmOLO09fc5siHTdf,QTiRE1GCvSWgnzWg,lbcr2s3CoCpLwIni,fW8J9S88kqHYg2ob,Ae2mrJJkm7h94D1W	
+cyLyYlSy809iclHz	CBS - Variations	true	variations	cbs-variations,cbs-variations-data,cbs-variation-act		
+djecOV96hfoWcyWA	CBS - Yard	true	yard	cbs-yard,cbs-yard-approve,cbs-yard-data,cbs-yard-act,cbs-yard-approve-act	JXOdwpye7BjXzjB9,HOHWTBOJHrHF0TvB	

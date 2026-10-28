@@ -1,0 +1,100 @@
+{
+  "table": "cbs_form_records",
+  "n8n_id": "vRt2HrpueDo78xSg",
+  "columns": [
+    {
+      "name": "answers_json",
+      "type": "string"
+    },
+    {
+      "name": "asset_id",
+      "type": "string"
+    },
+    {
+      "name": "asset_name",
+      "type": "string"
+    },
+    {
+      "name": "checked_at",
+      "type": "string"
+    },
+    {
+      "name": "checked_by",
+      "type": "string"
+    },
+    {
+      "name": "doc_ref",
+      "type": "string"
+    },
+    {
+      "name": "fail_count",
+      "type": "number"
+    },
+    {
+      "name": "header_json",
+      "type": "string"
+    },
+    {
+      "name": "history",
+      "type": "string"
+    },
+    {
+      "name": "item_id",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "kind",
+      "type": "string"
+    },
+    {
+      "name": "outcome",
+      "type": "string"
+    },
+    {
+      "name": "pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "photos_json",
+      "type": "string"
+    },
+    {
+      "name": "released_at",
+      "type": "string"
+    },
+    {
+      "name": "released_by",
+      "type": "string"
+    },
+    {
+      "name": "signature",
+      "type": "string"
+    },
+    {
+      "name": "site",
+      "type": "string"
+    },
+    {
+      "name": "sub_company",
+      "type": "string"
+    },
+    {
+      "name": "title",
+      "type": "string"
+    },
+    {
+      "name": "tkey",
+      "type": "string"
+    },
+    {
+      "name": "version",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [],
+  "note": "no rows: Get Records in CBS - Forms exec 1313187 (2026-10-27) returned empty"
+}

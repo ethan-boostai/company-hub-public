@@ -1,0 +1,205 @@
+{
+  "table": "cbs_workers",
+  "n8n_id": "pNNkwGO5VvlhEsnP",
+  "columns": [
+    {
+      "name": "active",
+      "type": "boolean"
+    },
+    {
+      "name": "email",
+      "type": "string"
+    },
+    {
+      "name": "hub_signin",
+      "type": "boolean"
+    },
+    {
+      "name": "in_checks",
+      "type": "boolean"
+    },
+    {
+      "name": "in_coshh",
+      "type": "boolean"
+    },
+    {
+      "name": "in_cphsp",
+      "type": "boolean"
+    },
+    {
+      "name": "in_crew",
+      "type": "boolean"
+    },
+    {
+      "name": "in_diary",
+      "type": "boolean"
+    },
+    {
+      "name": "in_director",
+      "type": "boolean"
+    },
+    {
+      "name": "in_docs",
+      "type": "boolean"
+    },
+    {
+      "name": "in_incidents",
+      "type": "boolean"
+    },
+    {
+      "name": "in_permits",
+      "type": "boolean"
+    },
+    {
+      "name": "in_po",
+      "type": "boolean"
+    },
+    {
+      "name": "in_rams",
+      "type": "boolean"
+    },
+    {
+      "name": "in_service",
+      "type": "boolean"
+    },
+    {
+      "name": "in_sm8",
+      "type": "boolean"
+    },
+    {
+      "name": "in_survey",
+      "type": "boolean"
+    },
+    {
+      "name": "in_tasks",
+      "type": "boolean"
+    },
+    {
+      "name": "in_toolbox",
+      "type": "boolean"
+    },
+    {
+      "name": "mobile",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "portal_hide",
+      "type": "boolean"
+    },
+    {
+      "name": "role",
+      "type": "string"
+    },
+    {
+      "name": "signature",
+      "type": "string"
+    },
+    {
+      "name": "site_lead",
+      "type": "boolean"
+    }
+  ],
+  "sample_rows": [
+    {
+      "name": "ZZ Person A",
+      "role": "Director / Site Manager",
+      "mobile": "07700 900001",
+      "email": "contact1@example.com",
+      "active": true,
+      "notes": "",
+      "portal_hide": false,
+      "site_lead": false,
+      "in_crew": true,
+      "in_tasks": false,
+      "in_rams": false,
+      "in_coshh": false,
+      "in_cphsp": false,
+      "in_checks": false,
+      "in_toolbox": false,
+      "in_permits": false,
+      "in_incidents": false,
+      "in_po": false,
+      "in_survey": false,
+      "in_diary": false,
+      "in_docs": false,
+      "in_director": false,
+      "in_sm8": false,
+      "hub_signin": true,
+      "signature": null,
+      "in_service": null,
+      "id": 1,
+      "createdAt": "2026-10-05T09:45:10.115Z",
+      "updatedAt": "2026-10-25T07:58:19.700Z"
+    },
+    {
+      "name": "ZZ Person B",
+      "role": "Operations Manager",
+      "mobile": "07700 900002",
+      "email": "contact2@example.com",
+      "active": true,
+      "notes": "",
+      "portal_hide": false,
+      "site_lead": false,
+      "in_crew": true,
+      "in_tasks": false,
+      "in_rams": true,
+      "in_coshh": true,
+      "in_cphsp": true,
+      "in_checks": false,
+      "in_toolbox": true,
+      "in_permits": false,
+      "in_incidents": false,
+      "in_po": false,
+      "in_survey": false,
+      "in_diary": false,
+      "in_docs": false,
+      "in_director": false,
+      "in_sm8": false,
+      "hub_signin": true,
+      "signature": "",
+      "in_service": true,
+      "id": 2,
+      "createdAt": "2026-10-05T11:11:46.110Z",
+      "updatedAt": "2026-10-27T16:31:49.904Z"
+    },
+    {
+      "name": "ZZ Person C",
+      "role": "Administration Manager",
+      "mobile": "07700 900003",
+      "email": "contact3@example.com",
+      "active": true,
+      "notes": "",
+      "portal_hide": true,
+      "site_lead": false,
+      "in_crew": false,
+      "in_tasks": false,
+      "in_rams": false,
+      "in_coshh": false,
+      "in_cphsp": false,
+      "in_checks": false,
+      "in_toolbox": false,
+      "in_permits": false,
+      "in_incidents": false,
+      "in_po": false,
+      "in_survey": false,
+      "in_diary": false,
+      "in_docs": false,
+      "in_director": false,
+      "in_sm8": false,
+      "hub_signin": true,
+      "signature": "[redacted]",
+      "in_service": true,
+      "id": 3,
+      "createdAt": "2026-10-05T11:13:00.146Z",
+      "updatedAt": "2026-10-27T16:13:35.273Z"
+    }
+  ]
+}

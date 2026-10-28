@@ -1,0 +1,56 @@
+{
+  "table": "cbs_pci",
+  "n8n_id": "bmOLO09fc5siHTdf",
+  "columns": [
+    {
+      "name": "category",
+      "type": "string"
+    },
+    {
+      "name": "doc_url",
+      "type": "string"
+    },
+    {
+      "name": "file_name",
+      "type": "string"
+    },
+    {
+      "name": "item_id",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "linked_id",
+      "type": "string"
+    },
+    {
+      "name": "linked_table",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "type": "string"
+    },
+    {
+      "name": "title",
+      "type": "string"
+    },
+    {
+      "name": "uploaded_at",
+      "type": "string"
+    },
+    {
+      "name": "uploaded_by",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [],
+  "note": "no rows: PCI node in CBS - TV Dashboard exec 1313413 (2026-10-27) returned empty"
+}

@@ -1,0 +1,776 @@
+{
+  "id": "sNUQwzC3WbjeuiZr",
+  "name": "CBS - Job Inspections",
+  "active": true,
+  "isArchived": false,
+  "versionId": "68cfa20d-6c4f-4c42-80d7-231c5f1138cd",
+  "activeVersionId": "68cfa20d-6c4f-4c42-80d7-231c5f1138cd",
+  "triggerCount": 3,
+  "createdAt": "2026-10-16T15:15:34.167Z",
+  "updatedAt": "2026-10-16T15:17:15.374Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "GET cbs-job-inspections": {
+      "main": [
+        [
+          {
+            "node": "Sched Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-job-toolbox": {
+      "main": [
+        [
+          {
+            "node": "Sched Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sched Page": {
+      "main": [
+        [
+          {
+            "node": "Send Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-job-sched-data": {
+      "main": [
+        [
+          {
+            "node": "Task Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Task Rows": {
+      "main": [
+        [
+          {
+            "node": "Job Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Job Rows": {
+      "main": [
+        [
+          {
+            "node": "Subbie Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Subbie Rows": {
+      "main": [
+        [
+          {
+            "node": "Worker Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Worker Rows": {
+      "main": [
+        [
+          {
+            "node": "Toolbox Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Toolbox Rows": {
+      "main": [
+        [
+          {
+            "node": "Sched Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sched Data": {
+      "main": [
+        [
+          {
+            "node": "Send Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "81791f9a-ad28-438a-a9d6-2bad9eed9a18",
+      "name": "GET cbs-job-inspections",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-job-inspections",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "23f33703-a210-4d55-89c3-e4bae118a1a3"
+    },
+    {
+      "id": "fc25ff3e-ed70-4545-a341-cd5156b1cfb7",
+      "name": "GET cbs-job-toolbox",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        200
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-job-toolbox",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "7b816a54-20d5-4aa4-8676-f04fd5ccaaeb"
+    },
+    {
+      "id": "a8ed66ec-bc53-48ac-89b8-3d5481a32e7c",
+      "name": "Sched Page",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        260,
+        100
+      ],
+      "parameters": {
+        "jsCode": "/* Inspections / Toolbox talks page (job menu). One page for both: cbs-job-inspections (req scaffold) and cbs-job-toolbox (req toolbox).\n   Items are the job's task rows (cbs_job_tasks, req scaffold/toolbox), the same ones the Actions board and TV read.\n   Add / edit / remove: POST cbs-admin-save (t=jobtasks). Reports: POST cbs-job-upload (SharePoint), then the item is marked done,\n   last done = today and the next due date follows the frequency. CBS does not carry out inspections: the contractor sends a report. */\nconst it = $input.first().json;\nconst url = String(it.webhookUrl || '');\nconst K = /cbs-job-toolbox/.test(url) ? 'toolbox' : 'scaffold';\nconst job = String((it.query || {}).job || '').replace(/[^0-9A-Za-z-]/g, '');\nconst C = K === 'toolbox' ? {\n  k: 'toolbox', title: 'Toolbox talks', one: 'toolbox talk', typeLab: 'Topic', byLab: 'Given by', folder: 'Toolbox talks', fin: 'Held',\n  st: ['Not held', 'Booked', 'Held'], add: '+ Add toolbox talk', up: 'Upload record',\n  help: 'Plan toolbox talks for this job and how often they happen. Upload the signed record after each talk; the next one is then due by the frequency. Talks built with the toolbox talk builder are listed under Talks held.',\n  empty: 'No toolbox talks planned for this job yet.',\n  types: ['Working at height', 'Manual handling', 'Slips, trips and falls', 'Dust and silica', 'Hand-arm vibration', 'Noise', 'Fire safety', 'Electrical safety', 'Plant and machinery', 'PPE', 'Asbestos awareness', 'Other']\n} : {\n  k: 'scaffold', title: 'Inspections', one: 'inspection', typeLab: 'Inspection type', byLab: 'Carried out by', folder: 'Inspections', fin: 'Inspected',\n  st: ['Not booked', 'Booked', 'Inspected', 'Re-inspection needed'], add: '+ Add inspection', up: 'Upload report',\n  help: 'Inspections are carried out by the specialist contractor (scaffolder, LOLER engineer and so on), who sends a report. Add each inspection the job needs and how often, then upload the report when it comes in; the next one is then due by the frequency. Scaffolds: before first use, at least every 7 days, and after bad weather or alterations.',\n  empty: 'No inspections set up for this job yet.',\n  types: ['Scaffold', 'Lifting equipment (LOLER)', 'Excavation', 'Temporary works', 'MEWP / access equipment', 'Hoist', 'Fire safety', 'Electrical installation', 'PAT testing', 'Asbestos re-inspection', 'Other']\n};\nconst CSS = '*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n + 'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n + '.wrap{max-width:860px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}'\n + '.btn{background:#F47920;color:#fff;font-weight:600;border-radius:8px;padding:9px 14px;font-size:14px;border:1px solid #F47920;font-family:inherit;cursor:pointer;text-decoration:none;display:inline-block;line-height:1.2}.btn.ghost{background:#fff;color:#1d1d1d;border-color:#3d4043}.btn.red{background:#fff;color:#b3261e;border-color:#e9b6b1}.btn.sm{padding:6px 10px;font-size:13px}.btn:disabled{opacity:.5;cursor:wait}'\n + '.m{color:#6b6e70;font-size:13.5px}.help{margin:4px 0 14px}.it{background:#fff;border:1px solid #d9d9d6;border-radius:12px;padding:12px 14px;margin-bottom:10px}.hd{display:flex;gap:10px;align-items:flex-start}.tt{flex:1;font-weight:700}'\n + '.ch{display:inline-block;font-size:12.5px;font-weight:600;border-radius:6px;padding:2px 8px;white-space:nowrap}.ch.r{background:#fde7e5;color:#b3261e}.ch.a{background:#fff1d6;color:#8a5300}.ch.g{background:#e6f4ea;color:#1a7f37}'\n + '.it .m{margin-top:4px}.nt{font-size:14px;margin-top:6px;white-space:pre-wrap}.fl{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.fl a{font-size:13px;color:#b3261e;font-weight:600;border:1px solid #d9d9d6;border-radius:6px;padding:3px 8px;text-decoration:none;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'\n + '.b{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}h2{font-size:16px;margin:22px 0 8px}'\n + '.hl{background:#fff;border:1px solid #d9d9d6;border-radius:12px}.hl .r{display:flex;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid #f0f0ee}.hl .r:first-child{border-top:0}.hl .r .x{flex:1;min-width:0}'\n + '.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;overflow:auto;z-index:2147483300}.dlg{background:#fff;border-radius:14px;max-width:520px;width:100%;padding:16px}.dlg h3{margin:0 0 10px;font-size:18px}'\n + 'label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}.dlg input,.dlg select,.dlg textarea{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.msg{font-size:14px;color:#8a5a00;margin-top:8px;min-height:18px}'\n + '@media(max-width:560px){.row2{grid-template-columns:1fr}}';\nconst nav = '<div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a><a class=\"hub\" href=\"/webhook/cbs-job-file?job=' + encodeURIComponent(job) + '\">Job</a></div>';\nconst html = '<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>' + C.title + ' - Job ' + job + '</title><script src=\"/webhook/cbs-guard\"></script><style>' + CSS + '</style></head><body><header>' + nav + '<h1>' + C.title + '</h1><p>Job ' + job + '</p></header><div class=\"wrap\" id=\"app\"><div class=\"empty\">' + (job ? 'Loading\\u2026' : 'Open this page from a job.') + '</div></div>'\n + (job ? '<script>(' + client.toString() + ')(' + JSON.stringify(C).replace(/</g, '\\\\u003c') + ',' + JSON.stringify(job) + ');</script>' : '') + '</body></html>';\nreturn [{ json: { html: html } }];\n\nfunction client(C, JOB) {\n  var app = document.getElementById('app'), D = null, MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];\n  function s(v){return v==null?'':String(v);}\n  function e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\n  function today(){return new Date().toLocaleDateString('en-CA',{timeZone:'Europe/London'});}\n  function now(){return new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);}\n  function dn(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?Date.UTC(+m[1],+m[2]-1,+m[3])/864e5:null;}\n  function ukd(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?Number(m[3])+' '+MO[+m[2]-1]:'';}\n  function addF(d,f){var x=dn(d);if(x===null||!f)return '';f=s(f).toLowerCase();var n=0,mo=0,m;if(f==='daily')n=1;else if(f==='weekly')n=7;else if(f==='fortnightly')n=14;else if(f==='monthly')mo=1;else if((m=f.match(/every\\s+(\\d+)\\s*day/)))n=+m[1];else return '';var dt=new Date(x*864e5);if(mo)dt.setUTCMonth(dt.getUTCMonth()+1);else dt.setUTCDate(dt.getUTCDate()+n);return dt.toISOString().slice(0,10);}\n  function nextDue(r){var f=s(r.freq),ld=s(r.last_done).slice(0,10);if(f&&ld)return addF(ld,f);return s(r.due_on).slice(0,10);}\n  function state(r){var st=s(r.status),nd=nextDue(r),d=nd?dn(nd)-dn(today()):null;\n    if(st==='Re-inspection needed')return {c:'r',t:'Re-inspection needed'};\n    if(d!==null&&d<0)return {c:'r',t:'Overdue \\u00b7 was due '+ukd(nd)};\n    if(st===C.fin&&!s(r.freq))return {c:'g',t:C.fin+(r.last_done?' '+ukd(r.last_done):'')};\n    if(d!==null&&d<=2)return {c:'a',t:d===0?'Due today':'Due '+ukd(nd)};\n    if(st===C.fin||s(r.last_done))return {c:'g',t:'Up to date'+(nd?' \\u00b7 next '+ukd(nd):'')};\n    if(st==='Booked')return {c:'a',t:'Booked'+(nd?' for '+ukd(nd):'')};\n    return {c:'a',t:(st||C.st[0])+(nd?' \\u00b7 due '+ukd(nd):'')};}\n  function files(r){try{var a=JSON.parse(r.files_json||'[]');return Array.isArray(a)?a:[];}catch(x){return [];}}\n  function fileUrl(u){return /sharepoint\\.com/i.test(s(u))?'/webhook/cbs-file?u='+encodeURIComponent(u):s(u);}\n  function who(){var x='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)x=m.name;}catch(z){}if(!x){try{x=localStorage.getItem('cbs_name')||'';}catch(z){}}if(!x){x=(prompt('Your name:')||'').trim();if(x){try{localStorage.setItem('cbs_name',x);}catch(z){}}}return x;}\n  function post(u,b){return fetch(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b||{})}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(d){if(!d||d.ok===false)throw 0;return d;});}\n  function load(){fetch('/webhook/cbs-job-sched-data?job='+encodeURIComponent(JOB)+'&k='+C.k+'&_='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){D=d||{};var p=document.querySelector('header p');if(p&&D.site)p.textContent='Job '+JOB+' \\u00b7 '+D.site;render();}).catch(function(){app.innerHTML='<div class=\"empty\">Could not load. Refresh to try again.</div>';});}\n  function render(){var L=(D.items||[]).slice().sort(function(a,b){var x=nextDue(a)||'9999',y=nextDue(b)||'9999';return x<y?-1:x>y?1:0;}),h='';\n    h+='<div class=\"tools\"><button class=\"btn\" id=\"add\">'+e(C.add)+'</button>'+(C.k==='toolbox'?'<a class=\"btn ghost\" href=\"/webhook/cbs-toolbox-builder?job='+encodeURIComponent(JOB)+'\">Build a toolbox talk</a>':'')+'</div><p class=\"m help\">'+e(C.help)+'</p>';\n    if(!L.length)h+='<div class=\"empty\">'+e(C.empty)+'</div>';\n    L.forEach(function(r){var S=state(r),F=files(r),nd=nextDue(r),by=r.label&&r.label!==r.ref_name?r.label:'';\n      h+='<div class=\"it\" data-id=\"'+e(r.id)+'\"><div class=\"hd\"><div class=\"tt\">'+e(r.ref_name||r.label||C.one)+'</div><span class=\"ch '+S.c+'\">'+e(S.t)+'</span></div>'\n       +'<div class=\"m\">'+[by?e(C.byLab+': '+by):'',r.freq?e(r.freq):'One-off',r.last_done?'Last '+e(ukd(r.last_done)):'',nd?'Next due '+e(ukd(nd)):''].filter(Boolean).join(' \\u00b7 ')+'</div>'\n       +(r.notes?'<div class=\"nt\">'+e(r.notes)+'</div>':'')\n       +(F.length?'<div class=\"fl\">'+F.map(function(f){return '<a href=\"'+e(fileUrl(f.u))+'\" target=\"_blank\" rel=\"noopener\" title=\"'+e(f.n||'PDF')+'\">'+e(f.n||'PDF')+'</a>';}).join('')+'</div>':'')\n       +'<div class=\"b\"><button class=\"btn sm\" data-a=\"up\">'+e(C.up)+'</button><button class=\"btn ghost sm\" data-a=\"edit\">Edit</button><button class=\"btn red sm\" data-a=\"rm\">Remove</button></div></div>';});\n    var HL=D.held||[];if(C.k==='toolbox')h+='<h2>Talks held</h2>'+(HL.length?'<div class=\"hl\">'+HL.map(function(t){return '<div class=\"r\"><div class=\"x\"><b>'+e(t.topic||'Toolbox talk')+'</b><div class=\"m\">'+[ukd(t.held_on),t.presenter].filter(Boolean).map(e).join(' \\u00b7 ')+'</div></div>'+(t.pdf?'<a class=\"btn ghost sm\" target=\"_blank\" rel=\"noopener\" href=\"'+e(fileUrl(t.pdf))+'\">PDF</a>':'')+'</div>';}).join('')+'</div>':'<div class=\"empty\">No toolbox talks held on this job yet.</div>');\n    app.innerHTML=h;\n    document.getElementById('add').onclick=function(){dlg(null);};\n    [].forEach.call(app.querySelectorAll('.it [data-a]'),function(b){b.onclick=function(){var id=b.closest('.it').getAttribute('data-id'),r=(D.items||[]).filter(function(x){return String(x.id)===id;})[0];if(!r)return;var a=b.getAttribute('data-a');if(a==='edit')dlg(r);else if(a==='rm')rm(r);else upload(r,b);};});}\n  var FQ=[['','One-off'],['Daily','Daily'],['Weekly','Weekly'],['Fortnightly','Fortnightly'],['Monthly','Monthly'],['custom','Every \\u2026 days']];\n  function dlg(r){var isNew=!r;r=r||{};var fq=s(r.freq),m=fq.match(/^every\\s+(\\d+)\\s*days?$/i),cv=m?'custom':fq,by=r.label&&r.label!==r.ref_name?r.label:'',sts=C.st.slice();if(r.status&&sts.indexOf(r.status)<0)sts.push(r.status);\n    var o=document.createElement('div');o.className='ov';\n    o.innerHTML='<div class=\"dlg\"><h3>'+(isNew?e(C.add.replace(/^\\+ /,'')):'Edit '+e(C.one))+'</h3>'\n     +'<label class=\"f\">'+e(C.typeLab)+'</label><input id=\"fT\" list=\"fTl\" value=\"'+e(r.ref_name||'')+'\" placeholder=\"Choose or type\"><datalist id=\"fTl\">'+C.types.map(function(t){return '<option value=\"'+e(t)+'\">';}).join('')+'</datalist>'\n     +'<label class=\"f\">'+e(C.byLab)+'</label><input id=\"fB\" list=\"fBl\" value=\"'+e(by)+'\" placeholder=\"'+(C.k==='toolbox'?'Who gives the talk':'Contractor')+'\"><datalist id=\"fBl\">'+(D.people||[]).map(function(t){return '<option value=\"'+e(t)+'\">';}).join('')+'</datalist>'\n     +'<div class=\"row2\"><div><label class=\"f\">How often</label><select id=\"fF\">'+FQ.map(function(x){return '<option value=\"'+e(x[0])+'\"'+(x[0]===cv?' selected':'')+'>'+e(x[1])+'</option>';}).join('')+(cv&&!FQ.some(function(x){return x[0]===cv;})?'<option selected>'+e(cv)+'</option>':'')+'</select><input id=\"fN\" type=\"number\" min=\"1\" placeholder=\"Number of days\" value=\"'+(m?m[1]:'')+'\" style=\"margin-top:6px;'+(cv==='custom'?'':'display:none')+'\"></div>'\n     +'<div><label class=\"f\">'+(isNew?'First due':'Due')+'</label><input id=\"fD\" type=\"date\" value=\"'+e(s(r.due_on).slice(0,10))+'\"></div></div>'\n     +'<label class=\"f\">Status</label><select id=\"fS\">'+sts.map(function(x){return '<option'+(x===(r.status||C.st[0])?' selected':'')+'>'+e(x)+'</option>';}).join('')+'</select>'\n     +'<label class=\"f\">Notes</label><textarea id=\"fX\" rows=\"3\">'+e(r.notes||'')+'</textarea>'\n     +'<div class=\"msg\" id=\"fM\"></div><div class=\"b\"><button class=\"btn\" id=\"fGo\">Save</button><button class=\"btn ghost\" id=\"fNo\">Cancel</button></div></div>';\n    document.body.appendChild(o);var Q=function(i){return o.querySelector('#'+i);};\n    Q('fF').onchange=function(){Q('fN').style.display=this.value==='custom'?'':'none';if(this.value==='custom')Q('fN').focus();};\n    function close(){o.remove();}Q('fNo').onclick=close;o.onclick=function(ev){if(ev.target===o)close();};\n    Q('fGo').onclick=function(){var t=Q('fT').value.trim(),b=Q('fB').value.trim(),f=Q('fF').value,st=Q('fS').value,d=Q('fD').value,nt=Q('fX').value.trim(),M=Q('fM');\n      if(!t){M.textContent='Enter the '+C.typeLab.toLowerCase()+'.';return;}\n      if(f==='custom'){var n=parseInt(Q('fN').value,10);if(!(n>0)){M.textContent='Enter the number of days.';return;}f='Every '+n+' days';}\n      var me=who();if(!me)return;var fin=st===C.fin,btn=this;btn.disabled=true;M.textContent='Saving\\u2026';\n      var body={ref_name:t,label:b||t,freq:f,due_on:d,status:st,notes:nt};\n      if(isNew){body.job_no=JOB;body.req=C.k;body.kind='item';body.ref_id='';body.files_json='[]';body.last_done=fin?today():'';body.done_by=fin?me:'';body.done_at=fin?now():'';body.created_by=me;body.created_at=now();}\n      else if(st!==r.status){body.done_by=fin?me:'';body.done_at=fin?now():'';if(fin&&!r.last_done)body.last_done=today();}\n      post('/webhook/cbs-admin-save?a=save&t=jobtasks&id='+(isNew?'0':encodeURIComponent(r.id)+'&partial=1'),body).then(function(){close();load();}).catch(function(){btn.disabled=false;M.textContent='Could not save. Check the connection and try again.';});};\n    setTimeout(function(){Q('fT').focus();},50);}\n  function rm(r){if(!confirm('Remove '+(r.ref_name||C.one)+'? Uploaded reports stay in SharePoint.'))return;post('/webhook/cbs-admin-save?a=del&t=jobtasks&id='+encodeURIComponent(r.id),{}).then(load).catch(function(){alert('Could not remove. Try again.');});}\n  function b64(f){return new Promise(function(res,rej){var x=new FileReader();x.onload=function(){res(String(x.result).split(',')[1]||'');};x.onerror=function(){rej(0);};x.readAsDataURL(f);});}\n  function upload(r,btn){var fi=document.createElement('input');fi.type='file';fi.accept='application/pdf,image/*';fi.onchange=function(){var f=fi.files&&fi.files[0];if(!f)return;\n      if(f.size>10*1024*1024){alert(f.name+' is over 10 MB. Compress it and try again.');return;}\n      var me=who();if(!me)return;btn.disabled=true;btn.textContent='Uploading\\u2026';\n      b64(f).then(function(d){return post('/webhook/cbs-job-upload',{job:JOB,folder:C.folder,filename:f.name,mime:f.type||'application/pdf',data:d});}).then(function(x){if(!x||!x.u)throw 0;\n        var F=files(r);F.push({n:x.n||f.name,u:x.u});var t=today(),nx=addF(t,r.freq);\n        var body={files_json:JSON.stringify(F),status:C.fin,last_done:t,done_by:me,done_at:now()};if(nx)body.due_on=nx;\n        return post('/webhook/cbs-admin-save?a=save&t=jobtasks&id='+encodeURIComponent(r.id)+'&partial=1',body);}).then(function(){load();}).catch(function(){btn.disabled=false;btn.textContent=C.up;alert('Upload failed. Check the connection and try again.');});};\n    fi.click();}\n  load();\n}\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "798a9aa5-a3b6-455c-8687-33cdb818b154",
+      "name": "Send Page",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        500,
+        100
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}"
+      }
+    },
+    {
+      "id": "9c7cc0c1-791e-438f-93f9-8480e504c403",
+      "name": "GET cbs-job-sched-data",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        500
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-job-sched-data",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "c67928ea-46f2-4213-89b2-014010de28d2"
+    },
+    {
+      "id": "346e33fc-75b8-491a-bdf9-50c04358b5ab",
+      "name": "Task Rows",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        500
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "Ae2mrJJkm7h94D1W"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-sched-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "6708cf43-39bd-44f3-ac34-d6c44e96fbba",
+      "name": "Job Rows",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        500
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "5dgWt9kYzCb49m5h"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "c5509c60-c24a-4b37-9e0e-7061ea50712e",
+      "name": "Subbie Rows",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        660,
+        500
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "ibSO7Sf8VzGU4jsS"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "66aaa888-c8f3-40e9-a562-83604c407091",
+      "name": "Worker Rows",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        500
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "pNNkwGO5VvlhEsnP"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "37b82a29-03e9-426a-845d-99d5fb9557bd",
+      "name": "Toolbox Rows",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        500
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "yzh0N48ZuMVkpQk4"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "c90e32c0-eee6-498d-bcb8-d7deba9d4405",
+      "name": "Sched Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1320,
+        500
+      ],
+      "parameters": {
+        "jsCode": "/* Data for the Inspections / Toolbox talks page: the job's task rows for that kind (req scaffold or toolbox), the site,\n   people for the 'carried out by' / 'given by' list, and toolbox talks held on the job (cbs_toolbox). */\nconst S = v => v == null ? '' : String(v).trim();\nconst jk = v => S(v).replace(/^#/, '').replace(/[^0-9A-Za-z-]/g, '').toLowerCase();\nconst q = $('GET cbs-job-sched-data').first().json.query || {};\nconst job = jk(q.job), K = S(q.k) === 'toolbox' ? 'toolbox' : 'scaffold';\nfunction rows(n) { try { return $(n).all().map(i => i.json).filter(r => r && r.id != null); } catch (e) { return []; } }\nconst items = rows('Task Rows').filter(r => jk(r.job_no) === job && S(r.req) === K).map(r => ({ id: r.id, ref_name: S(r.ref_name), label: S(r.label), freq: S(r.freq), last_done: S(r.last_done), due_on: S(r.due_on), status: S(r.status), notes: S(r.notes), files_json: S(r.files_json) || '[]', done_by: S(r.done_by) }));\nconst jr = rows('Job Rows').filter(r => jk(r.ref) === job).sort((a, b) => b.id - a.id)[0] || {};\nlet people = [];\nif (K === 'toolbox') people = rows('Worker Rows').filter(r => r.active !== false).map(r => S(r.name));\nelse people = rows('Subbie Rows').map(r => S(r.company));\npeople = Array.from(new Set(people.filter(Boolean))).sort((a, b) => a.localeCompare(b));\nconst held = K === 'toolbox' ? rows('Toolbox Rows').filter(r => jk(r.job_no) === job).map(r => ({ topic: S(r.topic), held_on: S(r.held_on), presenter: S(r.presenter), pdf: S(r.pdf_url) })).sort((a, b) => b.held_on.localeCompare(a.held_on)) : [];\nreturn [{ json: { ok: true, job: job, k: K, site: S(jr.site) || S(jr.name), items: items, people: people, held: held } }];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "580f725f-bc4f-45ee-8689-f4ef459d1fdc",
+      "name": "Send Data",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1540,
+        500
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        },
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "81791f9a-ad28-438a-a9d6-2bad9eed9a18",
+        "name": "GET cbs-job-inspections",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-job-inspections",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "23f33703-a210-4d55-89c3-e4bae118a1a3"
+      },
+      {
+        "id": "fc25ff3e-ed70-4545-a341-cd5156b1cfb7",
+        "name": "GET cbs-job-toolbox",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          200
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-job-toolbox",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "7b816a54-20d5-4aa4-8676-f04fd5ccaaeb"
+      },
+      {
+        "id": "a8ed66ec-bc53-48ac-89b8-3d5481a32e7c",
+        "name": "Sched Page",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          260,
+          100
+        ],
+        "parameters": {
+          "jsCode": "/* Inspections / Toolbox talks page (job menu). One page for both: cbs-job-inspections (req scaffold) and cbs-job-toolbox (req toolbox).\n   Items are the job's task rows (cbs_job_tasks, req scaffold/toolbox), the same ones the Actions board and TV read.\n   Add / edit / remove: POST cbs-admin-save (t=jobtasks). Reports: POST cbs-job-upload (SharePoint), then the item is marked done,\n   last done = today and the next due date follows the frequency. CBS does not carry out inspections: the contractor sends a report. */\nconst it = $input.first().json;\nconst url = String(it.webhookUrl || '');\nconst K = /cbs-job-toolbox/.test(url) ? 'toolbox' : 'scaffold';\nconst job = String((it.query || {}).job || '').replace(/[^0-9A-Za-z-]/g, '');\nconst C = K === 'toolbox' ? {\n  k: 'toolbox', title: 'Toolbox talks', one: 'toolbox talk', typeLab: 'Topic', byLab: 'Given by', folder: 'Toolbox talks', fin: 'Held',\n  st: ['Not held', 'Booked', 'Held'], add: '+ Add toolbox talk', up: 'Upload record',\n  help: 'Plan toolbox talks for this job and how often they happen. Upload the signed record after each talk; the next one is then due by the frequency. Talks built with the toolbox talk builder are listed under Talks held.',\n  empty: 'No toolbox talks planned for this job yet.',\n  types: ['Working at height', 'Manual handling', 'Slips, trips and falls', 'Dust and silica', 'Hand-arm vibration', 'Noise', 'Fire safety', 'Electrical safety', 'Plant and machinery', 'PPE', 'Asbestos awareness', 'Other']\n} : {\n  k: 'scaffold', title: 'Inspections', one: 'inspection', typeLab: 'Inspection type', byLab: 'Carried out by', folder: 'Inspections', fin: 'Inspected',\n  st: ['Not booked', 'Booked', 'Inspected', 'Re-inspection needed'], add: '+ Add inspection', up: 'Upload report',\n  help: 'Inspections are carried out by the specialist contractor (scaffolder, LOLER engineer and so on), who sends a report. Add each inspection the job needs and how often, then upload the report when it comes in; the next one is then due by the frequency. Scaffolds: before first use, at least every 7 days, and after bad weather or alterations.',\n  empty: 'No inspections set up for this job yet.',\n  types: ['Scaffold', 'Lifting equipment (LOLER)', 'Excavation', 'Temporary works', 'MEWP / access equipment', 'Hoist', 'Fire safety', 'Electrical installation', 'PAT testing', 'Asbestos re-inspection', 'Other']\n};\nconst CSS = '*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n + 'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n + '.wrap{max-width:860px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}'\n + '.btn{background:#F47920;color:#fff;font-weight:600;border-radius:8px;padding:9px 14px;font-size:14px;border:1px solid #F47920;font-family:inherit;cursor:pointer;text-decoration:none;display:inline-block;line-height:1.2}.btn.ghost{background:#fff;color:#1d1d1d;border-color:#3d4043}.btn.red{background:#fff;color:#b3261e;border-color:#e9b6b1}.btn.sm{padding:6px 10px;font-size:13px}.btn:disabled{opacity:.5;cursor:wait}'\n + '.m{color:#6b6e70;font-size:13.5px}.help{margin:4px 0 14px}.it{background:#fff;border:1px solid #d9d9d6;border-radius:12px;padding:12px 14px;margin-bottom:10px}.hd{display:flex;gap:10px;align-items:flex-start}.tt{flex:1;font-weight:700}'\n + '.ch{display:inline-block;font-size:12.5px;font-weight:600;border-radius:6px;padding:2px 8px;white-space:nowrap}.ch.r{background:#fde7e5;color:#b3261e}.ch.a{background:#fff1d6;color:#8a5300}.ch.g{background:#e6f4ea;color:#1a7f37}'\n + '.it .m{margin-top:4px}.nt{font-size:14px;margin-top:6px;white-space:pre-wrap}.fl{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.fl a{font-size:13px;color:#b3261e;font-weight:600;border:1px solid #d9d9d6;border-radius:6px;padding:3px 8px;text-decoration:none;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'\n + '.b{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}h2{font-size:16px;margin:22px 0 8px}'\n + '.hl{background:#fff;border:1px solid #d9d9d6;border-radius:12px}.hl .r{display:flex;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid #f0f0ee}.hl .r:first-child{border-top:0}.hl .r .x{flex:1;min-width:0}'\n + '.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;overflow:auto;z-index:2147483300}.dlg{background:#fff;border-radius:14px;max-width:520px;width:100%;padding:16px}.dlg h3{margin:0 0 10px;font-size:18px}'\n + 'label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}.dlg input,.dlg select,.dlg textarea{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.msg{font-size:14px;color:#8a5a00;margin-top:8px;min-height:18px}'\n + '@media(max-width:560px){.row2{grid-template-columns:1fr}}';\nconst nav = '<div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a><a class=\"hub\" href=\"/webhook/cbs-job-file?job=' + encodeURIComponent(job) + '\">Job</a></div>';\nconst html = '<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>' + C.title + ' - Job ' + job + '</title><script src=\"/webhook/cbs-guard\"></script><style>' + CSS + '</style></head><body><header>' + nav + '<h1>' + C.title + '</h1><p>Job ' + job + '</p></header><div class=\"wrap\" id=\"app\"><div class=\"empty\">' + (job ? 'Loading\\u2026' : 'Open this page from a job.') + '</div></div>'\n + (job ? '<script>(' + client.toString() + ')(' + JSON.stringify(C).replace(/</g, '\\\\u003c') + ',' + JSON.stringify(job) + ');</script>' : '') + '</body></html>';\nreturn [{ json: { html: html } }];\n\nfunction client(C, JOB) {\n  var app = document.getElementById('app'), D = null, MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];\n  function s(v){return v==null?'':String(v);}\n  function e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\n  function today(){return new Date().toLocaleDateString('en-CA',{timeZone:'Europe/London'});}\n  function now(){return new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);}\n  function dn(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?Date.UTC(+m[1],+m[2]-1,+m[3])/864e5:null;}\n  function ukd(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?Number(m[3])+' '+MO[+m[2]-1]:'';}\n  function addF(d,f){var x=dn(d);if(x===null||!f)return '';f=s(f).toLowerCase();var n=0,mo=0,m;if(f==='daily')n=1;else if(f==='weekly')n=7;else if(f==='fortnightly')n=14;else if(f==='monthly')mo=1;else if((m=f.match(/every\\s+(\\d+)\\s*day/)))n=+m[1];else return '';var dt=new Date(x*864e5);if(mo)dt.setUTCMonth(dt.getUTCMonth()+1);else dt.setUTCDate(dt.getUTCDate()+n);return dt.toISOString().slice(0,10);}\n  function nextDue(r){var f=s(r.freq),ld=s(r.last_done).slice(0,10);if(f&&ld)return addF(ld,f);return s(r.due_on).slice(0,10);}\n  function state(r){var st=s(r.status),nd=nextDue(r),d=nd?dn(nd)-dn(today()):null;\n    if(st==='Re-inspection needed')return {c:'r',t:'Re-inspection needed'};\n    if(d!==null&&d<0)return {c:'r',t:'Overdue \\u00b7 was due '+ukd(nd)};\n    if(st===C.fin&&!s(r.freq))return {c:'g',t:C.fin+(r.last_done?' '+ukd(r.last_done):'')};\n    if(d!==null&&d<=2)return {c:'a',t:d===0?'Due today':'Due '+ukd(nd)};\n    if(st===C.fin||s(r.last_done))return {c:'g',t:'Up to date'+(nd?' \\u00b7 next '+ukd(nd):'')};\n    if(st==='Booked')return {c:'a',t:'Booked'+(nd?' for '+ukd(nd):'')};\n    return {c:'a',t:(st||C.st[0])+(nd?' \\u00b7 due '+ukd(nd):'')};}\n  function files(r){try{var a=JSON.parse(r.files_json||'[]');return Array.isArray(a)?a:[];}catch(x){return [];}}\n  function fileUrl(u){return /sharepoint\\.com/i.test(s(u))?'/webhook/cbs-file?u='+encodeURIComponent(u):s(u);}\n  function who(){var x='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)x=m.name;}catch(z){}if(!x){try{x=localStorage.getItem('cbs_name')||'';}catch(z){}}if(!x){x=(prompt('Your name:')||'').trim();if(x){try{localStorage.setItem('cbs_name',x);}catch(z){}}}return x;}\n  function post(u,b){return fetch(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b||{})}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(d){if(!d||d.ok===false)throw 0;return d;});}\n  function load(){fetch('/webhook/cbs-job-sched-data?job='+encodeURIComponent(JOB)+'&k='+C.k+'&_='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){D=d||{};var p=document.querySelector('header p');if(p&&D.site)p.textContent='Job '+JOB+' \\u00b7 '+D.site;render();}).catch(function(){app.innerHTML='<div class=\"empty\">Could not load. Refresh to try again.</div>';});}\n  function render(){var L=(D.items||[]).slice().sort(function(a,b){var x=nextDue(a)||'9999',y=nextDue(b)||'9999';return x<y?-1:x>y?1:0;}),h='';\n    h+='<div class=\"tools\"><button class=\"btn\" id=\"add\">'+e(C.add)+'</button>'+(C.k==='toolbox'?'<a class=\"btn ghost\" href=\"/webhook/cbs-toolbox-builder?job='+encodeURIComponent(JOB)+'\">Build a toolbox talk</a>':'')+'</div><p class=\"m help\">'+e(C.help)+'</p>';\n    if(!L.length)h+='<div class=\"empty\">'+e(C.empty)+'</div>';\n    L.forEach(function(r){var S=state(r),F=files(r),nd=nextDue(r),by=r.label&&r.label!==r.ref_name?r.label:'';\n      h+='<div class=\"it\" data-id=\"'+e(r.id)+'\"><div class=\"hd\"><div class=\"tt\">'+e(r.ref_name||r.label||C.one)+'</div><span class=\"ch '+S.c+'\">'+e(S.t)+'</span></div>'\n       +'<div class=\"m\">'+[by?e(C.byLab+': '+by):'',r.freq?e(r.freq):'One-off',r.last_done?'Last '+e(ukd(r.last_done)):'',nd?'Next due '+e(ukd(nd)):''].filter(Boolean).join(' \\u00b7 ')+'</div>'\n       +(r.notes?'<div class=\"nt\">'+e(r.notes)+'</div>':'')\n       +(F.length?'<div class=\"fl\">'+F.map(function(f){return '<a href=\"'+e(fileUrl(f.u))+'\" target=\"_blank\" rel=\"noopener\" title=\"'+e(f.n||'PDF')+'\">'+e(f.n||'PDF')+'</a>';}).join('')+'</div>':'')\n       +'<div class=\"b\"><button class=\"btn sm\" data-a=\"up\">'+e(C.up)+'</button><button class=\"btn ghost sm\" data-a=\"edit\">Edit</button><button class=\"btn red sm\" data-a=\"rm\">Remove</button></div></div>';});\n    var HL=D.held||[];if(C.k==='toolbox')h+='<h2>Talks held</h2>'+(HL.length?'<div class=\"hl\">'+HL.map(function(t){return '<div class=\"r\"><div class=\"x\"><b>'+e(t.topic||'Toolbox talk')+'</b><div class=\"m\">'+[ukd(t.held_on),t.presenter].filter(Boolean).map(e).join(' \\u00b7 ')+'</div></div>'+(t.pdf?'<a class=\"btn ghost sm\" target=\"_blank\" rel=\"noopener\" href=\"'+e(fileUrl(t.pdf))+'\">PDF</a>':'')+'</div>';}).join('')+'</div>':'<div class=\"empty\">No toolbox talks held on this job yet.</div>');\n    app.innerHTML=h;\n    document.getElementById('add').onclick=function(){dlg(null);};\n    [].forEach.call(app.querySelectorAll('.it [data-a]'),function(b){b.onclick=function(){var id=b.closest('.it').getAttribute('data-id'),r=(D.items||[]).filter(function(x){return String(x.id)===id;})[0];if(!r)return;var a=b.getAttribute('data-a');if(a==='edit')dlg(r);else if(a==='rm')rm(r);else upload(r,b);};});}\n  var FQ=[['','One-off'],['Daily','Daily'],['Weekly','Weekly'],['Fortnightly','Fortnightly'],['Monthly','Monthly'],['custom','Every \\u2026 days']];\n  function dlg(r){var isNew=!r;r=r||{};var fq=s(r.freq),m=fq.match(/^every\\s+(\\d+)\\s*days?$/i),cv=m?'custom':fq,by=r.label&&r.label!==r.ref_name?r.label:'',sts=C.st.slice();if(r.status&&sts.indexOf(r.status)<0)sts.push(r.status);\n    var o=document.createElement('div');o.className='ov';\n    o.innerHTML='<div class=\"dlg\"><h3>'+(isNew?e(C.add.replace(/^\\+ /,'')):'Edit '+e(C.one))+'</h3>'\n     +'<label class=\"f\">'+e(C.typeLab)+'</label><input id=\"fT\" list=\"fTl\" value=\"'+e(r.ref_name||'')+'\" placeholder=\"Choose or type\"><datalist id=\"fTl\">'+C.types.map(function(t){return '<option value=\"'+e(t)+'\">';}).join('')+'</datalist>'\n     +'<label class=\"f\">'+e(C.byLab)+'</label><input id=\"fB\" list=\"fBl\" value=\"'+e(by)+'\" placeholder=\"'+(C.k==='toolbox'?'Who gives the talk':'Contractor')+'\"><datalist id=\"fBl\">'+(D.people||[]).map(function(t){return '<option value=\"'+e(t)+'\">';}).join('')+'</datalist>'\n     +'<div class=\"row2\"><div><label class=\"f\">How often</label><select id=\"fF\">'+FQ.map(function(x){return '<option value=\"'+e(x[0])+'\"'+(x[0]===cv?' selected':'')+'>'+e(x[1])+'</option>';}).join('')+(cv&&!FQ.some(function(x){return x[0]===cv;})?'<option selected>'+e(cv)+'</option>':'')+'</select><input id=\"fN\" type=\"number\" min=\"1\" placeholder=\"Number of days\" value=\"'+(m?m[1]:'')+'\" style=\"margin-top:6px;'+(cv==='custom'?'':'display:none')+'\"></div>'\n     +'<div><label class=\"f\">'+(isNew?'First due':'Due')+'</label><input id=\"fD\" type=\"date\" value=\"'+e(s(r.due_on).slice(0,10))+'\"></div></div>'\n     +'<label class=\"f\">Status</label><select id=\"fS\">'+sts.map(function(x){return '<option'+(x===(r.status||C.st[0])?' selected':'')+'>'+e(x)+'</option>';}).join('')+'</select>'\n     +'<label class=\"f\">Notes</label><textarea id=\"fX\" rows=\"3\">'+e(r.notes||'')+'</textarea>'\n     +'<div class=\"msg\" id=\"fM\"></div><div class=\"b\"><button class=\"btn\" id=\"fGo\">Save</button><button class=\"btn ghost\" id=\"fNo\">Cancel</button></div></div>';\n    document.body.appendChild(o);var Q=function(i){return o.querySelector('#'+i);};\n    Q('fF').onchange=function(){Q('fN').style.display=this.value==='custom'?'':'none';if(this.value==='custom')Q('fN').focus();};\n    function close(){o.remove();}Q('fNo').onclick=close;o.onclick=function(ev){if(ev.target===o)close();};\n    Q('fGo').onclick=function(){var t=Q('fT').value.trim(),b=Q('fB').value.trim(),f=Q('fF').value,st=Q('fS').value,d=Q('fD').value,nt=Q('fX').value.trim(),M=Q('fM');\n      if(!t){M.textContent='Enter the '+C.typeLab.toLowerCase()+'.';return;}\n      if(f==='custom'){var n=parseInt(Q('fN').value,10);if(!(n>0)){M.textContent='Enter the number of days.';return;}f='Every '+n+' days';}\n      var me=who();if(!me)return;var fin=st===C.fin,btn=this;btn.disabled=true;M.textContent='Saving\\u2026';\n      var body={ref_name:t,label:b||t,freq:f,due_on:d,status:st,notes:nt};\n      if(isNew){body.job_no=JOB;body.req=C.k;body.kind='item';body.ref_id='';body.files_json='[]';body.last_done=fin?today():'';body.done_by=fin?me:'';body.done_at=fin?now():'';body.created_by=me;body.created_at=now();}\n      else if(st!==r.status){body.done_by=fin?me:'';body.done_at=fin?now():'';if(fin&&!r.last_done)body.last_done=today();}\n      post('/webhook/cbs-admin-save?a=save&t=jobtasks&id='+(isNew?'0':encodeURIComponent(r.id)+'&partial=1'),body).then(function(){close();load();}).catch(function(){btn.disabled=false;M.textContent='Could not save. Check the connection and try again.';});};\n    setTimeout(function(){Q('fT').focus();},50);}\n  function rm(r){if(!confirm('Remove '+(r.ref_name||C.one)+'? Uploaded reports stay in SharePoint.'))return;post('/webhook/cbs-admin-save?a=del&t=jobtasks&id='+encodeURIComponent(r.id),{}).then(load).catch(function(){alert('Could not remove. Try again.');});}\n  function b64(f){return new Promise(function(res,rej){var x=new FileReader();x.onload=function(){res(String(x.result).split(',')[1]||'');};x.onerror=function(){rej(0);};x.readAsDataURL(f);});}\n  function upload(r,btn){var fi=document.createElement('input');fi.type='file';fi.accept='application/pdf,image/*';fi.onchange=function(){var f=fi.files&&fi.files[0];if(!f)return;\n      if(f.size>10*1024*1024){alert(f.name+' is over 10 MB. Compress it and try again.');return;}\n      var me=who();if(!me)return;btn.disabled=true;btn.textContent='Uploading\\u2026';\n      b64(f).then(function(d){return post('/webhook/cbs-job-upload',{job:JOB,folder:C.folder,filename:f.name,mime:f.type||'application/pdf',data:d});}).then(function(x){if(!x||!x.u)throw 0;\n        var F=files(r);F.push({n:x.n||f.name,u:x.u});var t=today(),nx=addF(t,r.freq);\n        var body={files_json:JSON.stringify(F),status:C.fin,last_done:t,done_by:me,done_at:now()};if(nx)body.due_on=nx;\n        return post('/webhook/cbs-admin-save?a=save&t=jobtasks&id='+encodeURIComponent(r.id)+'&partial=1',body);}).then(function(){load();}).catch(function(){btn.disabled=false;btn.textContent=C.up;alert('Upload failed. Check the connection and try again.');});};\n    fi.click();}\n  load();\n}\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "798a9aa5-a3b6-455c-8687-33cdb818b154",
+        "name": "Send Page",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          500,
+          100
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}"
+        }
+      },
+      {
+        "id": "9c7cc0c1-791e-438f-93f9-8480e504c403",
+        "name": "GET cbs-job-sched-data",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          500
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-job-sched-data",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "c67928ea-46f2-4213-89b2-014010de28d2"
+      },
+      {
+        "id": "346e33fc-75b8-491a-bdf9-50c04358b5ab",
+        "name": "Task Rows",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          220,
+          500
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Ae2mrJJkm7h94D1W"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-sched-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "6708cf43-39bd-44f3-ac34-d6c44e96fbba",
+        "name": "Job Rows",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          500
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "5dgWt9kYzCb49m5h"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "c5509c60-c24a-4b37-9e0e-7061ea50712e",
+        "name": "Subbie Rows",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          660,
+          500
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "ibSO7Sf8VzGU4jsS"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "66aaa888-c8f3-40e9-a562-83604c407091",
+        "name": "Worker Rows",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          880,
+          500
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "pNNkwGO5VvlhEsnP"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "37b82a29-03e9-426a-845d-99d5fb9557bd",
+        "name": "Toolbox Rows",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1100,
+          500
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "yzh0N48ZuMVkpQk4"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "c90e32c0-eee6-498d-bcb8-d7deba9d4405",
+        "name": "Sched Data",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1320,
+          500
+        ],
+        "parameters": {
+          "jsCode": "/* Data for the Inspections / Toolbox talks page: the job's task rows for that kind (req scaffold or toolbox), the site,\n   people for the 'carried out by' / 'given by' list, and toolbox talks held on the job (cbs_toolbox). */\nconst S = v => v == null ? '' : String(v).trim();\nconst jk = v => S(v).replace(/^#/, '').replace(/[^0-9A-Za-z-]/g, '').toLowerCase();\nconst q = $('GET cbs-job-sched-data').first().json.query || {};\nconst job = jk(q.job), K = S(q.k) === 'toolbox' ? 'toolbox' : 'scaffold';\nfunction rows(n) { try { return $(n).all().map(i => i.json).filter(r => r && r.id != null); } catch (e) { return []; } }\nconst items = rows('Task Rows').filter(r => jk(r.job_no) === job && S(r.req) === K).map(r => ({ id: r.id, ref_name: S(r.ref_name), label: S(r.label), freq: S(r.freq), last_done: S(r.last_done), due_on: S(r.due_on), status: S(r.status), notes: S(r.notes), files_json: S(r.files_json) || '[]', done_by: S(r.done_by) }));\nconst jr = rows('Job Rows').filter(r => jk(r.ref) === job).sort((a, b) => b.id - a.id)[0] || {};\nlet people = [];\nif (K === 'toolbox') people = rows('Worker Rows').filter(r => r.active !== false).map(r => S(r.name));\nelse people = rows('Subbie Rows').map(r => S(r.company));\npeople = Array.from(new Set(people.filter(Boolean))).sort((a, b) => a.localeCompare(b));\nconst held = K === 'toolbox' ? rows('Toolbox Rows').filter(r => jk(r.job_no) === job).map(r => ({ topic: S(r.topic), held_on: S(r.held_on), presenter: S(r.presenter), pdf: S(r.pdf_url) })).sort((a, b) => b.held_on.localeCompare(a.held_on)) : [];\nreturn [{ json: { ok: true, job: job, k: K, site: S(jr.site) || S(jr.name), items: items, people: people, held: held } }];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "580f725f-bc4f-45ee-8689-f4ef459d1fdc",
+        "name": "Send Data",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          1540,
+          500
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          },
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify($json) }}"
+        }
+      }
+    ],
+    "connections": {
+      "GET cbs-job-inspections": {
+        "main": [
+          [
+            {
+              "node": "Sched Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-job-toolbox": {
+        "main": [
+          [
+            {
+              "node": "Sched Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Sched Page": {
+        "main": [
+          [
+            {
+              "node": "Send Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-job-sched-data": {
+        "main": [
+          [
+            {
+              "node": "Task Rows",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Task Rows": {
+        "main": [
+          [
+            {
+              "node": "Job Rows",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Job Rows": {
+        "main": [
+          [
+            {
+              "node": "Subbie Rows",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Subbie Rows": {
+        "main": [
+          [
+            {
+              "node": "Worker Rows",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Worker Rows": {
+        "main": [
+          [
+            {
+              "node": "Toolbox Rows",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Toolbox Rows": {
+        "main": [
+          [
+            {
+              "node": "Sched Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Sched Data": {
+        "main": [
+          [
+            {
+              "node": "Send Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Job Inspections and Toolbox talks pages (job menu). GET cbs-job-inspections / cbs-job-toolbox (page), GET cbs-job-sched-data?job=&k=scaffold|toolbox (items from cbs_job_tasks + people). Saves and uploads use cbs-admin-save (jobtasks) and cbs-job-upload.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

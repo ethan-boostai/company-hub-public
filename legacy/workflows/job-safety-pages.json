@@ -1,0 +1,2822 @@
+{
+  "id": "g3DzeW3z5nbs5scf",
+  "name": "CBS - Job Safety Pages",
+  "active": true,
+  "isArchived": false,
+  "versionId": "45630138-7973-469b-a686-951ce039247c",
+  "activeVersionId": "45630138-7973-469b-a686-951ce039247c",
+  "triggerCount": 13,
+  "createdAt": "2026-10-16T20:32:55.968Z",
+  "updatedAt": "2026-10-20T10:43:30.846Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "GET cbs-job-rams": {
+      "main": [
+        [
+          {
+            "node": "Reg Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-job-permits": {
+      "main": [
+        [
+          {
+            "node": "Reg Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-job-prestarts": {
+      "main": [
+        [
+          {
+            "node": "Reg Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-job-signons": {
+      "main": [
+        [
+          {
+            "node": "Reg Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-job-visitors": {
+      "main": [
+        [
+          {
+            "node": "Reg Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-job-incidents": {
+      "main": [
+        [
+          {
+            "node": "Reg Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reg Page": {
+      "main": [
+        [
+          {
+            "node": "Send Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-job-reg-data": {
+      "main": [
+        [
+          {
+            "node": "T job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T job": {
+      "main": [
+        [
+          {
+            "node": "T rams",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T rams": {
+      "main": [
+        [
+          {
+            "node": "T subjobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T subjobs": {
+      "main": [
+        [
+          {
+            "node": "T permits",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T permits": {
+      "main": [
+        [
+          {
+            "node": "T prestarts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T prestarts": {
+      "main": [
+        [
+          {
+            "node": "T signons",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T signons": {
+      "main": [
+        [
+          {
+            "node": "T visitors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T visitors": {
+      "main": [
+        [
+          {
+            "node": "T incidents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T incidents": {
+      "main": [
+        [
+          {
+            "node": "T increports",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-job-pos": {
+      "main": [
+        [
+          {
+            "node": "Reg Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-job-plantlist": {
+      "main": [
+        [
+          {
+            "node": "Reg Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-job-materials": {
+      "main": [
+        [
+          {
+            "node": "Reg Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-job-cdm": {
+      "main": [
+        [
+          {
+            "node": "Reg Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T increports": {
+      "main": [
+        [
+          {
+            "node": "T pos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T pos": {
+      "main": [
+        [
+          {
+            "node": "T jplant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T jplant": {
+      "main": [
+        [
+          {
+            "node": "T moves",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T moves": {
+      "main": [
+        [
+          {
+            "node": "T ptm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T ptm": {
+      "main": [
+        [
+          {
+            "node": "T cphsp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T cphsp": {
+      "main": [
+        [
+          {
+            "node": "T pci",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T pci": {
+      "main": [
+        [
+          {
+            "node": "T diary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T diary": {
+      "main": [
+        [
+          {
+            "node": "T rfis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T rfis": {
+      "main": [
+        [
+          {
+            "node": "T drawings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T drawings": {
+      "main": [
+        [
+          {
+            "node": "T variations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T variations": {
+      "main": [
+        [
+          {
+            "node": "T costs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reg Data": {
+      "main": [
+        [
+          {
+            "node": "Summary Extra",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summary Extra": {
+      "main": [
+        [
+          {
+            "node": "Send Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T costs": {
+      "main": [
+        [
+          {
+            "node": "T assets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "T assets": {
+      "main": [
+        [
+          {
+            "node": "Reg Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-job-pci": {
+      "main": [
+        [
+          {
+            "node": "Reg Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-job-cphsp": {
+      "main": [
+        [
+          {
+            "node": "Reg Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "0fafd0fd-2c92-47fd-95a6-1ff76e4b6941",
+      "name": "GET cbs-job-rams",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-job-rams",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "7314a3b6-4d99-4918-a69f-7ff7fc575e00"
+    },
+    {
+      "id": "dd3d16cf-ed6a-4037-9fe9-dc12087c4074",
+      "name": "GET cbs-job-permits",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        150
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-job-permits",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "c1a85713-4f40-4381-b88a-c6e193cbb1e5"
+    },
+    {
+      "id": "aa843103-df8e-413c-a007-31da7af593ab",
+      "name": "GET cbs-job-prestarts",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        300
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-job-prestarts",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "cb333526-d2cc-420a-bcfc-0a520bdcd258"
+    },
+    {
+      "id": "2d76b966-af8b-46df-ba36-77d9e63becc4",
+      "name": "GET cbs-job-signons",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        450
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-job-signons",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "6f3935c2-8617-42cb-9fe4-398d47820b3a"
+    },
+    {
+      "id": "5acd944f-89e2-466d-a509-b2d3e9768f97",
+      "name": "GET cbs-job-visitors",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        600
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-job-visitors",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "7321e19c-7acf-4e22-95da-24abf6092b7e"
+    },
+    {
+      "id": "ec4a2f2b-9e03-4390-b3fe-7f6c3824cc82",
+      "name": "GET cbs-job-incidents",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        750
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-job-incidents",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "0901f874-83c4-456e-bebb-583c9bad757f"
+    },
+    {
+      "id": "3ce814a7-0ed5-4da4-a141-360294f5a496",
+      "name": "Reg Page",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        260,
+        300
+      ],
+      "parameters": {
+        "jsCode": "/* Job record pages, one layout: Safety (RAMS, Pre-con info, CPHSP, Permits, Pre-starts, Sign-ons, Visitors, Incidents) and Site\n   (Purchase orders, Plant, Materials). cbs-job-<k>?job=N. Lists the job's records (from cbs-job-reg-data) with a status chip and PDF\n   buttons (PDFs open in the in-page viewer); the buttons open the existing builders and forms with the job filled in.\n   Pre-con info (pci) and CPHSP (cphsp) are separate pages; both read the cdm data and show only their own section. The old combined\n   page (cdm) still works for saved links.\n   Plant: book yard plant to the job and return it to the yard here (POST cbs-job-plant, action book / return, as the job page did). */\nconst it = $input.first().json;\nconst m = String(it.webhookUrl || '').match(/cbs-job-(rams|permits|prestarts|signons|visitors|incidents|pos|plantlist|materials|cdm|pci|cphsp)(\\b|$)/);\nconst K = m ? m[1] : 'rams';\nconst job = String((it.query || {}).job || '').replace(/[^0-9A-Za-z-]/g, '');\nconst CFG = {\n  rams: { title: 'RAMS', help: \"CBS RAMS for this job and the subcontractors' RAMS. New RAMS opens the RAMS builder; Request subcontractor RAMS asks a subcontractor for theirs.\", btns: [['+ New RAMS', 'cbs-rams-builder'], ['+ Request subcontractor RAMS', 'cbs-admin?new=subjobs']] },\n  pci: { title: 'Pre-construction information', help: 'Pre-construction information for this job from the client or principal designer, such as surveys, asbestos reports and existing drawings (CDM jobs).', btns: [['+ Add pre-con info', 'cbs-pci']] },\n  cphsp: { title: 'CPHSP', help: 'The construction phase health and safety plan for this job (CDM jobs).', btns: [['+ New CPHSP', 'cbs-cphsp-builder']] },\n  cdm: { title: 'CPHSP and pre-con info', help: 'The construction phase health and safety plan and the pre-construction information for this job (CDM jobs).', btns: [['+ New CPHSP', 'cbs-cphsp-builder'], ['+ Add pre-con info', 'cbs-pci']] },\n  permits: { title: 'Permits', help: 'Permits to work for this job (CDM jobs). The subcontractor fills the permit in; the office or site manager approves it.', btns: [['+ New permit', 'cbs-permit']] },\n  prestarts: { title: 'Pre-starts', help: 'Daily pre-start briefings held on this job.', btns: [['+ New pre-start', 'cbs-prestart']] },\n  signons: { title: 'Sign-ons', help: \"Who has signed on to this job's documents (RAMS, pre-starts, toolbox talks). The crew sign through the link in the ServiceM8 note.\", btns: [] },\n  visitors: { title: 'Visitors', help: 'Visitor sign-in log for this job (CDM jobs).', btns: [['Open visitor sign-in', 'cbs-visit']] },\n  incidents: { title: 'Incidents', help: 'Incidents and near misses on this job.', btns: [['+ Report incident or near miss', 'cbs-admin?new=incidents']] },\n  pos: { title: 'Purchase orders', help: 'Supplier, subcontractor and hire purchase orders for this job.', btns: [['+ New PO', 'cbs-po'], ['Upload supplier PO', 'cbs-qbpo'], ['Upload subcontractor PO', 'cbs-qbpo?sub=1']] },\n  plantlist: { title: 'Plant', help: 'CBS plant booked out to this job, and plant hired in for it. Book plant from the yard below; return it when it comes back.', btns: [] },\n  materials: { title: 'Materials', help: 'Load-up sheets for this job and stock booked out to it.', btns: [['+ Plan a load-up', 'cbs-ptm-sheet']] }\n};\nconst C = CFG[K];\nconst link = p => { const h = p.indexOf('#'), base = h > -1 ? p.slice(0, h) : p, frag = h > -1 ? p.slice(h) : ''; return '/webhook/' + base + (base.indexOf('?') > -1 ? '&' : '?') + 'job=' + encodeURIComponent(job) + frag; };\nconst E = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');\nconst CSS = '*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n + 'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n + '.wrap{max-width:860px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}'\n + '.btn{background:#F47920;color:#fff;font-weight:600;border-radius:8px;padding:9px 14px;font-size:14px;border:1px solid #F47920;font-family:inherit;cursor:pointer;text-decoration:none;display:inline-block;line-height:1.2}.btn.ghost{background:#fff;color:#1d1d1d;border-color:#3d4043}.btn.sm{padding:6px 10px;font-size:13px}.btn:disabled{opacity:.6;cursor:default}'\n + '.m{color:#6b6e70;font-size:13.5px}.help{margin:4px 0 14px}h2{font-size:16px;margin:18px 0 8px}.it{background:#fff;border:1px solid #d9d9d6;border-radius:12px;padding:12px 14px;margin-bottom:10px}.hd{display:flex;gap:10px;align-items:flex-start}.tt{flex:1;font-weight:700;min-width:0}'\n + '.ch{display:inline-block;font-size:12.5px;font-weight:600;border-radius:6px;padding:2px 8px;white-space:nowrap}.ch.r{background:#fde7e5;color:#b3261e}.ch.a{background:#fff1d6;color:#8a5300}.ch.g{background:#e6f4ea;color:#1a7f37}'\n + '.it .m{margin-top:4px}.fl{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.fl a{font-size:13px;color:#b3261e;font-weight:600;border:1px solid #d9d9d6;border-radius:6px;padding:3px 8px;text-decoration:none;max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'\n + '.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}'\n + 'input.f{font:inherit;font-size:15px;border:1px solid #c4c6c8;border-radius:8px;padding:8px 10px;background:#fff;color:#161616}#bkL{max-height:280px;overflow:auto;margin-top:8px;border:1px solid #ecece9;border-radius:8px}#bkL label{display:flex;gap:10px;align-items:center;padding:8px 10px;border-top:1px solid #f0f0ee;cursor:pointer;font-size:14.5px}#bkL label:first-child{border-top:0}#bkL input{width:18px;height:18px;accent-color:#F47920}';\nconst nav = '<div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a><a class=\"hub\" href=\"/webhook/cbs-job-file?job=' + encodeURIComponent(job) + '\">Job</a></div>';\nconst tools = C.btns.length ? '<div class=\"tools\">' + C.btns.map((b, i) => '<a class=\"btn' + (i ? ' ghost' : '') + '\" href=\"' + E(link(b[1])) + '\">' + E(b[0]) + '</a>').join('') + '</div>' : '';\nconst html = '<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>' + E(C.title) + ' - Job ' + E(job) + '</title><script src=\"/webhook/cbs-guard\"></script><style>' + CSS + '</style></head><body><header>' + nav + '<h1>' + E(C.title) + '</h1><p>Job ' + E(job) + '</p></header><div class=\"wrap\">' + tools + '<p class=\"m help\">' + E(C.help) + '</p><div id=\"app\"><div class=\"empty\">' + (job ? 'Loading\\u2026' : 'Open this page from a job.') + '</div></div></div>'\n + (job ? '<script>(' + client.toString() + ')(' + JSON.stringify(K) + ',' + JSON.stringify(job) + ');</script>' : '') + '</body></html>';\nreturn [{ json: { html: html } }];\n\nfunction client(K, JOB) {\n  var app = document.getElementById('app'), SEL = {}, ASSETS = [];\n  var FK = (K === 'pci' || K === 'cphsp') ? 'cdm' : K, ONLY = K === 'pci' ? 'Pre-construction information' : (K === 'cphsp' ? 'CPHSP' : '');\n  function e(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\n  function fileUrl(u){return /sharepoint\\.com/i.test(String(u||''))?'/webhook/cbs-file?u='+encodeURIComponent(u):String(u||'');}\n  function me(){var n='';try{n=localStorage.getItem('cbs_name')||'';}catch(x){}if(!n){n=(prompt('Your name:')||'').trim();if(n){try{localStorage.setItem('cbs_name',n);}catch(x){}}}return n;}\n  function free(a){return !a.j&&!/(repair|quarantin|retired|lost|sold|scrap|out)/i.test(a.st+' '+a.y);}\n  function drawList(){var L=document.getElementById('bkL');if(!L)return;var q=(document.getElementById('bkQ').value||'').toLowerCase().trim();\n    var A=ASSETS.filter(free).filter(function(a){return !q||(a.n+' '+a.t+' '+a.c).toLowerCase().indexOf(q)>-1;});\n    L.innerHTML=A.length?A.slice(0,200).map(function(a){return '<label><input type=\"checkbox\" value=\"'+e(a.id)+'\"'+(SEL[a.id]?' checked':'')+'><span style=\"flex:1\"><b>'+e(a.n)+'</b>'+(a.t?' \\u00b7 '+e(a.t):'')+'<span class=\"m\" style=\"display:block;margin:0\">'+e(a.c)+'</span></span></label>';}).join(''):'<div class=\"m\" style=\"padding:10px\">No free plant matches.</div>';\n    var k=Object.keys(SEL).length;document.getElementById('bkN').textContent=k?k+' selected':'';}\n  function post(body,b,ok){body.job=JOB;if(b)b.disabled=true;fetch('/webhook/cbs-job-plant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){return r.json();}).then(function(d){if(!d||!d.ok)throw new Error((d&&d.message)||'');location.reload();}).catch(function(err){if(b)b.disabled=false;alert((err&&err.message)||'Could not save. Check your connection and try again.');});}\n  document.addEventListener('change',function(ev){var c=ev.target;if(c&&c.closest&&c.closest('#bkL')){if(c.checked)SEL[c.value]=1;else delete SEL[c.value];var k=Object.keys(SEL).length;document.getElementById('bkN').textContent=k?k+' selected':'';}});\n  document.addEventListener('input',function(ev){if(ev.target&&ev.target.id==='bkQ')drawList();});\n  document.addEventListener('click',function(ev){var t=ev.target,x;\n    if((x=t.closest&&t.closest('#bkGo'))){var ids=Object.keys(SEL);if(!ids.length){alert('Tick the plant to book to this job.');return;}var n=me();if(!n)return;post({action:'book',ids:ids,by:n,out_with:document.getElementById('bkW').value||n,due_back:document.getElementById('bkD').value},x);return;}\n    if((x=t.closest&&t.closest('[data-ret]'))){var n2=me();if(!n2)return;if(!confirm('Return '+x.getAttribute('data-n')+' to the yard?'))return;post({action:'return',ids:[x.getAttribute('data-ret')],by:n2},x);return;}\n  });\n  fetch('/webhook/cbs-job-reg-data?job='+encodeURIComponent(JOB)+'&k='+FK+'&_='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){\n    var p=document.querySelector('header p');if(p&&d.site)p.textContent='Job '+JOB+' \\u00b7 '+d.site;\n    var h='', secs=d.sections||[];\n    if(ONLY)secs=secs.filter(function(s){return s.title===ONLY;}).map(function(s){return {title:'',empty:s.empty,items:s.items};});\n    if(d.assets){ASSETS=d.assets;h+='<div class=\"it\" id=\"bk\"><div class=\"tt\">Book plant to this job</div><div class=\"m\">Tick the plant going out from the yard. Only plant that is free (in the yard and in service) shows.</div>'\n      +'<input class=\"f\" id=\"bkQ\" placeholder=\"Search plant, tag or category\" style=\"width:100%;margin-top:8px\"><div id=\"bkL\"></div>'\n      +'<div style=\"display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px\"><input class=\"f\" id=\"bkW\" placeholder=\"Out with (name)\" style=\"flex:1;min-width:160px\"><label class=\"m\" style=\"display:flex;align-items:center;gap:6px\">Due back <input class=\"f\" type=\"date\" id=\"bkD\"></label><button type=\"button\" class=\"btn\" id=\"bkGo\">Book selected</button><span class=\"m\" id=\"bkN\"></span></div></div>';}\n    secs.forEach(function(s){if(s.title)h+='<h2>'+e(s.title)+'</h2>';\n      if(!s.items||!s.items.length){h+='<div class=\"empty\">'+e(s.empty||'None yet.')+'</div>';return;}\n      s.items.forEach(function(x){h+='<div class=\"it\"><div class=\"hd\"><div class=\"tt\">'+e(x.t)+'</div>'+(x.st?'<span class=\"ch '+(x.c||'a')+'\">'+e(x.st)+'</span>':'')+'</div>'\n        +((x.m||[]).filter(Boolean).length?'<div class=\"m\">'+(x.m||[]).filter(Boolean).map(e).join(' \\u00b7 ')+'</div>':'')\n        +((x.pdfs||[]).length?'<div class=\"fl\">'+x.pdfs.map(function(f){return '<a href=\"'+e(fileUrl(f.u))+'\" target=\"_blank\" rel=\"noopener\" title=\"'+e(f.n||'PDF')+'\">'+e(f.n||'PDF')+'</a>';}).join('')+'</div>':'')\n        +(x.ret?'<div style=\"margin-top:8px\"><button type=\"button\" class=\"btn ghost sm\" data-ret=\"'+e(x.ret)+'\" data-n=\"'+e(x.t)+'\">Return to yard</button></div>':'')+'</div>';});});\n    app.innerHTML=h||'<div class=\"empty\">None yet.</div>';\n    if(d.assets)drawList();\n  }).catch(function(){app.innerHTML='<div class=\"empty\">Could not load. Refresh to try again.</div>';});\n}\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "3bc226ea-adaf-4047-b2c5-153c2bb359ce",
+      "name": "Send Page",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        500,
+        300
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}"
+      }
+    },
+    {
+      "id": "c2992503-c6b9-4f25-83e3-a89f2bcb716f",
+      "name": "GET cbs-job-reg-data",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        1000
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-job-reg-data",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "11f682ce-ec69-435f-9b80-dc55dccb8ac5"
+    },
+    {
+      "id": "6fb639f4-5720-4e22-bd79-d81a0addb9b6",
+      "name": "T job",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        1000
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "5dgWt9kYzCb49m5h"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "ref",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "d5e94f43-4ed3-4232-8589-fcba271ebef4",
+      "name": "T rams",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        1000
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "b2FkFIy27taH73i9"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "4a55844c-430a-4b22-832c-a2777f56c22f",
+      "name": "T subjobs",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        660,
+        1000
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "0KkYwJ3A3fi1wGXd"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "02ca0ba7-1bb0-4046-a0dc-73df31435726",
+      "name": "T permits",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        1000
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "bPr02oOPEg6icX8g"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "42a30254-e866-46e4-9dbd-e1ca006e6041",
+      "name": "T prestarts",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        1000
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "Wg8zT3VHAzrdt8Sw"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "e4f38d6e-90b0-411d-916f-5d32a9c02e94",
+      "name": "T signons",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1320,
+        1000
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "7mnxJyfK2DSbq7J4"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "406d16ce-04dc-4073-93e6-7dbbaf4ccc91",
+      "name": "T visitors",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1540,
+        1000
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "5ET1OUDUv4D2u9o6"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "573dcbc4-f2ec-4de2-9047-e0f8250405ba",
+      "name": "T incidents",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1760,
+        1000
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "vZXrt8GrhPBPSqQH"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "9a08a337-50fe-4e58-a851-5fc18fe505a9",
+      "name": "T increports",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1980,
+        1000
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "19HFiSBMOKK9bVz4"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "ad58b9d4-b383-4c10-bafe-ae87124162aa",
+      "name": "Reg Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2200,
+        1000
+      ],
+      "parameters": {
+        "jsCode": "/* Data for the job record pages: the job's records for one page (k), as generic items {t, m:[meta], st, c (r/a/g), pdfs:[{n,u}]}.\n   k=summary: one short status per page for the Job records card on the job page ({t, l}), plus whether the job is CDM. */\nconst S = v => v == null ? '' : String(v).trim();\nconst jk = v => S(v).replace(/^#/, '').replace(/[^0-9A-Za-z-]/g, '').toLowerCase();\nconst q = $('GET cbs-job-reg-data').first().json.query || {};\nconst job = jk(q.job), K = S(q.k);\nconst today = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/London' });\nfunction rows(n) { try { return $(n).all().map(i => i.json).filter(r => r && r.id != null); } catch (e) { return []; } }\nconst MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];\nfunction ukd(d) { const m = S(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})(?:[T ](\\d{2}):(\\d{2}))?/); if (!m) return S(d); return Number(m[3]) + ' ' + MO[+m[2] - 1] + ' ' + m[1] + (m[4] ? ' ' + m[4] + ':' + m[5] : ''); }\nfunction col(st) { st = S(st); if (/^(approved|live|complete|completed|signed|issued|received|closed|done|accepted|signed out|reviewed|held|returned|loaded|off.?hired|delivered|on job)$/i.test(st)) return 'g'; if (/(reject|expired|overdue|required|riddor|cancel|missing|not received|open|short)/i.test(st)) return 'r'; return 'a'; }\nfunction pdf(u, n) { u = S(u); return u ? [{ n: n || 'PDF', u: u }] : []; }\nfunction docs(j) { try { const a = JSON.parse(S(j) || '[]'); return (Array.isArray(a) ? a : []).map(x => typeof x === 'string' ? { n: 'Document', u: x } : { n: S(x.n || x.name || x.label) || 'Document', u: S(x.u || x.url || x.webUrl) }).filter(x => x.u); } catch (e) { return []; } }\nfunction money(v) { const n = parseFloat(String(v || '').replace(/[^0-9.\\-]/g, '')); return isFinite(n) && n ? '\\u00a3' + n.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : ''; }\nconst by = (k) => (a, b) => S(b[k]).localeCompare(S(a[k]));\nconst mine = n => rows(n).filter(r => jk(r.job_no) === job);\nfunction poItem(r) { return { t: (S(r.po_no) ? S(r.po_no) + ' \\u00b7 ' : '') + (S(r.supplier) || 'Supplier'), m: [r.ordered_on ? 'Ordered ' + ukd(r.ordered_on) : '', r.needed_by ? 'Needed ' + ukd(r.needed_by) : '', r.hire_end ? 'Hire to ' + ukd(r.hire_end) : '', r.offhired_on ? 'Off-hired ' + ukd(r.offhired_on) : '', money(r.total)], st: S(r.status) || 'Ordered', c: col(r.status || 'Ordered'), pdfs: pdf(r.pdf_url, 'PO PDF') }; }\nconst isSub = r => /sub/i.test(S(r.po_type)), isHire = r => /hire/i.test(S(r.po_type));\nconst jr = rows('T job').sort((a, b) => b.id - a.id)[0] || {};\nlet sections = [];\nif (K === 'rams') {\n  sections.push({ title: 'CBS RAMS', empty: 'No CBS RAMS for this job yet.', items: mine('T rams').sort(by('dated')).map(r => ({ t: S(r.activity) || S(r.task) || 'RAMS', m: [r.revision ? 'Rev ' + S(r.revision) : '', ukd(r.dated), r.prepared_by ? 'Prepared by ' + S(r.prepared_by) : ''], st: S(r.status) || 'Draft', c: col(r.status || 'Draft'), pdfs: [{ n: 'Open in RAMS builder', u: '/webhook/cbs-rams-builder?id=' + r.id }].concat(pdf(r.pdf_url, 'RAMS PDF')) })) });\n  sections.push({ title: 'Subcontractor RAMS', empty: 'No subcontractor RAMS requested for this job yet.', items: mine('T subjobs').sort(by('requested_on')).map(r => ({ t: S(r.company) || 'Subcontractor', m: [S(r.doc_type), r.requested_on ? 'Requested ' + ukd(r.requested_on) : '', r.received_on ? 'Received ' + ukd(r.received_on) : '', r.reviewed_by ? 'Reviewed by ' + S(r.reviewed_by) : ''], st: S(r.status) || 'Requested', c: col(r.status || 'Requested'), pdfs: docs(r.docs_json) })) });\n} else if (K === 'cdm') {\n  sections.push({ title: 'CPHSP', empty: 'No CPHSP for this job yet.', items: mine('T cphsp').sort(by('dated')).map(r => ({ t: 'CPHSP' + (r.cphsp_no ? ' ' + S(r.cphsp_no) : '') + (r.revision ? ' \\u00b7 Rev ' + S(r.revision) : ''), m: [ukd(r.dated), r.prepared_by ? 'Prepared by ' + S(r.prepared_by) : '', r.approved_by ? 'Approved by ' + S(r.approved_by) + (r.approved_on ? ' ' + ukd(r.approved_on) : '') : ''], st: S(r.status) || 'Draft', c: col(r.status || 'Draft'), pdfs: pdf(r.pdf_url, 'CPHSP PDF').concat(pdf(r.register_pdf_url, 'Register PDF')) })) });\n  sections.push({ title: 'Pre-construction information', empty: 'No pre-con info for this job yet.', items: mine('T pci').sort(by('uploaded_at')).map(r => ({ t: S(r.title) || S(r.file_name) || 'Document', m: [S(r.category), r.uploaded_at ? 'Added ' + ukd(r.uploaded_at) : '', S(r.uploaded_by)], st: r.doc_url ? 'Received' : 'Missing', c: r.doc_url ? 'g' : 'r', pdfs: pdf(r.doc_url, S(r.file_name) || 'Document') })) });\n} else if (K === 'permits') {\n  sections.push({ title: '', empty: 'No permits for this job yet.', items: mine('T permits').sort(by('requested_at')).map(r => ({ t: (S(r.permit_type) || 'Permit') + (r.permit_no ? ' \\u00b7 ' + S(r.permit_no) : ''), m: [S(r.contractor_company), S(r.location), (r.valid_from || r.valid_to) ? 'Valid ' + ukd(r.valid_from) + (r.valid_to ? ' to ' + ukd(r.valid_to) : '') : '', r.approved_by ? 'Approved by ' + S(r.approved_by) : ''], st: S(r.status) || 'Requested', c: col(r.status || 'Requested'), pdfs: pdf(r.pdf_url, 'Permit PDF') })) });\n} else if (K === 'prestarts') {\n  sections.push({ title: '', empty: 'No pre-starts held on this job yet.', items: mine('T prestarts').sort(by('held_on')).map(r => ({ t: 'Pre-start ' + ukd(r.held_on) + (r.ps_no ? ' \\u00b7 ' + S(r.ps_no) : ''), m: [r.site_lead ? 'Led by ' + S(r.site_lead) : '', r.headcount ? S(r.headcount) + ' on site' : '', S(r.held_at)], st: r.pdf_url ? 'Held' : 'Draft', c: r.pdf_url ? 'g' : 'a', pdfs: pdf(r.pdf_url, 'Pre-start PDF') })) });\n} else if (K === 'signons') {\n  sections.push({ title: '', empty: 'Nobody has signed on to documents on this job yet.', items: mine('T signons').sort(by('signed_at')).map(r => ({ t: S(r.name) || 'Unknown', m: [S(r.company), S(r.doc_label) || S(r.doc_type), r.doc_rev ? 'Rev ' + S(r.doc_rev) : '', ukd(r.signed_at)], st: 'Signed', c: 'g', pdfs: pdf(r.record_pdf_url, 'Sign-on record') })) });\n} else if (K === 'visitors') {\n  sections.push({ title: '', empty: 'No visitors signed in on this job yet.', items: mine('T visitors').sort(by('signed_in_at')).map(r => ({ t: S(r.name) || 'Visitor', m: [S(r.company), S(r.reason), r.visiting ? 'Visiting ' + S(r.visiting) : '', r.signed_in_at ? 'In ' + ukd(r.signed_in_at) : ukd(r.visit_date), r.signed_out_at ? 'Out ' + ukd(r.signed_out_at) : ''], st: r.signed_out_at ? 'Signed out' : 'On site', c: r.signed_out_at ? 'g' : 'a', pdfs: [] })) });\n} else if (K === 'incidents') {\n  const inc = rows('T incidents').filter(r => jk(r.sm8_job) === job).sort(by('occurred_at')).map(r => ({ t: (S(r.kind) || 'Incident') + (r.ref ? ' \\u00b7 ' + S(r.ref) : ''), m: [S(r.severity), ukd(r.occurred_at), S(r.person), S(r.location)], st: S(r.status) || 'Open', c: col(r.status || 'Open'), pdfs: pdf(r.record_pdf_url, 'Incident record') }));\n  const rep = mine('T increports').sort(by('occurred_at')).map(r => ({ t: 'Incident report' + (r.incident_id ? ' \\u00b7 ' + S(r.incident_id) : ''), m: [ukd(r.occurred_at), S(r.person), r.signed_by ? 'Signed by ' + S(r.signed_by) : ''], st: S(r.status) || 'Draft', c: col(r.status || 'Draft'), pdfs: pdf(r.pdf_url, 'Report PDF') }));\n  sections.push({ title: '', empty: 'No incidents or near misses on this job.', items: inc.concat(rep) });\n} else if (K === 'pos') {\n  const P = mine('T pos').sort(by('ordered_on'));\n  sections.push({ title: 'Supplier POs', empty: 'No supplier POs for this job yet.', items: P.filter(r => !isSub(r) && !isHire(r)).map(poItem) });\n  sections.push({ title: 'Subcontractor POs', empty: 'No subcontractor POs for this job yet.', items: P.filter(isSub).map(poItem) });\n  sections.push({ title: 'Hire', empty: 'No hire POs for this job yet.', items: P.filter(isHire).map(poItem) });\n} else if (K === 'plantlist') {\n  sections.push({ title: 'CBS plant', empty: 'No CBS plant booked to this job.', items: mine('T jplant').sort(by('booked_at')).map(r => { const back = S(r.returned_at), due = S(r.due_back).slice(0, 10), od = !back && due && due < today; return { t: (S(r.asset_name) || 'Plant') + (r.asset_tag ? ' \\u00b7 ' + S(r.asset_tag) : ''), m: [S(r.category), r.out_with ? 'With ' + S(r.out_with) : '', r.booked_at ? 'Booked ' + ukd(r.booked_at) : '', back ? 'Returned ' + ukd(back) : (due ? 'Due back ' + ukd(due) : '')], st: back ? 'Returned' : (od ? 'Overdue' : 'On job'), c: back ? 'g' : (od ? 'r' : 'a'), pdfs: [] }; }) });\n  sections.push({ title: 'Hired plant', empty: 'No plant hired for this job.', items: mine('T pos').filter(isHire).sort(by('ordered_on')).map(poItem) });\n} else if (K === 'materials') {\n  sections.push({ title: 'Load-up sheets', empty: 'No load-ups planned for this job yet.', items: mine('T ptm').sort(by('sheet_date')).map(r => ({ t: 'Load-up ' + ukd(r.sheet_date), m: [S(r.vehicle), S(r.crew), r.prepared_by ? 'Prepared by ' + S(r.prepared_by) : '', r.loaded_by ? 'Loaded by ' + S(r.loaded_by) : '', S(r.shortages) ? 'Short: ' + S(r.shortages) : ''], st: S(r.status) || (r.loaded_at ? 'Loaded' : 'Planned'), c: col(r.status || (r.loaded_at ? 'Loaded' : 'Planned')), pdfs: pdf(r.pdf_url, 'Load-up PDF') })) });\n  sections.push({ title: 'Stock booked to this job', empty: 'No stock booked out to this job.', items: mine('T moves').sort(by('at')).map(r => { const n = parseFloat(S(r.change)); return { t: S(r.material) || 'Material', m: [isFinite(n) ? (n < 0 ? Math.abs(n) + ' out' : n + ' back') : S(r.change), S(r.reason), S(r.by), ukd(r.at)], st: isFinite(n) && n > 0 ? 'Returned' : 'Used', c: isFinite(n) && n > 0 ? 'g' : 'a', pdfs: [] }; }) });\n}\nlet sum = null;\nif (K === 'summary') {\n  const FIN = /^(approved|issued|live|complete|completed|signed|received|accepted|closed|done|returned|loaded|delivered|reviewed)$/i;\n  const z = (t, l) => ({ t: t, l: l || '' });\n  const pl = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');\n  const R = mine('T rams'), SJ = mine('T subjobs'), CP = mine('T cphsp').sort(by('dated')), PC = mine('T pci'), PM = mine('T permits'), PS = mine('T prestarts').sort(by('held_on')), SO = mine('T signons'), VI = mine('T visitors');\n  const IN = rows('T incidents').filter(r => jk(r.sm8_job) === job), PO = mine('T pos'), PL = mine('T jplant'), MV = mine('T moves'), LU = mine('T ptm');\n  sum = {};\n  sum.rams = (R.length || SJ.length) ? z([R.length ? R.length + ' CBS' : '', SJ.length ? SJ.length + ' sub' : ''].filter(Boolean).join(' \\u00b7 '), R.concat(SJ).some(r => !FIN.test(S(r.status))) ? 'a' : 'g') : z('None');\n  sum.cdm = (CP.length || PC.length) ? z([CP.length ? 'CPHSP ' + (S(CP[0].status) || 'draft').toLowerCase() : 'No CPHSP', PC.length ? PC.length + ' pre-con' : ''].filter(Boolean).join(' \\u00b7 '), CP.length && FIN.test(S(CP[0].status)) ? 'g' : 'a') : z('None');\n  { const live = PM.filter(r => /live|approved|issued|active/i.test(S(r.status)) && !/closed/i.test(S(r.status))).length, wait = PM.filter(r => /submitted|requested|awaiting|pending/i.test(S(r.status))).length;\n    sum.permits = PM.length ? z([live ? live + ' live' : '', wait ? wait + ' awaiting' : '', !live && !wait ? pl(PM.length, 'permit') : ''].filter(Boolean).join(' \\u00b7 '), wait ? 'a' : 'g') : z('None'); }\n  sum.prestarts = PS.length ? z(PS.length + ' held \\u00b7 last ' + ukd(PS[0].held_on).replace(/ \\d{4}$/, ''), 'g') : z('None');\n  sum.signons = SO.length ? z(SO.length + ' signed', 'g') : z('None');\n  { const on = VI.filter(r => !S(r.signed_out_at) && S(r.signed_in_at || r.visit_date).slice(0, 10) === today).length;\n    sum.visitors = VI.length ? z(pl(VI.length, 'visit') + (on ? ' \\u00b7 ' + on + ' on site' : ''), on ? 'a' : '') : z('None'); }\n  { const open = IN.filter(r => !/closed/i.test(S(r.status))).length;\n    sum.incidents = IN.length ? z(open ? open + ' open' : IN.length + ' closed', open ? 'r' : 'g') : z('None'); }\n  { const out = PO.filter(r => !/(received|delivered|closed|complete|off.?hired|cancel)/i.test(S(r.status))).length;\n    sum.pos = PO.length ? z(pl(PO.length, 'PO') + (out ? ' \\u00b7 ' + out + ' outstanding' : ''), out ? 'a' : 'g') : z('None'); }\n  { const on = PL.filter(r => !S(r.returned_at)), od = on.filter(r => { const d = S(r.due_back).slice(0, 10); return d && d < today; }).length, hire = PO.filter(isHire).filter(r => !S(r.offhired_on)).length;\n    sum.plantlist = (PL.length || hire) ? z([on.length ? on.length + ' on job' : (PL.length ? 'All returned' : ''), od ? od + ' overdue' : '', hire ? hire + ' on hire' : ''].filter(Boolean).join(' \\u00b7 '), od ? 'r' : (on.length || hire ? 'a' : 'g')) : z('None'); }\n  sum.materials = (LU.length || MV.length) ? z([LU.length ? pl(LU.length, 'load-up') : '', MV.length ? pl(MV.length, 'stock item') : ''].filter(Boolean).join(' \\u00b7 '), LU.some(r => !S(r.loaded_at) && !/loaded/i.test(S(r.status))) ? 'a' : 'g') : z('None');\n}\nconst cdm = jr.cdm === true || /^true$/i.test(S(jr.cdm)) || /cdm/i.test(S(jr.mode));\nreturn [{ json: { ok: true, job: job, k: K, site: S(jr.site) || S(jr.name), cdm: cdm, sections: sections, sum: sum } }];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "30cce43c-d576-4890-a63d-7b1ed448d6be",
+      "name": "Send Data",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2420,
+        1000
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        },
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}"
+      }
+    },
+    {
+      "id": "0c180774-f6ad-4154-8fe6-674b54e5ff45",
+      "name": "GET cbs-job-pos",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        -150
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-job-pos",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "6dfc2da2-90aa-4e96-83b3-8143ac7afc82"
+    },
+    {
+      "id": "863bac06-9ea1-4d26-b2ef-f28e141d7972",
+      "name": "GET cbs-job-plantlist",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        -300
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-job-plantlist",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "4a47c409-338b-486b-a69e-4d4f43b694aa"
+    },
+    {
+      "id": "4e54ba4b-db5d-4b90-a2bc-89cf4f5d80bf",
+      "name": "GET cbs-job-materials",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        -450
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-job-materials",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "2f0618ba-a634-4642-bb71-33a5aadbabf9"
+    },
+    {
+      "id": "159bcaf2-1b9c-4828-ad5a-317056084aa7",
+      "name": "GET cbs-job-cdm",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        -600
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-job-cdm",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "70da9ee7-0fb9-4ea5-ba15-fdd986f95387"
+    },
+    {
+      "id": "30c5bbd1-d9b5-4a9f-990f-3d72f7824fc2",
+      "name": "T pos",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2200,
+        1200
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "Z1lGdRMfPFALqbCR"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "41a79054-6c18-4b1d-aa40-e771197d0d81",
+      "name": "T jplant",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2420,
+        1200
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "QTiRE1GCvSWgnzWg"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "24d939cd-277b-4442-b74f-ba95103674ec",
+      "name": "T moves",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2640,
+        1200
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "i1dOh6PyUvWAZTBI"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "df160d50-7ed3-4d92-8227-a372773eb200",
+      "name": "T ptm",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2860,
+        1200
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "9HztIXJq3gqHZMFK"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "8f8364da-4c33-4cee-9376-81a1f754a58e",
+      "name": "T cphsp",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3080,
+        1200
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "VrPaSgrY1W6zm3HN"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "8ba860ad-94c0-4cea-9312-65cbcd360389",
+      "name": "T pci",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3300,
+        1200
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "bmOLO09fc5siHTdf"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "cf2cd65f-0491-455f-a72d-f25a02ebfa80",
+      "name": "T diary",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3520,
+        1200
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "0ujWfxU1dlaQQ55d"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "ceba5fbe-22d7-42b7-a478-369748e45a23",
+      "name": "T rfis",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3740,
+        1200
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "35JJVFVHvS4u1E72"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "8eeed731-13b7-483b-a80e-71fdffe9daf6",
+      "name": "T drawings",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3960,
+        1200
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "e0S80HKaojWw1Sdn"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "73b4c355-deb8-49c6-9a42-5fd05cbcb692",
+      "name": "T variations",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        4180,
+        1200
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "FRxxY87u7qKb7JcN"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "8145c351-f501-4b3b-a18c-19419ecf41de",
+      "name": "T costs",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        4400,
+        1200
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "Zex3Tm0OF5XNFWiB"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "job_no",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "2aafc683-e981-476c-89ca-e9ae052c4385",
+      "name": "Summary Extra",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4620,
+        1000
+      ],
+      "parameters": {
+        "jsCode": "/* After Reg Data:\n   - k=summary: statuses for Daily diary, RFIs, Drawings, Variations, Job costing, and separate Pre-con info (pci) and CPHSP (cphsp);\n   - k=plantlist: the yard's plant for the booking panel (assets) and a return id (ret) on CBS plant still on the job. */\nconst d = Object.assign({}, $input.first().json);\nconst S = v => v == null ? '' : String(v).trim();\nconst jk = v => S(v).replace(/^#/, '').replace(/[^0-9A-Za-z-]/g, '').toLowerCase();\nconst job = d.job, today = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/London' });\nfunction all(n) { try { return $(n).all().map(i => i.json).filter(r => r && r.id != null); } catch (e) { return []; } }\nfunction rows(n) { return all(n).filter(r => jk(r.job_no) === job); }\nif (d.k === 'plantlist') {\n  const by = (k) => (a, b) => S(b[k]).localeCompare(S(a[k]));\n  const P = rows('T jplant').sort(by('booked_at'));\n  const sec = (d.sections || []).map(s => Object.assign({}, s, { items: (s.items || []).slice() }));\n  if (sec[0]) sec[0].items = sec[0].items.map((x, i) => { const r = P[i]; return r && !S(r.returned_at) && S(r.asset_id) ? Object.assign({}, x, { ret: S(r.asset_id) }) : x; });\n  d.sections = sec;\n  d.assets = all('T assets').map(a => ({ id: a.id, n: S(a.name), t: S(a.asset_tag), c: S(a.category), st: S(a.status), j: S(a.out_job), y: S(a.yard_status) })).sort((a, b) => (a.n + a.t).localeCompare(b.n + b.t));\n  return [{ json: d }];\n}\nif (d.k !== 'summary' || !d.sum) return [{ json: d }];\nconst MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];\nconst short = v => { const m = S(v).match(/^(\\d{4})-(\\d{2})-(\\d{2})/); return m ? Number(m[3]) + ' ' + MO[+m[2] - 1] : S(v); };\nconst z = (t, l) => ({ t: t, l: l || '' }), pl = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');\nconst sum = Object.assign({}, d.sum);\n{ const FIN = /^(approved|issued|live|complete|completed|signed|accepted|closed|done)$/i;\n  const CP = rows('T cphsp').sort((a, b) => S(b.dated).localeCompare(S(a.dated)));\n  sum.cphsp = CP.length ? z((S(CP[0].revision) ? 'Rev ' + S(CP[0].revision) + ' \\u00b7 ' : '') + (S(CP[0].status) || 'Draft'), FIN.test(S(CP[0].status)) ? 'g' : 'a') : z('None');\n  const PC = rows('T pci'), miss = PC.filter(r => !S(r.doc_url)).length;\n  sum.pci = PC.length ? z(pl(PC.length, 'document') + (miss ? ' \\u00b7 ' + miss + ' missing' : ''), miss ? 'r' : 'g') : z('None'); }\n{ const D = rows('T diary'), days = D.map(r => S(r.day).slice(0, 10)).filter(Boolean).sort();\n  sum.diary = D.length ? z(pl(D.length, 'day') + ' \\u00b7 last ' + short(days[days.length - 1]), days[days.length - 1] === today ? 'g' : '') : z('None'); }\n{ const R = rows('T rfis'), open = R.filter(r => !/(answered|closed|responded|resolved)/i.test(S(r.status)) && !S(r.responded_on)), od = open.filter(r => { const n = S(r.needed_by).slice(0, 10); return n && n < today; }).length;\n  sum.rfis = R.length ? z(open.length ? open.length + ' open' + (od ? ' \\u00b7 ' + od + ' overdue' : '') : pl(R.length, 'RFI') + ' answered', od ? 'r' : (open.length ? 'a' : 'g')) : z('None'); }\n{ const W = rows('T drawings').filter(r => S(r.file_url) && !/^(pin|markup|note|issue)$/i.test(S(r.kind))), cur = W.filter(r => !/superseded/i.test(S(r.status)));\n  sum.drawings = W.length ? z(pl(cur.length || W.length, 'drawing'), '') : z('None'); }\n{ const V = rows('T variations'), pend = V.filter(r => /(pending|submitted|draft|awaiting|raised|sent)/i.test(S(r.status))).length, appr = V.filter(r => /approved|accepted/i.test(S(r.status))).length;\n  sum.variations = V.length ? z([appr ? appr + ' approved' : '', pend ? pend + ' pending' : '', !appr && !pend ? pl(V.length, 'variation') : ''].filter(Boolean).join(' \\u00b7 '), pend ? 'a' : 'g') : z('None'); }\n{ const C = rows('T costs'), net = C.reduce((a, r) => a + (parseFloat(S(r.net)) || 0), 0);\n  sum.costs = C.length ? z('\\u00a3' + net.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' net \\u00b7 ' + pl(C.length, 'cost'), '') : z('None'); }\nd.sum = sum;\nreturn [{ json: d }];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "9b033308-27d9-481c-9612-bf1812d790c1",
+      "name": "T assets",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        4620,
+        1200
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "8CWS3fZeytjpf4HX"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.k || '') === 'plantlist' ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "2d0af9ea-1403-47dd-9929-78d60d125c07",
+      "name": "GET cbs-job-pci",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        -750
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-job-pci",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "ad3e6fb5-3736-49b0-9dd0-ebefaeb6c32e"
+    },
+    {
+      "id": "fb3384f9-2ec7-4161-83e9-09880f0626bb",
+      "name": "GET cbs-job-cphsp",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        -900
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-job-cphsp",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "56cdf828-2507-4ee0-81ea-644ef6e621d9"
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "0fafd0fd-2c92-47fd-95a6-1ff76e4b6941",
+        "name": "GET cbs-job-rams",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-job-rams",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "7314a3b6-4d99-4918-a69f-7ff7fc575e00"
+      },
+      {
+        "id": "dd3d16cf-ed6a-4037-9fe9-dc12087c4074",
+        "name": "GET cbs-job-permits",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          150
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-job-permits",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "c1a85713-4f40-4381-b88a-c6e193cbb1e5"
+      },
+      {
+        "id": "aa843103-df8e-413c-a007-31da7af593ab",
+        "name": "GET cbs-job-prestarts",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          300
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-job-prestarts",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "cb333526-d2cc-420a-bcfc-0a520bdcd258"
+      },
+      {
+        "id": "2d76b966-af8b-46df-ba36-77d9e63becc4",
+        "name": "GET cbs-job-signons",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          450
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-job-signons",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "6f3935c2-8617-42cb-9fe4-398d47820b3a"
+      },
+      {
+        "id": "5acd944f-89e2-466d-a509-b2d3e9768f97",
+        "name": "GET cbs-job-visitors",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          600
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-job-visitors",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "7321e19c-7acf-4e22-95da-24abf6092b7e"
+      },
+      {
+        "id": "ec4a2f2b-9e03-4390-b3fe-7f6c3824cc82",
+        "name": "GET cbs-job-incidents",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          750
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-job-incidents",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "0901f874-83c4-456e-bebb-583c9bad757f"
+      },
+      {
+        "id": "3ce814a7-0ed5-4da4-a141-360294f5a496",
+        "name": "Reg Page",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          260,
+          300
+        ],
+        "parameters": {
+          "jsCode": "/* Job record pages, one layout: Safety (RAMS, Pre-con info, CPHSP, Permits, Pre-starts, Sign-ons, Visitors, Incidents) and Site\n   (Purchase orders, Plant, Materials). cbs-job-<k>?job=N. Lists the job's records (from cbs-job-reg-data) with a status chip and PDF\n   buttons (PDFs open in the in-page viewer); the buttons open the existing builders and forms with the job filled in.\n   Pre-con info (pci) and CPHSP (cphsp) are separate pages; both read the cdm data and show only their own section. The old combined\n   page (cdm) still works for saved links.\n   Plant: book yard plant to the job and return it to the yard here (POST cbs-job-plant, action book / return, as the job page did). */\nconst it = $input.first().json;\nconst m = String(it.webhookUrl || '').match(/cbs-job-(rams|permits|prestarts|signons|visitors|incidents|pos|plantlist|materials|cdm|pci|cphsp)(\\b|$)/);\nconst K = m ? m[1] : 'rams';\nconst job = String((it.query || {}).job || '').replace(/[^0-9A-Za-z-]/g, '');\nconst CFG = {\n  rams: { title: 'RAMS', help: \"CBS RAMS for this job and the subcontractors' RAMS. New RAMS opens the RAMS builder; Request subcontractor RAMS asks a subcontractor for theirs.\", btns: [['+ New RAMS', 'cbs-rams-builder'], ['+ Request subcontractor RAMS', 'cbs-admin?new=subjobs']] },\n  pci: { title: 'Pre-construction information', help: 'Pre-construction information for this job from the client or principal designer, such as surveys, asbestos reports and existing drawings (CDM jobs).', btns: [['+ Add pre-con info', 'cbs-pci']] },\n  cphsp: { title: 'CPHSP', help: 'The construction phase health and safety plan for this job (CDM jobs).', btns: [['+ New CPHSP', 'cbs-cphsp-builder']] },\n  cdm: { title: 'CPHSP and pre-con info', help: 'The construction phase health and safety plan and the pre-construction information for this job (CDM jobs).', btns: [['+ New CPHSP', 'cbs-cphsp-builder'], ['+ Add pre-con info', 'cbs-pci']] },\n  permits: { title: 'Permits', help: 'Permits to work for this job (CDM jobs). The subcontractor fills the permit in; the office or site manager approves it.', btns: [['+ New permit', 'cbs-permit']] },\n  prestarts: { title: 'Pre-starts', help: 'Daily pre-start briefings held on this job.', btns: [['+ New pre-start', 'cbs-prestart']] },\n  signons: { title: 'Sign-ons', help: \"Who has signed on to this job's documents (RAMS, pre-starts, toolbox talks). The crew sign through the link in the ServiceM8 note.\", btns: [] },\n  visitors: { title: 'Visitors', help: 'Visitor sign-in log for this job (CDM jobs).', btns: [['Open visitor sign-in', 'cbs-visit']] },\n  incidents: { title: 'Incidents', help: 'Incidents and near misses on this job.', btns: [['+ Report incident or near miss', 'cbs-admin?new=incidents']] },\n  pos: { title: 'Purchase orders', help: 'Supplier, subcontractor and hire purchase orders for this job.', btns: [['+ New PO', 'cbs-po'], ['Upload supplier PO', 'cbs-qbpo'], ['Upload subcontractor PO', 'cbs-qbpo?sub=1']] },\n  plantlist: { title: 'Plant', help: 'CBS plant booked out to this job, and plant hired in for it. Book plant from the yard below; return it when it comes back.', btns: [] },\n  materials: { title: 'Materials', help: 'Load-up sheets for this job and stock booked out to it.', btns: [['+ Plan a load-up', 'cbs-ptm-sheet']] }\n};\nconst C = CFG[K];\nconst link = p => { const h = p.indexOf('#'), base = h > -1 ? p.slice(0, h) : p, frag = h > -1 ? p.slice(h) : ''; return '/webhook/' + base + (base.indexOf('?') > -1 ? '&' : '?') + 'job=' + encodeURIComponent(job) + frag; };\nconst E = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');\nconst CSS = '*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n + 'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n + '.wrap{max-width:860px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}'\n + '.btn{background:#F47920;color:#fff;font-weight:600;border-radius:8px;padding:9px 14px;font-size:14px;border:1px solid #F47920;font-family:inherit;cursor:pointer;text-decoration:none;display:inline-block;line-height:1.2}.btn.ghost{background:#fff;color:#1d1d1d;border-color:#3d4043}.btn.sm{padding:6px 10px;font-size:13px}.btn:disabled{opacity:.6;cursor:default}'\n + '.m{color:#6b6e70;font-size:13.5px}.help{margin:4px 0 14px}h2{font-size:16px;margin:18px 0 8px}.it{background:#fff;border:1px solid #d9d9d6;border-radius:12px;padding:12px 14px;margin-bottom:10px}.hd{display:flex;gap:10px;align-items:flex-start}.tt{flex:1;font-weight:700;min-width:0}'\n + '.ch{display:inline-block;font-size:12.5px;font-weight:600;border-radius:6px;padding:2px 8px;white-space:nowrap}.ch.r{background:#fde7e5;color:#b3261e}.ch.a{background:#fff1d6;color:#8a5300}.ch.g{background:#e6f4ea;color:#1a7f37}'\n + '.it .m{margin-top:4px}.fl{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.fl a{font-size:13px;color:#b3261e;font-weight:600;border:1px solid #d9d9d6;border-radius:6px;padding:3px 8px;text-decoration:none;max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'\n + '.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}'\n + 'input.f{font:inherit;font-size:15px;border:1px solid #c4c6c8;border-radius:8px;padding:8px 10px;background:#fff;color:#161616}#bkL{max-height:280px;overflow:auto;margin-top:8px;border:1px solid #ecece9;border-radius:8px}#bkL label{display:flex;gap:10px;align-items:center;padding:8px 10px;border-top:1px solid #f0f0ee;cursor:pointer;font-size:14.5px}#bkL label:first-child{border-top:0}#bkL input{width:18px;height:18px;accent-color:#F47920}';\nconst nav = '<div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a><a class=\"hub\" href=\"/webhook/cbs-job-file?job=' + encodeURIComponent(job) + '\">Job</a></div>';\nconst tools = C.btns.length ? '<div class=\"tools\">' + C.btns.map((b, i) => '<a class=\"btn' + (i ? ' ghost' : '') + '\" href=\"' + E(link(b[1])) + '\">' + E(b[0]) + '</a>').join('') + '</div>' : '';\nconst html = '<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>' + E(C.title) + ' - Job ' + E(job) + '</title><script src=\"/webhook/cbs-guard\"></script><style>' + CSS + '</style></head><body><header>' + nav + '<h1>' + E(C.title) + '</h1><p>Job ' + E(job) + '</p></header><div class=\"wrap\">' + tools + '<p class=\"m help\">' + E(C.help) + '</p><div id=\"app\"><div class=\"empty\">' + (job ? 'Loading\\u2026' : 'Open this page from a job.') + '</div></div></div>'\n + (job ? '<script>(' + client.toString() + ')(' + JSON.stringify(K) + ',' + JSON.stringify(job) + ');</script>' : '') + '</body></html>';\nreturn [{ json: { html: html } }];\n\nfunction client(K, JOB) {\n  var app = document.getElementById('app'), SEL = {}, ASSETS = [];\n  var FK = (K === 'pci' || K === 'cphsp') ? 'cdm' : K, ONLY = K === 'pci' ? 'Pre-construction information' : (K === 'cphsp' ? 'CPHSP' : '');\n  function e(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\n  function fileUrl(u){return /sharepoint\\.com/i.test(String(u||''))?'/webhook/cbs-file?u='+encodeURIComponent(u):String(u||'');}\n  function me(){var n='';try{n=localStorage.getItem('cbs_name')||'';}catch(x){}if(!n){n=(prompt('Your name:')||'').trim();if(n){try{localStorage.setItem('cbs_name',n);}catch(x){}}}return n;}\n  function free(a){return !a.j&&!/(repair|quarantin|retired|lost|sold|scrap|out)/i.test(a.st+' '+a.y);}\n  function drawList(){var L=document.getElementById('bkL');if(!L)return;var q=(document.getElementById('bkQ').value||'').toLowerCase().trim();\n    var A=ASSETS.filter(free).filter(function(a){return !q||(a.n+' '+a.t+' '+a.c).toLowerCase().indexOf(q)>-1;});\n    L.innerHTML=A.length?A.slice(0,200).map(function(a){return '<label><input type=\"checkbox\" value=\"'+e(a.id)+'\"'+(SEL[a.id]?' checked':'')+'><span style=\"flex:1\"><b>'+e(a.n)+'</b>'+(a.t?' \\u00b7 '+e(a.t):'')+'<span class=\"m\" style=\"display:block;margin:0\">'+e(a.c)+'</span></span></label>';}).join(''):'<div class=\"m\" style=\"padding:10px\">No free plant matches.</div>';\n    var k=Object.keys(SEL).length;document.getElementById('bkN').textContent=k?k+' selected':'';}\n  function post(body,b,ok){body.job=JOB;if(b)b.disabled=true;fetch('/webhook/cbs-job-plant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){return r.json();}).then(function(d){if(!d||!d.ok)throw new Error((d&&d.message)||'');location.reload();}).catch(function(err){if(b)b.disabled=false;alert((err&&err.message)||'Could not save. Check your connection and try again.');});}\n  document.addEventListener('change',function(ev){var c=ev.target;if(c&&c.closest&&c.closest('#bkL')){if(c.checked)SEL[c.value]=1;else delete SEL[c.value];var k=Object.keys(SEL).length;document.getElementById('bkN').textContent=k?k+' selected':'';}});\n  document.addEventListener('input',function(ev){if(ev.target&&ev.target.id==='bkQ')drawList();});\n  document.addEventListener('click',function(ev){var t=ev.target,x;\n    if((x=t.closest&&t.closest('#bkGo'))){var ids=Object.keys(SEL);if(!ids.length){alert('Tick the plant to book to this job.');return;}var n=me();if(!n)return;post({action:'book',ids:ids,by:n,out_with:document.getElementById('bkW').value||n,due_back:document.getElementById('bkD').value},x);return;}\n    if((x=t.closest&&t.closest('[data-ret]'))){var n2=me();if(!n2)return;if(!confirm('Return '+x.getAttribute('data-n')+' to the yard?'))return;post({action:'return',ids:[x.getAttribute('data-ret')],by:n2},x);return;}\n  });\n  fetch('/webhook/cbs-job-reg-data?job='+encodeURIComponent(JOB)+'&k='+FK+'&_='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){\n    var p=document.querySelector('header p');if(p&&d.site)p.textContent='Job '+JOB+' \\u00b7 '+d.site;\n    var h='', secs=d.sections||[];\n    if(ONLY)secs=secs.filter(function(s){return s.title===ONLY;}).map(function(s){return {title:'',empty:s.empty,items:s.items};});\n    if(d.assets){ASSETS=d.assets;h+='<div class=\"it\" id=\"bk\"><div class=\"tt\">Book plant to this job</div><div class=\"m\">Tick the plant going out from the yard. Only plant that is free (in the yard and in service) shows.</div>'\n      +'<input class=\"f\" id=\"bkQ\" placeholder=\"Search plant, tag or category\" style=\"width:100%;margin-top:8px\"><div id=\"bkL\"></div>'\n      +'<div style=\"display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px\"><input class=\"f\" id=\"bkW\" placeholder=\"Out with (name)\" style=\"flex:1;min-width:160px\"><label class=\"m\" style=\"display:flex;align-items:center;gap:6px\">Due back <input class=\"f\" type=\"date\" id=\"bkD\"></label><button type=\"button\" class=\"btn\" id=\"bkGo\">Book selected</button><span class=\"m\" id=\"bkN\"></span></div></div>';}\n    secs.forEach(function(s){if(s.title)h+='<h2>'+e(s.title)+'</h2>';\n      if(!s.items||!s.items.length){h+='<div class=\"empty\">'+e(s.empty||'None yet.')+'</div>';return;}\n      s.items.forEach(function(x){h+='<div class=\"it\"><div class=\"hd\"><div class=\"tt\">'+e(x.t)+'</div>'+(x.st?'<span class=\"ch '+(x.c||'a')+'\">'+e(x.st)+'</span>':'')+'</div>'\n        +((x.m||[]).filter(Boolean).length?'<div class=\"m\">'+(x.m||[]).filter(Boolean).map(e).join(' \\u00b7 ')+'</div>':'')\n        +((x.pdfs||[]).length?'<div class=\"fl\">'+x.pdfs.map(function(f){return '<a href=\"'+e(fileUrl(f.u))+'\" target=\"_blank\" rel=\"noopener\" title=\"'+e(f.n||'PDF')+'\">'+e(f.n||'PDF')+'</a>';}).join('')+'</div>':'')\n        +(x.ret?'<div style=\"margin-top:8px\"><button type=\"button\" class=\"btn ghost sm\" data-ret=\"'+e(x.ret)+'\" data-n=\"'+e(x.t)+'\">Return to yard</button></div>':'')+'</div>';});});\n    app.innerHTML=h||'<div class=\"empty\">None yet.</div>';\n    if(d.assets)drawList();\n  }).catch(function(){app.innerHTML='<div class=\"empty\">Could not load. Refresh to try again.</div>';});\n}\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "3bc226ea-adaf-4047-b2c5-153c2bb359ce",
+        "name": "Send Page",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          500,
+          300
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}"
+        }
+      },
+      {
+        "id": "c2992503-c6b9-4f25-83e3-a89f2bcb716f",
+        "name": "GET cbs-job-reg-data",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          1000
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-job-reg-data",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "11f682ce-ec69-435f-9b80-dc55dccb8ac5"
+      },
+      {
+        "id": "6fb639f4-5720-4e22-bd79-d81a0addb9b6",
+        "name": "T job",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          220,
+          1000
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "5dgWt9kYzCb49m5h"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "ref",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "d5e94f43-4ed3-4232-8589-fcba271ebef4",
+        "name": "T rams",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          1000
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "b2FkFIy27taH73i9"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "4a55844c-430a-4b22-832c-a2777f56c22f",
+        "name": "T subjobs",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          660,
+          1000
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "0KkYwJ3A3fi1wGXd"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "02ca0ba7-1bb0-4046-a0dc-73df31435726",
+        "name": "T permits",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          880,
+          1000
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "bPr02oOPEg6icX8g"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "42a30254-e866-46e4-9dbd-e1ca006e6041",
+        "name": "T prestarts",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1100,
+          1000
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Wg8zT3VHAzrdt8Sw"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "e4f38d6e-90b0-411d-916f-5d32a9c02e94",
+        "name": "T signons",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1320,
+          1000
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "7mnxJyfK2DSbq7J4"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "406d16ce-04dc-4073-93e6-7dbbaf4ccc91",
+        "name": "T visitors",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1540,
+          1000
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "5ET1OUDUv4D2u9o6"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "573dcbc4-f2ec-4de2-9047-e0f8250405ba",
+        "name": "T incidents",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1760,
+          1000
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "vZXrt8GrhPBPSqQH"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "9a08a337-50fe-4e58-a851-5fc18fe505a9",
+        "name": "T increports",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1980,
+          1000
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "19HFiSBMOKK9bVz4"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "ad58b9d4-b383-4c10-bafe-ae87124162aa",
+        "name": "Reg Data",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2200,
+          1000
+        ],
+        "parameters": {
+          "jsCode": "/* Data for the job record pages: the job's records for one page (k), as generic items {t, m:[meta], st, c (r/a/g), pdfs:[{n,u}]}.\n   k=summary: one short status per page for the Job records card on the job page ({t, l}), plus whether the job is CDM. */\nconst S = v => v == null ? '' : String(v).trim();\nconst jk = v => S(v).replace(/^#/, '').replace(/[^0-9A-Za-z-]/g, '').toLowerCase();\nconst q = $('GET cbs-job-reg-data').first().json.query || {};\nconst job = jk(q.job), K = S(q.k);\nconst today = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/London' });\nfunction rows(n) { try { return $(n).all().map(i => i.json).filter(r => r && r.id != null); } catch (e) { return []; } }\nconst MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];\nfunction ukd(d) { const m = S(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})(?:[T ](\\d{2}):(\\d{2}))?/); if (!m) return S(d); return Number(m[3]) + ' ' + MO[+m[2] - 1] + ' ' + m[1] + (m[4] ? ' ' + m[4] + ':' + m[5] : ''); }\nfunction col(st) { st = S(st); if (/^(approved|live|complete|completed|signed|issued|received|closed|done|accepted|signed out|reviewed|held|returned|loaded|off.?hired|delivered|on job)$/i.test(st)) return 'g'; if (/(reject|expired|overdue|required|riddor|cancel|missing|not received|open|short)/i.test(st)) return 'r'; return 'a'; }\nfunction pdf(u, n) { u = S(u); return u ? [{ n: n || 'PDF', u: u }] : []; }\nfunction docs(j) { try { const a = JSON.parse(S(j) || '[]'); return (Array.isArray(a) ? a : []).map(x => typeof x === 'string' ? { n: 'Document', u: x } : { n: S(x.n || x.name || x.label) || 'Document', u: S(x.u || x.url || x.webUrl) }).filter(x => x.u); } catch (e) { return []; } }\nfunction money(v) { const n = parseFloat(String(v || '').replace(/[^0-9.\\-]/g, '')); return isFinite(n) && n ? '\\u00a3' + n.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : ''; }\nconst by = (k) => (a, b) => S(b[k]).localeCompare(S(a[k]));\nconst mine = n => rows(n).filter(r => jk(r.job_no) === job);\nfunction poItem(r) { return { t: (S(r.po_no) ? S(r.po_no) + ' \\u00b7 ' : '') + (S(r.supplier) || 'Supplier'), m: [r.ordered_on ? 'Ordered ' + ukd(r.ordered_on) : '', r.needed_by ? 'Needed ' + ukd(r.needed_by) : '', r.hire_end ? 'Hire to ' + ukd(r.hire_end) : '', r.offhired_on ? 'Off-hired ' + ukd(r.offhired_on) : '', money(r.total)], st: S(r.status) || 'Ordered', c: col(r.status || 'Ordered'), pdfs: pdf(r.pdf_url, 'PO PDF') }; }\nconst isSub = r => /sub/i.test(S(r.po_type)), isHire = r => /hire/i.test(S(r.po_type));\nconst jr = rows('T job').sort((a, b) => b.id - a.id)[0] || {};\nlet sections = [];\nif (K === 'rams') {\n  sections.push({ title: 'CBS RAMS', empty: 'No CBS RAMS for this job yet.', items: mine('T rams').sort(by('dated')).map(r => ({ t: S(r.activity) || S(r.task) || 'RAMS', m: [r.revision ? 'Rev ' + S(r.revision) : '', ukd(r.dated), r.prepared_by ? 'Prepared by ' + S(r.prepared_by) : ''], st: S(r.status) || 'Draft', c: col(r.status || 'Draft'), pdfs: [{ n: 'Open in RAMS builder', u: '/webhook/cbs-rams-builder?id=' + r.id }].concat(pdf(r.pdf_url, 'RAMS PDF')) })) });\n  sections.push({ title: 'Subcontractor RAMS', empty: 'No subcontractor RAMS requested for this job yet.', items: mine('T subjobs').sort(by('requested_on')).map(r => ({ t: S(r.company) || 'Subcontractor', m: [S(r.doc_type), r.requested_on ? 'Requested ' + ukd(r.requested_on) : '', r.received_on ? 'Received ' + ukd(r.received_on) : '', r.reviewed_by ? 'Reviewed by ' + S(r.reviewed_by) : ''], st: S(r.status) || 'Requested', c: col(r.status || 'Requested'), pdfs: docs(r.docs_json) })) });\n} else if (K === 'cdm') {\n  sections.push({ title: 'CPHSP', empty: 'No CPHSP for this job yet.', items: mine('T cphsp').sort(by('dated')).map(r => ({ t: 'CPHSP' + (r.cphsp_no ? ' ' + S(r.cphsp_no) : '') + (r.revision ? ' \\u00b7 Rev ' + S(r.revision) : ''), m: [ukd(r.dated), r.prepared_by ? 'Prepared by ' + S(r.prepared_by) : '', r.approved_by ? 'Approved by ' + S(r.approved_by) + (r.approved_on ? ' ' + ukd(r.approved_on) : '') : ''], st: S(r.status) || 'Draft', c: col(r.status || 'Draft'), pdfs: pdf(r.pdf_url, 'CPHSP PDF').concat(pdf(r.register_pdf_url, 'Register PDF')) })) });\n  sections.push({ title: 'Pre-construction information', empty: 'No pre-con info for this job yet.', items: mine('T pci').sort(by('uploaded_at')).map(r => ({ t: S(r.title) || S(r.file_name) || 'Document', m: [S(r.category), r.uploaded_at ? 'Added ' + ukd(r.uploaded_at) : '', S(r.uploaded_by)], st: r.doc_url ? 'Received' : 'Missing', c: r.doc_url ? 'g' : 'r', pdfs: pdf(r.doc_url, S(r.file_name) || 'Document') })) });\n} else if (K === 'permits') {\n  sections.push({ title: '', empty: 'No permits for this job yet.', items: mine('T permits').sort(by('requested_at')).map(r => ({ t: (S(r.permit_type) || 'Permit') + (r.permit_no ? ' \\u00b7 ' + S(r.permit_no) : ''), m: [S(r.contractor_company), S(r.location), (r.valid_from || r.valid_to) ? 'Valid ' + ukd(r.valid_from) + (r.valid_to ? ' to ' + ukd(r.valid_to) : '') : '', r.approved_by ? 'Approved by ' + S(r.approved_by) : ''], st: S(r.status) || 'Requested', c: col(r.status || 'Requested'), pdfs: pdf(r.pdf_url, 'Permit PDF') })) });\n} else if (K === 'prestarts') {\n  sections.push({ title: '', empty: 'No pre-starts held on this job yet.', items: mine('T prestarts').sort(by('held_on')).map(r => ({ t: 'Pre-start ' + ukd(r.held_on) + (r.ps_no ? ' \\u00b7 ' + S(r.ps_no) : ''), m: [r.site_lead ? 'Led by ' + S(r.site_lead) : '', r.headcount ? S(r.headcount) + ' on site' : '', S(r.held_at)], st: r.pdf_url ? 'Held' : 'Draft', c: r.pdf_url ? 'g' : 'a', pdfs: pdf(r.pdf_url, 'Pre-start PDF') })) });\n} else if (K === 'signons') {\n  sections.push({ title: '', empty: 'Nobody has signed on to documents on this job yet.', items: mine('T signons').sort(by('signed_at')).map(r => ({ t: S(r.name) || 'Unknown', m: [S(r.company), S(r.doc_label) || S(r.doc_type), r.doc_rev ? 'Rev ' + S(r.doc_rev) : '', ukd(r.signed_at)], st: 'Signed', c: 'g', pdfs: pdf(r.record_pdf_url, 'Sign-on record') })) });\n} else if (K === 'visitors') {\n  sections.push({ title: '', empty: 'No visitors signed in on this job yet.', items: mine('T visitors').sort(by('signed_in_at')).map(r => ({ t: S(r.name) || 'Visitor', m: [S(r.company), S(r.reason), r.visiting ? 'Visiting ' + S(r.visiting) : '', r.signed_in_at ? 'In ' + ukd(r.signed_in_at) : ukd(r.visit_date), r.signed_out_at ? 'Out ' + ukd(r.signed_out_at) : ''], st: r.signed_out_at ? 'Signed out' : 'On site', c: r.signed_out_at ? 'g' : 'a', pdfs: [] })) });\n} else if (K === 'incidents') {\n  const inc = rows('T incidents').filter(r => jk(r.sm8_job) === job).sort(by('occurred_at')).map(r => ({ t: (S(r.kind) || 'Incident') + (r.ref ? ' \\u00b7 ' + S(r.ref) : ''), m: [S(r.severity), ukd(r.occurred_at), S(r.person), S(r.location)], st: S(r.status) || 'Open', c: col(r.status || 'Open'), pdfs: pdf(r.record_pdf_url, 'Incident record') }));\n  const rep = mine('T increports').sort(by('occurred_at')).map(r => ({ t: 'Incident report' + (r.incident_id ? ' \\u00b7 ' + S(r.incident_id) : ''), m: [ukd(r.occurred_at), S(r.person), r.signed_by ? 'Signed by ' + S(r.signed_by) : ''], st: S(r.status) || 'Draft', c: col(r.status || 'Draft'), pdfs: pdf(r.pdf_url, 'Report PDF') }));\n  sections.push({ title: '', empty: 'No incidents or near misses on this job.', items: inc.concat(rep) });\n} else if (K === 'pos') {\n  const P = mine('T pos').sort(by('ordered_on'));\n  sections.push({ title: 'Supplier POs', empty: 'No supplier POs for this job yet.', items: P.filter(r => !isSub(r) && !isHire(r)).map(poItem) });\n  sections.push({ title: 'Subcontractor POs', empty: 'No subcontractor POs for this job yet.', items: P.filter(isSub).map(poItem) });\n  sections.push({ title: 'Hire', empty: 'No hire POs for this job yet.', items: P.filter(isHire).map(poItem) });\n} else if (K === 'plantlist') {\n  sections.push({ title: 'CBS plant', empty: 'No CBS plant booked to this job.', items: mine('T jplant').sort(by('booked_at')).map(r => { const back = S(r.returned_at), due = S(r.due_back).slice(0, 10), od = !back && due && due < today; return { t: (S(r.asset_name) || 'Plant') + (r.asset_tag ? ' \\u00b7 ' + S(r.asset_tag) : ''), m: [S(r.category), r.out_with ? 'With ' + S(r.out_with) : '', r.booked_at ? 'Booked ' + ukd(r.booked_at) : '', back ? 'Returned ' + ukd(back) : (due ? 'Due back ' + ukd(due) : '')], st: back ? 'Returned' : (od ? 'Overdue' : 'On job'), c: back ? 'g' : (od ? 'r' : 'a'), pdfs: [] }; }) });\n  sections.push({ title: 'Hired plant', empty: 'No plant hired for this job.', items: mine('T pos').filter(isHire).sort(by('ordered_on')).map(poItem) });\n} else if (K === 'materials') {\n  sections.push({ title: 'Load-up sheets', empty: 'No load-ups planned for this job yet.', items: mine('T ptm').sort(by('sheet_date')).map(r => ({ t: 'Load-up ' + ukd(r.sheet_date), m: [S(r.vehicle), S(r.crew), r.prepared_by ? 'Prepared by ' + S(r.prepared_by) : '', r.loaded_by ? 'Loaded by ' + S(r.loaded_by) : '', S(r.shortages) ? 'Short: ' + S(r.shortages) : ''], st: S(r.status) || (r.loaded_at ? 'Loaded' : 'Planned'), c: col(r.status || (r.loaded_at ? 'Loaded' : 'Planned')), pdfs: pdf(r.pdf_url, 'Load-up PDF') })) });\n  sections.push({ title: 'Stock booked to this job', empty: 'No stock booked out to this job.', items: mine('T moves').sort(by('at')).map(r => { const n = parseFloat(S(r.change)); return { t: S(r.material) || 'Material', m: [isFinite(n) ? (n < 0 ? Math.abs(n) + ' out' : n + ' back') : S(r.change), S(r.reason), S(r.by), ukd(r.at)], st: isFinite(n) && n > 0 ? 'Returned' : 'Used', c: isFinite(n) && n > 0 ? 'g' : 'a', pdfs: [] }; }) });\n}\nlet sum = null;\nif (K === 'summary') {\n  const FIN = /^(approved|issued|live|complete|completed|signed|received|accepted|closed|done|returned|loaded|delivered|reviewed)$/i;\n  const z = (t, l) => ({ t: t, l: l || '' });\n  const pl = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');\n  const R = mine('T rams'), SJ = mine('T subjobs'), CP = mine('T cphsp').sort(by('dated')), PC = mine('T pci'), PM = mine('T permits'), PS = mine('T prestarts').sort(by('held_on')), SO = mine('T signons'), VI = mine('T visitors');\n  const IN = rows('T incidents').filter(r => jk(r.sm8_job) === job), PO = mine('T pos'), PL = mine('T jplant'), MV = mine('T moves'), LU = mine('T ptm');\n  sum = {};\n  sum.rams = (R.length || SJ.length) ? z([R.length ? R.length + ' CBS' : '', SJ.length ? SJ.length + ' sub' : ''].filter(Boolean).join(' \\u00b7 '), R.concat(SJ).some(r => !FIN.test(S(r.status))) ? 'a' : 'g') : z('None');\n  sum.cdm = (CP.length || PC.length) ? z([CP.length ? 'CPHSP ' + (S(CP[0].status) || 'draft').toLowerCase() : 'No CPHSP', PC.length ? PC.length + ' pre-con' : ''].filter(Boolean).join(' \\u00b7 '), CP.length && FIN.test(S(CP[0].status)) ? 'g' : 'a') : z('None');\n  { const live = PM.filter(r => /live|approved|issued|active/i.test(S(r.status)) && !/closed/i.test(S(r.status))).length, wait = PM.filter(r => /submitted|requested|awaiting|pending/i.test(S(r.status))).length;\n    sum.permits = PM.length ? z([live ? live + ' live' : '', wait ? wait + ' awaiting' : '', !live && !wait ? pl(PM.length, 'permit') : ''].filter(Boolean).join(' \\u00b7 '), wait ? 'a' : 'g') : z('None'); }\n  sum.prestarts = PS.length ? z(PS.length + ' held \\u00b7 last ' + ukd(PS[0].held_on).replace(/ \\d{4}$/, ''), 'g') : z('None');\n  sum.signons = SO.length ? z(SO.length + ' signed', 'g') : z('None');\n  { const on = VI.filter(r => !S(r.signed_out_at) && S(r.signed_in_at || r.visit_date).slice(0, 10) === today).length;\n    sum.visitors = VI.length ? z(pl(VI.length, 'visit') + (on ? ' \\u00b7 ' + on + ' on site' : ''), on ? 'a' : '') : z('None'); }\n  { const open = IN.filter(r => !/closed/i.test(S(r.status))).length;\n    sum.incidents = IN.length ? z(open ? open + ' open' : IN.length + ' closed', open ? 'r' : 'g') : z('None'); }\n  { const out = PO.filter(r => !/(received|delivered|closed|complete|off.?hired|cancel)/i.test(S(r.status))).length;\n    sum.pos = PO.length ? z(pl(PO.length, 'PO') + (out ? ' \\u00b7 ' + out + ' outstanding' : ''), out ? 'a' : 'g') : z('None'); }\n  { const on = PL.filter(r => !S(r.returned_at)), od = on.filter(r => { const d = S(r.due_back).slice(0, 10); return d && d < today; }).length, hire = PO.filter(isHire).filter(r => !S(r.offhired_on)).length;\n    sum.plantlist = (PL.length || hire) ? z([on.length ? on.length + ' on job' : (PL.length ? 'All returned' : ''), od ? od + ' overdue' : '', hire ? hire + ' on hire' : ''].filter(Boolean).join(' \\u00b7 '), od ? 'r' : (on.length || hire ? 'a' : 'g')) : z('None'); }\n  sum.materials = (LU.length || MV.length) ? z([LU.length ? pl(LU.length, 'load-up') : '', MV.length ? pl(MV.length, 'stock item') : ''].filter(Boolean).join(' \\u00b7 '), LU.some(r => !S(r.loaded_at) && !/loaded/i.test(S(r.status))) ? 'a' : 'g') : z('None');\n}\nconst cdm = jr.cdm === true || /^true$/i.test(S(jr.cdm)) || /cdm/i.test(S(jr.mode));\nreturn [{ json: { ok: true, job: job, k: K, site: S(jr.site) || S(jr.name), cdm: cdm, sections: sections, sum: sum } }];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "30cce43c-d576-4890-a63d-7b1ed448d6be",
+        "name": "Send Data",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          2420,
+          1000
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          },
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify($json) }}"
+        }
+      },
+      {
+        "id": "0c180774-f6ad-4154-8fe6-674b54e5ff45",
+        "name": "GET cbs-job-pos",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          -150
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-job-pos",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "6dfc2da2-90aa-4e96-83b3-8143ac7afc82"
+      },
+      {
+        "id": "863bac06-9ea1-4d26-b2ef-f28e141d7972",
+        "name": "GET cbs-job-plantlist",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          -300
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-job-plantlist",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "4a47c409-338b-486b-a69e-4d4f43b694aa"
+      },
+      {
+        "id": "4e54ba4b-db5d-4b90-a2bc-89cf4f5d80bf",
+        "name": "GET cbs-job-materials",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          -450
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-job-materials",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "2f0618ba-a634-4642-bb71-33a5aadbabf9"
+      },
+      {
+        "id": "159bcaf2-1b9c-4828-ad5a-317056084aa7",
+        "name": "GET cbs-job-cdm",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          -600
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-job-cdm",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "70da9ee7-0fb9-4ea5-ba15-fdd986f95387"
+      },
+      {
+        "id": "30c5bbd1-d9b5-4a9f-990f-3d72f7824fc2",
+        "name": "T pos",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2200,
+          1200
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Z1lGdRMfPFALqbCR"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "41a79054-6c18-4b1d-aa40-e771197d0d81",
+        "name": "T jplant",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2420,
+          1200
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "QTiRE1GCvSWgnzWg"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "24d939cd-277b-4442-b74f-ba95103674ec",
+        "name": "T moves",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2640,
+          1200
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "i1dOh6PyUvWAZTBI"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "df160d50-7ed3-4d92-8227-a372773eb200",
+        "name": "T ptm",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2860,
+          1200
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "9HztIXJq3gqHZMFK"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "8f8364da-4c33-4cee-9376-81a1f754a58e",
+        "name": "T cphsp",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3080,
+          1200
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "VrPaSgrY1W6zm3HN"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "8ba860ad-94c0-4cea-9312-65cbcd360389",
+        "name": "T pci",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3300,
+          1200
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "bmOLO09fc5siHTdf"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "cf2cd65f-0491-455f-a72d-f25a02ebfa80",
+        "name": "T diary",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3520,
+          1200
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "0ujWfxU1dlaQQ55d"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "ceba5fbe-22d7-42b7-a478-369748e45a23",
+        "name": "T rfis",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3740,
+          1200
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "35JJVFVHvS4u1E72"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "8eeed731-13b7-483b-a80e-71fdffe9daf6",
+        "name": "T drawings",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          3960,
+          1200
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "e0S80HKaojWw1Sdn"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "73b4c355-deb8-49c6-9a42-5fd05cbcb692",
+        "name": "T variations",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          4180,
+          1200
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "FRxxY87u7qKb7JcN"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "8145c351-f501-4b3b-a18c-19419ecf41de",
+        "name": "T costs",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          4400,
+          1200
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "Zex3Tm0OF5XNFWiB"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "job_no",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.job || '').replace(/[^0-9A-Za-z-]/g,'') }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "2aafc683-e981-476c-89ca-e9ae052c4385",
+        "name": "Summary Extra",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          4620,
+          1000
+        ],
+        "parameters": {
+          "jsCode": "/* After Reg Data:\n   - k=summary: statuses for Daily diary, RFIs, Drawings, Variations, Job costing, and separate Pre-con info (pci) and CPHSP (cphsp);\n   - k=plantlist: the yard's plant for the booking panel (assets) and a return id (ret) on CBS plant still on the job. */\nconst d = Object.assign({}, $input.first().json);\nconst S = v => v == null ? '' : String(v).trim();\nconst jk = v => S(v).replace(/^#/, '').replace(/[^0-9A-Za-z-]/g, '').toLowerCase();\nconst job = d.job, today = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/London' });\nfunction all(n) { try { return $(n).all().map(i => i.json).filter(r => r && r.id != null); } catch (e) { return []; } }\nfunction rows(n) { return all(n).filter(r => jk(r.job_no) === job); }\nif (d.k === 'plantlist') {\n  const by = (k) => (a, b) => S(b[k]).localeCompare(S(a[k]));\n  const P = rows('T jplant').sort(by('booked_at'));\n  const sec = (d.sections || []).map(s => Object.assign({}, s, { items: (s.items || []).slice() }));\n  if (sec[0]) sec[0].items = sec[0].items.map((x, i) => { const r = P[i]; return r && !S(r.returned_at) && S(r.asset_id) ? Object.assign({}, x, { ret: S(r.asset_id) }) : x; });\n  d.sections = sec;\n  d.assets = all('T assets').map(a => ({ id: a.id, n: S(a.name), t: S(a.asset_tag), c: S(a.category), st: S(a.status), j: S(a.out_job), y: S(a.yard_status) })).sort((a, b) => (a.n + a.t).localeCompare(b.n + b.t));\n  return [{ json: d }];\n}\nif (d.k !== 'summary' || !d.sum) return [{ json: d }];\nconst MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];\nconst short = v => { const m = S(v).match(/^(\\d{4})-(\\d{2})-(\\d{2})/); return m ? Number(m[3]) + ' ' + MO[+m[2] - 1] : S(v); };\nconst z = (t, l) => ({ t: t, l: l || '' }), pl = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');\nconst sum = Object.assign({}, d.sum);\n{ const FIN = /^(approved|issued|live|complete|completed|signed|accepted|closed|done)$/i;\n  const CP = rows('T cphsp').sort((a, b) => S(b.dated).localeCompare(S(a.dated)));\n  sum.cphsp = CP.length ? z((S(CP[0].revision) ? 'Rev ' + S(CP[0].revision) + ' \\u00b7 ' : '') + (S(CP[0].status) || 'Draft'), FIN.test(S(CP[0].status)) ? 'g' : 'a') : z('None');\n  const PC = rows('T pci'), miss = PC.filter(r => !S(r.doc_url)).length;\n  sum.pci = PC.length ? z(pl(PC.length, 'document') + (miss ? ' \\u00b7 ' + miss + ' missing' : ''), miss ? 'r' : 'g') : z('None'); }\n{ const D = rows('T diary'), days = D.map(r => S(r.day).slice(0, 10)).filter(Boolean).sort();\n  sum.diary = D.length ? z(pl(D.length, 'day') + ' \\u00b7 last ' + short(days[days.length - 1]), days[days.length - 1] === today ? 'g' : '') : z('None'); }\n{ const R = rows('T rfis'), open = R.filter(r => !/(answered|closed|responded|resolved)/i.test(S(r.status)) && !S(r.responded_on)), od = open.filter(r => { const n = S(r.needed_by).slice(0, 10); return n && n < today; }).length;\n  sum.rfis = R.length ? z(open.length ? open.length + ' open' + (od ? ' \\u00b7 ' + od + ' overdue' : '') : pl(R.length, 'RFI') + ' answered', od ? 'r' : (open.length ? 'a' : 'g')) : z('None'); }\n{ const W = rows('T drawings').filter(r => S(r.file_url) && !/^(pin|markup|note|issue)$/i.test(S(r.kind))), cur = W.filter(r => !/superseded/i.test(S(r.status)));\n  sum.drawings = W.length ? z(pl(cur.length || W.length, 'drawing'), '') : z('None'); }\n{ const V = rows('T variations'), pend = V.filter(r => /(pending|submitted|draft|awaiting|raised|sent)/i.test(S(r.status))).length, appr = V.filter(r => /approved|accepted/i.test(S(r.status))).length;\n  sum.variations = V.length ? z([appr ? appr + ' approved' : '', pend ? pend + ' pending' : '', !appr && !pend ? pl(V.length, 'variation') : ''].filter(Boolean).join(' \\u00b7 '), pend ? 'a' : 'g') : z('None'); }\n{ const C = rows('T costs'), net = C.reduce((a, r) => a + (parseFloat(S(r.net)) || 0), 0);\n  sum.costs = C.length ? z('\\u00a3' + net.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' net \\u00b7 ' + pl(C.length, 'cost'), '') : z('None'); }\nd.sum = sum;\nreturn [{ json: d }];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "9b033308-27d9-481c-9612-bf1812d790c1",
+        "name": "T assets",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          4620,
+          1200
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "8CWS3fZeytjpf4HX"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ String($('GET cbs-job-reg-data').first().json.query.k || '') === 'plantlist' ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "2d0af9ea-1403-47dd-9929-78d60d125c07",
+        "name": "GET cbs-job-pci",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          -750
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-job-pci",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "ad3e6fb5-3736-49b0-9dd0-ebefaeb6c32e"
+      },
+      {
+        "id": "fb3384f9-2ec7-4161-83e9-09880f0626bb",
+        "name": "GET cbs-job-cphsp",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          -900
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-job-cphsp",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "56cdf828-2507-4ee0-81ea-644ef6e621d9"
+      }
+    ],
+    "connections": {
+      "GET cbs-job-rams": {
+        "main": [
+          [
+            {
+              "node": "Reg Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-job-permits": {
+        "main": [
+          [
+            {
+              "node": "Reg Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-job-prestarts": {
+        "main": [
+          [
+            {
+              "node": "Reg Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-job-signons": {
+        "main": [
+          [
+            {
+              "node": "Reg Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-job-visitors": {
+        "main": [
+          [
+            {
+              "node": "Reg Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-job-incidents": {
+        "main": [
+          [
+            {
+              "node": "Reg Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Reg Page": {
+        "main": [
+          [
+            {
+              "node": "Send Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-job-reg-data": {
+        "main": [
+          [
+            {
+              "node": "T job",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T job": {
+        "main": [
+          [
+            {
+              "node": "T rams",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T rams": {
+        "main": [
+          [
+            {
+              "node": "T subjobs",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T subjobs": {
+        "main": [
+          [
+            {
+              "node": "T permits",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T permits": {
+        "main": [
+          [
+            {
+              "node": "T prestarts",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T prestarts": {
+        "main": [
+          [
+            {
+              "node": "T signons",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T signons": {
+        "main": [
+          [
+            {
+              "node": "T visitors",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T visitors": {
+        "main": [
+          [
+            {
+              "node": "T incidents",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T incidents": {
+        "main": [
+          [
+            {
+              "node": "T increports",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-job-pos": {
+        "main": [
+          [
+            {
+              "node": "Reg Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-job-plantlist": {
+        "main": [
+          [
+            {
+              "node": "Reg Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-job-materials": {
+        "main": [
+          [
+            {
+              "node": "Reg Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-job-cdm": {
+        "main": [
+          [
+            {
+              "node": "Reg Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T increports": {
+        "main": [
+          [
+            {
+              "node": "T pos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T pos": {
+        "main": [
+          [
+            {
+              "node": "T jplant",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T jplant": {
+        "main": [
+          [
+            {
+              "node": "T moves",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T moves": {
+        "main": [
+          [
+            {
+              "node": "T ptm",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T ptm": {
+        "main": [
+          [
+            {
+              "node": "T cphsp",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T cphsp": {
+        "main": [
+          [
+            {
+              "node": "T pci",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T pci": {
+        "main": [
+          [
+            {
+              "node": "T diary",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T diary": {
+        "main": [
+          [
+            {
+              "node": "T rfis",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T rfis": {
+        "main": [
+          [
+            {
+              "node": "T drawings",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T drawings": {
+        "main": [
+          [
+            {
+              "node": "T variations",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T variations": {
+        "main": [
+          [
+            {
+              "node": "T costs",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Reg Data": {
+        "main": [
+          [
+            {
+              "node": "Summary Extra",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Summary Extra": {
+        "main": [
+          [
+            {
+              "node": "Send Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T costs": {
+        "main": [
+          [
+            {
+              "node": "T assets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "T assets": {
+        "main": [
+          [
+            {
+              "node": "Reg Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-job-pci": {
+        "main": [
+          [
+            {
+              "node": "Reg Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-job-cphsp": {
+        "main": [
+          [
+            {
+              "node": "Reg Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Job menu Safety pages (one layout): RAMS (CBS + subcontractor), Permits, Pre-starts, Sign-ons, Visitors, Incidents. GET cbs-job-<k>?job=N pages; GET cbs-job-reg-data?job=N&k=... data (job rows only). New buttons open the existing builders/forms.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

@@ -1,0 +1,114 @@
+{
+  "table": "cbs_service_sheets",
+  "n8n_id": "G3mYDjQqWyYiCx0W",
+  "columns": [
+    {
+      "name": "created_at",
+      "type": "string"
+    },
+    {
+      "name": "created_by",
+      "type": "string"
+    },
+    {
+      "name": "file_name",
+      "type": "string"
+    },
+    {
+      "name": "history",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "job_title",
+      "type": "string"
+    },
+    {
+      "name": "location",
+      "type": "string"
+    },
+    {
+      "name": "pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "sections_json",
+      "type": "string"
+    },
+    {
+      "name": "sheet_date",
+      "type": "string"
+    },
+    {
+      "name": "sheet_no",
+      "type": "string"
+    },
+    {
+      "name": "signed_by",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "tok",
+      "type": "string"
+    },
+    {
+      "name": "updated_at",
+      "type": "string"
+    },
+    {
+      "name": "updated_by",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "job_no": "12",
+      "sheet_no": "SS-01",
+      "sheet_date": "2026-10-27",
+      "location": "Test",
+      "job_title": "12 - { description of work }",
+      "sections_json": "[{\"title\":\"Test\",\"details\":\"Test\",\"photos\":{\"before\":[{\"u\":\"01a17dc6-3730-79fe-9530-29e4ae27e17b\",\"cap\":\"\"}],\"progress\":[{\"u\":\"01a17dc6-459c-79fe-9530-78c5501fabbb\",\"cap\":\"\"}],\"after\":[]}}]",
+      "signed_by": "Ethan Paraha",
+      "status": "Issued",
+      "pdf_url": "https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-22.pdf",
+      "file_name": "Job 12 - Service sheet SS-01 - 2026-10-27.pdf",
+      "tok": "[redacted]",
+      "created_by": "Ethan Paraha",
+      "created_at": "2026-10-27T14:40",
+      "updated_by": "Ethan Paraha",
+      "updated_at": "2026-10-27T16:27",
+      "history": "[{\"at\":\"2026-10-27T14:40\",\"by\":\"Ethan Paraha\",\"ev\":\"Created\"},{\"at\":\"2026-10-27T14:40\",\"by\":\"Ethan Paraha\",\"ev\":\"PDF saved to the job files\",\"file\":\"Job 12 - Service sheet SS-01 - 2026-10-27.pdf\"},{\"at\":\"2026-10-27T14:45\",\"by\":\"Ethan Paraha\",\"ev\":\"Saved\"},{\"at\":\"2026-10-27T14:45\",\"by\":\"Ethan Paraha\",\"ev\":\"PDF saved to the job files\",\"file\":\"Job 12 - Service sheet SS-01 - 2026-10-27.pdf\"},{\"at\":\"2026-10-27T14:46\",\"by\":\"Ethan Paraha\",\"ev\":\"Saved\"},{\"at\":\"2026-10-27T14:46\",\"by\":\"Ethan Paraha\",\"ev\":\"PDF saved to the job files\",\"file\":\"Job 12 - Service sheet SS-01 - 2026-10-27.pdf\"},{\"at\":\"2026-10-27T16:26\",\"by\":\"Ethan Paraha\",\"ev\":\"Saved\"},{\"at\":\"2026-10-27T16:27\",\"by\":\"Ethan Paraha\",\"ev\":\"Saved\"},{\"at\":\"2026-10-27T16:27\",\"by\":\"Ethan Paraha\",\"ev\":\"PDF saved to the job files\",\"file\":\"Job 12 - Service sheet SS-01 - 2026-10-27.pdf\"}]",
+      "id": 1,
+      "createdAt": "2026-10-27T14:40:31.941Z",
+      "updatedAt": "2026-10-27T16:27:49.920Z"
+    },
+    {
+      "job_no": "10014",
+      "sheet_no": "SS-01",
+      "sheet_date": "2026-10-24",
+      "location": "2 Sample Street, Sampletown F, Greater London, ZZ99 4ZZ",
+      "job_title": "10014 - ZZ-ORD-3 Access Creation to investigate leak",
+      "sections_json": "[{\"title\":\"Investigation of leak above reception\",\"details\":\"Installed an access hatch and investigated within the ceiling void. The investigation identified severe corrosion and pinholing to the drainage pipework, allowing water to leak onto the MF plasterboard ceiling and through into reception. \\n\\nA temporary banding wrap was applied to the pipework around the joints and areas of heavy corrosion. \\nRemedial works are required, Quote to be sent separately.\",\"photos\":{\"before\":[{\"u\":\"01a17dfc-cbb8-79fe-9531-73a5201bfa5b\",\"cap\":\"\"},{\"u\":\"01a17dfc-cbbd-79fe-9531-8a07ac3a7c2b\",\"cap\":\"\"},{\"u\":\"01a17dfc-cbc8-79fe-9530-902452bb4b2b\",\"cap\":\"\"},{\"u\":\"01a17dfc-d23b-79fe-9530-e56c5c9c41ab\",\"cap\":\"\"},{\"u\":\"01a17dfc-d2a4-79fe-9531-02c89381b39b\",\"cap\":\"\"},{\"u\":\"01a17dfd-9fbe-79fe-9531-0e555b76761b\",\"cap\":\"\"}],\"progress\":[],\"after\":[{\"u\":\"01a17dfd-9f86-79fe-9530-7c37971c5d3b\",\"cap\":\"\"},{\"u\":\"01a17dfd-9fb6-79fe-9531-054efe9d4b0b\",\"cap\":\"\"},{\"u\":\"01a17dfd-a66b-79fe-9530-1e9d61e58aab\",\"cap\":\"\"},{\"u\":\"01a17dfd-a695-79fe-9530-d2c6bdccd03b\",\"cap\":\"\"}]}}]",
+      "signed_by": "ZZ Person C",
+      "status": "Issued",
+      "pdf_url": "https://example.sharepoint.com/Shared%20Documents/ZZ%20Test/old-23.pdf",
+      "file_name": "Job 10014 - Service sheet SS-01 - 2026-10-24.pdf",
+      "tok": "[redacted]",
+      "created_by": "ZZ Person C",
+      "created_at": "2026-10-27T15:50",
+      "updated_by": "ZZ Person C",
+      "updated_at": "2026-10-27T16:39",
+      "history": "[{\"at\":\"2026-10-27T15:50\",\"by\":\"ZZ Person C\",\"ev\":\"Created\"},{\"at\":\"2026-10-27T15:50\",\"by\":\"ZZ Person C\",\"ev\":\"PDF saved to the job files\",\"file\":\"Job 10014 - Service sheet SS-01 - 2026-10-24.pdf\"},{\"at\":\"2026-10-27T15:56\",\"by\":\"ZZ Person C\",\"ev\":\"Saved\"},{\"at\":\"2026-10-27T16:13\",\"by\":\"ZZ Person C\",\"ev\":\"Saved\"},{\"at\":\"2026-10-27T16:13\",\"by\":\"ZZ Person C\",\"ev\":\"PDF saved to the job files\",\"file\":\"Job 10014 - Service sheet SS-01 - 2026-10-24.pdf\"},{\"at\":\"2026-10-27T16:30\",\"by\":\"ZZ Person C\",\"ev\":\"Saved\"},{\"at\":\"2026-10-27T16:31\",\"by\":\"ZZ Person C\",\"ev\":\"PDF saved to the job files\",\"file\":\"Job 10014 - Service sheet SS-01 - 2026-10-24.pdf\"},{\"at\":\"2026-10-27T16:37\",\"by\":\"ZZ Person C\",\"ev\":\"Saved\"},{\"at\":\"2026-10-27T16:37\",\"by\":\"ZZ Person C\",\"ev\":\"PDF saved to the job files\",\"file\":\"Job 10014 - Service sheet SS-01 - 2026-10-24.pdf\"},{\"at\":\"2026-10-27T16:39\",\"by\":\"ZZ Person C\",\"ev\":\"Saved\"},{\"at\":\"2026-10-27T16:39\",\"by\":\"ZZ Person C\",\"ev\":\"PDF saved to the job files\",\"file\":\"Job 10014 - Service sheet SS-01 - 2026-10-24.pdf\"}]",
+      "id": 2,
+      "createdAt": "2026-10-27T15:50:47.532Z",
+      "updatedAt": "2026-10-27T16:39:55.942Z"
+    }
+  ]
+}

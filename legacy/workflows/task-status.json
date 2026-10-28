@@ -1,0 +1,296 @@
+{
+  "id": "0wybDwYIoyULQEn6",
+  "name": "CBS - Task Status",
+  "active": true,
+  "isArchived": false,
+  "versionId": "9ed0d343-a43e-48c9-aebc-ab9d0f3b93f7",
+  "activeVersionId": "9ed0d343-a43e-48c9-aebc-ab9d0f3b93f7",
+  "triggerCount": 1,
+  "createdAt": "2026-10-07T09:12:04.578Z",
+  "updatedAt": "2026-10-13T16:56:12.902Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Clean Rows": {
+      "main": [
+        [
+          {
+            "node": "Upsert Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Task Status Hook": {
+      "main": [
+        [
+          {
+            "node": "Get Existing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Existing": {
+      "main": [
+        [
+          {
+            "node": "Clean Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "2f8a6b24-05d7-464c-9ef1-15519ba85682",
+      "name": "Task Status Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-task-status",
+        "responseMode": "lastNode",
+        "responseData": "firstEntryJson",
+        "options": {}
+      },
+      "webhookId": "3d91815c-344e-4dea-b15c-e80496172386"
+    },
+    {
+      "id": "902ccce1-7030-466a-99d9-00914ae30bdc",
+      "name": "Clean Rows",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var b = $('Task Status Hook').first().json.body || {};\nvar list = Array.isArray(b.rows) ? b.rows : [];\nvar ok = ['New', 'In progress', 'Done', 'Dismissed'];\nfunction s(v, n) { return String(v == null ? '' : v).slice(0, n || 300); }\nfunction has(o, k) { return Object.prototype.hasOwnProperty.call(o, k); }\nvar EX = {};\n$('Get Existing').all().forEach(function (i) { var r = i.json; if (r && r.task_key) EX[r.task_key] = r; });\n/* Rules (server is the source of truth):\n   1. Version gate: only the current hub page (rows tagged v>=2) may write. Old copies of the hub are ignored.\n   2. In progress is sticky: background syncs (rows without a note field) can never move an In progress task.\n      Only a person's action (Start / Update progress / Back to New / Undo, which always send the note fields) can.\n   3. Dismissed: a roll-up reminder dismissed in the task drawer (note = the reminder text; it comes back when the text changes). */\nreturn list.filter(function (r) {\n  if (!r || !r.task_key || ok.indexOf(r.status) < 0 || Number(r.v) < 2 || !(Number(r.v) >= 2)) return false;\n  var ex = EX[r.task_key];\n  if (!has(r, 'note') && ex && ex.status === 'In progress' && r.status !== 'In progress') return false;\n  return true;\n}).slice(0, 200).map(function (r) {\n  var o = { task_key: s(r.task_key, 300), title: s(r.title, 200), ref_table: s(r.ref_table, 40), ref_id: s(r.ref_id, 20), grp: s(r.grp, 60), status: r.status, changed_at: s(r.changed_at, 30) || new Date().toISOString() };\n  if (has(r, 'note')) o.note = s(r.note, 80);\n  if (has(r, 'note_date')) o.note_date = s(r.note_date, 10);\n  if (has(r, 'note_by')) o.note_by = s(r.note_by, 60);\n  return { json: o };\n});"
+      }
+    },
+    {
+      "id": "838b318c-d6ea-4558-9815-06c4206e4ffa",
+      "name": "Upsert Status",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "79HTD2OG21IvSBZT"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "task_key",
+              "condition": "eq",
+              "keyValue": "={{ $json.task_key }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null,
+          "matchingColumns": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "5fb2476e-e50b-484a-b561-4a8d1db91299",
+      "name": "Get Existing",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        112,
+        160
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "79HTD2OG21IvSBZT"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      },
+      "executeOnce": true
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "2f8a6b24-05d7-464c-9ef1-15519ba85682",
+        "name": "Task Status Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-task-status",
+          "responseMode": "lastNode",
+          "responseData": "firstEntryJson",
+          "options": {}
+        },
+        "webhookId": "3d91815c-344e-4dea-b15c-e80496172386"
+      },
+      {
+        "id": "902ccce1-7030-466a-99d9-00914ae30bdc",
+        "name": "Clean Rows",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var b = $('Task Status Hook').first().json.body || {};\nvar list = Array.isArray(b.rows) ? b.rows : [];\nvar ok = ['New', 'In progress', 'Done', 'Dismissed'];\nfunction s(v, n) { return String(v == null ? '' : v).slice(0, n || 300); }\nfunction has(o, k) { return Object.prototype.hasOwnProperty.call(o, k); }\nvar EX = {};\n$('Get Existing').all().forEach(function (i) { var r = i.json; if (r && r.task_key) EX[r.task_key] = r; });\n/* Rules (server is the source of truth):\n   1. Version gate: only the current hub page (rows tagged v>=2) may write. Old copies of the hub are ignored.\n   2. In progress is sticky: background syncs (rows without a note field) can never move an In progress task.\n      Only a person's action (Start / Update progress / Back to New / Undo, which always send the note fields) can.\n   3. Dismissed: a roll-up reminder dismissed in the task drawer (note = the reminder text; it comes back when the text changes). */\nreturn list.filter(function (r) {\n  if (!r || !r.task_key || ok.indexOf(r.status) < 0 || Number(r.v) < 2 || !(Number(r.v) >= 2)) return false;\n  var ex = EX[r.task_key];\n  if (!has(r, 'note') && ex && ex.status === 'In progress' && r.status !== 'In progress') return false;\n  return true;\n}).slice(0, 200).map(function (r) {\n  var o = { task_key: s(r.task_key, 300), title: s(r.title, 200), ref_table: s(r.ref_table, 40), ref_id: s(r.ref_id, 20), grp: s(r.grp, 60), status: r.status, changed_at: s(r.changed_at, 30) || new Date().toISOString() };\n  if (has(r, 'note')) o.note = s(r.note, 80);\n  if (has(r, 'note_date')) o.note_date = s(r.note_date, 10);\n  if (has(r, 'note_by')) o.note_by = s(r.note_by, 60);\n  return { json: o };\n});"
+        }
+      },
+      {
+        "id": "838b318c-d6ea-4558-9815-06c4206e4ffa",
+        "name": "Upsert Status",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "79HTD2OG21IvSBZT"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "task_key",
+                "condition": "eq",
+                "keyValue": "={{ $json.task_key }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null,
+            "matchingColumns": []
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "5fb2476e-e50b-484a-b561-4a8d1db91299",
+        "name": "Get Existing",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          112,
+          160
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "79HTD2OG21IvSBZT"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true
+        },
+        "executeOnce": true
+      }
+    ],
+    "connections": {
+      "Clean Rows": {
+        "main": [
+          [
+            {
+              "node": "Upsert Status",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Task Status Hook": {
+        "main": [
+          [
+            {
+              "node": "Get Existing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Existing": {
+        "main": [
+          [
+            {
+              "node": "Clean Rows",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS Actions board: saves the status (New / In progress / Done) of automatic tasks to cbs_task_status. POST /webhook/cbs-task-status {rows:[...]}. Port of Embr - Task Status.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

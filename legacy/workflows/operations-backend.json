@@ -1,0 +1,1395 @@
+{
+  "id": "oa0PcWtXNArmPwj0",
+  "name": "CBS - Operations Backend",
+  "active": true,
+  "isArchived": false,
+  "versionId": "03a4cde0-bdfa-48aa-9889-6253cac5728d",
+  "activeVersionId": "03a4cde0-bdfa-48aa-9889-6253cac5728d",
+  "triggerCount": 1,
+  "createdAt": "2026-10-05T09:44:09.261Z",
+  "updatedAt": "2026-10-27T16:04:11.722Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none"
+  },
+  "connections": {
+    "Admin Save": {
+      "main": [
+        [
+          {
+            "node": "Route",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route": {
+      "main": [
+        [
+          {
+            "node": "Route Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Switch": {
+      "main": [
+        null,
+        [
+          {
+            "node": "List Rows",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Clean Row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pre Delete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Rows": {
+      "main": [
+        [
+          {
+            "node": "Pack List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pack List": {
+      "main": [
+        [
+          {
+            "node": "Respond List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean Row": {
+      "main": [
+        [
+          {
+            "node": "Asset Yard Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Row": {
+      "main": [
+        [
+          {
+            "node": "Respond Save",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Plant Log Sync",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Mark Changed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Row": {
+      "main": [
+        [
+          {
+            "node": "Respond Delete",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Signon Restamp",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Mark Changed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Asset Yard Fields": {
+      "main": [
+        [
+          {
+            "node": "Internal Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Stock Move Fill": {
+      "main": [
+        [
+          {
+            "node": "Save Row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pre Delete": {
+      "main": [
+        [
+          {
+            "node": "Delete Row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Internal Fields": {
+      "main": [
+        [
+          {
+            "node": "Scope Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scope Fields": {
+      "main": [
+        [
+          {
+            "node": "Vehicle Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vehicle Fields": {
+      "main": [
+        [
+          {
+            "node": "Stock Move Fill",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "cd915e2b-71f6-4e2c-90dd-a7b7e692ef1a",
+      "name": "Admin Save",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-admin-save",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "5eb9cf85-1b34-4f54-8a4c-ecae451e8c5c"
+    },
+    {
+      "id": "b82e69a1-dc7d-4712-8c03-12f194f6fed8",
+      "name": "Route",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        288
+      ],
+      "parameters": {
+        "jsCode": "var it = $input.first().json;\nvar q = it.query || {};\nvar TBL = { workers: \"cbs_workers\", incidents: \"cbs_incidents\", toolbox: \"cbs_toolbox\", hsmeet: \"cbs_toolbox\", training: \"cbs_training\", substances: \"cbs_substances\", rams: \"cbs_rams\", subbies: \"cbs_subcontractors\", subdocs: \"cbs_sub_docs\", insurance: \"cbs_insurance\", vehicles: \"cbs_vehicles\", checks: \"cbs_vehicle_checks\", crashes: \"cbs_vehicle_accidents\", photos: \"cbs_photos\", assets: \"cbs_assets\", services: \"cbs_asset_services\", requests: \"cbs_requests\", leave: \"cbs_time_off\", vservices: \"cbs_vehicle_services\", taskstat: \"cbs_task_status\", hazards: \"cbs_hazards\", increports: \"cbs_incident_reports\", materials: \"cbs_materials\", stockmoves: \"cbs_stock_moves\", ptmsheets: \"cbs_ptm_sheets\", claims: \"cbs_claims\", covertasks: \"cbs_cover_tasks\", companycerts: \"cbs_company_certs\", subjobs: \"cbs_sub_jobdocs\", cphsp: \"cbs_cphsp\", prestarts: \"cbs_prestarts\", hspolicy: \"cbs_hs_policy\", notifyrules: \"cbs_notify_rules\", suppliers: \"cbs_suppliers\", pos: \"cbs_purchase_orders\", signatures: \"cbs_signatures\", signons: \"cbs_signons\", jobplant: \"cbs_job_plant\", notices: \"cbs_hub_notices\", selectopts: \"cbs_select_options\", scaffinsp: \"cbs_scaffold_insp\", snags: \"cbs_snags\", programmes: \"cbs_programmes\", progitems: \"cbs_prog_items\", phototags: \"cbs_photo_tags\", jobtasks: \"cbs_job_tasks\", support: \"cbs_support\", variations: \"cbs_variations\", rfis: \"cbs_rfis\", jobrows: \"cbs_jobs\", jobcosts: \"cbs_job_costs\", scope: \"cbs_scope\", surveys: \"cbs_surveys\", signin: \"cbs_signin\", tbtopics: \"cbs_tb_topics\", ramstypes: \"cbs_rams_types\", cphspwording: \"cbs_cphsp_wording\" };\nvar a = String(q.a || \"app\").toLowerCase();\nif ([\"list\",\"save\",\"del\"].indexOf(a) === -1) { a = \"app\"; }\nvar tbl = TBL[String(q.t || \"\")] || \"\";\nvar internal = String(q.k || \"\") === \"[redacted-internal-key]\";\nif (a !== \"app\" && !tbl) { throw new Error(\"Unknown register: \" + q.t); }\n/* Hub sign-in (PIN hashes and sign-in tokens): only CBS - Nav's sign-in service may read or write it (internal key). */\nif (!internal && q.t === \"signin\") { throw new Error(\"Sign-in records are private\"); }\nif (!internal && a === \"save\" && (q.t === \"taskstat\" || q.t === \"increports\")) { throw new Error(\"This register is saved through its own builder\"); }\nif (!internal && a === \"save\" && q.t === \"signons\" && !(Number(q.id) > 0)) { throw new Error(\"Sign-ons are created on the signing page\"); }\nif (!internal && a === \"save\" && q.t === \"notices\" && !(Number(q.id) > 0)) { throw new Error(\"Notifications are created by the system\"); }\nif (!internal && a !== \"list\" && q.t === \"jobplant\") { throw new Error(\"The plant log is written from the Job File\"); }\nif (!internal && a === \"save\" && q.t === \"snags\") { throw new Error(\"Snags are saved from the snagging page\"); }\nif (!internal && a !== \"list\" && (q.t === \"programmes\" || q.t === \"progitems\")) { throw new Error(\"Programmes are edited from the Job File programme page\"); }\nif (!internal && a !== \"list\" && q.t === \"support\") { throw new Error(\"Feature requests and bug reports are saved from the Support page\"); }\nif (!internal && a !== \"list\" && (q.t === \"variations\" || q.t === \"rfis\" || q.t === \"jobrows\" || q.t === \"jobcosts\")) { throw new Error(\"Variations, RFIs and job records are saved from their own pages\"); }\nif (!internal && a !== \"list\" && q.t === \"scope\") { throw new Error(\"The scope of works is saved from the Scope of works page\"); }\nif (a !== \"list\" && q.t === \"surveys\") { throw new Error(\"Site surveys are saved from the survey form\"); }\n/* CPHSP wording: every row is a fixed part of the plan, so rows can be edited but not added or deleted from the hub */\nif (!internal && q.t === \"cphspwording\" && (a === \"del\" || (a === \"save\" && !(Number(q.id) > 0)))) { throw new Error(\"CPHSP wording rows are fixed parts of the plan: edit the wording instead\"); }\nreturn [{ json: { route: a, tbl: tbl, rowId: Number(q.id || 0) || 0, query: q, body: it.body || {}, internal: internal, partial: String(q.partial || \"\") === \"1\" } }];\n"
+      }
+    },
+    {
+      "id": "b8e2a4ed-c025-4748-bf6a-add235b27dd5",
+      "name": "Route Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        448,
+        256
+      ],
+      "parameters": {
+        "options": {},
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.route }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "app"
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                }
+              }
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.route }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "list"
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                }
+              }
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.route }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "save"
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                }
+              }
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.route }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "del"
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cb733e67-25d3-4868-b6ae-f8a1c9fa5f76",
+      "name": "List Rows",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        192
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $json.tbl }}"
+        },
+        "operation": "get",
+        "returnAll": true
+      }
+    },
+    {
+      "id": "c76f71fd-9962-4bad-a1e3-2421c7f5a9f8",
+      "name": "Pack List",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        192
+      ],
+      "parameters": {
+        "jsCode": "var q = $(\"Route\").first().json.query || {};\nvar tbl = $(\"Route\").first().json.tbl;\nvar rows = $input.all().map(function(i){ return i.json; }).filter(function(r){ return r && r.id; });\nif (tbl === \"cbs_photos\") {\n  if (!q.rt) { rows = []; }\n  else { rows = rows.filter(function(r){ return String(r.ref_table) === String(q.rt) && String(r.ref_id) === String(q.rid); }); }\n}\nreturn [{ json: { rows: rows } }];"
+      }
+    },
+    {
+      "id": "c5d5b34b-cbe1-485c-af5a-25170568908f",
+      "name": "Respond List",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        192
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json.rows) }}"
+      }
+    },
+    {
+      "id": "319ac0da-e545-43be-8a5c-d0d67586c556",
+      "name": "Clean Row",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        384
+      ],
+      "parameters": {
+        "jsCode": "var r = $input.first().json;\nvar body = r.body || {};\nvar COLS = {\n  cbs_workers: [\"name\",\"role\",\"mobile\",\"email\",\"active\",\"notes\"],\n  cbs_incidents: [\"ref\",\"occurred_at\",\"kind\",\"severity\",\"person\",\"location\",\"sm8_job\",\"description\",\"immediate_action\",\"injury_detail\",\"treatment\",\"notifiable\",\"riddor_notified_at\",\"investigation\",\"root_cause\",\"corrective_actions\",\"action_owner\",\"action_due\",\"status\",\"reported_by\",\"closed_at\",\"requires_investigation\"],\n  cbs_toolbox: [\"meeting_type\",\"held_on\",\"topic\",\"presenter\",\"site\",\"job_no\",\"key_points\",\"hazards_raised\",\"actions\",\"attendees\",\"notes\",\"pdf_url\"],\n  cbs_training: [\"person\",\"qualification\",\"provider\",\"issued_on\",\"expires_on\",\"reference\",\"notes\",\"docs_json\",\"qual_other\"],\n  cbs_substances: [\"product\",\"supplier\",\"location\",\"coshh_class\",\"quantity\",\"use_for\",\"sds_url\",\"sds_date\",\"controls\",\"ppe\",\"review_on\",\"notes\"],\n  cbs_rams: [\"site\",\"activity\",\"task\",\"revision\",\"prepared_by\",\"dated\",\"status\",\"pdf_url\",\"notes\"],\n  cbs_subcontractors: [\"company\",\"trade\",\"job\",\"contact\",\"mobile\",\"email\",\"insurance_expiry\",\"licence_type\",\"licence_no\",\"licence_expiry\",\"rams_received\",\"sds_provided\",\"inducted\",\"approved\",\"notes\"],\n  cbs_sub_docs: [\"company\",\"item\",\"custom_name\",\"reference\",\"issued_on\",\"expires_on\",\"doc_url\",\"notes\"],\n  cbs_insurance: [\"item\",\"custom_name\",\"insurer\",\"policy_no\",\"cover\",\"starts_on\",\"expires_on\",\"doc_url\",\"notes\",\"cover_json\"],\n  cbs_vehicles: [\"reg\",\"make_model\",\"year\",\"assigned_to\",\"tax_due\",\"mot_expiry\",\"ins_due\",\"service_due\",\"doc_url\",\"notes\"],\n  cbs_vehicle_checks: [\"vehicle\",\"checked_on\",\"checked_by\",\"odometer\",\"tyres_ok\",\"lights_ok\",\"fluids_ok\",\"body_ok\",\"first_aid_ok\",\"extinguisher_ok\",\"restraints_ok\",\"defects\",\"action\",\"status\",\"doc_url\",\"reviewed\"],\n  cbs_vehicle_accidents: [\"occurred_at\",\"vehicle\",\"driver\",\"location\",\"description\",\"damage\",\"injuries\",\"third_party\",\"third_party_reg\",\"third_party_insurer\",\"police_event_no\",\"claim_no\",\"status\",\"doc_url\",\"notes\"],\n  cbs_photos: [\"ref_table\",\"ref_id\",\"caption\",\"image\",\"taken_by\",\"taken_at\"],\n  cbs_assets: [\"name\",\"category\",\"make_model\",\"serial_no\",\"asset_tag\",\"location\",\"assigned_to\",\"purchased_on\",\"service_interval\",\"last_service\",\"next_service\",\"test_tag_due\",\"status\",\"notes\"],\n  cbs_asset_services: [\"asset\",\"serviced_on\",\"serviced_by\",\"work_done\",\"cost\",\"next_due\",\"notes\"],\n  cbs_requests: [\"requested_by\",\"category\",\"details\",\"urgency\",\"status\",\"response\",\"requested_at\",\"closed_at\"],\n  cbs_time_off: [\"worker\",\"kind\",\"from_date\",\"to_date\",\"part_day\",\"days\",\"notes\",\"status\",\"response\",\"requested_at\"],\n  cbs_vehicle_services: [\"vehicle\",\"serviced_on\",\"odometer\",\"workshop\",\"work_done\",\"cost\",\"next_due\",\"next_due_km\",\"receipt_url\",\"notes\"],\n  cbs_hazards: [\"hazard\",\"activity\",\"harm\",\"likelihood\",\"consequence\",\"risk_rating\",\"controls\",\"control_level\",\"residual_likelihood\",\"residual_consequence\",\"residual_risk\",\"owner\",\"last_reviewed\",\"review_on\",\"status\",\"source\",\"notes\",\"rams_key\",\"ctrl_codes\",\"plant_categories\"],\n  cbs_materials: [\"name\",\"category\",\"unit\",\"location\",\"qty_on_hand\",\"min_level\",\"reorder_qty\",\"supplier\",\"supplier_code\",\"cost\",\"sds_product\",\"last_counted_on\",\"last_counted_by\",\"status\",\"notes\",\"sm8_uuid\"],\n  cbs_stock_moves: [\"material_id\",\"material\",\"change\",\"qty_after\",\"reason\",\"ref\",\"by\",\"at\",\"notes\"],\n  cbs_ptm_sheets: [\"sheet_date\",\"job_no\",\"site\",\"client\",\"job_desc\",\"crew\",\"vehicle\",\"status\",\"shortages\",\"items_json\",\"notes\",\"pdf_url\",\"prepared_by\",\"loaded_by\",\"loaded_at\"],\n  cbs_claims: [\"claim_no\",\"claim_type\",\"direction\",\"status\",\"incident_date\",\"lodged_on\",\"policy\",\"insurer\",\"insurer_claim_no\",\"other_party\",\"other_contact\",\"description\",\"amount_claimed\",\"excess\",\"amount_settled\",\"vehicle\",\"asset\",\"incident_ref\",\"job_no\",\"site\",\"client\",\"next_action\",\"next_action_due\",\"doc_url\",\"closed_on\",\"notes\"],\n  cbs_cover_tasks: [\"cover\",\"action\",\"target\",\"notes\",\"status\",\"raised_on\",\"done_on\"],\n  cbs_company_certs: [\"name\",\"other_name\",\"issuer\",\"reference\",\"level\",\"issued_on\",\"expires_on\",\"cost\",\"contact\",\"docs_json\",\"notes\"],\n  cbs_sub_jobdocs: [\"company\",\"job_no\",\"site\",\"client\",\"start_date\",\"doc_type\",\"status\",\"requested_on\",\"received_on\",\"reviewed_by\",\"reviewed_on\",\"docs_json\",\"notes\"],\n  cbs_cphsp: [\"cphsp_no\",\"revision\",\"dated\",\"job_no\",\"project\",\"site\",\"client\",\"status\",\"prepared_by\",\"approved_by\",\"approved_on\",\"subs\",\"subs_not_approved\",\"pdf_url\",\"state_json\",\"notes\"],\n  cbs_prestarts: [\"ps_no\",\"held_on\",\"held_at\",\"job_no\",\"site\",\"client\",\"site_lead\",\"linked\",\"docs_json\",\"headcount\",\"acknowledged\",\"pdf_url\",\"state_json\",\"notes\"],\n  cbs_hs_policy: [\"version\",\"status\",\"effective_on\",\"review_due\",\"approved_by\",\"approver_role\",\"approved_on\",\"scope\",\"commitment\",\"objectives\",\"notes\",\"pdf_url\"],\n  cbs_notify_rules: [\"event\",\"label\",\"post_note\",\"tags\",\"notes\"],\n  cbs_suppliers: [\"name\",\"contact\",\"email\",\"phone\",\"account_no\",\"address\",\"notes\"],\n  cbs_purchase_orders: [\"po_no\",\"supplier\",\"supplier_id\",\"job_no\",\"site\",\"client\",\"ordered_on\",\"needed_by\",\"deliver_to\",\"status\",\"lines_json\",\"subtotal\",\"vat\",\"total\",\"ordered_by\",\"received_json\",\"pdf_url\",\"notes\"],\n  cbs_signatures: [\"name\",\"role\",\"image\",\"notes\"],\n  cbs_job_plant: [\"job_no\",\"asset_id\",\"asset_name\",\"asset_tag\",\"category\",\"out_with\",\"booked_by\",\"booked_at\",\"due_back\",\"returned_at\",\"returned_by\",\"source\",\"notes\"],\n  cbs_select_options: [\"reg\",\"field\",\"value\",\"added_by\"]\n};\nvar BOOL = { active: true, notifiable: true, rams_received: true, sds_provided: true, inducted: true, approved: true, tyres_ok: true, lights_ok: true, fluids_ok: true, body_ok: true, first_aid_ok: true, extinguisher_ok: true, restraints_ok: true, reviewed: true };\nvar cols = COLS[r.tbl] || [];\nvar row = {};\ncols.forEach(function(k){\n  var v = body[k];\n  if (BOOL[k]) { row[k] = v === true || v === \"true\"; }\n  else { row[k] = v === undefined || v === null ? \"\" : String(v); }\n});\nreturn [{ json: row }];"
+      }
+    },
+    {
+      "id": "7f3ed169-a8ee-4422-b653-5407884083d2",
+      "name": "Save Row",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        384
+      ],
+      "parameters": {
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "matchingColumns": [],
+          "value": null
+        },
+        "dataTableId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $('Route').first().json.tbl }}"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyValue": "={{ $('Route').first().json.rowId }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "upsert",
+        "options": {}
+      }
+    },
+    {
+      "id": "cd2f569f-4d5e-4be0-b51a-478feb57f7b7",
+      "name": "Respond Save",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        384
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ ok: true, id: $json.id || $('Route').first().json.rowId || 0 }) }}"
+      }
+    },
+    {
+      "id": "bb537cdf-113c-408b-b46e-bfd764498142",
+      "name": "Delete Row",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        576
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ $json.tbl }}"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyValue": "={{ $json.rowId }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "deleteRows",
+        "options": {}
+      }
+    },
+    {
+      "id": "71a7f2b6-d1d5-4dfe-84d8-08479b3c7b15",
+      "name": "Respond Delete",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        576
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ ok: true }) }}"
+      }
+    },
+    {
+      "id": "9491a1c6-a31a-46c1-acc4-38458aad2174",
+      "name": "Asset Yard Fields",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        784,
+        520
+      ],
+      "parameters": {
+        "jsCode": "var r = $('Route').first().json;\nvar row = $input.first().json;\nif (r.tbl === 'cbs_assets') {\n  var b = r.body || {};\n  ['yard_status', 'out_job', 'out_with', 'out_since', 'due_back'].forEach(function(k){ row[k] = b[k] === undefined || b[k] === null ? '' : String(b[k]); });\n}\nif (r.tbl === 'cbs_subcontractors') {\n  var sbb = r.body || {};\n  delete row.rams_received; delete row.sds_provided;\n  if (Object.prototype.hasOwnProperty.call(sbb, 'type')) { row.type = sbb.type === undefined || sbb.type === null ? '' : String(sbb.type); }\n}\nif (r.tbl === 'cbs_signons') {\n  var sb = r.body || {};\n  row = { reviewed: String(sb.reviewed) === 'Yes' ? 'Yes' : 'No' };\n}\n/* Team: site_lead = this person sees Run the site in the crew portal (start pre-start, toolbox talk, inspection, sub-contractor audit, load-ups).\n   in_* = \"Appears in\" ticks: which name pickers this person is offered in (read by the shared cbs-people script). Only written when the save sends them.\n   in_service = Appears in: Service sheets (offered under Signed / serviced on service sheets; also needs a saved signature). 27/10/2026.\n   in_crew replaces portal_hide (the old opt-out): when in_crew is sent, portal_hide is kept as its opposite so crew pages that still read portal_hide stay in step.\n   hub_signin = can sign in to the Operations Hub office pages (CBS - Nav sign-in).\n   signature = the person's saved signature (PNG data URL, drawn on their Team record, 27/10/2026). Used for approvals and service sheets;\n   CBS - Hub Data builds the signatures list from it. Only written when the save sends it; empty clears it. */\nif (r.tbl === 'cbs_workers') {\n  var wb = r.body || {};\n  ['portal_hide','site_lead','hub_signin','in_crew','in_tasks','in_rams','in_coshh','in_cphsp','in_checks','in_toolbox','in_permits','in_incidents','in_po','in_survey','in_diary','in_docs','in_director','in_sm8','in_service'].forEach(function(k){\n    if (Object.prototype.hasOwnProperty.call(wb, k)) { row[k] = wb[k] === true || wb[k] === 'true'; }\n  });\n  if (Object.prototype.hasOwnProperty.call(wb, 'in_crew')) { row.portal_hide = !row.in_crew; }\n  if (Object.prototype.hasOwnProperty.call(wb, 'signature')) { var sv = wb.signature == null ? '' : String(wb.signature); row.signature = /^data:image\\/(png|jpeg);base64,[A-Za-z0-9+\\/=]+$/.test(sv) && sv.length < 400000 ? sv : ''; }\n}\n/* Hub sign-in records (internal key only): kind pin|session, name, pin_hash, token, device, created_at, last_seen, active ('1'/'0'). */\nif (r.tbl === 'cbs_signin' && r.internal) {\n  var sg = r.body || {};\n  ['kind','name','pin_hash','token','device','created_at','last_seen','active'].forEach(function(k){ if (Object.prototype.hasOwnProperty.call(sg, k)) row[k] = sg[k] === null || sg[k] === undefined ? '' : String(sg[k]); });\n}\nreturn [{ json: row }];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "46bf261e-a8a1-49b4-8023-a5328b5d1260",
+      "name": "Internal Fields",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        840,
+        460
+      ],
+      "parameters": {
+        "jsCode": "var r = $('Route').first().json;\nvar row = $input.first().json;\nvar b = r.body || {};\nfunction has(k){ return Object.prototype.hasOwnProperty.call(b, k); }\nvar EXTRA = {\n  cbs_incidents: ['record_pdf_url'],\n  cbs_incident_reports: ['incident_id','status','occurred_at','site','job_no','person','first_aid','corrective_action','update_hazard_register','review_hazard_register','hazard_register_done_on','riddor_required','investigate','signed_by','signed_on','pdf_url','report_json'],\n  cbs_signons: ['doc_type','doc_id','doc_rev','doc_label','job_no','name','company','is_worker','signed_at','signature','reviewed','record_pdf_url','inducted_by'],\n  /* load-up sheets: loaded_json = what the crew ticked when signing out, load_issues = problems reported by the crew, order_task_id = legacy */\n  cbs_ptm_sheets: ['loaded_by','loaded_at','status','loaded_json','load_issues','order_task_id'],\n  /* purchase orders: source (QuickBooks for uploaded QuickBooks POs), po_type (Material/Plant), hire_end + offhired_on (plant hire), qbo_po_id (QuickBooks PO number, so costing does not double-count) */\n  cbs_purchase_orders: ['pdf_url','source','po_type','hire_end','offhired_on','qbo_po_id'],\n  cbs_hub_notices: ['status','notes'],\n  /* vehicles: fleet_only = Yes hides it from Kit and stock; no_monthly = Yes stops the monthly vehicle inspection task */\n  cbs_vehicles: ['fleet_only','no_monthly'],\n  /* scaffold inspections: every column is written here (no COLS entry in Clean Row) */\n  cbs_scaffold_insp: ['job_no','site','inspected_on','inspector','company','cisrs_card','result','next_due','report_url','requested_by','requested_on','notes'],\n  /* snags: written by CBS - Snagging only (internal key) */\n  cbs_snags: ['job_no','snag_no','area','description','phase','assigned_to','due_on','status','before_json','after_json','raised_by','raised_at','pushed_at','pushed_by','fixed_by','fixed_at','fix_notes','signed_off_by','signed_off_at','history','notes'],\n  /* programmes: written by CBS - Programme only (internal key) */\n  cbs_programmes: ['job_no','status','created_by','created_at','closed_by','closed_at','skip_weekends','undo_json','history','notes'],\n  /* programme items: checklist_json, pct and check_token are written by CBS - Task Checklist */\n  cbs_prog_items: ['job_no','kind','parent_id','sort','name','start_on','end_on','status','assigned_to','blocked_by','notes','updated_by','updated_at','checklist_json','pct','check_token'],\n  /* photo labels: ServiceM8 photo uuid -> phase + categories + caption, written from the Job File photo sorter */\n  cbs_photo_tags: ['job_no','photo_uuid','phase_id','phase_name','categories','caption','updated_by','updated_at'],\n  /* job task list items under each Job File requirement (req = requirement key, kind item|custom, files_json = uploaded PDFs/photos, freq + last_done = repeating inspections / toolbox talks) */\n  cbs_job_tasks: ['job_no','req','kind','ref_id','ref_name','label','due_on','status','done_by','done_at','created_by','created_at','notes','files_json','freq','last_done'],\n  /* support: feature requests (kind=feature) and bug reports (kind=bug), written by CBS - Support only (internal key) */\n  cbs_support: ['kind','ref','title','details','expected','steps','section','priority','status','reason','response','duplicate_of','photos_json','page_url','device','raised_by','raised_at','updated_by','history'],\n  /* variations: written by CBS - Variations only (internal key) */\n  cbs_variations: ['job_no','var_no','title','description','instructed_by','instructed_on','instruction_via','cost','time_days','status','decided_by','decided_on','files_json','prog_item_ids','pdf_url','history','created_by','created_at'],\n  /* RFIs: written by CBS - RFIs only (internal key) */\n  cbs_rfis: ['job_no','rfi_no','subject','question','sent_to','sent_to_email','sent_on','needed_by','status','response','responded_on','files_json','pdf_url','history','created_by','created_at'],\n  /* job costs: written by CBS - Job Costing only (internal key) */\n  cbs_job_costs: ['job_no','cost_date','supplier','ref','category','description','net','vat','gross','po_no','source','qbo_id','file_url','notes','history','created_by','created_at'],\n  /* job record: contract value, QuickBooks link and start date (planned start, kept in step with the programme by CBS - Programme) only (internal key) */\n  cbs_jobs: ['contract_value','qbo_ref','starts_on']\n};\n/* number columns: blank saves as empty (null), anything else as a number */\nvar NUM = { cbs_prog_items: ['pct'], cbs_variations: ['cost','time_days'], cbs_jobs: ['contract_value'], cbs_job_costs: ['net','vat','gross'] };\nvar SYS = { cbs_hub_notices: ['title','message','event','job_no','sign','link','pdf','created_at'] };\nif (r.internal && r.tbl === 'cbs_signons') { row = {}; }\nif (r.partial) { var o = {}; Object.keys(row).forEach(function(k){ if (has(k)) o[k] = row[k]; }); row = o; }\nif (r.internal || r.tbl !== 'cbs_signons') { (EXTRA[r.tbl] || []).forEach(function(k){ if (has(k)) row[k] = b[k] === null || b[k] === undefined ? '' : String(b[k]); }); }\nif (r.internal) { (SYS[r.tbl] || []).forEach(function(k){ if (has(k)) row[k] = b[k] === null || b[k] === undefined ? '' : String(b[k]); }); }\n(NUM[r.tbl] || []).forEach(function(k){ if (!Object.prototype.hasOwnProperty.call(row, k)) return; var v = String(row[k] == null ? '' : row[k]).trim(); row[k] = v === '' || isNaN(Number(v)) ? null : Number(v); });\nreturn [{ json: row }];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "eedfc825-4b34-48f1-bba6-04fc958258a2",
+      "name": "Plant Log Sync",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        620
+      ],
+      "parameters": {
+        "jsCode": "try {\nconst r=$('Route').first().json; if(r.tbl!=='cbs_assets'||r.route!=='save') return [];\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim(),jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();\nconst id=Number($json.id)||Number(r.rowId)||0; if(!id) return [];\nconst b=r.body||{};\nconst A=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=assets',body:{},json:true});\nconst a=(Array.isArray(A)?A:[]).find(x=>Number(x.id)===id); if(!a) return [];\nlet LG=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=jobplant',body:{},json:true}); if(!Array.isArray(LG)) LG=[];\nconst save=(rid,row,p)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=jobplant&id='+(rid||0)+'&k='+K+(p?'&partial=1':''),body:row,json:true});\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst job=S(a.out_job), by=S(b._by)||S(b.by), src=S(b._source);\nconst open=LG.filter(o=>S(o.asset_id)===String(id)&&!S(o.returned_at));\nfor(const o of open){ if(jk(o.job_no)!==jk(job)){\n  const note=job?'Moved to job '+job:(src||(/yard/i.test(S(a.yard_status))?'Returned to '+S(a.yard_status).toLowerCase():''));\n  await save(o.id,{returned_at:now,returned_by:by||(job?'':'Yard team'),notes:[S(o.notes),note].filter(Boolean).join('; ')},true); } }\nif(job){ const mine=open.filter(o=>jk(o.job_no)===jk(job));\n  if(mine.length){ if(S(mine[0].out_with)!==S(a.out_with)||S(mine[0].due_back)!==S(a.due_back)) await save(mine[0].id,{out_with:S(a.out_with),due_back:S(a.due_back)},true); }\n  else await save(0,{job_no:job,asset_id:String(id),asset_name:S(a.name),asset_tag:S(a.asset_tag),category:S(a.category),out_with:S(a.out_with),booked_by:by,booked_at:now,due_back:S(a.due_back),returned_at:'',returned_by:'',source:src||'Kit register',notes:''}); }\nreturn [{json:{synced:true}}];\n} catch(e){ return [{json:{syncError:String(e.message||e)}}]; }\n",
+        "mode": "runOnceForAllItems"
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "3ef8e9b6-5c07-44d5-9954-b6090407f45f",
+      "name": "Stock Move Fill",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        868,
+        300
+      ],
+      "parameters": {
+        "jsCode": "var r=$('Route').first().json;var row=$input.first().json;\nif(r.tbl==='cbs_stock_moves'){var b=r.body||{};\n if(b.location!==undefined)row.location=String(b.location==null?'':b.location);\n if(b.job_no!==undefined)row.job_no=String(b.job_no==null?'':b.job_no);\n if(!r.partial&&!r.rowId){\n  if(!row.job_no){var m=String(row.ref||b.ref||'').match(/job\\s*(?:no\\.?)?\\s*#?\\s*([A-Za-z0-9-]+)/i);if(m)row.job_no=m[1];}\n  if(!row.location&&row.material_id){try{var M=await this.helpers.httpRequest({method:'POST',url:'https://old-hub.example/webhook/cbs-admin-save?a=list&t=materials',body:{},json:true});var f=(Array.isArray(M)?M:[]).find(function(x){return String(x.id)===String(row.material_id);});if(f)row.location=String(f.location||'');}catch(e){}}\n }\n}\nreturn [{json:row}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "d7a57b8d-5392-4ae6-a72a-047a51f1cd22",
+      "name": "Pre Delete",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        576
+      ],
+      "parameters": {
+        "jsCode": "const r=$input.first().json;let sg=null;\nif(r.tbl==='cbs_signons'&&r.rowId){try{const d=await this.helpers.httpRequest({url:'https://old-hub.example/webhook/cbs-admin-data?t=signons',json:true,timeout:15000});const x=((d&&d.signons)||[]).find(s=>Number(s.id)===Number(r.rowId));if(x)sg={doc:String(x.doc_type||''),id:String(x.doc_id||'')};}catch(e){}}\nreturn [{json:Object.assign({},r,{_signon:sg})}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "90038b48-256b-466c-a3d2-779f69b2e287",
+      "name": "Signon Restamp",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        720
+      ],
+      "parameters": {
+        "jsCode": "try{const s=$('Pre Delete').first().json._signon;if(s&&s.doc&&s.id){await this.helpers.httpRequest({method:'POST',url:'https://old-hub.example/webhook/cbs-sign-restamp',body:s,json:true,timeout:15000});}}catch(e){}\nreturn [];",
+        "mode": "runOnceForAllItems"
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "3673595c-2f78-4158-8e52-bef0ef0622e2",
+      "name": "Scope Fields",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        868,
+        180
+      ],
+      "parameters": {
+        "jsCode": "/* Scope of works (cbs_scope): one row per job, written by CBS - Scope only (internal key). Columns pass straight through. */\nvar r = $('Route').first().json;\nvar row = $input.first().json;\nif (r.tbl === 'cbs_scope' && r.internal) {\n  var b = r.body || {};\n  ['job_no','scope_json','history','created_by','created_at','updated_by','updated_at'].forEach(function(k){ if (Object.prototype.hasOwnProperty.call(b, k)) row[k] = b[k] === null || b[k] === undefined ? '' : String(b[k]); });\n}\nreturn [{ json: row }];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "541e3373-c86f-48fe-8890-cdef1668818a",
+      "name": "Vehicle Fields",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        868,
+        60
+      ],
+      "parameters": {
+        "jsCode": "/* Vehicles: insp_freq = vehicle inspection frequency (Weekly / Monthly / Quarterly / Not required; blank = Monthly).\n   insp_next = next inspection due (YYYY-MM-DD); the hub moves it on by the frequency as inspections are logged.\n   Only written when the save sends them, so other vehicle saves never clear them. */\nvar r = $('Route').first().json;\nvar row = $input.first().json;\nif (r.tbl === 'cbs_vehicles') {\n  var b = r.body || {};\n  ['insp_freq','insp_next'].forEach(function(k){ if (Object.prototype.hasOwnProperty.call(b, k)) { row[k] = b[k] === null || b[k] === undefined ? '' : String(b[k]); } });\n}\n/* Templates > Toolbox talk topics (cbs_tb_topics): read by the toolbox talk builder. points = one talking point per line.\n   topic_key = the builder's original topic id (kept for the 43 built-in topics); status Active / Retired. */\nif (r.tbl === 'cbs_tb_topics') {\n  var tb = r.body || {};\n  ['topic_key','title','points','status','notes'].forEach(function(k){ if (Object.prototype.hasOwnProperty.call(tb, k)) { row[k] = tb[k] === null || tb[k] === undefined ? '' : String(tb[k]); } });\n}\n/* Templates > RAMS job types (cbs_rams_types): read by the RAMS builder's Job type list. tpl = the job type as JSON\n   (activity, taskShort, scope, plant, materials, hazards, ppe, permits, steps, openIdx, ct); edited in the RAMS builder.\n   type_key = the builder's original id for the 12 built-in types; status Active / Retired. */\nif (r.tbl === 'cbs_rams_types') {\n  var rt = r.body || {};\n  ['type_key','name','status','step_count','tpl','notes','updated_by'].forEach(function(k){ if (Object.prototype.hasOwnProperty.call(rt, k)) { row[k] = rt[k] === null || rt[k] === undefined ? '' : String(rt[k]); } });\n}\n/* Templates > CPHSP wording (cbs_cphsp_wording): read by the CPHSP builder. list = std (standard wording) / emg (emergency procedure) /\n   list (one item per line) / table (one row per line, columns split by |) / risks (starting risks: blocks split by a blank line,\n   title, description, then one control per line). item_key = which part of the plan; fixed rows, only title / text / notes change. */\nif (r.tbl === 'cbs_cphsp_wording') {\n  var cw = r.body || {};\n  ['list','item_key','title','text','sort','notes','updated_by'].forEach(function(k){ if (Object.prototype.hasOwnProperty.call(cw, k)) { row[k] = cw[k] === null || cw[k] === undefined ? '' : String(cw[k]); } });\n}\nreturn [{ json: row }];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "51df6600-109d-4f5d-bc14-0afbe61bb9da",
+      "name": "Mark Changed",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        860
+      ],
+      "parameters": {
+        "columns": {
+          "mappingMode": "defineBelow",
+          "schema": [
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "key",
+              "id": "key",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "at",
+              "id": "at",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "value": {
+            "at": "={{ String(Date.now()) }}",
+            "key": "={{ 'dirty:' + String(($('Route').first().json.query || {}).t || '') + (function(j){j=String(j==null?'':j).replace(/[^0-9A-Za-z]/g,'').toLowerCase().replace(/^job/,'');return j?'@'+j:'';})($json.job_no || $json.sm8_job || (String(($('Route').first().json.query || {}).t || '') === 'jobrows' ? $json.ref : '')) }}"
+          }
+        },
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "bSkjEWvTgJnP818K"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "key",
+              "keyValue": "={{ 'dirty:' + String(($('Route').first().json.query || {}).t || '') + (function(j){j=String(j==null?'':j).replace(/[^0-9A-Za-z]/g,'').toLowerCase().replace(/^job/,'');return j?'@'+j:'';})($json.job_no || $json.sm8_job || (String(($('Route').first().json.query || {}).t || '') === 'jobrows' ? $json.ref : '')) }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "upsert",
+        "options": {},
+        "resource": "row"
+      },
+      "onError": "continueRegularOutput",
+      "executeOnce": true
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "cd915e2b-71f6-4e2c-90dd-a7b7e692ef1a",
+        "name": "Admin Save",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-admin-save",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "5eb9cf85-1b34-4f54-8a4c-ecae451e8c5c"
+      },
+      {
+        "id": "b82e69a1-dc7d-4712-8c03-12f194f6fed8",
+        "name": "Route",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          288
+        ],
+        "parameters": {
+          "jsCode": "var it = $input.first().json;\nvar q = it.query || {};\nvar TBL = { workers: \"cbs_workers\", incidents: \"cbs_incidents\", toolbox: \"cbs_toolbox\", hsmeet: \"cbs_toolbox\", training: \"cbs_training\", substances: \"cbs_substances\", rams: \"cbs_rams\", subbies: \"cbs_subcontractors\", subdocs: \"cbs_sub_docs\", insurance: \"cbs_insurance\", vehicles: \"cbs_vehicles\", checks: \"cbs_vehicle_checks\", crashes: \"cbs_vehicle_accidents\", photos: \"cbs_photos\", assets: \"cbs_assets\", services: \"cbs_asset_services\", requests: \"cbs_requests\", leave: \"cbs_time_off\", vservices: \"cbs_vehicle_services\", taskstat: \"cbs_task_status\", hazards: \"cbs_hazards\", increports: \"cbs_incident_reports\", materials: \"cbs_materials\", stockmoves: \"cbs_stock_moves\", ptmsheets: \"cbs_ptm_sheets\", claims: \"cbs_claims\", covertasks: \"cbs_cover_tasks\", companycerts: \"cbs_company_certs\", subjobs: \"cbs_sub_jobdocs\", cphsp: \"cbs_cphsp\", prestarts: \"cbs_prestarts\", hspolicy: \"cbs_hs_policy\", notifyrules: \"cbs_notify_rules\", suppliers: \"cbs_suppliers\", pos: \"cbs_purchase_orders\", signatures: \"cbs_signatures\", signons: \"cbs_signons\", jobplant: \"cbs_job_plant\", notices: \"cbs_hub_notices\", selectopts: \"cbs_select_options\", scaffinsp: \"cbs_scaffold_insp\", snags: \"cbs_snags\", programmes: \"cbs_programmes\", progitems: \"cbs_prog_items\", phototags: \"cbs_photo_tags\", jobtasks: \"cbs_job_tasks\", support: \"cbs_support\", variations: \"cbs_variations\", rfis: \"cbs_rfis\", jobrows: \"cbs_jobs\", jobcosts: \"cbs_job_costs\", scope: \"cbs_scope\", surveys: \"cbs_surveys\", signin: \"cbs_signin\", tbtopics: \"cbs_tb_topics\", ramstypes: \"cbs_rams_types\", cphspwording: \"cbs_cphsp_wording\" };\nvar a = String(q.a || \"app\").toLowerCase();\nif ([\"list\",\"save\",\"del\"].indexOf(a) === -1) { a = \"app\"; }\nvar tbl = TBL[String(q.t || \"\")] || \"\";\nvar internal = String(q.k || \"\") === \"[redacted-internal-key]\";\nif (a !== \"app\" && !tbl) { throw new Error(\"Unknown register: \" + q.t); }\n/* Hub sign-in (PIN hashes and sign-in tokens): only CBS - Nav's sign-in service may read or write it (internal key). */\nif (!internal && q.t === \"signin\") { throw new Error(\"Sign-in records are private\"); }\nif (!internal && a === \"save\" && (q.t === \"taskstat\" || q.t === \"increports\")) { throw new Error(\"This register is saved through its own builder\"); }\nif (!internal && a === \"save\" && q.t === \"signons\" && !(Number(q.id) > 0)) { throw new Error(\"Sign-ons are created on the signing page\"); }\nif (!internal && a === \"save\" && q.t === \"notices\" && !(Number(q.id) > 0)) { throw new Error(\"Notifications are created by the system\"); }\nif (!internal && a !== \"list\" && q.t === \"jobplant\") { throw new Error(\"The plant log is written from the Job File\"); }\nif (!internal && a === \"save\" && q.t === \"snags\") { throw new Error(\"Snags are saved from the snagging page\"); }\nif (!internal && a !== \"list\" && (q.t === \"programmes\" || q.t === \"progitems\")) { throw new Error(\"Programmes are edited from the Job File programme page\"); }\nif (!internal && a !== \"list\" && q.t === \"support\") { throw new Error(\"Feature requests and bug reports are saved from the Support page\"); }\nif (!internal && a !== \"list\" && (q.t === \"variations\" || q.t === \"rfis\" || q.t === \"jobrows\" || q.t === \"jobcosts\")) { throw new Error(\"Variations, RFIs and job records are saved from their own pages\"); }\nif (!internal && a !== \"list\" && q.t === \"scope\") { throw new Error(\"The scope of works is saved from the Scope of works page\"); }\nif (a !== \"list\" && q.t === \"surveys\") { throw new Error(\"Site surveys are saved from the survey form\"); }\n/* CPHSP wording: every row is a fixed part of the plan, so rows can be edited but not added or deleted from the hub */\nif (!internal && q.t === \"cphspwording\" && (a === \"del\" || (a === \"save\" && !(Number(q.id) > 0)))) { throw new Error(\"CPHSP wording rows are fixed parts of the plan: edit the wording instead\"); }\nreturn [{ json: { route: a, tbl: tbl, rowId: Number(q.id || 0) || 0, query: q, body: it.body || {}, internal: internal, partial: String(q.partial || \"\") === \"1\" } }];\n"
+        }
+      },
+      {
+        "id": "b8e2a4ed-c025-4748-bf6a-add235b27dd5",
+        "name": "Route Switch",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          448,
+          256
+        ],
+        "parameters": {
+          "options": {},
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "combinator": "and",
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.route }}",
+                      "operator": {
+                        "operation": "equals",
+                        "type": "string"
+                      },
+                      "rightValue": "app"
+                    }
+                  ],
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  }
+                }
+              },
+              {
+                "conditions": {
+                  "combinator": "and",
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.route }}",
+                      "operator": {
+                        "operation": "equals",
+                        "type": "string"
+                      },
+                      "rightValue": "list"
+                    }
+                  ],
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  }
+                }
+              },
+              {
+                "conditions": {
+                  "combinator": "and",
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.route }}",
+                      "operator": {
+                        "operation": "equals",
+                        "type": "string"
+                      },
+                      "rightValue": "save"
+                    }
+                  ],
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  }
+                }
+              },
+              {
+                "conditions": {
+                  "combinator": "and",
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.route }}",
+                      "operator": {
+                        "operation": "equals",
+                        "type": "string"
+                      },
+                      "rightValue": "del"
+                    }
+                  ],
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 1
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "cb733e67-25d3-4868-b6ae-f8a1c9fa5f76",
+        "name": "List Rows",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          192
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "name",
+            "value": "={{ $json.tbl }}"
+          },
+          "operation": "get",
+          "returnAll": true
+        }
+      },
+      {
+        "id": "c76f71fd-9962-4bad-a1e3-2421c7f5a9f8",
+        "name": "Pack List",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          896,
+          192
+        ],
+        "parameters": {
+          "jsCode": "var q = $(\"Route\").first().json.query || {};\nvar tbl = $(\"Route\").first().json.tbl;\nvar rows = $input.all().map(function(i){ return i.json; }).filter(function(r){ return r && r.id; });\nif (tbl === \"cbs_photos\") {\n  if (!q.rt) { rows = []; }\n  else { rows = rows.filter(function(r){ return String(r.ref_table) === String(q.rt) && String(r.ref_id) === String(q.rid); }); }\n}\nreturn [{ json: { rows: rows } }];"
+        }
+      },
+      {
+        "id": "c5d5b34b-cbe1-485c-af5a-25170568908f",
+        "name": "Respond List",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1120,
+          192
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json.rows) }}"
+        }
+      },
+      {
+        "id": "319ac0da-e545-43be-8a5c-d0d67586c556",
+        "name": "Clean Row",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          384
+        ],
+        "parameters": {
+          "jsCode": "var r = $input.first().json;\nvar body = r.body || {};\nvar COLS = {\n  cbs_workers: [\"name\",\"role\",\"mobile\",\"email\",\"active\",\"notes\"],\n  cbs_incidents: [\"ref\",\"occurred_at\",\"kind\",\"severity\",\"person\",\"location\",\"sm8_job\",\"description\",\"immediate_action\",\"injury_detail\",\"treatment\",\"notifiable\",\"riddor_notified_at\",\"investigation\",\"root_cause\",\"corrective_actions\",\"action_owner\",\"action_due\",\"status\",\"reported_by\",\"closed_at\",\"requires_investigation\"],\n  cbs_toolbox: [\"meeting_type\",\"held_on\",\"topic\",\"presenter\",\"site\",\"job_no\",\"key_points\",\"hazards_raised\",\"actions\",\"attendees\",\"notes\",\"pdf_url\"],\n  cbs_training: [\"person\",\"qualification\",\"provider\",\"issued_on\",\"expires_on\",\"reference\",\"notes\",\"docs_json\",\"qual_other\"],\n  cbs_substances: [\"product\",\"supplier\",\"location\",\"coshh_class\",\"quantity\",\"use_for\",\"sds_url\",\"sds_date\",\"controls\",\"ppe\",\"review_on\",\"notes\"],\n  cbs_rams: [\"site\",\"activity\",\"task\",\"revision\",\"prepared_by\",\"dated\",\"status\",\"pdf_url\",\"notes\"],\n  cbs_subcontractors: [\"company\",\"trade\",\"job\",\"contact\",\"mobile\",\"email\",\"insurance_expiry\",\"licence_type\",\"licence_no\",\"licence_expiry\",\"rams_received\",\"sds_provided\",\"inducted\",\"approved\",\"notes\"],\n  cbs_sub_docs: [\"company\",\"item\",\"custom_name\",\"reference\",\"issued_on\",\"expires_on\",\"doc_url\",\"notes\"],\n  cbs_insurance: [\"item\",\"custom_name\",\"insurer\",\"policy_no\",\"cover\",\"starts_on\",\"expires_on\",\"doc_url\",\"notes\",\"cover_json\"],\n  cbs_vehicles: [\"reg\",\"make_model\",\"year\",\"assigned_to\",\"tax_due\",\"mot_expiry\",\"ins_due\",\"service_due\",\"doc_url\",\"notes\"],\n  cbs_vehicle_checks: [\"vehicle\",\"checked_on\",\"checked_by\",\"odometer\",\"tyres_ok\",\"lights_ok\",\"fluids_ok\",\"body_ok\",\"first_aid_ok\",\"extinguisher_ok\",\"restraints_ok\",\"defects\",\"action\",\"status\",\"doc_url\",\"reviewed\"],\n  cbs_vehicle_accidents: [\"occurred_at\",\"vehicle\",\"driver\",\"location\",\"description\",\"damage\",\"injuries\",\"third_party\",\"third_party_reg\",\"third_party_insurer\",\"police_event_no\",\"claim_no\",\"status\",\"doc_url\",\"notes\"],\n  cbs_photos: [\"ref_table\",\"ref_id\",\"caption\",\"image\",\"taken_by\",\"taken_at\"],\n  cbs_assets: [\"name\",\"category\",\"make_model\",\"serial_no\",\"asset_tag\",\"location\",\"assigned_to\",\"purchased_on\",\"service_interval\",\"last_service\",\"next_service\",\"test_tag_due\",\"status\",\"notes\"],\n  cbs_asset_services: [\"asset\",\"serviced_on\",\"serviced_by\",\"work_done\",\"cost\",\"next_due\",\"notes\"],\n  cbs_requests: [\"requested_by\",\"category\",\"details\",\"urgency\",\"status\",\"response\",\"requested_at\",\"closed_at\"],\n  cbs_time_off: [\"worker\",\"kind\",\"from_date\",\"to_date\",\"part_day\",\"days\",\"notes\",\"status\",\"response\",\"requested_at\"],\n  cbs_vehicle_services: [\"vehicle\",\"serviced_on\",\"odometer\",\"workshop\",\"work_done\",\"cost\",\"next_due\",\"next_due_km\",\"receipt_url\",\"notes\"],\n  cbs_hazards: [\"hazard\",\"activity\",\"harm\",\"likelihood\",\"consequence\",\"risk_rating\",\"controls\",\"control_level\",\"residual_likelihood\",\"residual_consequence\",\"residual_risk\",\"owner\",\"last_reviewed\",\"review_on\",\"status\",\"source\",\"notes\",\"rams_key\",\"ctrl_codes\",\"plant_categories\"],\n  cbs_materials: [\"name\",\"category\",\"unit\",\"location\",\"qty_on_hand\",\"min_level\",\"reorder_qty\",\"supplier\",\"supplier_code\",\"cost\",\"sds_product\",\"last_counted_on\",\"last_counted_by\",\"status\",\"notes\",\"sm8_uuid\"],\n  cbs_stock_moves: [\"material_id\",\"material\",\"change\",\"qty_after\",\"reason\",\"ref\",\"by\",\"at\",\"notes\"],\n  cbs_ptm_sheets: [\"sheet_date\",\"job_no\",\"site\",\"client\",\"job_desc\",\"crew\",\"vehicle\",\"status\",\"shortages\",\"items_json\",\"notes\",\"pdf_url\",\"prepared_by\",\"loaded_by\",\"loaded_at\"],\n  cbs_claims: [\"claim_no\",\"claim_type\",\"direction\",\"status\",\"incident_date\",\"lodged_on\",\"policy\",\"insurer\",\"insurer_claim_no\",\"other_party\",\"other_contact\",\"description\",\"amount_claimed\",\"excess\",\"amount_settled\",\"vehicle\",\"asset\",\"incident_ref\",\"job_no\",\"site\",\"client\",\"next_action\",\"next_action_due\",\"doc_url\",\"closed_on\",\"notes\"],\n  cbs_cover_tasks: [\"cover\",\"action\",\"target\",\"notes\",\"status\",\"raised_on\",\"done_on\"],\n  cbs_company_certs: [\"name\",\"other_name\",\"issuer\",\"reference\",\"level\",\"issued_on\",\"expires_on\",\"cost\",\"contact\",\"docs_json\",\"notes\"],\n  cbs_sub_jobdocs: [\"company\",\"job_no\",\"site\",\"client\",\"start_date\",\"doc_type\",\"status\",\"requested_on\",\"received_on\",\"reviewed_by\",\"reviewed_on\",\"docs_json\",\"notes\"],\n  cbs_cphsp: [\"cphsp_no\",\"revision\",\"dated\",\"job_no\",\"project\",\"site\",\"client\",\"status\",\"prepared_by\",\"approved_by\",\"approved_on\",\"subs\",\"subs_not_approved\",\"pdf_url\",\"state_json\",\"notes\"],\n  cbs_prestarts: [\"ps_no\",\"held_on\",\"held_at\",\"job_no\",\"site\",\"client\",\"site_lead\",\"linked\",\"docs_json\",\"headcount\",\"acknowledged\",\"pdf_url\",\"state_json\",\"notes\"],\n  cbs_hs_policy: [\"version\",\"status\",\"effective_on\",\"review_due\",\"approved_by\",\"approver_role\",\"approved_on\",\"scope\",\"commitment\",\"objectives\",\"notes\",\"pdf_url\"],\n  cbs_notify_rules: [\"event\",\"label\",\"post_note\",\"tags\",\"notes\"],\n  cbs_suppliers: [\"name\",\"contact\",\"email\",\"phone\",\"account_no\",\"address\",\"notes\"],\n  cbs_purchase_orders: [\"po_no\",\"supplier\",\"supplier_id\",\"job_no\",\"site\",\"client\",\"ordered_on\",\"needed_by\",\"deliver_to\",\"status\",\"lines_json\",\"subtotal\",\"vat\",\"total\",\"ordered_by\",\"received_json\",\"pdf_url\",\"notes\"],\n  cbs_signatures: [\"name\",\"role\",\"image\",\"notes\"],\n  cbs_job_plant: [\"job_no\",\"asset_id\",\"asset_name\",\"asset_tag\",\"category\",\"out_with\",\"booked_by\",\"booked_at\",\"due_back\",\"returned_at\",\"returned_by\",\"source\",\"notes\"],\n  cbs_select_options: [\"reg\",\"field\",\"value\",\"added_by\"]\n};\nvar BOOL = { active: true, notifiable: true, rams_received: true, sds_provided: true, inducted: true, approved: true, tyres_ok: true, lights_ok: true, fluids_ok: true, body_ok: true, first_aid_ok: true, extinguisher_ok: true, restraints_ok: true, reviewed: true };\nvar cols = COLS[r.tbl] || [];\nvar row = {};\ncols.forEach(function(k){\n  var v = body[k];\n  if (BOOL[k]) { row[k] = v === true || v === \"true\"; }\n  else { row[k] = v === undefined || v === null ? \"\" : String(v); }\n});\nreturn [{ json: row }];"
+        }
+      },
+      {
+        "id": "7f3ed169-a8ee-4422-b653-5407884083d2",
+        "name": "Save Row",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          384
+        ],
+        "parameters": {
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "matchingColumns": [],
+            "value": null
+          },
+          "dataTableId": {
+            "__rl": true,
+            "mode": "name",
+            "value": "={{ $('Route').first().json.tbl }}"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "keyValue": "={{ $('Route').first().json.rowId }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "upsert",
+          "options": {}
+        }
+      },
+      {
+        "id": "cd2f569f-4d5e-4be0-b51a-478feb57f7b7",
+        "name": "Respond Save",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1120,
+          384
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify({ ok: true, id: $json.id || $('Route').first().json.rowId || 0 }) }}"
+        }
+      },
+      {
+        "id": "bb537cdf-113c-408b-b46e-bfd764498142",
+        "name": "Delete Row",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          576
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "name",
+            "value": "={{ $json.tbl }}"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "keyValue": "={{ $json.rowId }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "deleteRows",
+          "options": {}
+        }
+      },
+      {
+        "id": "71a7f2b6-d1d5-4dfe-84d8-08479b3c7b15",
+        "name": "Respond Delete",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          576
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify({ ok: true }) }}"
+        }
+      },
+      {
+        "id": "9491a1c6-a31a-46c1-acc4-38458aad2174",
+        "name": "Asset Yard Fields",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          784,
+          520
+        ],
+        "parameters": {
+          "jsCode": "var r = $('Route').first().json;\nvar row = $input.first().json;\nif (r.tbl === 'cbs_assets') {\n  var b = r.body || {};\n  ['yard_status', 'out_job', 'out_with', 'out_since', 'due_back'].forEach(function(k){ row[k] = b[k] === undefined || b[k] === null ? '' : String(b[k]); });\n}\nif (r.tbl === 'cbs_subcontractors') {\n  var sbb = r.body || {};\n  delete row.rams_received; delete row.sds_provided;\n  if (Object.prototype.hasOwnProperty.call(sbb, 'type')) { row.type = sbb.type === undefined || sbb.type === null ? '' : String(sbb.type); }\n}\nif (r.tbl === 'cbs_signons') {\n  var sb = r.body || {};\n  row = { reviewed: String(sb.reviewed) === 'Yes' ? 'Yes' : 'No' };\n}\n/* Team: site_lead = this person sees Run the site in the crew portal (start pre-start, toolbox talk, inspection, sub-contractor audit, load-ups).\n   in_* = \"Appears in\" ticks: which name pickers this person is offered in (read by the shared cbs-people script). Only written when the save sends them.\n   in_service = Appears in: Service sheets (offered under Signed / serviced on service sheets; also needs a saved signature). 27/10/2026.\n   in_crew replaces portal_hide (the old opt-out): when in_crew is sent, portal_hide is kept as its opposite so crew pages that still read portal_hide stay in step.\n   hub_signin = can sign in to the Operations Hub office pages (CBS - Nav sign-in).\n   signature = the person's saved signature (PNG data URL, drawn on their Team record, 27/10/2026). Used for approvals and service sheets;\n   CBS - Hub Data builds the signatures list from it. Only written when the save sends it; empty clears it. */\nif (r.tbl === 'cbs_workers') {\n  var wb = r.body || {};\n  ['portal_hide','site_lead','hub_signin','in_crew','in_tasks','in_rams','in_coshh','in_cphsp','in_checks','in_toolbox','in_permits','in_incidents','in_po','in_survey','in_diary','in_docs','in_director','in_sm8','in_service'].forEach(function(k){\n    if (Object.prototype.hasOwnProperty.call(wb, k)) { row[k] = wb[k] === true || wb[k] === 'true'; }\n  });\n  if (Object.prototype.hasOwnProperty.call(wb, 'in_crew')) { row.portal_hide = !row.in_crew; }\n  if (Object.prototype.hasOwnProperty.call(wb, 'signature')) { var sv = wb.signature == null ? '' : String(wb.signature); row.signature = /^data:image\\/(png|jpeg);base64,[A-Za-z0-9+\\/=]+$/.test(sv) && sv.length < 400000 ? sv : ''; }\n}\n/* Hub sign-in records (internal key only): kind pin|session, name, pin_hash, token, device, created_at, last_seen, active ('1'/'0'). */\nif (r.tbl === 'cbs_signin' && r.internal) {\n  var sg = r.body || {};\n  ['kind','name','pin_hash','token','device','created_at','last_seen','active'].forEach(function(k){ if (Object.prototype.hasOwnProperty.call(sg, k)) row[k] = sg[k] === null || sg[k] === undefined ? '' : String(sg[k]); });\n}\nreturn [{ json: row }];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "46bf261e-a8a1-49b4-8023-a5328b5d1260",
+        "name": "Internal Fields",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          840,
+          460
+        ],
+        "parameters": {
+          "jsCode": "var r = $('Route').first().json;\nvar row = $input.first().json;\nvar b = r.body || {};\nfunction has(k){ return Object.prototype.hasOwnProperty.call(b, k); }\nvar EXTRA = {\n  cbs_incidents: ['record_pdf_url'],\n  cbs_incident_reports: ['incident_id','status','occurred_at','site','job_no','person','first_aid','corrective_action','update_hazard_register','review_hazard_register','hazard_register_done_on','riddor_required','investigate','signed_by','signed_on','pdf_url','report_json'],\n  cbs_signons: ['doc_type','doc_id','doc_rev','doc_label','job_no','name','company','is_worker','signed_at','signature','reviewed','record_pdf_url','inducted_by'],\n  /* load-up sheets: loaded_json = what the crew ticked when signing out, load_issues = problems reported by the crew, order_task_id = legacy */\n  cbs_ptm_sheets: ['loaded_by','loaded_at','status','loaded_json','load_issues','order_task_id'],\n  /* purchase orders: source (QuickBooks for uploaded QuickBooks POs), po_type (Material/Plant), hire_end + offhired_on (plant hire), qbo_po_id (QuickBooks PO number, so costing does not double-count) */\n  cbs_purchase_orders: ['pdf_url','source','po_type','hire_end','offhired_on','qbo_po_id'],\n  cbs_hub_notices: ['status','notes'],\n  /* vehicles: fleet_only = Yes hides it from Kit and stock; no_monthly = Yes stops the monthly vehicle inspection task */\n  cbs_vehicles: ['fleet_only','no_monthly'],\n  /* scaffold inspections: every column is written here (no COLS entry in Clean Row) */\n  cbs_scaffold_insp: ['job_no','site','inspected_on','inspector','company','cisrs_card','result','next_due','report_url','requested_by','requested_on','notes'],\n  /* snags: written by CBS - Snagging only (internal key) */\n  cbs_snags: ['job_no','snag_no','area','description','phase','assigned_to','due_on','status','before_json','after_json','raised_by','raised_at','pushed_at','pushed_by','fixed_by','fixed_at','fix_notes','signed_off_by','signed_off_at','history','notes'],\n  /* programmes: written by CBS - Programme only (internal key) */\n  cbs_programmes: ['job_no','status','created_by','created_at','closed_by','closed_at','skip_weekends','undo_json','history','notes'],\n  /* programme items: checklist_json, pct and check_token are written by CBS - Task Checklist */\n  cbs_prog_items: ['job_no','kind','parent_id','sort','name','start_on','end_on','status','assigned_to','blocked_by','notes','updated_by','updated_at','checklist_json','pct','check_token'],\n  /* photo labels: ServiceM8 photo uuid -> phase + categories + caption, written from the Job File photo sorter */\n  cbs_photo_tags: ['job_no','photo_uuid','phase_id','phase_name','categories','caption','updated_by','updated_at'],\n  /* job task list items under each Job File requirement (req = requirement key, kind item|custom, files_json = uploaded PDFs/photos, freq + last_done = repeating inspections / toolbox talks) */\n  cbs_job_tasks: ['job_no','req','kind','ref_id','ref_name','label','due_on','status','done_by','done_at','created_by','created_at','notes','files_json','freq','last_done'],\n  /* support: feature requests (kind=feature) and bug reports (kind=bug), written by CBS - Support only (internal key) */\n  cbs_support: ['kind','ref','title','details','expected','steps','section','priority','status','reason','response','duplicate_of','photos_json','page_url','device','raised_by','raised_at','updated_by','history'],\n  /* variations: written by CBS - Variations only (internal key) */\n  cbs_variations: ['job_no','var_no','title','description','instructed_by','instructed_on','instruction_via','cost','time_days','status','decided_by','decided_on','files_json','prog_item_ids','pdf_url','history','created_by','created_at'],\n  /* RFIs: written by CBS - RFIs only (internal key) */\n  cbs_rfis: ['job_no','rfi_no','subject','question','sent_to','sent_to_email','sent_on','needed_by','status','response','responded_on','files_json','pdf_url','history','created_by','created_at'],\n  /* job costs: written by CBS - Job Costing only (internal key) */\n  cbs_job_costs: ['job_no','cost_date','supplier','ref','category','description','net','vat','gross','po_no','source','qbo_id','file_url','notes','history','created_by','created_at'],\n  /* job record: contract value, QuickBooks link and start date (planned start, kept in step with the programme by CBS - Programme) only (internal key) */\n  cbs_jobs: ['contract_value','qbo_ref','starts_on']\n};\n/* number columns: blank saves as empty (null), anything else as a number */\nvar NUM = { cbs_prog_items: ['pct'], cbs_variations: ['cost','time_days'], cbs_jobs: ['contract_value'], cbs_job_costs: ['net','vat','gross'] };\nvar SYS = { cbs_hub_notices: ['title','message','event','job_no','sign','link','pdf','created_at'] };\nif (r.internal && r.tbl === 'cbs_signons') { row = {}; }\nif (r.partial) { var o = {}; Object.keys(row).forEach(function(k){ if (has(k)) o[k] = row[k]; }); row = o; }\nif (r.internal || r.tbl !== 'cbs_signons') { (EXTRA[r.tbl] || []).forEach(function(k){ if (has(k)) row[k] = b[k] === null || b[k] === undefined ? '' : String(b[k]); }); }\nif (r.internal) { (SYS[r.tbl] || []).forEach(function(k){ if (has(k)) row[k] = b[k] === null || b[k] === undefined ? '' : String(b[k]); }); }\n(NUM[r.tbl] || []).forEach(function(k){ if (!Object.prototype.hasOwnProperty.call(row, k)) return; var v = String(row[k] == null ? '' : row[k]).trim(); row[k] = v === '' || isNaN(Number(v)) ? null : Number(v); });\nreturn [{ json: row }];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "eedfc825-4b34-48f1-bba6-04fc958258a2",
+        "name": "Plant Log Sync",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          620
+        ],
+        "parameters": {
+          "jsCode": "try {\nconst r=$('Route').first().json; if(r.tbl!=='cbs_assets'||r.route!=='save') return [];\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim(),jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();\nconst id=Number($json.id)||Number(r.rowId)||0; if(!id) return [];\nconst b=r.body||{};\nconst A=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=assets',body:{},json:true});\nconst a=(Array.isArray(A)?A:[]).find(x=>Number(x.id)===id); if(!a) return [];\nlet LG=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=jobplant',body:{},json:true}); if(!Array.isArray(LG)) LG=[];\nconst save=(rid,row,p)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=jobplant&id='+(rid||0)+'&k='+K+(p?'&partial=1':''),body:row,json:true});\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst job=S(a.out_job), by=S(b._by)||S(b.by), src=S(b._source);\nconst open=LG.filter(o=>S(o.asset_id)===String(id)&&!S(o.returned_at));\nfor(const o of open){ if(jk(o.job_no)!==jk(job)){\n  const note=job?'Moved to job '+job:(src||(/yard/i.test(S(a.yard_status))?'Returned to '+S(a.yard_status).toLowerCase():''));\n  await save(o.id,{returned_at:now,returned_by:by||(job?'':'Yard team'),notes:[S(o.notes),note].filter(Boolean).join('; ')},true); } }\nif(job){ const mine=open.filter(o=>jk(o.job_no)===jk(job));\n  if(mine.length){ if(S(mine[0].out_with)!==S(a.out_with)||S(mine[0].due_back)!==S(a.due_back)) await save(mine[0].id,{out_with:S(a.out_with),due_back:S(a.due_back)},true); }\n  else await save(0,{job_no:job,asset_id:String(id),asset_name:S(a.name),asset_tag:S(a.asset_tag),category:S(a.category),out_with:S(a.out_with),booked_by:by,booked_at:now,due_back:S(a.due_back),returned_at:'',returned_by:'',source:src||'Kit register',notes:''}); }\nreturn [{json:{synced:true}}];\n} catch(e){ return [{json:{syncError:String(e.message||e)}}]; }\n",
+          "mode": "runOnceForAllItems"
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "3ef8e9b6-5c07-44d5-9954-b6090407f45f",
+        "name": "Stock Move Fill",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          868,
+          300
+        ],
+        "parameters": {
+          "jsCode": "var r=$('Route').first().json;var row=$input.first().json;\nif(r.tbl==='cbs_stock_moves'){var b=r.body||{};\n if(b.location!==undefined)row.location=String(b.location==null?'':b.location);\n if(b.job_no!==undefined)row.job_no=String(b.job_no==null?'':b.job_no);\n if(!r.partial&&!r.rowId){\n  if(!row.job_no){var m=String(row.ref||b.ref||'').match(/job\\s*(?:no\\.?)?\\s*#?\\s*([A-Za-z0-9-]+)/i);if(m)row.job_no=m[1];}\n  if(!row.location&&row.material_id){try{var M=await this.helpers.httpRequest({method:'POST',url:'https://old-hub.example/webhook/cbs-admin-save?a=list&t=materials',body:{},json:true});var f=(Array.isArray(M)?M:[]).find(function(x){return String(x.id)===String(row.material_id);});if(f)row.location=String(f.location||'');}catch(e){}}\n }\n}\nreturn [{json:row}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "d7a57b8d-5392-4ae6-a72a-047a51f1cd22",
+        "name": "Pre Delete",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          560,
+          576
+        ],
+        "parameters": {
+          "jsCode": "const r=$input.first().json;let sg=null;\nif(r.tbl==='cbs_signons'&&r.rowId){try{const d=await this.helpers.httpRequest({url:'https://old-hub.example/webhook/cbs-admin-data?t=signons',json:true,timeout:15000});const x=((d&&d.signons)||[]).find(s=>Number(s.id)===Number(r.rowId));if(x)sg={doc:String(x.doc_type||''),id:String(x.doc_id||'')};}catch(e){}}\nreturn [{json:Object.assign({},r,{_signon:sg})}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "90038b48-256b-466c-a3d2-779f69b2e287",
+        "name": "Signon Restamp",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          896,
+          720
+        ],
+        "parameters": {
+          "jsCode": "try{const s=$('Pre Delete').first().json._signon;if(s&&s.doc&&s.id){await this.helpers.httpRequest({method:'POST',url:'https://old-hub.example/webhook/cbs-sign-restamp',body:s,json:true,timeout:15000});}}catch(e){}\nreturn [];",
+          "mode": "runOnceForAllItems"
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "3673595c-2f78-4158-8e52-bef0ef0622e2",
+        "name": "Scope Fields",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          868,
+          180
+        ],
+        "parameters": {
+          "jsCode": "/* Scope of works (cbs_scope): one row per job, written by CBS - Scope only (internal key). Columns pass straight through. */\nvar r = $('Route').first().json;\nvar row = $input.first().json;\nif (r.tbl === 'cbs_scope' && r.internal) {\n  var b = r.body || {};\n  ['job_no','scope_json','history','created_by','created_at','updated_by','updated_at'].forEach(function(k){ if (Object.prototype.hasOwnProperty.call(b, k)) row[k] = b[k] === null || b[k] === undefined ? '' : String(b[k]); });\n}\nreturn [{ json: row }];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "541e3373-c86f-48fe-8890-cdef1668818a",
+        "name": "Vehicle Fields",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          868,
+          60
+        ],
+        "parameters": {
+          "jsCode": "/* Vehicles: insp_freq = vehicle inspection frequency (Weekly / Monthly / Quarterly / Not required; blank = Monthly).\n   insp_next = next inspection due (YYYY-MM-DD); the hub moves it on by the frequency as inspections are logged.\n   Only written when the save sends them, so other vehicle saves never clear them. */\nvar r = $('Route').first().json;\nvar row = $input.first().json;\nif (r.tbl === 'cbs_vehicles') {\n  var b = r.body || {};\n  ['insp_freq','insp_next'].forEach(function(k){ if (Object.prototype.hasOwnProperty.call(b, k)) { row[k] = b[k] === null || b[k] === undefined ? '' : String(b[k]); } });\n}\n/* Templates > Toolbox talk topics (cbs_tb_topics): read by the toolbox talk builder. points = one talking point per line.\n   topic_key = the builder's original topic id (kept for the 43 built-in topics); status Active / Retired. */\nif (r.tbl === 'cbs_tb_topics') {\n  var tb = r.body || {};\n  ['topic_key','title','points','status','notes'].forEach(function(k){ if (Object.prototype.hasOwnProperty.call(tb, k)) { row[k] = tb[k] === null || tb[k] === undefined ? '' : String(tb[k]); } });\n}\n/* Templates > RAMS job types (cbs_rams_types): read by the RAMS builder's Job type list. tpl = the job type as JSON\n   (activity, taskShort, scope, plant, materials, hazards, ppe, permits, steps, openIdx, ct); edited in the RAMS builder.\n   type_key = the builder's original id for the 12 built-in types; status Active / Retired. */\nif (r.tbl === 'cbs_rams_types') {\n  var rt = r.body || {};\n  ['type_key','name','status','step_count','tpl','notes','updated_by'].forEach(function(k){ if (Object.prototype.hasOwnProperty.call(rt, k)) { row[k] = rt[k] === null || rt[k] === undefined ? '' : String(rt[k]); } });\n}\n/* Templates > CPHSP wording (cbs_cphsp_wording): read by the CPHSP builder. list = std (standard wording) / emg (emergency procedure) /\n   list (one item per line) / table (one row per line, columns split by |) / risks (starting risks: blocks split by a blank line,\n   title, description, then one control per line). item_key = which part of the plan; fixed rows, only title / text / notes change. */\nif (r.tbl === 'cbs_cphsp_wording') {\n  var cw = r.body || {};\n  ['list','item_key','title','text','sort','notes','updated_by'].forEach(function(k){ if (Object.prototype.hasOwnProperty.call(cw, k)) { row[k] = cw[k] === null || cw[k] === undefined ? '' : String(cw[k]); } });\n}\nreturn [{ json: row }];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "51df6600-109d-4f5d-bc14-0afbe61bb9da",
+        "name": "Mark Changed",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1120,
+          860
+        ],
+        "parameters": {
+          "columns": {
+            "mappingMode": "defineBelow",
+            "schema": [
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "key",
+                "id": "key",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "at",
+                "id": "at",
+                "required": false,
+                "type": "string"
+              }
+            ],
+            "value": {
+              "at": "={{ String(Date.now()) }}",
+              "key": "={{ 'dirty:' + String(($('Route').first().json.query || {}).t || '') + (function(j){j=String(j==null?'':j).replace(/[^0-9A-Za-z]/g,'').toLowerCase().replace(/^job/,'');return j?'@'+j:'';})($json.job_no || $json.sm8_job || (String(($('Route').first().json.query || {}).t || '') === 'jobrows' ? $json.ref : '')) }}"
+            }
+          },
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "bSkjEWvTgJnP818K"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "key",
+                "keyValue": "={{ 'dirty:' + String(($('Route').first().json.query || {}).t || '') + (function(j){j=String(j==null?'':j).replace(/[^0-9A-Za-z]/g,'').toLowerCase().replace(/^job/,'');return j?'@'+j:'';})($json.job_no || $json.sm8_job || (String(($('Route').first().json.query || {}).t || '') === 'jobrows' ? $json.ref : '')) }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "upsert",
+          "options": {},
+          "resource": "row"
+        },
+        "onError": "continueRegularOutput",
+        "executeOnce": true
+      }
+    ],
+    "connections": {
+      "Admin Save": {
+        "main": [
+          [
+            {
+              "node": "Route",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Route": {
+        "main": [
+          [
+            {
+              "node": "Route Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Route Switch": {
+        "main": [
+          null,
+          [
+            {
+              "node": "List Rows",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Clean Row",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Pre Delete",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "List Rows": {
+        "main": [
+          [
+            {
+              "node": "Pack List",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pack List": {
+        "main": [
+          [
+            {
+              "node": "Respond List",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Clean Row": {
+        "main": [
+          [
+            {
+              "node": "Asset Yard Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Save Row": {
+        "main": [
+          [
+            {
+              "node": "Respond Save",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Plant Log Sync",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Mark Changed",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Delete Row": {
+        "main": [
+          [
+            {
+              "node": "Respond Delete",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Signon Restamp",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Mark Changed",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Asset Yard Fields": {
+        "main": [
+          [
+            {
+              "node": "Internal Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Stock Move Fill": {
+        "main": [
+          [
+            {
+              "node": "Save Row",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pre Delete": {
+        "main": [
+          [
+            {
+              "node": "Delete Row",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Internal Fields": {
+        "main": [
+          [
+            {
+              "node": "Scope Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Scope Fields": {
+        "main": [
+          [
+            {
+              "node": "Vehicle Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Vehicle Fields": {
+        "main": [
+          [
+            {
+              "node": "Stock Move Fill",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Operations Hub backend: list, save and delete rows in the cbs_ registers (POST /webhook/cbs-admin-save)",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

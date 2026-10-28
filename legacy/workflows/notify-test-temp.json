@@ -1,0 +1,89 @@
+{
+  "id": "G5xLARvYT5UIdaLG",
+  "name": "CBS - Notify Test (temp)",
+  "active": false,
+  "isArchived": false,
+  "versionId": "3602f3d5-5ee0-49d4-96ee-a57218849249",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "createdAt": "2026-10-06T12:21:18.379Z",
+  "updatedAt": "2026-10-06T12:36:49.969Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Test Hook": {
+      "main": [
+        [
+          {
+            "node": "Send Test Note",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "0bd7e659-d8e4-4d10-a105-6a91e95ca500",
+      "name": "Test Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-notify-test",
+        "responseMode": "lastNode"
+      },
+      "webhookId": "74d8282d-8c79-4748-8056-b685ef429acf"
+    },
+    {
+      "id": "ba4921e5-ffcd-48f3-963a-eb666e9925df",
+      "name": "Send Test Note",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const h=this.helpers,H='https://old-hub.example/webhook/';\nconst S=v=>v==null?'':String(v).trim();\nconst B=$input.first().json.body||{};\nconst L=async t=>{const r=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true});return Array.isArray(r)?r:[];};\nconst rams=(await L('rams')).sort((a,b)=>Number(b.id)-Number(a.id));\nconst r=rams.find(x=>S(x.pdf_url))||rams[0]||null;\nlet body;\nif(B.nojob){body={event:'test_notification',job_no:'',message:'TEST notification with no job number - checking it lands on the Actions board. Set it to Done to clear it.',link:H+'cbs-admin?open=rams'+(r?'&id='+r.id:''),pdf:r?S(r.pdf_url):''};}\nelse{const job=S(B.job_no).replace(/[^0-9]/g,'')||(r?S(r.job_no).replace(/[^0-9]/g,''):'');\nbody={event:'test_notification',job_no:job,message:'TEST notification - checking the new note layout. Please ignore.'+(r?' (Links use RAMS #'+r.id+(r.activity||r.task?': '+S(r.activity||r.task):'')+'.)':''),sign:H+'cbs-sign?doc=rams&id='+(r?r.id:0),link:H+'cbs-admin?open=rams'+(r?'&id='+r.id:''),pdf:r?S(r.pdf_url):''};}\nawait h.httpRequest({method:'POST',url:H+'cbs-notify',body:body,json:true,timeout:15000});\nreturn [{json:{sent:true,body:body}}];"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": null,
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Temporary: posts one test note through cbs-notify using the newest RAMS for sign/hub/PDF links.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

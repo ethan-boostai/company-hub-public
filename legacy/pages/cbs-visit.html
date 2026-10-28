@@ -1,0 +1,158 @@
+<!--cbs-baked--><!doctype html><html lang='en'><head><script id="cbsDl">(function(){if(window.__cbsDl)return;window.__cbsDl=1;
+var ua=navigator.userAgent||'',fr=false;try{fr=window.top!==window.self;}catch(e){fr=true;}
+var ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+var wv=(ios&&ua.indexOf('Safari/')<0)||ua.indexOf('; wv)')>-1||/ServiceM8/i.test(ua);
+window.__cbsDlPost=fr||wv;
+var oc=HTMLAnchorElement.prototype.click,od=HTMLAnchorElement.prototype.dispatchEvent;
+function want(a){if(!window.__cbsDlPost||!a||!a.download)return false;var h=String(a.href||'');return (h.indexOf('blob:')===0||h.indexOf('data:application/pdf')===0)&&(/[.]pdf$/i.test(a.download)||h.indexOf('data:application/pdf')===0);}
+function b64(href){return fetch(href).then(function(r){return r.blob();}).then(function(b){return new Promise(function(res,rej){var f=new FileReader();f.onload=function(){res(String(f.result).split(',')[1]);};f.onerror=rej;f.readAsDataURL(b);});});}
+function css(){if(document.getElementById('cbsDlCss'))return;var s=document.createElement('style');s.id='cbsDlCss';s.textContent='#cbsDlOv{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px;font-family:inherit}#cbsDlOv .bx{background:#fff;border-radius:12px;padding:20px;max-width:360px;width:100%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.25)}#cbsDlOv b{display:block;font-size:18px;margin-bottom:6px}#cbsDlOv p{margin:0 0 14px;color:#555;font-size:14px;word-break:break-word}#cbsDlOv button{display:block;width:100%;border:0;border-radius:8px;padding:13px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;margin-top:8px}#cbsDlGo{background:#F47920;color:#fff}#cbsDlX{background:#eef0f2;color:#1f2328}';document.head.appendChild(s);}
+function show(name,data){css();var o=document.getElementById('cbsDlOv');if(o)o.remove();o=document.createElement('div');o.id='cbsDlOv';
+ var bx=document.createElement('div');bx.className='bx';var t=document.createElement('b');t.textContent='Your PDF is ready';var p=document.createElement('p');p.textContent=name;
+ var f=document.createElement('form');f.method='POST';f.action='/webhook/cbs-pdf-out';f.target='_blank';f.style.margin='0';
+ [['name',name],['data',data]].forEach(function(x){var i=document.createElement('input');i.type='hidden';i.name=x[0];i.value=x[1];f.appendChild(i);});
+ var g=document.createElement('button');g.type='submit';g.id='cbsDlGo';g.textContent='Open PDF';f.appendChild(g);
+ var x=document.createElement('button');x.type='button';x.id='cbsDlX';x.textContent='Close';x.onclick=function(){o.remove();};
+ f.onsubmit=function(){setTimeout(function(){o.remove();},1500);};
+ bx.appendChild(t);bx.appendChild(p);bx.appendChild(f);bx.appendChild(x);o.appendChild(bx);document.body.appendChild(o);}
+function go(a){var n=a.download||'document.pdf';b64(a.href).then(function(d){show(n,d);})['catch'](function(){try{window.open(a.href,'_blank');}catch(e){}});}
+HTMLAnchorElement.prototype.click=function(){if(want(this)){go(this);return;}return oc.apply(this,arguments);};
+HTMLAnchorElement.prototype.dispatchEvent=function(e){if(e&&e.type==='click'&&want(this)){go(this);return true;}return od.apply(this,arguments);};
+})();</script><script id="cbsSp">(function(){if(window.__cbsSP)return;window.__cbsSP=1;var R=/^https:\/\/chelmsfordbuildingservices(-my)?\.sharepoint\.com\//i;function px(u){u=String(u||"");return R.test(u)?"/webhook/cbs-file?u="+encodeURIComponent(u):u;}window.__cbsPx=px;document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(!a)return;var h=a.getAttribute("href"),v=px(h);if(v!==h){a.setAttribute("href",v);a.setAttribute("target","_blank");a.setAttribute("rel","noopener");}},true);var wo=window.open;window.open=function(u){var a=[].slice.call(arguments);a[0]=px(u);return wo.apply(window,a);};})();</script><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Visitors Log | CBS</title>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'></script>
+<style>
+:root{--o:#F47920;--g:#3d4045;--ink:#1f2328;--mut:#6b7280;--line:#e5e7eb;--bg:#f5f6f7}
+*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+.top{background:var(--g);color:#fff;display:flex;align-items:center;gap:14px;padding:10px 18px;border-bottom:3px solid var(--o)}
+.top img{height:34px;width:auto;background:transparent}.top b{font-size:17px}.top a{color:#fff;text-decoration:none;margin-left:auto;font-size:14px;opacity:.85}
+.wrap{max-width:860px;margin:0 auto;padding:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+h1{font-size:21px;margin:2px 0 4px}.mut{color:var(--mut);font-size:13px}.mut a{color:inherit}
+.bo,.bg{display:inline-block;border:0;border-radius:8px;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer;text-decoration:none}
+.bo{background:var(--o);color:#fff}.bg{background:#eef0f2;color:var(--ink)}.bo:disabled{opacity:.6}
+.cdm{display:inline-block;background:var(--o);color:#fff;font-size:12px;font-weight:700;border-radius:20px;padding:2px 10px;vertical-align:middle}
+.live{background:#ecfdf5;border-left:4px solid #16a34a;padding:12px 14px;border-radius:8px;margin-top:12px}
+.dead{background:#fef2f2;border-left:4px solid #dc2626;padding:12px 14px;border-radius:8px;margin-top:12px}
+.big{font-size:20px;font-weight:700;margin-bottom:2px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+label{display:block;margin-top:10px;font-size:13px;font-weight:600;color:#374151}
+input,select{display:block;width:100%;margin-top:4px;padding:11px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;font-size:16px;font-weight:400;color:var(--ink);background:#fff}
+.lb{margin-top:14px;font-size:13px;font-weight:700;color:#374151}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.ch{display:flex;align-items:center;gap:6px;margin:0;padding:8px 14px;border:1px solid var(--line);border-radius:20px;font-weight:400;font-size:15px}
+.ch input,.dc input{width:auto;margin:0;display:inline;flex:none}
+.dc{display:flex;gap:9px;align-items:flex-start;font-weight:400;font-size:14px;margin-top:14px}.dc input{margin-top:3px}
+.pr{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid var(--line)}.nm{flex:1;font-weight:600}
+.sr,.sg{display:inline-block;font-size:11px;font-weight:700;border-radius:20px;padding:2px 9px;margin-left:8px;vertical-align:middle;color:#fff}.sr{background:#dc2626}.sg{background:#16a34a}
+.n{font-size:28px;font-weight:800;color:var(--o)}
+.ok{color:#15803d;font-size:13px}.bad{color:#b91c1c;font-size:13px;font-weight:600}
+#poster,#roll{display:none}
+#poster{text-align:center;padding:30px 20px}#poster h1{font-size:44px;margin:18px 0 6px}#poster .ps{font-size:22px;color:#374151}
+#pq{display:inline-block;margin:26px 0;padding:14px;border:8px solid #F47920;border-radius:18px;background:#fff}
+#poster .pb{font-size:20px;font-weight:600}#poster .pm{font-size:16px;color:#374151;max-width:560px;margin:10px auto}#poster .pu{font-size:12px;color:#6b7280;word-break:break-all}
+#roll table{width:100%;border-collapse:collapse;margin-top:14px}#roll td,#roll th{border:1px solid #999;padding:9px;text-align:left;font-size:14px}
+@media print{body{background:#fff}body.pp .top,body.pp #app,body.pp #roll{display:none}body.pp #poster{display:block}body.rc .top,body.rc #app,body.rc #poster{display:none}body.rc #roll{display:block}}
+</style></head><body>
+<div class='top'><img id='lg' alt='CBS'><b>Visitors Log</b><a id='hb' href='/webhook/cbs-admin'>&larr; Operations Hub</a><a id='cbsJf' href='/webhook/cbs-job-file' style='display:none'>Job File</a></div>
+<div class='wrap' id='app'><p class='mut'>Loading&hellip;</p></div>
+<div id='poster'></div><div id='roll'></div>
+<script>
+(function(){
+var LOGO='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';if(LOGO)document.getElementById('lg').src='data:image/png;base64,'+LOGO;
+var Q=new URLSearchParams(location.search),JOB=(Q.get('job')||'').replace(/[^0-9A-Za-z-]/g,''),VIS=Q.get('v')==='1',KN='cbs_visit_'+JOB,TM=null;
+var app=document.getElementById('app');
+var REASONS=['Meeting','Delivery','Inspection or audit','Contractor work','Client visit','Other'];
+function $(i){return document.getElementById(i);}
+function e(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;');}
+function tm(s){return String(s||'').slice(11,16)||'-';}
+function fd(s){s=String(s||'');return s?s.slice(8,10)+'/'+s.slice(5,7)+'/'+s.slice(0,4):'';}
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v);}catch(x){return null;}}
+function me(){try{var m=JSON.parse(ls('cbs_me')||'null');if(m&&m.name)return m.name;}catch(x){}return ls('cbs_name')||'';}
+function get(u){return fetch(u,{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){if(!d.ok)throw new Error(d.error||'Could not load');return d;});}
+function post(o){return fetch('/webhook/cbs-visit-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)}).then(function(r){return r.json();}).then(function(d){if(!d.ok)throw new Error(d.error||'Could not save');return d;});}
+function msg(t,bad){var m=$('msg');if(m){m.textContent=t;m.className=bad?'bad':'ok';}return false;}
+function oops(x){app.innerHTML='<div class=card><b>'+e(x&&x.message?x.message:'Could not load.')+'</b><p class=mut>Check your connection and refresh the page.</p></div>';}
+if(!JOB){app.innerHTML='<div class=card><b>Open the visitors log from a CDM job.</b><p class=mut><a href=/webhook/cbs-job-file>Go to the Job File</a></p></div>';return;}
+if(VIS){$('hb').style.display='none';visitor();}else office();
+function visitor(){var k=ls(KN)||'';
+ get('/webhook/cbs-visit-data?job='+encodeURIComponent(JOB)+'&v=1'+(k?'&k='+encodeURIComponent(k):'')).then(function(d){
+  var hd='<div class=card><div class=mut>Chelmsford Building Services Ltd</div><h1>Visitor sign-in</h1><div class=mut>'+e(d.site||('Job '+JOB))+'</div></div>';
+  if(d.me&&!d.me.signed_out_at)return signedIn(hd,d.me,k);
+  if(k&&!d.me)ls(KN,null);form(hd);
+ }).catch(oops);}
+function signedIn(hd,m,k){var no=/^no/i.test(m.inducted||'');
+ app.innerHTML=hd+'<div class=card><div class=live><div class=big>You are signed in</div>'+e(m.name)+' &middot; since '+tm(m.signed_in_at)+(String(m.visit_date||'')?' on '+fd(m.visit_date||m.signed_in_at):'')+'</div>'+(no?'<div class=dead><b>Report to the site manager before going on site.</b> There is no site induction on record for you on this job.</div>':'')+'<p>Keep this page open, or scan the sign-in code again when you leave, and press <b>Sign out</b> so the site knows you have left in an emergency.</p><div class=bar><button class=bo id=so>Sign out</button><span id=msg></span></div></div>';
+ $('so').onclick=function(){var b=this;b.disabled=true;post({action:'out',job_no:JOB,vkey:k}).then(function(){ls(KN,null);app.innerHTML=hd+'<div class=card><div class=live><div class=big>Signed out</div>Thank you, '+e(m.name)+'. Safe journey.</div></div>';}).catch(function(x){b.disabled=false;msg(x.message,true);});};}
+function form(hd){var sv={};try{sv=JSON.parse(ls('cbs_visitor')||'{}');}catch(x){}
+ app.innerHTML=hd+'<div class=card><b>Sign in</b><div class=mut>All visitors must sign in on arrival and sign out when leaving.</div><label>Your name<input id=nm autocomplete=name></label><label>Company<input id=co autocomplete=organization></label><label>Mobile<input id=ph type=tel autocomplete=tel></label><label>Who are you visiting?<input id=vs></label><label>Reason for visit<select id=rs></select></label><label>Vehicle registration, if parked on site<input id=vr></label><div class=lb>Have you had a site induction on this site?</div><div class=chips><label class=ch><input type=radio name=ind value=Yes>Yes</label><label class=ch><input type=radio name=ind value=No>No</label></div><label class=dc><input type=checkbox id=ag><span>I will follow the site rules, wear the PPE required and follow instructions from site staff.</span></label><div class=bar><button class=bo id=si>Sign in</button><span id=msg></span></div></div>';
+ $('rs').innerHTML=REASONS.map(function(r){return '<option>'+e(r)+'</option>';}).join('');$('nm').value=sv.nm||'';$('co').value=sv.co||'';$('ph').value=sv.ph||'';
+ $('si').onclick=function(){var b=this,ind=document.querySelector('input[name=ind]:checked');
+  var o={action:'in',job_no:JOB,name:$('nm').value.trim(),company:$('co').value.trim(),phone:$('ph').value.trim(),visiting:$('vs').value.trim(),reason:$('rs').value,vehicle_reg:$('vr').value.trim(),inducted:ind?ind.value:'',agree:$('ag').checked};
+  if(!o.name)return msg('Enter your name.',true);if(!o.company)return msg('Enter your company.',true);if(!ind)return msg('Answer the induction question.',true);if(!o.agree)return msg('Tick to confirm you will follow the site rules.',true);
+  b.disabled=true;b.textContent='Signing in...';
+  post(o).then(function(r){ls(KN,r.vkey);ls('cbs_visitor',JSON.stringify({nm:o.name,co:o.company,ph:o.phone}));signedIn(hd,{name:r.name,signed_in_at:r.signed_in_at,inducted:r.inducted},r.vkey);}).catch(function(x){b.disabled=false;b.textContent='Sign in';msg(x.message,true);});};}
+function office(){clearTimeout(TM);
+ get('/webhook/cbs-visit-data?job='+encodeURIComponent(JOB)).then(function(d){
+  var back='<div class=mut><a href=/webhook/cbs-job-file?job='+encodeURIComponent(JOB)+'>&larr; Job '+e(JOB)+'</a></div>';
+  if(!d.cdm){app.innerHTML='<div class=card>'+back+'<h1>Visitors log</h1><p>The visitors log is only used on CDM jobs. Make job '+e(JOB)+' a CDM job in the Job File to switch it on.</p></div>';return;}
+  var url=location.origin+'/webhook/cbs-visit?job='+encodeURIComponent(JOB)+'&v=1';
+  function who(r,btn){var no=/^no/i.test(r.inducted||'');return '<div class=pr><div class=nm>'+e(r.name)+' <span class=mut>'+e(r.company)+'</span>'+(no?'<span class=sr>Needs induction</span>':'')+'<div class=mut>In '+tm(r.signed_in_at)+(r.signed_out_at?' &middot; out '+tm(r.signed_out_at):'')+(r.visit_date&&r.visit_date!==d.today?' &middot; '+fd(r.visit_date):'')+(r.visiting?' &middot; visiting '+e(r.visiting):'')+(r.reason?' &middot; '+e(r.reason):'')+(r.vehicle_reg?' &middot; '+e(r.vehicle_reg):'')+(r.phone?' &middot; '+e(r.phone):'')+'</div></div>'+(btn?'<button class=bg data-out='+r.id+'>Sign out</button>':'')+'</div>';}
+  var h='<div class=card>'+back+'<h1>Visitors log <span class=cdm>CDM</span></h1><div class=mut>'+e(d.site||'')+(d.client?' &middot; '+e(d.client):'')+'</div><div class=bar><button class=bo id=pp>Print QR poster</button><button class=bg id=rc>Fire roll call</button><a class=bg target=_blank rel=noopener href='+e(url)+'>Open sign-in page</a></div></div>';
+  h+='<div class=card><b>On site now</b> <span class=n>'+d.onsite.length+'</span>'+(d.onsite.length?d.onsite.map(function(r){return who(r,true);}).join(''):'<p class=mut>Nobody signed in at the moment.</p>')+'</div>';
+  if(d.not_signed_out.length)h+='<div class=card><b>Not signed out from earlier days</b><div class=mut>Sign these out so the roll call stays accurate.</div>'+d.not_signed_out.map(function(r){return who(r,true);}).join('')+'</div>';
+  var gone=d.visitors.filter(function(r){return r.signed_out_at;});
+  h+='<div class=card><b>Signed out today</b>'+(gone.length?gone.map(function(r){return who(r,false);}).join(''):'<p class=mut>None yet.</p>')+'</div>';
+  h+='<div class=card><b>Previous days</b><div class=mut>Every day is included in the CDM site file download (folder 7.0).</div>'+(d.days.length?d.days.map(function(x){return '<div class=pr><div class=nm>'+fd(x.date)+'</div><span class=mut>'+x.count+' visitor'+(x.count===1?'':'s')+'</span></div>';}).join(''):'<p class=mut>No earlier visits.</p>')+'</div>';
+  app.innerHTML=h;
+  [].forEach.call(app.querySelectorAll('[data-out]'),function(b){b.onclick=function(){var id=b.getAttribute('data-out');if(!confirm('Sign this visitor out now?'))return;b.disabled=true;post({action:'out',job_no:JOB,id:id,by:me()}).then(office).catch(function(x){b.disabled=false;alert(x.message);});};});
+  $('poster').innerHTML='<img id=pli style=max-height:90px alt=CBS><h1>Visitors: sign in here</h1><div class=ps>'+e(d.site||('Job '+JOB))+'</div><div id=pq></div><p class=pb>Scan with your phone camera to sign in.<br>Sign out on the same page when you leave.</p><p class=pm>All visitors must sign in on arrival and report to the site manager. Chelmsford Building Services Ltd is Principal Contractor on this site.</p><p class=pu>'+e(url)+'</p>';
+  if(LOGO)$('pli').src='data:image/png;base64,'+LOGO;
+  if(window.QRCode){try{new QRCode($('pq'),{text:url,width:300,height:300,correctLevel:QRCode.CorrectLevel.M});}catch(x){$('pq').textContent=url;}}else $('pq').textContent=url;
+  var now=new Date();
+  $('roll').innerHTML='<h1>Fire roll call</h1><div>'+e(d.site||('Job '+JOB))+' &middot; printed '+now.toLocaleDateString('en-GB')+' '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+'</div><p><b>'+(d.onsite.length+d.not_signed_out.length)+'</b> visitor(s) signed in. Site staff and contractors are on the daily pre-start.</p><table><tr><th>Name</th><th>Company</th><th>Signed in</th><th>Mobile</th><th>Accounted for</th></tr>'+d.onsite.concat(d.not_signed_out).map(function(r){return '<tr><td>'+e(r.name)+'</td><td>'+e(r.company)+'</td><td>'+tm(r.signed_in_at)+'</td><td>'+e(r.phone)+'</td><td></td></tr>';}).join('')+'</table>';
+  function pr(c){document.body.className=c;setTimeout(function(){window.print();setTimeout(function(){document.body.className='';},400);},150);}
+  $('pp').onclick=function(){pr('pp');};$('rc').onclick=function(){pr('rc');};
+  TM=setTimeout(office,60000);
+ }).catch(oops);}
+})();
+</script><script id="cbsDelGuard">(function(){
+if(window.__cbsDelGuard)return;window.__cbsDelGuard=1;
+var ok=false,SEL='#delBtn,.std-del,button[data-hub],button[data-rm]';
+var css=document.createElement('style');
+css.textContent='#delModal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:99999;padding:16px}#delModal .bx{background:#fff;border-radius:14px;max-width:380px;width:100%;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.3);font-family:inherit;text-align:left}#delModal h3{margin:0 0 8px;font-size:19px;color:#000}#delModal p{margin:0 0 6px;color:#333;font-size:15px}#delModal .what{font-weight:700;color:#000;margin:10px 0 4px;word-break:break-word}#delModal .row2{display:flex;gap:10px;margin-top:18px}#delModal button{flex:1;padding:12px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer}#delModal .cx{background:#F47920;color:#fff;border:0}#delModal .yes{background:#fff;color:#b3261e;border:2px solid #b3261e}';
+document.head.appendChild(css);
+function tgt(e){var t=e.target;if(!t||!t.closest)return null;var b=t.closest(SEL);if(!b||b.tagName!=='BUTTON'||b.disabled)return null;if(b.hasAttribute('data-hub')&&!/^delete/i.test((b.textContent||'').trim()))return null;return b;}
+function clean(el){if(!el)return '';var c=el.cloneNode(true);Array.prototype.forEach.call(c.querySelectorAll('button,a,input,select,textarea,script,style'),function(x){x.parentNode.removeChild(x);});return (c.textContent||'').replace(/\s+/g,' ').trim();}
+function what(b){var s='';if(b.hasAttribute('data-rm')){var p=b.parentElement;for(var i=0;i<4&&p&&!s;i++){s=clean(p);p=p.parentElement;}}
+ if(!s){var po=document.getElementById('po_no');s=po&&po.value?po.value:'';}
+ if(!s)s=clean(document.querySelector('h1,h2,h3'))||document.title||'this record';return s.slice(0,160);}
+function note(rm){var p=location.pathname;if(/cbs-coshh/.test(p))return 'It stays on the CoSHH register.';if(/cbs-pci/.test(p))return 'The file stays in SharePoint.';return rm?'':'Any PDF already saved stays in SharePoint.';}
+function ask(b){var rm=/^remove/i.test((b.textContent||'').trim());
+ var m=document.createElement('div');m.id='delModal';
+ m.innerHTML='<div class="bx" role="dialog" aria-modal="true"><h3>Are you sure?</h3><p>'+(rm?'This will remove it from the job:':'This will permanently delete:')+'</p><div class="what"></div><p class="xtra"></p>'+(rm?'':'<p>It cannot be undone.</p>')+'<div class="row2"><button class="cx" type="button">Cancel</button><button class="yes" type="button">Yes, '+(rm?'remove':'delete')+'</button></div></div>';
+ m.querySelector('.what').textContent=what(b);var n=note(rm);if(n)m.querySelector('.xtra').textContent=n;
+ document.body.appendChild(m);var cx=m.querySelector('.cx'),yes=m.querySelector('.yes');cx.focus();
+ function close(){if(m.parentNode)m.parentNode.removeChild(m);document.removeEventListener('keydown',key,true);}
+ function key(e){if(e.key==='Escape'){e.preventDefault();close();}}
+ document.addEventListener('keydown',key,true);
+ cx.onclick=close;m.onclick=function(e){if(e.target===m)close();};
+ yes.onclick=function(){close();ok=true;try{b.click();}finally{ok=false;}};}
+document.addEventListener('click',function(e){if(ok)return;var b=tgt(e);if(!b)return;e.preventDefault();e.stopImmediatePropagation();ask(b);},true);
+var _c=window.confirm;window.confirm=function(){if(ok)return true;return _c.apply(window,arguments);};
+})();</script><script id="cbsJfScr">(function(){
+var a=document.getElementById("cbsJf");if(!a)return;var hub=a.previousElementSibling;
+var GEN={"10871":1,"10885":1};
+function clean(v){return String(v||"").replace(/[^0-9A-Za-z-]/g,"");}
+function fromInputs(){var els=document.querySelectorAll("input,select");for(var i=0;i<els.length;i++){var el=els[i];if(el.type==="hidden"||el.type==="checkbox")continue;
+ var k=[el.id,el.name,el.getAttribute("data-k"),el.getAttribute("data-bind")].join(" ").toLowerCase();
+ if(!/(^|[\s._-])(job|jobno|job_no|sm8_job)($|[\s._-])/.test(k)&&!/jobno|job_no|sm8_job/.test(k))continue;
+ var m=String(el.value||"").match(/\b\d{3,}\b/);if(m)return m[0];}return "";}
+function fromQuery(){var m=location.search.match(/[?&]job=([^&#]+)/);if(!m)return "";try{return clean(decodeURIComponent(m[1]));}catch(e){return clean(m[1]);}}
+function fromLinks(){var l=document.querySelectorAll("a[href*='job=']");for(var i=0;i<l.length;i++){if(l[i]===a)continue;var h=l[i].getAttribute("href")||"";if(!/cbs-(job-file|permit|visit|pci)\?/.test(h))continue;var m=h.match(/[?&]job=([0-9A-Za-z-]+)/);if(m)return m[1];}return "";}
+function upd(){var j=fromInputs()||fromQuery()||fromLinks();var n=(j.match(/\d{3,}/)||[""])[0];
+ var hidden=hub&&hub.style&&hub.style.display==="none";
+ if(!n||GEN[n]||hidden){a.style.display="none";return;}
+ var href="/webhook/cbs-job-file?job="+encodeURIComponent(j);if(a.getAttribute("href")!==href){a.setAttribute("href",href);a.title="Open the Job File for job "+j;}a.style.display="";}
+upd();setInterval(upd,1500);document.addEventListener("input",upd,true);document.addEventListener("change",upd,true);
+})();
+</script></body></html>

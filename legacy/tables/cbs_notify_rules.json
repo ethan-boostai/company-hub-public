@@ -1,0 +1,58 @@
+{
+  "table": "cbs_notify_rules",
+  "n8n_id": "ADSvZbpbCr0gisiO",
+  "columns": [
+    {
+      "name": "event",
+      "type": "string"
+    },
+    {
+      "name": "label",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "post_note",
+      "type": "string"
+    },
+    {
+      "name": "tags",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "event": "_general_job",
+      "label": "General job for notes with no job number",
+      "post_note": "No",
+      "tags": "",
+      "notes": "Put the ServiceM8 job number of your admin / H&S job here. Notes that are not linked to a job (H&S policy, manual sign-offs, vehicle checks, team requests) are posted on it. Leave blank to skip them.",
+      "id": 1,
+      "createdAt": "2026-10-05T14:43:02.825Z",
+      "updatedAt": "2026-10-05T14:43:02.825Z"
+    },
+    {
+      "event": "rams_saved",
+      "label": "RAMS saved",
+      "post_note": "Yes",
+      "tags": "",
+      "notes": "",
+      "id": 2,
+      "createdAt": "2026-10-05T14:43:02.825Z",
+      "updatedAt": "2026-10-05T14:43:02.825Z"
+    },
+    {
+      "event": "cphsp_saved",
+      "label": "Construction phase plan saved",
+      "post_note": "Yes",
+      "tags": "",
+      "notes": "",
+      "id": 3,
+      "createdAt": "2026-10-05T14:43:02.825Z",
+      "updatedAt": "2026-10-05T14:43:02.825Z"
+    }
+  ]
+}

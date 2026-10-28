@@ -1,0 +1,68 @@
+{
+  "table": "cbs_visitors",
+  "n8n_id": "5ET1OUDUv4D2u9o6",
+  "columns": [
+    {
+      "name": "company",
+      "type": "string"
+    },
+    {
+      "name": "inducted",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "phone",
+      "type": "string"
+    },
+    {
+      "name": "reason",
+      "type": "string"
+    },
+    {
+      "name": "signature",
+      "type": "string"
+    },
+    {
+      "name": "signed_in_at",
+      "type": "string"
+    },
+    {
+      "name": "signed_out_at",
+      "type": "string"
+    },
+    {
+      "name": "site",
+      "type": "string"
+    },
+    {
+      "name": "vehicle_reg",
+      "type": "string"
+    },
+    {
+      "name": "visit_date",
+      "type": "string"
+    },
+    {
+      "name": "visiting",
+      "type": "string"
+    },
+    {
+      "name": "vkey",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [],
+  "note": "no rows: Visitors node in CBS - TV Dashboard exec 1313413 (2026-10-27) returned empty"
+}

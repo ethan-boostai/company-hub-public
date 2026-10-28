@@ -1,0 +1,110 @@
+{
+  "id": "hgoUBoTtC1TVQE7F",
+  "name": "CBS - ServiceM8 Client Lookup",
+  "active": false,
+  "isArchived": false,
+  "versionId": "b0139574-c146-4c6e-8ecc-f2e4ba8c67ed",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "createdAt": "2026-09-28T10:30:45.603Z",
+  "updatedAt": "2026-10-05T08:56:16.495Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Run Lookup": {
+      "main": [
+        [
+          {
+            "node": "Get Clients",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Clients": {
+      "main": [
+        [
+          {
+            "node": "Name and UUID Only",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "62d96348-f340-4e4b-95f8-610252d1aa37",
+      "name": "Run Lookup",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "503ccaf4-5b99-4dee-bd11-0550025406b4",
+      "name": "Get Clients",
+      "type": "@servicem8/n8n-nodes-servicem8.serviceM8",
+      "typeVersion": 1,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "resource": "client",
+        "operation": "getMany",
+        "limit": 200,
+        "includeContacts": false
+      }
+    },
+    {
+      "id": "1191f54f-597f-4819-8ff2-c198c154b04a",
+      "name": "Name and UUID Only",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// Read-only helper. Lists every ServiceM8 client with its UUID\n// so the map in 'CBS - Excel to ServiceM8 (Create Job)' can be extended.\nconst rows = $input.all().map(function (item) {\n  const c = item.json;\n  return {\n    name: c.name,\n    uuid: c.uuid,\n    address: c.address || ''\n  };\n});\n\nrows.sort(function (a, b) {\n  return String(a.name).localeCompare(String(b.name));\n});\n\nreturn rows.map(function (r) { return { json: r }; });"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": null,
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Read-only helper. Lists every client in CBS's ServiceM8 account with name, UUID and address, so the client map in the Excel to ServiceM8 workflow can be extended without running the full connection test (which creates a job).",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

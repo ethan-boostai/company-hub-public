@@ -1,0 +1,93 @@
+{
+  "table": "cbs_insurance",
+  "n8n_id": "s93fmXaKYCfghbbO",
+  "columns": [
+    {
+      "name": "cover",
+      "type": "string"
+    },
+    {
+      "name": "cover_json",
+      "type": "string"
+    },
+    {
+      "name": "custom_name",
+      "type": "string"
+    },
+    {
+      "name": "doc_url",
+      "type": "string"
+    },
+    {
+      "name": "expires_on",
+      "type": "string"
+    },
+    {
+      "name": "insurer",
+      "type": "string"
+    },
+    {
+      "name": "item",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "policy_no",
+      "type": "string"
+    },
+    {
+      "name": "starts_on",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "item": "Motor vehicle",
+      "custom_name": "Fleet",
+      "insurer": "ZZ Insurer A ",
+      "policy_no": "ZZ-POL-0001",
+      "cover": "Fully Comp",
+      "starts_on": "2026-05-01",
+      "expires_on": "2027-04-30",
+      "doc_url": "",
+      "notes": "",
+      "cover_json": "[{\"type\":\"Motor vehicle / fleet\",\"limit\":\"\",\"excess\":\"250\"}]",
+      "id": 1,
+      "createdAt": "2026-10-05T13:59:22.491Z",
+      "updatedAt": "2026-10-05T13:59:22.491Z"
+    },
+    {
+      "item": "Employers liability",
+      "custom_name": "",
+      "insurer": "ZZ Insurer B Ltd",
+      "policy_no": "ZZ-POL-0002",
+      "cover": "10000000",
+      "starts_on": "2026-02-04",
+      "expires_on": "2027-02-03",
+      "doc_url": "",
+      "notes": "",
+      "cover_json": "[]",
+      "id": 2,
+      "createdAt": "2026-10-05T14:36:37.444Z",
+      "updatedAt": "2026-10-05T14:36:37.444Z"
+    },
+    {
+      "item": "Public liability",
+      "custom_name": "Public & Products",
+      "insurer": "ZZ Insurer C Ltd & ZZ Insurer D Ltd",
+      "policy_no": "ZZ-POL-0002 & ZZ-POL-0003",
+      "cover": "10000000",
+      "starts_on": "2026-02-04",
+      "expires_on": "2027-02-03",
+      "doc_url": "",
+      "notes": "",
+      "cover_json": "[]",
+      "id": 3,
+      "createdAt": "2026-10-05T14:37:52.199Z",
+      "updatedAt": "2026-10-05T14:37:52.199Z"
+    }
+  ]
+}

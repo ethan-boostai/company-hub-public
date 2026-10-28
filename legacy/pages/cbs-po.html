@@ -1,0 +1,222 @@
+<!--cbs-baked--><!doctype html><html lang="en-GB"><head><script id="cbsDl">(function(){if(window.__cbsDl)return;window.__cbsDl=1;
+var ua=navigator.userAgent||'',fr=false;try{fr=window.top!==window.self;}catch(e){fr=true;}
+var ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+var wv=(ios&&ua.indexOf('Safari/')<0)||ua.indexOf('; wv)')>-1||/ServiceM8/i.test(ua);
+window.__cbsDlPost=fr||wv;
+var oc=HTMLAnchorElement.prototype.click,od=HTMLAnchorElement.prototype.dispatchEvent;
+function want(a){if(!window.__cbsDlPost||!a||!a.download)return false;var h=String(a.href||'');return (h.indexOf('blob:')===0||h.indexOf('data:application/pdf')===0)&&(/[.]pdf$/i.test(a.download)||h.indexOf('data:application/pdf')===0);}
+function b64(href){return fetch(href).then(function(r){return r.blob();}).then(function(b){return new Promise(function(res,rej){var f=new FileReader();f.onload=function(){res(String(f.result).split(',')[1]);};f.onerror=rej;f.readAsDataURL(b);});});}
+function css(){if(document.getElementById('cbsDlCss'))return;var s=document.createElement('style');s.id='cbsDlCss';s.textContent='#cbsDlOv{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px;font-family:inherit}#cbsDlOv .bx{background:#fff;border-radius:12px;padding:20px;max-width:360px;width:100%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.25)}#cbsDlOv b{display:block;font-size:18px;margin-bottom:6px}#cbsDlOv p{margin:0 0 14px;color:#555;font-size:14px;word-break:break-word}#cbsDlOv button{display:block;width:100%;border:0;border-radius:8px;padding:13px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;margin-top:8px}#cbsDlGo{background:#F47920;color:#fff}#cbsDlX{background:#eef0f2;color:#1f2328}';document.head.appendChild(s);}
+function show(name,data){css();var o=document.getElementById('cbsDlOv');if(o)o.remove();o=document.createElement('div');o.id='cbsDlOv';
+ var bx=document.createElement('div');bx.className='bx';var t=document.createElement('b');t.textContent='Your PDF is ready';var p=document.createElement('p');p.textContent=name;
+ var f=document.createElement('form');f.method='POST';f.action='/webhook/cbs-pdf-out';f.target='_blank';f.style.margin='0';
+ [['name',name],['data',data]].forEach(function(x){var i=document.createElement('input');i.type='hidden';i.name=x[0];i.value=x[1];f.appendChild(i);});
+ var g=document.createElement('button');g.type='submit';g.id='cbsDlGo';g.textContent='Open PDF';f.appendChild(g);
+ var x=document.createElement('button');x.type='button';x.id='cbsDlX';x.textContent='Close';x.onclick=function(){o.remove();};
+ f.onsubmit=function(){setTimeout(function(){o.remove();},1500);};
+ bx.appendChild(t);bx.appendChild(p);bx.appendChild(f);bx.appendChild(x);o.appendChild(bx);document.body.appendChild(o);}
+function go(a){var n=a.download||'document.pdf';b64(a.href).then(function(d){show(n,d);})['catch'](function(){try{window.open(a.href,'_blank');}catch(e){}});}
+HTMLAnchorElement.prototype.click=function(){if(want(this)){go(this);return;}return oc.apply(this,arguments);};
+HTMLAnchorElement.prototype.dispatchEvent=function(e){if(e&&e.type==='click'&&want(this)){go(this);return true;}return od.apply(this,arguments);};
+})();</script><script id="cbsSp">(function(){if(window.__cbsSP)return;window.__cbsSP=1;var R=/^https:\/\/chelmsfordbuildingservices(-my)?\.sharepoint\.com\//i;function px(u){u=String(u||"");return R.test(u)?"/webhook/cbs-file?u="+encodeURIComponent(u):u;}window.__cbsPx=px;document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(!a)return;var h=a.getAttribute("href"),v=px(h);if(v!==h){a.setAttribute("href",v);a.setAttribute("target","_blank");a.setAttribute("rel","noopener");}},true);var wo=window.open;window.open=function(u){var a=[].slice.call(arguments);a[0]=px(u);return wo.apply(window,a);};})();</script><script id="cbsSaveGuard">(function(){if(window.__cbsSG)return;window.__cbsSG=1;var F=window.fetch.bind(window),P={},R={},IDS={};
+function isSave(u){return /\/webhook\/cbs-[a-z0-9-]*(save|record|upload|receive|loaded|pdf)(\?|$)/.test(u)&&!/[?&]a=del/.test(u);}
+function isDoc(u){return /\/webhook\/cbs-[a-z0-9-]*-save(\?|$)/.test(u)&&!/cbs-admin-save/.test(u);}
+window.fetch=function(u,o){o=o||{};var url=String(u&&u.url||u),m=String(o.method||'GET').toUpperCase();
+ if(m!=='POST'||!isSave(url))return F(u,o);
+ var body=o.body,key=url.split('?')[0]+location.pathname;
+ if(isDoc(url)&&typeof body==='string'&&IDS[key]){try{var j=JSON.parse(body);if(!Number(j.id)){j.id=IDS[key];body=JSON.stringify(j);o=Object.assign({},o,{body:body});}}catch(e){}}
+ var k=url+'|'+(typeof body==='string'?body:Math.random());
+ if(P[k])return P[k].then(function(r){return r.clone();});
+ if(R[k]&&Date.now()-R[k].t<15000)return Promise.resolve(R[k].r.clone());
+ var p=F(u,o).then(function(r){var c=r.clone();R[k]={t:Date.now(),r:r.clone()};delete P[k];
+   if(isDoc(url)&&r.ok)c.json().then(function(d){if(d&&Number(d.id))IDS[key]=Number(d.id);}).catch(function(){});return r;},
+  function(e){delete P[k];throw e;});
+ P[k]=p.then(function(r){return r.clone();});return p;};
+document.addEventListener('click',function(e){var b=e.target&&e.target.closest&&e.target.closest('button');if(!b||!/save|submit|issue/i.test(b.textContent||''))return;if(b.__cbsLock){e.stopImmediatePropagation();e.preventDefault();return;}b.__cbsLock=1;setTimeout(function(){b.__cbsLock=0;},1500);},true);
+})();</script><script id="cbsRoute">(function(){if(window.__cbsRT)return;window.__cbsRT=1;var M={"swms-save":"cbs-rams-save","sssp-save":"cbs-cphsp-save","swms-builder":"cbs-rams-builder","sssp-builder":"cbs-cphsp-builder","embr-builder-kit":"cbs-builder-kit","site-form-save":"cbs-site-inspection-save","embr-logo":"cbs-logo"},T=[["Embr Operations","Operations Hub"],["Embr Projects","Chelmsford Building Services"],["Embr - ","CBS - "],["embr-ops","cbs-ops"],["embr-toolbox-saved","cbs-toolbox-saved"],["embr_","cbs_"],["embr-","cbs-"],["Google Drive","SharePoint"],["WorkSafe","HSE"],["lang=\"en-NZ\"","lang=\"en-GB\""],["\"en-NZ\"","\"en-GB\""],["Pacific/Auckland","Europe/London"],["($\"+","(£\"+"]],TK={"swms":"rams","sssp":"cphsp"};function nm(n){return n.indexOf('cbs-')===0?n:(M[n]||('cbs-'+n));}function fx(u){try{var s=String(u);var x=new URL(s,location.href);if(x.origin!==location.origin)return u;var p=x.pathname.split('/');if(p.length!==3||p[1]!=='webhook'||!p[2])return u;var n=nm(p[2]);if(n===p[2])return u;return '/webhook/'+n+x.search+x.hash;}catch(e){return u;}}function lst(u){try{var x=new URL(String(u),location.href);if(x.origin!==location.origin)return null;if(x.pathname!=='/webhook/admin'&&x.pathname!=='/webhook/cbs-admin')return null;if(x.searchParams.get('a')!=='list')return null;return x.searchParams.get('t')||'';}catch(e){return null;}}window.__cbsUrl=fx;window.__cbsFix=function(h){h=String(h).replace(new RegExp('/webhook/(?!cbs-)([A-Za-z0-9-]+)','g'),function(a,n){return '/webhook/'+nm(n);});T.forEach(function(r){h=h.split(r[0]).join(r[1]);});return h;};var F=window.fetch;window.fetch=function(u,o){var q=u&&typeof u==='object'&&u.url;var t=lst(q?u.url:u);if(t!==null){var k=TK[t]||t;return F.call(window,'/webhook/cbs-admin-data?t='+encodeURIComponent(k)).then(function(r){return r.json();}).then(function(d){var a=(d&&Array.isArray(d[k]))?d[k]:[];return new Response(JSON.stringify(a),{status:200,headers:{'Content-Type':'application/json'}});});}if(q){var v=fx(u.url);if(v!==u.url)u=new Request(v,u);}else{u=fx(u);}return F.call(window,u,o);};var XO=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(m,u){var t=lst(u);if(t!==null){arguments[1]='/webhook/cbs-admin-data?t='+encodeURIComponent(TK[t]||t);}else{arguments[1]=fx(u);}return XO.apply(this,arguments);};document.addEventListener('click',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href]');if(a){var h=a.getAttribute('href'),v=fx(h);if(v!==h)a.setAttribute('href',v);}},true);})();</script><style id="cbsLogoFix">.topbar .logo,.topbar img,#topLogo,#cbsLogo,header img,img.logo{background:transparent!important;box-shadow:none!important;border:0!important;padding:0!important;border-radius:0!important;filter:none!important}</style><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CBS - Purchase Order</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:15px;line-height:1.45}
+.top{background:#3d4043;color:#fff;border-bottom:4px solid #F47920;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:5}
+.top h1{margin:0;font-size:18px;flex:1;min-width:160px}.top a,.top button{font:inherit;font-size:14px;font-weight:600;border-radius:8px;padding:8px 12px;cursor:pointer;text-decoration:none}
+.top a,.top .s{background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}.top .p{background:#F47920;color:#fff;border:0}
+.wrap{max-width:980px;margin:0 auto;padding:16px}.card{background:#fff;border:1px solid #e2e0dc;border-radius:12px;padding:16px;margin:0 0 14px}
+.card h2{margin:0 0 12px;font-size:16px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:#555}input,select,textarea{font:inherit;font-size:15px;padding:9px 10px;border:1px solid #ccc;border-radius:8px;background:#fff;width:100%}
+textarea{min-height:64px}.row{display:flex;gap:8px}.row>*{min-width:0}.btn{font:inherit;font-size:14px;font-weight:600;border:1px solid #ccc;background:#fff;border-radius:8px;padding:9px 12px;cursor:pointer;white-space:nowrap}
+.btn.dark{background:#F47920;color:#fff;border-color:#F47920}.muted{color:#6b6e70;font-size:13px}.msg{font-size:13px;margin-top:4px}
+table{width:100%;border-collapse:collapse}th{text-align:left;font-size:12px;color:#555;font-weight:600;padding:6px 4px;border-bottom:1px solid #ddd}td{padding:5px 4px;border-bottom:1px solid #eee;vertical-align:top}
+td input,td select{padding:7px 8px;font-size:14px}.num{text-align:right}.tot{display:flex;justify-content:flex-end;margin-top:10px}.tot table{width:auto;min-width:260px}.tot td{border:0;padding:3px 8px}.tot tr.g td{font-weight:700;font-size:16px;border-top:2px solid #000}
+.pill{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px;background:#eee}.pill.Ordered{background:#fff1d6;color:#7a4b00}.pill.Received{background:#dff3e4;color:#1a7f37}.pill.Part{background:#e6efff;color:#1f5fbf}.pill.Cancelled{background:#fbdedb;color:#b3261e}
+#status{padding:8px 16px;font-size:13px;color:#555;max-width:980px;margin:0 auto}
+@media(max-width:700px){.lines thead{display:none}.lines tr{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px 0;border-bottom:1px solid #ddd}.lines td{border:0;padding:0}.lines td.d{grid-column:1/-1}}
+.row{align-items:stretch}.row input{flex:1 1 auto;width:auto;min-width:0}.row .btn{flex:0 0 auto}
+label.f>.row{position:relative;display:block}label.f>.row #job{width:100%;padding-right:104px}label.f>.row #lookBtn{position:absolute;right:5px;top:50%;transform:translateY(-50%);padding:6px 12px;margin:0;line-height:1.2}
+</style></head><body>
+<div class="top"><h1 id="ttl">Purchase Order</h1><a href="/webhook/cbs-admin?open=pos">&#8249; Operations Hub</a><a id="cbsJf" href="/webhook/cbs-job-file" style="display:none">Job File</a><a id="boardLink" href="/webhook/cbs-po-board">Return to Board</a><button class="s" id="draftBtn">Save to Operations Hub</button><button class="p" id="issueBtn">Issue to job card</button><button class="s" id="pdfBtn">Download PDF</button><button class="s" id="delBtn" style="display:none;color:#ff8a80;border-color:#7a2a24">Delete</button></div>
+<div id="status">Loading&#8230;</div>
+<main class="wrap" id="app"></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function(){
+var Q=new URLSearchParams(location.search),ID=Number(Q.get("id")||0),D={suppliers:[],materials:[],pos:[],workers:[]},P=null,REC={};
+function $(s){return document.querySelector(s);}function el(i){return document.getElementById(i);}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");}
+function num(v){var x=parseFloat(String(v==null?"":v).replace(/[^0-9.\-]/g,""));return isNaN(x)?0:x;}
+function money(x){return "\u00a3"+(Math.round(x*100)/100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,",");}
+function today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}
+function nz(d){d=String(d||"").slice(0,10);var p=d.split("-");return p.length===3?p[2]+"/"+p[1]+"/"+p[0]:d;}
+function status(t,bad){var s=el("status");s.textContent=t;s.style.color=bad?"#b3261e":"#555";}
+function letters(n){var s="";n++;while(n>0){var r=(n-1)%26;s=String.fromCharCode(65+r)+s;n=Math.floor((n-1)/26);}return s;}
+function nextNo(job){var base=String(job||"").replace(/[^0-9]/g,"")||"STOCK";if(P&&P.po_no&&P.po_no.indexOf(base+"-")===0&&/^[A-Z]+$/.test(P.po_no.slice(base.length+1)))return P.po_no;var used={};(D.pos||[]).forEach(function(x){if(Number(x.id)!==ID)used[String(x.po_no)]=1;});for(var i=0;i<702;i++){var c=base+"-"+letters(i);if(!used[c])return c;}return base+"-"+Date.now();}
+function renum(){if(!editable())return;P.po_no=nextNo(P.job_no);var t=el("ttl");if(t)t.innerHTML=esc(P.po_no)+" <span class='pill "+esc(String(P.status).split(" ")[0])+"'>"+esc(P.status)+"</span>";}
+function sup(){return (D.suppliers||[]).filter(function(s){return String(s.id)===String(P.supplier_id);})[0]||null;}
+function mat(id){return (D.materials||[]).filter(function(m){return String(m.id)===String(id);})[0];}
+function totals(){var sub=0;P.lines.forEach(function(l){sub+=num(l.qty)*num(l.cost);});var g=Math.round(sub*0.2*100)/100;return {sub:Math.round(sub*100)/100,vat:g,total:Math.round((sub+g)*100)/100};}
+function dtMode(){return /^Other:/.test(P.deliver_to||"")?"Other address":(P.deliver_to||"Site");}function dtAddr(){return /^Other:/.test(P.deliver_to||"")?String(P.deliver_to).replace(/^Other:\s*/,""):"";}
+function editable(){return P.status==="Draft"||!P.status;}
+function load(){fetch("/webhook/cbs-admin-data?t=suppliers,materials,pos,workers,subbies").then(function(r){return r.json();}).then(function(d){D=d||D;(D.subbies||[]).forEach(function(c){if(c&&c.company&&!/^(inactive|archived)$/i.test(String(c.status||"")))(D.suppliers=D.suppliers||[]).push({id:"sub:"+c.id,name:c.company,contact:c.contact||c.contact_name||"",email:c.email||"",phone:c.phone||"",address:c.address||"",sub:1});});
+ var ex=ID?(D.pos||[]).filter(function(p){return Number(p.id)===ID;})[0]:null;
+ if(ID&&!ex){status("That purchase order wasn't found.",1);return;}if(ex&&ex.source==="QuickBooks"){location.replace("/webhook/cbs-qbpo?id="+ID);return;}
+ if(ex){P={po_no:ex.po_no,supplier:ex.supplier,supplier_id:ex.supplier_id,job_no:ex.job_no,site:ex.site,client:ex.client,ordered_on:ex.ordered_on,needed_by:ex.needed_by,deliver_to:ex.deliver_to,status:ex.status||"Draft",ordered_by:ex.ordered_by,notes:ex.notes,pdf_url:ex.pdf_url,lines:[]};try{P.lines=JSON.parse(ex.lines_json||"[]");}catch(e){}try{REC=JSON.parse(ex.received_json||"{}")||{};}catch(e){REC={};}}
+ else{P={po_no:"",supplier:"",supplier_id:"",job_no:(Q.get("job")||"").replace(/[^0-9]/g,""),site:"",client:"",ordered_on:today(),needed_by:"",deliver_to:"Site",status:"Draft",ordered_by:"",notes:"",pdf_url:"",lines:[]};
+  var sq=Q.get("supplier");if(sq){var s=(D.suppliers||[]).filter(function(x){return String(x.id)===sq||x.name===sq;})[0];if(s){P.supplier_id=String(s.id);P.supplier=s.name;}}
+  var iq=Q.get("items");if(iq){iq.split(",").forEach(function(pr){var a=pr.split(":"),m=mat(a[0]);if(m)P.lines.push({material_id:String(m.id),desc:m.name,code:m.supplier_code||"",qty:a[1]||"",unit:m.unit||"",cost:m.cost||""});});}var mq=Q.get("material");if(mq){var m=mat(mq);if(m){P.lines.push({material_id:String(m.id),desc:m.name,code:m.supplier_code||"",qty:"",unit:m.unit||"",cost:m.cost||""});if(!P.supplier_id&&m.supplier){var s2=(D.suppliers||[]).filter(function(x){return x.name.toLowerCase()===String(m.supplier).toLowerCase();})[0];if(s2){P.supplier_id=String(s2.id);P.supplier=s2.name;}}}}}
+ if(!P.lines.length)P.lines.push({material_id:"",desc:"",code:"",qty:"",unit:"",cost:""});
+ if(!ex)P.po_no=nextNo(P.job_no);
+ render();status(ex?"Loaded "+P.po_no+".":"New purchase order.");
+ if(!ex&&P.job_no)look();
+})["catch"](function(){status("Couldn't load. Check your connection and refresh.",1);});}
+function supOpts(){var h="<option value=''>Choose a supplier\u2026</option>";(D.suppliers||[]).slice().sort(function(a,b){return String(a.name).localeCompare(String(b.name));}).forEach(function(s){h+="<option value='"+esc(s.id)+"'"+(String(s.id)===String(P.supplier_id)?" selected":"")+">"+esc(s.name)+(s.sub?" (subcontractor)":"")+"</option>";});return h;}
+function matOpts(sel){var s=sup(),L=(D.materials||[]).slice();L.sort(function(a,b){var am=s&&String(a.supplier||"").toLowerCase()===s.name.toLowerCase()?0:1,bm=s&&String(b.supplier||"").toLowerCase()===s.name.toLowerCase()?0:1;return am-bm||String(a.name).localeCompare(String(b.name));});
+ var h="<option value=''>Custom item (not in materials list)</option>";L.forEach(function(m){h+="<option value='"+esc(m.id)+"'"+(String(m.id)===String(sel)?" selected":"")+">"+esc(m.name)+(m.supplier?" ("+esc(m.supplier)+")":"")+"</option>";});return h;}
+function render(){var ed=editable(),dis=ed?"":" disabled",s=sup(),t=totals();
+ el("ttl").innerHTML=esc(P.po_no)+" <span class='pill "+esc(String(P.status).split(" ")[0])+"'>"+esc(P.status)+"</span>";
+ el("draftBtn").style.display=ed?"":"none";el("issueBtn").style.display=ed?"":"none";
+ var h="<div class='card'><h2>Supplier and job</h2><div class='grid'>";
+ h+="<label class='f'>Supplier<select id='sup'"+dis+">"+supOpts()+"</select><span class='muted' id='supInfo'>"+(s?esc([s.contact,s.email,s.phone,s.account_no?"Account "+s.account_no:""].filter(Boolean).join(" \u2022 ")):(D.suppliers.length?"":"No suppliers yet. Add them in the Operations Hub under Purchasing.")) +"</span></label>";
+ h+="<label class='f'>ServiceM8 job (leave blank for yard stock)<div class='row'><input id='job' inputmode='numeric' placeholder='e.g. 10840' value='"+esc(P.job_no)+"'"+dis+"><button class='btn dark' id='lookBtn' type='button'"+dis+">Look up</button></div><span class='msg' id='jobMsg'></span></label>";
+ h+="<label class='f'>Site<input id='site' value='"+esc(P.site)+"'"+dis+"></label><label class='f'>Client<input id='client' value='"+esc(P.client)+"'"+dis+"></label>";
+ h+="<label class='f'>Order date<input type='date' id='od' value='"+esc(P.ordered_on)+"'"+dis+"></label><label class='f'>Needed by<input type='date' id='nb' value='"+esc(P.needed_by)+"'"+dis+"></label>";
+ h+="<label class='f'>Deliver to<select id='dt'"+dis+">"+["Site","Yard","Pick up","Other address"].map(function(o){return "<option"+(dtMode()===o?" selected":"")+">"+o+"</option>";}).join("")+"</select><textarea id='dtAddr' placeholder='Delivery address, e.g. name, street, suburb, city' style='margin-top:6px;min-height:64px;"+(dtMode()==="Other address"?"":"display:none")+"'"+dis+">"+esc(dtAddr())+"</textarea></label>";
+ h+="<label class='f'>Ordered by<select id='ob'"+dis+"><option value=''></option>"+(D.workers||[]).filter(function(w){return w.name&&w.active!==false;}).map(function(w){return "<option"+(w.name===P.ordered_by?" selected":"")+">"+esc(w.name)+"</option>";}).join("")+"</select></label>";
+ h+="</div><label class='f' style='margin-top:12px'>Notes to supplier<textarea id='notes'"+dis+">"+esc(P.notes)+"</textarea></label></div>";
+ h+="<div class='card'><h2>Items</h2><table class='lines'><thead><tr><th>Item</th><th>Description</th><th>Code</th><th class='num'>Qty</th><th>Unit</th><th class='num'>Unit cost (ex VAT)</th><th class='num'>Line total</th><th></th></tr></thead><tbody>";
+ P.lines.forEach(function(l,i){var _cu=l.custom&&!l.material_id;h+="<tr><td>"+(_cu?"<span class='pill' style='background:#fff1d6;color:#7a4b00'>Custom item</span>":"<select data-l='"+i+"|material_id'"+dis+">"+matOpts(l.material_id)+"</select>")+"</td><td class='d'><input data-l='"+i+"|desc' value='"+esc(l.desc)+"' placeholder='"+(_cu?"What you are ordering (e.g. 20 kg resin kit, special order)":"Description")+"'"+dis+"></td><td><input data-l='"+i+"|code' value='"+esc(l.code)+"' placeholder='Code'"+dis+"></td><td><input class='num' data-l='"+i+"|qty' inputmode='decimal' value='"+esc(l.qty)+"'"+dis+"></td><td><input data-l='"+i+"|unit' value='"+esc(l.unit)+"'"+dis+"></td><td><input class='num' data-l='"+i+"|cost' inputmode='decimal' value='"+esc(l.cost)+"'"+dis+"></td><td class='num' id='lt"+i+"'>"+money(num(l.qty)*num(l.cost))+"</td><td>"+(ed?"<button class='btn' data-del='"+i+"' type='button'>&times;</button>":"")+"</td></tr>";});
+ h+="</tbody></table>"+(ed?"<button class='btn' id='addLine' type='button' style='margin-top:8px'>+ Add item from materials</button> <button class='btn' id='addCustom' type='button' style='margin-top:8px'>+ Add custom item</button><div class='muted' style='margin-top:6px'>Custom items are for anything not coded in ServiceM8. They print on the PO but don\u2019t go into stock when received.</div>":"");
+ h+="<div class='tot'><table><tr><td>Subtotal</td><td class='num' id='tSub'>"+money(t.sub)+"</td></tr><tr><td>VAT 20%</td><td class='num' id='tGst'>"+money(t.vat)+"</td></tr><tr class='g'><td>Total</td><td class='num' id='tTot'>"+money(t.total)+"</td></tr></table></div></div>";
+ if(!ed&&P.status!=="Cancelled")h+=recvCard();
+ if(P.pdf_url)h+="<div class='card'><a href='"+esc(P.pdf_url)+"' target='_blank' rel='noopener'>Open the issued PDF</a>"+(P.job_no?"<div class='muted'>Also attached to ServiceM8 job "+esc(P.job_no)+". Email it to the supplier from the job card.</div>":"")+"</div>";
+ el("app").innerHTML=h;bind();}
+function recvCard(){var open=0,h="<div class='card'><h2>Receive items</h2><p class='muted' style='margin:0 0 8px'>Tick off what has arrived. Items from your materials list go into stock straight away.</p><table><thead><tr><th>Item</th><th class='num'>Ordered</th><th class='num'>Received</th><th class='num'>Arrived now</th></tr></thead><tbody>";
+ P.lines.forEach(function(l,i){var got=num(REC[i]),left=num(l.qty)-got;if(num(l.qty)<=0)return;if(left>1e-9)open++;h+="<tr><td>"+esc(l.desc)+(l.material_id?"":" <span class='muted'>(not a stock item)</span>")+"</td><td class='num'>"+esc(l.qty)+" "+esc(l.unit)+"</td><td class='num'>"+(got?esc(String(got)):"-")+"</td><td class='num'>"+(left>1e-9?"<input class='num' data-rv='"+i+"' inputmode='decimal' value='0' style='width:90px'>":"<span class='muted'>Done</span>")+"</td></tr>";});
+ h+="</tbody></table>";if(!open)return h+"<p style='color:#1a7f37;font-weight:600;margin:10px 0 0'>Everything on this order has been received.</p></div>";
+ h+="<div class='row' style='margin-top:10px;align-items:flex-end'><label class='f' style='flex:1'>Received by<select id='rb'><option value=''></option>"+(D.workers||[]).filter(function(w){return w.name&&w.active!==false;}).map(function(w){return "<option>"+esc(w.name)+"</option>";}).join("")+"</select></label><button class='btn dark' id='allBtn' type='button'>All arrived</button><button class='btn dark' id='recvBtn' type='button'>Receive</button></div><div class='msg' id='recvMsg'></div></div>";return h;}
+function upd(){var t=totals();P.lines.forEach(function(l,i){var c=el("lt"+i);if(c)c.textContent=money(num(l.qty)*num(l.cost));});el("tSub").textContent=money(t.sub);el("tGst").textContent=money(t.vat);el("tTot").textContent=money(t.total);}
+function grab(){if(!editable())return;P.supplier_id=el("sup").value;var s=sup();P.supplier=s?s.name:"";P.job_no=el("job").value.replace(/[^0-9]/g,"");P.site=el("site").value;P.client=el("client").value;P.ordered_on=el("od").value;P.needed_by=el("nb").value;P.deliver_to=el("dt").value==="Other address"?"Other: "+(el("dtAddr")?el("dtAddr").value.trim():""):el("dt").value;P.ordered_by=el("ob").value;P.notes=el("notes").value;renum();}
+function bind(){if(editable()){
+ el("sup").onchange=function(){grab();render();};el("dt").onchange=function(){var a=el("dtAddr");if(!a)return;var o=el("dt").value==="Other address";a.style.display=o?"":"none";if(o)a.focus();};
+ el("lookBtn").onclick=look;el("job").addEventListener("input",function(){P.job_no=el("job").value.replace(/[^0-9]/g,"");renum();});el("job").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();look();}});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-l]"),function(x){var p=x.getAttribute("data-l").split("|"),i=+p[0],k=p[1];
+  if(k==="material_id")x.onchange=function(){grab();var l=P.lines[i];l.material_id=x.value;var m=mat(x.value);if(m){l.desc=m.name;l.code=m.supplier_code||"";l.unit=m.unit||"";if(m.cost)l.cost=String(m.cost);}render();};
+  else x.oninput=function(){P.lines[i][k]=x.value;upd();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-del]"),function(b){b.onclick=function(){grab();P.lines.splice(+b.getAttribute("data-del"),1);if(!P.lines.length)P.lines.push({material_id:"",desc:"",code:"",qty:"",unit:"",cost:""});render();};});
+ el("addLine").onclick=function(){grab();P.lines.push({material_id:"",desc:"",code:"",qty:"",unit:"",cost:""});render();};el("addCustom").onclick=function(){grab();var L=P.lines,last=L[L.length-1];if(last&&!last.material_id&&!String(last.desc).trim()&&!last.qty){last.custom=1;}else{L.push({material_id:"",desc:"",code:"",qty:"",unit:"each",cost:"",custom:1});}render();var x=document.querySelector("[data-l='"+(P.lines.length-1)+"|desc']");if(x)x.focus();};}
+ var rb=el("recvBtn");if(rb){rb.onclick=receive;el("allBtn").onclick=function(){P.lines.forEach(function(l,i){var x=document.querySelector("[data-rv='"+i+"']");if(x)x.value=String(Math.round((num(l.qty)-num(REC[i]))*100)/100);});};}}
+function look(){var no=el("job").value.replace(/[^0-9]/g,""),m=el("jobMsg");if(!no){m.style.color="#b3261e";m.textContent="Type the job number first.";return;}
+ m.style.color="#6b6e70";m.textContent="Looking up job "+no+"...";
+ fetch("/webhook/cbs-sm8-job?no="+no).then(function(r){return r.json();}).then(function(j){if(!j||!j.found){m.style.color="#b3261e";m.textContent="Job "+no+" wasn't found in ServiceM8.";return;}
+  var s=el("site"),c=el("client"),_ns=j.site||"",_nc=j.client||"";if(((s.value&&s.value!==_ns)||(c.value&&c.value!==_nc))&&!confirm("Are you sure you want to replace the job details with ServiceM8 job "+no+"?\n\nClient: "+(_nc||"(blank)")+"\nSite: "+(_ns||"(blank)")+"\n\nThe current site and client will be overwritten.")){m.style.color="#6b6e70";m.textContent="Kept the existing details.";return;}s.value=_ns;c.value=_nc;
+  m.style.color="#1a7f37";m.textContent="Job "+no+" found. The PO will be attached to this job when issued.";grab();})["catch"](function(){m.style.color="#b3261e";m.textContent="Couldn't reach ServiceM8.";});}
+function check(){grab();if(!P.supplier_id)return "Choose a supplier.";if(/^Other:\s*$/.test(P.deliver_to||""))return "Enter the delivery address.";var ok=P.lines.filter(function(l){return String(l.desc).trim()&&num(l.qty)>0;});if(!ok.length)return "Add at least one item with a description and quantity.";return "";}
+function pdf(){var J=window.jspdf.jsPDF,d=new J({unit:"pt",format:"a4"}),s=sup()||{},t=totals(),PW=595.28,PH=841.89,L=52,R=PW-52,y=52,OR=[244,121,32];
+ function pl(v){return typeof v==="string"?v.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[\u2018\u2019]/g,"'").replace(/[\u201C\u201D]/g,'"').replace(/[\u2013\u2014]/g,"-"):(Array.isArray(v)?v.map(pl):v);}var _tx=d.text.bind(d),_sp=d.splitTextToSize.bind(d);d.text=function(a,b,c,o){return _tx(pl(a),b,c,o);};d.splitTextToSize=function(a,w,o){return _sp(pl(a),w,o);};
+ function sp(v){return String(v||"").split(/\s*,\s*|\n/).map(function(x){return x.trim();}).filter(Boolean);}
+ var CO=["Chelmsford Building Services Ltd","Trading as Chelmsford Building Services","Unit 1, Example Business Park, Example Road","Bishop's Stortford, Hertfordshire","ZZ99 1ZZ","United Kingdom","contact4@example.com","Phone: 0117 496 0004","VAT Registration No.: GB 425 1034 96"],YARD=["Chelmsford Building Services","Unit 1, Example Business Park, Example Road","Bishop's Stortford, Hertfordshire","ZZ99 1ZZ"];
+ d.setFont("helvetica","bold");d.setFontSize(11);d.text(CO[0],L,y);d.setFont("helvetica","normal");d.setFontSize(10.5);for(var i=1;i<CO.length;i++){y+=15.5;d.text(CO[i],L,y);}
+ var LG=window.__CBS_LOGO;if(LG){try{var ip=d.getImageProperties(LG),lw=170,lh=lw*ip.height/ip.width;if(lh>54){lh=54;lw=lh*ip.width/ip.height;}d.addImage(LG,"PNG",R-lw,40,lw,lh);}catch(e){LG=null;}}
+ if(!LG){d.setFont("helvetica","bold");d.setFontSize(30);d.setTextColor(107,110,112);d.text("CBS",R,80,{align:"right"});d.setFont("helvetica","normal");d.setFontSize(7);d.setTextColor(OR[0],OR[1],OR[2]);d.text("Chelmsford Building Services",R,92,{align:"right"});}
+ y+=34;d.setFont("helvetica","normal");d.setFontSize(21);d.setTextColor(OR[0],OR[1],OR[2]);d.text("Purchase Order",L,y);d.setTextColor(0);y+=32;
+ var ship=/^Other:/.test(P.deliver_to||"")?sp(String(P.deliver_to).replace(/^Other:\s*/,"")):P.deliver_to==="Yard"?YARD:(P.deliver_to==="Pick up"?["Pick up - we will collect"]:[P.client].concat(P.site?sp(P.site):["Site address to be confirmed"]));
+ var supL=[s.name||P.supplier].concat(sp(s.address),[s.phone,s.email,s.account_no?"Our account: "+s.account_no:""]).filter(Boolean);
+ d.setFont("helvetica","bold");d.setFontSize(10.5);d.text("SUPPLIER",L,y);d.text("SHIP TO",L+185,y);d.text("P.O. NO.",PW-170,y,{align:"right"});d.text("DATE",PW-170,y+15.5,{align:"right"});
+ d.setFont("helvetica","normal");d.text(String(P.po_no)+(P.status==="Draft"?" (DRAFT)":""),PW-166,y);d.text(nz(P.ordered_on),PW-166,y+15.5);
+ var h1=0,h2=0;supL.forEach(function(l){d.splitTextToSize(String(l),175).forEach(function(z){d.text(z,L,y+17+h1);h1+=15.5;});});ship.filter(Boolean).forEach(function(l){d.splitTextToSize(String(l),150).forEach(function(z){d.text(z,L+185,y+17+h2);h2+=15.5;});});
+ y+=Math.max(h1,h2,31)+24;d.setDrawColor(217,217,214);d.setLineWidth(0.6);d.line(L,y,R,y);y+=18;
+ var info=[P.job_no?"Job "+P.job_no:"Yard stock",P.needed_by?"Needed by "+nz(P.needed_by):"",P.ordered_by?"Ordered by "+P.ordered_by:""].filter(Boolean).join("   |   ");d.setFontSize(9.5);d.setTextColor(90);d.text(info,L,y);d.setTextColor(0);y+=30;
+ var CX={code:L+212,qty:L+342,uc:R-72,amt:R};
+ function head(){d.setFillColor(253,228,208);d.rect(20,y-14,PW-26,20,"F");d.setTextColor(OR[0],OR[1],OR[2]);d.setFont("helvetica","normal");d.setFontSize(10);d.text("ITEM",L+3,y);d.text("CODE",CX.code,y);d.text("QTY",CX.qty,y,{align:"right"});d.text("UNIT COST",CX.uc,y,{align:"right"});d.text("AMOUNT",CX.amt,y,{align:"right"});d.setTextColor(0);y+=24;}
+ head();
+ P.lines.filter(function(l){return String(l.desc).trim()&&num(l.qty)>0;}).forEach(function(l){d.setFontSize(10);var Ld=d.splitTextToSize(String(l.desc),200),Lc=d.splitTextToSize(String(l.code||""),96),n=Math.max(Ld.length,Lc.length),rh=n*13+9;if(y+rh>PH-110){d.addPage();y=60;head();d.setFontSize(10);}
+  Ld.forEach(function(z,k){d.text(z,L+3,y+k*13);});Lc.forEach(function(z,k){d.text(z,CX.code,y+k*13);});d.text(String(l.qty)+" "+String(l.unit||""),CX.qty,y,{align:"right"});d.text(money(num(l.cost)),CX.uc,y,{align:"right"});d.text(money(num(l.qty)*num(l.cost)),CX.amt,y,{align:"right"});y+=rh;});
+ y+=2;d.setDrawColor(153);d.setLineDashPattern([1.5,2],0);d.line(L,y,R,y);d.setLineDashPattern([],0);
+ if(y>PH-170){d.addPage();y=60;}d.setFontSize(10.5);[["SUBTOTAL",money(t.sub)],["VAT TOTAL",money(t.vat)],["TOTAL",money(t.total)]].forEach(function(r){y+=17;d.text(r[0],PW-325,y);d.text(r[1],R,y,{align:"right"});});
+ if(String(P.notes).trim()){var NL=d.splitTextToSize(String(P.notes),R-L);y+=34;if(y+NL.length*13+20>PH-60){d.addPage();y=60;}d.setFont("helvetica","bold");d.text("NOTES",L,y);d.setFont("helvetica","normal");d.setFontSize(10);NL.forEach(function(z,k){d.text(z,L,y+15+k*13);});y+=15+NL.length*13;}
+ y+=60;if(y>PH-80){d.addPage();y=80;}d.setFontSize(8.5);d.setDrawColor(0);d.setLineWidth(0.7);d.text("Approved By",L+5,y);d.line(L+135,y+6,R,y+6);y+=55;d.text("Date",L+5,y);d.line(L+135,y+6,R,y+6);
+ d.setProperties({title:"Purchase_Order_"+P.po_no+"_from_Central_Services_Group_Ltd",subject:"Purchase Order "+P.po_no,author:"Chelmsford Building Services Ltd"});
+ return d;}
+(function(){try{fetch("/webhook/cbs-logo").then(function(r){return r.text();}).then(function(t){var m=t.match(/src="(data:image\/png;base64,[^"]+)"/);if(m)window.__CBS_LOGO=m[1];})["catch"](function(){});}catch(e){}})();
+function fname(){return ("Purchase_Order_"+_fn0()).replace(/ - /g,"_").replace(/\s+/g,"_");}function _fn0(){return [P.po_no,P.supplier,P.job_no?"Job "+P.job_no:"Yard stock"].filter(Boolean).join(" - ").replace(/[\\\/:*?"<>|]/g," ")+".pdf";}
+function save(issue){var e=check();if(e){status(e,1);return;}if(issue&&!confirm("Issue "+P.po_no+" to "+P.supplier+"? It will be locked for editing"+(P.job_no?" and attached to ServiceM8 job "+P.job_no:"")+"."))return;
+ var wasDraft=P.status==="Draft";if(issue)P.status="Ordered";var t=totals(),lines=P.lines.filter(function(l){return String(l.desc).trim()&&num(l.qty)>0;});P.lines=lines.length?lines:P.lines;
+ var row={po_no:P.po_no,supplier:P.supplier,supplier_id:P.supplier_id,job_no:P.job_no,site:P.site,client:P.client,ordered_on:P.ordered_on,needed_by:P.needed_by,deliver_to:P.deliver_to,status:P.status,lines_json:JSON.stringify(P.lines),subtotal:t.sub.toFixed(2),vat:t.vat.toFixed(2),total:t.total.toFixed(2),ordered_by:P.ordered_by,received_json:JSON.stringify(REC),notes:P.notes};
+ var body={id:ID||0,row:row,existing_pdf_url:P.pdf_url||"",notify:issue&&wasDraft};
+ if(issue){body.pdf=pdf().output("datauristring").split(",")[1];body.filename=fname();}
+ el("issueBtn").disabled=el("draftBtn").disabled=true;status(issue?"Issuing "+P.po_no+"...":"Saving draft...");
+ fetch("/webhook/cbs-po-save",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}).then(function(r){return r.json();}).then(function(j){if(!j||!j.ok)throw new Error("bad");
+  ID=j.id;P.pdf_url=j.pdf_url||P.pdf_url;try{history.replaceState(null,"","?id="+ID);}catch(e){}render();status(issue?P.po_no+" issued"+(P.job_no?" and attached to ServiceM8 job "+P.job_no+". Email it to the supplier from the job card.":". Download the PDF to send it."):"Draft saved.");
+ })["catch"](function(){if(issue&&wasDraft)P.status="Draft";render();status("Couldn't save. Check your connection and try again.",1);}).then(function(){el("issueBtn").disabled=el("draftBtn").disabled=false;});}
+function receive(){var by=el("rb").value,m=el("recvMsg");m.style.color="#b3261e";if(!by){m.textContent="Choose who received it.";return;}
+ var L=[],bad="";Array.prototype.forEach.call(document.querySelectorAll("[data-rv]"),function(x){var i=+x.getAttribute("data-rv"),q=num(x.value);if(!q)return;var left=num(P.lines[i].qty)-num(REC[i]);if(q<0||q>left+1e-9)bad=P.lines[i].desc+": only "+(Math.round(left*100)/100)+" still to come.";L.push({i:i,qty:q});});
+ if(bad){m.textContent=bad;return;}if(!L.length){m.textContent="Enter what arrived.";return;}el("recvBtn").disabled=true;m.style.color="#6b6e70";m.textContent="Receiving...";
+ fetch("/webhook/cbs-po-receive",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:ID,by:by,lines:L})}).then(function(r){return r.json();}).then(function(j){if(!j||!j.ok)throw new Error((j&&j.message)||"bad");
+  REC=j.received||REC;P.status=j.status||P.status;render();status("Received. "+(j.stocked?j.stocked+" stock item"+(j.stocked===1?"":"s")+" added to stock. ":"")+"Status: "+P.status+".");
+ })["catch"](function(e){el("recvBtn").disabled=false;m.style.color="#b3261e";m.textContent=e.message&&e.message!=="bad"?e.message:"Couldn't save. Try again.";});}
+el("pdfBtn").onclick=function(){if(P&&P.pdf_url&&!editable()){var w0=window.open(P.pdf_url,"_blank");if(!w0)location.href=P.pdf_url;return;}var e=check();if(e){status(e,1);return;}try{var d=pdf(),n=fname(),emb=false;try{emb=window.top!==window;}catch(x){emb=true;}if(emb||/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)){var u=URL.createObjectURL(d.output("blob"));var w=window.open(u,"_blank");if(!w)location.href=u;status("PDF opened. Use Share or Download to save it as "+n+".");}else{d.save(n);status("Downloaded "+n+".");}}catch(x){status("Could not create the PDF. Refresh the page and try again.",1);}};
+var _r0=render;render=function(){_r0();var b=el("delBtn");if(b)b.style.display=ID?"":"none";};
+el("delBtn").onclick=function(){if(!ID||!P)return;var rec=Object.keys(REC||{}).some(function(k){return num(REC[k])>0;});var msg="Delete "+P.po_no+"? This cannot be undone."+(P.status&&P.status!=="Draft"?"\n\nIt has already been issued. The PDF stays in SharePoint"+(P.job_no?" and on ServiceM8 job "+P.job_no:"")+", so let the supplier know if the order is off.":"")+(rec?"\n\nItems already received stay in stock.":"");if(!confirm(msg))return;var btn=el("delBtn");btn.disabled=true;status("Deleting "+P.po_no+"...");fetch("/webhook/cbs-admin-save?a=del&t=pos&id="+ID,{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"}).then(function(r){if(!r.ok)throw new Error("bad");return r.text();}).then(function(){status(P.po_no+" deleted.");location.href="/webhook/cbs-po-board"+(P.job_no?"?job="+P.job_no:"");})["catch"](function(){btn.disabled=false;status("Could not delete. Check your connection and try again.",1);});};
+el("draftBtn").onclick=function(){save(false);};el("issueBtn").onclick=function(){save(true);};
+try{var bl=el("boardLink");var jq=(Q.get("job")||"").replace(/[^0-9]/g,"");if(jq)bl.href="/webhook/cbs-po-board?job="+jq;}catch(e){}
+var _r1=render;render=function(){_r1();var ib=el("issueBtn");if(ib)ib.textContent=P&&P.job_no?"Issue to job card":"Issue PO";};
+load();
+})();
+</script><script id="cbsDelGuard">(function(){
+if(window.__cbsDelGuard)return;window.__cbsDelGuard=1;
+var ok=false,SEL='#delBtn,.std-del,button[data-hub],button[data-rm]';
+var css=document.createElement('style');
+css.textContent='#delModal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:99999;padding:16px}#delModal .bx{background:#fff;border-radius:14px;max-width:380px;width:100%;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.3);font-family:inherit;text-align:left}#delModal h3{margin:0 0 8px;font-size:19px;color:#000}#delModal p{margin:0 0 6px;color:#333;font-size:15px}#delModal .what{font-weight:700;color:#000;margin:10px 0 4px;word-break:break-word}#delModal .row2{display:flex;gap:10px;margin-top:18px}#delModal button{flex:1;padding:12px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer}#delModal .cx{background:#F47920;color:#fff;border:0}#delModal .yes{background:#fff;color:#b3261e;border:2px solid #b3261e}';
+document.head.appendChild(css);
+function tgt(e){var t=e.target;if(!t||!t.closest)return null;var b=t.closest(SEL);if(!b||b.tagName!=='BUTTON'||b.disabled)return null;if(b.hasAttribute('data-hub')&&!/^delete/i.test((b.textContent||'').trim()))return null;return b;}
+function clean(el){if(!el)return '';var c=el.cloneNode(true);Array.prototype.forEach.call(c.querySelectorAll('button,a,input,select,textarea,script,style'),function(x){x.parentNode.removeChild(x);});return (c.textContent||'').replace(/\s+/g,' ').trim();}
+function what(b){var s='';if(b.hasAttribute('data-rm')){var p=b.parentElement;for(var i=0;i<4&&p&&!s;i++){s=clean(p);p=p.parentElement;}}
+ if(!s){var po=document.getElementById('po_no');s=po&&po.value?po.value:'';}
+ if(!s)s=clean(document.querySelector('h1,h2,h3'))||document.title||'this record';return s.slice(0,160);}
+function note(rm){var p=location.pathname;if(/cbs-coshh/.test(p))return 'It stays on the CoSHH register.';if(/cbs-pci/.test(p))return 'The file stays in SharePoint.';return rm?'':'Any PDF already saved stays in SharePoint.';}
+function ask(b){var rm=/^remove/i.test((b.textContent||'').trim());
+ var m=document.createElement('div');m.id='delModal';
+ m.innerHTML='<div class="bx" role="dialog" aria-modal="true"><h3>Are you sure?</h3><p>'+(rm?'This will remove it from the job:':'This will permanently delete:')+'</p><div class="what"></div><p class="xtra"></p>'+(rm?'':'<p>It cannot be undone.</p>')+'<div class="row2"><button class="cx" type="button">Cancel</button><button class="yes" type="button">Yes, '+(rm?'remove':'delete')+'</button></div></div>';
+ m.querySelector('.what').textContent=what(b);var n=note(rm);if(n)m.querySelector('.xtra').textContent=n;
+ document.body.appendChild(m);var cx=m.querySelector('.cx'),yes=m.querySelector('.yes');cx.focus();
+ function close(){if(m.parentNode)m.parentNode.removeChild(m);document.removeEventListener('keydown',key,true);}
+ function key(e){if(e.key==='Escape'){e.preventDefault();close();}}
+ document.addEventListener('keydown',key,true);
+ cx.onclick=close;m.onclick=function(e){if(e.target===m)close();};
+ yes.onclick=function(){close();ok=true;try{b.click();}finally{ok=false;}};}
+document.addEventListener('click',function(e){if(ok)return;var b=tgt(e);if(!b)return;e.preventDefault();e.stopImmediatePropagation();ask(b);},true);
+var _c=window.confirm;window.confirm=function(){if(ok)return true;return _c.apply(window,arguments);};
+})();</script><script id="cbsJfScr">(function(){
+var a=document.getElementById("cbsJf");if(!a)return;var hub=a.previousElementSibling;
+var GEN={"10871":1,"10885":1};
+function clean(v){return String(v||"").replace(/[^0-9A-Za-z-]/g,"");}
+function fromInputs(){var els=document.querySelectorAll("input,select");for(var i=0;i<els.length;i++){var el=els[i];if(el.type==="hidden"||el.type==="checkbox")continue;
+ var k=[el.id,el.name,el.getAttribute("data-k"),el.getAttribute("data-bind")].join(" ").toLowerCase();
+ if(!/(^|[\s._-])(job|jobno|job_no|sm8_job)($|[\s._-])/.test(k)&&!/jobno|job_no|sm8_job/.test(k))continue;
+ var m=String(el.value||"").match(/\b\d{3,}\b/);if(m)return m[0];}return "";}
+function fromQuery(){var m=location.search.match(/[?&]job=([^&#]+)/);if(!m)return "";try{return clean(decodeURIComponent(m[1]));}catch(e){return clean(m[1]);}}
+function fromLinks(){var l=document.querySelectorAll("a[href*='job=']");for(var i=0;i<l.length;i++){if(l[i]===a)continue;var h=l[i].getAttribute("href")||"";if(!/cbs-(job-file|permit|visit|pci)\?/.test(h))continue;var m=h.match(/[?&]job=([0-9A-Za-z-]+)/);if(m)return m[1];}return "";}
+function upd(){var j=fromInputs()||fromQuery()||fromLinks();var n=(j.match(/\d{3,}/)||[""])[0];
+ var hidden=hub&&hub.style&&hub.style.display==="none";
+ if(!n||GEN[n]||hidden){a.style.display="none";return;}
+ var href="/webhook/cbs-job-file?job="+encodeURIComponent(j);if(a.getAttribute("href")!==href){a.setAttribute("href",href);a.title="Open the Job File for job "+j;}a.style.display="";}
+upd();setInterval(upd,1500);document.addEventListener("input",upd,true);document.addEventListener("change",upd,true);
+})();
+</script></body></html>

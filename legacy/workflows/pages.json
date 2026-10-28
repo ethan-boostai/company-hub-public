@@ -1,0 +1,2399 @@
+{
+  "id": "9Y8IYjM8jsKTtQTH",
+  "name": "CBS - Pages",
+  "active": true,
+  "isArchived": false,
+  "versionId": "ae43747e-92b4-4b3d-b822-8ab95b2019d7",
+  "activeVersionId": "ae43747e-92b4-4b3d-b822-8ab95b2019d7",
+  "triggerCount": 27,
+  "createdAt": "2026-10-05T09:42:05.109Z",
+  "updatedAt": "2026-10-27T17:29:53.344Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none"
+  },
+  "connections": {
+    "GET cbs-admin": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Which Page": {
+      "main": [
+        [
+          {
+            "node": "Get Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-rams-builder": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-cphsp-builder": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-toolbox-builder": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-team-meeting": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-incident-report": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-ptm-sheet": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-ptm-crew": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-prestart": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-po": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-sign": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-team": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-subjobs-board": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-site-inspection": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-builder-kit": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-hz-icons": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-std": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-po-board": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-logo": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Page": {
+      "main": [
+        [
+          {
+            "node": "Unpack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-permit": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-visit": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-hs": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-pci": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inspections": {
+      "main": [
+        [
+          {
+            "node": "Live Site Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-coshh-builder": {
+      "main": [
+        [
+          {
+            "node": "Which Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sign Induction": {
+      "main": [
+        [
+          {
+            "node": "CBS Brand",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guard Hook": {
+      "main": [
+        [
+          {
+            "node": "Serve Guard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Hook": {
+      "main": [
+        [
+          {
+            "node": "Serve Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Keep View": {
+      "main": [
+        [
+          {
+            "node": "Inspections",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Unpack": {
+      "main": [
+        [
+          {
+            "node": "Get Logo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Logo": {
+      "main": [
+        [
+          {
+            "node": "Keep View",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Live Site Data": {
+      "main": [
+        [
+          {
+            "node": "Sign Induction",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CBS Brand": {
+      "main": [
+        [
+          {
+            "node": "Scope Fill",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scope Fill": {
+      "main": [
+        [
+          {
+            "node": "Serve",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Viewer Hook": {
+      "main": [
+        [
+          {
+            "node": "Serve Viewer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "95c500fb-e9a5-4019-857c-d498f3770e7c",
+      "name": "GET cbs-admin",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-admin",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "fe65f977-7c2b-49a9-9ddd-286c363ccc82"
+    },
+    {
+      "id": "dabd319f-4d8e-42c6-82b6-46ee098e43be",
+      "name": "Which Page",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        1824
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var P = ['cbs-admin','cbs-rams-builder','cbs-cphsp-builder','cbs-toolbox-builder','cbs-team-meeting','cbs-incident-report','cbs-ptm-sheet','cbs-ptm-crew','cbs-prestart','cbs-po','cbs-sign','cbs-job-file','cbs-team','cbs-subjobs-board','cbs-site-inspection','cbs-builder-kit','cbs-hz-icons','cbs-std','cbs-po-board','cbs-logo','cbs-permit','cbs-visit','cbs-hs','cbs-pci','cbs-coshh-builder'];\nvar hit = '';\nfor (var i = 0; i < P.length; i++) { try { if ($('GET ' + P[i]).isExecuted) { hit = P[i]; break; } } catch (e) {} }\nreturn [{ json: { name: 'page:' + hit } }];"
+      }
+    },
+    {
+      "id": "f534fcce-0ba3-4c00-9020-763663831bfc",
+      "name": "GET cbs-rams-builder",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        192
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-rams-builder",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "335e47bf-149f-4c5c-844d-6b8651a564be"
+    },
+    {
+      "id": "d2ae2a86-b6e5-4736-8812-6a8cee33cd2c",
+      "name": "GET cbs-cphsp-builder",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        384
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-cphsp-builder",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "9e7568fc-bee0-4a8e-a237-866134ed0c7f"
+    },
+    {
+      "id": "f918f5c2-ca07-42f2-95ff-4a3fc09ebe68",
+      "name": "GET cbs-toolbox-builder",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        576
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-toolbox-builder",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "2cd73c53-cd57-4440-b773-3a54b1341c5c"
+    },
+    {
+      "id": "73b2ed9e-d023-4280-be69-f34c21c3279f",
+      "name": "GET cbs-team-meeting",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        768
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-team-meeting",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "940fb59f-151d-4f13-8f00-96cd19ff9a67"
+    },
+    {
+      "id": "e0a576b7-91cf-4992-ab7e-f2b087a0f8f4",
+      "name": "GET cbs-incident-report",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        960
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-incident-report",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "e0025467-4abc-420c-8fc5-255af4535bca"
+    },
+    {
+      "id": "052e0c0b-fc10-4059-81db-e758cdaece2e",
+      "name": "GET cbs-ptm-sheet",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        1152
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-ptm-sheet",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "56356e73-e458-4d32-ab1a-5534f5839089"
+    },
+    {
+      "id": "87fe4ce5-e291-4d19-9509-08b3845f9a0d",
+      "name": "GET cbs-ptm-crew",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        1344
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-ptm-crew",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "eaae3117-d17c-4d2c-8bb4-ce911ccaf2c7"
+    },
+    {
+      "id": "7390e1a3-77ee-4ec6-bba5-bfe1be1bd26b",
+      "name": "GET cbs-prestart",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        1536
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-prestart",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "750e46d2-f94e-47eb-9cc1-2af972f6a5a6"
+    },
+    {
+      "id": "e95d28fd-e11a-4ad7-bf77-9788bf13513f",
+      "name": "GET cbs-po",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        1728
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-po",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "81d7fdd9-b118-4bc6-b469-55efe890b2a0"
+    },
+    {
+      "id": "39fe2866-db83-44b3-8e92-5f67155286b0",
+      "name": "GET cbs-sign",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        1920
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-sign",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "2c3be4ba-720a-4c29-b2a5-9d478d6cb231"
+    },
+    {
+      "id": "abfe78e1-8036-4081-b297-f891af6a19a3",
+      "name": "GET cbs-team",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        2304
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-team",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "8a954111-6903-48a4-9ff8-a5b91d85ecb0"
+    },
+    {
+      "id": "175044e2-ad70-4153-b537-a0f119529124",
+      "name": "GET cbs-subjobs-board",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        2496
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-subjobs-board",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "27484e42-efef-4d57-974e-8be533037d45"
+    },
+    {
+      "id": "f0b49ad3-89c5-4701-aa08-d8e9f4b8d555",
+      "name": "GET cbs-site-inspection",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        2688
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-site-inspection",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "2fb6c5e6-6715-4d7b-a985-7d0ee18f2e94"
+    },
+    {
+      "id": "7d97503a-2625-462b-8a08-b37db960b4c4",
+      "name": "GET cbs-builder-kit",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        2880
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-builder-kit",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "6726c9a0-f1bf-436f-a6a7-ce5aec5e54df"
+    },
+    {
+      "id": "b8d1d5ad-452d-4401-9bad-a1a180c2b5c1",
+      "name": "GET cbs-hz-icons",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        3072
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-hz-icons",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "605fa461-5ce7-4c8f-96d1-5b4fd091ecc5"
+    },
+    {
+      "id": "9a610128-814b-411e-be04-1e9eae2845ca",
+      "name": "GET cbs-std",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        3264
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-std",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "ad4cfd6f-6372-48fd-adb4-5c88c8ef2617"
+    },
+    {
+      "id": "ce85f77f-ccc6-4eee-915f-25c62dd7e7a2",
+      "name": "GET cbs-po-board",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        3456
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-po-board",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "2f750433-e318-469b-89cf-9e2b03fd0d7c"
+    },
+    {
+      "id": "afc6b9b3-7964-4556-a8be-1724cc43ff37",
+      "name": "GET cbs-logo",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        3648
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-logo",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "5419ee0a-a363-4d7d-9a13-ad34dcb5c39f"
+    },
+    {
+      "id": "f33b022a-15d3-44f5-b4a7-9031a0228a6d",
+      "name": "Get Page",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        1824
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HOHWTBOJHrHF0TvB"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "name",
+              "condition": "eq",
+              "keyValue": "={{ $json.name }}"
+            }
+          ]
+        },
+        "returnAll": false,
+        "limit": 1
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "b5fdb299-6e93-4f32-94fb-2c4365e1ac3d",
+      "name": "Unpack",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        1824
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var r = $input.first().json || {};\nvar o = { t: 'text/plain; charset=utf-8', b: 'Page not found' };\ntry { if (r.content) o = JSON.parse(r.content); } catch (e) {}\nvar DL = String.raw`<script id=\"cbsDl\">(function(){if(window.__cbsDl)return;window.__cbsDl=1;\nvar ua=navigator.userAgent||'',fr=false;try{fr=window.top!==window.self;}catch(e){fr=true;}\nvar ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);\nvar wv=(ios&&ua.indexOf('Safari/')<0)||ua.indexOf('; wv)')>-1||/ServiceM8/i.test(ua);\nwindow.__cbsDlPost=fr||wv;\nvar oc=HTMLAnchorElement.prototype.click,od=HTMLAnchorElement.prototype.dispatchEvent;\nfunction want(a){if(!window.__cbsDlPost||!a||!a.download)return false;var h=String(a.href||'');return (h.indexOf('blob:')===0||h.indexOf('data:application/pdf')===0)&&(/[.]pdf$/i.test(a.download)||h.indexOf('data:application/pdf')===0);}\nfunction b64(href){return fetch(href).then(function(r){return r.blob();}).then(function(b){return new Promise(function(res,rej){var f=new FileReader();f.onload=function(){res(String(f.result).split(',')[1]);};f.onerror=rej;f.readAsDataURL(b);});});}\nfunction css(){if(document.getElementById('cbsDlCss'))return;var s=document.createElement('style');s.id='cbsDlCss';s.textContent='#cbsDlOv{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px;font-family:inherit}#cbsDlOv .bx{background:#fff;border-radius:12px;padding:20px;max-width:360px;width:100%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.25)}#cbsDlOv b{display:block;font-size:18px;margin-bottom:6px}#cbsDlOv p{margin:0 0 14px;color:#555;font-size:14px;word-break:break-word}#cbsDlOv button{display:block;width:100%;border:0;border-radius:8px;padding:13px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;margin-top:8px}#cbsDlGo{background:#F47920;color:#fff}#cbsDlX{background:#eef0f2;color:#1f2328}';document.head.appendChild(s);}\nfunction show(name,data){css();var o=document.getElementById('cbsDlOv');if(o)o.remove();o=document.createElement('div');o.id='cbsDlOv';\n var bx=document.createElement('div');bx.className='bx';var t=document.createElement('b');t.textContent='Your PDF is ready';var p=document.createElement('p');p.textContent=name;\n var f=document.createElement('form');f.method='POST';f.action='/webhook/cbs-pdf-out';f.target='_blank';f.style.margin='0';\n [['name',name],['data',data]].forEach(function(x){var i=document.createElement('input');i.type='hidden';i.name=x[0];i.value=x[1];f.appendChild(i);});\n var g=document.createElement('button');g.type='submit';g.id='cbsDlGo';g.textContent='Open PDF';f.appendChild(g);\n var x=document.createElement('button');x.type='button';x.id='cbsDlX';x.textContent='Close';x.onclick=function(){o.remove();};\n f.onsubmit=function(){setTimeout(function(){o.remove();},1500);};\n bx.appendChild(t);bx.appendChild(p);bx.appendChild(f);bx.appendChild(x);o.appendChild(bx);document.body.appendChild(o);}\nfunction go(a){var n=a.download||'document.pdf';b64(a.href).then(function(d){show(n,d);})['catch'](function(){try{window.open(a.href,'_blank');}catch(e){}});}\nHTMLAnchorElement.prototype.click=function(){if(want(this)){go(this);return;}return oc.apply(this,arguments);};\nHTMLAnchorElement.prototype.dispatchEvent=function(e){if(e&&e.type==='click'&&want(this)){go(this);return true;}return od.apply(this,arguments);};\n})();</script>`;\nif (/text\\/html/i.test(String(o.t||'')) && typeof o.b === 'string' && o.b.indexOf('id=\"cbsDl\"') < 0) { var m = o.b.match(/<head[^>]*>/i); if (m) { var i = o.b.indexOf(m[0]) + m[0].length; o.b = o.b.slice(0, i) + DL + o.b.slice(i); } }\nreturn [{ json: { t: o.t, b: o.b } }];"
+      }
+    },
+    {
+      "id": "fc7cb84a-db73-43ff-ac40-23232562c03f",
+      "name": "Serve",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        1824
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ (/text\\/html/i.test(String($json.t||'')) && typeof $json.b === 'string' && $json.b.indexOf('/webhook/cbs-guard') < 0) ? $json.b.replace(/<head[^>]*>/i, '$&<script src=\"/webhook/cbs-guard\"></script>') : $json.b }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "={{ $json.t }}"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "a1f5b94c-6420-43d6-bcd8-2a3a19468fd9",
+      "name": "GET cbs-permit",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        3840
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-permit",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "4a94815e-6a6a-4106-8ded-9640898d772a"
+    },
+    {
+      "id": "16f6dcf0-428a-4faa-a920-a3ae540eb797",
+      "name": "GET cbs-visit",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        4032
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-visit",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "f5ceb44b-afdf-4131-8b46-ec4741ec7856"
+    },
+    {
+      "id": "b3f19d4f-fca1-4ae5-9327-454d2c82e64a",
+      "name": "GET cbs-hs",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        4224
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-hs",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "9a6eb12b-d1d2-4cc4-bffa-d7de34805a07"
+    },
+    {
+      "id": "5bf57dca-fd9a-45e6-877a-2bb6deddefaa",
+      "name": "GET cbs-pci",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        4416
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-pci",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "caed0788-e0dc-41d3-bfd4-5ab0a14942b2"
+    },
+    {
+      "id": "d4ade210-479f-49ba-bffe-e3da526745eb",
+      "name": "CBS Brand",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        784,
+        2000
+      ],
+      "parameters": {
+        "jsCode": "/* CBS brand converter: Embr black/gold -> CBS grey #3d4043 / orange #F47920 (sign-on page style). Skipped for pages already baked (marker cbs-baked at the start). */\nfunction cbsBrand(h){\n  var O='#F47920',OD='#d4650f',G='#3d4043',TINT='#fde4d0',LO='#ffb37a';\n  var GOLD=/#ffbe59\\b/ig, BLACK=/^(#000|#000000|#111|var\\(--ink\\))$/i;\n  function conv(body,sel){\n    var decl=body.split(';'),bgI=-1,colI=-1,bcI=-1,bg='',col='',bc='';\n    decl.forEach(function(d,i){var m=d.match(/^\\s*(background(?:-color)?|color|border-color)\\s*:\\s*([^!]+?)\\s*(!important)?\\s*$/i);if(!m)return;var p=m[1].toLowerCase(),v=m[2].trim();\n      if(p==='color'){colI=i;col=v;}else if(p==='border-color'){bcI=i;bc=v;}else{bgI=i;bg=v;}});\n    if(bgI<0) return null;\n    var isBlack=BLACK.test(bg), isGold=/^(#ffbe59|var\\(--brand\\))$/i.test(bg), gCol=/^(#ffbe59|var\\(--brand\\))$/i.test(col), wCol=/^(#fff|#ffffff|white)$/i.test(col), kCol=/^(#000|#000000|#111|#161616)$/i.test(col);\n    function set(i,prop,val){var imp=/!important/.test(decl[i])?'!important':'';decl[i]=decl[i].replace(/^(\\s*)[^:]+:.*$/,'$1'+prop+':'+val+imp);}\n    function rep(i,v){var m=decl[i].match(/^\\s*([^:]+):/);set(i,m[1].trim(),v);}\n    if(isBlack&&gCol){rep(bgI,O);rep(colI,'#fff');if(bcI>-1&&BLACK.test(bc))rep(bcI,O);return decl.join(';');}\n    if(isBlack&&wCol&&/(^|[\\s,>])(button|\\.btn|a\\.p|button\\.p|\\.go|\\.big)\\b/.test(sel||'')&&!/top|header|\\.ph/.test(sel||'')){rep(bgI,O);if(bcI>-1&&BLACK.test(bc))rep(bcI,O);return decl.join(';');}\n    if(isBlack&&(wCol||colI<0)&&!/\\.ph span a/.test(sel||'')){rep(bgI,G);if(bcI>-1&&BLACK.test(bc))rep(bcI,G);return decl.join(';');}\n    if(isBlack&&kCol){return null;}\n    if(isGold&&(kCol||colI<0)){\n      if(/\\bth\\b|thead/.test(sel||'')&&colI<0){rep(bgI,TINT);return decl.join(';');}\n      if(colI<0&&/rule|li:before|\\.st\\b/.test(sel||'')){rep(bgI,O);return decl.join(';');}\n      rep(bgI,O);if(colI>-1)rep(colI,'#fff');else decl.push('color:#fff');if(bcI>-1)rep(bcI,O);return decl.join(';');}\n    return null;\n  }\n  h=h.replace(/([^{}]{0,200})\\{([^{}<>]{0,1200})\\}/g,function(all,sel,body){\n    if(!/background/i.test(body))return all;var r=conv(body,sel);return r==null?all:sel+'{'+r+'}';});\n  h=h.replace(/(style=\\\\?[\"'])([^\"'\\\\]{0,600})(\\\\?[\"'])/g,function(all,a,body,b){\n    if(!/background/i.test(body))return all;var r=conv(body,'th');return r==null?all:a+r+b;});\n  h=h.replace(/((?:header|\\.top|\\.topbar)[^{}]{0,60}\\{[^{}]*?color:\\s*)(var\\(--brand\\)|#FFBE59)/gi,'$1'+LO);\n  h=h.replace(/(\\.secT i\\{[^}]*?color:)#FFBE59/gi,'$1'+LO);\n  h=h.replace(/((?:\\.top|\\.topbar)[^{}]{0,40}\\{[^{}]*?)background:\\s*#1[cd]1[cd]1[cd](!important)?;\\s*color:\\s*#fff(!important)?;([^{}]*)\\}/gi,function(a,pre,i1,i2,rest){\n    rest=rest.replace(/border:1px solid #(555|444)/i,'border:1px solid #d9d9d6').replace(/border-color:\\s*#(555|444)/i,'border-color:#d9d9d6');\n    return pre+'background:#fff'+(i1||'')+';color:#1d1d1d'+(i2||'')+';'+rest+'}';});\n  h=h.replace(/background:#000;color:#fff(?![\\w;]*border-radius:50%)/g,'background:'+G+';color:#fff');\n  var R=[[/--brand-deep:\\s*#e0982a/ig,'--brand-deep:'+OD],[/#e0982a/ig,OD],[GOLD,O],\n    [/255\\s*,\\s*190\\s*,\\s*89/g,'244,121,32'],[/setFillColor\\(0,\\s*0,\\s*0\\)/g,'setFillColor(61,64,67)'],[/OR=\\[247,148,29\\]/g,'OR=[244,121,32]'],[/st===\"lead\"\\?190:0,st===\"lead\"\\?89:0/g,'st===\"lead\"?121:0,st===\"lead\"?32:0'],[/st===\"lead\"\\?255:0,st===\"lead\"\\?121/g,'st===\"lead\"?244:0,st===\"lead\"?121'],[/setFillColor\\(255,236,204\\)/g,'setFillColor(253,228,208)'],[/setDrawColor\\(201,191,163\\)/g,'setDrawColor(217,217,214)'],[/setTextColor\\(122,139,135\\)/g,'setTextColor(107,110,112)'],[/setFillColor\\(253,231,200\\)/g,'setFillColor(253,228,208)'],[/224\\s*,\\s*152\\s*,\\s*42/g,'212,101,15'],\n    [/--bg:\\s*#f3f2ef/ig,'--bg:#f2f2f0'],[/#f3f2ef/ig,'#f2f2f0'],[/#e0ddd7/ig,'#d9d9d6'],[/#dddad4/ig,'#d9d9d6'],[/#6c6a66/ig,'#6b6e70'],\n    [/background:#1d1d1d!important;color:#fff!important;border:1px solid #444!important/g,'background:#fff!important;color:#1d1d1d!important;border:1px solid #d9d9d6!important'],[/\\.std-del\\{color:#ff8a80!important;border-color:#7a2a24!important\\}/g,'.std-del{color:#b3261e!important;border-color:#d9d9d6!important}'],[/background:#fff;color:#000;border:1px solid #000/g,'background:#fff;color:#1d1d1d;border:1px solid #d9d9d6'],[/#fff8e8/ig,'#fff4ec'],[/#faf9f7/ig,'#f7f7f6'],[/#eeece8/ig,'#ececea'],[/#c9c5bd/ig,'#c4c6c8']];\n  R.forEach(function(r){h=h.replace(r[0],r[1]);});\n  h=h.replace(/(background(?:-color)?:\\s*(?:#F47920|var\\(--brand\\))(?:!important)?;(?:[^\"'{}<>;]*;){0,4}?\\s*color:\\s*)#000\\b/g,'$1#fff');\n  h=h.replace(/((?:^|[;{\"'\\s])color:\\s*)#000\\b([^\"'{}<>]{0,90}?background(?:-color)?:\\s*(?:#F47920|var\\(--brand\\)))/g,'$1#fff$2');\n  return h;\n}\nvar name='';try{name=$('Which Page').first().json.name||'';}catch(e){}\nvar o=$input.first().json||{};\nif(!/^page:cbs-(hz-icons|logo)$/.test(name)&&typeof o.b==='string'&&o.b.slice(0,40).indexOf('cbs-baked')<0){try{o.b=cbsBrand(o.b);}catch(e){}}\nreturn [{json:{t:o.t,b:o.b}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "131e28e3-2688-4fe3-80a6-783e819e29ef",
+      "name": "Keep View",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        784,
+        1824
+      ],
+      "parameters": {
+        "jsCode": "/* Input: Get Logo (page:cbs-logo row). Page comes from Unpack. */\n/* Keeps the hub on the same section/record across refresh (page:cbs-admin only). Hides the hub until the saved section is restored so home never flashes. */\nvar KEEP = String.raw`<script id=\"cbsKeep\">(function(){if(window.__cbsKeep)return;window.__cbsKeep=1;\nvar K=\"cbsHubView\",q=null;try{q=new URLSearchParams(location.search);}catch(e){}\nvar deep=q&&(q.get(\"open\")||q.get(\"new\")),saved=null;\nif(!deep){try{var hs=history.state;if(hs&&hs.cbs)saved={cbs:hs.cbs,d:hs.d||0};}catch(e){}\n if(!saved){try{var ss=JSON.parse(sessionStorage.getItem(K)||\"null\");if(ss&&ss.cbs)saved={cbs:ss.cbs,d:0};}catch(e){}}}\nfunction keep(){try{var s=history.state;if(s&&s.cbs)sessionStorage.setItem(K,JSON.stringify({cbs:s.cbs}));}catch(e){}}\nwindow.addEventListener(\"pagehide\",keep);\ndocument.addEventListener(\"visibilitychange\",function(){if(document.visibilityState===\"hidden\")keep();});\nif(!saved||!saved.cbs.name||saved.cbs.name===\"home\")return;\nvar R=document.documentElement;R.classList.add(\"cbs-restoring\");\ntry{var st=document.createElement(\"style\");st.id=\"cbsKeepCss\";st.textContent='html.cbs-restoring #app>*,html.cbs-restoring #qm,html.cbs-restoring #nt,html.cbs-restoring #title,html.cbs-restoring #back{visibility:hidden!important}html.cbs-restoring #app{position:relative;min-height:60vh}html.cbs-restoring #app::before{content:\"Loading\\\\2026\";position:absolute;left:0;right:0;top:40px;text-align:center;color:#6b6e70;font-size:15px}';(document.head||R).appendChild(st);}catch(e){}\nfunction show(){R.classList.remove(\"cbs-restoring\");}\nvar fail=setTimeout(show,10000);\nfunction restore(){try{window.dispatchEvent(new PopStateEvent(\"popstate\",{state:saved}));history.replaceState(saved,\"\");}catch(e){}\n clearTimeout(fail);requestAnimationFrame(function(){requestAnimationFrame(show);});}\nfunction watch(){var b=document.body;if(b.classList.contains(\"cbs-ready\")){restore();return;}\n var mo=new MutationObserver(function(){if(b.classList.contains(\"cbs-ready\")){mo.disconnect();restore();}});\n mo.observe(b,{attributes:true,attributeFilter:[\"class\"]});}\nif(document.body)watch();else document.addEventListener(\"DOMContentLoaded\",watch);\n})();</script>`;\nvar name = '';\ntry { name = $('Which Page').first().json.name || ''; } catch (e) {}\nvar o = $('Unpack').first().json || {};\nif (name === 'page:cbs-admin' && typeof o.b === 'string' && o.b.indexOf('id=\"cbsKeep\"') < 0) {\n  var m = o.b.match(/<head[^>]*>/i);\n  if (m) { var i = o.b.indexOf(m[0]) + m[0].length; o.b = o.b.slice(0, i) + KEEP + o.b.slice(i); }\n}\n/* Hub header (page:cbs-admin): Actions and Jobs are sent in the header HTML (stored page). This only styles and wires them,\n   keeps the Actions count in step with the board on every redraw. (The home-page \"Hub tools\" TV tile was removed: TV dashboard lives in the side menu under Settings.)\n   No TV header button, no timers. */\nvar HDR = '<style id=\"cbsHdr2Css\">#actBtn{background:#F47920;color:#fff;border:0;border-radius:8px;padding:8px 16px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;margin-left:auto;margin-right:8px;display:inline-flex;align-items:center;gap:6px}#actBtn .c{background:#fff;color:#F47920;border-radius:10px;padding:0 7px;font-size:12px;font-weight:700}#enqBtn{margin-left:0!important;margin-right:8px;background:#fff!important;color:#1d1d1d!important;border:1px solid #fff!important;border-radius:8px;font:inherit;font-size:13px;font-weight:700!important;padding:7px 14px!important;cursor:pointer;white-space:nowrap}@media (max-width:760px){#actBtn{order:7;flex:1 1 0!important;margin:0!important;justify-content:center;padding:8px 10px!important}#enqBtn{order:7!important;flex:1 1 0!important;margin:0!important}}</style><script id=\"cbsHdr2\">(function(){if(window.__cbsHdr2)return;window.__cbsHdr2=1;var U=\"/webhook/cbs-tv-settings?k=[redacted-secret]\",E=\"https://old-hub.example/webhook/cbs-jobs\",CNT=\"\";function tv(){var w=window.open(U,\"_blank\");if(!w)location.href=U;}var a=document.getElementById(\"actBtn\"),j=document.getElementById(\"enqBtn\");if(a)a.onclick=function(){if(typeof go===\"function\"){go({name:\"actions\"});document.body.classList.remove(\"m-open\");}};if(j)j.onclick=function(){var w=window.open(E,\"_blank\");if(!w)location.href=E;};function cnt(){var t=document.querySelector(\"#actTile .n\");if(t)CNT=String(t.textContent||\"\").trim();else{var q=document.querySelector(\"#qmAct .c\");if(q&&!CNT)CNT=String(q.textContent||\"\").trim();}if(!a)return;var s=a.querySelector(\".c\");if(CNT&&CNT!==\"0\"){if(!s){s=document.createElement(\"span\");s.className=\"c\";a.appendChild(s);}if(s.textContent!==CNT)s.textContent=CNT;}else if(s)s.remove();}try{[\"app\",\"qm\"].forEach(function(id){var e=document.getElementById(id);if(e&&window.MutationObserver)new MutationObserver(cnt).observe(e,{childList:true,subtree:true,characterData:true});});}catch(e){}cnt();})();</script>';\nif (name === 'page:cbs-admin' && typeof o.b === 'string' && o.b.indexOf('id=\"cbsHdr2\"') < 0) {\n  var bk = o.b.lastIndexOf('</body>');\n  if (bk > -1) o.b = o.b.slice(0, bk) + HDR + o.b.slice(bk); else o.b += HDR;\n}\n\n/* Every page: first frame matches the final page.\n   G1 builder logo sent in the HTML (was filled in by script after a fetch).\n   G2 Job File button and job back-links sent with the job when ?job= is in the URL (was revealed by a 1.5 s poll).\n   G4 loading placeholders say what is loading. Anchors that are not found are left alone. */\nvar LOGO = '';\ntry { var lr = $input.first().json || {}, lc = String(lr.content || ''); try { var lo = JSON.parse(lc); if (lo && lo.b) lc = String(lo.b); } catch (e) {} var lm = lc.match(/src=\"(data:image\\/[a-z]+;base64,[A-Za-z0-9+\\/=]+)\"/); if (lm) LOGO = lm[1]; } catch (e) {}\nvar slug = name.replace(/^page:/, ''), q = {};\ntry { q = $('GET ' + slug).first().json.query || {}; } catch (e) {}\nvar JOB = String(q.job || '').replace(/[^0-9A-Za-z-]/g, ''), RID = String(q.id || '').replace(/[^0-9]/g, '');\nif (/^(10871|10885)$/.test(JOB)) JOB = '';\nif (typeof o.b === 'string' && /text\\/html/i.test(String(o.t || 'text/html'))) {\n  var b = o.b;\n  if (LOGO) b = b.replace(/<img class=\"logo\" id=\"topLogo\"( src=\"\")? alt=/, '<img class=\"logo\" id=\"topLogo\" src=\"' + LOGO + '\" alt=');\n  if (LOGO) b = b.replace('<img id=\"cbsLogo\" alt=\"Chelmsford Building Services\" title=\"Home\">', '<img id=\"cbsLogo\" alt=\"Chelmsford Building Services\" title=\"Home\" src=\"' + LOGO + '\">');\n  if (JOB) {\n    var jf = '/webhook/cbs-job-file?job=' + encodeURIComponent(JOB);\n    b = b.replace(/id=([\"'])cbsJf\\1 href=([\"'])\\/webhook\\/cbs-job-file\\2 style=([\"'])display:none\\3/, function (m, a, c) { return 'id=' + a + 'cbsJf' + a + ' href=' + c + jf + c + ' title=' + c + 'Open the Job File for job ' + JOB + c; });\n    if (slug === 'cbs-pci') b = b.replace(\"<a id='hb' href='/webhook/cbs-job-file'>&larr; Job File</a>\", \"<a id='hb' href='\" + jf + \"'>&larr; Job \" + JOB + \"</a>\");\n    if (slug === 'cbs-po') b = b.replace('<a id=\"boardLink\" href=\"/webhook/cbs-po-board\">', '<a id=\"boardLink\" href=\"/webhook/cbs-po-board?job=' + encodeURIComponent(JOB) + '\">');\n  }\n  var NOUN = {'cbs-rams-builder':'RAMS','cbs-cphsp-builder':'construction phase plan','cbs-toolbox-builder':'record','cbs-team-meeting':'team meeting','cbs-incident-report':'incident report','cbs-prestart':'pre-start','cbs-ptm-sheet':'sheet','cbs-po':'purchase order','cbs-site-inspection':'inspection','cbs-permit':'permit','cbs-coshh-builder':'CoSHH assessment'};\n  var LIST = {'cbs-po-board':'purchase orders','cbs-subjobs-board':'subcontractor RAMS','cbs-hs':'H&amp;S documents','cbs-permit':'permits to work','cbs-visit':'visitors log','cbs-pci':'pre-construction information','cbs-ptm-crew':'load-up sheet'};\n  var txt = RID && NOUN[slug] ? 'Loading ' + NOUN[slug] + ' ' + RID + '&#8230;' : (JOB ? 'Loading job ' + JOB + '&#8230;' : (LIST[slug] ? 'Loading ' + LIST[slug] + '&#8230;' : ''));\n  if (slug === 'cbs-pci' || slug === 'cbs-visit' || slug === 'cbs-ptm-crew') txt = LIST[slug] ? 'Loading ' + LIST[slug] + (JOB ? ' for job ' + JOB : '') + '&#8230;' : txt;\n  if (txt) {\n    var bs = b.search(/<body[^>]*>/i), se = bs > -1 ? b.indexOf('<script', bs) : -1;\n    if (bs > -1 && se > bs) { var seg = b.slice(bs, se), nseg = seg.replace(/>Loading(&#8230;|&hellip;|\\u2026)</, '>' + txt + '<'); if (nseg !== seg) b = b.slice(0, bs) + nseg + b.slice(se); }\n    var tjs = txt.replace(/&#8230;/g, '\\\\u2026').replace(/&amp;/g, '&');\n    if (b.split('status(\"Loading\\\\u2026\")').length === 2) b = b.split('status(\"Loading\\\\u2026\")').join('status(\"' + tjs + '\")');\n  }\n  o.b = b;\n}\nreturn [{ json: { t: o.t, b: o.b } }];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "2b11453d-0d29-46dd-9ec6-00a4a8badb11",
+      "name": "Inspections",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        784,
+        1640
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "DPgv7Nm5Q4Vx8uVv"
+        },
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "condition": "lt",
+              "keyName": "id",
+              "keyValue": "={{ $('Which Page').first().json.name === 'page:cbs-site-inspection' ? 2000000000 : 0 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions"
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "79aed4ae-a880-45ce-8d8a-bb85c67d7a08",
+      "name": "Live Site Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        1640
+      ],
+      "parameters": {
+        "jsCode": "var name='';try{name=$('Which Page').first().json.name||'';}catch(e){}\nvar o=Object.assign({},$('Keep View').first().json);\nif(name!=='page:cbs-site-inspection'||typeof o.b!=='string')return [{json:{t:o.t,b:o.b}}];\nvar q={};try{q=$('GET cbs-site-inspection').first().json.query||{};}catch(e){}\nvar d={};try{d=await this.helpers.httpRequest({method:'GET',url:'https://old-hub.example/webhook/cbs-admin-data?t=workers,cphsp',json:true,timeout:20000})||{};}catch(e){d={};}\nvar workers=(d.workers||[]).filter(function(w){return w&&w.name&&w.active!==false;}).map(function(w){return String(w.name);}).sort();\nvar cphsps=(d.cphsp||[]).map(function(c){var st={};try{st=JSON.parse(c.state_json||'{}')||{};}catch(e){}var row=(st.insp||[]).filter(function(r){return r&&/site safety inspection/i.test(String(r[0]));})[0]||[];return {id:c.id,job:String(c.job_no||''),label:c.cphsp_no||('CPHSP-'+c.id),site:c.site||'',freq:row[1]||'Weekly',insp_by:row[2]||'Site manager'};});\nvar ins=$('Inspections').all().map(function(i){return i.json;}).filter(function(r){return r&&r.id;});\nvar job=String(q.job||'').trim();\nvar prev=ins.filter(function(r){return !job||String(r.job_no||'')===job;}).map(function(r){return {id:r.id,job:String(r.job_no||''),no:r.insp_no||'',dated:r.dated||'',status:r.status||''};}).sort(function(a,b){return String(b.dated).localeCompare(String(a.dated));});\nvar rec=null;if(q.id){var r=ins.filter(function(x){return String(x.id)===String(q.id);})[0];if(r){var s={};try{s=JSON.parse(r.state_json||'{}')||{};}catch(e){}rec={id:r.id,insp_no:r.insp_no||'',state:s};if(!job)job=String(r.job_no||'');}}\nvar b=o.b,K='window.__D=',k=b.indexOf(K);\nif(k<0)return [{json:{t:o.t,b:b}}];\nvar s0=k+K.length,i=s0,dep=0,inS=false,esc=false;\nfor(;i<b.length;i++){var ch=b[i];if(inS){if(esc)esc=false;else if(ch==='\\\\')esc=true;else if(ch==='\"')inS=false;continue;}if(ch==='\"'){inS=true;continue;}if(ch==='{')dep++;else if(ch==='}'){dep--;if(dep===0){i++;break;}}}\nvar old={};try{old=JSON.parse(b.slice(s0,i));}catch(e){old={};}\nvar nd=Object.assign({},old,{job:job,workers:workers,cphsps:cphsps,prev:prev,rec:rec});\nnd.items=(old.items||[]).map(function(t){return String(t).replace('roof or chimney work','roof and edge work');});\nb=b.slice(0,s0)+JSON.stringify(nd).replace(/</g,'\\\\u003c')+b.slice(i);\nreturn [{json:{t:o.t,b:b}}];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "cf7ff9ed-1cb2-4f46-a396-f7185f925fd8",
+      "name": "GET cbs-coshh-builder",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        4608
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-coshh-builder",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "30b39a15-804d-4014-9b5c-ca2067b44a32"
+    },
+    {
+      "id": "8a35475e-b3e0-4f18-bebf-18b148fc236c",
+      "name": "Sign Induction",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        2000
+      ],
+      "parameters": {
+        "jsCode": "var PRES_OLD=\"window.__CBS_PV={doc:\\\"cphsp\\\",label:\\\"site induction\\\",preview:false};(function(){var t=0,iv=setInterval(function(){t++;var id=Number(new URLSearchParams(location.search).get(\\\"id\\\")||window.__cbsRecId||0);var bar=document.querySelector(\\\".topbar\\\");if(bar&&id&&!document.getElementById(\\\"presBtn\\\")){var a=document.createElement(\\\"a\\\");a.id=\\\"presBtn\\\";a.className=\\\"btn\\\";a.target=\\\"_blank\\\";a.rel=\\\"noopener\\\";a.textContent=\\\"Present induction\\\";a.href=\\\"/webhook/cbs-sign?doc=cphsp&id=\\\"+id+\\\"&present=1\\\";var pdf=document.getElementById(\\\"pdfBtn\\\");if(pdf&&pdf.parentNode===bar)bar.insertBefore(a,pdf);else bar.appendChild(a);}var b=document.getElementById(\\\"presBtn\\\");if(b&&id)b.href=\\\"/webhook/cbs-sign?doc=cphsp&id=\\\"+id+\\\"&present=1\\\";if(t>600)clearInterval(iv);},1000);})();\",PRES_NEW=\"window.__CBS_PV={doc:\\\"cphsp\\\",label:\\\"site induction\\\",preview:false};(function(){function rid(){return Number(new URLSearchParams(location.search).get(\\\"id\\\")||window.__cbsRecId||0);}function purl(id){return \\\"/webhook/cbs-sign?doc=cphsp&id=\\\"+id+\\\"&present=1\\\";}function warn(){alert(\\\"Save the CPHSP first, then present the induction.\\\");}setInterval(function(){var id=rid(),bar=document.querySelector(\\\".topbar\\\");if(bar){var a=document.getElementById(\\\"presBtn\\\");if(!a){a=document.createElement(\\\"a\\\");a.id=\\\"presBtn\\\";a.className=\\\"btn\\\";a.target=\\\"_blank\\\";a.rel=\\\"noopener\\\";a.textContent=\\\"Present induction\\\";a.onclick=function(e){if(!rid()){e.preventDefault();warn();}};var pdf=document.getElementById(\\\"pdfBtn\\\");if(pdf&&pdf.parentNode===bar)bar.insertBefore(a,pdf);else bar.appendChild(a);}a.href=id?purl(id):\\\"#\\\";a.style.opacity=id?\\\"\\\":\\\"0.6\\\";}var eb=document.querySelector(\\\"#cbsSign .es-bar\\\");if(eb&&!document.getElementById(\\\"esPres\\\")){var b=document.createElement(\\\"button\\\");b.type=\\\"button\\\";b.id=\\\"esPres\\\";b.className=\\\"qr\\\";b.textContent=\\\"Present induction\\\";b.onclick=function(){var i=rid();if(!i){warn();return;}window.open(purl(i),\\\"_blank\\\",\\\"noopener\\\");};var q=document.getElementById(\\\"esQrBtn\\\");if(q&&q.parentNode===eb)eb.insertBefore(b,q);else eb.appendChild(b);}},1000);})();\\n\";\nvar signPatch=function(h){\n if(h.indexOf('/*CBS-IND-v8*/')>-1)return {h:h,already:true};\n if(h.indexOf('function indHtml')>-1)throw new Error('old induction patch present - restore base first');\n function rep(a,b,tag){if(h.indexOf(a)<0)throw new Error('missing '+tag);h=h.split(a).join(b);}\n rep('</style>','table.kv{width:100%;border-collapse:collapse;font-size:14.5px;margin-bottom:6px}table.kv th{text-align:left;color:var(--m);font-weight:600;padding:7px 10px 7px 0;vertical-align:top;width:38%}table.kv td{padding:7px 0;vertical-align:top}table.kv tr+tr{border-top:1px solid var(--b)}.ind p{font-size:14.5px;line-height:1.45;white-space:pre-line;margin:8px 0}.ind h2{font-size:17px;display:flex;align-items:center}.step{display:inline-block;flex:0 0 26px;background:var(--o);color:#fff;border-radius:50%;width:26px;height:26px;text-align:center;line-height:26px;font-size:14px;margin-right:8px}.ind.done{border-color:#9fd3ae;background:#f6fbf7}.ind.done .step{background:#1a7f37}.tick{display:flex;gap:12px;align-items:center;margin-top:12px;padding:12px;border:1px solid var(--b);border-radius:8px;background:#fafafa;cursor:pointer;font-size:15px;-webkit-user-select:none;user-select:none}.tick input{width:26px;height:26px;flex:0 0 auto;margin:0;accent-color:#1a7f37}.ind.done .tick{background:#e6f4ea;border-color:#9fd3ae}#indProg{font-weight:600}.qrc{text-align:center}.qrc #qrBox{display:inline-block;padding:10px;border:5px solid var(--o);border-radius:12px;background:#fff;margin:6px 0}.qrc #qrBox img,.qrc #qrBox canvas{width:min(70vw,300px)!important;height:auto!important;display:block}.qrc small{display:block;color:var(--m);word-break:break-all;font-size:12px}</style>','css');\n rep(\"\\n if(done){h+='<div class=ok>\",\"\\n if(!done&&D.ind)h+=indHtml();\\n if(done){h+='<div class=ok>\",'insert');\n rep(\"I have read, or been briefed on, this '+esc(String(d.kind).toLowerCase())+'. I understand it and will follow it. I will stop work and tell my supervisor if anything changes or I am unsure.\",\"'+(D.ind?esc(D.ind.acceptance):'I have read, or been briefed on, this '+esc(String(d.kind).toLowerCase())+'. I understand it and will follow it. I will stop work and tell my supervisor if anything changes or I am unsure.')+'\",'agree');\n rep(\"if(!$('ag').checked){m.textContent='Tick the box to confirm you have read and understood it.';return;}\",\"if(D.ind&&!BRIEFED&&!indOk()){m.textContent='Go through each induction section above and tick it off.';var f=document.querySelector('.ind:not(.done)');if(f&&f.scrollIntoView)f.scrollIntoView({behavior:'smooth',block:'center'});return;}if(!$('ag').checked){m.textContent=D.ind?'Tick the acceptance box to confirm.':'Tick the box to confirm you have read and understood it.';return;}\",'check');\n rep(\" pad();$('go').onclick=sign;}\",\" pad();$('go').onclick=sign;indBind();}\",'bind');\n rep(\"D=d;$('sub').textContent=d.doc.kind+' sign-on'+(PRES?' (group)':'');render();\",\"D=d;$('sub').textContent=d.doc.kind+' sign-on'+(PRES?' (presented)':'');if(PRES&&D.ind)slides();else render();\",'load');\n rep(\"inducted_by:PRES?d.prepared_by:''\",\"inducted_by:BY||(PRES?d.prepared_by:'')\",'by');\n rep(\"N++;WK=true;\",\"N++;WK=true;TK={};\",'reset');\n rep('function pad(){',String.raw`/*CBS-IND-v8*/\nvar BRIEFED=Q.get('briefed')==='1',TK={};\nvar BY=Q.get('by')||'',SL=0,SLN=0;\nfunction slides(){var I=D.ind,d=D.doc,S=I.sections||[],w=I.presenters||[];if(BY&&w.indexOf(BY)<0)BY='';\n var st=document.createElement('style');st.textContent='html.svon,html.svon body{overflow:hidden!important;height:100%;overscroll-behavior:none}#sv{position:fixed;inset:0;z-index:5000;background:#f2f2f0;display:flex;flex-direction:column;font-family:inherit;overflow:hidden;touch-action:pan-y pinch-zoom}#sv .top{background:#3d4043;color:#fff;border-bottom:.8vh solid #F47920;padding:1.4vh 3vw;display:flex;align-items:center;gap:2vw;flex:0 0 auto}#sv .top img{height:6vh;min-height:30px}#sv .top b{font-size:clamp(16px,3vh,40px);flex:1}#sv .top span{font-size:clamp(14px,2.6vh,34px);color:#e6e6e6}#sv .stage{flex:1 1 auto;min-height:0;overflow:hidden;position:relative}#sv .sl{display:none;position:absolute;inset:0;padding:3vh 5vw;box-sizing:border-box;overflow:hidden}#sv .sl.on{display:flex;flex-direction:column;justify-content:center}#sv .in{width:100%;max-width:1600px;margin:0 auto}#sv h1{font-size:1.4em;margin:0 0 .5em;line-height:1.1}#sv h1 .n{display:inline-block;background:#F47920;color:#fff;border-radius:50%;width:1.4em;height:1.4em;line-height:1.4em;text-align:center;margin-right:.4em;font-size:.8em;vertical-align:middle}#sv .big,#sv p,#sv ul,#sv table{font-size:1em;line-height:1.35}#sv .big{color:inherit}#sv p{margin:.45em 0;white-space:pre-line}#sv table{border-collapse:collapse;width:100%}#sv th{text-align:left;color:#55585a;font-weight:600;padding:.3em 1em .3em 0;width:34%;vertical-align:top}#sv td{padding:.3em 0;vertical-align:top}#sv tr+tr{border-top:2px solid #d9d9d6}#sv ul{margin:.3em 0;padding-left:1.1em}#sv li{margin:.25em 0;font-size:1em!important}#sv th,#sv td,#sv p,#sv ul,#sv .big{font-size:1em!important}#sv b{font-size:inherit}#sv .ctl{display:flex;align-items:center;gap:2vw;padding:1.4vh 3vw;background:#fff;border-top:1px solid #d9d9d6;flex:0 0 auto}#sv .ctl button{font:inherit;font-size:clamp(16px,2.8vh,34px);font-weight:600;padding:1.1vh 3vw;border-radius:10px;border:2px solid #3d4043;background:#fff;color:#1d1d1d;cursor:pointer}#sv .ctl button.p{background:#F47920;border-color:#F47920;color:#fff}#sv .ctl button:disabled{opacity:.35}#sv .ctl button.fs{padding:1.1vh 1.6vw}#sv .dots{flex:1;text-align:center}#sv .dots i{display:inline-block;width:1.4vh;height:1.4vh;min-width:10px;min-height:10px;border-radius:50%;background:#c4c6c8;margin:0 .4vh}#sv .dots i.on{background:#F47920}#sv select{font:inherit;font-size:1em;padding:.3em .5em;border-radius:10px;border:2px solid #3d4043;min-width:40vw}#sv .qrw{display:flex;gap:4vw;align-items:center}#sv #svQr{background:#fff;padding:1.5vh;border:.8vh solid #F47920;border-radius:16px;flex:0 0 auto}#sv #svQr img,#sv #svQr canvas{width:min(52vh,40vw)!important;height:auto!important;display:block}#sv .warn{color:#b3261e;font-weight:600}#sv .hb{font:inherit;font-size:.8em;font-weight:600;padding:.4em 1em;border-radius:10px;border:2px solid #3d4043;background:#fff;color:#1d1d1d;cursor:pointer;margin-top:.4em}#svCo{position:fixed;inset:0;z-index:5100;background:#f2f2f0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:3vh 5vw;box-sizing:border-box;overflow:hidden;font-size:clamp(16px,3vh,34px)}#svCo.on{display:flex}#svCo .bx{width:100%;max-width:1100px}#svCo h1{font-size:1.6em;margin:0 0 .4em}#svCo p{margin:.4em 0;line-height:1.35}#svCo canvas{width:100%;height:28vh;border:2px dashed #888;border-radius:12px;background:#fff;touch-action:none;display:block;margin:.4em 0}#svCo .row{display:flex;gap:2vw;flex-wrap:wrap;margin-top:.6em}#svCo button{font:inherit;font-size:.9em;font-weight:600;padding:.5em 1.4em;border-radius:10px;border:2px solid #3d4043;background:#fff;color:#1d1d1d;cursor:pointer}#svCo button.p{background:#F47920;border-color:#F47920;color:#fff}#svCo .err{color:#b3261e;font-weight:600;min-height:1.2em}#svCo ul{margin:.3em 0;padding-left:1.1em;columns:2;column-gap:4vw}#svCo li{font-size:.85em!important;margin:.15em 0}#svCo .big{font-size:1.2em;font-weight:700;color:#1a7f37}';document.head.appendChild(st);\n var h='<div id=sv><div class=top><img src=\"'+(($('lg')||{}).src||'')+'\" alt=\"\"><b>'+esc(d.kind)+'</b><span>'+esc(d.title||'')+'</span></div><div class=stage>';\n h+='<div class=sl><div class=in><h1>Site induction</h1><p class=big><b>'+esc(d.title||'')+'</b>'+(d.site?'<br>'+esc(d.site):'')+(d.job_no?'<br>Job '+esc(d.job_no):'')+'</p><p class=big style=\"margin-top:4vh\">Presented by</p>'+(w.length?'<select id=svBy><option value=\"\">Choose who is presenting\\u2026</option>'+w.map(function(x){return '<option'+(x===BY?' selected':'')+'>'+esc(x)+'</option>';}).join('')+'</select><p style=\"color:#55585a;font-size:.7em!important\">Only the site manager, deputy or a supervisor named on the CPHSP can give the induction.</p>':'<p class=warn>No site manager, deputy or supervisor is named on this CPHSP. Add them to the CPHSP, then present the induction.</p>')+'</div></div>';\n S.forEach(function(s,i){var kv=(s.kv||[]).filter(function(r){return r&&r[1]!=null&&String(r[1]).trim();});\n  h+='<div class=sl><div class=in><h1><span class=n>'+(i+1)+'</span>'+esc(s.h)+'</h1>'+(s.p0?'<p>'+esc(s.p0)+'</p>':'')+(kv.length?'<table>'+kv.map(function(r){return '<tr><th>'+esc(r[0])+'</th><td>'+esc(r[1]).split(String.fromCharCode(10)).join('<br>')+'</td></tr>';}).join('')+'</table>':'')+((s.items||[]).length?'<ul>'+s.items.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':'')+(s.p?'<p>'+esc(s.p)+'</p>':'')+'</div></div>';});\n h+='<div class=sl id=svEnd><div class=in><h1>Sign on now</h1><div class=qrw><div id=svQr></div><div><p class=big>Scan with your phone camera and sign on.</p><p>Everyone who has seen this induction must sign. Anyone without a phone can sign on this device.</p><p id=svByMsg></p><button type=button id=svHere class=hb>Sign on this device</button></div></div></div></div>';\n h+='</div><div class=ctl><button type=button id=svB>Back</button><div class=dots id=svD></div><button type=button class=fs id=svF title=\"Full screen\">\\u26F6</button><button type=button class=p id=svN>Next</button></div></div>';\n document.body.insertAdjacentHTML('beforeend',h);var sls=document.querySelectorAll('#sv .sl');SLN=sls.length;\n $('svD').innerHTML=Array.prototype.map.call(sls,function(){return '<i></i>';}).join('');\n if($('svBy'))$('svBy').onchange=function(){BY=this.value;};\n function url(){return location.origin+location.pathname+'?doc='+encodeURIComponent(DOC)+'&id='+encodeURIComponent(ID)+'&briefed=1'+(BY?'&by='+encodeURIComponent(BY):'');}\n function qr(){var q=$('svQr'),m=$('svByMsg');if(!BY){q.innerHTML='';m.className='warn';m.textContent='Choose who presented the induction on the first slide.';return;}m.className='';m.textContent='Inducted by '+BY+'.';\n  function draw(){q.innerHTML='';try{new window.QRCode(q,{text:url(),width:600,height:600,correctLevel:window.QRCode.CorrectLevel.M});}catch(e){q.textContent='QR code unavailable.';}setTimeout(fit,50);}\n  if(window.QRCode)draw();else{var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';s.onload=draw;s.onerror=function(){q.textContent='QR code could not load.';setTimeout(fit,50);};document.head.appendChild(s);}}\n function go(n){if(n<0||n>=SLN)return;if(n>0&&SL===0&&!BY){var b=$('svBy');if(b){b.style.borderColor='#b3261e';b.focus();}return;}SL=n;Array.prototype.forEach.call(sls,function(x,i){x.classList.toggle('on',i===n);});Array.prototype.forEach.call($('svD').children,function(x,i){x.classList.toggle('on',i===n);});\n  $('svB').disabled=n===0;var nx=$('svN');if(n===SLN-1){nx.textContent='Complete induction';nx.onclick=function(){if(!BY){go(0);return;}complete();};qr();}else{nx.textContent='Next';nx.onclick=function(){firstFs();go(SL+1);};}\n  setTimeout(fit,0);if(window.QRCode)setTimeout(fit,300);}\n\n document.documentElement.classList.add('svon');window.scrollTo(0,0);\n function fitOne(el,hi){var inn=el.firstChild,lo=12,f=hi;el.style.fontSize=f+'px';\n  for(var k=0;k<40&&(inn.scrollHeight>el.clientHeight-2||inn.scrollWidth>el.clientWidth+2)&&f>lo;k++){f=f*0.93;el.style.fontSize=f+'px';}return f;}\n function fit(){if(!SLN)return;var hi=Math.max(16,window.innerHeight*0.055),m=hi,i,el,was;\n  for(i=0;i<SLN-1;i++){el=sls[i];was=el.classList.contains('on');if(!was)el.classList.add('on');m=Math.min(m,fitOne(el,hi));if(!was)el.classList.remove('on');}\n  for(i=0;i<SLN-1;i++)sls[i].style.fontSize=m+'px';\n  el=sls[SLN-1];was=el.classList.contains('on');if(!was)el.classList.add('on');fitOne(el,m);if(!was)el.classList.remove('on');}\n window.addEventListener('resize',function(){fit();});\n function fsOn(){var r=document.documentElement;try{if(!document.fullscreenElement&&!document.webkitFullscreenElement){(r.requestFullscreen||r.webkitRequestFullscreen||function(){}).call(r);}}catch(e){}}\n var fsDone=false;function firstFs(){if(fsDone)return;fsDone=true;fsOn();}\n $('svF').onclick=function(){if(document.fullscreenElement||document.webkitFullscreenElement){try{(document.exitFullscreen||document.webkitExitFullscreen).call(document);}catch(e){}}else fsOn();};\n $('sv').addEventListener('wheel',function(e){e.preventDefault();},{passive:false});\n document.addEventListener('fullscreenchange',function(){setTimeout(fit,150);});\n\n $('svHere').onclick=function(){if(!BY){go(0);return;}location.href=url();};\n var CSIG='';\n function complete(){var co=$('svCo');if(!co){document.body.insertAdjacentHTML('beforeend','<div id=svCo><div class=bx id=svCoB></div></div>');co=$('svCo');}\n  $('svCoB').innerHTML='<h1>Complete the induction</h1><p><b>'+esc(BY)+'</b>, presenter</p><p>I confirm I delivered this site induction for '+esc(d.title||d.kind)+' to everyone who signed on.</p><canvas id=svCv width=1100 height=300></canvas><div class=err id=svCoE></div><div class=row><button type=button class=p id=svCoGo>Sign and complete</button><button type=button id=svCoClr>Clear signature</button><button type=button id=svCoBack>Back to the induction</button></div>';\n  co.classList.add('on');CSIG='';var cv=$('svCv'),g=cv.getContext('2d'),dn=false,last=null,ink=false;g.lineWidth=4;g.lineCap='round';g.strokeStyle='#000';\n  function pt(e){var r=cv.getBoundingClientRect();return {x:(e.clientX-r.left)*cv.width/r.width,y:(e.clientY-r.top)*cv.height/r.height};}\n  cv.onpointerdown=function(e){dn=true;last=pt(e);$('svCoE').textContent='';try{cv.setPointerCapture(e.pointerId);}catch(x){}e.preventDefault();};\n  cv.onpointermove=function(e){if(!dn)return;var p=pt(e);g.beginPath();g.moveTo(last.x,last.y);g.lineTo(p.x,p.y);g.stroke();last=p;ink=true;};\n  cv.onpointerup=cv.onpointercancel=function(){if(!dn)return;dn=false;if(!ink)return;var t=document.createElement('canvas');t.width=cv.width;t.height=cv.height;var tg=t.getContext('2d');tg.fillStyle='#fff';tg.fillRect(0,0,t.width,t.height);tg.drawImage(cv,0,0);CSIG=t.toDataURL('image/jpeg',0.6);};\n  $('svCoClr').onclick=function(){g.clearRect(0,0,cv.width,cv.height);CSIG='';ink=false;};\n  $('svCoBack').onclick=function(){co.classList.remove('on');};\n  $('svCoGo').onclick=function(){var e=$('svCoE'),b=this;if(!CSIG){e.textContent='Please sign in the box.';return;}b.disabled=true;e.style.color='#6b6e70';e.textContent='Saving\\u2026';\n   fetch('/webhook/cbs-sign-save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({doc_type:d.type,doc_id:d.id,doc_rev:d.rev,doc_label:d.kind+(d.title?': '+d.title:'')+' (presenter confirmation)',job_no:d.job_no,name:BY,company:'Chelmsford Building Services',is_worker:true,signature:CSIG,inducted_by:BY})}).then(function(r){return r.json();}).then(function(j){if(!j||!j.ok)throw new Error((j&&j.message)||'');\n    return fetch('/webhook/cbs-sign-data?doc='+encodeURIComponent(DOC)+'&id='+encodeURIComponent(ID)).then(function(r){return r.json();})['catch'](function(){return {};});}).then(function(dd){\n    var L=((dd&&dd.signed)||[]).filter(function(x){return x.name!==BY;});\n    $('svCoB').innerHTML='<h1>Induction complete</h1><p class=big>\\u2713 Presented by '+esc(BY)+'</p><p>'+(L.length?L.length+' '+(L.length===1?'person has':'people have')+' signed on:':'Nobody has signed on yet. Anyone who saw the induction must still sign on.')+'</p>'+(L.length?'<ul>'+L.map(function(x){return '<li>'+esc(x.name)+(x.company&&x.company!=='Chelmsford Building Services'?' ('+esc(x.company)+')':'')+'</li>';}).join('')+'</ul>':'')+'<div class=row><button type=button class=p id=svCoX>Close</button></div>';\n    try{if(document.fullscreenElement||document.webkitFullscreenElement)(document.exitFullscreen||document.webkitExitFullscreen).call(document);}catch(x){}\n    $('svCoX').onclick=function(){window.close();setTimeout(function(){location.href='/webhook/cbs-cphsp-builder?id='+encodeURIComponent(ID);},300);};\n   })['catch'](function(x){b.disabled=false;e.style.color='#b3261e';e.textContent=x.message||'Could not save. Check the connection and try again.';});};}\n $('svB').onclick=function(){go(SL-1);};\n document.addEventListener('keydown',function(e){if(e.target&&e.target.tagName==='SELECT')return;if($('svCo')&&$('svCo').classList.contains('on'))return;if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();firstFs();if(SL<SLN-1)go(SL+1);}if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(SL-1);}});\n var x0=null;$('sv').addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});$('sv').addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>60){if(dx<0&&SL<SLN-1)go(SL+1);else if(dx>0)go(SL-1);}},{passive:true});\n go(0);}\nfunction indHtml(){var I=D.ind,S=I.sections||[],h='';\n if(PRES){var u=location.origin+location.pathname+'?doc='+encodeURIComponent(DOC)+'&id='+encodeURIComponent(ID);\n  h+='<div class=\"card qrc\"><h2>Or use your own phone</h2><p class=muted>Scan this with your phone camera to go through the induction and sign on your own phone.</p><div id=qrBox>Loading QR code\\u2026</div><small>'+esc(u)+'</small></div>';}\n if(!PRES&&!BRIEFED){var pu=location.origin+location.pathname+'?doc='+encodeURIComponent(DOC)+'&id='+encodeURIComponent(ID)+'&present=1';h+='<div class=card><a class=btn style=\"background:#3d4043;border-color:#3d4043;color:#fff\" id=presGo href=\"'+esc(pu)+'\">Present induction</a></div>';}\n h+='<div class=card><h2>Site induction</h2><p class=muted>'+(BRIEFED?'You have been taken through this induction'+(BY?' by '+esc(BY):'')+'. It is here to read again before you accept and sign below.':PRES?'Take the person through each section. They tick each one off once they understand it, then accept and sign below.':'Read each section and tick it off. Then accept and sign at the bottom.')+'</p>'+(BRIEFED?'':'<div id=indProg></div>')+'</div>';\n S.forEach(function(s,i){var kv=(s.kv||[]).filter(function(r){return r&&r[1]!=null&&String(r[1]).trim();});\n  h+='<div class=\"card ind'+(TK[i]?' done':'')+'\" data-sec='+i+'><h2><span class=step>'+(i+1)+'</span>'+esc(s.h)+'</h2>'+(s.p0?'<p>'+esc(s.p0)+'</p>':'')+(kv.length?'<table class=kv>'+kv.map(function(r){return '<tr><th>'+esc(r[0])+'</th><td>'+esc(r[1]).split(String.fromCharCode(10)).join('<br>')+'</td></tr>';}).join('')+'</table>':'')+((s.items||[]).length?'<ul>'+s.items.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':'')+(s.p?'<p>'+esc(s.p)+'</p>':'')+(BRIEFED?'':'<label class=tick><input type=checkbox data-ik='+i+(TK[i]?' checked':'')+'><span>I understand this section</span></label>')+'</div>';});\n return h;}\nfunction indProg(){var p=$('indProg');if(!p||!D.ind)return;var n=(D.ind.sections||[]).length,k=0;for(var i=0;i<n;i++)if(TK[i])k++;p.textContent=k+' of '+n+' sections ticked off';p.style.color=k===n?'#1a7f37':'#6b6e70';}\nfunction indOk(){var n=((D.ind||{}).sections||[]).length;for(var i=0;i<n;i++)if(!TK[i])return false;return true;}\nfunction indBind(){if(!D.ind)return;Array.prototype.forEach.call(document.querySelectorAll('[data-ik]'),function(cb){cb.onchange=function(){var i=+cb.getAttribute('data-ik');TK[i]=cb.checked;var c=cb.closest('.ind');if(c)c.classList.toggle('done',cb.checked);indProg();};});indProg();\n var qb=$('qrBox');if(qb){var u=location.origin+location.pathname+'?doc='+encodeURIComponent(DOC)+'&id='+encodeURIComponent(ID);\n  function draw(){qb.innerHTML='';try{new window.QRCode(qb,{text:u,width:512,height:512,correctLevel:window.QRCode.CorrectLevel.M});}catch(e){qb.textContent='QR code unavailable. Share the link below.';}}\n  if(window.QRCode)draw();else{var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';s.onload=draw;s.onerror=function(){qb.textContent='QR code could not load. Share the link below.';};document.head.appendChild(s);}}}\nfunction pad(){`,'fns');\n return {h:h};};\n\nvar name='';try{name=$('Which Page').first().json.name||'';}catch(e){}\nvar o=Object.assign({},$input.first().json);\nif(name==='page:cbs-sign'&&typeof o.b==='string'&&o.b.indexOf('CBS-IND-v8')<0&&o.b.indexOf('function indHtml')<0){try{o.b=signPatch(o.b).h;}catch(e){}}\nif(name==='page:cbs-cphsp-builder'&&typeof o.b==='string')o.b=o.b.split(PRES_OLD).join(PRES_NEW).split('also check aedlocations.co.nz').join('also check The Circuit (www.thecircuit.uk), the national defibrillator network');\nreturn [{json:{t:o.t,b:o.b}}];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "e5023a64-438c-4386-a472-b29000bd59db",
+      "name": "Guard Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        1400
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-guard",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "889aff3c-66b6-4775-b6bd-5907c6da4653"
+    },
+    {
+      "id": "d7f4e5bd-01a7-4506-a0be-b0671acd4e31",
+      "name": "Serve Guard",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        220,
+        1400
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/javascript; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "public, max-age=300"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "/* CBS new layout loading cover: only on devices using the new layout (localStorage cbs_nl_on, set by cbs-layout-js). Hides the page until the new layout has drawn it, so it never shows half-styled. Only on pages that load the new layout; stays until cbs-layout-js has drawn the page (15s safety limit). */\n(function(){try{if(localStorage.getItem('cbs_nl_on')!=='1')return;if(window.top!==window.self)return;if(/[?&]embed=/.test(location.search))return;if(/cbs-(snags-crew|scope-crew|crew|yard|signin|tv-cast)|\\/cbs-tv$/.test(location.pathname))return;if(!/\\/webhook\\/(cbs-admin|cbs-jobs|cbs-job-file|cbs-enquiry|cbs-programme|cbs-drawings|cbs-diary|cbs-variations|cbs-rfis|cbs-costs|cbs-closeout|cbs-board|cbs-client-people|cbs-today|cbs-po-board|cbs-subjobs-board|cbs-hs|cbs-pci|cbs-support|cbs-tv-settings|cbs-qbpo|cbs-rams-builder|cbs-cphsp-builder|cbs-coshh-builder|cbs-team-meeting|cbs-forms-records|cbs-yard-approve|cbs-snags|cbs-scope|cbs-coshh|cbs-po|cbs-ptm-sheet|cbs-prestart|cbs-toolbox-builder|cbs-incident-report|cbs-job-[a-z]+)(\\/|$)/.test(location.pathname))return;\nvar d=document.documentElement;d.classList.add('cbsnlwait');var st=document.createElement('style');st.id='cbsnlwaitcss';st.textContent='html.cbsnlwait body{visibility:hidden!important}html.cbsnlwait{background:#f2f2f0!important}html.cbsnlwait::after{content:\"\";position:fixed;left:50%;top:42%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;border:3px solid #dcdcd8;border-top-color:#F47920;animation:cbsnlspin .8s linear infinite;visibility:visible;z-index:2147483647}@keyframes cbsnlspin{to{transform:rotate(360deg)}}';(document.head||d).appendChild(st);\nvar off=function(){d.classList.remove('cbsnlwait');};setTimeout(off,15000);}catch(e){}})();\n/* CBS save guard v3: one write per tap, everywhere; read throttling (dedupe identical reads, background tabs use last result, back off when the server is slow). Served from CBS - Pages (cbs-guard). Also loads the list search (cbs-search). */\n(function(){if(window.__cbsSG2)return;window.__cbsSG2=1;\nvar F=window.fetch?window.fetch.bind(window):null,P={},R={},lastBtn=null,lastAt=0;\nvar G={},C={},B={},POLL=/\\/webhook\\/cbs-(admin-data|tv-data|tv-cast|tv-ping|support-data)(\\?|$)/;\nfunction isW(u,m){return m!=='GET'&&m!=='HEAD'&&/\\/webhook\\/cbs-/.test(u);}\nfunction rk(u){try{var x=new URL(u,location.href);x.searchParams.delete('_');return x.pathname+'?'+x.searchParams.toString();}catch(e){return u;}}\nfunction bump(k){var b=B[k]||{n:0};b.n++;b.until=Date.now()+Math.min(60000,5000*Math.pow(2,b.n-1));B[k]=b;}\nfunction skip(b){if(b.hasAttribute&&b.hasAttribute('data-nolock'))return true;var t=(b.textContent||'').replace(/\\s+/g,'');return t.length>0&&t.length<=2&&/^[+\\-\\u2212\\u00d7x<>\\u2039\\u203a]+$/i.test(t);}\nfunction lock(b){if(!b||b.__sg2)return;b.__sg2=1;try{b.setAttribute('aria-busy','true');b.__sg2op=b.style.opacity;b.style.opacity='.55';}catch(e){}}\nfunction unlock(b){if(!b)return;b.__sg2=0;b.__sg2n=0;try{b.removeAttribute('aria-busy');b.style.opacity=b.__sg2op||'';}catch(e){}}\nfunction cur(){return(lastBtn&&Date.now()-lastAt<800)?lastBtn:null;}\nfunction read(u,o,url){var k=rk(url),poll=POLL.test(url)&&(url.indexOf('cbs-tv-cast')<0||/[?&]a=status(&|$)/.test(url)),now=Date.now(),c=C[k],b=B[k];\n if(G[k])return G[k].then(function(r){return r.clone();});\n if(poll&&c&&(document.hidden||(b&&now<b.until)))return Promise.resolve(c.clone());\n var t0=now,p=F(u,o).then(function(r){var dt=Date.now()-t0;delete G[k];\n  if(r.ok){if(poll){try{C[k]=r.clone();}catch(e){}}if(dt>10000)bump(k);else delete B[k];}else bump(k);return r;},\n  function(e){delete G[k];bump(k);throw e;});\n G[k]=p.then(function(r){return r.clone();});G[k]['catch'](function(){});return p;}\nif(F){window.fetch=function(u,o){o=o||{};var url=String(u&&u.url||u),m=String(o.method||(u&&u.method)||'GET').toUpperCase();\n if(m==='GET'&&/\\/webhook\\/cbs-/.test(url)&&!(o.signal))return read(u,o,url);\n if(!isW(url,m))return F(u,o);\n C={};B={};\n var body=o.body,k=(typeof body==='string'||body==null)?(m+' '+url+'|'+(body||'')):null;\n if(k&&P[k])return P[k].then(function(r){return r.clone();});\n if(k&&R[k]&&Date.now()-R[k].t<4000)return Promise.resolve(R[k].r.clone());\n var b=cur();if(b){lock(b);b.__sg2n=(b.__sg2n||0)+1;}\n var fin=function(){if(k)delete P[k];if(b&&--b.__sg2n<=0)setTimeout(function(){unlock(b);},400);};\n var p=F(u,o).then(function(r){if(k&&r.ok){try{R[k]={t:Date.now(),r:r.clone()};}catch(e){}}fin();return r;},function(e){fin();throw e;});\n if(k)P[k]=p.then(function(r){return r.clone();});\n return p;};}\nvar X=window.XMLHttpRequest&&XMLHttpRequest.prototype;\nif(X){var op=X.open,sd=X.send;X.open=function(m,u){this.__sg2w=isW(String(u),String(m).toUpperCase());return op.apply(this,arguments);};\n X.send=function(){if(this.__sg2w){C={};B={};var b=cur();if(b){lock(b);this.addEventListener('loadend',function(){setTimeout(function(){unlock(b);},400);});}}return sd.apply(this,arguments);};}\ndocument.addEventListener('click',function(e){var t=e.target;var b=t&&t.closest&&t.closest('button,[role=\"button\"],.btn,input[type=\"submit\"],input[type=\"button\"],a[onclick]');if(!b||skip(b))return;var now=Date.now();\n if(b.__sg2||(b===lastBtn&&now-lastAt<1000)){e.preventDefault();e.stopImmediatePropagation();return;}\n lastBtn=b;lastAt=now;},true);\ndocument.addEventListener('submit',function(e){var f=e.target;if(!f)return;var now=Date.now();if(f.__sg2t&&now-f.__sg2t<1500){e.preventDefault();e.stopImmediatePropagation();return;}f.__sg2t=now;},true);\n})();\n(function(){if(window.__cbsSrchL)return;window.__cbsSrchL=1;try{var s=document.createElement('script');s.src='/webhook/cbs-search';(document.head||document.documentElement).appendChild(s);}catch(e){}})();/* CBS mobile fixes v1 (served with cbs-guard, so every hub page and builder gets it).\n   1. Stops iOS Safari auto-enlarging text (the overlapping text in builder previews).\n   2. Holds form fields, iOS date fields included, to the width of their box on phones.\n   3. Builders: on phones the A4 preview (#doc) is zoomed to fit the screen width. The zoom dropdown still overrides it, and PDF output is unaffected. */\n(function(){if(window.__cbsMob)return;window.__cbsMob=1;\ntry{var st=document.createElement('style');st.id='cbsMobCss';st.textContent='html{-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important}'+\n'@media (max-width:900px){input,select,textarea{max-width:100%;min-width:0;box-sizing:border-box}'+\n'input[type=date],input[type=time],input[type=datetime-local],input[type=month]{-webkit-appearance:none;appearance:none;display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;min-height:2.6em}'+\n'input[type=date]::-webkit-date-and-time-value,input[type=time]::-webkit-date-and-time-value{min-width:0}}';\n(document.head||document.documentElement).appendChild(st);}catch(e){}\nvar user=false,busy=false;\nfunction fit(){try{if(busy||user||window.innerWidth>900)return;var d=document.getElementById('doc');if(!d)return;var p=d.querySelector('.page');var w=d.closest('.previewWrap')||d.parentElement;if(!p||!w||!w.clientWidth)return;\n var ps=document.getElementById('pdfStatus');if(ps&&ps.textContent)return;\n busy=true;var cs=getComputedStyle(w),avail=w.clientWidth-(parseFloat(cs.paddingLeft)||0)-(parseFloat(cs.paddingRight)||0);\n var old=d.style.zoom;d.style.zoom='1';var pw=p.getBoundingClientRect().width;\n if(!pw||!avail){d.style.zoom=old;busy=false;return;}\n var z=Math.min(1,Math.floor(avail/pw*1000)/1000);d.style.zoom=String(z);busy=false;}catch(e){busy=false;}}\nfunction soon(){setTimeout(fit,0);setTimeout(fit,400);}\ndocument.addEventListener('change',function(e){if(e.target&&e.target.id==='zoom')user=true;},true);\ndocument.addEventListener('click',function(e){var t=e.target&&e.target.closest&&e.target.closest('#tabPrev,.tabs .btn');if(t)soon();},true);\nvar rt=null;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(fit,250);});\nwindow.addEventListener('orientationchange',function(){setTimeout(fit,400);});\nfunction boot(){soon();setTimeout(fit,1500);try{if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){setTimeout(fit,50);});}catch(e){}}\nif(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();\nwindow.addEventListener('load',soon);\n})();\n/* CBS cast bar loader: shows the 'TV is showing job' bar on every hub page (script served by CBS - TV Dashboard). */\n(function(){if(window.__cbsCastL)return;window.__cbsCastL=1;try{var s=document.createElement('script');s.src='/webhook/cbs-castbar';(document.head||document.documentElement).appendChild(s);}catch(e){}})();\n/* CBS side menu loader: the shared menu on admin pages (script served by CBS - Nav; it does nothing on crew pages). */\n(function(){if(window.__cbsNavL)return;window.__cbsNavL=1;try{if(document.querySelector('script[src*=\"/webhook/cbs-nav\"]'))return;var s=document.createElement('script');s.src='/webhook/cbs-nav';(document.head||document.documentElement).appendChild(s);}catch(e){}})();\n/* CBS combined PDF loader: adds 'one combined PDF' to every download pop-up (script served by CBS - Combined PDF Downloads). */\n(function(){if(window.__cbsMpL)return;window.__cbsMpL=1;try{var s=document.createElement('script');s.src='/webhook/cbs-dlpdf';(document.head||document.documentElement).appendChild(s);}catch(e){}})();\n/* New layout on the three builders the menu script does not load it for (pre-start, toolbox talk, incident report). Office pages only; does nothing if the layout is already there. */\n(function(){if(window.__cbsNLx)return;window.__cbsNLx=1;if(!/\\/webhook\\/(cbs-prestart|cbs-toolbox-builder|cbs-incident-report)$/.test(location.pathname))return;try{if(window.top!==window.self)return;}catch(e){return;}if(/[?&]embed=/.test(location.search))return;var go=function(){setTimeout(function(){if(window.__cbsNL||document.querySelector('script[src*=\"/webhook/cbs-layout-js\"]'))return;var s=document.createElement('script');s.src='/webhook/cbs-layout-js';(document.head||document.documentElement).appendChild(s);},150);};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go();})();\n"
+      }
+    },
+    {
+      "id": "d30a0895-e893-411f-a98c-51698512dbe5",
+      "name": "Search Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        1220
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-search",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "68f47bfc-30e5-4a89-a038-fda2f5d91606"
+    },
+    {
+      "id": "e34d4098-4344-40f7-b58a-e866f417d84d",
+      "name": "Serve Search",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        220,
+        1220
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/javascript; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "public, max-age=300"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "/* CBS list search: switched off 20/10/2026 at the client's request (it added search boxes above long lists and inside long dropdowns on every page). cbs-guard still requests this file, so it is left as an empty script. The previous script is in this workflow's version history if it is ever wanted back. */\n"
+      }
+    },
+    {
+      "id": "27404a17-a10a-43b1-a391-06c66bce5d46",
+      "name": "Get Logo",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        400
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "HOHWTBOJHrHF0TvB"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "name",
+              "keyValue": "page:cbs-logo"
+            }
+          ]
+        },
+        "limit": 1,
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": false
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "b275f6c3-9864-4e3e-8c5a-d966aff15a6b",
+      "name": "Scope Fill",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1900,
+        300
+      ],
+      "parameters": {
+        "jsCode": "/* CPHSP builder: \"Fill from scope of works\" (19/10/2026). Adds a button above 1.1 Scope of works that reads the job's scope of works\n   (cbs-scope-data) and fills Scope of works (one item per line) and, on CDM jobs with more than one phase, Sequence of works (the phases in order).\n   Asks before replacing anything already typed. Other pages pass through unchanged. */\nconst o=Object.assign({},$input.first().json);let name='';try{name=$('Which Page').first().json.name||'';}catch(e){}\nif(name!=='page:cbs-cphsp-builder'||typeof o.b!=='string'||o.b.indexOf('id=\"scFillJs\"')>-1)return [{json:o}];\nconst JS=String.raw`<script id=\"scFillJs\">(function(){\nfunction q(k){return document.querySelector(\"[data-k='\"+k+\"']\");}\nfunction val(k){var el=q(k);return el?String(el.value||'').trim():'';}\nfunction setv(k,v){var el=q(k);if(el){el.value=v;el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));}try{if(window.S&&typeof window.S==='object')window.S[k]=v;}catch(e){}}\nfunction add(){var t=q('scope');if(!t||document.getElementById('scFill'))return;var host=t.closest('label')||t;\n var w=document.createElement('div');w.id='scFill';w.style.cssText='display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0 2px';\n w.innerHTML=\"<button type='button' class='btn' style='background:#fff;color:#1d1d1d;border:1px solid #c9cbcd'>Fill from scope of works</button><span style='font-size:13px;color:#6b6e70'></span>\";\n host.parentNode.insertBefore(w,host);w.querySelector('button').onclick=go;}\nfunction go(){var msg=document.querySelector('#scFill span'),bt=document.querySelector('#scFill button'),job=val('job_no');\n if(!job){msg.textContent='Add the job number first.';return;}\n msg.textContent='Reading the scope of works\\u2026';bt.disabled=true;\n fetch('/webhook/cbs-scope-data?crew=1&job='+encodeURIComponent(job),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){bt.disabled=false;\n  var SS=(d&&d.ok&&d.scope&&d.scope.sections)||[],L=[];\n  SS.forEach(function(s){(s.items||[]).forEach(function(i){L.push((SS.length>1?s.name+': ':'')+(i.var?'['+i.var+'] ':'')+i.text+(i.who&&i.who!=='CBS'?' ('+i.who+')':''));});});\n  if(!L.length){msg.textContent='Job '+job+' has no scope of works yet. Write it on the Scope of works page first.';return;}\n  var seq=d.cdm&&SS.length>1;\n  if((val('scope')||(seq&&val('sequence')))&&!confirm('Replace '+(seq?'Scope of works and Sequence of works':'Scope of works')+' with the scope of works for job '+job+'?\\n\\n'+L.length+' item'+(L.length===1?'':'s')+' in '+SS.length+' section'+(SS.length===1?'':'s')+'.')){msg.textContent='Kept what was there.';return;}\n  setv('scope',L.join('\\n'));if(seq)setv('sequence',SS.map(function(s){return s.name;}).join('\\n'));\n  msg.textContent='Filled '+L.length+' item'+(L.length===1?'':'s')+(seq?' and '+SS.length+' phases as the sequence':'')+' from the scope of works.'+(d.locked?'':' Note: the scope is not locked yet, so it may still change.');\n }).catch(function(){bt.disabled=false;msg.textContent='Could not read the scope of works. Try again.';});}\nnew MutationObserver(add).observe(document.body,{childList:true,subtree:true});add();\n})();</script>`;\nconst i=o.b.lastIndexOf('</body>');\no.b=i>-1?o.b.slice(0,i)+JS+o.b.slice(i):o.b+JS;\nreturn [{json:o}];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "fe6ca6a5-9e1a-4de6-a905-665ce91fb6db",
+      "name": "Viewer Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        3200
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-viewer",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "b6fdbf87-4b89-4fd6-9aea-db7b295fa707"
+    },
+    {
+      "id": "0b9156d3-12fe-4634-996c-1b416aec35ee",
+      "name": "Serve Viewer",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        3200
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/javascript; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "public, max-age=300"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "/* CBS shared file viewer (served by CBS - Pages at GET /webhook/cbs-viewer).\n   window.CBSView.open({u, n, list:[{u,n}], actions:[{label, onClick(file)}], noOffice})  /  CBSView.close()  /  CBSView.kind(file)\n   PDFs (pdf.js), photos and videos show full screen with the page behind locked (no background scroll, position restored on close).\n   Word / Excel / PowerPoint open straight in Office (new tab) unless noOffice (crew links: Download instead). Toolbar: name, previous /\n   next through the list, the caller's extra actions, Download, Full screen, Close. Esc, the phone's back button and Close all close it. */\n(function(){\nif(window.CBSView)return;\nvar Z=2147483400,O=null,ST=null,L=[],IX=0,OPTS={},PUSHED=false,TOK=null,PL=0,PW=[];\nfunction ext(n){var m=String(n||'').toLowerCase().match(/[.]([a-z0-9]{1,6})(?:$|[?#])/);return m?m[1]:'';}\nfunction kind(f){f=f||{};var e=ext(f.n)||ext(String(f.u||'').split('?')[0]);if(e==='pdf')return 'pdf';if(/^(jpe?g|png|gif|webp|bmp|svg)$/.test(e))return 'img';if(/^(docx?|xlsx?|xlsm|pptx?|csv)$/.test(e))return 'office';if(/^(mp4|mov|webm|m4v)$/.test(e))return 'video';return 'other';}\nfunction prox(u){u=String(u||'');return /^https?:[/][/][^/?#]*sharepoint[.]com[/]/i.test(u)?'/webhook/cbs-file?u='+encodeURIComponent(u):u;}\nfunction nameOf(u){try{return decodeURIComponent(String(u||'').split('?')[0].split('/').pop()||'File');}catch(e){return 'File';}}\nfunction lock(){if(ST)return;var b=document.body,h=document.documentElement,y=window.scrollY||h.scrollTop||0;ST={y:y,b:b.getAttribute('style'),h:h.getAttribute('style')};h.style.overflow='hidden';b.style.overflow='hidden';b.style.position='fixed';b.style.top=(-y)+'px';b.style.left='0';b.style.right='0';b.style.width='100%';}\nfunction unlock(){if(!ST)return;var b=document.body,h=document.documentElement,s=ST;ST=null;if(s.b!=null)b.setAttribute('style',s.b);else b.removeAttribute('style');if(s.h!=null)h.setAttribute('style',s.h);else h.removeAttribute('style');window.scrollTo(0,s.y);}\nvar CSS='#cbsVw{position:fixed;inset:0;z-index:'+Z+';background:#1e2022;display:flex;flex-direction:column;font-family:system-ui,-apple-system,sans-serif;color:#fff}'+\n'#cbsVw .vb{display:flex;align-items:center;gap:8px;padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top,0px));background:#2b2e31;flex:none;flex-wrap:wrap}'+\n'#cbsVw .vn{flex:1 1 160px;min-width:0;font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'+\n'#cbsVw .vc{font-size:13px;color:#b9bcbf;white-space:nowrap}#cbsVw .va{display:contents}'+\n'#cbsVw button,#cbsVw a.vbtn{font:inherit;font-size:14px;color:#fff;background:none;border:1px solid #6b6e70;border-radius:8px;padding:7px 12px;cursor:pointer;text-decoration:none;white-space:nowrap}'+\n'#cbsVw button:disabled{opacity:.35;cursor:default}#cbsVw .vx{font-size:20px;line-height:1;padding:5px 12px}'+\n'#cbsVw .vbody{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:12px;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));text-align:center}'+\n'#cbsVw canvas{display:block;margin:0 auto 12px;max-width:100%;height:auto;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.4)}'+\n'#cbsVw .vbody img,#cbsVw .vbody video{max-width:100%;max-height:calc(100vh - 130px);object-fit:contain;background:#fff}'+\n'#cbsVw .vmsg{margin:40px auto;max-width:420px;color:#d5d7d9;font-size:15px;line-height:1.5}';\nfunction pdfLib(cb){var W='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';if(window.pdfjsLib){try{window.pdfjsLib.GlobalWorkerOptions.workerSrc=W;}catch(e){}cb(window.pdfjsLib);return;}PW.push(cb);if(PL)return;PL=1;var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';s.onload=function(){var q=PW;PW=[];q.forEach(function(c){pdfLib(c);});};s.onerror=function(){var q=PW;PW=[];PL=0;q.forEach(function(c){c(null);});};document.head.appendChild(s);}\nfunction key(e){if(!O)return;if(e.key==='Escape'){e.stopImmediatePropagation();e.preventDefault();close();}else if(e.key==='ArrowLeft'&&IX>0){e.stopImmediatePropagation();IX--;show();}else if(e.key==='ArrowRight'&&IX<L.length-1){e.stopImmediatePropagation();IX++;show();}}\nfunction pop(){if(O){PUSHED=false;close();}}\nfunction build(){if(O)return;if(!document.getElementById('cbsVwCss')){var st=document.createElement('style');st.id='cbsVwCss';st.textContent=CSS;document.head.appendChild(st);}\n O=document.createElement('div');O.id='cbsVw';O.setAttribute('role','dialog');O.setAttribute('aria-modal','true');\n O.innerHTML='<div class=\"vb\"><span class=\"vn\"></span><span class=\"vc\"></span><button type=\"button\" data-v=\"prev\" aria-label=\"Previous file\">\\u2039</button><button type=\"button\" data-v=\"next\" aria-label=\"Next file\">\\u203a</button><span class=\"va\"></span><a class=\"vbtn\" data-v=\"dl\">Download</a><button type=\"button\" data-v=\"fs\">Full screen</button><button type=\"button\" class=\"vx\" data-v=\"x\" aria-label=\"Close\">\\u00d7</button></div><div class=\"vbody\"></div>';\n document.body.appendChild(O);lock();\n O.addEventListener('click',function(e){var b=e.target&&e.target.closest&&e.target.closest('[data-v]');if(!b||b.disabled)return;var v=b.getAttribute('data-v');\n  if(v==='x')close();else if(v==='prev'&&IX>0){IX--;show();}else if(v==='next'&&IX<L.length-1){IX++;show();}\n  else if(v==='fs'){try{if(document.fullscreenElement)document.exitFullscreen();else if(O.requestFullscreen)O.requestFullscreen();else if(O.webkitRequestFullscreen)O.webkitRequestFullscreen();}catch(x){}}});\n window.addEventListener('keydown',key,true);\n try{history.pushState({cbsVw:1},'');PUSHED=true;window.addEventListener('popstate',pop);}catch(x){PUSHED=false;}}\nfunction close(){if(!O)return;window.removeEventListener('keydown',key,true);window.removeEventListener('popstate',pop);var p=PUSHED;PUSHED=false;TOK=null;try{if(document.fullscreenElement)document.exitFullscreen();}catch(x){}O.remove();O=null;unlock();if(p){try{history.back();}catch(x){}}}\nfunction show(){if(!O)return;var f=L[IX]||{},k=kind(f),B=O.querySelector('.vbody');\n O.querySelector('.vn').textContent=f.n||'File';O.querySelector('.vc').textContent=L.length>1?(IX+1)+' of '+L.length:'';\n var pv=O.querySelector('[data-v=prev]'),nx=O.querySelector('[data-v=next]');pv.style.display=nx.style.display=L.length>1?'':'none';pv.disabled=IX===0;nx.disabled=IX===L.length-1;\n var dl=O.querySelector('[data-v=dl]');dl.href=prox(f.u);dl.setAttribute('download',f.n||'');\n var A=O.querySelector('.va');A.innerHTML='';(OPTS.actions||[]).forEach(function(a){if(!a||!a.label||typeof a.onClick!=='function')return;var b=document.createElement('button');b.type='button';b.textContent=a.label;b.onclick=function(){var cur=L[IX];close();setTimeout(function(){try{a.onClick(cur);}catch(x){}},0);};A.appendChild(b);});\n B.innerHTML='';B.scrollTop=0;var tok={};TOK=tok;\n function msg(t){var d=document.createElement('div');d.className='vmsg';d.textContent=t;B.appendChild(d);return d;}\n if(k==='img'){var im=document.createElement('img');im.alt=f.n||'';im.src=prox(f.u);B.appendChild(im);}\n else if(k==='video'){var vd=document.createElement('video');vd.controls=true;vd.playsInline=true;vd.src=prox(f.u);B.appendChild(vd);}\n else if(k==='pdf'){var m=msg('Loading\\u2026');pdfLib(function(lib){if(TOK!==tok)return;if(!lib){m.textContent='This PDF could not be shown here. Use Download.';return;}\n  lib.getDocument({url:prox(f.u)}).promise.then(function(doc){if(TOK!==tok)return;m.remove();var w=Math.max(200,Math.min(B.clientWidth-24,1400)),i=1;\n   (function next(){if(TOK!==tok||i>doc.numPages)return;doc.getPage(i).then(function(pg){var sc=w/pg.getViewport({scale:1}).width,dpr=Math.min(window.devicePixelRatio||1,2),vp=pg.getViewport({scale:sc*dpr});var c=document.createElement('canvas');c.width=Math.floor(vp.width);c.height=Math.floor(vp.height);c.style.width=Math.floor(vp.width/dpr)+'px';if(TOK!==tok)return null;B.appendChild(c);return pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;}).then(function(){i++;next();},function(){i++;next();});})();\n  },function(){if(TOK===tok)m.textContent='This PDF could not be shown here. Use Download.';});});}\n else if(k==='office')msg(OPTS.noOffice?'Tap Download to open this file.':'Word, Excel and PowerPoint files open in Office. Use Download to get a copy.');\n else msg('There is no preview for this type of file. Use Download.');}\nfunction open(o){o=o||{};if(!o.u)return;var f={u:o.u,n:o.n||nameOf(o.u)},k=kind(f);\n if(k==='office'&&!o.noOffice){window.open(f.u,'_blank','noopener');return;}\n OPTS=o;var ok=function(x){return x&&x.u&&(kind(x)!=='office'||o.noOffice)&&kind(x)!=='other';};\n L=(Array.isArray(o.list)?o.list:[]).filter(ok).map(function(x){return {u:x.u,n:x.n||nameOf(x.u)};});\n IX=-1;for(var i=0;i<L.length;i++){if(L[i].u===f.u){IX=i;break;}}if(IX<0){L=[f];IX=0;}\n build();show();}\nwindow.CBSView={open:open,close:close,kind:kind};\n})();\n"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "95c500fb-e9a5-4019-857c-d498f3770e7c",
+        "name": "GET cbs-admin",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-admin",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "fe65f977-7c2b-49a9-9ddd-286c363ccc82"
+      },
+      {
+        "id": "dabd319f-4d8e-42c6-82b6-46ee098e43be",
+        "name": "Which Page",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          1824
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var P = ['cbs-admin','cbs-rams-builder','cbs-cphsp-builder','cbs-toolbox-builder','cbs-team-meeting','cbs-incident-report','cbs-ptm-sheet','cbs-ptm-crew','cbs-prestart','cbs-po','cbs-sign','cbs-job-file','cbs-team','cbs-subjobs-board','cbs-site-inspection','cbs-builder-kit','cbs-hz-icons','cbs-std','cbs-po-board','cbs-logo','cbs-permit','cbs-visit','cbs-hs','cbs-pci','cbs-coshh-builder'];\nvar hit = '';\nfor (var i = 0; i < P.length; i++) { try { if ($('GET ' + P[i]).isExecuted) { hit = P[i]; break; } } catch (e) {} }\nreturn [{ json: { name: 'page:' + hit } }];"
+        }
+      },
+      {
+        "id": "f534fcce-0ba3-4c00-9020-763663831bfc",
+        "name": "GET cbs-rams-builder",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          192
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-rams-builder",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "335e47bf-149f-4c5c-844d-6b8651a564be"
+      },
+      {
+        "id": "d2ae2a86-b6e5-4736-8812-6a8cee33cd2c",
+        "name": "GET cbs-cphsp-builder",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          384
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-cphsp-builder",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "9e7568fc-bee0-4a8e-a237-866134ed0c7f"
+      },
+      {
+        "id": "f918f5c2-ca07-42f2-95ff-4a3fc09ebe68",
+        "name": "GET cbs-toolbox-builder",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          576
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-toolbox-builder",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "2cd73c53-cd57-4440-b773-3a54b1341c5c"
+      },
+      {
+        "id": "73b2ed9e-d023-4280-be69-f34c21c3279f",
+        "name": "GET cbs-team-meeting",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          768
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-team-meeting",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "940fb59f-151d-4f13-8f00-96cd19ff9a67"
+      },
+      {
+        "id": "e0a576b7-91cf-4992-ab7e-f2b087a0f8f4",
+        "name": "GET cbs-incident-report",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          960
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-incident-report",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "e0025467-4abc-420c-8fc5-255af4535bca"
+      },
+      {
+        "id": "052e0c0b-fc10-4059-81db-e758cdaece2e",
+        "name": "GET cbs-ptm-sheet",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          1152
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-ptm-sheet",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "56356e73-e458-4d32-ab1a-5534f5839089"
+      },
+      {
+        "id": "87fe4ce5-e291-4d19-9509-08b3845f9a0d",
+        "name": "GET cbs-ptm-crew",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          1344
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-ptm-crew",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "eaae3117-d17c-4d2c-8bb4-ce911ccaf2c7"
+      },
+      {
+        "id": "7390e1a3-77ee-4ec6-bba5-bfe1be1bd26b",
+        "name": "GET cbs-prestart",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          1536
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-prestart",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "750e46d2-f94e-47eb-9cc1-2af972f6a5a6"
+      },
+      {
+        "id": "e95d28fd-e11a-4ad7-bf77-9788bf13513f",
+        "name": "GET cbs-po",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          1728
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-po",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "81d7fdd9-b118-4bc6-b469-55efe890b2a0"
+      },
+      {
+        "id": "39fe2866-db83-44b3-8e92-5f67155286b0",
+        "name": "GET cbs-sign",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          1920
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-sign",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "2c3be4ba-720a-4c29-b2a5-9d478d6cb231"
+      },
+      {
+        "id": "abfe78e1-8036-4081-b297-f891af6a19a3",
+        "name": "GET cbs-team",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          2304
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-team",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "8a954111-6903-48a4-9ff8-a5b91d85ecb0"
+      },
+      {
+        "id": "175044e2-ad70-4153-b537-a0f119529124",
+        "name": "GET cbs-subjobs-board",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          2496
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-subjobs-board",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "27484e42-efef-4d57-974e-8be533037d45"
+      },
+      {
+        "id": "f0b49ad3-89c5-4701-aa08-d8e9f4b8d555",
+        "name": "GET cbs-site-inspection",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          2688
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-site-inspection",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "2fb6c5e6-6715-4d7b-a985-7d0ee18f2e94"
+      },
+      {
+        "id": "7d97503a-2625-462b-8a08-b37db960b4c4",
+        "name": "GET cbs-builder-kit",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          2880
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-builder-kit",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "6726c9a0-f1bf-436f-a6a7-ce5aec5e54df"
+      },
+      {
+        "id": "b8d1d5ad-452d-4401-9bad-a1a180c2b5c1",
+        "name": "GET cbs-hz-icons",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          3072
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-hz-icons",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "605fa461-5ce7-4c8f-96d1-5b4fd091ecc5"
+      },
+      {
+        "id": "9a610128-814b-411e-be04-1e9eae2845ca",
+        "name": "GET cbs-std",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          3264
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-std",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "ad4cfd6f-6372-48fd-adb4-5c88c8ef2617"
+      },
+      {
+        "id": "ce85f77f-ccc6-4eee-915f-25c62dd7e7a2",
+        "name": "GET cbs-po-board",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          3456
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-po-board",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "2f750433-e318-469b-89cf-9e2b03fd0d7c"
+      },
+      {
+        "id": "afc6b9b3-7964-4556-a8be-1724cc43ff37",
+        "name": "GET cbs-logo",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          3648
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-logo",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "5419ee0a-a363-4d7d-9a13-ad34dcb5c39f"
+      },
+      {
+        "id": "f33b022a-15d3-44f5-b4a7-9031a0228a6d",
+        "name": "Get Page",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          1824
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "HOHWTBOJHrHF0TvB"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "name",
+                "condition": "eq",
+                "keyValue": "={{ $json.name }}"
+              }
+            ]
+          },
+          "returnAll": false,
+          "limit": 1
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "b5fdb299-6e93-4f32-94fb-2c4365e1ac3d",
+        "name": "Unpack",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          1824
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var r = $input.first().json || {};\nvar o = { t: 'text/plain; charset=utf-8', b: 'Page not found' };\ntry { if (r.content) o = JSON.parse(r.content); } catch (e) {}\nvar DL = String.raw`<script id=\"cbsDl\">(function(){if(window.__cbsDl)return;window.__cbsDl=1;\nvar ua=navigator.userAgent||'',fr=false;try{fr=window.top!==window.self;}catch(e){fr=true;}\nvar ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);\nvar wv=(ios&&ua.indexOf('Safari/')<0)||ua.indexOf('; wv)')>-1||/ServiceM8/i.test(ua);\nwindow.__cbsDlPost=fr||wv;\nvar oc=HTMLAnchorElement.prototype.click,od=HTMLAnchorElement.prototype.dispatchEvent;\nfunction want(a){if(!window.__cbsDlPost||!a||!a.download)return false;var h=String(a.href||'');return (h.indexOf('blob:')===0||h.indexOf('data:application/pdf')===0)&&(/[.]pdf$/i.test(a.download)||h.indexOf('data:application/pdf')===0);}\nfunction b64(href){return fetch(href).then(function(r){return r.blob();}).then(function(b){return new Promise(function(res,rej){var f=new FileReader();f.onload=function(){res(String(f.result).split(',')[1]);};f.onerror=rej;f.readAsDataURL(b);});});}\nfunction css(){if(document.getElementById('cbsDlCss'))return;var s=document.createElement('style');s.id='cbsDlCss';s.textContent='#cbsDlOv{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:20px;font-family:inherit}#cbsDlOv .bx{background:#fff;border-radius:12px;padding:20px;max-width:360px;width:100%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.25)}#cbsDlOv b{display:block;font-size:18px;margin-bottom:6px}#cbsDlOv p{margin:0 0 14px;color:#555;font-size:14px;word-break:break-word}#cbsDlOv button{display:block;width:100%;border:0;border-radius:8px;padding:13px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;margin-top:8px}#cbsDlGo{background:#F47920;color:#fff}#cbsDlX{background:#eef0f2;color:#1f2328}';document.head.appendChild(s);}\nfunction show(name,data){css();var o=document.getElementById('cbsDlOv');if(o)o.remove();o=document.createElement('div');o.id='cbsDlOv';\n var bx=document.createElement('div');bx.className='bx';var t=document.createElement('b');t.textContent='Your PDF is ready';var p=document.createElement('p');p.textContent=name;\n var f=document.createElement('form');f.method='POST';f.action='/webhook/cbs-pdf-out';f.target='_blank';f.style.margin='0';\n [['name',name],['data',data]].forEach(function(x){var i=document.createElement('input');i.type='hidden';i.name=x[0];i.value=x[1];f.appendChild(i);});\n var g=document.createElement('button');g.type='submit';g.id='cbsDlGo';g.textContent='Open PDF';f.appendChild(g);\n var x=document.createElement('button');x.type='button';x.id='cbsDlX';x.textContent='Close';x.onclick=function(){o.remove();};\n f.onsubmit=function(){setTimeout(function(){o.remove();},1500);};\n bx.appendChild(t);bx.appendChild(p);bx.appendChild(f);bx.appendChild(x);o.appendChild(bx);document.body.appendChild(o);}\nfunction go(a){var n=a.download||'document.pdf';b64(a.href).then(function(d){show(n,d);})['catch'](function(){try{window.open(a.href,'_blank');}catch(e){}});}\nHTMLAnchorElement.prototype.click=function(){if(want(this)){go(this);return;}return oc.apply(this,arguments);};\nHTMLAnchorElement.prototype.dispatchEvent=function(e){if(e&&e.type==='click'&&want(this)){go(this);return true;}return od.apply(this,arguments);};\n})();</script>`;\nif (/text\\/html/i.test(String(o.t||'')) && typeof o.b === 'string' && o.b.indexOf('id=\"cbsDl\"') < 0) { var m = o.b.match(/<head[^>]*>/i); if (m) { var i = o.b.indexOf(m[0]) + m[0].length; o.b = o.b.slice(0, i) + DL + o.b.slice(i); } }\nreturn [{ json: { t: o.t, b: o.b } }];"
+        }
+      },
+      {
+        "id": "fc7cb84a-db73-43ff-ac40-23232562c03f",
+        "name": "Serve",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          1824
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ (/text\\/html/i.test(String($json.t||'')) && typeof $json.b === 'string' && $json.b.indexOf('/webhook/cbs-guard') < 0) ? $json.b.replace(/<head[^>]*>/i, '$&<script src=\"/webhook/cbs-guard\"></script>') : $json.b }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "={{ $json.t }}"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "a1f5b94c-6420-43d6-bcd8-2a3a19468fd9",
+        "name": "GET cbs-permit",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          3840
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-permit",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "4a94815e-6a6a-4106-8ded-9640898d772a"
+      },
+      {
+        "id": "16f6dcf0-428a-4faa-a920-a3ae540eb797",
+        "name": "GET cbs-visit",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          4032
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-visit",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "f5ceb44b-afdf-4131-8b46-ec4741ec7856"
+      },
+      {
+        "id": "b3f19d4f-fca1-4ae5-9327-454d2c82e64a",
+        "name": "GET cbs-hs",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          4224
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-hs",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "9a6eb12b-d1d2-4cc4-bffa-d7de34805a07"
+      },
+      {
+        "id": "5bf57dca-fd9a-45e6-877a-2bb6deddefaa",
+        "name": "GET cbs-pci",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          4416
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-pci",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "caed0788-e0dc-41d3-bfd4-5ab0a14942b2"
+      },
+      {
+        "id": "d4ade210-479f-49ba-bffe-e3da526745eb",
+        "name": "CBS Brand",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          784,
+          2000
+        ],
+        "parameters": {
+          "jsCode": "/* CBS brand converter: Embr black/gold -> CBS grey #3d4043 / orange #F47920 (sign-on page style). Skipped for pages already baked (marker cbs-baked at the start). */\nfunction cbsBrand(h){\n  var O='#F47920',OD='#d4650f',G='#3d4043',TINT='#fde4d0',LO='#ffb37a';\n  var GOLD=/#ffbe59\\b/ig, BLACK=/^(#000|#000000|#111|var\\(--ink\\))$/i;\n  function conv(body,sel){\n    var decl=body.split(';'),bgI=-1,colI=-1,bcI=-1,bg='',col='',bc='';\n    decl.forEach(function(d,i){var m=d.match(/^\\s*(background(?:-color)?|color|border-color)\\s*:\\s*([^!]+?)\\s*(!important)?\\s*$/i);if(!m)return;var p=m[1].toLowerCase(),v=m[2].trim();\n      if(p==='color'){colI=i;col=v;}else if(p==='border-color'){bcI=i;bc=v;}else{bgI=i;bg=v;}});\n    if(bgI<0) return null;\n    var isBlack=BLACK.test(bg), isGold=/^(#ffbe59|var\\(--brand\\))$/i.test(bg), gCol=/^(#ffbe59|var\\(--brand\\))$/i.test(col), wCol=/^(#fff|#ffffff|white)$/i.test(col), kCol=/^(#000|#000000|#111|#161616)$/i.test(col);\n    function set(i,prop,val){var imp=/!important/.test(decl[i])?'!important':'';decl[i]=decl[i].replace(/^(\\s*)[^:]+:.*$/,'$1'+prop+':'+val+imp);}\n    function rep(i,v){var m=decl[i].match(/^\\s*([^:]+):/);set(i,m[1].trim(),v);}\n    if(isBlack&&gCol){rep(bgI,O);rep(colI,'#fff');if(bcI>-1&&BLACK.test(bc))rep(bcI,O);return decl.join(';');}\n    if(isBlack&&wCol&&/(^|[\\s,>])(button|\\.btn|a\\.p|button\\.p|\\.go|\\.big)\\b/.test(sel||'')&&!/top|header|\\.ph/.test(sel||'')){rep(bgI,O);if(bcI>-1&&BLACK.test(bc))rep(bcI,O);return decl.join(';');}\n    if(isBlack&&(wCol||colI<0)&&!/\\.ph span a/.test(sel||'')){rep(bgI,G);if(bcI>-1&&BLACK.test(bc))rep(bcI,G);return decl.join(';');}\n    if(isBlack&&kCol){return null;}\n    if(isGold&&(kCol||colI<0)){\n      if(/\\bth\\b|thead/.test(sel||'')&&colI<0){rep(bgI,TINT);return decl.join(';');}\n      if(colI<0&&/rule|li:before|\\.st\\b/.test(sel||'')){rep(bgI,O);return decl.join(';');}\n      rep(bgI,O);if(colI>-1)rep(colI,'#fff');else decl.push('color:#fff');if(bcI>-1)rep(bcI,O);return decl.join(';');}\n    return null;\n  }\n  h=h.replace(/([^{}]{0,200})\\{([^{}<>]{0,1200})\\}/g,function(all,sel,body){\n    if(!/background/i.test(body))return all;var r=conv(body,sel);return r==null?all:sel+'{'+r+'}';});\n  h=h.replace(/(style=\\\\?[\"'])([^\"'\\\\]{0,600})(\\\\?[\"'])/g,function(all,a,body,b){\n    if(!/background/i.test(body))return all;var r=conv(body,'th');return r==null?all:a+r+b;});\n  h=h.replace(/((?:header|\\.top|\\.topbar)[^{}]{0,60}\\{[^{}]*?color:\\s*)(var\\(--brand\\)|#FFBE59)/gi,'$1'+LO);\n  h=h.replace(/(\\.secT i\\{[^}]*?color:)#FFBE59/gi,'$1'+LO);\n  h=h.replace(/((?:\\.top|\\.topbar)[^{}]{0,40}\\{[^{}]*?)background:\\s*#1[cd]1[cd]1[cd](!important)?;\\s*color:\\s*#fff(!important)?;([^{}]*)\\}/gi,function(a,pre,i1,i2,rest){\n    rest=rest.replace(/border:1px solid #(555|444)/i,'border:1px solid #d9d9d6').replace(/border-color:\\s*#(555|444)/i,'border-color:#d9d9d6');\n    return pre+'background:#fff'+(i1||'')+';color:#1d1d1d'+(i2||'')+';'+rest+'}';});\n  h=h.replace(/background:#000;color:#fff(?![\\w;]*border-radius:50%)/g,'background:'+G+';color:#fff');\n  var R=[[/--brand-deep:\\s*#e0982a/ig,'--brand-deep:'+OD],[/#e0982a/ig,OD],[GOLD,O],\n    [/255\\s*,\\s*190\\s*,\\s*89/g,'244,121,32'],[/setFillColor\\(0,\\s*0,\\s*0\\)/g,'setFillColor(61,64,67)'],[/OR=\\[247,148,29\\]/g,'OR=[244,121,32]'],[/st===\"lead\"\\?190:0,st===\"lead\"\\?89:0/g,'st===\"lead\"?121:0,st===\"lead\"?32:0'],[/st===\"lead\"\\?255:0,st===\"lead\"\\?121/g,'st===\"lead\"?244:0,st===\"lead\"?121'],[/setFillColor\\(255,236,204\\)/g,'setFillColor(253,228,208)'],[/setDrawColor\\(201,191,163\\)/g,'setDrawColor(217,217,214)'],[/setTextColor\\(122,139,135\\)/g,'setTextColor(107,110,112)'],[/setFillColor\\(253,231,200\\)/g,'setFillColor(253,228,208)'],[/224\\s*,\\s*152\\s*,\\s*42/g,'212,101,15'],\n    [/--bg:\\s*#f3f2ef/ig,'--bg:#f2f2f0'],[/#f3f2ef/ig,'#f2f2f0'],[/#e0ddd7/ig,'#d9d9d6'],[/#dddad4/ig,'#d9d9d6'],[/#6c6a66/ig,'#6b6e70'],\n    [/background:#1d1d1d!important;color:#fff!important;border:1px solid #444!important/g,'background:#fff!important;color:#1d1d1d!important;border:1px solid #d9d9d6!important'],[/\\.std-del\\{color:#ff8a80!important;border-color:#7a2a24!important\\}/g,'.std-del{color:#b3261e!important;border-color:#d9d9d6!important}'],[/background:#fff;color:#000;border:1px solid #000/g,'background:#fff;color:#1d1d1d;border:1px solid #d9d9d6'],[/#fff8e8/ig,'#fff4ec'],[/#faf9f7/ig,'#f7f7f6'],[/#eeece8/ig,'#ececea'],[/#c9c5bd/ig,'#c4c6c8']];\n  R.forEach(function(r){h=h.replace(r[0],r[1]);});\n  h=h.replace(/(background(?:-color)?:\\s*(?:#F47920|var\\(--brand\\))(?:!important)?;(?:[^\"'{}<>;]*;){0,4}?\\s*color:\\s*)#000\\b/g,'$1#fff');\n  h=h.replace(/((?:^|[;{\"'\\s])color:\\s*)#000\\b([^\"'{}<>]{0,90}?background(?:-color)?:\\s*(?:#F47920|var\\(--brand\\)))/g,'$1#fff$2');\n  return h;\n}\nvar name='';try{name=$('Which Page').first().json.name||'';}catch(e){}\nvar o=$input.first().json||{};\nif(!/^page:cbs-(hz-icons|logo)$/.test(name)&&typeof o.b==='string'&&o.b.slice(0,40).indexOf('cbs-baked')<0){try{o.b=cbsBrand(o.b);}catch(e){}}\nreturn [{json:{t:o.t,b:o.b}}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "131e28e3-2688-4fe3-80a6-783e819e29ef",
+        "name": "Keep View",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          784,
+          1824
+        ],
+        "parameters": {
+          "jsCode": "/* Input: Get Logo (page:cbs-logo row). Page comes from Unpack. */\n/* Keeps the hub on the same section/record across refresh (page:cbs-admin only). Hides the hub until the saved section is restored so home never flashes. */\nvar KEEP = String.raw`<script id=\"cbsKeep\">(function(){if(window.__cbsKeep)return;window.__cbsKeep=1;\nvar K=\"cbsHubView\",q=null;try{q=new URLSearchParams(location.search);}catch(e){}\nvar deep=q&&(q.get(\"open\")||q.get(\"new\")),saved=null;\nif(!deep){try{var hs=history.state;if(hs&&hs.cbs)saved={cbs:hs.cbs,d:hs.d||0};}catch(e){}\n if(!saved){try{var ss=JSON.parse(sessionStorage.getItem(K)||\"null\");if(ss&&ss.cbs)saved={cbs:ss.cbs,d:0};}catch(e){}}}\nfunction keep(){try{var s=history.state;if(s&&s.cbs)sessionStorage.setItem(K,JSON.stringify({cbs:s.cbs}));}catch(e){}}\nwindow.addEventListener(\"pagehide\",keep);\ndocument.addEventListener(\"visibilitychange\",function(){if(document.visibilityState===\"hidden\")keep();});\nif(!saved||!saved.cbs.name||saved.cbs.name===\"home\")return;\nvar R=document.documentElement;R.classList.add(\"cbs-restoring\");\ntry{var st=document.createElement(\"style\");st.id=\"cbsKeepCss\";st.textContent='html.cbs-restoring #app>*,html.cbs-restoring #qm,html.cbs-restoring #nt,html.cbs-restoring #title,html.cbs-restoring #back{visibility:hidden!important}html.cbs-restoring #app{position:relative;min-height:60vh}html.cbs-restoring #app::before{content:\"Loading\\\\2026\";position:absolute;left:0;right:0;top:40px;text-align:center;color:#6b6e70;font-size:15px}';(document.head||R).appendChild(st);}catch(e){}\nfunction show(){R.classList.remove(\"cbs-restoring\");}\nvar fail=setTimeout(show,10000);\nfunction restore(){try{window.dispatchEvent(new PopStateEvent(\"popstate\",{state:saved}));history.replaceState(saved,\"\");}catch(e){}\n clearTimeout(fail);requestAnimationFrame(function(){requestAnimationFrame(show);});}\nfunction watch(){var b=document.body;if(b.classList.contains(\"cbs-ready\")){restore();return;}\n var mo=new MutationObserver(function(){if(b.classList.contains(\"cbs-ready\")){mo.disconnect();restore();}});\n mo.observe(b,{attributes:true,attributeFilter:[\"class\"]});}\nif(document.body)watch();else document.addEventListener(\"DOMContentLoaded\",watch);\n})();</script>`;\nvar name = '';\ntry { name = $('Which Page').first().json.name || ''; } catch (e) {}\nvar o = $('Unpack').first().json || {};\nif (name === 'page:cbs-admin' && typeof o.b === 'string' && o.b.indexOf('id=\"cbsKeep\"') < 0) {\n  var m = o.b.match(/<head[^>]*>/i);\n  if (m) { var i = o.b.indexOf(m[0]) + m[0].length; o.b = o.b.slice(0, i) + KEEP + o.b.slice(i); }\n}\n/* Hub header (page:cbs-admin): Actions and Jobs are sent in the header HTML (stored page). This only styles and wires them,\n   keeps the Actions count in step with the board on every redraw. (The home-page \"Hub tools\" TV tile was removed: TV dashboard lives in the side menu under Settings.)\n   No TV header button, no timers. */\nvar HDR = '<style id=\"cbsHdr2Css\">#actBtn{background:#F47920;color:#fff;border:0;border-radius:8px;padding:8px 16px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;margin-left:auto;margin-right:8px;display:inline-flex;align-items:center;gap:6px}#actBtn .c{background:#fff;color:#F47920;border-radius:10px;padding:0 7px;font-size:12px;font-weight:700}#enqBtn{margin-left:0!important;margin-right:8px;background:#fff!important;color:#1d1d1d!important;border:1px solid #fff!important;border-radius:8px;font:inherit;font-size:13px;font-weight:700!important;padding:7px 14px!important;cursor:pointer;white-space:nowrap}@media (max-width:760px){#actBtn{order:7;flex:1 1 0!important;margin:0!important;justify-content:center;padding:8px 10px!important}#enqBtn{order:7!important;flex:1 1 0!important;margin:0!important}}</style><script id=\"cbsHdr2\">(function(){if(window.__cbsHdr2)return;window.__cbsHdr2=1;var U=\"/webhook/cbs-tv-settings?k=[redacted-secret]\",E=\"https://old-hub.example/webhook/cbs-jobs\",CNT=\"\";function tv(){var w=window.open(U,\"_blank\");if(!w)location.href=U;}var a=document.getElementById(\"actBtn\"),j=document.getElementById(\"enqBtn\");if(a)a.onclick=function(){if(typeof go===\"function\"){go({name:\"actions\"});document.body.classList.remove(\"m-open\");}};if(j)j.onclick=function(){var w=window.open(E,\"_blank\");if(!w)location.href=E;};function cnt(){var t=document.querySelector(\"#actTile .n\");if(t)CNT=String(t.textContent||\"\").trim();else{var q=document.querySelector(\"#qmAct .c\");if(q&&!CNT)CNT=String(q.textContent||\"\").trim();}if(!a)return;var s=a.querySelector(\".c\");if(CNT&&CNT!==\"0\"){if(!s){s=document.createElement(\"span\");s.className=\"c\";a.appendChild(s);}if(s.textContent!==CNT)s.textContent=CNT;}else if(s)s.remove();}try{[\"app\",\"qm\"].forEach(function(id){var e=document.getElementById(id);if(e&&window.MutationObserver)new MutationObserver(cnt).observe(e,{childList:true,subtree:true,characterData:true});});}catch(e){}cnt();})();</script>';\nif (name === 'page:cbs-admin' && typeof o.b === 'string' && o.b.indexOf('id=\"cbsHdr2\"') < 0) {\n  var bk = o.b.lastIndexOf('</body>');\n  if (bk > -1) o.b = o.b.slice(0, bk) + HDR + o.b.slice(bk); else o.b += HDR;\n}\n\n/* Every page: first frame matches the final page.\n   G1 builder logo sent in the HTML (was filled in by script after a fetch).\n   G2 Job File button and job back-links sent with the job when ?job= is in the URL (was revealed by a 1.5 s poll).\n   G4 loading placeholders say what is loading. Anchors that are not found are left alone. */\nvar LOGO = '';\ntry { var lr = $input.first().json || {}, lc = String(lr.content || ''); try { var lo = JSON.parse(lc); if (lo && lo.b) lc = String(lo.b); } catch (e) {} var lm = lc.match(/src=\"(data:image\\/[a-z]+;base64,[A-Za-z0-9+\\/=]+)\"/); if (lm) LOGO = lm[1]; } catch (e) {}\nvar slug = name.replace(/^page:/, ''), q = {};\ntry { q = $('GET ' + slug).first().json.query || {}; } catch (e) {}\nvar JOB = String(q.job || '').replace(/[^0-9A-Za-z-]/g, ''), RID = String(q.id || '').replace(/[^0-9]/g, '');\nif (/^(10871|10885)$/.test(JOB)) JOB = '';\nif (typeof o.b === 'string' && /text\\/html/i.test(String(o.t || 'text/html'))) {\n  var b = o.b;\n  if (LOGO) b = b.replace(/<img class=\"logo\" id=\"topLogo\"( src=\"\")? alt=/, '<img class=\"logo\" id=\"topLogo\" src=\"' + LOGO + '\" alt=');\n  if (LOGO) b = b.replace('<img id=\"cbsLogo\" alt=\"Chelmsford Building Services\" title=\"Home\">', '<img id=\"cbsLogo\" alt=\"Chelmsford Building Services\" title=\"Home\" src=\"' + LOGO + '\">');\n  if (JOB) {\n    var jf = '/webhook/cbs-job-file?job=' + encodeURIComponent(JOB);\n    b = b.replace(/id=([\"'])cbsJf\\1 href=([\"'])\\/webhook\\/cbs-job-file\\2 style=([\"'])display:none\\3/, function (m, a, c) { return 'id=' + a + 'cbsJf' + a + ' href=' + c + jf + c + ' title=' + c + 'Open the Job File for job ' + JOB + c; });\n    if (slug === 'cbs-pci') b = b.replace(\"<a id='hb' href='/webhook/cbs-job-file'>&larr; Job File</a>\", \"<a id='hb' href='\" + jf + \"'>&larr; Job \" + JOB + \"</a>\");\n    if (slug === 'cbs-po') b = b.replace('<a id=\"boardLink\" href=\"/webhook/cbs-po-board\">', '<a id=\"boardLink\" href=\"/webhook/cbs-po-board?job=' + encodeURIComponent(JOB) + '\">');\n  }\n  var NOUN = {'cbs-rams-builder':'RAMS','cbs-cphsp-builder':'construction phase plan','cbs-toolbox-builder':'record','cbs-team-meeting':'team meeting','cbs-incident-report':'incident report','cbs-prestart':'pre-start','cbs-ptm-sheet':'sheet','cbs-po':'purchase order','cbs-site-inspection':'inspection','cbs-permit':'permit','cbs-coshh-builder':'CoSHH assessment'};\n  var LIST = {'cbs-po-board':'purchase orders','cbs-subjobs-board':'subcontractor RAMS','cbs-hs':'H&amp;S documents','cbs-permit':'permits to work','cbs-visit':'visitors log','cbs-pci':'pre-construction information','cbs-ptm-crew':'load-up sheet'};\n  var txt = RID && NOUN[slug] ? 'Loading ' + NOUN[slug] + ' ' + RID + '&#8230;' : (JOB ? 'Loading job ' + JOB + '&#8230;' : (LIST[slug] ? 'Loading ' + LIST[slug] + '&#8230;' : ''));\n  if (slug === 'cbs-pci' || slug === 'cbs-visit' || slug === 'cbs-ptm-crew') txt = LIST[slug] ? 'Loading ' + LIST[slug] + (JOB ? ' for job ' + JOB : '') + '&#8230;' : txt;\n  if (txt) {\n    var bs = b.search(/<body[^>]*>/i), se = bs > -1 ? b.indexOf('<script', bs) : -1;\n    if (bs > -1 && se > bs) { var seg = b.slice(bs, se), nseg = seg.replace(/>Loading(&#8230;|&hellip;|\\u2026)</, '>' + txt + '<'); if (nseg !== seg) b = b.slice(0, bs) + nseg + b.slice(se); }\n    var tjs = txt.replace(/&#8230;/g, '\\\\u2026').replace(/&amp;/g, '&');\n    if (b.split('status(\"Loading\\\\u2026\")').length === 2) b = b.split('status(\"Loading\\\\u2026\")').join('status(\"' + tjs + '\")');\n  }\n  o.b = b;\n}\nreturn [{ json: { t: o.t, b: o.b } }];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "2b11453d-0d29-46dd-9ec6-00a4a8badb11",
+        "name": "Inspections",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          784,
+          1640
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "DPgv7Nm5Q4Vx8uVv"
+          },
+          "operation": "get",
+          "resource": "row",
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "condition": "lt",
+                "keyName": "id",
+                "keyValue": "={{ $('Which Page').first().json.name === 'page:cbs-site-inspection' ? 2000000000 : 0 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions"
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "79aed4ae-a880-45ce-8d8a-bb85c67d7a08",
+        "name": "Live Site Data",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1000,
+          1640
+        ],
+        "parameters": {
+          "jsCode": "var name='';try{name=$('Which Page').first().json.name||'';}catch(e){}\nvar o=Object.assign({},$('Keep View').first().json);\nif(name!=='page:cbs-site-inspection'||typeof o.b!=='string')return [{json:{t:o.t,b:o.b}}];\nvar q={};try{q=$('GET cbs-site-inspection').first().json.query||{};}catch(e){}\nvar d={};try{d=await this.helpers.httpRequest({method:'GET',url:'https://old-hub.example/webhook/cbs-admin-data?t=workers,cphsp',json:true,timeout:20000})||{};}catch(e){d={};}\nvar workers=(d.workers||[]).filter(function(w){return w&&w.name&&w.active!==false;}).map(function(w){return String(w.name);}).sort();\nvar cphsps=(d.cphsp||[]).map(function(c){var st={};try{st=JSON.parse(c.state_json||'{}')||{};}catch(e){}var row=(st.insp||[]).filter(function(r){return r&&/site safety inspection/i.test(String(r[0]));})[0]||[];return {id:c.id,job:String(c.job_no||''),label:c.cphsp_no||('CPHSP-'+c.id),site:c.site||'',freq:row[1]||'Weekly',insp_by:row[2]||'Site manager'};});\nvar ins=$('Inspections').all().map(function(i){return i.json;}).filter(function(r){return r&&r.id;});\nvar job=String(q.job||'').trim();\nvar prev=ins.filter(function(r){return !job||String(r.job_no||'')===job;}).map(function(r){return {id:r.id,job:String(r.job_no||''),no:r.insp_no||'',dated:r.dated||'',status:r.status||''};}).sort(function(a,b){return String(b.dated).localeCompare(String(a.dated));});\nvar rec=null;if(q.id){var r=ins.filter(function(x){return String(x.id)===String(q.id);})[0];if(r){var s={};try{s=JSON.parse(r.state_json||'{}')||{};}catch(e){}rec={id:r.id,insp_no:r.insp_no||'',state:s};if(!job)job=String(r.job_no||'');}}\nvar b=o.b,K='window.__D=',k=b.indexOf(K);\nif(k<0)return [{json:{t:o.t,b:b}}];\nvar s0=k+K.length,i=s0,dep=0,inS=false,esc=false;\nfor(;i<b.length;i++){var ch=b[i];if(inS){if(esc)esc=false;else if(ch==='\\\\')esc=true;else if(ch==='\"')inS=false;continue;}if(ch==='\"'){inS=true;continue;}if(ch==='{')dep++;else if(ch==='}'){dep--;if(dep===0){i++;break;}}}\nvar old={};try{old=JSON.parse(b.slice(s0,i));}catch(e){old={};}\nvar nd=Object.assign({},old,{job:job,workers:workers,cphsps:cphsps,prev:prev,rec:rec});\nnd.items=(old.items||[]).map(function(t){return String(t).replace('roof or chimney work','roof and edge work');});\nb=b.slice(0,s0)+JSON.stringify(nd).replace(/</g,'\\\\u003c')+b.slice(i);\nreturn [{json:{t:o.t,b:b}}];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "cf7ff9ed-1cb2-4f46-a396-f7185f925fd8",
+        "name": "GET cbs-coshh-builder",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          4608
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-coshh-builder",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "30b39a15-804d-4014-9b5c-ca2067b44a32"
+      },
+      {
+        "id": "8a35475e-b3e0-4f18-bebf-18b148fc236c",
+        "name": "Sign Induction",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1000,
+          2000
+        ],
+        "parameters": {
+          "jsCode": "var PRES_OLD=\"window.__CBS_PV={doc:\\\"cphsp\\\",label:\\\"site induction\\\",preview:false};(function(){var t=0,iv=setInterval(function(){t++;var id=Number(new URLSearchParams(location.search).get(\\\"id\\\")||window.__cbsRecId||0);var bar=document.querySelector(\\\".topbar\\\");if(bar&&id&&!document.getElementById(\\\"presBtn\\\")){var a=document.createElement(\\\"a\\\");a.id=\\\"presBtn\\\";a.className=\\\"btn\\\";a.target=\\\"_blank\\\";a.rel=\\\"noopener\\\";a.textContent=\\\"Present induction\\\";a.href=\\\"/webhook/cbs-sign?doc=cphsp&id=\\\"+id+\\\"&present=1\\\";var pdf=document.getElementById(\\\"pdfBtn\\\");if(pdf&&pdf.parentNode===bar)bar.insertBefore(a,pdf);else bar.appendChild(a);}var b=document.getElementById(\\\"presBtn\\\");if(b&&id)b.href=\\\"/webhook/cbs-sign?doc=cphsp&id=\\\"+id+\\\"&present=1\\\";if(t>600)clearInterval(iv);},1000);})();\",PRES_NEW=\"window.__CBS_PV={doc:\\\"cphsp\\\",label:\\\"site induction\\\",preview:false};(function(){function rid(){return Number(new URLSearchParams(location.search).get(\\\"id\\\")||window.__cbsRecId||0);}function purl(id){return \\\"/webhook/cbs-sign?doc=cphsp&id=\\\"+id+\\\"&present=1\\\";}function warn(){alert(\\\"Save the CPHSP first, then present the induction.\\\");}setInterval(function(){var id=rid(),bar=document.querySelector(\\\".topbar\\\");if(bar){var a=document.getElementById(\\\"presBtn\\\");if(!a){a=document.createElement(\\\"a\\\");a.id=\\\"presBtn\\\";a.className=\\\"btn\\\";a.target=\\\"_blank\\\";a.rel=\\\"noopener\\\";a.textContent=\\\"Present induction\\\";a.onclick=function(e){if(!rid()){e.preventDefault();warn();}};var pdf=document.getElementById(\\\"pdfBtn\\\");if(pdf&&pdf.parentNode===bar)bar.insertBefore(a,pdf);else bar.appendChild(a);}a.href=id?purl(id):\\\"#\\\";a.style.opacity=id?\\\"\\\":\\\"0.6\\\";}var eb=document.querySelector(\\\"#cbsSign .es-bar\\\");if(eb&&!document.getElementById(\\\"esPres\\\")){var b=document.createElement(\\\"button\\\");b.type=\\\"button\\\";b.id=\\\"esPres\\\";b.className=\\\"qr\\\";b.textContent=\\\"Present induction\\\";b.onclick=function(){var i=rid();if(!i){warn();return;}window.open(purl(i),\\\"_blank\\\",\\\"noopener\\\");};var q=document.getElementById(\\\"esQrBtn\\\");if(q&&q.parentNode===eb)eb.insertBefore(b,q);else eb.appendChild(b);}},1000);})();\\n\";\nvar signPatch=function(h){\n if(h.indexOf('/*CBS-IND-v8*/')>-1)return {h:h,already:true};\n if(h.indexOf('function indHtml')>-1)throw new Error('old induction patch present - restore base first');\n function rep(a,b,tag){if(h.indexOf(a)<0)throw new Error('missing '+tag);h=h.split(a).join(b);}\n rep('</style>','table.kv{width:100%;border-collapse:collapse;font-size:14.5px;margin-bottom:6px}table.kv th{text-align:left;color:var(--m);font-weight:600;padding:7px 10px 7px 0;vertical-align:top;width:38%}table.kv td{padding:7px 0;vertical-align:top}table.kv tr+tr{border-top:1px solid var(--b)}.ind p{font-size:14.5px;line-height:1.45;white-space:pre-line;margin:8px 0}.ind h2{font-size:17px;display:flex;align-items:center}.step{display:inline-block;flex:0 0 26px;background:var(--o);color:#fff;border-radius:50%;width:26px;height:26px;text-align:center;line-height:26px;font-size:14px;margin-right:8px}.ind.done{border-color:#9fd3ae;background:#f6fbf7}.ind.done .step{background:#1a7f37}.tick{display:flex;gap:12px;align-items:center;margin-top:12px;padding:12px;border:1px solid var(--b);border-radius:8px;background:#fafafa;cursor:pointer;font-size:15px;-webkit-user-select:none;user-select:none}.tick input{width:26px;height:26px;flex:0 0 auto;margin:0;accent-color:#1a7f37}.ind.done .tick{background:#e6f4ea;border-color:#9fd3ae}#indProg{font-weight:600}.qrc{text-align:center}.qrc #qrBox{display:inline-block;padding:10px;border:5px solid var(--o);border-radius:12px;background:#fff;margin:6px 0}.qrc #qrBox img,.qrc #qrBox canvas{width:min(70vw,300px)!important;height:auto!important;display:block}.qrc small{display:block;color:var(--m);word-break:break-all;font-size:12px}</style>','css');\n rep(\"\\n if(done){h+='<div class=ok>\",\"\\n if(!done&&D.ind)h+=indHtml();\\n if(done){h+='<div class=ok>\",'insert');\n rep(\"I have read, or been briefed on, this '+esc(String(d.kind).toLowerCase())+'. I understand it and will follow it. I will stop work and tell my supervisor if anything changes or I am unsure.\",\"'+(D.ind?esc(D.ind.acceptance):'I have read, or been briefed on, this '+esc(String(d.kind).toLowerCase())+'. I understand it and will follow it. I will stop work and tell my supervisor if anything changes or I am unsure.')+'\",'agree');\n rep(\"if(!$('ag').checked){m.textContent='Tick the box to confirm you have read and understood it.';return;}\",\"if(D.ind&&!BRIEFED&&!indOk()){m.textContent='Go through each induction section above and tick it off.';var f=document.querySelector('.ind:not(.done)');if(f&&f.scrollIntoView)f.scrollIntoView({behavior:'smooth',block:'center'});return;}if(!$('ag').checked){m.textContent=D.ind?'Tick the acceptance box to confirm.':'Tick the box to confirm you have read and understood it.';return;}\",'check');\n rep(\" pad();$('go').onclick=sign;}\",\" pad();$('go').onclick=sign;indBind();}\",'bind');\n rep(\"D=d;$('sub').textContent=d.doc.kind+' sign-on'+(PRES?' (group)':'');render();\",\"D=d;$('sub').textContent=d.doc.kind+' sign-on'+(PRES?' (presented)':'');if(PRES&&D.ind)slides();else render();\",'load');\n rep(\"inducted_by:PRES?d.prepared_by:''\",\"inducted_by:BY||(PRES?d.prepared_by:'')\",'by');\n rep(\"N++;WK=true;\",\"N++;WK=true;TK={};\",'reset');\n rep('function pad(){',String.raw`/*CBS-IND-v8*/\nvar BRIEFED=Q.get('briefed')==='1',TK={};\nvar BY=Q.get('by')||'',SL=0,SLN=0;\nfunction slides(){var I=D.ind,d=D.doc,S=I.sections||[],w=I.presenters||[];if(BY&&w.indexOf(BY)<0)BY='';\n var st=document.createElement('style');st.textContent='html.svon,html.svon body{overflow:hidden!important;height:100%;overscroll-behavior:none}#sv{position:fixed;inset:0;z-index:5000;background:#f2f2f0;display:flex;flex-direction:column;font-family:inherit;overflow:hidden;touch-action:pan-y pinch-zoom}#sv .top{background:#3d4043;color:#fff;border-bottom:.8vh solid #F47920;padding:1.4vh 3vw;display:flex;align-items:center;gap:2vw;flex:0 0 auto}#sv .top img{height:6vh;min-height:30px}#sv .top b{font-size:clamp(16px,3vh,40px);flex:1}#sv .top span{font-size:clamp(14px,2.6vh,34px);color:#e6e6e6}#sv .stage{flex:1 1 auto;min-height:0;overflow:hidden;position:relative}#sv .sl{display:none;position:absolute;inset:0;padding:3vh 5vw;box-sizing:border-box;overflow:hidden}#sv .sl.on{display:flex;flex-direction:column;justify-content:center}#sv .in{width:100%;max-width:1600px;margin:0 auto}#sv h1{font-size:1.4em;margin:0 0 .5em;line-height:1.1}#sv h1 .n{display:inline-block;background:#F47920;color:#fff;border-radius:50%;width:1.4em;height:1.4em;line-height:1.4em;text-align:center;margin-right:.4em;font-size:.8em;vertical-align:middle}#sv .big,#sv p,#sv ul,#sv table{font-size:1em;line-height:1.35}#sv .big{color:inherit}#sv p{margin:.45em 0;white-space:pre-line}#sv table{border-collapse:collapse;width:100%}#sv th{text-align:left;color:#55585a;font-weight:600;padding:.3em 1em .3em 0;width:34%;vertical-align:top}#sv td{padding:.3em 0;vertical-align:top}#sv tr+tr{border-top:2px solid #d9d9d6}#sv ul{margin:.3em 0;padding-left:1.1em}#sv li{margin:.25em 0;font-size:1em!important}#sv th,#sv td,#sv p,#sv ul,#sv .big{font-size:1em!important}#sv b{font-size:inherit}#sv .ctl{display:flex;align-items:center;gap:2vw;padding:1.4vh 3vw;background:#fff;border-top:1px solid #d9d9d6;flex:0 0 auto}#sv .ctl button{font:inherit;font-size:clamp(16px,2.8vh,34px);font-weight:600;padding:1.1vh 3vw;border-radius:10px;border:2px solid #3d4043;background:#fff;color:#1d1d1d;cursor:pointer}#sv .ctl button.p{background:#F47920;border-color:#F47920;color:#fff}#sv .ctl button:disabled{opacity:.35}#sv .ctl button.fs{padding:1.1vh 1.6vw}#sv .dots{flex:1;text-align:center}#sv .dots i{display:inline-block;width:1.4vh;height:1.4vh;min-width:10px;min-height:10px;border-radius:50%;background:#c4c6c8;margin:0 .4vh}#sv .dots i.on{background:#F47920}#sv select{font:inherit;font-size:1em;padding:.3em .5em;border-radius:10px;border:2px solid #3d4043;min-width:40vw}#sv .qrw{display:flex;gap:4vw;align-items:center}#sv #svQr{background:#fff;padding:1.5vh;border:.8vh solid #F47920;border-radius:16px;flex:0 0 auto}#sv #svQr img,#sv #svQr canvas{width:min(52vh,40vw)!important;height:auto!important;display:block}#sv .warn{color:#b3261e;font-weight:600}#sv .hb{font:inherit;font-size:.8em;font-weight:600;padding:.4em 1em;border-radius:10px;border:2px solid #3d4043;background:#fff;color:#1d1d1d;cursor:pointer;margin-top:.4em}#svCo{position:fixed;inset:0;z-index:5100;background:#f2f2f0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:3vh 5vw;box-sizing:border-box;overflow:hidden;font-size:clamp(16px,3vh,34px)}#svCo.on{display:flex}#svCo .bx{width:100%;max-width:1100px}#svCo h1{font-size:1.6em;margin:0 0 .4em}#svCo p{margin:.4em 0;line-height:1.35}#svCo canvas{width:100%;height:28vh;border:2px dashed #888;border-radius:12px;background:#fff;touch-action:none;display:block;margin:.4em 0}#svCo .row{display:flex;gap:2vw;flex-wrap:wrap;margin-top:.6em}#svCo button{font:inherit;font-size:.9em;font-weight:600;padding:.5em 1.4em;border-radius:10px;border:2px solid #3d4043;background:#fff;color:#1d1d1d;cursor:pointer}#svCo button.p{background:#F47920;border-color:#F47920;color:#fff}#svCo .err{color:#b3261e;font-weight:600;min-height:1.2em}#svCo ul{margin:.3em 0;padding-left:1.1em;columns:2;column-gap:4vw}#svCo li{font-size:.85em!important;margin:.15em 0}#svCo .big{font-size:1.2em;font-weight:700;color:#1a7f37}';document.head.appendChild(st);\n var h='<div id=sv><div class=top><img src=\"'+(($('lg')||{}).src||'')+'\" alt=\"\"><b>'+esc(d.kind)+'</b><span>'+esc(d.title||'')+'</span></div><div class=stage>';\n h+='<div class=sl><div class=in><h1>Site induction</h1><p class=big><b>'+esc(d.title||'')+'</b>'+(d.site?'<br>'+esc(d.site):'')+(d.job_no?'<br>Job '+esc(d.job_no):'')+'</p><p class=big style=\"margin-top:4vh\">Presented by</p>'+(w.length?'<select id=svBy><option value=\"\">Choose who is presenting\\u2026</option>'+w.map(function(x){return '<option'+(x===BY?' selected':'')+'>'+esc(x)+'</option>';}).join('')+'</select><p style=\"color:#55585a;font-size:.7em!important\">Only the site manager, deputy or a supervisor named on the CPHSP can give the induction.</p>':'<p class=warn>No site manager, deputy or supervisor is named on this CPHSP. Add them to the CPHSP, then present the induction.</p>')+'</div></div>';\n S.forEach(function(s,i){var kv=(s.kv||[]).filter(function(r){return r&&r[1]!=null&&String(r[1]).trim();});\n  h+='<div class=sl><div class=in><h1><span class=n>'+(i+1)+'</span>'+esc(s.h)+'</h1>'+(s.p0?'<p>'+esc(s.p0)+'</p>':'')+(kv.length?'<table>'+kv.map(function(r){return '<tr><th>'+esc(r[0])+'</th><td>'+esc(r[1]).split(String.fromCharCode(10)).join('<br>')+'</td></tr>';}).join('')+'</table>':'')+((s.items||[]).length?'<ul>'+s.items.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':'')+(s.p?'<p>'+esc(s.p)+'</p>':'')+'</div></div>';});\n h+='<div class=sl id=svEnd><div class=in><h1>Sign on now</h1><div class=qrw><div id=svQr></div><div><p class=big>Scan with your phone camera and sign on.</p><p>Everyone who has seen this induction must sign. Anyone without a phone can sign on this device.</p><p id=svByMsg></p><button type=button id=svHere class=hb>Sign on this device</button></div></div></div></div>';\n h+='</div><div class=ctl><button type=button id=svB>Back</button><div class=dots id=svD></div><button type=button class=fs id=svF title=\"Full screen\">\\u26F6</button><button type=button class=p id=svN>Next</button></div></div>';\n document.body.insertAdjacentHTML('beforeend',h);var sls=document.querySelectorAll('#sv .sl');SLN=sls.length;\n $('svD').innerHTML=Array.prototype.map.call(sls,function(){return '<i></i>';}).join('');\n if($('svBy'))$('svBy').onchange=function(){BY=this.value;};\n function url(){return location.origin+location.pathname+'?doc='+encodeURIComponent(DOC)+'&id='+encodeURIComponent(ID)+'&briefed=1'+(BY?'&by='+encodeURIComponent(BY):'');}\n function qr(){var q=$('svQr'),m=$('svByMsg');if(!BY){q.innerHTML='';m.className='warn';m.textContent='Choose who presented the induction on the first slide.';return;}m.className='';m.textContent='Inducted by '+BY+'.';\n  function draw(){q.innerHTML='';try{new window.QRCode(q,{text:url(),width:600,height:600,correctLevel:window.QRCode.CorrectLevel.M});}catch(e){q.textContent='QR code unavailable.';}setTimeout(fit,50);}\n  if(window.QRCode)draw();else{var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';s.onload=draw;s.onerror=function(){q.textContent='QR code could not load.';setTimeout(fit,50);};document.head.appendChild(s);}}\n function go(n){if(n<0||n>=SLN)return;if(n>0&&SL===0&&!BY){var b=$('svBy');if(b){b.style.borderColor='#b3261e';b.focus();}return;}SL=n;Array.prototype.forEach.call(sls,function(x,i){x.classList.toggle('on',i===n);});Array.prototype.forEach.call($('svD').children,function(x,i){x.classList.toggle('on',i===n);});\n  $('svB').disabled=n===0;var nx=$('svN');if(n===SLN-1){nx.textContent='Complete induction';nx.onclick=function(){if(!BY){go(0);return;}complete();};qr();}else{nx.textContent='Next';nx.onclick=function(){firstFs();go(SL+1);};}\n  setTimeout(fit,0);if(window.QRCode)setTimeout(fit,300);}\n\n document.documentElement.classList.add('svon');window.scrollTo(0,0);\n function fitOne(el,hi){var inn=el.firstChild,lo=12,f=hi;el.style.fontSize=f+'px';\n  for(var k=0;k<40&&(inn.scrollHeight>el.clientHeight-2||inn.scrollWidth>el.clientWidth+2)&&f>lo;k++){f=f*0.93;el.style.fontSize=f+'px';}return f;}\n function fit(){if(!SLN)return;var hi=Math.max(16,window.innerHeight*0.055),m=hi,i,el,was;\n  for(i=0;i<SLN-1;i++){el=sls[i];was=el.classList.contains('on');if(!was)el.classList.add('on');m=Math.min(m,fitOne(el,hi));if(!was)el.classList.remove('on');}\n  for(i=0;i<SLN-1;i++)sls[i].style.fontSize=m+'px';\n  el=sls[SLN-1];was=el.classList.contains('on');if(!was)el.classList.add('on');fitOne(el,m);if(!was)el.classList.remove('on');}\n window.addEventListener('resize',function(){fit();});\n function fsOn(){var r=document.documentElement;try{if(!document.fullscreenElement&&!document.webkitFullscreenElement){(r.requestFullscreen||r.webkitRequestFullscreen||function(){}).call(r);}}catch(e){}}\n var fsDone=false;function firstFs(){if(fsDone)return;fsDone=true;fsOn();}\n $('svF').onclick=function(){if(document.fullscreenElement||document.webkitFullscreenElement){try{(document.exitFullscreen||document.webkitExitFullscreen).call(document);}catch(e){}}else fsOn();};\n $('sv').addEventListener('wheel',function(e){e.preventDefault();},{passive:false});\n document.addEventListener('fullscreenchange',function(){setTimeout(fit,150);});\n\n $('svHere').onclick=function(){if(!BY){go(0);return;}location.href=url();};\n var CSIG='';\n function complete(){var co=$('svCo');if(!co){document.body.insertAdjacentHTML('beforeend','<div id=svCo><div class=bx id=svCoB></div></div>');co=$('svCo');}\n  $('svCoB').innerHTML='<h1>Complete the induction</h1><p><b>'+esc(BY)+'</b>, presenter</p><p>I confirm I delivered this site induction for '+esc(d.title||d.kind)+' to everyone who signed on.</p><canvas id=svCv width=1100 height=300></canvas><div class=err id=svCoE></div><div class=row><button type=button class=p id=svCoGo>Sign and complete</button><button type=button id=svCoClr>Clear signature</button><button type=button id=svCoBack>Back to the induction</button></div>';\n  co.classList.add('on');CSIG='';var cv=$('svCv'),g=cv.getContext('2d'),dn=false,last=null,ink=false;g.lineWidth=4;g.lineCap='round';g.strokeStyle='#000';\n  function pt(e){var r=cv.getBoundingClientRect();return {x:(e.clientX-r.left)*cv.width/r.width,y:(e.clientY-r.top)*cv.height/r.height};}\n  cv.onpointerdown=function(e){dn=true;last=pt(e);$('svCoE').textContent='';try{cv.setPointerCapture(e.pointerId);}catch(x){}e.preventDefault();};\n  cv.onpointermove=function(e){if(!dn)return;var p=pt(e);g.beginPath();g.moveTo(last.x,last.y);g.lineTo(p.x,p.y);g.stroke();last=p;ink=true;};\n  cv.onpointerup=cv.onpointercancel=function(){if(!dn)return;dn=false;if(!ink)return;var t=document.createElement('canvas');t.width=cv.width;t.height=cv.height;var tg=t.getContext('2d');tg.fillStyle='#fff';tg.fillRect(0,0,t.width,t.height);tg.drawImage(cv,0,0);CSIG=t.toDataURL('image/jpeg',0.6);};\n  $('svCoClr').onclick=function(){g.clearRect(0,0,cv.width,cv.height);CSIG='';ink=false;};\n  $('svCoBack').onclick=function(){co.classList.remove('on');};\n  $('svCoGo').onclick=function(){var e=$('svCoE'),b=this;if(!CSIG){e.textContent='Please sign in the box.';return;}b.disabled=true;e.style.color='#6b6e70';e.textContent='Saving\\u2026';\n   fetch('/webhook/cbs-sign-save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({doc_type:d.type,doc_id:d.id,doc_rev:d.rev,doc_label:d.kind+(d.title?': '+d.title:'')+' (presenter confirmation)',job_no:d.job_no,name:BY,company:'Chelmsford Building Services',is_worker:true,signature:CSIG,inducted_by:BY})}).then(function(r){return r.json();}).then(function(j){if(!j||!j.ok)throw new Error((j&&j.message)||'');\n    return fetch('/webhook/cbs-sign-data?doc='+encodeURIComponent(DOC)+'&id='+encodeURIComponent(ID)).then(function(r){return r.json();})['catch'](function(){return {};});}).then(function(dd){\n    var L=((dd&&dd.signed)||[]).filter(function(x){return x.name!==BY;});\n    $('svCoB').innerHTML='<h1>Induction complete</h1><p class=big>\\u2713 Presented by '+esc(BY)+'</p><p>'+(L.length?L.length+' '+(L.length===1?'person has':'people have')+' signed on:':'Nobody has signed on yet. Anyone who saw the induction must still sign on.')+'</p>'+(L.length?'<ul>'+L.map(function(x){return '<li>'+esc(x.name)+(x.company&&x.company!=='Chelmsford Building Services'?' ('+esc(x.company)+')':'')+'</li>';}).join('')+'</ul>':'')+'<div class=row><button type=button class=p id=svCoX>Close</button></div>';\n    try{if(document.fullscreenElement||document.webkitFullscreenElement)(document.exitFullscreen||document.webkitExitFullscreen).call(document);}catch(x){}\n    $('svCoX').onclick=function(){window.close();setTimeout(function(){location.href='/webhook/cbs-cphsp-builder?id='+encodeURIComponent(ID);},300);};\n   })['catch'](function(x){b.disabled=false;e.style.color='#b3261e';e.textContent=x.message||'Could not save. Check the connection and try again.';});};}\n $('svB').onclick=function(){go(SL-1);};\n document.addEventListener('keydown',function(e){if(e.target&&e.target.tagName==='SELECT')return;if($('svCo')&&$('svCo').classList.contains('on'))return;if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();firstFs();if(SL<SLN-1)go(SL+1);}if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(SL-1);}});\n var x0=null;$('sv').addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});$('sv').addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>60){if(dx<0&&SL<SLN-1)go(SL+1);else if(dx>0)go(SL-1);}},{passive:true});\n go(0);}\nfunction indHtml(){var I=D.ind,S=I.sections||[],h='';\n if(PRES){var u=location.origin+location.pathname+'?doc='+encodeURIComponent(DOC)+'&id='+encodeURIComponent(ID);\n  h+='<div class=\"card qrc\"><h2>Or use your own phone</h2><p class=muted>Scan this with your phone camera to go through the induction and sign on your own phone.</p><div id=qrBox>Loading QR code\\u2026</div><small>'+esc(u)+'</small></div>';}\n if(!PRES&&!BRIEFED){var pu=location.origin+location.pathname+'?doc='+encodeURIComponent(DOC)+'&id='+encodeURIComponent(ID)+'&present=1';h+='<div class=card><a class=btn style=\"background:#3d4043;border-color:#3d4043;color:#fff\" id=presGo href=\"'+esc(pu)+'\">Present induction</a></div>';}\n h+='<div class=card><h2>Site induction</h2><p class=muted>'+(BRIEFED?'You have been taken through this induction'+(BY?' by '+esc(BY):'')+'. It is here to read again before you accept and sign below.':PRES?'Take the person through each section. They tick each one off once they understand it, then accept and sign below.':'Read each section and tick it off. Then accept and sign at the bottom.')+'</p>'+(BRIEFED?'':'<div id=indProg></div>')+'</div>';\n S.forEach(function(s,i){var kv=(s.kv||[]).filter(function(r){return r&&r[1]!=null&&String(r[1]).trim();});\n  h+='<div class=\"card ind'+(TK[i]?' done':'')+'\" data-sec='+i+'><h2><span class=step>'+(i+1)+'</span>'+esc(s.h)+'</h2>'+(s.p0?'<p>'+esc(s.p0)+'</p>':'')+(kv.length?'<table class=kv>'+kv.map(function(r){return '<tr><th>'+esc(r[0])+'</th><td>'+esc(r[1]).split(String.fromCharCode(10)).join('<br>')+'</td></tr>';}).join('')+'</table>':'')+((s.items||[]).length?'<ul>'+s.items.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':'')+(s.p?'<p>'+esc(s.p)+'</p>':'')+(BRIEFED?'':'<label class=tick><input type=checkbox data-ik='+i+(TK[i]?' checked':'')+'><span>I understand this section</span></label>')+'</div>';});\n return h;}\nfunction indProg(){var p=$('indProg');if(!p||!D.ind)return;var n=(D.ind.sections||[]).length,k=0;for(var i=0;i<n;i++)if(TK[i])k++;p.textContent=k+' of '+n+' sections ticked off';p.style.color=k===n?'#1a7f37':'#6b6e70';}\nfunction indOk(){var n=((D.ind||{}).sections||[]).length;for(var i=0;i<n;i++)if(!TK[i])return false;return true;}\nfunction indBind(){if(!D.ind)return;Array.prototype.forEach.call(document.querySelectorAll('[data-ik]'),function(cb){cb.onchange=function(){var i=+cb.getAttribute('data-ik');TK[i]=cb.checked;var c=cb.closest('.ind');if(c)c.classList.toggle('done',cb.checked);indProg();};});indProg();\n var qb=$('qrBox');if(qb){var u=location.origin+location.pathname+'?doc='+encodeURIComponent(DOC)+'&id='+encodeURIComponent(ID);\n  function draw(){qb.innerHTML='';try{new window.QRCode(qb,{text:u,width:512,height:512,correctLevel:window.QRCode.CorrectLevel.M});}catch(e){qb.textContent='QR code unavailable. Share the link below.';}}\n  if(window.QRCode)draw();else{var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';s.onload=draw;s.onerror=function(){qb.textContent='QR code could not load. Share the link below.';};document.head.appendChild(s);}}}\nfunction pad(){`,'fns');\n return {h:h};};\n\nvar name='';try{name=$('Which Page').first().json.name||'';}catch(e){}\nvar o=Object.assign({},$input.first().json);\nif(name==='page:cbs-sign'&&typeof o.b==='string'&&o.b.indexOf('CBS-IND-v8')<0&&o.b.indexOf('function indHtml')<0){try{o.b=signPatch(o.b).h;}catch(e){}}\nif(name==='page:cbs-cphsp-builder'&&typeof o.b==='string')o.b=o.b.split(PRES_OLD).join(PRES_NEW).split('also check aedlocations.co.nz').join('also check The Circuit (www.thecircuit.uk), the national defibrillator network');\nreturn [{json:{t:o.t,b:o.b}}];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "e5023a64-438c-4386-a472-b29000bd59db",
+        "name": "Guard Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          1400
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-guard",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "889aff3c-66b6-4775-b6bd-5907c6da4653"
+      },
+      {
+        "id": "d7f4e5bd-01a7-4506-a0be-b0671acd4e31",
+        "name": "Serve Guard",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          220,
+          1400
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/javascript; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "public, max-age=300"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "/* CBS new layout loading cover: only on devices using the new layout (localStorage cbs_nl_on, set by cbs-layout-js). Hides the page until the new layout has drawn it, so it never shows half-styled. Only on pages that load the new layout; stays until cbs-layout-js has drawn the page (15s safety limit). */\n(function(){try{if(localStorage.getItem('cbs_nl_on')!=='1')return;if(window.top!==window.self)return;if(/[?&]embed=/.test(location.search))return;if(/cbs-(snags-crew|scope-crew|crew|yard|signin|tv-cast)|\\/cbs-tv$/.test(location.pathname))return;if(!/\\/webhook\\/(cbs-admin|cbs-jobs|cbs-job-file|cbs-enquiry|cbs-programme|cbs-drawings|cbs-diary|cbs-variations|cbs-rfis|cbs-costs|cbs-closeout|cbs-board|cbs-client-people|cbs-today|cbs-po-board|cbs-subjobs-board|cbs-hs|cbs-pci|cbs-support|cbs-tv-settings|cbs-qbpo|cbs-rams-builder|cbs-cphsp-builder|cbs-coshh-builder|cbs-team-meeting|cbs-forms-records|cbs-yard-approve|cbs-snags|cbs-scope|cbs-coshh|cbs-po|cbs-ptm-sheet|cbs-prestart|cbs-toolbox-builder|cbs-incident-report|cbs-job-[a-z]+)(\\/|$)/.test(location.pathname))return;\nvar d=document.documentElement;d.classList.add('cbsnlwait');var st=document.createElement('style');st.id='cbsnlwaitcss';st.textContent='html.cbsnlwait body{visibility:hidden!important}html.cbsnlwait{background:#f2f2f0!important}html.cbsnlwait::after{content:\"\";position:fixed;left:50%;top:42%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;border:3px solid #dcdcd8;border-top-color:#F47920;animation:cbsnlspin .8s linear infinite;visibility:visible;z-index:2147483647}@keyframes cbsnlspin{to{transform:rotate(360deg)}}';(document.head||d).appendChild(st);\nvar off=function(){d.classList.remove('cbsnlwait');};setTimeout(off,15000);}catch(e){}})();\n/* CBS save guard v3: one write per tap, everywhere; read throttling (dedupe identical reads, background tabs use last result, back off when the server is slow). Served from CBS - Pages (cbs-guard). Also loads the list search (cbs-search). */\n(function(){if(window.__cbsSG2)return;window.__cbsSG2=1;\nvar F=window.fetch?window.fetch.bind(window):null,P={},R={},lastBtn=null,lastAt=0;\nvar G={},C={},B={},POLL=/\\/webhook\\/cbs-(admin-data|tv-data|tv-cast|tv-ping|support-data)(\\?|$)/;\nfunction isW(u,m){return m!=='GET'&&m!=='HEAD'&&/\\/webhook\\/cbs-/.test(u);}\nfunction rk(u){try{var x=new URL(u,location.href);x.searchParams.delete('_');return x.pathname+'?'+x.searchParams.toString();}catch(e){return u;}}\nfunction bump(k){var b=B[k]||{n:0};b.n++;b.until=Date.now()+Math.min(60000,5000*Math.pow(2,b.n-1));B[k]=b;}\nfunction skip(b){if(b.hasAttribute&&b.hasAttribute('data-nolock'))return true;var t=(b.textContent||'').replace(/\\s+/g,'');return t.length>0&&t.length<=2&&/^[+\\-\\u2212\\u00d7x<>\\u2039\\u203a]+$/i.test(t);}\nfunction lock(b){if(!b||b.__sg2)return;b.__sg2=1;try{b.setAttribute('aria-busy','true');b.__sg2op=b.style.opacity;b.style.opacity='.55';}catch(e){}}\nfunction unlock(b){if(!b)return;b.__sg2=0;b.__sg2n=0;try{b.removeAttribute('aria-busy');b.style.opacity=b.__sg2op||'';}catch(e){}}\nfunction cur(){return(lastBtn&&Date.now()-lastAt<800)?lastBtn:null;}\nfunction read(u,o,url){var k=rk(url),poll=POLL.test(url)&&(url.indexOf('cbs-tv-cast')<0||/[?&]a=status(&|$)/.test(url)),now=Date.now(),c=C[k],b=B[k];\n if(G[k])return G[k].then(function(r){return r.clone();});\n if(poll&&c&&(document.hidden||(b&&now<b.until)))return Promise.resolve(c.clone());\n var t0=now,p=F(u,o).then(function(r){var dt=Date.now()-t0;delete G[k];\n  if(r.ok){if(poll){try{C[k]=r.clone();}catch(e){}}if(dt>10000)bump(k);else delete B[k];}else bump(k);return r;},\n  function(e){delete G[k];bump(k);throw e;});\n G[k]=p.then(function(r){return r.clone();});G[k]['catch'](function(){});return p;}\nif(F){window.fetch=function(u,o){o=o||{};var url=String(u&&u.url||u),m=String(o.method||(u&&u.method)||'GET').toUpperCase();\n if(m==='GET'&&/\\/webhook\\/cbs-/.test(url)&&!(o.signal))return read(u,o,url);\n if(!isW(url,m))return F(u,o);\n C={};B={};\n var body=o.body,k=(typeof body==='string'||body==null)?(m+' '+url+'|'+(body||'')):null;\n if(k&&P[k])return P[k].then(function(r){return r.clone();});\n if(k&&R[k]&&Date.now()-R[k].t<4000)return Promise.resolve(R[k].r.clone());\n var b=cur();if(b){lock(b);b.__sg2n=(b.__sg2n||0)+1;}\n var fin=function(){if(k)delete P[k];if(b&&--b.__sg2n<=0)setTimeout(function(){unlock(b);},400);};\n var p=F(u,o).then(function(r){if(k&&r.ok){try{R[k]={t:Date.now(),r:r.clone()};}catch(e){}}fin();return r;},function(e){fin();throw e;});\n if(k)P[k]=p.then(function(r){return r.clone();});\n return p;};}\nvar X=window.XMLHttpRequest&&XMLHttpRequest.prototype;\nif(X){var op=X.open,sd=X.send;X.open=function(m,u){this.__sg2w=isW(String(u),String(m).toUpperCase());return op.apply(this,arguments);};\n X.send=function(){if(this.__sg2w){C={};B={};var b=cur();if(b){lock(b);this.addEventListener('loadend',function(){setTimeout(function(){unlock(b);},400);});}}return sd.apply(this,arguments);};}\ndocument.addEventListener('click',function(e){var t=e.target;var b=t&&t.closest&&t.closest('button,[role=\"button\"],.btn,input[type=\"submit\"],input[type=\"button\"],a[onclick]');if(!b||skip(b))return;var now=Date.now();\n if(b.__sg2||(b===lastBtn&&now-lastAt<1000)){e.preventDefault();e.stopImmediatePropagation();return;}\n lastBtn=b;lastAt=now;},true);\ndocument.addEventListener('submit',function(e){var f=e.target;if(!f)return;var now=Date.now();if(f.__sg2t&&now-f.__sg2t<1500){e.preventDefault();e.stopImmediatePropagation();return;}f.__sg2t=now;},true);\n})();\n(function(){if(window.__cbsSrchL)return;window.__cbsSrchL=1;try{var s=document.createElement('script');s.src='/webhook/cbs-search';(document.head||document.documentElement).appendChild(s);}catch(e){}})();/* CBS mobile fixes v1 (served with cbs-guard, so every hub page and builder gets it).\n   1. Stops iOS Safari auto-enlarging text (the overlapping text in builder previews).\n   2. Holds form fields, iOS date fields included, to the width of their box on phones.\n   3. Builders: on phones the A4 preview (#doc) is zoomed to fit the screen width. The zoom dropdown still overrides it, and PDF output is unaffected. */\n(function(){if(window.__cbsMob)return;window.__cbsMob=1;\ntry{var st=document.createElement('style');st.id='cbsMobCss';st.textContent='html{-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important}'+\n'@media (max-width:900px){input,select,textarea{max-width:100%;min-width:0;box-sizing:border-box}'+\n'input[type=date],input[type=time],input[type=datetime-local],input[type=month]{-webkit-appearance:none;appearance:none;display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;min-height:2.6em}'+\n'input[type=date]::-webkit-date-and-time-value,input[type=time]::-webkit-date-and-time-value{min-width:0}}';\n(document.head||document.documentElement).appendChild(st);}catch(e){}\nvar user=false,busy=false;\nfunction fit(){try{if(busy||user||window.innerWidth>900)return;var d=document.getElementById('doc');if(!d)return;var p=d.querySelector('.page');var w=d.closest('.previewWrap')||d.parentElement;if(!p||!w||!w.clientWidth)return;\n var ps=document.getElementById('pdfStatus');if(ps&&ps.textContent)return;\n busy=true;var cs=getComputedStyle(w),avail=w.clientWidth-(parseFloat(cs.paddingLeft)||0)-(parseFloat(cs.paddingRight)||0);\n var old=d.style.zoom;d.style.zoom='1';var pw=p.getBoundingClientRect().width;\n if(!pw||!avail){d.style.zoom=old;busy=false;return;}\n var z=Math.min(1,Math.floor(avail/pw*1000)/1000);d.style.zoom=String(z);busy=false;}catch(e){busy=false;}}\nfunction soon(){setTimeout(fit,0);setTimeout(fit,400);}\ndocument.addEventListener('change',function(e){if(e.target&&e.target.id==='zoom')user=true;},true);\ndocument.addEventListener('click',function(e){var t=e.target&&e.target.closest&&e.target.closest('#tabPrev,.tabs .btn');if(t)soon();},true);\nvar rt=null;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(fit,250);});\nwindow.addEventListener('orientationchange',function(){setTimeout(fit,400);});\nfunction boot(){soon();setTimeout(fit,1500);try{if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){setTimeout(fit,50);});}catch(e){}}\nif(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();\nwindow.addEventListener('load',soon);\n})();\n/* CBS cast bar loader: shows the 'TV is showing job' bar on every hub page (script served by CBS - TV Dashboard). */\n(function(){if(window.__cbsCastL)return;window.__cbsCastL=1;try{var s=document.createElement('script');s.src='/webhook/cbs-castbar';(document.head||document.documentElement).appendChild(s);}catch(e){}})();\n/* CBS side menu loader: the shared menu on admin pages (script served by CBS - Nav; it does nothing on crew pages). */\n(function(){if(window.__cbsNavL)return;window.__cbsNavL=1;try{if(document.querySelector('script[src*=\"/webhook/cbs-nav\"]'))return;var s=document.createElement('script');s.src='/webhook/cbs-nav';(document.head||document.documentElement).appendChild(s);}catch(e){}})();\n/* CBS combined PDF loader: adds 'one combined PDF' to every download pop-up (script served by CBS - Combined PDF Downloads). */\n(function(){if(window.__cbsMpL)return;window.__cbsMpL=1;try{var s=document.createElement('script');s.src='/webhook/cbs-dlpdf';(document.head||document.documentElement).appendChild(s);}catch(e){}})();\n/* New layout on the three builders the menu script does not load it for (pre-start, toolbox talk, incident report). Office pages only; does nothing if the layout is already there. */\n(function(){if(window.__cbsNLx)return;window.__cbsNLx=1;if(!/\\/webhook\\/(cbs-prestart|cbs-toolbox-builder|cbs-incident-report)$/.test(location.pathname))return;try{if(window.top!==window.self)return;}catch(e){return;}if(/[?&]embed=/.test(location.search))return;var go=function(){setTimeout(function(){if(window.__cbsNL||document.querySelector('script[src*=\"/webhook/cbs-layout-js\"]'))return;var s=document.createElement('script');s.src='/webhook/cbs-layout-js';(document.head||document.documentElement).appendChild(s);},150);};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go();})();\n"
+        }
+      },
+      {
+        "id": "d30a0895-e893-411f-a98c-51698512dbe5",
+        "name": "Search Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          1220
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-search",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "68f47bfc-30e5-4a89-a038-fda2f5d91606"
+      },
+      {
+        "id": "e34d4098-4344-40f7-b58a-e866f417d84d",
+        "name": "Serve Search",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          220,
+          1220
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/javascript; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "public, max-age=300"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "/* CBS list search: switched off 20/10/2026 at the client's request (it added search boxes above long lists and inside long dropdowns on every page). cbs-guard still requests this file, so it is left as an empty script. The previous script is in this workflow's version history if it is ever wanted back. */\n"
+        }
+      },
+      {
+        "id": "27404a17-a10a-43b1-a391-06c66bce5d46",
+        "name": "Get Logo",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1100,
+          400
+        ],
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "HOHWTBOJHrHF0TvB"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "name",
+                "keyValue": "page:cbs-logo"
+              }
+            ]
+          },
+          "limit": 1,
+          "matchType": "allConditions",
+          "operation": "get",
+          "resource": "row",
+          "returnAll": false
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "b275f6c3-9864-4e3e-8c5a-d966aff15a6b",
+        "name": "Scope Fill",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1900,
+          300
+        ],
+        "parameters": {
+          "jsCode": "/* CPHSP builder: \"Fill from scope of works\" (19/10/2026). Adds a button above 1.1 Scope of works that reads the job's scope of works\n   (cbs-scope-data) and fills Scope of works (one item per line) and, on CDM jobs with more than one phase, Sequence of works (the phases in order).\n   Asks before replacing anything already typed. Other pages pass through unchanged. */\nconst o=Object.assign({},$input.first().json);let name='';try{name=$('Which Page').first().json.name||'';}catch(e){}\nif(name!=='page:cbs-cphsp-builder'||typeof o.b!=='string'||o.b.indexOf('id=\"scFillJs\"')>-1)return [{json:o}];\nconst JS=String.raw`<script id=\"scFillJs\">(function(){\nfunction q(k){return document.querySelector(\"[data-k='\"+k+\"']\");}\nfunction val(k){var el=q(k);return el?String(el.value||'').trim():'';}\nfunction setv(k,v){var el=q(k);if(el){el.value=v;el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));}try{if(window.S&&typeof window.S==='object')window.S[k]=v;}catch(e){}}\nfunction add(){var t=q('scope');if(!t||document.getElementById('scFill'))return;var host=t.closest('label')||t;\n var w=document.createElement('div');w.id='scFill';w.style.cssText='display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0 2px';\n w.innerHTML=\"<button type='button' class='btn' style='background:#fff;color:#1d1d1d;border:1px solid #c9cbcd'>Fill from scope of works</button><span style='font-size:13px;color:#6b6e70'></span>\";\n host.parentNode.insertBefore(w,host);w.querySelector('button').onclick=go;}\nfunction go(){var msg=document.querySelector('#scFill span'),bt=document.querySelector('#scFill button'),job=val('job_no');\n if(!job){msg.textContent='Add the job number first.';return;}\n msg.textContent='Reading the scope of works\\u2026';bt.disabled=true;\n fetch('/webhook/cbs-scope-data?crew=1&job='+encodeURIComponent(job),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){bt.disabled=false;\n  var SS=(d&&d.ok&&d.scope&&d.scope.sections)||[],L=[];\n  SS.forEach(function(s){(s.items||[]).forEach(function(i){L.push((SS.length>1?s.name+': ':'')+(i.var?'['+i.var+'] ':'')+i.text+(i.who&&i.who!=='CBS'?' ('+i.who+')':''));});});\n  if(!L.length){msg.textContent='Job '+job+' has no scope of works yet. Write it on the Scope of works page first.';return;}\n  var seq=d.cdm&&SS.length>1;\n  if((val('scope')||(seq&&val('sequence')))&&!confirm('Replace '+(seq?'Scope of works and Sequence of works':'Scope of works')+' with the scope of works for job '+job+'?\\n\\n'+L.length+' item'+(L.length===1?'':'s')+' in '+SS.length+' section'+(SS.length===1?'':'s')+'.')){msg.textContent='Kept what was there.';return;}\n  setv('scope',L.join('\\n'));if(seq)setv('sequence',SS.map(function(s){return s.name;}).join('\\n'));\n  msg.textContent='Filled '+L.length+' item'+(L.length===1?'':'s')+(seq?' and '+SS.length+' phases as the sequence':'')+' from the scope of works.'+(d.locked?'':' Note: the scope is not locked yet, so it may still change.');\n }).catch(function(){bt.disabled=false;msg.textContent='Could not read the scope of works. Try again.';});}\nnew MutationObserver(add).observe(document.body,{childList:true,subtree:true});add();\n})();</script>`;\nconst i=o.b.lastIndexOf('</body>');\no.b=i>-1?o.b.slice(0,i)+JS+o.b.slice(i):o.b+JS;\nreturn [{json:o}];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "fe6ca6a5-9e1a-4de6-a905-665ce91fb6db",
+        "name": "Viewer Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          3200
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-viewer",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "b6fdbf87-4b89-4fd6-9aea-db7b295fa707"
+      },
+      {
+        "id": "0b9156d3-12fe-4634-996c-1b416aec35ee",
+        "name": "Serve Viewer",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          3200
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/javascript; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "public, max-age=300"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "/* CBS shared file viewer (served by CBS - Pages at GET /webhook/cbs-viewer).\n   window.CBSView.open({u, n, list:[{u,n}], actions:[{label, onClick(file)}], noOffice})  /  CBSView.close()  /  CBSView.kind(file)\n   PDFs (pdf.js), photos and videos show full screen with the page behind locked (no background scroll, position restored on close).\n   Word / Excel / PowerPoint open straight in Office (new tab) unless noOffice (crew links: Download instead). Toolbar: name, previous /\n   next through the list, the caller's extra actions, Download, Full screen, Close. Esc, the phone's back button and Close all close it. */\n(function(){\nif(window.CBSView)return;\nvar Z=2147483400,O=null,ST=null,L=[],IX=0,OPTS={},PUSHED=false,TOK=null,PL=0,PW=[];\nfunction ext(n){var m=String(n||'').toLowerCase().match(/[.]([a-z0-9]{1,6})(?:$|[?#])/);return m?m[1]:'';}\nfunction kind(f){f=f||{};var e=ext(f.n)||ext(String(f.u||'').split('?')[0]);if(e==='pdf')return 'pdf';if(/^(jpe?g|png|gif|webp|bmp|svg)$/.test(e))return 'img';if(/^(docx?|xlsx?|xlsm|pptx?|csv)$/.test(e))return 'office';if(/^(mp4|mov|webm|m4v)$/.test(e))return 'video';return 'other';}\nfunction prox(u){u=String(u||'');return /^https?:[/][/][^/?#]*sharepoint[.]com[/]/i.test(u)?'/webhook/cbs-file?u='+encodeURIComponent(u):u;}\nfunction nameOf(u){try{return decodeURIComponent(String(u||'').split('?')[0].split('/').pop()||'File');}catch(e){return 'File';}}\nfunction lock(){if(ST)return;var b=document.body,h=document.documentElement,y=window.scrollY||h.scrollTop||0;ST={y:y,b:b.getAttribute('style'),h:h.getAttribute('style')};h.style.overflow='hidden';b.style.overflow='hidden';b.style.position='fixed';b.style.top=(-y)+'px';b.style.left='0';b.style.right='0';b.style.width='100%';}\nfunction unlock(){if(!ST)return;var b=document.body,h=document.documentElement,s=ST;ST=null;if(s.b!=null)b.setAttribute('style',s.b);else b.removeAttribute('style');if(s.h!=null)h.setAttribute('style',s.h);else h.removeAttribute('style');window.scrollTo(0,s.y);}\nvar CSS='#cbsVw{position:fixed;inset:0;z-index:'+Z+';background:#1e2022;display:flex;flex-direction:column;font-family:system-ui,-apple-system,sans-serif;color:#fff}'+\n'#cbsVw .vb{display:flex;align-items:center;gap:8px;padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top,0px));background:#2b2e31;flex:none;flex-wrap:wrap}'+\n'#cbsVw .vn{flex:1 1 160px;min-width:0;font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'+\n'#cbsVw .vc{font-size:13px;color:#b9bcbf;white-space:nowrap}#cbsVw .va{display:contents}'+\n'#cbsVw button,#cbsVw a.vbtn{font:inherit;font-size:14px;color:#fff;background:none;border:1px solid #6b6e70;border-radius:8px;padding:7px 12px;cursor:pointer;text-decoration:none;white-space:nowrap}'+\n'#cbsVw button:disabled{opacity:.35;cursor:default}#cbsVw .vx{font-size:20px;line-height:1;padding:5px 12px}'+\n'#cbsVw .vbody{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:12px;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));text-align:center}'+\n'#cbsVw canvas{display:block;margin:0 auto 12px;max-width:100%;height:auto;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.4)}'+\n'#cbsVw .vbody img,#cbsVw .vbody video{max-width:100%;max-height:calc(100vh - 130px);object-fit:contain;background:#fff}'+\n'#cbsVw .vmsg{margin:40px auto;max-width:420px;color:#d5d7d9;font-size:15px;line-height:1.5}';\nfunction pdfLib(cb){var W='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';if(window.pdfjsLib){try{window.pdfjsLib.GlobalWorkerOptions.workerSrc=W;}catch(e){}cb(window.pdfjsLib);return;}PW.push(cb);if(PL)return;PL=1;var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';s.onload=function(){var q=PW;PW=[];q.forEach(function(c){pdfLib(c);});};s.onerror=function(){var q=PW;PW=[];PL=0;q.forEach(function(c){c(null);});};document.head.appendChild(s);}\nfunction key(e){if(!O)return;if(e.key==='Escape'){e.stopImmediatePropagation();e.preventDefault();close();}else if(e.key==='ArrowLeft'&&IX>0){e.stopImmediatePropagation();IX--;show();}else if(e.key==='ArrowRight'&&IX<L.length-1){e.stopImmediatePropagation();IX++;show();}}\nfunction pop(){if(O){PUSHED=false;close();}}\nfunction build(){if(O)return;if(!document.getElementById('cbsVwCss')){var st=document.createElement('style');st.id='cbsVwCss';st.textContent=CSS;document.head.appendChild(st);}\n O=document.createElement('div');O.id='cbsVw';O.setAttribute('role','dialog');O.setAttribute('aria-modal','true');\n O.innerHTML='<div class=\"vb\"><span class=\"vn\"></span><span class=\"vc\"></span><button type=\"button\" data-v=\"prev\" aria-label=\"Previous file\">\\u2039</button><button type=\"button\" data-v=\"next\" aria-label=\"Next file\">\\u203a</button><span class=\"va\"></span><a class=\"vbtn\" data-v=\"dl\">Download</a><button type=\"button\" data-v=\"fs\">Full screen</button><button type=\"button\" class=\"vx\" data-v=\"x\" aria-label=\"Close\">\\u00d7</button></div><div class=\"vbody\"></div>';\n document.body.appendChild(O);lock();\n O.addEventListener('click',function(e){var b=e.target&&e.target.closest&&e.target.closest('[data-v]');if(!b||b.disabled)return;var v=b.getAttribute('data-v');\n  if(v==='x')close();else if(v==='prev'&&IX>0){IX--;show();}else if(v==='next'&&IX<L.length-1){IX++;show();}\n  else if(v==='fs'){try{if(document.fullscreenElement)document.exitFullscreen();else if(O.requestFullscreen)O.requestFullscreen();else if(O.webkitRequestFullscreen)O.webkitRequestFullscreen();}catch(x){}}});\n window.addEventListener('keydown',key,true);\n try{history.pushState({cbsVw:1},'');PUSHED=true;window.addEventListener('popstate',pop);}catch(x){PUSHED=false;}}\nfunction close(){if(!O)return;window.removeEventListener('keydown',key,true);window.removeEventListener('popstate',pop);var p=PUSHED;PUSHED=false;TOK=null;try{if(document.fullscreenElement)document.exitFullscreen();}catch(x){}O.remove();O=null;unlock();if(p){try{history.back();}catch(x){}}}\nfunction show(){if(!O)return;var f=L[IX]||{},k=kind(f),B=O.querySelector('.vbody');\n O.querySelector('.vn').textContent=f.n||'File';O.querySelector('.vc').textContent=L.length>1?(IX+1)+' of '+L.length:'';\n var pv=O.querySelector('[data-v=prev]'),nx=O.querySelector('[data-v=next]');pv.style.display=nx.style.display=L.length>1?'':'none';pv.disabled=IX===0;nx.disabled=IX===L.length-1;\n var dl=O.querySelector('[data-v=dl]');dl.href=prox(f.u);dl.setAttribute('download',f.n||'');\n var A=O.querySelector('.va');A.innerHTML='';(OPTS.actions||[]).forEach(function(a){if(!a||!a.label||typeof a.onClick!=='function')return;var b=document.createElement('button');b.type='button';b.textContent=a.label;b.onclick=function(){var cur=L[IX];close();setTimeout(function(){try{a.onClick(cur);}catch(x){}},0);};A.appendChild(b);});\n B.innerHTML='';B.scrollTop=0;var tok={};TOK=tok;\n function msg(t){var d=document.createElement('div');d.className='vmsg';d.textContent=t;B.appendChild(d);return d;}\n if(k==='img'){var im=document.createElement('img');im.alt=f.n||'';im.src=prox(f.u);B.appendChild(im);}\n else if(k==='video'){var vd=document.createElement('video');vd.controls=true;vd.playsInline=true;vd.src=prox(f.u);B.appendChild(vd);}\n else if(k==='pdf'){var m=msg('Loading\\u2026');pdfLib(function(lib){if(TOK!==tok)return;if(!lib){m.textContent='This PDF could not be shown here. Use Download.';return;}\n  lib.getDocument({url:prox(f.u)}).promise.then(function(doc){if(TOK!==tok)return;m.remove();var w=Math.max(200,Math.min(B.clientWidth-24,1400)),i=1;\n   (function next(){if(TOK!==tok||i>doc.numPages)return;doc.getPage(i).then(function(pg){var sc=w/pg.getViewport({scale:1}).width,dpr=Math.min(window.devicePixelRatio||1,2),vp=pg.getViewport({scale:sc*dpr});var c=document.createElement('canvas');c.width=Math.floor(vp.width);c.height=Math.floor(vp.height);c.style.width=Math.floor(vp.width/dpr)+'px';if(TOK!==tok)return null;B.appendChild(c);return pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;}).then(function(){i++;next();},function(){i++;next();});})();\n  },function(){if(TOK===tok)m.textContent='This PDF could not be shown here. Use Download.';});});}\n else if(k==='office')msg(OPTS.noOffice?'Tap Download to open this file.':'Word, Excel and PowerPoint files open in Office. Use Download to get a copy.');\n else msg('There is no preview for this type of file. Use Download.');}\nfunction open(o){o=o||{};if(!o.u)return;var f={u:o.u,n:o.n||nameOf(o.u)},k=kind(f);\n if(k==='office'&&!o.noOffice){window.open(f.u,'_blank','noopener');return;}\n OPTS=o;var ok=function(x){return x&&x.u&&(kind(x)!=='office'||o.noOffice)&&kind(x)!=='other';};\n L=(Array.isArray(o.list)?o.list:[]).filter(ok).map(function(x){return {u:x.u,n:x.n||nameOf(x.u)};});\n IX=-1;for(var i=0;i<L.length;i++){if(L[i].u===f.u){IX=i;break;}}if(IX<0){L=[f];IX=0;}\n build();show();}\nwindow.CBSView={open:open,close:close,kind:kind};\n})();\n"
+        }
+      }
+    ],
+    "connections": {
+      "GET cbs-admin": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Which Page": {
+        "main": [
+          [
+            {
+              "node": "Get Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-rams-builder": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-cphsp-builder": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-toolbox-builder": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-team-meeting": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-incident-report": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-ptm-sheet": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-ptm-crew": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-prestart": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-po": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-sign": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-team": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-subjobs-board": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-site-inspection": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-builder-kit": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-hz-icons": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-std": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-po-board": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-logo": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Page": {
+        "main": [
+          [
+            {
+              "node": "Unpack",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-permit": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-visit": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-hs": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-pci": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Inspections": {
+        "main": [
+          [
+            {
+              "node": "Live Site Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-coshh-builder": {
+        "main": [
+          [
+            {
+              "node": "Which Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Sign Induction": {
+        "main": [
+          [
+            {
+              "node": "CBS Brand",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Guard Hook": {
+        "main": [
+          [
+            {
+              "node": "Serve Guard",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Search Hook": {
+        "main": [
+          [
+            {
+              "node": "Serve Search",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Keep View": {
+        "main": [
+          [
+            {
+              "node": "Inspections",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Unpack": {
+        "main": [
+          [
+            {
+              "node": "Get Logo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Logo": {
+        "main": [
+          [
+            {
+              "node": "Keep View",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Live Site Data": {
+        "main": [
+          [
+            {
+              "node": "Sign Induction",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CBS Brand": {
+        "main": [
+          [
+            {
+              "node": "Scope Fill",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Scope Fill": {
+        "main": [
+          [
+            {
+              "node": "Serve",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Viewer Hook": {
+        "main": [
+          [
+            {
+              "node": "Serve Viewer",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Serves the converted CBS Operations Hub pages and builders from cbs_page_parts at /webhook/cbs-*",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

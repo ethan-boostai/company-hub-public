@@ -1,0 +1,48 @@
+{
+  "table": "cbs_client_contacts",
+  "n8n_id": "sfZL4wpJtHybqMx5",
+  "columns": [
+    {
+      "name": "active",
+      "type": "string"
+    },
+    {
+      "name": "client_name",
+      "type": "string"
+    },
+    {
+      "name": "client_uuid",
+      "type": "string"
+    },
+    {
+      "name": "created_at",
+      "type": "string"
+    },
+    {
+      "name": "created_by",
+      "type": "string"
+    },
+    {
+      "name": "email",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "phone",
+      "type": "string"
+    },
+    {
+      "name": "role",
+      "type": "string"
+    },
+    {
+      "name": "sm8_uuid",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [],
+  "note": "no sample found (CBS - Clients has no saved successful executions)"
+}

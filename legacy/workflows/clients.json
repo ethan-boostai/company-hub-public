@@ -1,0 +1,1866 @@
+{
+  "id": "X18nWuBaZHPjiBP6",
+  "name": "CBS - Clients",
+  "active": true,
+  "isArchived": false,
+  "versionId": "792e6701-56d0-4bb3-98ac-8581926175ce",
+  "activeVersionId": "792e6701-56d0-4bb3-98ac-8581926175ce",
+  "triggerCount": 3,
+  "createdAt": "2026-10-16T09:03:53.517Z",
+  "updatedAt": "2026-10-20T14:45:45.253Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "GET cbs-newjob-data": {
+      "main": [
+        [
+          {
+            "node": "ND Clients",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ND Clients": {
+      "main": [
+        [
+          {
+            "node": "ND Queues",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ND Queues": {
+      "main": [
+        [
+          {
+            "node": "ND People",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ND Build": {
+      "main": [
+        [
+          {
+            "node": "ND Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET cbs-client-people": {
+      "main": [
+        [
+          {
+            "node": "CP Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CP Page": {
+      "main": [
+        [
+          {
+            "node": "CP Send",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST cbs-client-people-act": {
+      "main": [
+        [
+          {
+            "node": "CA Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CA Remove": {
+      "main": [
+        [
+          {
+            "node": "CA Done",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ND People": {
+      "main": [
+        [
+          {
+            "node": "ND Contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ND Contacts": {
+      "main": [
+        [
+          {
+            "node": "ND Jobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ND Jobs": {
+      "main": [
+        [
+          {
+            "node": "ND Build",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CA Prep": {
+      "main": [
+        [
+          {
+            "node": "CA OK?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CA OK?": {
+      "main": [
+        [
+          {
+            "node": "CA Call?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CA Fail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CA Call?": {
+      "main": [
+        [
+          {
+            "node": "CA SM8",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CA After",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CA SM8": {
+      "main": [
+        [
+          {
+            "node": "CA After",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CA After": {
+      "main": [
+        [
+          {
+            "node": "CA Hub?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CA Hub?": {
+      "main": [
+        [
+          {
+            "node": "CA Remove?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CA Done",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CA Remove?": {
+      "main": [
+        [
+          {
+            "node": "CA Remove",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CA Hub Save",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CA Hub Save": {
+      "main": [
+        [
+          {
+            "node": "CA Done",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "d8f5d901-5d65-4a07-885b-4b4a08379a34",
+      "name": "GET cbs-newjob-data",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-newjob-data",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "webhookId": "6ab74649-61de-4c56-9aa4-5d21e947279d"
+    },
+    {
+      "id": "5b97294c-5e47-424f-99f8-0e353c8a8feb",
+      "name": "ND Clients",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "method": "GET",
+        "url": "https://api.servicem8.com/api_1.0/company.json?%24filter=active%20eq%201",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "66808129-1235-4b58-8fee-daddb322b40d",
+      "name": "ND Queues",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "method": "GET",
+        "url": "https://api.servicem8.com/api_1.0/queue.json",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "7404308e-9b4f-4934-b188-96f133eb6dcd",
+      "name": "ND People",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "sfZL4wpJtHybqMx5"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "3d574180-02e7-4ec3-aed6-c5e4bd0e2ba8",
+      "name": "ND Build",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* Clients + New job data. ServiceM8 is the master: clients (company), contacts (companycontact) and jobs are read live from it, so changes made in ServiceM8 show in the hub.\n   The hub table cbs_client_contacts only adds each contact's role (matched by sm8_uuid) and holds people not yet in ServiceM8.\n   Blank contacts that ServiceM8 creates automatically are hidden. The client's primary BILLING contact is its accounts contact: shown in the client details AND in the contacts list\n   (ServiceM8 makes a client's first contact its billing contact, so hiding it would make people vanish).\n   Every ServiceM8 list is de-duplicated by uuid (safety net: the lookups must run once, see executeOnce on ND Contacts / ND Jobs).\n   Output shape kept for New job: clients[{uuid,name,address}], folders, people{client_uuid:[{id,name,role,phone,email}]}; extra fields for the Clients page. */\nconst S=v=>v==null?'':String(v).trim();\nconst nm=c=>[S(c.first),S(c.last)].filter(Boolean).join(' ');\nconst arr=n=>{try{return $(n).all().map(i=>i.json);}catch(e){return [];}};\nconst uniq=a=>{const s={};return a.filter(x=>{if(!x||!x.uuid||s[x.uuid])return false;s[x.uuid]=1;return true;});};\nconst CO=uniq(arr('ND Clients')).filter(x=>String(x.active)!=='0'&&S(x.name));\nconst CC=uniq(arr('ND Contacts')).filter(x=>x.company_uuid&&String(x.active)!=='0');\nconst JB=uniq(arr('ND Jobs')).filter(x=>String(x.active)!=='0');\nconst HR=arr('ND People').filter(r=>r&&S(r.client_uuid)&&S(r.name)&&S(r.active)!=='0');\nconst F=[...new Set(uniq(arr('ND Queues')).filter(x=>S(x.name)&&String(x.active)!=='0').map(x=>S(x.name)))];\nconst byU={};HR.forEach(r=>{if(S(r.sm8_uuid))byU[S(r.sm8_uuid)]=r;});\nconst TYPE={BILLING:'Accounts',JOB:'','Property Manager':'Property manager'};\nconst BILL={};CC.forEach(c=>{if(S(c.type)==='BILLING'&&String(c.is_primary_contact)==='1'&&!BILL[c.company_uuid])BILL[c.company_uuid]=c;});\nconst P={},seen={};\nCC.forEach(c=>{const n=nm(c),ph=S(c.phone)||S(c.mobile),em=S(c.email);if(!n&&!ph&&!em)return;const h=byU[c.uuid];if(h)seen[h.id]=1;\n const b=BILL[c.company_uuid],acc=!!(b&&b.uuid===c.uuid);\n (P[c.company_uuid]=P[c.company_uuid]||[]).push({id:h?h.id:'',uuid:c.uuid,name:n||(h?S(h.name):'')||'(no name)',role:(h&&S(h.role))||(acc?'Accounts':(TYPE[S(c.type)]||'')),phone:ph,email:em,accounts:acc});});\n/* hub people not yet in ServiceM8 (no sm8_uuid). A hub person whose ServiceM8 contact was deleted in ServiceM8 is not shown (deleted both ways). */\nHR.forEach(r=>{if(seen[r.id]||S(r.sm8_uuid))return;(P[r.client_uuid]=P[r.client_uuid]||[]).push({id:r.id,uuid:'',name:S(r.name),role:S(r.role),phone:S(r.phone),email:S(r.email)});});\nObject.keys(P).forEach(k=>P[k].sort((a,b)=>a.name.localeCompare(b.name)));\nconst ST={'Quote':'Estimate','Work Order':'Approved','Completed':'Completed','Unsuccessful':'Unsuccessful'};\nconst J={};JB.forEach(j=>{const cu=S(j.company_uuid);if(!cu||!S(j.generated_job_id))return;(J[cu]=J[cu]||[]).push({no:S(j.generated_job_id),status:ST[S(j.status)]||S(j.status),site:S(j.job_address).split('\\n').join(', '),desc:S(j.job_description).split('\\n')[0].slice(0,140),date:S(j.date).slice(0,10)});});\nObject.keys(J).forEach(k=>J[k].sort((a,b)=>(Number(b.no)||0)-(Number(a.no)||0)));\nconst C=CO.map(x=>{const b=BILL[x.uuid],jj=J[x.uuid]||[];return {uuid:x.uuid,name:S(x.name),address:S(x.address)||S(x.address_street)||S(x.billing_address),billing_address:S(x.billing_address),website:S(x.website),abn_number:S(x.abn_number),payment_terms:S(x.payment_terms),\n bill:b?{uuid:b.uuid,name:nm(b),phone:S(b.phone)||S(b.mobile),email:S(b.email)}:null,jobs:jj.slice(0,40),job_count:jj.length};}).sort((a,b)=>a.name.localeCompare(b.name));\nreturn [{json:{ok:true,clients:C,folders:F,people:P,warn:C.length?'':'ServiceM8 clients did not load'}}];\n"
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "f6fea3e2-6756-47c5-8a3b-948ba03d454b",
+      "name": "ND Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1120,
+        0
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "7f216c2f-8cac-4f83-a8a9-9b791bf8ed95",
+      "name": "GET cbs-client-people",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        1000
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "options": {},
+        "path": "cbs-client-people",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "99a23abf-e8b5-4c61-8e6a-ac385f434de5"
+    },
+    {
+      "id": "e0879e12-faa0-4b21-a047-f159c6e3ad53",
+      "name": "CP Page",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        1000
+      ],
+      "parameters": {
+        "jsCode": "/* Clients page (hub menu: People and companies > Clients). ServiceM8 is the master for clients and contacts: data from cbs-newjob-data (live from ServiceM8, plus each contact's role kept in cbs_client_contacts); every change via cbs-client-people-act is written to ServiceM8 (company / companycontact), so changes made in either place show in both. Payment terms are shown but set in ServiceM8. */\nconst CSS=\"*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\\\"Segoe UI\\\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}.wrap{max-width:860px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;align-items:center}.btn{background:#F47920;color:#fff;font-weight:600;border-radius:8px;padding:8px 14px;font-size:14px;border:0;font-family:inherit;cursor:pointer}.btn.ghost{background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}.btn.sm{padding:6px 10px;font-size:13px}.btn:disabled{opacity:.5}.btn.red{background:#fff;color:#b3261e;border:1px solid #e9b6b1}.srch{width:100%;font:inherit;padding:10px 12px;border:1px solid #ccc;border-radius:10px;margin-bottom:10px;background:#fff}.cl{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}.cc{display:flex;flex-direction:column;gap:4px;text-align:left;font:inherit;color:#161616;background:#fff;border:1px solid #d9d9d6;border-radius:12px;padding:12px 14px;cursor:pointer}.cc:hover{border-color:#F47920}.cc b{font-size:16px}.cc .ad{color:#555;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.cc .ct{color:#6b6e70;font-size:12.5px}.back{display:inline-block;color:#b85a12;text-decoration:none;font-size:14px;font-weight:600;margin:2px 0 6px}.cn{margin:0 0 12px;font-size:22px}.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;margin-bottom:12px;overflow:hidden}.ch{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#f8f8f6;border-bottom:1px solid #ecece9;font-weight:700}.ch span{flex:1}.ch small{font-weight:400;color:#6b6e70;margin-left:4px}.cb{padding:4px 14px 10px}.dr{display:grid;grid-template-columns:170px 1fr;gap:10px;padding:8px 0;border-top:1px solid #f0f0ee}.dr:first-child{border-top:0}.dr span{color:#6b6e70;font-size:14px}.dr div{overflow-wrap:anywhere}.dr a,.p .m a{color:#1f5fbf;text-decoration:none}.p{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;border-top:1px solid #f0f0ee}.p:first-of-type{border-top:0}.p .i{flex:1;min-width:0}.p .n{font-weight:600}.p .rl{font-weight:400;color:#6b6e70;font-size:13.5px;margin-left:4px}.p .m{color:#555;font-size:14px;margin-top:2px;overflow-wrap:anywhere}.p .b{display:flex;gap:6px;flex:0 0 auto}.jb{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid #f0f0ee;text-decoration:none;color:#161616}.jb:hover{background:#f8f8f6}.jb b{flex:0 0 auto}.jb .jd{flex:1;min-width:0;color:#555;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.st{flex:0 0 auto;font-size:12px;font-weight:600;border-radius:999px;padding:2px 8px;background:#eee;color:#444}.st-approved{background:#e3f1e5;color:#1e6b2e}.st-estimate{background:#fff1dc;color:#8a5a00}.st-completed{background:#e6eefb;color:#1f4f9a}.st-unsuccessful{background:#f6e3e1;color:#8a2a1e}.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}.none{color:#6b6e70;font-size:14px;padding:10px 14px}.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;overflow:auto;z-index:20}.dlg{background:#fff;border-radius:14px;max-width:560px;width:100%;padding:16px}.dlg h2{margin:0 0 10px;font-size:18px}.dlg h3{margin:16px 0 0;font-size:15px;color:#3d4043;border-top:1px solid #eee;padding-top:12px}label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}.dlg input:not([type=checkbox]),.dlg textarea{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}.chkl{font-size:14px;color:#444;display:flex;gap:6px;align-items:center;margin-top:8px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.msg{font-size:14px;color:#8a5a00;margin-top:8px;min-height:18px}.note{font-size:13px;color:#6b6e70;margin-top:8px}.bb{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}@media(max-width:560px){.p{flex-wrap:wrap}.p .b{width:100%}.row2{grid-template-columns:1fr}.dr{grid-template-columns:1fr;gap:2px}}\";\nconst nav='<div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a><a class=\"hub\" href=\"/webhook/cbs-jobs\">Jobs</a></div>';\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Clients</title><script src=\"/webhook/cbs-guard\"></script><style>'+CSS+'</style></head><body><header>'+nav+'<h1>Clients</h1><p>Clients and their contacts. Saved to ServiceM8, and changes made in ServiceM8 show here.</p></header><div class=\"wrap\" id=\"app\"><div class=\"empty\">Loading\\u2026</div></div><script>('+client.toString()+')();</script></body></html>';\nreturn [{json:{html:html}}];\n\nfunction client(){\nvar app=document.getElementById('app'),DATA=null,Q='',BUSY=false;\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction nl(t){return e(t).replace(/\\n/g,'<br>');}\nfunction who(){var x='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)x=m.name;}catch(z){}if(!x){try{x=localStorage.getItem('cbs_name')||'';}catch(z){}}if(!x){x=(prompt('Your name:')||'').trim();if(x){try{localStorage.setItem('cbs_name',x);}catch(z){}}}return x;}\nfunction post(body){var by=who();if(!by)return Promise.resolve({ok:false,cancel:true});body.by=by;\n return fetch('/webhook/cbs-client-people-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw 0;return r.json();}).catch(function(){return {ok:false,message:'Could not save. Check your connection and try again.'};});}\nfunction load(){return fetch('/webhook/cbs-newjob-data?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){DATA=d;render();return d;}).catch(function(){app.innerHTML='<div class=\"empty\">Could not load. Refresh to try again.</div>';});}\nfunction clients(){return (DATA&&DATA.clients)||[];}\nfunction ppl(u){return ((DATA&&DATA.people)||{})[u]||[];}\nfunction cl(u){return clients().filter(function(x){return x.uuid===u;})[0]||null;}\nfunction cur(){var m=location.hash.match(/^#c=([^&]+)/);return m?decodeURIComponent(m[1]):'';}\nfunction go(u){if(u)location.hash='c='+encodeURIComponent(u);else{history.pushState('',document.title,location.pathname+location.search);render();}window.scrollTo(0,0);}\nfunction dlg(html){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg\">'+html+'</div>';document.body.appendChild(o);o.close=function(){o.remove();};return o;}\nfunction guard(o,dirty){o.addEventListener('click',function(ev){if(ev.target!==o)return;if(dirty&&dirty()&&!confirm('Close without saving your changes?'))return;o.close();});\n var x=o.querySelector('#dx');if(x)x.onclick=function(){if(dirty&&dirty()&&!confirm('Close without saving your changes?'))return;o.close();};}\nfunction tel(p){return p?'<a href=\"tel:'+e(p.replace(/\\s+/g,''))+'\">'+e(p)+'</a>':'';}\nfunction mail(m){return m?'<a href=\"mailto:'+e(m)+'\">'+e(m)+'</a>':'';}\nfunction render(){if(!DATA)return;var u=cur();if(u&&cl(u))return one(cl(u));list();}\nfunction list(){var q=Q.toLowerCase(),h='';\n h+='<div class=\"tools\"><button class=\"btn\" id=\"newc\">+ New client</button></div>';\n if(DATA.warn)h+='<div class=\"empty\" style=\"margin-bottom:10px\">'+e(DATA.warn)+'</div>';\n h+='<input class=\"srch\" id=\"q\" type=\"search\" placeholder=\"Search clients, contacts, addresses\" value=\"'+e(Q)+'\">';\n var L=clients().filter(function(c){if(!q)return true;var t=[c.name,c.address,c.billing_address,c.bill&&c.bill.name].concat(ppl(c.uuid).map(function(p){return [p.name,p.role,p.phone,p.email].join(' ');})).join(' ').toLowerCase();return t.indexOf(q)>-1;});\n if(!clients().length&&!DATA.warn)h+='<div class=\"empty\">No clients yet. Tap + New client.</div>';\n else if(!L.length)h+='<div class=\"empty\">Nothing matches.</div>';\n h+='<div class=\"cl\">';L.forEach(function(c){var n=ppl(c.uuid).length;h+='<button class=\"cc\" data-u=\"'+e(c.uuid)+'\"><b>'+e(c.name)+'</b><span class=\"ad\">'+(c.address?e(c.address.split('\\n').join(', ')):'<i>No address</i>')+'</span><span class=\"ct\">'+n+' '+(n===1?'contact':'contacts')+' \\u00b7 '+c.job_count+' '+(c.job_count===1?'job':'jobs')+'</span></button>';});h+='</div>';\n app.innerHTML=h;\n document.getElementById('newc').onclick=function(){clientDlg(null);};\n var qi=document.getElementById('q');qi.oninput=function(){Q=qi.value;var p=qi.selectionStart;list();var x=document.getElementById('q');x.focus();try{x.setSelectionRange(p,p);}catch(z){}};\n app.querySelectorAll('.cc').forEach(function(b){b.onclick=function(){go(b.getAttribute('data-u'));};});}\nfunction row(l,v){return v?'<div class=\"dr\"><span>'+l+'</span><div>'+v+'</div></div>':'';}\nfunction one(c){var P=ppl(c.uuid),b=c.bill||{},h='';\n h+='<a class=\"back\" href=\"#\" id=\"bk\">&larr; All clients</a><h2 class=\"cn\">'+e(c.name)+'</h2>';\n h+='<div class=\"card\"><div class=\"ch\"><span>Details</span><button class=\"btn ghost sm\" id=\"edc\">Edit</button></div><div class=\"cb\">'\n  +row('Site address',c.address?nl(c.address):'')+row('Billing address',c.billing_address&&c.billing_address!==c.address?nl(c.billing_address):(c.billing_address?'Same as site':''))\n  +row('Accounts contact',[e(b.name),tel(b.phone),mail(b.email)].filter(Boolean).join('<br>'))\n  +row('Website',c.website?'<a href=\"'+e(/^https?:/i.test(c.website)?c.website:'https://'+c.website)+'\" target=\"_blank\" rel=\"noopener\">'+e(c.website)+'</a>':'')\n  +row('Company / VAT number',e(c.abn_number))+row('Payment terms',c.payment_terms?e(c.payment_terms)+' <small style=\"color:#6b6e70\">(set in ServiceM8)</small>':'');\n if(!c.address&&!c.billing_address&&!b.name&&!b.phone&&!b.email&&!c.website&&!c.abn_number&&!c.payment_terms)h+='<div class=\"none\">No details yet. Tap Edit to add them.</div>';\n h+='</div></div>';\n h+='<div class=\"card\"><div class=\"ch\"><span>Contacts <small>'+P.length+'</small></span><button class=\"btn sm\" id=\"addp\">+ Add contact</button></div>';\n if(!P.length)h+='<div class=\"none\">No contacts yet.</div>';\n P.forEach(function(p,i){h+='<div class=\"p\"><div class=\"i\"><div class=\"n\">'+e(p.name)+(p.role?' <span class=\"rl\">'+e(p.role)+'</span>':'')+'</div><div class=\"m\">'+[tel(p.phone),mail(p.email)].filter(Boolean).join(' \\u00b7 ')+'</div></div><div class=\"b\"><button class=\"btn ghost sm\" data-ed=\"'+i+'\">Edit</button><button class=\"btn red sm\" data-rm=\"'+i+'\">Remove</button></div></div>';});\n h+='</div>';\n var J=c.jobs||[];h+='<div class=\"card\"><div class=\"ch\"><span>Jobs <small>'+c.job_count+'</small></span></div>';\n if(!J.length)h+='<div class=\"none\">No jobs for this client yet.</div>';\n J.forEach(function(j){h+='<a class=\"jb\" href=\"/webhook/cbs-job-file?job='+encodeURIComponent(j.no)+'\"><b>Job '+e(j.no)+'</b><span class=\"st st-'+e(j.status.toLowerCase())+'\">'+e(j.status)+'</span><span class=\"jd\">'+e(j.desc||j.site)+'</span></a>';});\n if(c.job_count>J.length)h+='<div class=\"none\">Showing the latest '+J.length+'.</div>';\n h+='</div>';\n app.innerHTML=h;\n document.getElementById('bk').onclick=function(ev){ev.preventDefault();go('');};\n document.getElementById('edc').onclick=function(){clientDlg(c);};\n document.getElementById('addp').onclick=function(){personDlg(c,null);};\n app.querySelectorAll('[data-ed]').forEach(function(x){x.onclick=function(){personDlg(c,P[+x.getAttribute('data-ed')]);};});\n app.querySelectorAll('[data-rm]').forEach(function(x){x.onclick=function(){rmP(c,P[+x.getAttribute('data-rm')]);};});}\nfunction clientDlg(c){var isNew=!c;c=c||{};var b=c.bill||{};var same=!c.billing_address||c.billing_address===c.address;\n var o=dlg('<h2>'+(isNew?'New client':'Edit '+e(c.name))+'</h2>'\n  +'<label class=\"f\">Client name</label><input id=\"cn\" value=\"'+e(c.name)+'\">'\n  +'<label class=\"f\">Site address</label><textarea id=\"ca\" rows=\"3\">'+e(c.address)+'</textarea>'\n  +'<label class=\"chkl\"><input type=\"checkbox\" id=\"cs\"'+(same?' checked':'')+'> Billing address is the same</label>'\n  +'<div id=\"cbw\"'+(same?' hidden':'')+'><label class=\"f\">Billing address</label><textarea id=\"cba\" rows=\"3\">'+e(same?'':c.billing_address)+'</textarea></div>'\n  +'<h3>Accounts contact</h3><label class=\"f\">Name</label><input id=\"bn\" value=\"'+e(b.name)+'\">'\n  +'<div class=\"row2\"><div><label class=\"f\">Phone</label><input id=\"bp\" type=\"tel\" value=\"'+e(b.phone)+'\"></div><div><label class=\"f\">Email</label><input id=\"be\" type=\"email\" value=\"'+e(b.email)+'\"></div></div>'\n  +'<h3>More</h3><label class=\"f\">Website</label><input id=\"cw\" value=\"'+e(c.website)+'\">'\n  +'<label class=\"f\">Company / VAT number</label><input id=\"cv\" value=\"'+e(c.abn_number)+'\">'+(c.payment_terms?'<div class=\"note\">Payment terms: '+e(c.payment_terms)+' (change these in ServiceM8)</div>':'')\n  +'<div class=\"note\">Saved to ServiceM8.</div><div class=\"msg\" id=\"cm\"></div><div class=\"bb\"><button class=\"btn\" id=\"csv\">Save</button><button class=\"btn ghost\" id=\"dx\">Cancel</button></div>');\n var cs=o.querySelector('#cs');cs.onchange=function(){o.querySelector('#cbw').hidden=cs.checked;};\n function v(){var a=o.querySelector('#ca').value.trim();return {name:o.querySelector('#cn').value.trim(),address:a,billing_address:cs.checked?a:o.querySelector('#cba').value.trim(),website:o.querySelector('#cw').value.trim(),abn_number:o.querySelector('#cv').value.trim(),\n  bill:{uuid:b.uuid||'',name:o.querySelector('#bn').value.trim(),phone:o.querySelector('#bp').value.trim(),email:o.querySelector('#be').value.trim()}};}\n var st=JSON.stringify(v());function dirty(){return JSON.stringify(v())!==st;}guard(o,dirty);setTimeout(function(){o.querySelector('#cn').focus();},50);\n o.querySelector('#csv').onclick=function(){var x=v(),m=o.querySelector('#cm');if(!x.name){m.textContent='Enter the client name.';return;}\n  if(x.bill.email&&!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(x.bill.email)){m.textContent='Check the accounts email address.';return;}\n  if(isNew){var dup=clients().filter(function(k){return k.name.toLowerCase()===x.name.toLowerCase();})[0];if(dup){m.textContent='A client called '+dup.name+' already exists.';return;}}\n  else if(!dirty()){o.close();return;}\n  var btn=this;btn.disabled=true;m.textContent='Saving\\u2026';\n  var hasBill=!!(x.bill.name||x.bill.phone||x.bill.email);\n  if(!isNew){x.a='client_save';x.uuid=c.uuid;if(!hasBill&&!b.uuid)delete x.bill;\n   post(x).then(function(r){if(r&&r.ok){o.close();load();}else{btn.disabled=false;m.textContent=r.cancel?'':((r&&r.message)||'Could not save.');}});return;}\n  var bill=x.bill;delete x.bill;x.a='client_new';\n  post(x).then(function(r){if(!(r&&r.ok&&r.uuid)){btn.disabled=false;m.textContent=r.cancel?'':((r&&r.message)||'Could not save.');return;}\n   var nu=r.uuid;return load().then(function(){var k=cl(nu);if(hasBill&&k){var y={a:'client_save',uuid:nu,name:k.name,address:k.address,billing_address:k.billing_address,website:k.website,abn_number:k.abn_number,bill:{uuid:(k.bill&&k.bill.uuid)||'',name:bill.name,phone:bill.phone,email:bill.email}};\n    return post(y).then(function(){return load();});}}).then(function(){o.close();go(nu);});});};}\nfunction personDlg(c,p){var isNew=!p;p=p||{};\n var o=dlg('<h2>'+(isNew?'Add contact':'Edit '+e(p.name))+'</h2><div class=\"note\" style=\"margin-top:0\">'+e(c.name)+'</div>'\n  +'<label class=\"f\">Name</label><input id=\"pn\" value=\"'+e(p.name)+'\" placeholder=\"Full name\">'\n  +'<label class=\"f\">Role</label><input id=\"pr\" value=\"'+e(p.role)+'\" placeholder=\"e.g. Facilities manager\">'\n  +'<div class=\"row2\"><div><label class=\"f\">Phone</label><input id=\"pp\" type=\"tel\" value=\"'+e(p.phone)+'\"></div><div><label class=\"f\">Email</label><input id=\"pe\" type=\"email\" value=\"'+e(p.email)+'\"></div></div>'\n  +'<div class=\"note\">Saved to ServiceM8 as a contact for this client. Shows in New job.</div><div class=\"msg\" id=\"pm\"></div><div class=\"bb\"><button class=\"btn\" id=\"psv\">Save</button><button class=\"btn ghost\" id=\"dx\">Cancel</button></div>');\n function v(){return {name:o.querySelector('#pn').value.trim(),role:o.querySelector('#pr').value.trim(),phone:o.querySelector('#pp').value.trim(),email:o.querySelector('#pe').value.trim()};}\n var st=JSON.stringify(v());function dirty(){return JSON.stringify(v())!==st;}guard(o,dirty);setTimeout(function(){o.querySelector('#pn').focus();},50);\n o.querySelector('#psv').onclick=function(){var x=v(),m=o.querySelector('#pm');if(!x.name){m.textContent='Enter the name.';return;}if(x.email&&!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(x.email)){m.textContent='Check the email address.';return;}\n  if(!isNew&&!dirty()){o.close();return;}\n  if(isNew){var dup=ppl(c.uuid).filter(function(k){return k.name.toLowerCase()===x.name.toLowerCase();})[0];if(dup&&!confirm(x.name+' is already a contact for '+c.name+'. Add another anyway?'))return;}\n  x.a=isNew?'contact_add':'contact_save';x.client_uuid=c.uuid;x.client_name=c.name;if(!isNew){x.id=p.id||'';x.uuid=p.uuid||'';}\n  var btn=this;btn.disabled=true;m.textContent='Saving\\u2026';\n  post(x).then(function(r){if(r&&r.ok){o.close();load();}else{btn.disabled=false;m.textContent=r.cancel?'':((r&&r.message)||'Could not save.');}});};}\nfunction rmP(c,p){if(!p)return;if(!confirm('Remove '+p.name+' from '+c.name+'?\\n\\nThey are removed from ServiceM8 too. Jobs they already raised keep their name.'))return;\n post({a:'remove',id:p.id||'',uuid:p.uuid||''}).then(function(r){if(!r.ok&&!r.cancel)alert(r.message||'Could not remove.');load();});}\nwindow.addEventListener('hashchange',render);\nload();\n}\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "01ee1236-f8ba-4b02-b7fc-81c5dc701882",
+      "name": "CP Send",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        1000
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        },
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}"
+      }
+    },
+    {
+      "id": "938c5d3b-f059-4954-866b-efb6442aa20a",
+      "name": "POST cbs-client-people-act",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        1240
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "options": {},
+        "path": "cbs-client-people-act",
+        "responseMode": "responseNode"
+      },
+      "webhookId": "7ac4dbce-c7f5-4128-b506-59873dabd386"
+    },
+    {
+      "id": "75878fb9-6fc0-4874-95fb-796a46b15d98",
+      "name": "CA Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        1240
+      ],
+      "parameters": {
+        "jsCode": "/* Clients page actions. Every change is written to ServiceM8 (the master); the hub table only keeps each contact's role.\n   a=client_save (company fields + accounts contact = primary BILLING contact), a=client_new, a=contact_add, a=contact_save, a=remove.\n   Only fields that are sent are written, so a missing field never blanks something set in ServiceM8. Payment terms are never written (ServiceM8 accepts only its own fixed values; set them in ServiceM8).\n   Output: one item per ServiceM8 call {method,url,body,hub}; CA After pairs results with these items by position. */\nconst S=v=>v==null?'':String(v).trim();\nlet b=$input.first().json.body||{};if(typeof b==='string'){try{b=JSON.parse(b);}catch(e){b={};}}\nconst a=S(b.a),by=S(b.by).slice(0,80),API='https://api.servicem8.com/api_1.0/';\nconst bad=m=>[{json:{ok:false,message:m}}];\nif(!by)return bad('Enter your name.');\nconst em=v=>!v||/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(v);\nfunction split(n){n=S(n);const i=n.indexOf(' ');return i<0?{first:n,last:''}:{first:n.slice(0,i),last:n.slice(i+1).trim()};}\nconst out=[];\nfunction call(method,url,body,hub){out.push({json:{ok:true,a:a,method:method,url:API+url,body:body||{},hub:hub||null}});}\nif(a==='client_save'||a==='client_new'){\n const name=S(b.name).slice(0,200);if(!name)return bad('Enter the client name.');\n const body={name:name};[['address',400],['billing_address',400],['website',200],['abn_number',60]].forEach(function(f){if(b[f[0]]!==undefined&&b[f[0]]!==null)body[f[0]]=S(b[f[0]]).slice(0,f[1]);});\n if(a==='client_new'){body.active=1;call('POST','company.json',body);return out;}\n const u=S(b.uuid);if(!u)return bad('That client was not found. Refresh the page.');\n call('POST','company/'+u+'.json',body);\n const bl=b.bill||null;\n if(bl){if(!em(S(bl.email)))return bad('Check the accounts email address.');\n  const nb=Object.assign(split(bl.name),{phone:S(bl.phone).slice(0,40),email:S(bl.email).slice(0,160)});\n  if(S(bl.uuid))call('POST','companycontact/'+S(bl.uuid)+'.json',nb);\n  else if(nb.first||nb.phone||nb.email)call('POST','companycontact.json',Object.assign(nb,{company_uuid:u,type:'BILLING',is_primary_contact:1,active:1}));}\n return out;}\nif(a==='contact_add'||a==='contact_save'){\n const cu=S(b.client_uuid),name=S(b.name).slice(0,120),email=S(b.email).slice(0,160),phone=S(b.phone).slice(0,40),role=S(b.role).slice(0,120);\n if(!cu)return bad('Choose the client.');if(!name)return bad('Enter the name.');if(!em(email))return bad('Check the email address.');\n const nb=Object.assign(split(name),{phone:phone,email:email});\n const hub={id:Number(b.id)||0,client_uuid:cu,client_name:S(b.client_name).slice(0,200),name:name,role:role,phone:phone,email:email,by:by,sm8_uuid:''};\n const u=a==='contact_save'?S(b.uuid):'';\n if(u){hub.sm8_uuid=u;call('POST','companycontact/'+u+'.json',nb,hub);}\n else call('POST','companycontact.json',Object.assign(nb,{company_uuid:cu,type:'JOB',is_primary_contact:0,active:1}),hub);\n return out;}\nif(a==='remove'||a==='contact_remove'){\n const u=S(b.uuid),id=Number(b.id)||0;if(!u&&!id)return bad('That person was not found. Refresh the page.');\n const hub=id?{id:id,remove:true}:null;\n if(u)call('DELETE','companycontact/'+u+'.json',null,hub);else out.push({json:{ok:true,a:a,noCall:true,hub:hub}});\n return out;}\nreturn bad('Unknown action.');\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "591986ca-5fb6-4b3d-9eeb-3ed495b25396",
+      "name": "CA Remove",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1792,
+        1160
+      ],
+      "parameters": {
+        "columns": {
+          "mappingMode": "defineBelow",
+          "schema": [
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "active",
+              "id": "active",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "value": {
+            "active": "0"
+          }
+        },
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "sfZL4wpJtHybqMx5"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "id",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "update",
+        "resource": "row"
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "eefa6f2f-fa24-449f-8efb-443fe2c79afe",
+      "name": "CA Done",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        896,
+        1240
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        },
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify((function(a){ return { ok: !!a.ok, message: a.message || '', uuid: a.uuid || '' }; })($('CA After').first().json)) }}"
+      }
+    },
+    {
+      "id": "96b63cef-4500-4d14-9552-57089c7c67a0",
+      "name": "CA Fail",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        672,
+        1500
+      ],
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        },
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: false, message: $json.message }) }}"
+      }
+    },
+    {
+      "id": "756a3cff-6e16-4b21-89fc-3c1bb5073c30",
+      "name": "ND Contacts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        784,
+        -160
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "GET",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        },
+        "url": "https://api.servicem8.com/api_1.0/companycontact.json?%24filter=active%20eq%201"
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "0046edb2-8980-4680-bf03-1abc0731bd05",
+      "name": "ND Jobs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        896,
+        -160
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "method": "GET",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        },
+        "url": "https://api.servicem8.com/api_1.0/job.json?%24filter=active%20eq%201"
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "eac68fa8-b832-4f83-b63f-90455d911eed",
+      "name": "CA OK?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        1240
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{ $json.ok }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              }
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          }
+        }
+      }
+    },
+    {
+      "id": "6c5ad2d0-5f68-41db-91a1-80370d4ea57b",
+      "name": "CA Call?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        1160
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{ $json.noCall === true }}",
+              "operator": {
+                "operation": "false",
+                "singleValue": true,
+                "type": "boolean"
+              }
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          }
+        }
+      }
+    },
+    {
+      "id": "f6cbebc7-06ef-4cb5-b43f-9962b9b4cff6",
+      "name": "CA SM8",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        896,
+        1080
+      ],
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "jsonBody": "={{ JSON.stringify($json.body || {}) }}",
+        "method": "={{ $json.method }}",
+        "nodeCredentialType": "serviceM8CredentialsApi",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "url": "={{ $json.url }}"
+      }
+    },
+    {
+      "id": "503b85a4-a846-441a-b8a3-90f50548de8c",
+      "name": "CA After",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        1160
+      ],
+      "parameters": {
+        "jsCode": "/* Pairs each ServiceM8 result with its CA Prep item. Any failed call = not saved. New records: uuid from the x-record-uuid header.\n   Output: hub rows to write (role kept in the hub), or one summary item. */\nconst S=v=>v==null?'':String(v).trim();\nconst P=$('CA Prep').all().map(i=>i.json),R=$input.all().map(i=>i.json);\nconst hubs=[];let err='',created='';\nR.forEach((r,i)=>{const p=P[i]||{};\n if(r&&r.noCall){if(r.hub)hubs.push(r.hub);return;}\n const ok=r&&r.statusCode>=200&&r.statusCode<300;\n if(!ok){err=err||('ServiceM8 did not accept the change'+(r&&r.statusCode?' ('+r.statusCode+')':'')+'. Nothing was changed in the hub.');return;}\n const h=r.headers||{},u=S(h['x-record-uuid']||h['X-Record-UUID']);if(u&&!created)created=u;\n if(p.hub){const x=Object.assign({},p.hub);if(!x.remove&&!x.sm8_uuid)x.sm8_uuid=u;hubs.push(x);}});\nif(err)return [{json:{ok:false,message:err,hubDo:false}}];\nif(!hubs.length)return [{json:{ok:true,uuid:created,hubDo:false}}];\nreturn hubs.map(x=>({json:Object.assign({ok:true,uuid:created,hubDo:true},x)}));\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "42e25281-c809-43aa-a25a-f15818a5ea78",
+      "name": "CA Hub?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        1160
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{ $json.hubDo }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              }
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          }
+        }
+      }
+    },
+    {
+      "id": "f7ae840c-f88d-4536-ad62-52c1c8fea503",
+      "name": "CA Remove?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1568,
+        1080
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "leftValue": "={{ $json.remove === true }}",
+              "operator": {
+                "operation": "true",
+                "singleValue": true,
+                "type": "boolean"
+              }
+            }
+          ],
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          }
+        }
+      }
+    },
+    {
+      "id": "1ff440f8-f233-47d3-adf6-50d49798a3ac",
+      "name": "CA Hub Save",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1792,
+        1000
+      ],
+      "parameters": {
+        "columns": {
+          "mappingMode": "defineBelow",
+          "schema": [
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "client_uuid",
+              "id": "client_uuid",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "client_name",
+              "id": "client_name",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "name",
+              "id": "name",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "role",
+              "id": "role",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "phone",
+              "id": "phone",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "email",
+              "id": "email",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "sm8_uuid",
+              "id": "sm8_uuid",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "active",
+              "id": "active",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "created_by",
+              "id": "created_by",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "canBeUsedToMatch": true,
+              "defaultMatch": false,
+              "display": true,
+              "displayName": "created_at",
+              "id": "created_at",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "value": {
+            "active": "1",
+            "client_name": "={{ $json.client_name }}",
+            "client_uuid": "={{ $json.client_uuid }}",
+            "created_at": "={{ new Date().toISOString() }}",
+            "created_by": "={{ $json.by }}",
+            "email": "={{ $json.email }}",
+            "name": "={{ $json.name }}",
+            "phone": "={{ $json.phone }}",
+            "role": "={{ $json.role }}",
+            "sm8_uuid": "={{ $json.sm8_uuid }}"
+          }
+        },
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "sfZL4wpJtHybqMx5"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "id",
+              "keyValue": "={{ $json.id || -1 }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "upsert",
+        "resource": "row"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "d8f5d901-5d65-4a07-885b-4b4a08379a34",
+        "name": "GET cbs-newjob-data",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-newjob-data",
+          "responseMode": "responseNode",
+          "options": {
+            "allowedOrigins": "*"
+          }
+        },
+        "webhookId": "6ab74649-61de-4c56-9aa4-5d21e947279d"
+      },
+      {
+        "id": "5b97294c-5e47-424f-99f8-0e353c8a8feb",
+        "name": "ND Clients",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "method": "GET",
+          "url": "https://api.servicem8.com/api_1.0/company.json?%24filter=active%20eq%201",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            },
+            "timeout": 30000
+          }
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "66808129-1235-4b58-8fee-daddb322b40d",
+        "name": "ND Queues",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "method": "GET",
+          "url": "https://api.servicem8.com/api_1.0/queue.json",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            },
+            "timeout": 30000
+          }
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "7404308e-9b4f-4934-b188-96f133eb6dcd",
+        "name": "ND People",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "sfZL4wpJtHybqMx5"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "3d574180-02e7-4ec3-aed6-c5e4bd0e2ba8",
+        "name": "ND Build",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          896,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* Clients + New job data. ServiceM8 is the master: clients (company), contacts (companycontact) and jobs are read live from it, so changes made in ServiceM8 show in the hub.\n   The hub table cbs_client_contacts only adds each contact's role (matched by sm8_uuid) and holds people not yet in ServiceM8.\n   Blank contacts that ServiceM8 creates automatically are hidden. The client's primary BILLING contact is its accounts contact: shown in the client details AND in the contacts list\n   (ServiceM8 makes a client's first contact its billing contact, so hiding it would make people vanish).\n   Every ServiceM8 list is de-duplicated by uuid (safety net: the lookups must run once, see executeOnce on ND Contacts / ND Jobs).\n   Output shape kept for New job: clients[{uuid,name,address}], folders, people{client_uuid:[{id,name,role,phone,email}]}; extra fields for the Clients page. */\nconst S=v=>v==null?'':String(v).trim();\nconst nm=c=>[S(c.first),S(c.last)].filter(Boolean).join(' ');\nconst arr=n=>{try{return $(n).all().map(i=>i.json);}catch(e){return [];}};\nconst uniq=a=>{const s={};return a.filter(x=>{if(!x||!x.uuid||s[x.uuid])return false;s[x.uuid]=1;return true;});};\nconst CO=uniq(arr('ND Clients')).filter(x=>String(x.active)!=='0'&&S(x.name));\nconst CC=uniq(arr('ND Contacts')).filter(x=>x.company_uuid&&String(x.active)!=='0');\nconst JB=uniq(arr('ND Jobs')).filter(x=>String(x.active)!=='0');\nconst HR=arr('ND People').filter(r=>r&&S(r.client_uuid)&&S(r.name)&&S(r.active)!=='0');\nconst F=[...new Set(uniq(arr('ND Queues')).filter(x=>S(x.name)&&String(x.active)!=='0').map(x=>S(x.name)))];\nconst byU={};HR.forEach(r=>{if(S(r.sm8_uuid))byU[S(r.sm8_uuid)]=r;});\nconst TYPE={BILLING:'Accounts',JOB:'','Property Manager':'Property manager'};\nconst BILL={};CC.forEach(c=>{if(S(c.type)==='BILLING'&&String(c.is_primary_contact)==='1'&&!BILL[c.company_uuid])BILL[c.company_uuid]=c;});\nconst P={},seen={};\nCC.forEach(c=>{const n=nm(c),ph=S(c.phone)||S(c.mobile),em=S(c.email);if(!n&&!ph&&!em)return;const h=byU[c.uuid];if(h)seen[h.id]=1;\n const b=BILL[c.company_uuid],acc=!!(b&&b.uuid===c.uuid);\n (P[c.company_uuid]=P[c.company_uuid]||[]).push({id:h?h.id:'',uuid:c.uuid,name:n||(h?S(h.name):'')||'(no name)',role:(h&&S(h.role))||(acc?'Accounts':(TYPE[S(c.type)]||'')),phone:ph,email:em,accounts:acc});});\n/* hub people not yet in ServiceM8 (no sm8_uuid). A hub person whose ServiceM8 contact was deleted in ServiceM8 is not shown (deleted both ways). */\nHR.forEach(r=>{if(seen[r.id]||S(r.sm8_uuid))return;(P[r.client_uuid]=P[r.client_uuid]||[]).push({id:r.id,uuid:'',name:S(r.name),role:S(r.role),phone:S(r.phone),email:S(r.email)});});\nObject.keys(P).forEach(k=>P[k].sort((a,b)=>a.name.localeCompare(b.name)));\nconst ST={'Quote':'Estimate','Work Order':'Approved','Completed':'Completed','Unsuccessful':'Unsuccessful'};\nconst J={};JB.forEach(j=>{const cu=S(j.company_uuid);if(!cu||!S(j.generated_job_id))return;(J[cu]=J[cu]||[]).push({no:S(j.generated_job_id),status:ST[S(j.status)]||S(j.status),site:S(j.job_address).split('\\n').join(', '),desc:S(j.job_description).split('\\n')[0].slice(0,140),date:S(j.date).slice(0,10)});});\nObject.keys(J).forEach(k=>J[k].sort((a,b)=>(Number(b.no)||0)-(Number(a.no)||0)));\nconst C=CO.map(x=>{const b=BILL[x.uuid],jj=J[x.uuid]||[];return {uuid:x.uuid,name:S(x.name),address:S(x.address)||S(x.address_street)||S(x.billing_address),billing_address:S(x.billing_address),website:S(x.website),abn_number:S(x.abn_number),payment_terms:S(x.payment_terms),\n bill:b?{uuid:b.uuid,name:nm(b),phone:S(b.phone)||S(b.mobile),email:S(b.email)}:null,jobs:jj.slice(0,40),job_count:jj.length};}).sort((a,b)=>a.name.localeCompare(b.name));\nreturn [{json:{ok:true,clients:C,folders:F,people:P,warn:C.length?'':'ServiceM8 clients did not load'}}];\n"
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "f6fea3e2-6756-47c5-8a3b-948ba03d454b",
+        "name": "ND Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          1120,
+          0
+        ],
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "7f216c2f-8cac-4f83-a8a9-9b791bf8ed95",
+        "name": "GET cbs-client-people",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          1000
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "options": {},
+          "path": "cbs-client-people",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "99a23abf-e8b5-4c61-8e6a-ac385f434de5"
+      },
+      {
+        "id": "e0879e12-faa0-4b21-a047-f159c6e3ad53",
+        "name": "CP Page",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          1000
+        ],
+        "parameters": {
+          "jsCode": "/* Clients page (hub menu: People and companies > Clients). ServiceM8 is the master for clients and contacts: data from cbs-newjob-data (live from ServiceM8, plus each contact's role kept in cbs_client_contacts); every change via cbs-client-people-act is written to ServiceM8 (company / companycontact), so changes made in either place show in both. Payment terms are shown but set in ServiceM8. */\nconst CSS=\"*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\\\"Segoe UI\\\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}.wrap{max-width:860px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;align-items:center}.btn{background:#F47920;color:#fff;font-weight:600;border-radius:8px;padding:8px 14px;font-size:14px;border:0;font-family:inherit;cursor:pointer}.btn.ghost{background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}.btn.sm{padding:6px 10px;font-size:13px}.btn:disabled{opacity:.5}.btn.red{background:#fff;color:#b3261e;border:1px solid #e9b6b1}.srch{width:100%;font:inherit;padding:10px 12px;border:1px solid #ccc;border-radius:10px;margin-bottom:10px;background:#fff}.cl{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}.cc{display:flex;flex-direction:column;gap:4px;text-align:left;font:inherit;color:#161616;background:#fff;border:1px solid #d9d9d6;border-radius:12px;padding:12px 14px;cursor:pointer}.cc:hover{border-color:#F47920}.cc b{font-size:16px}.cc .ad{color:#555;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.cc .ct{color:#6b6e70;font-size:12.5px}.back{display:inline-block;color:#b85a12;text-decoration:none;font-size:14px;font-weight:600;margin:2px 0 6px}.cn{margin:0 0 12px;font-size:22px}.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;margin-bottom:12px;overflow:hidden}.ch{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#f8f8f6;border-bottom:1px solid #ecece9;font-weight:700}.ch span{flex:1}.ch small{font-weight:400;color:#6b6e70;margin-left:4px}.cb{padding:4px 14px 10px}.dr{display:grid;grid-template-columns:170px 1fr;gap:10px;padding:8px 0;border-top:1px solid #f0f0ee}.dr:first-child{border-top:0}.dr span{color:#6b6e70;font-size:14px}.dr div{overflow-wrap:anywhere}.dr a,.p .m a{color:#1f5fbf;text-decoration:none}.p{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;border-top:1px solid #f0f0ee}.p:first-of-type{border-top:0}.p .i{flex:1;min-width:0}.p .n{font-weight:600}.p .rl{font-weight:400;color:#6b6e70;font-size:13.5px;margin-left:4px}.p .m{color:#555;font-size:14px;margin-top:2px;overflow-wrap:anywhere}.p .b{display:flex;gap:6px;flex:0 0 auto}.jb{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid #f0f0ee;text-decoration:none;color:#161616}.jb:hover{background:#f8f8f6}.jb b{flex:0 0 auto}.jb .jd{flex:1;min-width:0;color:#555;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.st{flex:0 0 auto;font-size:12px;font-weight:600;border-radius:999px;padding:2px 8px;background:#eee;color:#444}.st-approved{background:#e3f1e5;color:#1e6b2e}.st-estimate{background:#fff1dc;color:#8a5a00}.st-completed{background:#e6eefb;color:#1f4f9a}.st-unsuccessful{background:#f6e3e1;color:#8a2a1e}.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}.none{color:#6b6e70;font-size:14px;padding:10px 14px}.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;overflow:auto;z-index:20}.dlg{background:#fff;border-radius:14px;max-width:560px;width:100%;padding:16px}.dlg h2{margin:0 0 10px;font-size:18px}.dlg h3{margin:16px 0 0;font-size:15px;color:#3d4043;border-top:1px solid #eee;padding-top:12px}label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}.dlg input:not([type=checkbox]),.dlg textarea{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}.chkl{font-size:14px;color:#444;display:flex;gap:6px;align-items:center;margin-top:8px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.msg{font-size:14px;color:#8a5a00;margin-top:8px;min-height:18px}.note{font-size:13px;color:#6b6e70;margin-top:8px}.bb{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}@media(max-width:560px){.p{flex-wrap:wrap}.p .b{width:100%}.row2{grid-template-columns:1fr}.dr{grid-template-columns:1fr;gap:2px}}\";\nconst nav='<div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a><a class=\"hub\" href=\"/webhook/cbs-jobs\">Jobs</a></div>';\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Clients</title><script src=\"/webhook/cbs-guard\"></script><style>'+CSS+'</style></head><body><header>'+nav+'<h1>Clients</h1><p>Clients and their contacts. Saved to ServiceM8, and changes made in ServiceM8 show here.</p></header><div class=\"wrap\" id=\"app\"><div class=\"empty\">Loading\\u2026</div></div><script>('+client.toString()+')();</script></body></html>';\nreturn [{json:{html:html}}];\n\nfunction client(){\nvar app=document.getElementById('app'),DATA=null,Q='',BUSY=false;\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction nl(t){return e(t).replace(/\\n/g,'<br>');}\nfunction who(){var x='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)x=m.name;}catch(z){}if(!x){try{x=localStorage.getItem('cbs_name')||'';}catch(z){}}if(!x){x=(prompt('Your name:')||'').trim();if(x){try{localStorage.setItem('cbs_name',x);}catch(z){}}}return x;}\nfunction post(body){var by=who();if(!by)return Promise.resolve({ok:false,cancel:true});body.by=by;\n return fetch('/webhook/cbs-client-people-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw 0;return r.json();}).catch(function(){return {ok:false,message:'Could not save. Check your connection and try again.'};});}\nfunction load(){return fetch('/webhook/cbs-newjob-data?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){DATA=d;render();return d;}).catch(function(){app.innerHTML='<div class=\"empty\">Could not load. Refresh to try again.</div>';});}\nfunction clients(){return (DATA&&DATA.clients)||[];}\nfunction ppl(u){return ((DATA&&DATA.people)||{})[u]||[];}\nfunction cl(u){return clients().filter(function(x){return x.uuid===u;})[0]||null;}\nfunction cur(){var m=location.hash.match(/^#c=([^&]+)/);return m?decodeURIComponent(m[1]):'';}\nfunction go(u){if(u)location.hash='c='+encodeURIComponent(u);else{history.pushState('',document.title,location.pathname+location.search);render();}window.scrollTo(0,0);}\nfunction dlg(html){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg\">'+html+'</div>';document.body.appendChild(o);o.close=function(){o.remove();};return o;}\nfunction guard(o,dirty){o.addEventListener('click',function(ev){if(ev.target!==o)return;if(dirty&&dirty()&&!confirm('Close without saving your changes?'))return;o.close();});\n var x=o.querySelector('#dx');if(x)x.onclick=function(){if(dirty&&dirty()&&!confirm('Close without saving your changes?'))return;o.close();};}\nfunction tel(p){return p?'<a href=\"tel:'+e(p.replace(/\\s+/g,''))+'\">'+e(p)+'</a>':'';}\nfunction mail(m){return m?'<a href=\"mailto:'+e(m)+'\">'+e(m)+'</a>':'';}\nfunction render(){if(!DATA)return;var u=cur();if(u&&cl(u))return one(cl(u));list();}\nfunction list(){var q=Q.toLowerCase(),h='';\n h+='<div class=\"tools\"><button class=\"btn\" id=\"newc\">+ New client</button></div>';\n if(DATA.warn)h+='<div class=\"empty\" style=\"margin-bottom:10px\">'+e(DATA.warn)+'</div>';\n h+='<input class=\"srch\" id=\"q\" type=\"search\" placeholder=\"Search clients, contacts, addresses\" value=\"'+e(Q)+'\">';\n var L=clients().filter(function(c){if(!q)return true;var t=[c.name,c.address,c.billing_address,c.bill&&c.bill.name].concat(ppl(c.uuid).map(function(p){return [p.name,p.role,p.phone,p.email].join(' ');})).join(' ').toLowerCase();return t.indexOf(q)>-1;});\n if(!clients().length&&!DATA.warn)h+='<div class=\"empty\">No clients yet. Tap + New client.</div>';\n else if(!L.length)h+='<div class=\"empty\">Nothing matches.</div>';\n h+='<div class=\"cl\">';L.forEach(function(c){var n=ppl(c.uuid).length;h+='<button class=\"cc\" data-u=\"'+e(c.uuid)+'\"><b>'+e(c.name)+'</b><span class=\"ad\">'+(c.address?e(c.address.split('\\n').join(', ')):'<i>No address</i>')+'</span><span class=\"ct\">'+n+' '+(n===1?'contact':'contacts')+' \\u00b7 '+c.job_count+' '+(c.job_count===1?'job':'jobs')+'</span></button>';});h+='</div>';\n app.innerHTML=h;\n document.getElementById('newc').onclick=function(){clientDlg(null);};\n var qi=document.getElementById('q');qi.oninput=function(){Q=qi.value;var p=qi.selectionStart;list();var x=document.getElementById('q');x.focus();try{x.setSelectionRange(p,p);}catch(z){}};\n app.querySelectorAll('.cc').forEach(function(b){b.onclick=function(){go(b.getAttribute('data-u'));};});}\nfunction row(l,v){return v?'<div class=\"dr\"><span>'+l+'</span><div>'+v+'</div></div>':'';}\nfunction one(c){var P=ppl(c.uuid),b=c.bill||{},h='';\n h+='<a class=\"back\" href=\"#\" id=\"bk\">&larr; All clients</a><h2 class=\"cn\">'+e(c.name)+'</h2>';\n h+='<div class=\"card\"><div class=\"ch\"><span>Details</span><button class=\"btn ghost sm\" id=\"edc\">Edit</button></div><div class=\"cb\">'\n  +row('Site address',c.address?nl(c.address):'')+row('Billing address',c.billing_address&&c.billing_address!==c.address?nl(c.billing_address):(c.billing_address?'Same as site':''))\n  +row('Accounts contact',[e(b.name),tel(b.phone),mail(b.email)].filter(Boolean).join('<br>'))\n  +row('Website',c.website?'<a href=\"'+e(/^https?:/i.test(c.website)?c.website:'https://'+c.website)+'\" target=\"_blank\" rel=\"noopener\">'+e(c.website)+'</a>':'')\n  +row('Company / VAT number',e(c.abn_number))+row('Payment terms',c.payment_terms?e(c.payment_terms)+' <small style=\"color:#6b6e70\">(set in ServiceM8)</small>':'');\n if(!c.address&&!c.billing_address&&!b.name&&!b.phone&&!b.email&&!c.website&&!c.abn_number&&!c.payment_terms)h+='<div class=\"none\">No details yet. Tap Edit to add them.</div>';\n h+='</div></div>';\n h+='<div class=\"card\"><div class=\"ch\"><span>Contacts <small>'+P.length+'</small></span><button class=\"btn sm\" id=\"addp\">+ Add contact</button></div>';\n if(!P.length)h+='<div class=\"none\">No contacts yet.</div>';\n P.forEach(function(p,i){h+='<div class=\"p\"><div class=\"i\"><div class=\"n\">'+e(p.name)+(p.role?' <span class=\"rl\">'+e(p.role)+'</span>':'')+'</div><div class=\"m\">'+[tel(p.phone),mail(p.email)].filter(Boolean).join(' \\u00b7 ')+'</div></div><div class=\"b\"><button class=\"btn ghost sm\" data-ed=\"'+i+'\">Edit</button><button class=\"btn red sm\" data-rm=\"'+i+'\">Remove</button></div></div>';});\n h+='</div>';\n var J=c.jobs||[];h+='<div class=\"card\"><div class=\"ch\"><span>Jobs <small>'+c.job_count+'</small></span></div>';\n if(!J.length)h+='<div class=\"none\">No jobs for this client yet.</div>';\n J.forEach(function(j){h+='<a class=\"jb\" href=\"/webhook/cbs-job-file?job='+encodeURIComponent(j.no)+'\"><b>Job '+e(j.no)+'</b><span class=\"st st-'+e(j.status.toLowerCase())+'\">'+e(j.status)+'</span><span class=\"jd\">'+e(j.desc||j.site)+'</span></a>';});\n if(c.job_count>J.length)h+='<div class=\"none\">Showing the latest '+J.length+'.</div>';\n h+='</div>';\n app.innerHTML=h;\n document.getElementById('bk').onclick=function(ev){ev.preventDefault();go('');};\n document.getElementById('edc').onclick=function(){clientDlg(c);};\n document.getElementById('addp').onclick=function(){personDlg(c,null);};\n app.querySelectorAll('[data-ed]').forEach(function(x){x.onclick=function(){personDlg(c,P[+x.getAttribute('data-ed')]);};});\n app.querySelectorAll('[data-rm]').forEach(function(x){x.onclick=function(){rmP(c,P[+x.getAttribute('data-rm')]);};});}\nfunction clientDlg(c){var isNew=!c;c=c||{};var b=c.bill||{};var same=!c.billing_address||c.billing_address===c.address;\n var o=dlg('<h2>'+(isNew?'New client':'Edit '+e(c.name))+'</h2>'\n  +'<label class=\"f\">Client name</label><input id=\"cn\" value=\"'+e(c.name)+'\">'\n  +'<label class=\"f\">Site address</label><textarea id=\"ca\" rows=\"3\">'+e(c.address)+'</textarea>'\n  +'<label class=\"chkl\"><input type=\"checkbox\" id=\"cs\"'+(same?' checked':'')+'> Billing address is the same</label>'\n  +'<div id=\"cbw\"'+(same?' hidden':'')+'><label class=\"f\">Billing address</label><textarea id=\"cba\" rows=\"3\">'+e(same?'':c.billing_address)+'</textarea></div>'\n  +'<h3>Accounts contact</h3><label class=\"f\">Name</label><input id=\"bn\" value=\"'+e(b.name)+'\">'\n  +'<div class=\"row2\"><div><label class=\"f\">Phone</label><input id=\"bp\" type=\"tel\" value=\"'+e(b.phone)+'\"></div><div><label class=\"f\">Email</label><input id=\"be\" type=\"email\" value=\"'+e(b.email)+'\"></div></div>'\n  +'<h3>More</h3><label class=\"f\">Website</label><input id=\"cw\" value=\"'+e(c.website)+'\">'\n  +'<label class=\"f\">Company / VAT number</label><input id=\"cv\" value=\"'+e(c.abn_number)+'\">'+(c.payment_terms?'<div class=\"note\">Payment terms: '+e(c.payment_terms)+' (change these in ServiceM8)</div>':'')\n  +'<div class=\"note\">Saved to ServiceM8.</div><div class=\"msg\" id=\"cm\"></div><div class=\"bb\"><button class=\"btn\" id=\"csv\">Save</button><button class=\"btn ghost\" id=\"dx\">Cancel</button></div>');\n var cs=o.querySelector('#cs');cs.onchange=function(){o.querySelector('#cbw').hidden=cs.checked;};\n function v(){var a=o.querySelector('#ca').value.trim();return {name:o.querySelector('#cn').value.trim(),address:a,billing_address:cs.checked?a:o.querySelector('#cba').value.trim(),website:o.querySelector('#cw').value.trim(),abn_number:o.querySelector('#cv').value.trim(),\n  bill:{uuid:b.uuid||'',name:o.querySelector('#bn').value.trim(),phone:o.querySelector('#bp').value.trim(),email:o.querySelector('#be').value.trim()}};}\n var st=JSON.stringify(v());function dirty(){return JSON.stringify(v())!==st;}guard(o,dirty);setTimeout(function(){o.querySelector('#cn').focus();},50);\n o.querySelector('#csv').onclick=function(){var x=v(),m=o.querySelector('#cm');if(!x.name){m.textContent='Enter the client name.';return;}\n  if(x.bill.email&&!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(x.bill.email)){m.textContent='Check the accounts email address.';return;}\n  if(isNew){var dup=clients().filter(function(k){return k.name.toLowerCase()===x.name.toLowerCase();})[0];if(dup){m.textContent='A client called '+dup.name+' already exists.';return;}}\n  else if(!dirty()){o.close();return;}\n  var btn=this;btn.disabled=true;m.textContent='Saving\\u2026';\n  var hasBill=!!(x.bill.name||x.bill.phone||x.bill.email);\n  if(!isNew){x.a='client_save';x.uuid=c.uuid;if(!hasBill&&!b.uuid)delete x.bill;\n   post(x).then(function(r){if(r&&r.ok){o.close();load();}else{btn.disabled=false;m.textContent=r.cancel?'':((r&&r.message)||'Could not save.');}});return;}\n  var bill=x.bill;delete x.bill;x.a='client_new';\n  post(x).then(function(r){if(!(r&&r.ok&&r.uuid)){btn.disabled=false;m.textContent=r.cancel?'':((r&&r.message)||'Could not save.');return;}\n   var nu=r.uuid;return load().then(function(){var k=cl(nu);if(hasBill&&k){var y={a:'client_save',uuid:nu,name:k.name,address:k.address,billing_address:k.billing_address,website:k.website,abn_number:k.abn_number,bill:{uuid:(k.bill&&k.bill.uuid)||'',name:bill.name,phone:bill.phone,email:bill.email}};\n    return post(y).then(function(){return load();});}}).then(function(){o.close();go(nu);});});};}\nfunction personDlg(c,p){var isNew=!p;p=p||{};\n var o=dlg('<h2>'+(isNew?'Add contact':'Edit '+e(p.name))+'</h2><div class=\"note\" style=\"margin-top:0\">'+e(c.name)+'</div>'\n  +'<label class=\"f\">Name</label><input id=\"pn\" value=\"'+e(p.name)+'\" placeholder=\"Full name\">'\n  +'<label class=\"f\">Role</label><input id=\"pr\" value=\"'+e(p.role)+'\" placeholder=\"e.g. Facilities manager\">'\n  +'<div class=\"row2\"><div><label class=\"f\">Phone</label><input id=\"pp\" type=\"tel\" value=\"'+e(p.phone)+'\"></div><div><label class=\"f\">Email</label><input id=\"pe\" type=\"email\" value=\"'+e(p.email)+'\"></div></div>'\n  +'<div class=\"note\">Saved to ServiceM8 as a contact for this client. Shows in New job.</div><div class=\"msg\" id=\"pm\"></div><div class=\"bb\"><button class=\"btn\" id=\"psv\">Save</button><button class=\"btn ghost\" id=\"dx\">Cancel</button></div>');\n function v(){return {name:o.querySelector('#pn').value.trim(),role:o.querySelector('#pr').value.trim(),phone:o.querySelector('#pp').value.trim(),email:o.querySelector('#pe').value.trim()};}\n var st=JSON.stringify(v());function dirty(){return JSON.stringify(v())!==st;}guard(o,dirty);setTimeout(function(){o.querySelector('#pn').focus();},50);\n o.querySelector('#psv').onclick=function(){var x=v(),m=o.querySelector('#pm');if(!x.name){m.textContent='Enter the name.';return;}if(x.email&&!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(x.email)){m.textContent='Check the email address.';return;}\n  if(!isNew&&!dirty()){o.close();return;}\n  if(isNew){var dup=ppl(c.uuid).filter(function(k){return k.name.toLowerCase()===x.name.toLowerCase();})[0];if(dup&&!confirm(x.name+' is already a contact for '+c.name+'. Add another anyway?'))return;}\n  x.a=isNew?'contact_add':'contact_save';x.client_uuid=c.uuid;x.client_name=c.name;if(!isNew){x.id=p.id||'';x.uuid=p.uuid||'';}\n  var btn=this;btn.disabled=true;m.textContent='Saving\\u2026';\n  post(x).then(function(r){if(r&&r.ok){o.close();load();}else{btn.disabled=false;m.textContent=r.cancel?'':((r&&r.message)||'Could not save.');}});};}\nfunction rmP(c,p){if(!p)return;if(!confirm('Remove '+p.name+' from '+c.name+'?\\n\\nThey are removed from ServiceM8 too. Jobs they already raised keep their name.'))return;\n post({a:'remove',id:p.id||'',uuid:p.uuid||''}).then(function(r){if(!r.ok&&!r.cancel)alert(r.message||'Could not remove.');load();});}\nwindow.addEventListener('hashchange',render);\nload();\n}\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "01ee1236-f8ba-4b02-b7fc-81c5dc701882",
+        "name": "CP Send",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          1000
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          },
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}"
+        }
+      },
+      {
+        "id": "938c5d3b-f059-4954-866b-efb6442aa20a",
+        "name": "POST cbs-client-people-act",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          1240
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "options": {},
+          "path": "cbs-client-people-act",
+          "responseMode": "responseNode"
+        },
+        "webhookId": "7ac4dbce-c7f5-4128-b506-59873dabd386"
+      },
+      {
+        "id": "75878fb9-6fc0-4874-95fb-796a46b15d98",
+        "name": "CA Prep",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          1240
+        ],
+        "parameters": {
+          "jsCode": "/* Clients page actions. Every change is written to ServiceM8 (the master); the hub table only keeps each contact's role.\n   a=client_save (company fields + accounts contact = primary BILLING contact), a=client_new, a=contact_add, a=contact_save, a=remove.\n   Only fields that are sent are written, so a missing field never blanks something set in ServiceM8. Payment terms are never written (ServiceM8 accepts only its own fixed values; set them in ServiceM8).\n   Output: one item per ServiceM8 call {method,url,body,hub}; CA After pairs results with these items by position. */\nconst S=v=>v==null?'':String(v).trim();\nlet b=$input.first().json.body||{};if(typeof b==='string'){try{b=JSON.parse(b);}catch(e){b={};}}\nconst a=S(b.a),by=S(b.by).slice(0,80),API='https://api.servicem8.com/api_1.0/';\nconst bad=m=>[{json:{ok:false,message:m}}];\nif(!by)return bad('Enter your name.');\nconst em=v=>!v||/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(v);\nfunction split(n){n=S(n);const i=n.indexOf(' ');return i<0?{first:n,last:''}:{first:n.slice(0,i),last:n.slice(i+1).trim()};}\nconst out=[];\nfunction call(method,url,body,hub){out.push({json:{ok:true,a:a,method:method,url:API+url,body:body||{},hub:hub||null}});}\nif(a==='client_save'||a==='client_new'){\n const name=S(b.name).slice(0,200);if(!name)return bad('Enter the client name.');\n const body={name:name};[['address',400],['billing_address',400],['website',200],['abn_number',60]].forEach(function(f){if(b[f[0]]!==undefined&&b[f[0]]!==null)body[f[0]]=S(b[f[0]]).slice(0,f[1]);});\n if(a==='client_new'){body.active=1;call('POST','company.json',body);return out;}\n const u=S(b.uuid);if(!u)return bad('That client was not found. Refresh the page.');\n call('POST','company/'+u+'.json',body);\n const bl=b.bill||null;\n if(bl){if(!em(S(bl.email)))return bad('Check the accounts email address.');\n  const nb=Object.assign(split(bl.name),{phone:S(bl.phone).slice(0,40),email:S(bl.email).slice(0,160)});\n  if(S(bl.uuid))call('POST','companycontact/'+S(bl.uuid)+'.json',nb);\n  else if(nb.first||nb.phone||nb.email)call('POST','companycontact.json',Object.assign(nb,{company_uuid:u,type:'BILLING',is_primary_contact:1,active:1}));}\n return out;}\nif(a==='contact_add'||a==='contact_save'){\n const cu=S(b.client_uuid),name=S(b.name).slice(0,120),email=S(b.email).slice(0,160),phone=S(b.phone).slice(0,40),role=S(b.role).slice(0,120);\n if(!cu)return bad('Choose the client.');if(!name)return bad('Enter the name.');if(!em(email))return bad('Check the email address.');\n const nb=Object.assign(split(name),{phone:phone,email:email});\n const hub={id:Number(b.id)||0,client_uuid:cu,client_name:S(b.client_name).slice(0,200),name:name,role:role,phone:phone,email:email,by:by,sm8_uuid:''};\n const u=a==='contact_save'?S(b.uuid):'';\n if(u){hub.sm8_uuid=u;call('POST','companycontact/'+u+'.json',nb,hub);}\n else call('POST','companycontact.json',Object.assign(nb,{company_uuid:cu,type:'JOB',is_primary_contact:0,active:1}),hub);\n return out;}\nif(a==='remove'||a==='contact_remove'){\n const u=S(b.uuid),id=Number(b.id)||0;if(!u&&!id)return bad('That person was not found. Refresh the page.');\n const hub=id?{id:id,remove:true}:null;\n if(u)call('DELETE','companycontact/'+u+'.json',null,hub);else out.push({json:{ok:true,a:a,noCall:true,hub:hub}});\n return out;}\nreturn bad('Unknown action.');\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "591986ca-5fb6-4b3d-9eeb-3ed495b25396",
+        "name": "CA Remove",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1792,
+          1160
+        ],
+        "parameters": {
+          "columns": {
+            "mappingMode": "defineBelow",
+            "schema": [
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "active",
+                "id": "active",
+                "required": false,
+                "type": "string"
+              }
+            ],
+            "value": {
+              "active": "0"
+            }
+          },
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "sfZL4wpJtHybqMx5"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "id",
+                "keyValue": "={{ $json.id }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "update",
+          "resource": "row"
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "eefa6f2f-fa24-449f-8efb-443fe2c79afe",
+        "name": "CA Done",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          896,
+          1240
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          },
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify((function(a){ return { ok: !!a.ok, message: a.message || '', uuid: a.uuid || '' }; })($('CA After').first().json)) }}"
+        }
+      },
+      {
+        "id": "96b63cef-4500-4d14-9552-57089c7c67a0",
+        "name": "CA Fail",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.5,
+        "position": [
+          672,
+          1500
+        ],
+        "parameters": {
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          },
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify({ ok: false, message: $json.message }) }}"
+        }
+      },
+      {
+        "id": "756a3cff-6e16-4b21-89fc-3c1bb5073c30",
+        "name": "ND Contacts",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          784,
+          -160
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "method": "GET",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            },
+            "timeout": 30000
+          },
+          "url": "https://api.servicem8.com/api_1.0/companycontact.json?%24filter=active%20eq%201"
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "0046edb2-8980-4680-bf03-1abc0731bd05",
+        "name": "ND Jobs",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          896,
+          -160
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "method": "GET",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            },
+            "timeout": 30000
+          },
+          "url": "https://api.servicem8.com/api_1.0/job.json?%24filter=active%20eq%201"
+        },
+        "executeOnce": true
+      },
+      {
+        "id": "eac68fa8-b832-4f83-b63f-90455d911eed",
+        "name": "CA OK?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          448,
+          1240
+        ],
+        "parameters": {
+          "conditions": {
+            "combinator": "and",
+            "conditions": [
+              {
+                "leftValue": "={{ $json.ok }}",
+                "operator": {
+                  "operation": "true",
+                  "singleValue": true,
+                  "type": "boolean"
+                }
+              }
+            ],
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            }
+          }
+        }
+      },
+      {
+        "id": "6c5ad2d0-5f68-41db-91a1-80370d4ea57b",
+        "name": "CA Call?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          672,
+          1160
+        ],
+        "parameters": {
+          "conditions": {
+            "combinator": "and",
+            "conditions": [
+              {
+                "leftValue": "={{ $json.noCall === true }}",
+                "operator": {
+                  "operation": "false",
+                  "singleValue": true,
+                  "type": "boolean"
+                }
+              }
+            ],
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            }
+          }
+        }
+      },
+      {
+        "id": "f6cbebc7-06ef-4cb5-b43f-9962b9b4cff6",
+        "name": "CA SM8",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          896,
+          1080
+        ],
+        "parameters": {
+          "authentication": "predefinedCredentialType",
+          "jsonBody": "={{ JSON.stringify($json.body || {}) }}",
+          "method": "={{ $json.method }}",
+          "nodeCredentialType": "serviceM8CredentialsApi",
+          "options": {
+            "response": {
+              "response": {
+                "fullResponse": true,
+                "neverError": true,
+                "responseFormat": "json"
+              }
+            },
+            "timeout": 30000
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "url": "={{ $json.url }}"
+        }
+      },
+      {
+        "id": "503b85a4-a846-441a-b8a3-90f50548de8c",
+        "name": "CA After",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          1160
+        ],
+        "parameters": {
+          "jsCode": "/* Pairs each ServiceM8 result with its CA Prep item. Any failed call = not saved. New records: uuid from the x-record-uuid header.\n   Output: hub rows to write (role kept in the hub), or one summary item. */\nconst S=v=>v==null?'':String(v).trim();\nconst P=$('CA Prep').all().map(i=>i.json),R=$input.all().map(i=>i.json);\nconst hubs=[];let err='',created='';\nR.forEach((r,i)=>{const p=P[i]||{};\n if(r&&r.noCall){if(r.hub)hubs.push(r.hub);return;}\n const ok=r&&r.statusCode>=200&&r.statusCode<300;\n if(!ok){err=err||('ServiceM8 did not accept the change'+(r&&r.statusCode?' ('+r.statusCode+')':'')+'. Nothing was changed in the hub.');return;}\n const h=r.headers||{},u=S(h['x-record-uuid']||h['X-Record-UUID']);if(u&&!created)created=u;\n if(p.hub){const x=Object.assign({},p.hub);if(!x.remove&&!x.sm8_uuid)x.sm8_uuid=u;hubs.push(x);}});\nif(err)return [{json:{ok:false,message:err,hubDo:false}}];\nif(!hubs.length)return [{json:{ok:true,uuid:created,hubDo:false}}];\nreturn hubs.map(x=>({json:Object.assign({ok:true,uuid:created,hubDo:true},x)}));\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "42e25281-c809-43aa-a25a-f15818a5ea78",
+        "name": "CA Hub?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1344,
+          1160
+        ],
+        "parameters": {
+          "conditions": {
+            "combinator": "and",
+            "conditions": [
+              {
+                "leftValue": "={{ $json.hubDo }}",
+                "operator": {
+                  "operation": "true",
+                  "singleValue": true,
+                  "type": "boolean"
+                }
+              }
+            ],
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            }
+          }
+        }
+      },
+      {
+        "id": "f7ae840c-f88d-4536-ad62-52c1c8fea503",
+        "name": "CA Remove?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1568,
+          1080
+        ],
+        "parameters": {
+          "conditions": {
+            "combinator": "and",
+            "conditions": [
+              {
+                "leftValue": "={{ $json.remove === true }}",
+                "operator": {
+                  "operation": "true",
+                  "singleValue": true,
+                  "type": "boolean"
+                }
+              }
+            ],
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose"
+            }
+          }
+        }
+      },
+      {
+        "id": "1ff440f8-f233-47d3-adf6-50d49798a3ac",
+        "name": "CA Hub Save",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1792,
+          1000
+        ],
+        "parameters": {
+          "columns": {
+            "mappingMode": "defineBelow",
+            "schema": [
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "client_uuid",
+                "id": "client_uuid",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "client_name",
+                "id": "client_name",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "name",
+                "id": "name",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "role",
+                "id": "role",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "phone",
+                "id": "phone",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "email",
+                "id": "email",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "sm8_uuid",
+                "id": "sm8_uuid",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "active",
+                "id": "active",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "created_by",
+                "id": "created_by",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "canBeUsedToMatch": true,
+                "defaultMatch": false,
+                "display": true,
+                "displayName": "created_at",
+                "id": "created_at",
+                "required": false,
+                "type": "string"
+              }
+            ],
+            "value": {
+              "active": "1",
+              "client_name": "={{ $json.client_name }}",
+              "client_uuid": "={{ $json.client_uuid }}",
+              "created_at": "={{ new Date().toISOString() }}",
+              "created_by": "={{ $json.by }}",
+              "email": "={{ $json.email }}",
+              "name": "={{ $json.name }}",
+              "phone": "={{ $json.phone }}",
+              "role": "={{ $json.role }}",
+              "sm8_uuid": "={{ $json.sm8_uuid }}"
+            }
+          },
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "sfZL4wpJtHybqMx5"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "condition": "eq",
+                "keyName": "id",
+                "keyValue": "={{ $json.id || -1 }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "operation": "upsert",
+          "resource": "row"
+        }
+      }
+    ],
+    "connections": {
+      "GET cbs-newjob-data": {
+        "main": [
+          [
+            {
+              "node": "ND Clients",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ND Clients": {
+        "main": [
+          [
+            {
+              "node": "ND Queues",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ND Queues": {
+        "main": [
+          [
+            {
+              "node": "ND People",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ND Build": {
+        "main": [
+          [
+            {
+              "node": "ND Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GET cbs-client-people": {
+        "main": [
+          [
+            {
+              "node": "CP Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CP Page": {
+        "main": [
+          [
+            {
+              "node": "CP Send",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "POST cbs-client-people-act": {
+        "main": [
+          [
+            {
+              "node": "CA Prep",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CA Remove": {
+        "main": [
+          [
+            {
+              "node": "CA Done",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ND People": {
+        "main": [
+          [
+            {
+              "node": "ND Contacts",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ND Contacts": {
+        "main": [
+          [
+            {
+              "node": "ND Jobs",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ND Jobs": {
+        "main": [
+          [
+            {
+              "node": "ND Build",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CA Prep": {
+        "main": [
+          [
+            {
+              "node": "CA OK?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CA OK?": {
+        "main": [
+          [
+            {
+              "node": "CA Call?",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "CA Fail",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CA Call?": {
+        "main": [
+          [
+            {
+              "node": "CA SM8",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "CA After",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CA SM8": {
+        "main": [
+          [
+            {
+              "node": "CA After",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CA After": {
+        "main": [
+          [
+            {
+              "node": "CA Hub?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CA Hub?": {
+        "main": [
+          [
+            {
+              "node": "CA Remove?",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "CA Done",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CA Remove?": {
+        "main": [
+          [
+            {
+              "node": "CA Remove",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "CA Hub Save",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CA Hub Save": {
+        "main": [
+          [
+            {
+              "node": "CA Done",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Clients page (hub menu: People and companies > Clients): GET cbs-client-people page, POST cbs-client-people-act edits (written to ServiceM8), GET cbs-newjob-data client/contact/job feed. Jobs are created in ServiceM8 only (hub New job removed 20/10/2026).",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

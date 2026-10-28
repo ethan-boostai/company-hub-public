@@ -1,0 +1,1148 @@
+{
+  "id": "sfBs7BLPmvLNMacJ",
+  "name": "CBS - Team",
+  "active": true,
+  "isArchived": false,
+  "versionId": "5c89f61f-4892-44bd-95c7-68a03c0f5cd4",
+  "activeVersionId": "5c89f61f-4892-44bd-95c7-68a03c0f5cd4",
+  "triggerCount": 3,
+  "createdAt": "2026-10-05T11:39:42.239Z",
+  "updatedAt": "2026-10-05T11:39:42.239Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Data Hook": {
+      "main": [
+        [
+          {
+            "node": "Get Workers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Workers": {
+      "main": [
+        [
+          {
+            "node": "Get Vehicles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Vehicles": {
+      "main": [
+        [
+          {
+            "node": "Get Tools",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Tools": {
+      "main": [
+        [
+          {
+            "node": "Pack Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pack Data": {
+      "main": [
+        [
+          {
+            "node": "Respond Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Team Submit": {
+      "main": [
+        [
+          {
+            "node": "Prepare",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare": {
+      "main": [
+        [
+          {
+            "node": "Row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Row": {
+      "main": [
+        [
+          {
+            "node": "Insert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond": {
+      "main": [
+        [
+          {
+            "node": "Photos",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Replacement Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tool Status",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Photos": {
+      "main": [
+        [
+          {
+            "node": "Save Photos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leave Submit": {
+      "main": [
+        [
+          {
+            "node": "Prepare",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replacement Request": {
+      "main": [
+        [
+          {
+            "node": "Insert Replacement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool Status": {
+      "main": [
+        [
+          {
+            "node": "Update Tool Register",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "75a38d20-10d3-45ea-b254-d7908d9532fb",
+      "name": "Data Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-team-data",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "8267e2b1-62b9-411e-92a1-a28ab30ab5bc"
+    },
+    {
+      "id": "3d95a86c-f5c2-4f9f-a120-602cee9593a6",
+      "name": "Get Workers",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "pNNkwGO5VvlhEsnP"
+        },
+        "returnAll": true
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "aded6dbb-9514-4247-90e4-874a32dc0f85",
+      "name": "Get Vehicles",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "chFjXqeuWU1vB1l6"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "f5f54fa6-10b1-4a7d-8cd6-fd598c4d49fb",
+      "name": "Get Tools",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        660,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "8CWS3fZeytjpf4HX"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "82337f5e-b37b-4e67-97a1-a34449d67763",
+      "name": "Pack Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "function rows(n){try{return $(n).all().map(function(i){return i.json;});}catch(e){return [];}}\nvar workers=rows('Get Workers').filter(function(w){return w&&w.name&&w.active!==false;}).map(function(w){return String(w.name);}).sort();\nvar vehicles=rows('Get Vehicles').filter(function(v){return v&&v.reg;}).map(function(v){return {reg:String(v.reg),rego:String(v.reg),make_model:String(v.make_model||'')};});\nvar tools=rows('Get Tools').filter(function(a){return a&&a.name&&a.status!=='Retired'&&a.status!=='Lost';}).map(function(a){return {id:a.id,name:String(a.name),label:String(a.name)+(a.serial_no?' (S/N '+a.serial_no+')':'')};});\ntools.sort(function(a,b){return a.label.localeCompare(b.label);});\nreturn [{json:{d:Buffer.from(JSON.stringify({workers:workers,vehicles:vehicles})).toString('base64'),tools:tools}}];"
+      }
+    },
+    {
+      "id": "b26a4c87-ef7f-459a-90ae-239573628b61",
+      "name": "Respond Data",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "2bc9ad43-c36f-4153-a0f0-60656f1b4657",
+      "name": "Team Submit",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        300
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-team-submit",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "d2159336-4848-47d6-a4f0-0f5e31345204"
+    },
+    {
+      "id": "0507ae97-bb31-418c-9b93-b41a51d07195",
+      "name": "Prepare",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        260,
+        400
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var T={check:'WZid64FJ4not0CvS',accident:'rN0tkhyp5UwvQCRR',incident:'pNNkwGO5VvlhEsnP_x',request:'iTWIDSrGauy7iKM9',tool:'iTWIDSrGauy7iKM9',leave:'1XLRtGEOAZq22Abq'};T.incident='vZXrt8GrhPBPSqQH';\nvar COLS={check:'vehicle,checked_on,checked_by,odometer,tyres_ok,lights_ok,fluids_ok,body_ok,first_aid_ok,extinguisher_ok,restraints_ok,defects,action,status,doc_url,reviewed',\n accident:'occurred_at,vehicle,driver,location,description,damage,injuries,third_party,third_party_reg,third_party_insurer,police_event_no,claim_no,status,doc_url,notes',\n incident:'ref,occurred_at,kind,severity,person,location,description,immediate_action,injury_detail,treatment,notifiable,riddor_notified_at,investigation,root_cause,corrective_actions,action_owner,action_due,status,reported_by,closed_at,sm8_job,requires_investigation,record_pdf_url',\n request:'requested_by,category,details,urgency,status,response,requested_at,closed_at',leave:'worker,kind,from_date,to_date,part_day,days,notes,status,response,requested_at'};COLS.tool=COLS.request;\nvar BOOL=['tyres_ok','lights_ok','fluids_ok','body_ok','first_aid_ok','extinguisher_ok','restraints_ok','reviewed','notifiable'];\nvar leave=false;try{leave=$('Leave Submit').isExecuted;}catch(e){}\nvar b=$input.first().json.body||{};var type=leave?'leave':String(b.type||'');if(!T[type])throw new Error('Unknown report type: '+type);\nfunction s(v){return v===undefined||v===null?'':String(v);}\nvar TZ='Europe/London';var today=new Date().toLocaleDateString('en-CA',{timeZone:TZ});var now=new Date().toLocaleString('sv-SE',{timeZone:TZ}).replace(' ','T').slice(0,16);\nvar H='https://old-hub.example/webhook/cbs-admin?open=';var r={},msg='',open='',ev='request';\nif(type==='check'){var allOk=true;['tyres_ok','lights_ok','fluids_ok','body_ok','first_aid_ok','extinguisher_ok','restraints_ok'].forEach(function(k){var v=b[k]===true||b[k]==='true';r[k]=v;if(!v)allOk=false;});\n var safe=!(b.safe===false||b.safe==='false');r.vehicle=s(b.vehicle);r.checked_on=today;r.checked_by=s(b.name);r.odometer=s(b.odometer);r.defects=s(b.defects);r.action=safe?'':'Driver marked the vehicle unsafe to drive';r.status=!safe?'Off road':(allOk?'Passed':'Defects logged');r.reviewed=false;\n msg=r.status==='Off road'?'Vehicle '+r.vehicle+' has been taken off the road after a check. Do not drive it until the office clears it.':(r.status==='Defects logged'?'Vehicle check: '+r.vehicle+' - defects logged by '+(r.checked_by||'the driver')+'. The office is on it.':'Vehicle check: '+r.vehicle+' passed ('+r.checked_by+').');\n open='checks';ev=r.status==='Passed'?'check_pass':'check_defect';}\nelse if(type==='accident'){r={occurred_at:s(b.when)||now,vehicle:s(b.vehicle),driver:s(b.name),location:s(b.location),description:s(b.description),damage:s(b.damage),injuries:s(b.injuries),third_party:s(b.third_party),third_party_reg:s(b.third_party_reg||b.third_party_rego),third_party_insurer:s(b.third_party_insurer),police_event_no:s(b.police_event_no),status:'Reported',notes:'Submitted from the team page'};\n var none=['','none','no','nil','n/a','na','nobody','no one','noone'];msg=none.indexOf(r.injuries.trim().toLowerCase())===-1?'A vehicle accident involving an injury has been reported. The office is following it up.':'Vehicle accident reported: '+r.vehicle+' (reported by '+r.driver+'). No injuries. The office is following it up.';open='crashes';ev='accident';}\nelse if(type==='incident'){var kind=s(b.kind)||'Near miss';r={ref:'INC-'+today.split('-').join('').slice(2)+'-'+Math.floor(Math.random()*900+100),occurred_at:s(b.when)||now,kind:kind,severity:kind==='Near miss'?'No injury':'',person:s(b.person)||s(b.name),location:s(b.location),sm8_job:s(b.sm8_job).trim(),description:s(b.description),immediate_action:s(b.immediate_action),injury_detail:s(b.injury_detail),notifiable:false,status:'Open',reported_by:s(b.name)};\n var none2=['','none','no','nil','n/a','na','nobody','no one','noone'];var ser=kind==='Injury'||kind==='Illness'||none2.indexOf(r.injury_detail.trim().toLowerCase())===-1;\n msg=ser?'An injury or illness has been reported. The office is following it up. If you saw what happened, please speak to the office.':kind+' reported'+(r.location?' at '+r.location:'')+' by '+(r.reported_by||'a team member')+'. Thanks for speaking up.';open='incidents';ev='incident';}\nelse if(type==='request'){r={requested_by:s(b.name),category:s(b.category),details:s(b.details),urgency:s(b.urgency),status:'New',requested_at:now};msg=(r.requested_by||'A team member')+' logged a request: '+(r.category||'Other')+' ('+r.urgency+').';open='requests';}\nelse if(type==='tool'){var tk=['Lost','Stolen','Damaged'].indexOf(s(b.kind))>-1?s(b.kind):'Lost',tool=s(b.tool_name).trim()||'Unnamed tool',rep=b.replace===true||b.replace==='true',fix=b.repair===true||b.repair==='true';\n var p=[tk+': '+tool];if(s(b.when))p.push('When: '+s(b.when).replace('T',' '));if(s(b.location).trim())p.push('Where: '+s(b.location).trim());if(tk==='Stolen'&&s(b.police_event_no).trim())p.push('Police reference: '+s(b.police_event_no).trim());if(s(b.details).trim())p.push('Details: '+s(b.details).trim());\n if(rep)p.push('Replacement requested ('+(s(b.urgency)||'This week')+')');else if(fix)p.push('Repair requested ('+(s(b.urgency)||'This week')+')'+(s(b.repair_notes).trim()?': '+s(b.repair_notes).trim():''));else p.push('No replacement or repair requested');\n r={requested_by:s(b.name),category:'Lost, stolen or damaged tool',details:p.join('\\n'),urgency:tk==='Stolen'?'Today':(fix?(s(b.urgency)||'This week'):'This week'),status:'New',requested_at:now};\n msg=tool+' reported '+tk.toLowerCase()+(s(b.location).trim()?' at '+s(b.location).trim():'')+' by '+(s(b.name)||'a team member')+'.'+(rep?' Replacement requested ('+(s(b.urgency)||'This week')+').':'');open='requests';ev='tool';}\nelse{var f=s(b.from_date),t=s(b.to_date)||f,part=s(b.part_day)||'Full days',n=0;if(f){var d=new Date(f+'T00:00:00Z'),e=new Date(t+'T00:00:00Z');while(d<=e&&n<400){var w=d.getUTCDay();if(w!==0&&w!==6)n++;d.setUTCDate(d.getUTCDate()+1);}}if(part!=='Full days'&&f===t)n=0.5;\n r={worker:s(b.name),kind:s(b.kind),from_date:f,to_date:t,part_day:part,days:String(n),notes:s(b.notes),status:'Pending',requested_at:now};\n function uk(x){var q=String(x||'').split('-');return q.length===3?q[2]+'/'+q[1]+'/'+q[0]:String(x||'');}\n msg='Time off request from '+(r.worker||'a team member')+': '+uk(f)+(t!==f?' to '+uk(t):'')+' ('+n+' working day'+(n===1?'':'s')+').';open='leave';ev='leave';}\nvar row={};COLS[type].split(',').forEach(function(k){if(BOOL.indexOf(k)>-1)row[k]=r[k]===true;else row[k]=s(r[k]);});\nvar REF={check:'checks',accident:'crashes',incident:'incidents',request:'requests',tool:'requests',leave:'leave'};\nvar photos=(b.photos||[]).slice(0,4).filter(function(x){return typeof x==='string'&&x.indexOf('data:image')===0;});\nreturn [{json:{type:type,table:T[type],row:row,ref_table:REF[type],photos:photos,name:s(b.name),message:msg.slice(0,450),open:open,event:ev,job_no:type==='incident'?row.sm8_job:'',\n tool:type==='tool'?{asset_id:Number(b.asset_id||0),kind:s(b.kind),replace:b.replace===true||b.replace==='true',tool_name:s(b.tool_name),replace_notes:s(b.replace_notes),urgency:s(b.urgency)||'This week',now:now}:null}}];"
+      }
+    },
+    {
+      "id": "10ded465-55d1-432d-9fa2-d23531f6de8b",
+      "name": "Row",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        400
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{json:$('Prepare').first().json.row}];"
+      }
+    },
+    {
+      "id": "c0288698-f4c1-4126-87b7-f7451a5493b5",
+      "name": "Insert",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        700,
+        400
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Prepare').first().json.table }}"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null,
+          "matchingColumns": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "142b12ce-7bbf-4d05-932b-adaea186d262",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        920,
+        400
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ ok: true, id: $json.id }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cb931ccf-5cc1-486b-9f06-7caf67a3552e",
+      "name": "Photos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1140,
+        250
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var p=$('Prepare').first().json,id=$('Insert').first().json.id;return p.photos.map(function(x){return {json:{ref_table:p.ref_table,ref_id:String(id),caption:'',image:x,taken_by:p.name,taken_at:new Date().toISOString()}};});"
+      }
+    },
+    {
+      "id": "98320cc1-d8b0-410c-96d6-faba3619749c",
+      "name": "Save Photos",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1360,
+        250
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "vcQV6GSFEmjZkxxy"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null,
+          "matchingColumns": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "0dcf606e-28f0-49fd-9e38-c647114c9f5f",
+      "name": "Leave Submit",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        500
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-team-leave",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "03c9f3e4-847f-44c3-ad53-0835947ed0cb"
+    },
+    {
+      "id": "6bbfe938-3939-44bc-a7cd-75545e1085fc",
+      "name": "Replacement Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1140,
+        450
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var p=$('Prepare').first().json,t=p.tool;if(!t||!t.replace)return [];var id=$('Insert').first().json.id;var d='Replace: '+(t.tool_name.trim()||'tool')+' ('+(t.kind||'Lost').toLowerCase()+')'+(t.replace_notes.trim()?'. '+t.replace_notes.trim():'')+'\\nSee report #'+id+'.';return [{json:{requested_by:p.name,category:'Tools or equipment',details:d,urgency:t.urgency,status:'New',response:'',requested_at:t.now,closed_at:''}}];"
+      }
+    },
+    {
+      "id": "9cdcdb92-881d-4dce-ad63-399bd41c0d2f",
+      "name": "Insert Replacement",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1360,
+        450
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "insert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "iTWIDSrGauy7iKM9"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null,
+          "matchingColumns": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "ad215c26-547d-4ffc-8438-138d35aac0d3",
+      "name": "Tool Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1140,
+        650
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var t=$('Prepare').first().json.tool;if(!t||!t.asset_id)return [];return [{json:{asset_id:t.asset_id,status:t.kind==='Damaged'?'Needs repair':'Lost'}}];"
+      }
+    },
+    {
+      "id": "dbd03240-7f54-4097-84f6-4c5b7e50217d",
+      "name": "Update Tool Register",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1360,
+        650
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "8CWS3fZeytjpf4HX"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.asset_id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "={{ $json.status }}"
+          },
+          "matchingColumns": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "5994c1b0-3556-42b7-bdf2-a3f4d80761dc",
+      "name": "Notify",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1140,
+        850
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "var p=$('Prepare').first().json,id=$('Insert').first().json.id;var H='https://old-hub.example/webhook/';var res={};\nif(p.type==='incident'){try{await this.helpers.httpRequest({method:'POST',url:H+'cbs-incident-record',body:{id:id},json:true,timeout:10000});res.record=true;}catch(e){res.recordError=String(e.message||e);}}\nelse{try{await this.helpers.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:p.event,job_no:p.job_no,message:p.message,link:H+'cbs-admin?open='+p.open+'&id='+id},json:true,timeout:15000});res.notified=p.event;}catch(e){res.notifyError=String(e.message||e);}}\nreturn [{json:res}];"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "75a38d20-10d3-45ea-b254-d7908d9532fb",
+        "name": "Data Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-team-data",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "8267e2b1-62b9-411e-92a1-a28ab30ab5bc"
+      },
+      {
+        "id": "3d95a86c-f5c2-4f9f-a120-602cee9593a6",
+        "name": "Get Workers",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          220,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "pNNkwGO5VvlhEsnP"
+          },
+          "returnAll": true
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "id": "aded6dbb-9514-4247-90e4-874a32dc0f85",
+        "name": "Get Vehicles",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "chFjXqeuWU1vB1l6"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "f5f54fa6-10b1-4a7d-8cd6-fd598c4d49fb",
+        "name": "Get Tools",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          660,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "8CWS3fZeytjpf4HX"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "82337f5e-b37b-4e67-97a1-a34449d67763",
+        "name": "Pack Data",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "function rows(n){try{return $(n).all().map(function(i){return i.json;});}catch(e){return [];}}\nvar workers=rows('Get Workers').filter(function(w){return w&&w.name&&w.active!==false;}).map(function(w){return String(w.name);}).sort();\nvar vehicles=rows('Get Vehicles').filter(function(v){return v&&v.reg;}).map(function(v){return {reg:String(v.reg),rego:String(v.reg),make_model:String(v.make_model||'')};});\nvar tools=rows('Get Tools').filter(function(a){return a&&a.name&&a.status!=='Retired'&&a.status!=='Lost';}).map(function(a){return {id:a.id,name:String(a.name),label:String(a.name)+(a.serial_no?' (S/N '+a.serial_no+')':'')};});\ntools.sort(function(a,b){return a.label.localeCompare(b.label);});\nreturn [{json:{d:Buffer.from(JSON.stringify({workers:workers,vehicles:vehicles})).toString('base64'),tools:tools}}];"
+        }
+      },
+      {
+        "id": "b26a4c87-ef7f-459a-90ae-239573628b61",
+        "name": "Respond Data",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1100,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "2bc9ad43-c36f-4153-a0f0-60656f1b4657",
+        "name": "Team Submit",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          300
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-team-submit",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "d2159336-4848-47d6-a4f0-0f5e31345204"
+      },
+      {
+        "id": "0507ae97-bb31-418c-9b93-b41a51d07195",
+        "name": "Prepare",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          260,
+          400
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var T={check:'WZid64FJ4not0CvS',accident:'rN0tkhyp5UwvQCRR',incident:'pNNkwGO5VvlhEsnP_x',request:'iTWIDSrGauy7iKM9',tool:'iTWIDSrGauy7iKM9',leave:'1XLRtGEOAZq22Abq'};T.incident='vZXrt8GrhPBPSqQH';\nvar COLS={check:'vehicle,checked_on,checked_by,odometer,tyres_ok,lights_ok,fluids_ok,body_ok,first_aid_ok,extinguisher_ok,restraints_ok,defects,action,status,doc_url,reviewed',\n accident:'occurred_at,vehicle,driver,location,description,damage,injuries,third_party,third_party_reg,third_party_insurer,police_event_no,claim_no,status,doc_url,notes',\n incident:'ref,occurred_at,kind,severity,person,location,description,immediate_action,injury_detail,treatment,notifiable,riddor_notified_at,investigation,root_cause,corrective_actions,action_owner,action_due,status,reported_by,closed_at,sm8_job,requires_investigation,record_pdf_url',\n request:'requested_by,category,details,urgency,status,response,requested_at,closed_at',leave:'worker,kind,from_date,to_date,part_day,days,notes,status,response,requested_at'};COLS.tool=COLS.request;\nvar BOOL=['tyres_ok','lights_ok','fluids_ok','body_ok','first_aid_ok','extinguisher_ok','restraints_ok','reviewed','notifiable'];\nvar leave=false;try{leave=$('Leave Submit').isExecuted;}catch(e){}\nvar b=$input.first().json.body||{};var type=leave?'leave':String(b.type||'');if(!T[type])throw new Error('Unknown report type: '+type);\nfunction s(v){return v===undefined||v===null?'':String(v);}\nvar TZ='Europe/London';var today=new Date().toLocaleDateString('en-CA',{timeZone:TZ});var now=new Date().toLocaleString('sv-SE',{timeZone:TZ}).replace(' ','T').slice(0,16);\nvar H='https://old-hub.example/webhook/cbs-admin?open=';var r={},msg='',open='',ev='request';\nif(type==='check'){var allOk=true;['tyres_ok','lights_ok','fluids_ok','body_ok','first_aid_ok','extinguisher_ok','restraints_ok'].forEach(function(k){var v=b[k]===true||b[k]==='true';r[k]=v;if(!v)allOk=false;});\n var safe=!(b.safe===false||b.safe==='false');r.vehicle=s(b.vehicle);r.checked_on=today;r.checked_by=s(b.name);r.odometer=s(b.odometer);r.defects=s(b.defects);r.action=safe?'':'Driver marked the vehicle unsafe to drive';r.status=!safe?'Off road':(allOk?'Passed':'Defects logged');r.reviewed=false;\n msg=r.status==='Off road'?'Vehicle '+r.vehicle+' has been taken off the road after a check. Do not drive it until the office clears it.':(r.status==='Defects logged'?'Vehicle check: '+r.vehicle+' - defects logged by '+(r.checked_by||'the driver')+'. The office is on it.':'Vehicle check: '+r.vehicle+' passed ('+r.checked_by+').');\n open='checks';ev=r.status==='Passed'?'check_pass':'check_defect';}\nelse if(type==='accident'){r={occurred_at:s(b.when)||now,vehicle:s(b.vehicle),driver:s(b.name),location:s(b.location),description:s(b.description),damage:s(b.damage),injuries:s(b.injuries),third_party:s(b.third_party),third_party_reg:s(b.third_party_reg||b.third_party_rego),third_party_insurer:s(b.third_party_insurer),police_event_no:s(b.police_event_no),status:'Reported',notes:'Submitted from the team page'};\n var none=['','none','no','nil','n/a','na','nobody','no one','noone'];msg=none.indexOf(r.injuries.trim().toLowerCase())===-1?'A vehicle accident involving an injury has been reported. The office is following it up.':'Vehicle accident reported: '+r.vehicle+' (reported by '+r.driver+'). No injuries. The office is following it up.';open='crashes';ev='accident';}\nelse if(type==='incident'){var kind=s(b.kind)||'Near miss';r={ref:'INC-'+today.split('-').join('').slice(2)+'-'+Math.floor(Math.random()*900+100),occurred_at:s(b.when)||now,kind:kind,severity:kind==='Near miss'?'No injury':'',person:s(b.person)||s(b.name),location:s(b.location),sm8_job:s(b.sm8_job).trim(),description:s(b.description),immediate_action:s(b.immediate_action),injury_detail:s(b.injury_detail),notifiable:false,status:'Open',reported_by:s(b.name)};\n var none2=['','none','no','nil','n/a','na','nobody','no one','noone'];var ser=kind==='Injury'||kind==='Illness'||none2.indexOf(r.injury_detail.trim().toLowerCase())===-1;\n msg=ser?'An injury or illness has been reported. The office is following it up. If you saw what happened, please speak to the office.':kind+' reported'+(r.location?' at '+r.location:'')+' by '+(r.reported_by||'a team member')+'. Thanks for speaking up.';open='incidents';ev='incident';}\nelse if(type==='request'){r={requested_by:s(b.name),category:s(b.category),details:s(b.details),urgency:s(b.urgency),status:'New',requested_at:now};msg=(r.requested_by||'A team member')+' logged a request: '+(r.category||'Other')+' ('+r.urgency+').';open='requests';}\nelse if(type==='tool'){var tk=['Lost','Stolen','Damaged'].indexOf(s(b.kind))>-1?s(b.kind):'Lost',tool=s(b.tool_name).trim()||'Unnamed tool',rep=b.replace===true||b.replace==='true',fix=b.repair===true||b.repair==='true';\n var p=[tk+': '+tool];if(s(b.when))p.push('When: '+s(b.when).replace('T',' '));if(s(b.location).trim())p.push('Where: '+s(b.location).trim());if(tk==='Stolen'&&s(b.police_event_no).trim())p.push('Police reference: '+s(b.police_event_no).trim());if(s(b.details).trim())p.push('Details: '+s(b.details).trim());\n if(rep)p.push('Replacement requested ('+(s(b.urgency)||'This week')+')');else if(fix)p.push('Repair requested ('+(s(b.urgency)||'This week')+')'+(s(b.repair_notes).trim()?': '+s(b.repair_notes).trim():''));else p.push('No replacement or repair requested');\n r={requested_by:s(b.name),category:'Lost, stolen or damaged tool',details:p.join('\\n'),urgency:tk==='Stolen'?'Today':(fix?(s(b.urgency)||'This week'):'This week'),status:'New',requested_at:now};\n msg=tool+' reported '+tk.toLowerCase()+(s(b.location).trim()?' at '+s(b.location).trim():'')+' by '+(s(b.name)||'a team member')+'.'+(rep?' Replacement requested ('+(s(b.urgency)||'This week')+').':'');open='requests';ev='tool';}\nelse{var f=s(b.from_date),t=s(b.to_date)||f,part=s(b.part_day)||'Full days',n=0;if(f){var d=new Date(f+'T00:00:00Z'),e=new Date(t+'T00:00:00Z');while(d<=e&&n<400){var w=d.getUTCDay();if(w!==0&&w!==6)n++;d.setUTCDate(d.getUTCDate()+1);}}if(part!=='Full days'&&f===t)n=0.5;\n r={worker:s(b.name),kind:s(b.kind),from_date:f,to_date:t,part_day:part,days:String(n),notes:s(b.notes),status:'Pending',requested_at:now};\n function uk(x){var q=String(x||'').split('-');return q.length===3?q[2]+'/'+q[1]+'/'+q[0]:String(x||'');}\n msg='Time off request from '+(r.worker||'a team member')+': '+uk(f)+(t!==f?' to '+uk(t):'')+' ('+n+' working day'+(n===1?'':'s')+').';open='leave';ev='leave';}\nvar row={};COLS[type].split(',').forEach(function(k){if(BOOL.indexOf(k)>-1)row[k]=r[k]===true;else row[k]=s(r[k]);});\nvar REF={check:'checks',accident:'crashes',incident:'incidents',request:'requests',tool:'requests',leave:'leave'};\nvar photos=(b.photos||[]).slice(0,4).filter(function(x){return typeof x==='string'&&x.indexOf('data:image')===0;});\nreturn [{json:{type:type,table:T[type],row:row,ref_table:REF[type],photos:photos,name:s(b.name),message:msg.slice(0,450),open:open,event:ev,job_no:type==='incident'?row.sm8_job:'',\n tool:type==='tool'?{asset_id:Number(b.asset_id||0),kind:s(b.kind),replace:b.replace===true||b.replace==='true',tool_name:s(b.tool_name),replace_notes:s(b.replace_notes),urgency:s(b.urgency)||'This week',now:now}:null}}];"
+        }
+      },
+      {
+        "id": "10ded465-55d1-432d-9fa2-d23531f6de8b",
+        "name": "Row",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          480,
+          400
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "return [{json:$('Prepare').first().json.row}];"
+        }
+      },
+      {
+        "id": "c0288698-f4c1-4126-87b7-f7451a5493b5",
+        "name": "Insert",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          700,
+          400
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "insert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "={{ $('Prepare').first().json.table }}"
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null,
+            "matchingColumns": []
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "142b12ce-7bbf-4d05-932b-adaea186d262",
+        "name": "Respond",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          920,
+          400
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify({ ok: true, id: $json.id }) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "cb931ccf-5cc1-486b-9f06-7caf67a3552e",
+        "name": "Photos",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1140,
+          250
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var p=$('Prepare').first().json,id=$('Insert').first().json.id;return p.photos.map(function(x){return {json:{ref_table:p.ref_table,ref_id:String(id),caption:'',image:x,taken_by:p.name,taken_at:new Date().toISOString()}};});"
+        }
+      },
+      {
+        "id": "98320cc1-d8b0-410c-96d6-faba3619749c",
+        "name": "Save Photos",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1360,
+          250
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "insert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "vcQV6GSFEmjZkxxy"
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null,
+            "matchingColumns": []
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "0dcf606e-28f0-49fd-9e38-c647114c9f5f",
+        "name": "Leave Submit",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          500
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-team-leave",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "03c9f3e4-847f-44c3-ad53-0835947ed0cb"
+      },
+      {
+        "id": "6bbfe938-3939-44bc-a7cd-75545e1085fc",
+        "name": "Replacement Request",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1140,
+          450
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var p=$('Prepare').first().json,t=p.tool;if(!t||!t.replace)return [];var id=$('Insert').first().json.id;var d='Replace: '+(t.tool_name.trim()||'tool')+' ('+(t.kind||'Lost').toLowerCase()+')'+(t.replace_notes.trim()?'. '+t.replace_notes.trim():'')+'\\nSee report #'+id+'.';return [{json:{requested_by:p.name,category:'Tools or equipment',details:d,urgency:t.urgency,status:'New',response:'',requested_at:t.now,closed_at:''}}];"
+        }
+      },
+      {
+        "id": "9cdcdb92-881d-4dce-ad63-399bd41c0d2f",
+        "name": "Insert Replacement",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1360,
+          450
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "insert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "iTWIDSrGauy7iKM9"
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null,
+            "matchingColumns": []
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "ad215c26-547d-4ffc-8438-138d35aac0d3",
+        "name": "Tool Status",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1140,
+          650
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var t=$('Prepare').first().json.tool;if(!t||!t.asset_id)return [];return [{json:{asset_id:t.asset_id,status:t.kind==='Damaged'?'Needs repair':'Lost'}}];"
+        }
+      },
+      {
+        "id": "dbd03240-7f54-4097-84f6-4c5b7e50217d",
+        "name": "Update Tool Register",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1360,
+          650
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "8CWS3fZeytjpf4HX"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $json.asset_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "status": "={{ $json.status }}"
+            },
+            "matchingColumns": []
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "5994c1b0-3556-42b7-bdf2-a3f4d80761dc",
+        "name": "Notify",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1140,
+          850
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "var p=$('Prepare').first().json,id=$('Insert').first().json.id;var H='https://old-hub.example/webhook/';var res={};\nif(p.type==='incident'){try{await this.helpers.httpRequest({method:'POST',url:H+'cbs-incident-record',body:{id:id},json:true,timeout:10000});res.record=true;}catch(e){res.recordError=String(e.message||e);}}\nelse{try{await this.helpers.httpRequest({method:'POST',url:H+'cbs-notify',body:{event:p.event,job_no:p.job_no,message:p.message,link:H+'cbs-admin?open='+p.open+'&id='+id},json:true,timeout:15000});res.notified=p.event;}catch(e){res.notifyError=String(e.message||e);}}\nreturn [{json:res}];"
+        }
+      }
+    ],
+    "connections": {
+      "Data Hook": {
+        "main": [
+          [
+            {
+              "node": "Get Workers",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Workers": {
+        "main": [
+          [
+            {
+              "node": "Get Vehicles",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Vehicles": {
+        "main": [
+          [
+            {
+              "node": "Get Tools",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Tools": {
+        "main": [
+          [
+            {
+              "node": "Pack Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pack Data": {
+        "main": [
+          [
+            {
+              "node": "Respond Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Team Submit": {
+        "main": [
+          [
+            {
+              "node": "Prepare",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Prepare": {
+        "main": [
+          [
+            {
+              "node": "Row",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Row": {
+        "main": [
+          [
+            {
+              "node": "Insert",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert": {
+        "main": [
+          [
+            {
+              "node": "Respond",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Respond": {
+        "main": [
+          [
+            {
+              "node": "Photos",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Replacement Request",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Tool Status",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Notify",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Photos": {
+        "main": [
+          [
+            {
+              "node": "Save Photos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Leave Submit": {
+        "main": [
+          [
+            {
+              "node": "Prepare",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Replacement Request": {
+        "main": [
+          [
+            {
+              "node": "Insert Replacement",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Tool Status": {
+        "main": [
+          [
+            {
+              "node": "Update Tool Register",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS crew app backend: live data for the Team page, and saves vehicle checks, accidents, incidents, requests, tool reports and time off (with photos) into CBS tables.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

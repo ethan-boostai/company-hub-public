@@ -1,0 +1,59 @@
+{
+  "table": "cbs_toolbox",
+  "n8n_id": "yzh0N48ZuMVkpQk4",
+  "columns": [
+    {
+      "name": "actions",
+      "type": "string"
+    },
+    {
+      "name": "attendees",
+      "type": "string"
+    },
+    {
+      "name": "hazards_raised",
+      "type": "string"
+    },
+    {
+      "name": "held_on",
+      "type": "string"
+    },
+    {
+      "name": "job_json",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "key_points",
+      "type": "string"
+    },
+    {
+      "name": "meeting_type",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "presenter",
+      "type": "string"
+    },
+    {
+      "name": "site",
+      "type": "string"
+    },
+    {
+      "name": "topic",
+      "type": "string"
+    }
+  ],
+  "sample_rows": []
+}

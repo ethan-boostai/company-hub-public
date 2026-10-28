@@ -1,0 +1,223 @@
+{
+  "id": "ZrhvZ6pFdysQl2HD",
+  "name": "CBS - QuickBooks Sync",
+  "active": false,
+  "isArchived": false,
+  "versionId": "b87822b3-0d79-44f6-a60d-7057219609c3",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "createdAt": "2026-10-10T17:35:07.132Z",
+  "updatedAt": "2026-10-10T17:35:28.390Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Run Hook": {
+      "main": [
+        [
+          {
+            "node": "QBO Bills",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "QBO Bills": {
+      "main": [
+        [
+          {
+            "node": "QBO Purchases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "QBO Purchases": {
+      "main": [
+        [
+          {
+            "node": "QBO Sync",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "QBO Sync": {
+      "main": [
+        [
+          {
+            "node": "Send Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Daily 06:30": {
+      "main": [
+        [
+          {
+            "node": "QBO Bills",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "9b34a61e-546f-4703-ab9b-aeeb982e5db7",
+      "name": "Run Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-qbo-run",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "3d5688b7-1d87-4a45-85a5-1880f36fd2f9"
+    },
+    {
+      "id": "2046f6d4-2ca1-4919-bf15-f21b895f1a14",
+      "name": "QBO Bills",
+      "type": "n8n-nodes-base.quickbooks",
+      "typeVersion": 1,
+      "position": [
+        224,
+        96
+      ],
+      "parameters": {
+        "resource": "bill",
+        "operation": "getAll",
+        "returnAll": true,
+        "filters": {
+          "query": "={{ \"WHERE TxnDate >= '\" + $now.minus({days: 180}).toFormat('yyyy-MM-dd') + \"'\" }}"
+        }
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "00c9ebcd-0f91-46b0-9a5a-a5e7ea7588a6",
+      "name": "QBO Purchases",
+      "type": "n8n-nodes-base.quickbooks",
+      "typeVersion": 1,
+      "position": [
+        448,
+        96
+      ],
+      "parameters": {
+        "resource": "purchase",
+        "operation": "getAll",
+        "returnAll": true,
+        "filters": {
+          "query": "={{ \"WHERE TxnDate >= '\" + $now.minus({days: 180}).toFormat('yyyy-MM-dd') + \"'\" }}"
+        }
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "8ea96da7-0cfc-41ba-8644-a2198f0eeeb2",
+      "name": "QBO Sync",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        96
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* QuickBooks Online sync: bills and expenses (last 180 days) matched to hub jobs by job number in the line's\n   customer/project, line description, memo or doc number. Inserts new costs and updates changed ones (amounts,\n   date, supplier, ref). Category is set once on insert and then left to the office. */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>{const x=parseFloat(S(v));return isNaN(x)?0:x;};const r2=v=>Math.round(v*100)/100;\nconst list=async t=>{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);};\nconst save=(t,id,row,p)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t='+t+'&id='+(id||0)+'&k='+K+(p?'&partial=1':''),body:row,json:true,timeout:20000});\nconst del=(t,id)=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=del&t='+t+'&id='+id+'&k='+K,body:{},json:true,timeout:20000});\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nasync function status(o){try{const O=(await list('selectopts')).filter(x=>S(x.reg)==='jobcosts'&&S(x.field)==='qbo_sync');for(const x of O)await del('selectopts',x.id);await save('selectopts',0,{reg:'jobcosts',field:'qbo_sync',value:JSON.stringify(Object.assign({at:now},o)),added_by:'QuickBooks sync'});}catch(e){}}\nconst get=n=>{try{return $(n).all().map(i=>i.json);}catch(e){return [];}};\nconst B=get('QBO Bills'),P=get('QBO Purchases');\nconst errOf=a=>a.find(x=>x&&(x.error||x.message&&!x.Id));\nconst e1=errOf(B)||errOf(P);\nconst real=a=>a.filter(x=>x&&x.Id);\nif(e1&&!real(B).length&&!real(P).length){const msg=/credential|auth|token|401|403|connect/i.test(JSON.stringify(e1))?'QuickBooks is not connected yet.':'QuickBooks returned an error: '+S(e1.message||e1.error).slice(0,200);await status({ok:false,message:msg});return [{json:{ok:false,message:msg}}];}\nconst J=await list('jobrows');const JOBS={};J.forEach(r=>{const k=jk(r.ref);if(k)JOBS[k]=S(r.ref);});\nfunction findJob(){for(const t of arguments){const m=S(t).match(/\\b\\d{3,6}\\b/g)||[];for(const x of m){if(JOBS[jk(x)])return JOBS[jk(x)];}}return '';}\nfunction cat(acc,desc){const s=(S(acc)+' '+S(desc)).toLowerCase();if(/sub ?contract|cis\\b/.test(s))return 'Subcontractors';if(/hire|plant|skip|scaffold/.test(s))return 'Plant hire';if(/labou?r|wages|agency/.test(s))return 'Labour';if(/material|supplies|timber|stock|cost of sales|cogs|purchases/.test(s))return 'Materials';return 'Other';}\nconst out={};let unmatched=0;\nfunction take(kind,t){const vendor=S((t.VendorRef&&t.VendorRef.name)||(t.EntityRef&&t.EntityRef.name));const tot=num(t.TotalAmt),tax=num(t.TxnTaxDetail&&t.TxnTaxDetail.TotalTax);const netAll=tot-tax;\n (t.Line||[]).forEach(l=>{const d=l.AccountBasedExpenseLineDetail||l.ItemBasedExpenseLineDetail;if(!d)return;const cust=S(d.CustomerRef&&d.CustomerRef.name);\n  const job=findJob(cust,l.Description,t.PrivateNote,t.DocNumber);if(!job){unmatched++;return;}\n  const key=kind+':'+t.Id+':'+jk(job);const o=out[key]=out[key]||{qbo_id:key,job_no:job,cost_date:S(t.TxnDate),supplier:vendor,ref:S(t.DocNumber),net:0,acc:'',desc:[],kind:kind};\n  o.net+=num(l.Amount);if(!o.acc)o.acc=S(d.AccountRef&&d.AccountRef.name)||S(d.ItemRef&&d.ItemRef.name);if(S(l.Description))o.desc.push(S(l.Description));});\n Object.keys(out).filter(k=>k.indexOf(kind+':'+t.Id+':')===0).forEach(k=>{const o=out[k];const share=netAll?o.net/netAll:0;o.vat=r2(tax*share);o.net=r2(o.net);o.gross=r2(o.net+o.vat);});}\nreal(B).forEach(t=>take('Bill',t));real(P).forEach(t=>take('Expense',t));\nconst C=await list('jobcosts');const have={};C.forEach(r=>{if(S(r.qbo_id))have[S(r.qbo_id)]=r;});\nlet added=0,updated=0;\nfor(const k of Object.keys(out)){const o=out[k];const row={job_no:o.job_no,cost_date:o.cost_date,supplier:o.supplier,ref:o.ref,net:o.net,vat:o.vat,gross:o.gross};\n const ex=have[k];\n if(ex){if(Number(ex.net)!==o.net||Number(ex.vat)!==o.vat||S(ex.cost_date)!==o.cost_date||S(ex.supplier)!==o.supplier||S(ex.ref)!==o.ref){row.history=[S(ex.history),now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16)+' - Updated from QuickBooks'].join(String.fromCharCode(10));await save('jobcosts',ex.id,row,true);updated++;}}\n else{Object.assign(row,{category:cat(o.acc,o.desc.join(' ')),description:o.desc.join('; ').slice(0,500)||(o.kind==='Bill'?'QuickBooks bill':'QuickBooks expense'),po_no:'',source:'QuickBooks',qbo_id:k,file_url:'',notes:'',created_by:'QuickBooks sync',created_at:now,history:now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16)+' - Added from QuickBooks '+o.kind.toLowerCase()});await save('jobcosts',0,row,false);added++;}}\nconst res={ok:true,bills:real(B).length,expenses:real(P).length,added:added,updated:updated,unmatched:unmatched,message:'Synced: '+added+' added, '+updated+' updated'+(unmatched?', '+unmatched+' lines with no job number':'')};\nawait status(res);return [{json:res}];\n"
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "ba7a9832-8b9a-432b-8609-be37677af7c0",
+      "name": "Send Result",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        96
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "ea29c61c-8606-4aae-aab1-76965bda1e1d",
+      "name": "Daily 06:30",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        192
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "triggerAtHour": 6,
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": null,
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS QuickBooks Online sync: pulls bills and expenses (last 180 days), matches lines to hub jobs by job number, and writes them to job costs. POST cbs-qbo-run (from the costing page) and daily 06:30. Publish once the QuickBooks login is connected.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

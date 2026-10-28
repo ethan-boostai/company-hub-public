@@ -1,0 +1,124 @@
+{
+  "table": "cbs_permits",
+  "n8n_id": "bPr02oOPEg6icX8g",
+  "columns": [
+    {
+      "name": "approved_at",
+      "type": "string"
+    },
+    {
+      "name": "approved_by",
+      "type": "string"
+    },
+    {
+      "name": "closed_at",
+      "type": "string"
+    },
+    {
+      "name": "closed_by",
+      "type": "string"
+    },
+    {
+      "name": "contractor_company",
+      "type": "string"
+    },
+    {
+      "name": "contractor_email",
+      "type": "string"
+    },
+    {
+      "name": "contractor_mobile",
+      "type": "string"
+    },
+    {
+      "name": "contractor_name",
+      "type": "string"
+    },
+    {
+      "name": "controls",
+      "type": "string"
+    },
+    {
+      "name": "hazards",
+      "type": "string"
+    },
+    {
+      "name": "isolations",
+      "type": "string"
+    },
+    {
+      "name": "job_no",
+      "type": "string"
+    },
+    {
+      "name": "location",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "pdf_url",
+      "type": "string"
+    },
+    {
+      "name": "people",
+      "type": "string"
+    },
+    {
+      "name": "permit_no",
+      "type": "string"
+    },
+    {
+      "name": "permit_type",
+      "type": "string"
+    },
+    {
+      "name": "reject_reason",
+      "type": "string"
+    },
+    {
+      "name": "requested_at",
+      "type": "string"
+    },
+    {
+      "name": "requested_by",
+      "type": "string"
+    },
+    {
+      "name": "scope",
+      "type": "string"
+    },
+    {
+      "name": "site",
+      "type": "string"
+    },
+    {
+      "name": "state_json",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "submitted_at",
+      "type": "string"
+    },
+    {
+      "name": "token",
+      "type": "string"
+    },
+    {
+      "name": "valid_from",
+      "type": "string"
+    },
+    {
+      "name": "valid_to",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [],
+  "note": "no rows: Permits node in CBS - TV Dashboard exec 1313413 (2026-10-27) returned empty"
+}

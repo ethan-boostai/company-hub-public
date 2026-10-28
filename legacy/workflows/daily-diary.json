@@ -1,0 +1,1172 @@
+{
+  "id": "wjO1Q59rflXIhjkz",
+  "name": "CBS - Daily Diary",
+  "active": true,
+  "isArchived": false,
+  "versionId": "b149b9a1-f72a-48b8-adfc-f1279d4d3d4a",
+  "activeVersionId": "b149b9a1-f72a-48b8-adfc-f1279d4d3d4a",
+  "triggerCount": 4,
+  "createdAt": "2026-10-10T18:31:35.346Z",
+  "updatedAt": "2026-10-10T18:36:04.682Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Page Hook": {
+      "main": [
+        [
+          {
+            "node": "Diary Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Diary Page": {
+      "main": [
+        [
+          {
+            "node": "Send Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Diary Hook": {
+      "main": [
+        [
+          {
+            "node": "Get Diary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Diary": {
+      "main": [
+        [
+          {
+            "node": "Get Visitors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Visitors": {
+      "main": [
+        [
+          {
+            "node": "Get Inspections",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Inspections": {
+      "main": [
+        [
+          {
+            "node": "Get Permits",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Permits": {
+      "main": [
+        [
+          {
+            "node": "Diary Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Diary Data": {
+      "main": [
+        [
+          {
+            "node": "Send Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Act Hook": {
+      "main": [
+        [
+          {
+            "node": "Get Day",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Day": {
+      "main": [
+        [
+          {
+            "node": "Diary Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Diary Act": {
+      "main": [
+        [
+          {
+            "node": "Save Day",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Day": {
+      "main": [
+        [
+          {
+            "node": "Send Act",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Opt Hook": {
+      "main": [
+        [
+          {
+            "node": "Diary Opt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Diary Opt": {
+      "main": [
+        [
+          {
+            "node": "Send Opt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "f76ce340-fb58-4bf2-aac8-1f76228633f0",
+      "name": "Page Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-diary",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "da0eb57e-728f-4035-8480-ae5f5629e15e"
+    },
+    {
+      "id": "4b525e0a-b3c1-4f27-9363-6444e7258da8",
+      "name": "Diary Page",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* CBS daily diary page (admin): cbs-diary?job=N. Data cbs-diary-data, saves cbs-diary-act, delay causes cbs-diary-opt. */\nconst S=v=>v==null?'':String(v);const e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');const D={job:job};\nconst CSS='*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n+'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n+'.wrap{max-width:860px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;align-items:center}'\n+'.btn{background:#F47920;color:#fff;text-decoration:none;font-weight:600;border-radius:8px;padding:8px 14px;font-size:14px;border:0;font-family:inherit;cursor:pointer}.btn.ghost{background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}.btn.sm{padding:6px 10px;font-size:13px}.btn:disabled{opacity:.5}.btn.red{background:#fff;color:#b3261e;border:1px solid #e9b6b1}'\n+'.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}.pst{background:#fff;border:1px solid #d9d9d6;border-radius:10px;padding:8px 6px;text-align:center}.pst b{display:block;font-size:18px;line-height:1.2}.pst span{font-size:12px;color:#555}.pst.warn{border-color:#f2d398;background:#fff8ea}.pst.ok{border-color:#b9dfc1;background:#f1faf2}@media(max-width:560px){.strip{grid-template-columns:repeat(2,1fr)}}'\n+'.flt{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.flt button{border:1px solid #d9d9d6;background:#fff;border-radius:20px;padding:5px 11px;font:inherit;font-size:13px;cursor:pointer}.flt button.on{background:#F47920;color:#fff;border-color:#F47920}.srch{width:100%;font:inherit;padding:10px 12px;border:1px solid #ccc;border-radius:10px;margin-bottom:10px}select.rg{font:inherit;font-size:14px;padding:7px 8px;border:1px solid #d9d9d6;border-radius:8px;background:#fff}'\n+'.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;margin-bottom:10px;padding:12px 14px}.card.need{border-left:5px solid #e6a23c}.card.lock{border-left:5px solid #5fae6e}.card.quiet{opacity:.75}.t{font-weight:600}.m{color:#555;font-size:14px;margin-top:2px}.wx{color:#1f5fbf;font-size:13.5px;margin-top:2px}'\n+'.ln{font-size:14px;margin-top:4px;color:#333}.ln b{color:#555;font-weight:600}.off{background:#faf7f2;border-radius:8px;padding:8px 10px;margin-top:8px;font-size:14px;white-space:pre-wrap}.b{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}'\n+'.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:20px;padding:1px 8px;margin-left:6px;vertical-align:middle;background:#eee;color:#333}.tag.need{background:#fff1d6;color:#8a5a00}.tag.lock{background:#e3f4e6;color:#1d6b2c}.tag.done{background:#e6efff;color:#1f5fbf}.tag.del{background:#fde3e1;color:#b3261e}'\n+'.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}.hist{white-space:pre-wrap;font-size:12px;color:#6b6e70;margin-top:6px}'\n+'.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;overflow:auto;z-index:20}.dlg{background:#fff;border-radius:14px;max-width:580px;width:100%;padding:16px}.dlg h2{margin:0 0 10px;font-size:18px}'\n+'label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}.dlg input[type=text],.dlg input[type=date],.dlg input[type=number],.dlg textarea,.dlg select{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}.dlg textarea{min-height:70px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}'\n+'.chk{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid #eee}.chk input{width:20px;height:20px;flex:0 0 auto}.note{font-size:13px;color:#6b6e70;margin-top:6px}.msg{font-size:14px;color:#8a5a00;margin-top:8px;min-height:18px}.opr{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid #eee}.opr span{flex:1}';\nconst nav='<div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a>'+(job?'<a class=\"hub\" href=\"/webhook/cbs-job-file?job='+encodeURIComponent(job)+'\">Job File</a>':'')+'</div>';\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Daily diary - Job '+e(job)+'</title><script src=\"/webhook/cbs-guard\"></script><style>'+CSS+'</style><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script></head><body><header>'+nav+'<h1>Daily diary'+(job?' \\u00b7 Job '+e(job):'')+'</h1><p id=\"sub\">Chelmsford Building Services</p></header><div class=\"wrap\" id=\"app\">'+(job?'<div class=\"empty\">Building the diary\\u2026</div>':'<div class=\"empty\">Open the diary from a job.</div>')+'</div><script>window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+';</script>'+(job?'<script>('+client.toString()+')();</script>':'')+'</body></html>';\nreturn [{json:{html:html}}];\n\nfunction client(){\nvar D=window.D,JOB=D.job,app=document.getElementById('app'),X=null,RANGE='14',FILTER='all',Q='',QUIET=false,LOGO=null;\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction n(v){var x=Number(v);return isNaN(x)?0:x;}\nvar DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];\nfunction dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})(?:T(\\d{2}:\\d{2}))?/);return m?m[3]+'/'+m[2]+'/'+m[1]+(m[4]?' '+m[4]:''):s(d);}\nfunction dname(x){return DOW[x.dow]+' '+dmy(x.day);}\nfunction today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction addD(d,k){var x=new Date(d+'T12:00:00Z');x.setUTCDate(x.getUTCDate()+k);return x.toISOString().slice(0,10);}\nfunction who(){var x='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)x=m.name;}catch(z){}if(!x){try{x=localStorage.getItem('cbs_name')||'';}catch(z){}}if(!x){x=(prompt('Your name:')||'').trim();if(x){try{localStorage.setItem('cbs_name',x);}catch(z){}}}return x;}\nfunction dlg(h){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg\">'+h+'</div>';document.body.appendChild(o);o.close=function(){o.remove();};return o;}\nfunction guard(o,isDirty){o.addEventListener('click',function(ev){if(ev.target!==o)return;if(isDirty&&isDirty()&&!confirm('Close without saving your changes?'))return;o.close();});}\nfunction url(from,to){return '/webhook/cbs-diary-data?job='+encodeURIComponent(JOB)+(from?'&from='+from:'')+(to?'&to='+to:'');}\nfunction fromFor(r){return r==='all'?'':addD(today(),-(n(r)-1));}\nfunction load(){return fetch(url(fromFor(RANGE)),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){if(!d||!d.ok)throw 0;X=d;document.getElementById('sub').textContent=[d.name,d.site,d.client].filter(Boolean).join(' \\u00b7 ')||'Chelmsford Building Services';render();}).catch(function(){app.innerHTML='<div class=\"empty\">Could not load the diary. Refresh to try again.</div>';});}\nfunction post(path,body){var by=who();if(!by)return Promise.resolve({ok:false,cancel:true});body.job=JOB;body.by=by;return fetch('/webhook/'+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(x){return x&&x.ok===false?x:{ok:true};}).catch(function(){return {ok:false,message:'Could not save. Check your connection and try again.'};});}\nfunction wx(w){if(!w)return '';var p=[];if(w.text)p.push(w.text);if(w.max!=null)p.push(Math.round(w.max)+'\\u00b0'+(w.min!=null?' / '+Math.round(w.min)+'\\u00b0C':'C'));if(w.rain!=null)p.push(w.rain+' mm rain');if(w.wind!=null)p.push('wind '+Math.round(w.wind)+' mph'+(w.gust!=null?', gusts '+Math.round(w.gust):''));return p.join(' \\u00b7 ');}\nfunction state(x){if(x.entry&&x.entry.locked_at)return 'lock';if(x.entry)return 'done';if(x.day<X.today&&x.activity>0)return 'need';return x.activity||x.planned?'':'quiet';}\nfunction lines(a){if(!a)return [];var L=[],P=a.people||[];\n function uniq(arr){var o={},r=[];arr.forEach(function(v){v=s(v);if(v&&!o[v.toLowerCase()]){o[v.toLowerCase()]=1;r.push(v);}});return r;}\n if(P.length)L.push(['On site',P.length+': '+P.map(function(p){return p.name;}).join(', ')]);\n a.brief.forEach(function(b){L.push(['Briefing',[b.no,b.at,b.lead?'lead '+b.lead:'',b.count?b.count+' people':''].filter(Boolean).join(' \\u00b7 ')]);});\n if(a.signons.length)L.push(['Sign-ons',a.signons.length+' ('+uniq(a.signons.map(function(x){return x.doc;})).join(', ')+')']);\n if(a.planned.length)L.push(['Programme',uniq(a.planned.map(function(x){return x.name+(x.who?' ('+x.who+')':'');})).join('; ')]);\n if(a.done.length)L.push(['Completed',uniq(a.done.map(function(x){return x.name;})).join('; ')]);\n if(a.ticks.length)L.push(['Checklist',a.ticks.length+' item'+(a.ticks.length===1?'':'s')+' ticked: '+uniq(a.ticks.map(function(x){return x.task;})).join('; ')]);\n if(a.deliveries.length)L.push(['Deliveries due',a.deliveries.map(function(x){return x.no+' '+x.supplier+' ('+x.status+')';}).join('; ')]);\n if(a.hire.length)L.push(['Hire',a.hire.map(function(x){return x.ev+': '+x.no+' '+x.supplier;}).join('; ')]);\n if(a.snags.length)L.push(['Snags',a.snags.map(function(x){return x.no+' '+x.ev.toLowerCase();}).join('; ')]);\n if(a.vars.length)L.push(['Variations',a.vars.map(function(x){return x.no+' '+x.title+' - '+x.ev;}).join('; ')]);\n if(a.rfis.length)L.push(['RFIs',a.rfis.map(function(x){return x.no+' '+x.subject+' - '+x.ev;}).join('; ')]);\n if(a.insp.length)L.push(['Inspections',a.insp.map(function(x){return x.no+(x.by?' by '+x.by:'')+(x.open?' ('+x.open+' open actions)':'');}).join('; ')]);\n if(a.permits.length)L.push(['Permits',a.permits.map(function(x){return x.no+' '+x.type+(x.company?' - '+x.company:'')+' ('+x.status+')';}).join('; ')]);\n if(a.toolbox.length)L.push(['Toolbox',a.toolbox.map(function(x){return x.type+': '+x.topic;}).join('; ')]);\n if(a.incidents.length)L.push(['Incidents',a.incidents.map(function(x){return x.ref+' '+x.kind+(x.severity?' ('+x.severity+')':'');}).join('; ')]);\n if(a.visitors.length)L.push(['Visitors',a.visitors.map(function(x){return x.name+(x.company?' ('+x.company+')':'');}).join(', ')]);\n return L;}\nfunction offText(en){if(!en)return '';var o=[];if(en.on_site)o.push('On site (office note): '+en.on_site);if(en.delay_hours||en.delays||en.delay_cause)o.push('Delay'+(en.delay_cause?' - '+en.delay_cause:'')+(en.delay_hours?' ('+en.delay_hours+' h)':'')+(en.delays?': '+en.delays:''));if(en.instructions)o.push('Instructions: '+en.instructions);if(en.notes)o.push('Notes: '+en.notes);return o.join('\\n');}\nfunction vis(){var q=Q.toLowerCase();return X.days.filter(function(x){var st=state(x);\n if(!QUIET&&st==='quiet'&&!x.entry&&FILTER==='all')return false;\n if(FILTER==='need'&&st!=='need')return false;if(FILTER==='delay'&&!(x.entry&&(x.entry.delay_hours||x.entry.delays)))return false;if(FILTER==='lock'&&st!=='lock')return false;\n if(!q)return true;return (dname(x)+' '+lines(x.auto).map(function(l){return l.join(' ');}).join(' ')+' '+offText(x.entry)+' '+(x.weather&&x.weather.text||'')).toLowerCase().indexOf(q)>-1;});}\nfunction render(){var T=X.totals||{},h='';\n h+='<div class=\"strip\"><div class=\"pst\"><b>'+T.entries+'</b><span>Days written</span></div><div class=\"pst '+(X.missing.length?'warn':'ok')+'\"><b>'+X.missing.length+'</b><span>Need an entry</span></div><div class=\"pst\"><b>'+T.delay_days+'</b><span>Days with delays</span></div><div class=\"pst\"><b>'+T.delay_hours+'</b><span>Delay hours</span></div></div>';\n h+='<div class=\"tools\"><select class=\"rg\" id=\"rg\">'+[['7','Last 7 days'],['14','Last 14 days'],['30','Last 30 days'],['90','Last 90 days'],['all','Whole job']].map(function(o){return '<option value=\"'+o[0]+'\"'+(o[0]===RANGE?' selected':'')+'>'+o[1]+'</option>';}).join('')+'</select><button class=\"btn ghost\" id=\"pdf\">Diary PDF</button><button class=\"btn ghost\" id=\"opt\">Delay causes</button></div>';\n var C={need:0,delay:0,lock:0};X.days.forEach(function(x){var st=state(x);if(st==='need')C.need++;if(st==='lock')C.lock++;if(x.entry&&(x.entry.delay_hours||x.entry.delays))C.delay++;});\n h+='<div class=\"flt\">'+[['all','All days'],['need','Needs entry ('+C.need+')'],['delay','Delays ('+C.delay+')'],['lock','Locked ('+C.lock+')']].map(function(f){return '<button data-f=\"'+f[0]+'\" class=\"'+(FILTER===f[0]?'on':'')+'\">'+f[1]+'</button>';}).join('')+'<button id=\"qt\" class=\"'+(QUIET?'on':'')+'\">Show quiet days</button></div>';\n h+='<input class=\"srch\" id=\"q\" placeholder=\"Search the diary\" value=\"'+e(Q)+'\">';\n if(X.weather_from)h+='<div class=\"note\" style=\"margin:-4px 0 10px\">Weather for '+e(X.weather_from)+' from Open-Meteo. It is fixed when a day is locked.</div>';else h+='<div class=\"note\" style=\"margin:-4px 0 10px\">No weather: add a postcode to the job\\u2019s site address.</div>';\n var L=vis();if(!L.length)h+='<div class=\"empty\">'+(X.days.length?'Nothing matches.':'No days in this range.')+'</div>';\n L.forEach(function(x){var st=state(x),en=x.entry,lk=en&&en.locked_at;\n  h+='<div class=\"card '+(st==='need'?'need':st==='lock'?'lock':st==='quiet'?'quiet':'')+'\" data-d=\"'+x.day+'\"><div class=\"t\">'+dname(x)+(st==='need'?'<span class=\"tag need\">Needs entry</span>':st==='lock'?'<span class=\"tag lock\">Locked</span>':st==='done'?'<span class=\"tag done\">Written</span>':'')+(en&&(en.delay_hours||en.delays)?'<span class=\"tag del\">Delay'+(en.delay_hours?' '+en.delay_hours+'h':'')+'</span>':'')+'</div>'\n  +(x.weather?'<div class=\"wx\">'+e(wx(x.weather))+'</div>':'')\n  +lines(x.auto).map(function(l){return '<div class=\"ln\"><b>'+e(l[0])+':</b> '+e(l[1])+'</div>';}).join('')\n  +(!x.activity&&!x.planned?'<div class=\"m\">No site activity recorded.</div>':'')\n  +(en&&offText(en)?'<div class=\"off\">'+e(offText(en))+'</div>':'')\n  +(lk?'<div class=\"m\">Locked by '+e(en.locked_by)+' '+dmy(en.locked_at)+'</div>':'')\n  +'<div class=\"b\">'+(lk?'<button class=\"btn ghost sm\" data-a=\"unlock\">Unlock</button>':'<button class=\"btn '+(st==='need'?'':'ghost')+' sm\" data-a=\"edit\">'+(en?'Edit entry':'Write entry')+'</button>'+(x.day<=X.today?'<button class=\"btn ghost sm\" data-a=\"lock\">Lock day</button>':''))+'<button class=\"btn ghost sm\" data-a=\"pdf1\">PDF</button></div>'\n  +(en&&en.history?'<details><summary class=\"m\" style=\"cursor:pointer\">History</summary><div class=\"hist\">'+e(en.history)+'</div></details>':'')+'</div>';});\n app.innerHTML=h;\n document.getElementById('rg').onchange=function(){RANGE=this.value;app.innerHTML='<div class=\"empty\">Building the diary\\u2026</div>';load();};\n document.getElementById('pdf').onclick=pdfDlg;document.getElementById('opt').onclick=optDlg;document.getElementById('qt').onclick=function(){QUIET=!QUIET;render();};\n app.querySelectorAll('[data-f]').forEach(function(b){b.onclick=function(){FILTER=b.getAttribute('data-f');render();};});\n var qi=document.getElementById('q');qi.oninput=function(){Q=qi.value;var p=qi.selectionStart;render();var z=document.getElementById('q');z.focus();try{z.setSelectionRange(p,p);}catch(y){}};\n app.querySelectorAll('[data-a]').forEach(function(b){var d=b.closest('.card').getAttribute('data-d'),x=X.days.filter(function(y){return y.day===d;})[0],a=b.getAttribute('data-a');\n  b.onclick=function(){if(a==='edit')editDlg(x);else if(a==='lock')lockDay(x);else if(a==='unlock')unlockDay(x);else if(a==='pdf1')makePdf([x],{wx:1,auto:1,off:1},dname(x));};});}\nfunction editDlg(x){var en=x.entry||{},C=(X.causes||[]).slice();if(en.delay_cause&&C.indexOf(en.delay_cause)<0)C.push(en.delay_cause);\n var o=dlg('<h2>Diary: '+dname(x)+'</h2>'+(x.weather?'<div class=\"wx\">'+e(wx(x.weather))+'</div>':'')+(lines(x.auto).length?'<div class=\"note\">Recorded automatically: '+e(lines(x.auto).map(function(l){return l[0];}).join(', '))+'.</div>':'')\n  +'<label class=\"f\">Who was on site (if not picked up automatically)</label><input type=\"text\" id=\"fo\" value=\"'+e(en.on_site)+'\" placeholder=\"e.g. 3 CBS, 2 groundworkers (Smith Civils)\">'\n  +'<div class=\"row2\"><div><label class=\"f\">Delay cause</label><select id=\"fc\"><option value=\"\">No delay</option>'+C.map(function(c){return '<option'+(c===en.delay_cause?' selected':'')+'>'+e(c)+'</option>';}).join('')+'</select></div><div><label class=\"f\">Hours lost</label><input type=\"number\" step=\"0.25\" min=\"0\" id=\"fh\" value=\"'+(en.delay_hours==null?'':en.delay_hours)+'\"></div></div>'\n  +'<label class=\"f\">Delay details</label><textarea id=\"fd\" placeholder=\"What happened and the effect on the work\">'+e(en.delays)+'</textarea>'\n  +'<label class=\"f\">Instructions received</label><textarea id=\"fi\" placeholder=\"Who gave them, how, and what was asked\">'+e(en.instructions)+'</textarea>'\n  +'<label class=\"f\">Notes</label><textarea id=\"fn\">'+e(en.notes)+'</textarea><div class=\"msg\" id=\"fm\"></div><div class=\"b\"><button class=\"btn\" id=\"fs\">Save</button><button class=\"btn ghost\" id=\"fx\">Cancel</button></div>');\n var ids=['fo','fc','fh','fd','fi','fn'],st=ids.map(function(i){return o.querySelector('#'+i).value;}).join('|');function dirty(){return ids.map(function(i){return o.querySelector('#'+i).value;}).join('|')!==st;}\n guard(o,dirty);o.querySelector('#fx').onclick=function(){if(dirty()&&!confirm('Close without saving your changes?'))return;o.close();};\n o.querySelector('#fs').onclick=function(){var hrs=o.querySelector('#fh').value,c=o.querySelector('#fc').value;if(hrs&&!c){o.querySelector('#fm').textContent='Pick the delay cause for the hours lost.';return;}var b=this;b.disabled=true;\n  post('cbs-diary-act',{a:'save',day:x.day,on_site:o.querySelector('#fo').value,delay_cause:c,delay_hours:hrs,delays:o.querySelector('#fd').value,instructions:o.querySelector('#fi').value,notes:o.querySelector('#fn').value,weather:x.weather}).then(function(r){if(r.ok){o.close();load();}else{b.disabled=false;if(!r.cancel)o.querySelector('#fm').textContent=r.message||'Could not save.';}});};}\nfunction lockDay(x){if(!confirm('Lock '+dname(x)+'?\\n\\nThe day\\u2019s record and weather are fixed as they are now, and the entry can\\u2019t be edited unless someone unlocks it.'))return;\n post('cbs-diary-act',{a:'lock',day:x.day,snapshot:x.auto,weather:x.weather}).then(function(r){if(!r.ok&&!r.cancel)alert(r.message||'Could not lock.');load();});}\nfunction unlockDay(x){if(!confirm('Unlock '+dname(x)+'?'))return;var why=prompt('Are you sure? Give a reason for unlocking (it goes in the history):');if(why===null)return;if(!why.trim()){alert('A reason is needed to unlock.');return;}\n post('cbs-diary-act',{a:'unlock',day:x.day,reason:why}).then(function(r){if(!r.ok&&!r.cancel)alert(r.message||'Could not unlock.');load();});}\nfunction optDlg(){var o=dlg('<h2>Delay causes</h2><div class=\"m\">The choices for \\u201cDelay cause\\u201d.</div><div id=\"ol\"></div><div class=\"row2\" style=\"margin-top:10px\"><input type=\"text\" id=\"on\" placeholder=\"Add a cause\"><button class=\"btn ghost\" id=\"oa\">Add</button></div><div class=\"msg\" id=\"om\"></div><div class=\"b\"><button class=\"btn ghost\" id=\"ox\">Close</button></div>');\n function draw(){o.querySelector('#ol').innerHTML=(X.causes||[]).map(function(c){return '<div class=\"opr\"><span>'+e(c)+'</span><button class=\"btn red sm\" data-v=\"'+e(c)+'\">Remove</button></div>';}).join('');\n  o.querySelectorAll('[data-v]').forEach(function(b){b.onclick=function(){var v=b.getAttribute('data-v');if(!confirm('Are you sure you want to remove \\u201c'+v+'\\u201d? Days already using it keep it.'))return;b.disabled=true;post('cbs-diary-opt',{op:'del',value:v}).then(function(){load().then(draw);});};});}\n draw();guard(o);o.querySelector('#ox').onclick=o.close;\n o.querySelector('#oa').onclick=function(){var v=o.querySelector('#on').value.trim();if(!v)return;var b=this;b.disabled=true;post('cbs-diary-opt',{op:'add',value:v}).then(function(r){b.disabled=false;if(r.ok){o.querySelector('#on').value='';load().then(draw);}else if(!r.cancel)o.querySelector('#om').textContent=r.message||'Could not add.';});};}\nfunction pdfDlg(){var o=dlg('<h2>Diary PDF</h2><div class=\"row2\"><div><label class=\"f\">From</label><input type=\"date\" id=\"pf\"></div><div><label class=\"f\">To</label><input type=\"date\" id=\"pt\" value=\"'+X.to+'\"></div></div>'\n  +'<label class=\"f\">Include</label>'+[['wx','Weather',1],['auto','Site record (people, programme, deliveries, snags, H&S)',1],['off','Office entry (delays, instructions, notes)',1],['quiet','Days with no activity',0],['sum','Delay summary at the end',1]].map(function(c){return '<label class=\"chk\"><input type=\"checkbox\" class=\"pc\" value=\"'+c[0]+'\"'+(c[2]?' checked':'')+'><span>'+c[1]+'</span></label>';}).join('')\n  +'<div class=\"msg\" id=\"pm\"></div><div class=\"b\"><button class=\"btn\" id=\"pg\">Download PDF</button><button class=\"btn ghost\" id=\"px\">Cancel</button></div>');\n o.querySelector('#pf').value=X.days.length?X.days[X.days.length-1].day:X.from;guard(o);o.querySelector('#px').onclick=o.close;\n o.querySelector('#pg').onclick=function(){var f=o.querySelector('#pf').value,t=o.querySelector('#pt').value;if(!f||!t||f>t){o.querySelector('#pm').textContent='Check the dates.';return;}var opt={};[].forEach.call(o.querySelectorAll('.pc'),function(c){opt[c.value]=c.checked;});var b=this;b.disabled=true;o.querySelector('#pm').textContent='Building\\u2026';\n  fetch(url(f,t),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){var L=d.days.slice().reverse().filter(function(x){return opt.quiet||x.activity||x.entry||x.planned&&!x.weekend;});if(!L.length){b.disabled=false;o.querySelector('#pm').textContent='No days to include in that range.';return;}\n   makePdf(L,opt,dmy(f)+' to '+dmy(t));o.close();}).catch(function(){b.disabled=false;o.querySelector('#pm').textContent='Could not load that range. Try again.';});};}\nfunction getLogo(){if(LOGO!==null)return Promise.resolve(LOGO);return fetch('/webhook/cbs-programme-logo').then(function(r){return r.json();}).then(function(d){LOGO=(d&&d.lg)||'';return LOGO;}).catch(function(){LOGO='';return '';});}\nfunction makePdf(days,opt,label){if(!window.jspdf){alert('The PDF tool did not load. Refresh and try again.');return;}\n getLogo().then(function(lg){var doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'}),W=210,HH=297,M=14,y=0;\n  function head(){doc.setFillColor(244,121,32);doc.rect(0,0,W,3,'F');var lx=M;if(lg){try{var pr=doc.getImageProperties(lg),hh=13,ww=pr.width*hh/pr.height;if(ww>48){ww=48;hh=pr.height*ww/pr.width;}doc.addImage(lg,'PNG',M,7,ww,hh);lx=M+ww+5;}catch(z){}}\n   doc.setTextColor(30);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text('Daily diary - Job '+JOB,lx,12);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text(([X.site,X.client].filter(Boolean).join('  |  ')||'Chelmsford Building Services').slice(0,100),lx,17.5);doc.text(label,W-M,12,{align:'right'});y=28;}\n  function need(h){if(y+h>HH-16){doc.addPage();y=18;}}\n  function txt(t,sz,bold,col,ind){doc.setFont('helvetica',bold?'bold':'normal');doc.setFontSize(sz);doc.setTextColor(col==null?25:col);doc.splitTextToSize(s(t),W-2*M-(ind||0)).forEach(function(l){need(sz*0.45+1);doc.text(l,M+(ind||0),y);y+=sz*0.42+0.9;});}\n  head();var tot=0,dd=[];\n  days.forEach(function(x){need(22);doc.setDrawColor(244,121,32);doc.setLineWidth(0.5);doc.line(M,y,W-M,y);doc.setLineWidth(0.2);y+=5;\n   var en=x.entry;txt(dname(x)+(en&&en.locked_at?'   (locked by '+en.locked_by+')':''),11.5,1,20);\n   if(opt.wx&&x.weather)txt('Weather: '+wx(x.weather),9,0,40);\n   if(opt.auto){var L=lines(x.auto);if(!L.length)txt('No site activity recorded.',9,0,110);L.forEach(function(l){txt(l[0]+': '+l[1],9,0,30,3);});}\n   if(opt.off&&en){var t=offText(en);if(t){y+=1;t.split('\\n').forEach(function(p){txt(p,9,0,20,3);});}if(en.delay_hours||en.delays){tot+=n(en.delay_hours);dd.push(x);}}\n   y+=3;});\n  if(opt.sum&&opt.off){need(30);y+=4;txt('Delay summary',12,1,20);if(!dd.length)txt('No delays recorded in this period.',9.5,0,60);else{dd.forEach(function(x){txt(dmy(x.day)+'  -  '+(x.entry.delay_cause||'Delay')+(x.entry.delay_hours?' ('+x.entry.delay_hours+' h)':'')+(x.entry.delays?': '+x.entry.delays:''),9.5,0,25,3);});txt('Total: '+dd.length+' day'+(dd.length===1?'':'s')+' with delays, '+tot+' hours lost',10,1,20);}}\n  var np=doc.getNumberOfPages();for(var i=1;i<=np;i++){doc.setPage(i);doc.setFontSize(7.5);doc.setTextColor(120);doc.text('Chelmsford Building Services Ltd  |  Job '+JOB+' daily diary',M,HH-8);doc.text('Page '+i+' of '+np,W-M,HH-8,{align:'right'});}\n  doc.save('Job '+JOB+' - Daily diary - '+label.replace(/\\//g,'-')+'.pdf');});}\nload();\n}\n"
+      }
+    },
+    {
+      "id": "a84f723a-221e-41ed-97ce-0b7fbb98d608",
+      "name": "Send Page",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "618d9173-48cf-4f32-9564-2e151a47d483",
+      "name": "Diary Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        224
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cbs-diary-data",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "6d5975b1-defd-4a39-89eb-a9ee8266a7f8"
+    },
+    {
+      "id": "4c5a750f-6d45-4768-9c17-0e78807ad53a",
+      "name": "Get Diary",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        224
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "0ujWfxU1dlaQQ55d"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "51b53875-2388-47d3-bd1a-916816502f8f",
+      "name": "Get Visitors",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        224
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "5ET1OUDUv4D2u9o6"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "ac5e00bd-2186-41f5-bc1b-df17cf685fe9",
+      "name": "Get Inspections",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        224
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "DPgv7Nm5Q4Vx8uVv"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "4dcd80e7-adeb-4341-bfd8-31257b865f73",
+      "name": "Get Permits",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        224
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "bPr02oOPEg6icX8g"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "ce5962ab-6c01-4b42-a87e-6670d8c9e123",
+      "name": "Diary Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        224
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* CBS daily diary data. ?job=N[&from=YYYY-MM-DD&to=YYYY-MM-DD]: one record per day built from the hub registers, plus weather and the office entry.\n   ?due=1 (no job): days with site activity in the last 14 days and no diary entry, per open job (Actions board). */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst q=$('Diary Hook').first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,''),due=S(q.due)==='1';\nif(!job&&!due)return [{json:{ok:false,message:'No job number.'}}];\nconst rows=n=>{try{return $(n).all().map(i=>i.json).filter(r=>r&&r.id!=null);}catch(e){return [];}};\nconst DI=rows('Get Diary'),VI=rows('Get Visitors'),IN=rows('Get Inspections'),PE=rows('Get Permits');\nconst list=async t=>{try{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t+'&k='+K,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);}catch(e){return [];}};\nlet R={};try{R=await h.httpRequest({url:H+'cbs-admin-data?t=prestarts,signons,toolbox,incidents,rams,cphsp',json:true,timeout:30000})||{};}catch(e){R={};}\nconst reg=k=>Array.isArray(R[k])?R[k]:[];\nconst [JR,PI,PO,SN,VA,RF,SO]=await Promise.all(['jobrows','progitems','pos','snags','variations','rfis','selectopts'].map(list));\nconst DEFC=['Weather','Client / access','Design or information','Materials late','Subcontractor','Plant breakdown','Other'];let causes=SO.filter(o=>S(o.reg)==='diary'&&S(o.field)==='delay_cause').map(o=>S(o.value)).filter(Boolean);if(!causes.length)causes=DEFC.slice();\nconst d10=v=>{const m=S(v).match(/^(\\d{4}-\\d{2}-\\d{2})/);return m?m[1]:'';};\nconst today=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).slice(0,10);\nconst addD=(d,n)=>{const x=new Date(d+'T12:00:00Z');x.setUTCDate(x.getUTCDate()+n);return x.toISOString().slice(0,10);};\nconst pj=v=>{try{const a=JSON.parse(S(v)||'[]');return Array.isArray(a)?a:[];}catch(e){return [];}};\n/* activity for one job, keyed by day */\nfunction build(J){\n const mine=(L,k)=>L.filter(r=>jk(r[k||'job_no'])===J);\n const A={};const day=d=>{if(!d)return null;return A[d]=A[d]||{brief:[],signons:[],visitors:[],ticks:[],planned:[],started:[],done:[],deliveries:[],hire:[],snags:[],vars:[],rfis:[],insp:[],permits:[],toolbox:[],incidents:[],people:{}};};\n const who=(a,n,role)=>{n=S(n);if(n&&a)a.people[n.toLowerCase()]=a.people[n.toLowerCase()]||{name:n,role:role};};\n mine(reg('prestarts')).forEach(r=>{const a=day(d10(r.held_on));if(!a)return;a.brief.push({no:S(r.ps_no),at:S(r.held_at),lead:S(r.site_lead),count:num(r.headcount)});who(a,r.site_lead,'Site lead');});\n mine(reg('signons')).forEach(r=>{const a=day(d10(r.signed_at));if(!a)return;a.signons.push({name:S(r.name),company:S(r.company),doc:S(r.doc_label||r.doc_type)});who(a,r.name,S(r.company)||'Signed on');});\n mine(VI).forEach(r=>{const a=day(d10(r.visit_date||r.signed_in_at));if(!a)return;a.visitors.push({name:S(r.name),company:S(r.company),in:S(r.signed_in_at).slice(11,16),out:S(r.signed_out_at).slice(11,16),reason:S(r.reason||r.visiting)});});\n const items=mine(PI),byId={};items.forEach(i=>byId[S(i.id)]=i);\n items.forEach(i=>{const k=S(i.kind);if(k==='phase')return;const s=d10(i.start_on),e=d10(i.end_on)||s;\n  if(s){for(let d=s,n=0;d<=e&&n<120;d=addD(d,1),n++){const a=day(d);a.planned.push({name:S(i.name),who:S(i.assigned_to)});}}\n  if(/^(done|complete|completed)$/i.test(S(i.status))&&d10(i.updated_at)){const a=day(d10(i.updated_at));a.done.push({name:S(i.name),by:S(i.updated_by)});}\n  pj(i.checklist_json).forEach(c=>{if(c&&c.done&&d10(c.at)){const a=day(d10(c.at));a.ticks.push({task:S(i.name),item:S(c.t),by:S(c.by),at:S(c.at).slice(11,16)});who(a,c.by,'Crew');}});});\n mine(PO).filter(p=>S(p.po_no)&&!/cancel/i.test(S(p.status))).forEach(p=>{const plant=/plant|hire/i.test(S(p.po_type));\n  if(plant){const on=day(d10(p.needed_by||p.ordered_on));if(on)on.hire.push({no:S(p.po_no),supplier:S(p.supplier),ev:'On hire'});const off=day(d10(p.offhired_on));if(off)off.hire.push({no:S(p.po_no),supplier:S(p.supplier),ev:'Off hired'});}\n  else{const a=day(d10(p.needed_by));if(a)a.deliveries.push({no:S(p.po_no),supplier:S(p.supplier),status:S(p.status)||'Ordered'});}});\n mine(SN).forEach(r=>{[['raised_at','Raised',r.raised_by],['fixed_at','Fixed',r.fixed_by],['signed_off_at','Signed off',r.signed_off_by]].forEach(x=>{const a=day(d10(r[x[0]]));if(a)a.snags.push({no:S(r.snag_no),desc:S(r.description).slice(0,120),ev:x[1],by:S(x[2])});});});\n mine(VA).forEach(r=>{const a=day(d10(r.instructed_on));if(a)a.vars.push({no:S(r.var_no),title:S(r.title),ev:'Instructed'+(r.instructed_by?' by '+S(r.instructed_by):'')});if(/^(approved|rejected)$/i.test(S(r.status))){const b=day(d10(r.decided_on));if(b)b.vars.push({no:S(r.var_no),title:S(r.title),ev:S(r.status)+(r.decided_by?' by '+S(r.decided_by):'')});}});\n mine(RF).forEach(r=>{const a=day(d10(r.sent_on));if(a)a.rfis.push({no:S(r.rfi_no),subject:S(r.subject),ev:'Sent'+(r.sent_to?' to '+S(r.sent_to):'')});const b=day(d10(r.responded_on));if(b)b.rfis.push({no:S(r.rfi_no),subject:S(r.subject),ev:'Answered'});});\n mine(IN).forEach(r=>{const a=day(d10(r.dated));if(a){a.insp.push({no:S(r.insp_no),by:S(r.inspector),open:num(r.actions_open)});who(a,r.inspector,'Inspector');}});\n mine(PE).forEach(r=>{const a=day(d10(r.valid_from||r.requested_at));if(a)a.permits.push({no:S(r.permit_no),type:S(r.permit_type),company:S(r.contractor_company),status:S(r.status)});});\n mine(reg('toolbox')).forEach(r=>{const a=day(d10(r.held_on));if(a){a.toolbox.push({type:S(r.meeting_type)||'Toolbox talk',topic:S(r.topic),by:S(r.presenter)});who(a,r.presenter,'Presenter');}});\n mine(reg('incidents'),'sm8_job').forEach(r=>{const a=day(d10(r.occurred_at));if(a)a.incidents.push({ref:S(r.ref),kind:S(r.kind),severity:S(r.severity),status:S(r.status)});});\n return A;}\nconst site=a=>a.brief.length+a.signons.length+a.visitors.length+a.ticks.length+a.done.length+a.deliveries.length+a.hire.length+a.snags.length+a.insp.length+a.permits.length+a.toolbox.length+a.incidents.length;\nconst entryOf=(J,d)=>DI.filter(r=>jk(r.job_no)===J&&S(r.day)===d).sort((a,b)=>num(b.id)-num(a.id))[0]||null;\n/* Actions board summary */\nif(due){const out=[];const from=addD(today,-14);\n JR.filter(r=>/^(project|cdm)$/.test(S(r.mode))).forEach(r=>{const J=jk(r.ref);const A=build(J);const miss=Object.keys(A).filter(d=>d>=from&&d<today&&site(A[d])>0&&!entryOf(J,d)).sort();\n  if(miss.length)out.push({job:S(r.ref),site:S(r.site),days:miss});});\n return [{json:{ok:true,due:out}}];}\nconst J=jk(job);const jr=JR.filter(r=>jk(r.ref)===J).sort((a,b)=>num(b.id)-num(a.id))[0]||{};\nlet co={};try{co=JSON.parse(S(jr.closeout_json)||'{}')||{};}catch(e){}\nconst A=build(J);const act=Object.keys(A).filter(d=>site(A[d])>0||A[d].planned.length).sort();\nconst ents=DI.filter(r=>jk(r.job_no)===J);\nlet start=d10(q.from)||[d10(jr.starts_on),act[0],ents.map(r=>S(r.day)).sort()[0]].filter(Boolean).sort()[0]||addD(today,-13);\nlet end=d10(q.to)||(d10(co.closed_at)&&S(jr.mode)==='closed'?d10(co.closed_at):today);if(end>today)end=today;if(start>end)start=end;\nconst days=[];for(let d=end,n=0;d>=start&&n<400;d=addD(d,-1),n++)days.push(d);\n/* weather: postcode -> lat/lon -> Open-Meteo (forecast API for the last 90 days, archive before that) */\nconst W={};let wsrc='';\nconst siteAddr=S(jr.site)||[].concat(reg('prestarts'),reg('cphsp'),reg('rams')).filter(r=>jk(r.job_no)===J&&S(r.site)).map(r=>S(r.site))[0]||'';\nconst pc=(siteAddr.toUpperCase().match(/\\b([A-Z]{1,2}\\d[A-Z\\d]?)\\s*(\\d[A-Z]{2})\\b/)||[]);\nif(pc[0]&&days.length){try{const g=await h.httpRequest({url:'https://api.postcodes.io/postcodes/'+encodeURIComponent(pc[1]+pc[2]),json:true,timeout:10000});const lat=g&&g.result&&g.result.latitude,lon=g&&g.result&&g.result.longitude;\n if(lat!=null){wsrc=pc[1]+' '+pc[2];const cut=addD(today,-85),lo=days[days.length-1],hi=days[0];\n  const get=async(base,s,e)=>{if(s>e)return;const x=await h.httpRequest({url:base+'?latitude='+lat+'&longitude='+lon+'&start_date='+s+'&end_date='+e+'&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max&timezone=Europe%2FLondon&wind_speed_unit=mph',json:true,timeout:20000});const D=(x&&x.daily)||{};(D.time||[]).forEach((t,i)=>{if(D.weather_code[i]==null)return;W[t]={code:D.weather_code[i],max:D.temperature_2m_max[i],min:D.temperature_2m_min[i],rain:D.precipitation_sum[i],wind:D.wind_speed_10m_max[i],gust:D.wind_gusts_10m_max[i]};});};\n  try{await get('https://api.open-meteo.com/v1/forecast',lo<cut?cut:lo,hi);}catch(e){}\n  try{if(lo<cut)await get('https://archive-api.open-meteo.com/v1/archive',lo,addD(cut,-1)<hi?addD(cut,-1):hi);}catch(e){}}}catch(e){}}\nconst WX={0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Freezing fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',56:'Freezing drizzle',57:'Freezing drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',66:'Freezing rain',67:'Freezing rain',71:'Light snow',73:'Snow',75:'Heavy snow',77:'Snow grains',80:'Light showers',81:'Showers',82:'Heavy showers',85:'Snow showers',86:'Heavy snow showers',95:'Thunderstorm',96:'Thunderstorm with hail',99:'Thunderstorm with hail'};\nconst out=days.map(d=>{const a=A[d]||null,e=entryOf(J,d);let w=null;if(e&&S(e.weather_json)){try{w=JSON.parse(e.weather_json);}catch(x){}}if(!w&&W[d])w=Object.assign({},W[d]);if(w&&w.code!=null&&!w.text)w.text=WX[w.code]||'';\n let snap=null;if(e&&e.locked_at&&S(e.snapshot_json)){try{snap=JSON.parse(e.snapshot_json);}catch(x){}}\n const auto=snap||(a?Object.assign({},a,{people:Object.values(a.people)}):null);const dow=new Date(d+'T12:00:00Z').getUTCDay();\n return {day:d,dow:dow,weekend:dow===0||dow===6,activity:auto?site(auto):0,planned:auto?auto.planned.length:0,auto:auto,weather:w,\n  entry:e?{id:e.id,delay_cause:S(e.delay_cause),delay_hours:S(e.delay_hours)===''?null:num(e.delay_hours),delays:S(e.delays),instructions:S(e.instructions),notes:S(e.notes),on_site:S(e.on_site),locked_by:S(e.locked_by),locked_at:S(e.locked_at),updated_by:S(e.updated_by),updated_at:S(e.updated_at),history:S(e.history)}:null};});\nconst missing=out.filter(x=>x.day<today&&x.activity>0&&!x.entry).map(x=>x.day);\nreturn [{json:{ok:true,causes:causes,job:job,site:siteAddr,client:S(jr.client),name:S(jr.name),mode:S(jr.mode),from:start,to:end,today:today,weather_from:wsrc,days:out,missing:missing,\n totals:{delay_hours:out.reduce((m,x)=>m+(x.entry&&x.entry.delay_hours?x.entry.delay_hours:0),0),delay_days:out.filter(x=>x.entry&&(x.entry.delay_hours||x.entry.delays)).length,entries:out.filter(x=>x.entry).length,locked:out.filter(x=>x.entry&&x.entry.locked_at).length}}}];\n"
+      }
+    },
+    {
+      "id": "e6854a91-6c7a-461d-a111-70b7effcf03b",
+      "name": "Send Data",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        224
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "61e59c12-20a0-4603-9103-e5de6993aaf7",
+      "name": "Act Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        448
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-diary-act",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "c72ccc46-5efb-42c3-ab4b-029f3fd099f7"
+    },
+    {
+      "id": "1f9d26fe-15b7-4bbc-8413-8824f39c44e0",
+      "name": "Get Day",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        448
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "0ujWfxU1dlaQQ55d"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "job_no",
+              "condition": "eq",
+              "keyValue": "={{ String($json.body.job || \"\") }}"
+            },
+            {
+              "keyName": "day",
+              "condition": "eq",
+              "keyValue": "={{ String($json.body.day || \"\") }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "faf41db0-363d-4827-9a7c-8cfec99acdd4",
+      "name": "Diary Act",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        448
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* Daily diary actions: a=save (office entry), a=lock (freezes the day's record and weather), a=unlock. Output feeds the cbs_diary upsert (job_no + day). */\nconst S=v=>v==null?'':String(v).trim();\nconst b=$('Act Hook').first().json.body||{};const a=S(b.a),job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),day=S(b.day),by=S(b.by).slice(0,80);\nif(!job)throw new Error('No job number.');if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(day))throw new Error('Bad date.');if(!by)throw new Error('Enter your name.');\nlet ex=null;try{ex=$('Get Day').all().map(i=>i.json).filter(r=>r&&r.id!=null).sort((x,y)=>(Number(y.id)||0)-(Number(x.id)||0))[0]||null;}catch(e){ex=null;}\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst stamp=now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16);\nconst hist=line=>[S(ex&&ex.history),stamp+' - '+line].filter(Boolean).join(String.fromCharCode(10)).slice(-6000);\nconst js=v=>{try{return v&&typeof v==='object'?JSON.stringify(v).slice(0,60000):'';}catch(e){return '';}};\nconst row={job_no:job,day:day,updated_by:by,updated_at:now};\nif(a==='save'){\n if(ex&&S(ex.locked_at))throw new Error('This day is locked. Unlock it first.');\n const hrs=S(b.delay_hours);if(hrs!==''&&isNaN(Number(hrs)))throw new Error('Delay hours must be a number.');\n Object.assign(row,{delay_cause:S(b.delay_cause).slice(0,80),delay_hours:hrs===''?null:Math.round(Number(hrs)*4)/4,delays:S(b.delays).slice(0,4000),instructions:S(b.instructions).slice(0,4000),notes:S(b.notes).slice(0,4000),on_site:S(b.on_site).slice(0,2000)});\n if(!(ex&&S(ex.weather_json))&&b.weather)row.weather_json=js(b.weather);\n row.history=hist((ex?'Updated':'Entry written')+' by '+by);\n}else if(a==='lock'){\n if(ex&&S(ex.locked_at))throw new Error('Already locked.');\n Object.assign(row,{locked_by:by,locked_at:now,snapshot_json:js(b.snapshot),history:hist('Locked by '+by)});\n if(b.weather)row.weather_json=js(b.weather);\n if(!ex)Object.assign(row,{delay_cause:'',delay_hours:null,delays:'',instructions:'',notes:'',on_site:''});\n}else if(a==='unlock'){\n if(!ex||!S(ex.locked_at))throw new Error('Not locked.');\n Object.assign(row,{locked_by:'',locked_at:'',snapshot_json:'',history:hist('Unlocked by '+by+(S(b.reason)?': '+S(b.reason).slice(0,300):''))});\n}else throw new Error('Unknown action.');\nreturn [{json:row}];\n"
+      }
+    },
+    {
+      "id": "5cc70ba1-df91-4978-8f77-485ce50630b4",
+      "name": "Save Day",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        448
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "0ujWfxU1dlaQQ55d"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "job_no",
+              "condition": "eq",
+              "keyValue": "={{ $json.job_no }}"
+            },
+            {
+              "keyName": "day",
+              "condition": "eq",
+              "keyValue": "={{ $json.day }}"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": null,
+          "matchingColumns": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "624aa384-b5fa-418c-913a-2c5ba34608cf",
+      "name": "Send Act",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        448
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify({ ok: true }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "2dd98cd1-af71-4ce9-83ca-8f64aaa9d039",
+      "name": "Opt Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        672
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-diary-opt",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "b3e9310d-284e-4fac-b53e-16449e883530"
+    },
+    {
+      "id": "8051240e-3bcb-4cd2-81e5-d06bb53b4862",
+      "name": "Diary Opt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        672
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "/* Daily diary delay-cause options (cbs_select_options reg=diary, field=delay_cause): add / remove. Seeds the defaults on first change. */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';const S=v=>v==null?'':String(v).trim();\nconst b=$input.first().json.body||{};const op=S(b.op),val=S(b.value).slice(0,80),by=S(b.by).slice(0,80);\nconst R=(ok,x)=>[{json:Object.assign({ok:ok},x||{})}];\nif(!val)return R(false,{message:'Type the option first.'});if(!by)return R(false,{message:'Enter your name.'});\nconst list=async()=>{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=selectopts&k='+K,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(o=>o&&S(o.reg)==='diary'&&S(o.field)==='delay_cause');};\nconst save=row=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=selectopts&id=0&k='+K,body:row,json:true,timeout:20000});\nlet O=await list();\nif(!O.length){for(const d of ['Weather','Client / access','Design or information','Materials late','Subcontractor','Plant breakdown','Other'])await save({reg:'diary',field:'delay_cause',value:d,added_by:by});O=await list();}\nconst hit=O.find(o=>S(o.value).toLowerCase()===val.toLowerCase());\nif(op==='del'){if(hit)await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=del&t=selectopts&id='+hit.id+'&k='+K,body:{},json:true,timeout:20000});return R(true);}\nif(!hit)await save({reg:'diary',field:'delay_cause',value:val,added_by:by});return R(true);\n"
+      }
+    },
+    {
+      "id": "4f78f4cc-3bdd-4250-87a6-daddfc5a3f35",
+      "name": "Send Opt",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        672
+      ],
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "f76ce340-fb58-4bf2-aac8-1f76228633f0",
+        "name": "Page Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-diary",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "da0eb57e-728f-4035-8480-ae5f5629e15e"
+      },
+      {
+        "id": "4b525e0a-b3c1-4f27-9363-6444e7258da8",
+        "name": "Diary Page",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* CBS daily diary page (admin): cbs-diary?job=N. Data cbs-diary-data, saves cbs-diary-act, delay causes cbs-diary-opt. */\nconst S=v=>v==null?'':String(v);const e=t=>S(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');\nconst q=$input.first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,'');const D={job:job};\nconst CSS='*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:16px;line-height:1.4}'\n+'header{background:#3d4043;color:#fff;padding:12px 16px;border-bottom:4px solid #F47920;position:sticky;top:0;z-index:5}header .nav{display:flex;flex-wrap:wrap;gap:6px 14px}header a.hub{color:#ffb37a;font-size:13px;text-decoration:none}header h1{margin:4px 0 0;font-size:20px}header p{margin:3px 0 0;color:#ccc;font-size:13px}'\n+'.wrap{max-width:860px;margin:0 auto;padding:14px}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;align-items:center}'\n+'.btn{background:#F47920;color:#fff;text-decoration:none;font-weight:600;border-radius:8px;padding:8px 14px;font-size:14px;border:0;font-family:inherit;cursor:pointer}.btn.ghost{background:#fff;color:#1d1d1d;border:1px solid #d9d9d6}.btn.sm{padding:6px 10px;font-size:13px}.btn:disabled{opacity:.5}.btn.red{background:#fff;color:#b3261e;border:1px solid #e9b6b1}'\n+'.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}.pst{background:#fff;border:1px solid #d9d9d6;border-radius:10px;padding:8px 6px;text-align:center}.pst b{display:block;font-size:18px;line-height:1.2}.pst span{font-size:12px;color:#555}.pst.warn{border-color:#f2d398;background:#fff8ea}.pst.ok{border-color:#b9dfc1;background:#f1faf2}@media(max-width:560px){.strip{grid-template-columns:repeat(2,1fr)}}'\n+'.flt{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.flt button{border:1px solid #d9d9d6;background:#fff;border-radius:20px;padding:5px 11px;font:inherit;font-size:13px;cursor:pointer}.flt button.on{background:#F47920;color:#fff;border-color:#F47920}.srch{width:100%;font:inherit;padding:10px 12px;border:1px solid #ccc;border-radius:10px;margin-bottom:10px}select.rg{font:inherit;font-size:14px;padding:7px 8px;border:1px solid #d9d9d6;border-radius:8px;background:#fff}'\n+'.card{background:#fff;border:1px solid #d9d9d6;border-radius:12px;margin-bottom:10px;padding:12px 14px}.card.need{border-left:5px solid #e6a23c}.card.lock{border-left:5px solid #5fae6e}.card.quiet{opacity:.75}.t{font-weight:600}.m{color:#555;font-size:14px;margin-top:2px}.wx{color:#1f5fbf;font-size:13.5px;margin-top:2px}'\n+'.ln{font-size:14px;margin-top:4px;color:#333}.ln b{color:#555;font-weight:600}.off{background:#faf7f2;border-radius:8px;padding:8px 10px;margin-top:8px;font-size:14px;white-space:pre-wrap}.b{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}'\n+'.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:20px;padding:1px 8px;margin-left:6px;vertical-align:middle;background:#eee;color:#333}.tag.need{background:#fff1d6;color:#8a5a00}.tag.lock{background:#e3f4e6;color:#1d6b2c}.tag.done{background:#e6efff;color:#1f5fbf}.tag.del{background:#fde3e1;color:#b3261e}'\n+'.empty{color:#6b6e70;padding:18px 14px;text-align:center;background:#fff;border:1px dashed #d9d9d6;border-radius:12px}.hist{white-space:pre-wrap;font-size:12px;color:#6b6e70;margin-top:6px}'\n+'.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:20px 10px;overflow:auto;z-index:20}.dlg{background:#fff;border-radius:14px;max-width:580px;width:100%;padding:16px}.dlg h2{margin:0 0 10px;font-size:18px}'\n+'label.f{display:block;font-size:13px;font-weight:600;color:#444;margin:10px 0 4px}.dlg input[type=text],.dlg input[type=date],.dlg input[type=number],.dlg textarea,.dlg select{width:100%;font:inherit;padding:10px;border:1px solid #c4c6c8;border-radius:8px;background:#fff}.dlg textarea{min-height:70px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}'\n+'.chk{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid #eee}.chk input{width:20px;height:20px;flex:0 0 auto}.note{font-size:13px;color:#6b6e70;margin-top:6px}.msg{font-size:14px;color:#8a5a00;margin-top:8px;min-height:18px}.opr{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid #eee}.opr span{flex:1}';\nconst nav='<div class=\"nav\"><a class=\"hub\" href=\"/webhook/cbs-admin\">&larr; Operations Hub</a>'+(job?'<a class=\"hub\" href=\"/webhook/cbs-job-file?job='+encodeURIComponent(job)+'\">Job File</a>':'')+'</div>';\nconst html='<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Daily diary - Job '+e(job)+'</title><script src=\"/webhook/cbs-guard\"></script><style>'+CSS+'</style><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script></head><body><header>'+nav+'<h1>Daily diary'+(job?' \\u00b7 Job '+e(job):'')+'</h1><p id=\"sub\">Chelmsford Building Services</p></header><div class=\"wrap\" id=\"app\">'+(job?'<div class=\"empty\">Building the diary\\u2026</div>':'<div class=\"empty\">Open the diary from a job.</div>')+'</div><script>window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+';</script>'+(job?'<script>('+client.toString()+')();</script>':'')+'</body></html>';\nreturn [{json:{html:html}}];\n\nfunction client(){\nvar D=window.D,JOB=D.job,app=document.getElementById('app'),X=null,RANGE='14',FILTER='all',Q='',QUIET=false,LOGO=null;\nfunction s(v){return v==null?'':String(v);}\nfunction e(t){return s(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');}\nfunction n(v){var x=Number(v);return isNaN(x)?0:x;}\nvar DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];\nfunction dmy(d){var m=s(d).match(/^(\\d{4})-(\\d{2})-(\\d{2})(?:T(\\d{2}:\\d{2}))?/);return m?m[3]+'/'+m[2]+'/'+m[1]+(m[4]?' '+m[4]:''):s(d);}\nfunction dname(x){return DOW[x.dow]+' '+dmy(x.day);}\nfunction today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}\nfunction addD(d,k){var x=new Date(d+'T12:00:00Z');x.setUTCDate(x.getUTCDate()+k);return x.toISOString().slice(0,10);}\nfunction who(){var x='';try{var m=JSON.parse(localStorage.getItem('cbs_me')||'null');if(m&&m.name)x=m.name;}catch(z){}if(!x){try{x=localStorage.getItem('cbs_name')||'';}catch(z){}}if(!x){x=(prompt('Your name:')||'').trim();if(x){try{localStorage.setItem('cbs_name',x);}catch(z){}}}return x;}\nfunction dlg(h){var o=document.createElement('div');o.className='ov';o.innerHTML='<div class=\"dlg\">'+h+'</div>';document.body.appendChild(o);o.close=function(){o.remove();};return o;}\nfunction guard(o,isDirty){o.addEventListener('click',function(ev){if(ev.target!==o)return;if(isDirty&&isDirty()&&!confirm('Close without saving your changes?'))return;o.close();});}\nfunction url(from,to){return '/webhook/cbs-diary-data?job='+encodeURIComponent(JOB)+(from?'&from='+from:'')+(to?'&to='+to:'');}\nfunction fromFor(r){return r==='all'?'':addD(today(),-(n(r)-1));}\nfunction load(){return fetch(url(fromFor(RANGE)),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){if(!d||!d.ok)throw 0;X=d;document.getElementById('sub').textContent=[d.name,d.site,d.client].filter(Boolean).join(' \\u00b7 ')||'Chelmsford Building Services';render();}).catch(function(){app.innerHTML='<div class=\"empty\">Could not load the diary. Refresh to try again.</div>';});}\nfunction post(path,body){var by=who();if(!by)return Promise.resolve({ok:false,cancel:true});body.job=JOB;body.by=by;return fetch('/webhook/'+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(x){return x&&x.ok===false?x:{ok:true};}).catch(function(){return {ok:false,message:'Could not save. Check your connection and try again.'};});}\nfunction wx(w){if(!w)return '';var p=[];if(w.text)p.push(w.text);if(w.max!=null)p.push(Math.round(w.max)+'\\u00b0'+(w.min!=null?' / '+Math.round(w.min)+'\\u00b0C':'C'));if(w.rain!=null)p.push(w.rain+' mm rain');if(w.wind!=null)p.push('wind '+Math.round(w.wind)+' mph'+(w.gust!=null?', gusts '+Math.round(w.gust):''));return p.join(' \\u00b7 ');}\nfunction state(x){if(x.entry&&x.entry.locked_at)return 'lock';if(x.entry)return 'done';if(x.day<X.today&&x.activity>0)return 'need';return x.activity||x.planned?'':'quiet';}\nfunction lines(a){if(!a)return [];var L=[],P=a.people||[];\n function uniq(arr){var o={},r=[];arr.forEach(function(v){v=s(v);if(v&&!o[v.toLowerCase()]){o[v.toLowerCase()]=1;r.push(v);}});return r;}\n if(P.length)L.push(['On site',P.length+': '+P.map(function(p){return p.name;}).join(', ')]);\n a.brief.forEach(function(b){L.push(['Briefing',[b.no,b.at,b.lead?'lead '+b.lead:'',b.count?b.count+' people':''].filter(Boolean).join(' \\u00b7 ')]);});\n if(a.signons.length)L.push(['Sign-ons',a.signons.length+' ('+uniq(a.signons.map(function(x){return x.doc;})).join(', ')+')']);\n if(a.planned.length)L.push(['Programme',uniq(a.planned.map(function(x){return x.name+(x.who?' ('+x.who+')':'');})).join('; ')]);\n if(a.done.length)L.push(['Completed',uniq(a.done.map(function(x){return x.name;})).join('; ')]);\n if(a.ticks.length)L.push(['Checklist',a.ticks.length+' item'+(a.ticks.length===1?'':'s')+' ticked: '+uniq(a.ticks.map(function(x){return x.task;})).join('; ')]);\n if(a.deliveries.length)L.push(['Deliveries due',a.deliveries.map(function(x){return x.no+' '+x.supplier+' ('+x.status+')';}).join('; ')]);\n if(a.hire.length)L.push(['Hire',a.hire.map(function(x){return x.ev+': '+x.no+' '+x.supplier;}).join('; ')]);\n if(a.snags.length)L.push(['Snags',a.snags.map(function(x){return x.no+' '+x.ev.toLowerCase();}).join('; ')]);\n if(a.vars.length)L.push(['Variations',a.vars.map(function(x){return x.no+' '+x.title+' - '+x.ev;}).join('; ')]);\n if(a.rfis.length)L.push(['RFIs',a.rfis.map(function(x){return x.no+' '+x.subject+' - '+x.ev;}).join('; ')]);\n if(a.insp.length)L.push(['Inspections',a.insp.map(function(x){return x.no+(x.by?' by '+x.by:'')+(x.open?' ('+x.open+' open actions)':'');}).join('; ')]);\n if(a.permits.length)L.push(['Permits',a.permits.map(function(x){return x.no+' '+x.type+(x.company?' - '+x.company:'')+' ('+x.status+')';}).join('; ')]);\n if(a.toolbox.length)L.push(['Toolbox',a.toolbox.map(function(x){return x.type+': '+x.topic;}).join('; ')]);\n if(a.incidents.length)L.push(['Incidents',a.incidents.map(function(x){return x.ref+' '+x.kind+(x.severity?' ('+x.severity+')':'');}).join('; ')]);\n if(a.visitors.length)L.push(['Visitors',a.visitors.map(function(x){return x.name+(x.company?' ('+x.company+')':'');}).join(', ')]);\n return L;}\nfunction offText(en){if(!en)return '';var o=[];if(en.on_site)o.push('On site (office note): '+en.on_site);if(en.delay_hours||en.delays||en.delay_cause)o.push('Delay'+(en.delay_cause?' - '+en.delay_cause:'')+(en.delay_hours?' ('+en.delay_hours+' h)':'')+(en.delays?': '+en.delays:''));if(en.instructions)o.push('Instructions: '+en.instructions);if(en.notes)o.push('Notes: '+en.notes);return o.join('\\n');}\nfunction vis(){var q=Q.toLowerCase();return X.days.filter(function(x){var st=state(x);\n if(!QUIET&&st==='quiet'&&!x.entry&&FILTER==='all')return false;\n if(FILTER==='need'&&st!=='need')return false;if(FILTER==='delay'&&!(x.entry&&(x.entry.delay_hours||x.entry.delays)))return false;if(FILTER==='lock'&&st!=='lock')return false;\n if(!q)return true;return (dname(x)+' '+lines(x.auto).map(function(l){return l.join(' ');}).join(' ')+' '+offText(x.entry)+' '+(x.weather&&x.weather.text||'')).toLowerCase().indexOf(q)>-1;});}\nfunction render(){var T=X.totals||{},h='';\n h+='<div class=\"strip\"><div class=\"pst\"><b>'+T.entries+'</b><span>Days written</span></div><div class=\"pst '+(X.missing.length?'warn':'ok')+'\"><b>'+X.missing.length+'</b><span>Need an entry</span></div><div class=\"pst\"><b>'+T.delay_days+'</b><span>Days with delays</span></div><div class=\"pst\"><b>'+T.delay_hours+'</b><span>Delay hours</span></div></div>';\n h+='<div class=\"tools\"><select class=\"rg\" id=\"rg\">'+[['7','Last 7 days'],['14','Last 14 days'],['30','Last 30 days'],['90','Last 90 days'],['all','Whole job']].map(function(o){return '<option value=\"'+o[0]+'\"'+(o[0]===RANGE?' selected':'')+'>'+o[1]+'</option>';}).join('')+'</select><button class=\"btn ghost\" id=\"pdf\">Diary PDF</button><button class=\"btn ghost\" id=\"opt\">Delay causes</button></div>';\n var C={need:0,delay:0,lock:0};X.days.forEach(function(x){var st=state(x);if(st==='need')C.need++;if(st==='lock')C.lock++;if(x.entry&&(x.entry.delay_hours||x.entry.delays))C.delay++;});\n h+='<div class=\"flt\">'+[['all','All days'],['need','Needs entry ('+C.need+')'],['delay','Delays ('+C.delay+')'],['lock','Locked ('+C.lock+')']].map(function(f){return '<button data-f=\"'+f[0]+'\" class=\"'+(FILTER===f[0]?'on':'')+'\">'+f[1]+'</button>';}).join('')+'<button id=\"qt\" class=\"'+(QUIET?'on':'')+'\">Show quiet days</button></div>';\n h+='<input class=\"srch\" id=\"q\" placeholder=\"Search the diary\" value=\"'+e(Q)+'\">';\n if(X.weather_from)h+='<div class=\"note\" style=\"margin:-4px 0 10px\">Weather for '+e(X.weather_from)+' from Open-Meteo. It is fixed when a day is locked.</div>';else h+='<div class=\"note\" style=\"margin:-4px 0 10px\">No weather: add a postcode to the job\\u2019s site address.</div>';\n var L=vis();if(!L.length)h+='<div class=\"empty\">'+(X.days.length?'Nothing matches.':'No days in this range.')+'</div>';\n L.forEach(function(x){var st=state(x),en=x.entry,lk=en&&en.locked_at;\n  h+='<div class=\"card '+(st==='need'?'need':st==='lock'?'lock':st==='quiet'?'quiet':'')+'\" data-d=\"'+x.day+'\"><div class=\"t\">'+dname(x)+(st==='need'?'<span class=\"tag need\">Needs entry</span>':st==='lock'?'<span class=\"tag lock\">Locked</span>':st==='done'?'<span class=\"tag done\">Written</span>':'')+(en&&(en.delay_hours||en.delays)?'<span class=\"tag del\">Delay'+(en.delay_hours?' '+en.delay_hours+'h':'')+'</span>':'')+'</div>'\n  +(x.weather?'<div class=\"wx\">'+e(wx(x.weather))+'</div>':'')\n  +lines(x.auto).map(function(l){return '<div class=\"ln\"><b>'+e(l[0])+':</b> '+e(l[1])+'</div>';}).join('')\n  +(!x.activity&&!x.planned?'<div class=\"m\">No site activity recorded.</div>':'')\n  +(en&&offText(en)?'<div class=\"off\">'+e(offText(en))+'</div>':'')\n  +(lk?'<div class=\"m\">Locked by '+e(en.locked_by)+' '+dmy(en.locked_at)+'</div>':'')\n  +'<div class=\"b\">'+(lk?'<button class=\"btn ghost sm\" data-a=\"unlock\">Unlock</button>':'<button class=\"btn '+(st==='need'?'':'ghost')+' sm\" data-a=\"edit\">'+(en?'Edit entry':'Write entry')+'</button>'+(x.day<=X.today?'<button class=\"btn ghost sm\" data-a=\"lock\">Lock day</button>':''))+'<button class=\"btn ghost sm\" data-a=\"pdf1\">PDF</button></div>'\n  +(en&&en.history?'<details><summary class=\"m\" style=\"cursor:pointer\">History</summary><div class=\"hist\">'+e(en.history)+'</div></details>':'')+'</div>';});\n app.innerHTML=h;\n document.getElementById('rg').onchange=function(){RANGE=this.value;app.innerHTML='<div class=\"empty\">Building the diary\\u2026</div>';load();};\n document.getElementById('pdf').onclick=pdfDlg;document.getElementById('opt').onclick=optDlg;document.getElementById('qt').onclick=function(){QUIET=!QUIET;render();};\n app.querySelectorAll('[data-f]').forEach(function(b){b.onclick=function(){FILTER=b.getAttribute('data-f');render();};});\n var qi=document.getElementById('q');qi.oninput=function(){Q=qi.value;var p=qi.selectionStart;render();var z=document.getElementById('q');z.focus();try{z.setSelectionRange(p,p);}catch(y){}};\n app.querySelectorAll('[data-a]').forEach(function(b){var d=b.closest('.card').getAttribute('data-d'),x=X.days.filter(function(y){return y.day===d;})[0],a=b.getAttribute('data-a');\n  b.onclick=function(){if(a==='edit')editDlg(x);else if(a==='lock')lockDay(x);else if(a==='unlock')unlockDay(x);else if(a==='pdf1')makePdf([x],{wx:1,auto:1,off:1},dname(x));};});}\nfunction editDlg(x){var en=x.entry||{},C=(X.causes||[]).slice();if(en.delay_cause&&C.indexOf(en.delay_cause)<0)C.push(en.delay_cause);\n var o=dlg('<h2>Diary: '+dname(x)+'</h2>'+(x.weather?'<div class=\"wx\">'+e(wx(x.weather))+'</div>':'')+(lines(x.auto).length?'<div class=\"note\">Recorded automatically: '+e(lines(x.auto).map(function(l){return l[0];}).join(', '))+'.</div>':'')\n  +'<label class=\"f\">Who was on site (if not picked up automatically)</label><input type=\"text\" id=\"fo\" value=\"'+e(en.on_site)+'\" placeholder=\"e.g. 3 CBS, 2 groundworkers (Smith Civils)\">'\n  +'<div class=\"row2\"><div><label class=\"f\">Delay cause</label><select id=\"fc\"><option value=\"\">No delay</option>'+C.map(function(c){return '<option'+(c===en.delay_cause?' selected':'')+'>'+e(c)+'</option>';}).join('')+'</select></div><div><label class=\"f\">Hours lost</label><input type=\"number\" step=\"0.25\" min=\"0\" id=\"fh\" value=\"'+(en.delay_hours==null?'':en.delay_hours)+'\"></div></div>'\n  +'<label class=\"f\">Delay details</label><textarea id=\"fd\" placeholder=\"What happened and the effect on the work\">'+e(en.delays)+'</textarea>'\n  +'<label class=\"f\">Instructions received</label><textarea id=\"fi\" placeholder=\"Who gave them, how, and what was asked\">'+e(en.instructions)+'</textarea>'\n  +'<label class=\"f\">Notes</label><textarea id=\"fn\">'+e(en.notes)+'</textarea><div class=\"msg\" id=\"fm\"></div><div class=\"b\"><button class=\"btn\" id=\"fs\">Save</button><button class=\"btn ghost\" id=\"fx\">Cancel</button></div>');\n var ids=['fo','fc','fh','fd','fi','fn'],st=ids.map(function(i){return o.querySelector('#'+i).value;}).join('|');function dirty(){return ids.map(function(i){return o.querySelector('#'+i).value;}).join('|')!==st;}\n guard(o,dirty);o.querySelector('#fx').onclick=function(){if(dirty()&&!confirm('Close without saving your changes?'))return;o.close();};\n o.querySelector('#fs').onclick=function(){var hrs=o.querySelector('#fh').value,c=o.querySelector('#fc').value;if(hrs&&!c){o.querySelector('#fm').textContent='Pick the delay cause for the hours lost.';return;}var b=this;b.disabled=true;\n  post('cbs-diary-act',{a:'save',day:x.day,on_site:o.querySelector('#fo').value,delay_cause:c,delay_hours:hrs,delays:o.querySelector('#fd').value,instructions:o.querySelector('#fi').value,notes:o.querySelector('#fn').value,weather:x.weather}).then(function(r){if(r.ok){o.close();load();}else{b.disabled=false;if(!r.cancel)o.querySelector('#fm').textContent=r.message||'Could not save.';}});};}\nfunction lockDay(x){if(!confirm('Lock '+dname(x)+'?\\n\\nThe day\\u2019s record and weather are fixed as they are now, and the entry can\\u2019t be edited unless someone unlocks it.'))return;\n post('cbs-diary-act',{a:'lock',day:x.day,snapshot:x.auto,weather:x.weather}).then(function(r){if(!r.ok&&!r.cancel)alert(r.message||'Could not lock.');load();});}\nfunction unlockDay(x){if(!confirm('Unlock '+dname(x)+'?'))return;var why=prompt('Are you sure? Give a reason for unlocking (it goes in the history):');if(why===null)return;if(!why.trim()){alert('A reason is needed to unlock.');return;}\n post('cbs-diary-act',{a:'unlock',day:x.day,reason:why}).then(function(r){if(!r.ok&&!r.cancel)alert(r.message||'Could not unlock.');load();});}\nfunction optDlg(){var o=dlg('<h2>Delay causes</h2><div class=\"m\">The choices for \\u201cDelay cause\\u201d.</div><div id=\"ol\"></div><div class=\"row2\" style=\"margin-top:10px\"><input type=\"text\" id=\"on\" placeholder=\"Add a cause\"><button class=\"btn ghost\" id=\"oa\">Add</button></div><div class=\"msg\" id=\"om\"></div><div class=\"b\"><button class=\"btn ghost\" id=\"ox\">Close</button></div>');\n function draw(){o.querySelector('#ol').innerHTML=(X.causes||[]).map(function(c){return '<div class=\"opr\"><span>'+e(c)+'</span><button class=\"btn red sm\" data-v=\"'+e(c)+'\">Remove</button></div>';}).join('');\n  o.querySelectorAll('[data-v]').forEach(function(b){b.onclick=function(){var v=b.getAttribute('data-v');if(!confirm('Are you sure you want to remove \\u201c'+v+'\\u201d? Days already using it keep it.'))return;b.disabled=true;post('cbs-diary-opt',{op:'del',value:v}).then(function(){load().then(draw);});};});}\n draw();guard(o);o.querySelector('#ox').onclick=o.close;\n o.querySelector('#oa').onclick=function(){var v=o.querySelector('#on').value.trim();if(!v)return;var b=this;b.disabled=true;post('cbs-diary-opt',{op:'add',value:v}).then(function(r){b.disabled=false;if(r.ok){o.querySelector('#on').value='';load().then(draw);}else if(!r.cancel)o.querySelector('#om').textContent=r.message||'Could not add.';});};}\nfunction pdfDlg(){var o=dlg('<h2>Diary PDF</h2><div class=\"row2\"><div><label class=\"f\">From</label><input type=\"date\" id=\"pf\"></div><div><label class=\"f\">To</label><input type=\"date\" id=\"pt\" value=\"'+X.to+'\"></div></div>'\n  +'<label class=\"f\">Include</label>'+[['wx','Weather',1],['auto','Site record (people, programme, deliveries, snags, H&S)',1],['off','Office entry (delays, instructions, notes)',1],['quiet','Days with no activity',0],['sum','Delay summary at the end',1]].map(function(c){return '<label class=\"chk\"><input type=\"checkbox\" class=\"pc\" value=\"'+c[0]+'\"'+(c[2]?' checked':'')+'><span>'+c[1]+'</span></label>';}).join('')\n  +'<div class=\"msg\" id=\"pm\"></div><div class=\"b\"><button class=\"btn\" id=\"pg\">Download PDF</button><button class=\"btn ghost\" id=\"px\">Cancel</button></div>');\n o.querySelector('#pf').value=X.days.length?X.days[X.days.length-1].day:X.from;guard(o);o.querySelector('#px').onclick=o.close;\n o.querySelector('#pg').onclick=function(){var f=o.querySelector('#pf').value,t=o.querySelector('#pt').value;if(!f||!t||f>t){o.querySelector('#pm').textContent='Check the dates.';return;}var opt={};[].forEach.call(o.querySelectorAll('.pc'),function(c){opt[c.value]=c.checked;});var b=this;b.disabled=true;o.querySelector('#pm').textContent='Building\\u2026';\n  fetch(url(f,t),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){var L=d.days.slice().reverse().filter(function(x){return opt.quiet||x.activity||x.entry||x.planned&&!x.weekend;});if(!L.length){b.disabled=false;o.querySelector('#pm').textContent='No days to include in that range.';return;}\n   makePdf(L,opt,dmy(f)+' to '+dmy(t));o.close();}).catch(function(){b.disabled=false;o.querySelector('#pm').textContent='Could not load that range. Try again.';});};}\nfunction getLogo(){if(LOGO!==null)return Promise.resolve(LOGO);return fetch('/webhook/cbs-programme-logo').then(function(r){return r.json();}).then(function(d){LOGO=(d&&d.lg)||'';return LOGO;}).catch(function(){LOGO='';return '';});}\nfunction makePdf(days,opt,label){if(!window.jspdf){alert('The PDF tool did not load. Refresh and try again.');return;}\n getLogo().then(function(lg){var doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'}),W=210,HH=297,M=14,y=0;\n  function head(){doc.setFillColor(244,121,32);doc.rect(0,0,W,3,'F');var lx=M;if(lg){try{var pr=doc.getImageProperties(lg),hh=13,ww=pr.width*hh/pr.height;if(ww>48){ww=48;hh=pr.height*ww/pr.width;}doc.addImage(lg,'PNG',M,7,ww,hh);lx=M+ww+5;}catch(z){}}\n   doc.setTextColor(30);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text('Daily diary - Job '+JOB,lx,12);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(90);doc.text(([X.site,X.client].filter(Boolean).join('  |  ')||'Chelmsford Building Services').slice(0,100),lx,17.5);doc.text(label,W-M,12,{align:'right'});y=28;}\n  function need(h){if(y+h>HH-16){doc.addPage();y=18;}}\n  function txt(t,sz,bold,col,ind){doc.setFont('helvetica',bold?'bold':'normal');doc.setFontSize(sz);doc.setTextColor(col==null?25:col);doc.splitTextToSize(s(t),W-2*M-(ind||0)).forEach(function(l){need(sz*0.45+1);doc.text(l,M+(ind||0),y);y+=sz*0.42+0.9;});}\n  head();var tot=0,dd=[];\n  days.forEach(function(x){need(22);doc.setDrawColor(244,121,32);doc.setLineWidth(0.5);doc.line(M,y,W-M,y);doc.setLineWidth(0.2);y+=5;\n   var en=x.entry;txt(dname(x)+(en&&en.locked_at?'   (locked by '+en.locked_by+')':''),11.5,1,20);\n   if(opt.wx&&x.weather)txt('Weather: '+wx(x.weather),9,0,40);\n   if(opt.auto){var L=lines(x.auto);if(!L.length)txt('No site activity recorded.',9,0,110);L.forEach(function(l){txt(l[0]+': '+l[1],9,0,30,3);});}\n   if(opt.off&&en){var t=offText(en);if(t){y+=1;t.split('\\n').forEach(function(p){txt(p,9,0,20,3);});}if(en.delay_hours||en.delays){tot+=n(en.delay_hours);dd.push(x);}}\n   y+=3;});\n  if(opt.sum&&opt.off){need(30);y+=4;txt('Delay summary',12,1,20);if(!dd.length)txt('No delays recorded in this period.',9.5,0,60);else{dd.forEach(function(x){txt(dmy(x.day)+'  -  '+(x.entry.delay_cause||'Delay')+(x.entry.delay_hours?' ('+x.entry.delay_hours+' h)':'')+(x.entry.delays?': '+x.entry.delays:''),9.5,0,25,3);});txt('Total: '+dd.length+' day'+(dd.length===1?'':'s')+' with delays, '+tot+' hours lost',10,1,20);}}\n  var np=doc.getNumberOfPages();for(var i=1;i<=np;i++){doc.setPage(i);doc.setFontSize(7.5);doc.setTextColor(120);doc.text('Chelmsford Building Services Ltd  |  Job '+JOB+' daily diary',M,HH-8);doc.text('Page '+i+' of '+np,W-M,HH-8,{align:'right'});}\n  doc.save('Job '+JOB+' - Daily diary - '+label.replace(/\\//g,'-')+'.pdf');});}\nload();\n}\n"
+        }
+      },
+      {
+        "id": "a84f723a-221e-41ed-97ce-0b7fbb98d608",
+        "name": "Send Page",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          0
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ $json.html }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "text/html; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "618d9173-48cf-4f32-9564-2e151a47d483",
+        "name": "Diary Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          224
+        ],
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "cbs-diary-data",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "6d5975b1-defd-4a39-89eb-a9ee8266a7f8"
+      },
+      {
+        "id": "4c5a750f-6d45-4768-9c17-0e78807ad53a",
+        "name": "Get Diary",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          224
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "0ujWfxU1dlaQQ55d"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "51b53875-2388-47d3-bd1a-916816502f8f",
+        "name": "Get Visitors",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          224
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "5ET1OUDUv4D2u9o6"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "ac5e00bd-2186-41f5-bc1b-df17cf685fe9",
+        "name": "Get Inspections",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          224
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "DPgv7Nm5Q4Vx8uVv"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "4dcd80e7-adeb-4341-bfd8-31257b865f73",
+        "name": "Get Permits",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          224
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "bPr02oOPEg6icX8g"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "ce5962ab-6c01-4b42-a87e-6670d8c9e123",
+        "name": "Diary Data",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          224
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* CBS daily diary data. ?job=N[&from=YYYY-MM-DD&to=YYYY-MM-DD]: one record per day built from the hub registers, plus weather and the office entry.\n   ?due=1 (no job): days with site activity in the last 14 days and no diary entry, per open job (Actions board). */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();const num=v=>Number(v)||0;\nconst q=$('Diary Hook').first().json.query||{};const job=S(q.job).replace(/[^0-9A-Za-z-]/g,''),due=S(q.due)==='1';\nif(!job&&!due)return [{json:{ok:false,message:'No job number.'}}];\nconst rows=n=>{try{return $(n).all().map(i=>i.json).filter(r=>r&&r.id!=null);}catch(e){return [];}};\nconst DI=rows('Get Diary'),VI=rows('Get Visitors'),IN=rows('Get Inspections'),PE=rows('Get Permits');\nconst list=async t=>{try{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t='+t+'&k='+K,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(r=>r&&r.id!=null);}catch(e){return [];}};\nlet R={};try{R=await h.httpRequest({url:H+'cbs-admin-data?t=prestarts,signons,toolbox,incidents,rams,cphsp',json:true,timeout:30000})||{};}catch(e){R={};}\nconst reg=k=>Array.isArray(R[k])?R[k]:[];\nconst [JR,PI,PO,SN,VA,RF,SO]=await Promise.all(['jobrows','progitems','pos','snags','variations','rfis','selectopts'].map(list));\nconst DEFC=['Weather','Client / access','Design or information','Materials late','Subcontractor','Plant breakdown','Other'];let causes=SO.filter(o=>S(o.reg)==='diary'&&S(o.field)==='delay_cause').map(o=>S(o.value)).filter(Boolean);if(!causes.length)causes=DEFC.slice();\nconst d10=v=>{const m=S(v).match(/^(\\d{4}-\\d{2}-\\d{2})/);return m?m[1]:'';};\nconst today=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).slice(0,10);\nconst addD=(d,n)=>{const x=new Date(d+'T12:00:00Z');x.setUTCDate(x.getUTCDate()+n);return x.toISOString().slice(0,10);};\nconst pj=v=>{try{const a=JSON.parse(S(v)||'[]');return Array.isArray(a)?a:[];}catch(e){return [];}};\n/* activity for one job, keyed by day */\nfunction build(J){\n const mine=(L,k)=>L.filter(r=>jk(r[k||'job_no'])===J);\n const A={};const day=d=>{if(!d)return null;return A[d]=A[d]||{brief:[],signons:[],visitors:[],ticks:[],planned:[],started:[],done:[],deliveries:[],hire:[],snags:[],vars:[],rfis:[],insp:[],permits:[],toolbox:[],incidents:[],people:{}};};\n const who=(a,n,role)=>{n=S(n);if(n&&a)a.people[n.toLowerCase()]=a.people[n.toLowerCase()]||{name:n,role:role};};\n mine(reg('prestarts')).forEach(r=>{const a=day(d10(r.held_on));if(!a)return;a.brief.push({no:S(r.ps_no),at:S(r.held_at),lead:S(r.site_lead),count:num(r.headcount)});who(a,r.site_lead,'Site lead');});\n mine(reg('signons')).forEach(r=>{const a=day(d10(r.signed_at));if(!a)return;a.signons.push({name:S(r.name),company:S(r.company),doc:S(r.doc_label||r.doc_type)});who(a,r.name,S(r.company)||'Signed on');});\n mine(VI).forEach(r=>{const a=day(d10(r.visit_date||r.signed_in_at));if(!a)return;a.visitors.push({name:S(r.name),company:S(r.company),in:S(r.signed_in_at).slice(11,16),out:S(r.signed_out_at).slice(11,16),reason:S(r.reason||r.visiting)});});\n const items=mine(PI),byId={};items.forEach(i=>byId[S(i.id)]=i);\n items.forEach(i=>{const k=S(i.kind);if(k==='phase')return;const s=d10(i.start_on),e=d10(i.end_on)||s;\n  if(s){for(let d=s,n=0;d<=e&&n<120;d=addD(d,1),n++){const a=day(d);a.planned.push({name:S(i.name),who:S(i.assigned_to)});}}\n  if(/^(done|complete|completed)$/i.test(S(i.status))&&d10(i.updated_at)){const a=day(d10(i.updated_at));a.done.push({name:S(i.name),by:S(i.updated_by)});}\n  pj(i.checklist_json).forEach(c=>{if(c&&c.done&&d10(c.at)){const a=day(d10(c.at));a.ticks.push({task:S(i.name),item:S(c.t),by:S(c.by),at:S(c.at).slice(11,16)});who(a,c.by,'Crew');}});});\n mine(PO).filter(p=>S(p.po_no)&&!/cancel/i.test(S(p.status))).forEach(p=>{const plant=/plant|hire/i.test(S(p.po_type));\n  if(plant){const on=day(d10(p.needed_by||p.ordered_on));if(on)on.hire.push({no:S(p.po_no),supplier:S(p.supplier),ev:'On hire'});const off=day(d10(p.offhired_on));if(off)off.hire.push({no:S(p.po_no),supplier:S(p.supplier),ev:'Off hired'});}\n  else{const a=day(d10(p.needed_by));if(a)a.deliveries.push({no:S(p.po_no),supplier:S(p.supplier),status:S(p.status)||'Ordered'});}});\n mine(SN).forEach(r=>{[['raised_at','Raised',r.raised_by],['fixed_at','Fixed',r.fixed_by],['signed_off_at','Signed off',r.signed_off_by]].forEach(x=>{const a=day(d10(r[x[0]]));if(a)a.snags.push({no:S(r.snag_no),desc:S(r.description).slice(0,120),ev:x[1],by:S(x[2])});});});\n mine(VA).forEach(r=>{const a=day(d10(r.instructed_on));if(a)a.vars.push({no:S(r.var_no),title:S(r.title),ev:'Instructed'+(r.instructed_by?' by '+S(r.instructed_by):'')});if(/^(approved|rejected)$/i.test(S(r.status))){const b=day(d10(r.decided_on));if(b)b.vars.push({no:S(r.var_no),title:S(r.title),ev:S(r.status)+(r.decided_by?' by '+S(r.decided_by):'')});}});\n mine(RF).forEach(r=>{const a=day(d10(r.sent_on));if(a)a.rfis.push({no:S(r.rfi_no),subject:S(r.subject),ev:'Sent'+(r.sent_to?' to '+S(r.sent_to):'')});const b=day(d10(r.responded_on));if(b)b.rfis.push({no:S(r.rfi_no),subject:S(r.subject),ev:'Answered'});});\n mine(IN).forEach(r=>{const a=day(d10(r.dated));if(a){a.insp.push({no:S(r.insp_no),by:S(r.inspector),open:num(r.actions_open)});who(a,r.inspector,'Inspector');}});\n mine(PE).forEach(r=>{const a=day(d10(r.valid_from||r.requested_at));if(a)a.permits.push({no:S(r.permit_no),type:S(r.permit_type),company:S(r.contractor_company),status:S(r.status)});});\n mine(reg('toolbox')).forEach(r=>{const a=day(d10(r.held_on));if(a){a.toolbox.push({type:S(r.meeting_type)||'Toolbox talk',topic:S(r.topic),by:S(r.presenter)});who(a,r.presenter,'Presenter');}});\n mine(reg('incidents'),'sm8_job').forEach(r=>{const a=day(d10(r.occurred_at));if(a)a.incidents.push({ref:S(r.ref),kind:S(r.kind),severity:S(r.severity),status:S(r.status)});});\n return A;}\nconst site=a=>a.brief.length+a.signons.length+a.visitors.length+a.ticks.length+a.done.length+a.deliveries.length+a.hire.length+a.snags.length+a.insp.length+a.permits.length+a.toolbox.length+a.incidents.length;\nconst entryOf=(J,d)=>DI.filter(r=>jk(r.job_no)===J&&S(r.day)===d).sort((a,b)=>num(b.id)-num(a.id))[0]||null;\n/* Actions board summary */\nif(due){const out=[];const from=addD(today,-14);\n JR.filter(r=>/^(project|cdm)$/.test(S(r.mode))).forEach(r=>{const J=jk(r.ref);const A=build(J);const miss=Object.keys(A).filter(d=>d>=from&&d<today&&site(A[d])>0&&!entryOf(J,d)).sort();\n  if(miss.length)out.push({job:S(r.ref),site:S(r.site),days:miss});});\n return [{json:{ok:true,due:out}}];}\nconst J=jk(job);const jr=JR.filter(r=>jk(r.ref)===J).sort((a,b)=>num(b.id)-num(a.id))[0]||{};\nlet co={};try{co=JSON.parse(S(jr.closeout_json)||'{}')||{};}catch(e){}\nconst A=build(J);const act=Object.keys(A).filter(d=>site(A[d])>0||A[d].planned.length).sort();\nconst ents=DI.filter(r=>jk(r.job_no)===J);\nlet start=d10(q.from)||[d10(jr.starts_on),act[0],ents.map(r=>S(r.day)).sort()[0]].filter(Boolean).sort()[0]||addD(today,-13);\nlet end=d10(q.to)||(d10(co.closed_at)&&S(jr.mode)==='closed'?d10(co.closed_at):today);if(end>today)end=today;if(start>end)start=end;\nconst days=[];for(let d=end,n=0;d>=start&&n<400;d=addD(d,-1),n++)days.push(d);\n/* weather: postcode -> lat/lon -> Open-Meteo (forecast API for the last 90 days, archive before that) */\nconst W={};let wsrc='';\nconst siteAddr=S(jr.site)||[].concat(reg('prestarts'),reg('cphsp'),reg('rams')).filter(r=>jk(r.job_no)===J&&S(r.site)).map(r=>S(r.site))[0]||'';\nconst pc=(siteAddr.toUpperCase().match(/\\b([A-Z]{1,2}\\d[A-Z\\d]?)\\s*(\\d[A-Z]{2})\\b/)||[]);\nif(pc[0]&&days.length){try{const g=await h.httpRequest({url:'https://api.postcodes.io/postcodes/'+encodeURIComponent(pc[1]+pc[2]),json:true,timeout:10000});const lat=g&&g.result&&g.result.latitude,lon=g&&g.result&&g.result.longitude;\n if(lat!=null){wsrc=pc[1]+' '+pc[2];const cut=addD(today,-85),lo=days[days.length-1],hi=days[0];\n  const get=async(base,s,e)=>{if(s>e)return;const x=await h.httpRequest({url:base+'?latitude='+lat+'&longitude='+lon+'&start_date='+s+'&end_date='+e+'&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max&timezone=Europe%2FLondon&wind_speed_unit=mph',json:true,timeout:20000});const D=(x&&x.daily)||{};(D.time||[]).forEach((t,i)=>{if(D.weather_code[i]==null)return;W[t]={code:D.weather_code[i],max:D.temperature_2m_max[i],min:D.temperature_2m_min[i],rain:D.precipitation_sum[i],wind:D.wind_speed_10m_max[i],gust:D.wind_gusts_10m_max[i]};});};\n  try{await get('https://api.open-meteo.com/v1/forecast',lo<cut?cut:lo,hi);}catch(e){}\n  try{if(lo<cut)await get('https://archive-api.open-meteo.com/v1/archive',lo,addD(cut,-1)<hi?addD(cut,-1):hi);}catch(e){}}}catch(e){}}\nconst WX={0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Freezing fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',56:'Freezing drizzle',57:'Freezing drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',66:'Freezing rain',67:'Freezing rain',71:'Light snow',73:'Snow',75:'Heavy snow',77:'Snow grains',80:'Light showers',81:'Showers',82:'Heavy showers',85:'Snow showers',86:'Heavy snow showers',95:'Thunderstorm',96:'Thunderstorm with hail',99:'Thunderstorm with hail'};\nconst out=days.map(d=>{const a=A[d]||null,e=entryOf(J,d);let w=null;if(e&&S(e.weather_json)){try{w=JSON.parse(e.weather_json);}catch(x){}}if(!w&&W[d])w=Object.assign({},W[d]);if(w&&w.code!=null&&!w.text)w.text=WX[w.code]||'';\n let snap=null;if(e&&e.locked_at&&S(e.snapshot_json)){try{snap=JSON.parse(e.snapshot_json);}catch(x){}}\n const auto=snap||(a?Object.assign({},a,{people:Object.values(a.people)}):null);const dow=new Date(d+'T12:00:00Z').getUTCDay();\n return {day:d,dow:dow,weekend:dow===0||dow===6,activity:auto?site(auto):0,planned:auto?auto.planned.length:0,auto:auto,weather:w,\n  entry:e?{id:e.id,delay_cause:S(e.delay_cause),delay_hours:S(e.delay_hours)===''?null:num(e.delay_hours),delays:S(e.delays),instructions:S(e.instructions),notes:S(e.notes),on_site:S(e.on_site),locked_by:S(e.locked_by),locked_at:S(e.locked_at),updated_by:S(e.updated_by),updated_at:S(e.updated_at),history:S(e.history)}:null};});\nconst missing=out.filter(x=>x.day<today&&x.activity>0&&!x.entry).map(x=>x.day);\nreturn [{json:{ok:true,causes:causes,job:job,site:siteAddr,client:S(jr.client),name:S(jr.name),mode:S(jr.mode),from:start,to:end,today:today,weather_from:wsrc,days:out,missing:missing,\n totals:{delay_hours:out.reduce((m,x)=>m+(x.entry&&x.entry.delay_hours?x.entry.delay_hours:0),0),delay_days:out.filter(x=>x.entry&&(x.entry.delay_hours||x.entry.delays)).length,entries:out.filter(x=>x.entry).length,locked:out.filter(x=>x.entry&&x.entry.locked_at).length}}}];\n"
+        }
+      },
+      {
+        "id": "e6854a91-6c7a-461d-a111-70b7effcf03b",
+        "name": "Send Data",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1344,
+          224
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "61e59c12-20a0-4603-9103-e5de6993aaf7",
+        "name": "Act Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          448
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-diary-act",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "c72ccc46-5efb-42c3-ab4b-029f3fd099f7"
+      },
+      {
+        "id": "1f9d26fe-15b7-4bbc-8413-8824f39c44e0",
+        "name": "Get Day",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          448
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "0ujWfxU1dlaQQ55d"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "job_no",
+                "condition": "eq",
+                "keyValue": "={{ String($json.body.job || \"\") }}"
+              },
+              {
+                "keyName": "day",
+                "condition": "eq",
+                "keyValue": "={{ String($json.body.day || \"\") }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "faf41db0-363d-4827-9a7c-8cfec99acdd4",
+        "name": "Diary Act",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          448
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* Daily diary actions: a=save (office entry), a=lock (freezes the day's record and weather), a=unlock. Output feeds the cbs_diary upsert (job_no + day). */\nconst S=v=>v==null?'':String(v).trim();\nconst b=$('Act Hook').first().json.body||{};const a=S(b.a),job=S(b.job).replace(/[^0-9A-Za-z-]/g,''),day=S(b.day),by=S(b.by).slice(0,80);\nif(!job)throw new Error('No job number.');if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(day))throw new Error('Bad date.');if(!by)throw new Error('Enter your name.');\nlet ex=null;try{ex=$('Get Day').all().map(i=>i.json).filter(r=>r&&r.id!=null).sort((x,y)=>(Number(y.id)||0)-(Number(x.id)||0))[0]||null;}catch(e){ex=null;}\nconst now=new Date().toLocaleString('sv-SE',{timeZone:'Europe/London'}).replace(' ','T').slice(0,16);\nconst stamp=now.slice(8,10)+'/'+now.slice(5,7)+'/'+now.slice(0,4)+' '+now.slice(11,16);\nconst hist=line=>[S(ex&&ex.history),stamp+' - '+line].filter(Boolean).join(String.fromCharCode(10)).slice(-6000);\nconst js=v=>{try{return v&&typeof v==='object'?JSON.stringify(v).slice(0,60000):'';}catch(e){return '';}};\nconst row={job_no:job,day:day,updated_by:by,updated_at:now};\nif(a==='save'){\n if(ex&&S(ex.locked_at))throw new Error('This day is locked. Unlock it first.');\n const hrs=S(b.delay_hours);if(hrs!==''&&isNaN(Number(hrs)))throw new Error('Delay hours must be a number.');\n Object.assign(row,{delay_cause:S(b.delay_cause).slice(0,80),delay_hours:hrs===''?null:Math.round(Number(hrs)*4)/4,delays:S(b.delays).slice(0,4000),instructions:S(b.instructions).slice(0,4000),notes:S(b.notes).slice(0,4000),on_site:S(b.on_site).slice(0,2000)});\n if(!(ex&&S(ex.weather_json))&&b.weather)row.weather_json=js(b.weather);\n row.history=hist((ex?'Updated':'Entry written')+' by '+by);\n}else if(a==='lock'){\n if(ex&&S(ex.locked_at))throw new Error('Already locked.');\n Object.assign(row,{locked_by:by,locked_at:now,snapshot_json:js(b.snapshot),history:hist('Locked by '+by)});\n if(b.weather)row.weather_json=js(b.weather);\n if(!ex)Object.assign(row,{delay_cause:'',delay_hours:null,delays:'',instructions:'',notes:'',on_site:''});\n}else if(a==='unlock'){\n if(!ex||!S(ex.locked_at))throw new Error('Not locked.');\n Object.assign(row,{locked_by:'',locked_at:'',snapshot_json:'',history:hist('Unlocked by '+by+(S(b.reason)?': '+S(b.reason).slice(0,300):''))});\n}else throw new Error('Unknown action.');\nreturn [{json:row}];\n"
+        }
+      },
+      {
+        "id": "5cc70ba1-df91-4978-8f77-485ce50630b4",
+        "name": "Save Day",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          672,
+          448
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "0ujWfxU1dlaQQ55d"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "job_no",
+                "condition": "eq",
+                "keyValue": "={{ $json.job_no }}"
+              },
+              {
+                "keyName": "day",
+                "condition": "eq",
+                "keyValue": "={{ $json.day }}"
+              }
+            ]
+          },
+          "matchType": "allConditions",
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": null,
+            "matchingColumns": []
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "624aa384-b5fa-418c-913a-2c5ba34608cf",
+        "name": "Send Act",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          448
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify({ ok: true }) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "2dd98cd1-af71-4ce9-83ca-8f64aaa9d039",
+        "name": "Opt Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          672
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-diary-opt",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "b3e9310d-284e-4fac-b53e-16449e883530"
+      },
+      {
+        "id": "8051240e-3bcb-4cd2-81e5-d06bb53b4862",
+        "name": "Diary Opt",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          672
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "language": "javaScript",
+          "jsCode": "/* Daily diary delay-cause options (cbs_select_options reg=diary, field=delay_cause): add / remove. Seeds the defaults on first change. */\nconst h=this.helpers,H='https://old-hub.example/webhook/',K='[redacted-internal-key]';const S=v=>v==null?'':String(v).trim();\nconst b=$input.first().json.body||{};const op=S(b.op),val=S(b.value).slice(0,80),by=S(b.by).slice(0,80);\nconst R=(ok,x)=>[{json:Object.assign({ok:ok},x||{})}];\nif(!val)return R(false,{message:'Type the option first.'});if(!by)return R(false,{message:'Enter your name.'});\nconst list=async()=>{const L=await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=list&t=selectopts&k='+K,body:{},json:true,timeout:30000});return (Array.isArray(L)?L:[]).filter(o=>o&&S(o.reg)==='diary'&&S(o.field)==='delay_cause');};\nconst save=row=>h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=save&t=selectopts&id=0&k='+K,body:row,json:true,timeout:20000});\nlet O=await list();\nif(!O.length){for(const d of ['Weather','Client / access','Design or information','Materials late','Subcontractor','Plant breakdown','Other'])await save({reg:'diary',field:'delay_cause',value:d,added_by:by});O=await list();}\nconst hit=O.find(o=>S(o.value).toLowerCase()===val.toLowerCase());\nif(op==='del'){if(hit)await h.httpRequest({method:'POST',url:H+'cbs-admin-save?a=del&t=selectopts&id='+hit.id+'&k='+K,body:{},json:true,timeout:20000});return R(true);}\nif(!hit)await save({reg:'diary',field:'delay_cause',value:val,added_by:by});return R(true);\n"
+        }
+      },
+      {
+        "id": "4f78f4cc-3bdd-4250-87a6-daddfc5a3f35",
+        "name": "Send Opt",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          672
+        ],
+        "parameters": {
+          "respondWith": "text",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "name": "Cache-Control",
+                  "value": "no-store"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Page Hook": {
+        "main": [
+          [
+            {
+              "node": "Diary Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Diary Page": {
+        "main": [
+          [
+            {
+              "node": "Send Page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Diary Hook": {
+        "main": [
+          [
+            {
+              "node": "Get Diary",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Diary": {
+        "main": [
+          [
+            {
+              "node": "Get Visitors",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Visitors": {
+        "main": [
+          [
+            {
+              "node": "Get Inspections",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Inspections": {
+        "main": [
+          [
+            {
+              "node": "Get Permits",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Permits": {
+        "main": [
+          [
+            {
+              "node": "Diary Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Diary Data": {
+        "main": [
+          [
+            {
+              "node": "Send Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Act Hook": {
+        "main": [
+          [
+            {
+              "node": "Get Day",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Day": {
+        "main": [
+          [
+            {
+              "node": "Diary Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Diary Act": {
+        "main": [
+          [
+            {
+              "node": "Save Day",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Save Day": {
+        "main": [
+          [
+            {
+              "node": "Send Act",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Opt Hook": {
+        "main": [
+          [
+            {
+              "node": "Diary Opt",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Diary Opt": {
+        "main": [
+          [
+            {
+              "node": "Send Opt",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS daily diary per job: GET cbs-diary?job=N (page), GET cbs-diary-data (day records from hub registers + Open-Meteo weather; ?due=1 for Actions board), POST cbs-diary-act (save/lock/unlock), POST cbs-diary-opt (delay causes).",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

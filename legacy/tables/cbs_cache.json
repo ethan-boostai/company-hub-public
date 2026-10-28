@@ -1,0 +1,28 @@
+{
+  "table": "cbs_cache",
+  "n8n_id": "bSkjEWvTgJnP818K",
+  "columns": [
+    {
+      "name": "at",
+      "type": "string"
+    },
+    {
+      "name": "busy_at",
+      "type": "string"
+    },
+    {
+      "name": "data",
+      "type": "string"
+    },
+    {
+      "name": "key",
+      "type": "string"
+    },
+    {
+      "name": "v",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [],
+  "note": "no sample found (only read/written by CBS - Job File, which saves no successful executions)"
+}

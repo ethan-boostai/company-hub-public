@@ -1,0 +1,72 @@
+{
+  "table": "cbs_rams_types",
+  "n8n_id": "eJhN4Cu9DqgoD8Dt",
+  "columns": [
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "step_count",
+      "type": "string"
+    },
+    {
+      "name": "tpl",
+      "type": "string"
+    },
+    {
+      "name": "type_key",
+      "type": "string"
+    },
+    {
+      "name": "updated_by",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "type_key": "general",
+      "name": "General building works (start blank)",
+      "status": "Active",
+      "step_count": "0",
+      "tpl": "{\"id\":\"general\",\"name\":\"General building works (start blank)\",\"activity\":\"\",\"taskShort\":\"\",\"scope\":\"\",\"plant\":\"110v, cordless and hand tools.\",\"materials\":\"\",\"hazards\":[\"client_site\",\"slips\",\"manual\",\"hand_tools\",\"electrical\",\"flt\"],\"ppe\":[\"Safety boots\",\"Hi-vis vest\",\"Overalls\",\"Safety gloves\"],\"permits\":[\"induction\",\"ptw\",\"cscs\",\"first\"],\"steps\":[],\"ct\":[]}",
+      "notes": "",
+      "updated_by": "Built-in (copied 24 Oct 2026)",
+      "id": 1,
+      "createdAt": "2026-10-24T19:39:02.426Z",
+      "updatedAt": "2026-10-24T19:39:02.426Z"
+    },
+    {
+      "type_key": "resin",
+      "name": "Resin floor & concrete plinths (Ucrete)",
+      "status": "Active",
+      "step_count": "10",
+      "tpl": "{\"id\":\"resin\",\"name\":\"Resin floor & concrete plinths (Ucrete)\",\"activity\":\"Semi-Treated Water Tank Plinths\",\"taskShort\":\"Concrete plinths and Ucrete UD200 resin top layer\",\"scope\":\"Form reinforced concrete plinths within a fenced compound, then grind and apply a Ucrete UD200 resin top layer with Ucrete RG coving and sealed expansion joints. Work supervised by an SMSTS-trained supervisor.\",\"plant\":\"Various hand, battery and 110v tools, petrol tamper and vibrating poker, floor grinder with extraction, 110v forced-action mixer, floor saw, automatic rebar tying tool. Ready-mix lorry and pump.\",\"materials\":\"Portland cement / ready-mix concrete, DPM, reinforcement mesh and bent bars, timber shuttering, chamfer profile, Ucrete UD200, PRG and RG, Sikaflex CR460 mastic.\",\"hazards\":[\"flt\",\"resin\",\"dust\",\"silica\",\"electrical\",\"manual\",\"access\",\"noise\",\"lighting\",\"buried\",\"havs\",\"wacker\",\"wet_concrete\",\"hand_tools\",\"slips\"],\"ppe\":[\"Safety boots\",\"Hi-vis vest\",\"Hard hat\",\"Safety gloves\",\"Chemical-resistant gloves\",\"Eye protection\",\"Hearing protection\",\"FFP3 / P3 respirator\",\"Knee pads\"],\"permits\":[\"induction\",\"ptw\",\"cscs\",\"smsts\",\"coshh\",\"manual\",\"first\"],\"steps\":[[\"Set up a working compound around the area with Heras fencing covered in flame-retardant sheeting.\",\"Manual handling of fence panels; vehicles and FLTs near the compound; panels blowing over.\",\"Two-person handling of panels; fence blocks and clamps fitted, stabilised against wind. Banksman for deliveries. Segregated pedestrian ...[truncated]",
+      "notes": "",
+      "updated_by": "Built-in (copied 24 Oct 2026)",
+      "id": 2,
+      "createdAt": "2026-10-24T19:39:02.604Z",
+      "updatedAt": "2026-10-24T19:39:02.604Z"
+    },
+    {
+      "type_key": "cableduct",
+      "name": "Civil works - cable duct & concrete pad",
+      "status": "Active",
+      "step_count": "4",
+      "tpl": "{\"id\":\"cableduct\",\"name\":\"Civil works - cable duct & concrete pad\",\"activity\":\"Civil Works for Cable Duct Installation\",\"taskShort\":\"Cable duct and concrete pad in block paving\",\"scope\":\"Saw cut existing block paving, form a concrete pad for a bolt-fixed pedestal, excavate the sand bedding to install a 20 mm flexible duct for cable routing and reinstate the block paving.\",\"plant\":\"110v, cordless and hand tools, floor / road saw with water suppression.\",\"materials\":\"Sika Tecfast Parex concrete, 20 mm flexible duct, sharp sand.\",\"hazards\":[\"adverse_weather\",\"hand_tools\",\"manual\",\"slips\",\"excavation\",\"buried\",\"silica\",\"noise\",\"wet_concrete\",\"flt\"],\"ppe\":[\"Safety boots\",\"Hi-vis vest\",\"Overalls\",\"Hard hat\",\"Safety gloves\",\"Eye protection\",\"Hearing protection\",\"FFP3 / P3 respirator\"],\"permits\":[\"induction\",\"ptw\",\"cscs\",\"dig\",\"first\"],\"steps\":[[\"Cordon off the area with Chapter 8 barriers, keeping access to the front entrance door open for staff.\",\"Pedestrians and vehicles entering the works; staff walking past open excavations.\",\"Chapter 8 barriers and signage; a clear, defined walkway to the entrance door maintained at all times.\",4,3,1,3,\"Supervisor\"],[\"Saw cut the existing block paving and form the concrete pad for the pedestal; hand mix Sika Tecfast Parex.\",\"Silica dust; noise; saw contact; wet concrete skin contact; buried services.\",\"Permit to dig and service drawings checked; CAT and Genny scan before cutting. Saw with water suppression; FFP3 respirator, hearing and eye prot...[truncated]",
+      "notes": "",
+      "updated_by": "Built-in (copied 24 Oct 2026)",
+      "id": 3,
+      "createdAt": "2026-10-24T19:39:02.872Z",
+      "updatedAt": "2026-10-24T19:39:02.872Z"
+    }
+  ]
+}

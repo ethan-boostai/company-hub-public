@@ -1,0 +1,135 @@
+{
+  "table": "cbs_materials",
+  "n8n_id": "cISot2CtqSItFj93",
+  "columns": [
+    {
+      "name": "category",
+      "type": "string"
+    },
+    {
+      "name": "cost",
+      "type": "string"
+    },
+    {
+      "name": "last_counted_by",
+      "type": "string"
+    },
+    {
+      "name": "last_counted_on",
+      "type": "string"
+    },
+    {
+      "name": "location",
+      "type": "string"
+    },
+    {
+      "name": "min_level",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "notes",
+      "type": "string"
+    },
+    {
+      "name": "qty_on_hand",
+      "type": "string"
+    },
+    {
+      "name": "reorder_qty",
+      "type": "string"
+    },
+    {
+      "name": "sds_product",
+      "type": "string"
+    },
+    {
+      "name": "sm8_uuid",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "supplier",
+      "type": "string"
+    },
+    {
+      "name": "supplier_code",
+      "type": "string"
+    },
+    {
+      "name": "unit",
+      "type": "string"
+    }
+  ],
+  "sample_rows": [
+    {
+      "name": "Accelerator - Ucrete Accelerator (10L)",
+      "category": "Resin flooring",
+      "unit": "tin",
+      "location": "CBS Warehouse",
+      "qty_on_hand": "1",
+      "min_level": null,
+      "supplier": null,
+      "supplier_code": null,
+      "cost": null,
+      "sds_product": null,
+      "last_counted_on": null,
+      "last_counted_by": null,
+      "status": "Active",
+      "notes": "Brand: Sika | Imported from asset records 05/10/2026",
+      "sm8_uuid": null,
+      "reorder_qty": null,
+      "id": 1,
+      "createdAt": "2026-10-06T09:28:06.550Z",
+      "updatedAt": "2026-10-06T09:28:06.550Z"
+    },
+    {
+      "name": "All Coat - Black (2.5L)",
+      "category": "Paint and coatings",
+      "unit": "tin",
+      "location": "CBS Warehouse",
+      "qty_on_hand": "2",
+      "min_level": null,
+      "supplier": null,
+      "supplier_code": null,
+      "cost": null,
+      "sds_product": null,
+      "last_counted_on": null,
+      "last_counted_by": null,
+      "status": "Active",
+      "notes": "Brand: Zinsser | Imported from asset records 05/10/2026",
+      "sm8_uuid": null,
+      "reorder_qty": null,
+      "id": 2,
+      "createdAt": "2026-10-06T09:28:06.550Z",
+      "updatedAt": "2026-10-06T09:28:06.550Z"
+    },
+    {
+      "name": "All Coat - White (2.5L)",
+      "category": "Paint and coatings",
+      "unit": "tin",
+      "location": "CBS Warehouse",
+      "qty_on_hand": "1",
+      "min_level": null,
+      "supplier": null,
+      "supplier_code": null,
+      "cost": null,
+      "sds_product": null,
+      "last_counted_on": null,
+      "last_counted_by": null,
+      "status": "Active",
+      "notes": "Brand: Zinsser | Imported from asset records 05/10/2026",
+      "sm8_uuid": null,
+      "reorder_qty": null,
+      "id": 3,
+      "createdAt": "2026-10-06T09:28:06.550Z",
+      "updatedAt": "2026-10-06T09:28:06.550Z"
+    }
+  ]
+}
