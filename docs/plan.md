@@ -263,6 +263,7 @@ files: belongs to one row anywhere via (entity_table, entity_id), plus job_id fo
 5. **Folder and status changes**: any to any, no reason or warning. Each change adds a ServiceM8 job note naming who made it, with an optional note. Setting Completed doesn't close the job out; setting a closed-out job back to Estimate or Approved reopens it.
 6. **Sync**: ServiceM8 webhooks through a new n8n workflow, plus a nightly catch-up. No existing workflow is changed.
 7. **Test job**: Phase 1 tests use a test job created in ServiceM8. Its files go to its real job folder in SharePoint.
+8. **Job folders in SharePoint** (same as the old hub, all inside `CBS System`, so the "CBS Hub - Files" folder rule needs no change): job files go to `CBS System/Operations/Jobs/Job N/<folder>`, where the folder comes from the requirement (RAMS and Subcontractor RAMS → `RAMS`; Supplier POs, Subcontractor POs, Hire plant → `Purchase orders`; Survey → `Surveys`; Estimate → `Estimate`; Supplier and Subcontractor quotes → `Quotes`; Documentation → `Documents`; RFIs → `RFIs`; Programme → `Programme`; Inspections → `Inspections`; Permits → `Permits`; CPHSP and Pre-con info → `CDM`; Inductions → `Inductions`; Toolbox talks → `Toolbox talks`), else `Tasks`. The old Enquiry prep page also saved estimate-stage uploads to `CBS System/Operations/Enquiries/Job N`; the job page reads both locations for old files.
 
 ## 4. Migration (per area)
 
