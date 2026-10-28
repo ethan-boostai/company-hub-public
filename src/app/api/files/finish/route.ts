@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { claimRequestKey } from "@/lib/actions";
 import { logActivity } from "@/lib/activity";
 import { getCurrentPerson } from "@/lib/auth/session";
-import { getItem } from "@/lib/files/graph";
+import { fileInfo, SharePointError, UNREACHABLE } from "@/lib/files/sharepoint";
 import { LOCAL_DIR, storageMode } from "@/lib/files/storage";
 import { readTicket } from "@/lib/files/ticket";
 
@@ -25,9 +25,15 @@ export async function POST(req: Request) {
     record = { storage: "local", storage_path: t.path, sharepoint_item_id: null, sharepoint_url: null, name: t.name, size: t.size };
   } else {
     if (!body?.itemId) return NextResponse.json({ ok: false, message: "The upload was incomplete. Try again." }, { status: 400 });
-    const item = await getItem(body.itemId).catch(() => null);
+    let item;
+    try {
+      item = await fileInfo(body.itemId);
+    } catch (e) {
+      const message = e instanceof SharePointError && e.status === 502 ? UNREACHABLE : "The upload could not be checked. Try again.";
+      return NextResponse.json({ ok: false, message }, { status: e instanceof SharePointError ? e.status : 502 });
+    }
     const folder = t.path.split("/").slice(0, -1).join("/");
-    if (!item || item.size !== t.size || !(item.parentReference?.path || "").endsWith(folder)) {
+    if (item.size !== t.size || item.path !== folder) {
       return NextResponse.json({ ok: false, message: "The upload could not be checked. Try again." }, { status: 400 });
     }
     record = { storage: "sharepoint", storage_path: null, sharepoint_item_id: item.id, sharepoint_url: item.webUrl, name: item.name, size: item.size };
@@ -48,7 +54,7 @@ export async function POST(req: Request) {
       person: person.name, table: "files", rowId: Number(row.id), jobId: t.jobId, action: "create",
       changes: { name: [null, record.name], entity: [null, t.entityTable ? `${t.entityTable}:${t.entityId ?? ""}` : null] },
     });
-    return { id: Number(row.id), name: record.name, mime: t.mime, size: record.size };
+    return { id: Number(row.id), name: record.name, mime: t.mime, size: record.size, storage: record.storage };
   });
   return NextResponse.json({ ok: true, file });
 }

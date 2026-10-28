@@ -2,9 +2,9 @@ import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getCurrentPerson } from "@/lib/auth/session";
-import { cleanFileName, MAX_UPLOAD_BYTES, storageMode, uploadPath } from "@/lib/files/storage";
+import { cleanFileName, MAX_UPLOAD_BYTES, storageMode, UPLOAD_FOLDER } from "@/lib/files/storage";
 import { signTicket } from "@/lib/files/ticket";
-import { createUploadSession } from "@/lib/files/graph";
+import { SharePointError, startUpload, UNREACHABLE } from "@/lib/files/sharepoint";
 
 const Body = z.object({
   name: z.string().min(1).max(400),
@@ -34,28 +34,31 @@ export async function POST(req: Request) {
 
   const name = cleanFileName(b.name);
   const mode = storageMode();
-  const path = mode === "local" ? `${randomUUID()}/${name}` : uploadPath(name);
-  const ticket = signTicket({
-    name,
-    size: b.size,
-    mime: b.mime || "application/octet-stream",
-    path,
-    entityTable: b.entityTable ?? null,
-    entityId: b.entityId ?? null,
-    jobId: b.jobId ?? null,
-    role: b.role ?? null,
-    personId: person.id,
-    requestKey: b.requestKey,
-    exp: Date.now() + 60 * 60 * 1000,
-  });
+  const ticketFor = (path: string) =>
+    signTicket({
+      name,
+      size: b.size,
+      mime: b.mime || "application/octet-stream",
+      path,
+      entityTable: b.entityTable ?? null,
+      entityId: b.entityId ?? null,
+      jobId: b.jobId ?? null,
+      role: b.role ?? null,
+      personId: person.id,
+      requestKey: b.requestKey,
+      exp: Date.now() + 60 * 60 * 1000,
+    });
 
   if (mode === "local") {
+    const ticket = ticketFor(`${randomUUID()}/${name}`);
     return NextResponse.json({ ok: true, mode, uploadUrl: `/api/files/local?t=${encodeURIComponent(ticket)}`, ticket });
   }
   try {
-    const uploadUrl = await createUploadSession(path);
-    return NextResponse.json({ ok: true, mode, uploadUrl, ticket });
-  } catch {
-    return NextResponse.json({ ok: false, message: "SharePoint isn't reachable right now. Try again shortly." }, { status: 502 });
+    const s = await startUpload(UPLOAD_FOLDER, name, b.size);
+    // SharePoint may rename the file if the name is taken; the ticket keeps the folder it must land in.
+    return NextResponse.json({ ok: true, mode, uploadUrl: s.uploadUrl, ticket: ticketFor(`${s.folder}/${s.name}`) });
+  } catch (e) {
+    const message = e instanceof SharePointError ? e.message : UNREACHABLE;
+    return NextResponse.json({ ok: false, message }, { status: e instanceof SharePointError ? e.status : 502 });
   }
 }

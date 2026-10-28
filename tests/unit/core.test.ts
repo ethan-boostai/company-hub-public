@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { PDFDocument } from "pdf-lib";
 import { checkLegacyPin, checkPin, hashPin, isValidPin, legacyPinHash } from "@/lib/auth/pin";
 import { hashToken, newToken } from "@/lib/auth/token";
-import { cleanFileName, uploadPath } from "@/lib/files/storage";
+import { cleanFileName, UPLOAD_FOLDER } from "@/lib/files/storage";
 import { readTicket, signTicket, type UploadTicket } from "@/lib/files/ticket";
 import { HousePdf } from "@/lib/pdf/house";
 import { diff } from "@/lib/activity";
@@ -62,8 +62,8 @@ describe("file names", () => {
     expect(cleanFileName("photo.HEIC")).toBe("photo.HEIC");
     expect(cleanFileName("")).toBe("file");
   });
-  it("go in a dated hub uploads folder", () => {
-    expect(uploadPath("a.txt", new Date(Date.UTC(2026, 9, 28)))).toBe("CBS System/Operations/Hub uploads/2026-10/a.txt");
+  it("go to the SharePoint test folder in Phase 0", () => {
+    expect(UPLOAD_FOLDER).toBe("CBS System/Hub uploads/Test");
   });
 });
 

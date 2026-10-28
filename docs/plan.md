@@ -247,7 +247,7 @@ files: belongs to one row anywhere via (entity_table, entity_id), plus job_id fo
 ### 3.5 Decisions (Ethan, 28/10/2026)
 
 1. **Requirement types: both.** Types that open a builder or page stay in code; the `requirement_types` table lets the office add simple custom types (plain task with a stage).
-2. **Documents:** SharePoint stays the home for documents and PDFs (`files.storage = 'sharepoint'`). Supabase Storage holds signatures and thumbnails only.
+2. **Documents:** SharePoint stays the home for documents and PDFs (`files.storage = 'sharepoint'`). Supabase Storage holds signatures and thumbnails only. The app reaches SharePoint only through the n8n workflow "CBS Hub - Files" (start upload / file info / short-lived links, secret header `X-CBS-Files-Key`); n8n holds the SharePoint credential, set in its one "Graph Request" node. Uploads go from the browser straight to SharePoint in 5 MB chunks (no Vercel or n8n size limit). Same library and `CBS System` folder as the old hub; Phase 0 uses `CBS System/Hub uploads/Test` only.
 3. **PINs** carry over: old hashes are copied, the existing PIN is accepted on first sign-in, then re-stored with bcrypt plus a lock-out after repeated wrong PINs. Old sign-in tokens are not migrated.
 4. **`/legacy`** has no real contact details: phone numbers, emails and addresses are replaced with fake values.
 5. **TV dashboard:** its tasks show exactly what's on the Actions board, no filters.

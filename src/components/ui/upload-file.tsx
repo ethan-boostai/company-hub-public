@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 
-export type UploadedFile = { id: number; name: string; mime: string; size: number };
+export type UploadedFile = { id: number; name: string; mime: string; size: number; storage: string };
 
 const CHUNK = 5 * 1024 * 1024; // multiple of 320 KiB, as SharePoint requires
 
@@ -11,21 +11,27 @@ async function json<T>(res: Response): Promise<T> {
 }
 
 // SharePoint upload session: send the file in chunks straight to Microsoft (no size limit from Vercel).
+// A failed chunk is retried once. If the upload can't finish, the session is cancelled so SharePoint
+// doesn't keep an empty or part file.
 async function sendToSharePoint(url: string, file: File, onProgress: (p: number) => void): Promise<string> {
   let item: { id?: string } = {};
-  for (let start = 0; start < file.size; start += CHUNK) {
-    const end = Math.min(start + CHUNK, file.size);
-    const res = await fetch(url, {
-      method: "PUT",
-      headers: { "Content-Range": `bytes ${start}-${end - 1}/${file.size}` },
-      body: file.slice(start, end),
-    });
-    if (!res.ok) throw new Error("upload");
-    if (res.status === 200 || res.status === 201) item = await res.json();
-    onProgress(end / file.size);
+  try {
+    for (let start = 0; start < file.size; start += CHUNK) {
+      const end = Math.min(start + CHUNK, file.size);
+      const put = () =>
+        fetch(url, { method: "PUT", headers: { "Content-Range": `bytes ${start}-${end - 1}/${file.size}` }, body: file.slice(start, end) });
+      let res = await put().catch(() => null);
+      if (!res || res.status >= 500) res = await put();
+      if (!res.ok) throw new Error("upload");
+      if (res.status === 200 || res.status === 201) item = await res.json();
+      onProgress(end / file.size);
+    }
+    if (!item.id) throw new Error("upload");
+    return item.id;
+  } catch (e) {
+    await fetch(url, { method: "DELETE" }).catch(() => undefined);
+    throw e;
   }
-  if (!item.id) throw new Error("upload");
-  return item.id;
 }
 
 // "Upload file": any file type. Records the file against what it belongs to.

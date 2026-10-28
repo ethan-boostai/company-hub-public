@@ -54,4 +54,14 @@ node tests/e2e/phase0.mjs
 
 ## Environment variables (Vercel)
 
-See `.env.example`. Server-only secrets: `DATABASE_URL`, `APP_SECRET`, `SUPABASE_SERVICE_ROLE_KEY`, `MS_CLIENT_SECRET`. On Vercel `FILE_STORAGE` must be `sharepoint`.
+See `.env.example`. Server-only secrets: `DATABASE_URL`, `APP_SECRET`, `SUPABASE_SERVICE_ROLE_KEY`, `N8N_FILES_KEY`. On Vercel `FILE_STORAGE` must be `sharepoint`.
+
+## Files (SharePoint through n8n)
+
+The app never talks to Microsoft directly. The n8n workflow **CBS Hub - Files** has three webhooks, each protected by the `X-CBS-Files-Key` header:
+
+- `cbs-hub-files-start` starts a resumable upload in a folder inside `CBS System`. The browser then sends the file to SharePoint in 5 MB chunks, so there's no size limit from Vercel or n8n (SharePoint allows up to 250 GB; the app caps uploads at 250 MB).
+- `cbs-hub-files-info` returns a file's name, size, folder and web link (used to check an upload before it's recorded).
+- `cbs-hub-files-link` returns short-lived view and download links, fetched fresh each time a file is opened.
+
+All SharePoint calls go through the one "Graph Request" node, so the SharePoint credential can be swapped (e.g. to the app/service principal credential) in n8n with no app change. If SharePoint fails, the workflow emails an alert (at most one per 15 minutes) and the app shows "SharePoint isn't reachable right now". Phase 0 uploads go to `CBS System/Hub uploads/Test` only.

@@ -103,14 +103,17 @@ try {
   const fBefore = await files.filter({ hasNotText: "No test files yet." }).count();
   const png = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFBQIAX8jx0gAAAABJRU5ErkJggg==", "base64");
   await page.locator('input[type="file"]').setInputFiles({ name: "test-photo.png", mimeType: "image/png", buffer: png });
-  await page.getByTestId("demo-files").getByText("test-photo.png").first().waitFor({ timeout: 15000 });
+  await page.waitForFunction(
+    (n) => document.querySelectorAll('[data-testid="demo-files"] li').length > n || (n === 0 && document.querySelector('[data-testid="demo-files"] li')?.textContent?.includes("test-photo.png")),
+    fBefore, { timeout: 15000 },
+  );
   const fAfter = await files.filter({ hasNotText: "No test files yet." }).count();
   check("Upload file records one file", fAfter === fBefore + 1, `${fBefore} -> ${fAfter}`);
   await page.locator('input[type="file"]').setInputFiles({ name: "notes.xyz", mimeType: "application/octet-stream", buffer: Buffer.from("any type of file") });
-  await page.getByTestId("demo-files").getByText("notes.xyz").first().waitFor({ timeout: 15000 });
+  await page.waitForFunction((n) => document.querySelectorAll('[data-testid="demo-files"] li').length > n, fAfter, { timeout: 15000 });
   check("Upload file accepts any file type", true);
 
-  await page.getByTestId("demo-files").getByRole("button", { name: "Open file" }).nth(1).click();
+  await files.filter({ hasText: "test-photo.png" }).first().getByRole("button", { name: "Open file" }).click();
   const viewer = page.getByRole("dialog");
   await viewer.locator("img").waitFor();
   const imgOk = await viewer.locator("img").evaluate((i) => i.complete && i.naturalWidth > 0);
@@ -195,6 +198,7 @@ try {
 
   check("no browser pop-ups (alert/confirm/prompt) at any point", browserPopups === 0, String(browserPopups));
 } catch (e) {
+  await shot(page, "99-failure").catch(() => {});
   check("test run finished without errors", false, e instanceof Error ? e.message.split("\n")[0] : String(e));
 } finally {
   await browser.close();

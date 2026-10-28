@@ -24,8 +24,5 @@ export function cleanFileName(name: string): string {
   return (cleaned || "file").slice(0, 180);
 }
 
-// Folder for uploads that are not yet tied to a job page (later phases choose job folders).
-export function uploadPath(fileName: string, now = new Date()): string {
-  const month = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
-  return `CBS System/Operations/Hub uploads/${month}/${fileName}`;
-}
+// SharePoint folder for uploads. Phase 0 uses the test folder only; job folders come with Phase 1.
+export const UPLOAD_FOLDER = "CBS System/Hub uploads/Test";
