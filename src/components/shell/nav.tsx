@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 export const NAV: { group?: string; items: { href: string; label: string }[] }[] = [
   { items: [{ href: "/", label: "Home" }] },
   { items: [{ href: "/fleet", label: "Fleet" }] },
+  { items: [{ href: "/subcontractors", label: "Subcontractors and suppliers" }] },
   {
     group: "Settings",
     items: [
