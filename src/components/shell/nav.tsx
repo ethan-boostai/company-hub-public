@@ -5,11 +5,12 @@ import { usePathname } from "next/navigation";
 
 // Main left menu. Items are added here as each phase is built.
 export const NAV: { group?: string; items: { href: string; label: string }[] }[] = [
-  { items: [{ href: "/", label: "Home" }] },
+  { items: [{ href: "/", label: "Home" }, { href: "/jobs", label: "Jobs" }, { href: "/actions", label: "Actions board" }] },
   {
     group: "Settings",
     items: [
       { href: "/settings/people", label: "People" },
+      { href: "/settings/requirement-types", label: "Requirement types" },
       { href: "/settings/shared-parts", label: "Shared parts" },
     ],
   },
