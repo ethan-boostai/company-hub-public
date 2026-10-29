@@ -280,9 +280,17 @@ export async function deleteFleetRecord(kind: keyof typeof DELETABLE, id: number
   const d = DELETABLE[kind];
   if (!d || !Number.isInteger(id) || id <= 0) return { ok: false, message: "Unknown record." };
   return guarded(requestKey, async (person) => {
+    // A vehicle still holding equipment or stock can't be deleted (Equipment and materials).
+    if (kind === "vehicles") {
+      const [held] = await db()<{ n: number }[]>`
+        select (select count(*) from assets where location_vehicle_id = ${id})::int
+             + (select count(*) from material_stock where location_vehicle_id = ${id} and qty > 0)::int as n`;
+      if (held?.n) return { ok: false, message: "This vehicle still holds equipment or materials. Move them off it first (Equipment and materials, Move stock)." };
+    }
     return db().begin(async (tx) => {
       const [before] = await tx`select * from ${tx(d.table)} where id = ${id} for update`;
       if (!before) return GONE;
+      if (kind === "vehicles") await tx`delete from material_stock where location_vehicle_id = ${id} and qty = 0`;
       await tx`delete from ${tx(d.table)} where id = ${id}`;
       const snapshot = Object.fromEntries(
         Object.entries(normalise(before)).filter(([k]) => !["id", "created_at", "updated_at"].includes(k)).map(([k, val]) => [k, [val, null] as [unknown, unknown]]),

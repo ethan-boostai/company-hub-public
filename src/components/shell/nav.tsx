@@ -8,6 +8,7 @@ import { Suspense } from "react";
 export const NAV: { group?: string; items: { href: string; label: string }[] }[] = [
   { items: [{ href: "/", label: "Home" }, { href: "/jobs", label: "Jobs" }, { href: "/actions", label: "Actions board" }] },
   { items: [{ href: "/fleet", label: "Fleet" }] },
+  { items: [{ href: "/equipment", label: "Equipment and materials" }] },
   { items: [{ href: "/subcontractors", label: "Subcontractors and suppliers" }] },
   { items: [{ href: "/requests", label: "Team requests" }] },
   {

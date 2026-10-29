@@ -6,6 +6,7 @@ import { cleanFileName, MAX_UPLOAD_BYTES, storageMode, UPLOAD_FOLDER } from "@/l
 import { signTicket } from "@/lib/files/ticket";
 import { db } from "@/lib/db";
 import { taskFolder } from "@/lib/requirements";
+import { recordFolder } from "@/lib/files/record-folder";
 import { SharePointError, startUpload, UNREACHABLE } from "@/lib/files/sharepoint";
 
 const Body = z.object({
@@ -44,6 +45,12 @@ export async function POST(req: Request) {
     }
     jobId = Number(t.job_id);
     folder = taskFolder(t.job_no, t.req_key);
+  }
+  // A record whose table has a folder function (upload_folder_<table>) gets its own folder.
+  if (b.entityTable && b.entityTable !== "tasks") {
+    const f = await recordFolder(b.entityTable, b.entityId ?? 0);
+    if (f === null) return NextResponse.json({ ok: false, message: "That record no longer exists. Refresh the page." }, { status: 400 });
+    if (f) folder = f;
   }
 
   const name = cleanFileName(b.name);

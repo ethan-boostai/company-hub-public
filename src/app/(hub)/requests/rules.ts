@@ -1,6 +1,6 @@
 // Team requests: fixed lists and the starting categories (the office can add more categories).
 export const CATEGORY_LIST = "requests.category";
-export const DEFAULT_CATEGORIES = ["Tools or equipment", "PPE or uniform", "Fuel card", "Vehicle issue", "Consumables", "Other"];
+export const DEFAULT_CATEGORIES = ["Tools or equipment", "Tool repair", "PPE or uniform", "Fuel card", "Vehicle issue", "Consumables", "Other"];
 
 export const URGENCIES = [
   { value: "today", label: "Today" },
