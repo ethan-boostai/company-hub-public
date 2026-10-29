@@ -5,12 +5,12 @@ import { Drawer, Modal } from "@/components/ui/overlay";
 import { DocViewer, type ViewableFile } from "@/components/ui/doc-viewer";
 import { SearchBox } from "@/components/ui/search-box";
 import { dueState, niceDate, niceDateTime } from "../_registers/dates";
-import { Chip } from "../_registers/ui";
+import { dueTone } from "../_registers/ui";
 import { PageTop, RegisterLayout, type AttentionItem } from "@/components/ui/page-top";
-import { FilterPills, FilterRow } from "@/components/ui/register";
+import { DataTable, FilterPills, FilterRow, StatusPill, type Column } from "@/components/ui/register";
 import type { AccidentRow, CheckRow, FleetData, ServiceRow, VehicleRow } from "./data";
 import { AccidentForm, CheckForm, ServiceForm, VehicleForm } from "./forms";
-import { ACCIDENT_STATUSES, CHECK_STATUSES, fleetDueItems, FREQUENCIES, labelOf, milesState, worst } from "./rules";
+import { ACCIDENT_STATUSES, CHECK_STATUSES, fleetDueItems, labelOf, milesState, worst } from "./rules";
 
 type View = "vehicles" | "checks" | "services" | "accidents";
 export type Open =
@@ -121,42 +121,46 @@ export function FleetClient({ initial, today, openVehicleId }: { initial: FleetD
         <SearchBox value={query} onChange={setQuery} placeholder={`Search ${view === "checks" ? "vehicle checks" : view}`} label={`Search ${view}`} />
       </FilterRow>
 
-      <div className="bg-white border border-line rounded-xl overflow-hidden">
-        <ul className="divide-y divide-line" data-testid="fleet-list">
-          {view === "vehicles" && vehicles.map((v) => (
-            <Row key={v.id} onClick={() => setOpen({ kind: "vehicle", id: v.id })}
-              title={v.reg} sub={[v.makeModel, v.driver].filter(Boolean).join(" · ")}
-              chips={<VehicleChips v={v} today={today} offRoad={isOffRoad(data.checks, v.id)} />} />
-          ))}
-          {view === "checks" && checks.map((c) => (
-            <Row key={c.id} onClick={() => setOpen({ kind: "check", id: c.id })}
-              title={`${regOf.get(c.vehicleId) ?? ""} · ${niceDate(c.checkedOn)}`}
-              sub={[c.checkedBy, c.odometer != null ? `${c.odometer.toLocaleString("en-GB")} miles` : "", c.defects].filter(Boolean).join(" · ")}
-              chips={<>
-                <Chip tone={c.status === "passed" || c.status === "defects_fixed" ? "ok" : c.status === "off_road" ? "overdue" : "soon"}>{labelOf(CHECK_STATUSES, c.status)}</Chip>
-                {!c.reviewed && <Chip tone="soon">Not reviewed</Chip>}
-                {c.source === "team" && <Chip>Team app</Chip>}
-              </>} />
-          ))}
-          {view === "services" && services.map((s) => (
-            <Row key={s.id} onClick={() => setOpen({ kind: "service", id: s.id })}
-              title={`${regOf.get(s.vehicleId) ?? ""} · ${niceDate(s.servicedOn)}`}
-              sub={[s.workshop, s.cost ? `£${Number(s.cost).toLocaleString("en-GB", { minimumFractionDigits: 2 })}` : "", s.workDone].filter(Boolean).join(" · ")}
-              chips={s.nextDue ? <Chip>Next due {niceDate(s.nextDue)}</Chip> : null} />
-          ))}
-          {view === "accidents" && accidents.map((a) => (
-            <Row key={a.id} onClick={() => setOpen({ kind: "accident", id: a.id })}
-              title={`${regOf.get(a.vehicleId) ?? ""} · ${a.occurredAt ? niceDateTime(a.occurredAt) : "Date not given"}`}
-              sub={[a.driver, a.location, a.description].filter(Boolean).join(" · ")}
-              chips={<>
-                <Chip tone={a.status === "closed" ? "ok" : "overdue"}>{labelOf(ACCIDENT_STATUSES, a.status)}</Chip>
-                {a.source === "team" && <Chip>Team app</Chip>}
-              </>} />
-          ))}
-          {{ vehicles, checks, services, accidents }[view].length === 0 && (
-            <li className="px-4 py-6 text-sm text-muted">{q ? "Nothing matches the search." : "Nothing here yet."}</li>
-          )}
-        </ul>
+      <div data-testid="fleet-list">
+        {view === "vehicles" && (
+          <DataTable label="Vehicles" rows={vehicles} rowKey={(v) => v.id} onOpen={(v) => setOpen({ kind: "vehicle", id: v.id })}
+            empty={q ? "Nothing matches the search." : "No vehicles yet."} columns={vehicleColumns(data.checks, today)} />
+        )}
+        {view === "checks" && (
+          <DataTable label="Vehicle checks" rows={checks} rowKey={(c) => c.id} onOpen={(c) => setOpen({ kind: "check", id: c.id })}
+            empty={q ? "Nothing matches the search." : "No vehicle checks yet."} columns={[
+              { key: "vehicle", label: "Vehicle", cell: (c) => regOf.get(c.vehicleId) ?? "", sub: (c) => niceDate(c.checkedOn) },
+              { key: "by", label: "Checked by", cell: (c) => c.checkedBy },
+              { key: "miles", label: "Miles", cell: (c) => (c.odometer != null ? c.odometer.toLocaleString("en-GB") : "") },
+              { key: "defects", label: "Defects", cell: (c) => <span className="line-clamp-2">{c.defects}</span> },
+              { key: "status", label: "Status", cell: (c) => (
+                <StatusPill tone={c.status === "passed" || c.status === "defects_fixed" ? "green" : c.status === "off_road" ? "red" : "amber"}>{labelOf(CHECK_STATUSES, c.status)}</StatusPill>
+              ) },
+              { key: "reviewed", label: "Reviewed", cell: (c) => (c.reviewed ? <StatusPill tone="green">Reviewed</StatusPill> : <StatusPill tone="amber">Not reviewed</StatusPill>) },
+              { key: "from", label: "From", cell: (c) => (c.source === "team" ? "Team app" : "Office") },
+            ]} />
+        )}
+        {view === "services" && (
+          <DataTable label="Services" rows={services} rowKey={(s) => s.id} onOpen={(s) => setOpen({ kind: "service", id: s.id })}
+            empty={q ? "Nothing matches the search." : "No services yet."} columns={[
+              { key: "vehicle", label: "Vehicle", cell: (s) => regOf.get(s.vehicleId) ?? "", sub: (s) => niceDate(s.servicedOn) },
+              { key: "workshop", label: "Workshop", cell: (s) => s.workshop },
+              { key: "work", label: "Work done", cell: (s) => <span className="line-clamp-2">{s.workDone}</span> },
+              { key: "cost", label: "Cost", cell: (s) => (s.cost ? `£${Number(s.cost).toLocaleString("en-GB", { minimumFractionDigits: 2 })}` : "") },
+              { key: "next", label: "Next due", cell: (s) => (s.nextDue ? niceDate(s.nextDue) : "") },
+            ]} />
+        )}
+        {view === "accidents" && (
+          <DataTable label="Accidents" rows={accidents} rowKey={(a) => a.id} onOpen={(a) => setOpen({ kind: "accident", id: a.id })}
+            empty={q ? "Nothing matches the search." : "No accidents."} columns={[
+              { key: "vehicle", label: "Vehicle", cell: (a) => regOf.get(a.vehicleId) ?? "", sub: (a) => (a.occurredAt ? niceDateTime(a.occurredAt) : "Date not given") },
+              { key: "driver", label: "Driver", cell: (a) => a.driver },
+              { key: "where", label: "Where", cell: (a) => a.location },
+              { key: "what", label: "What happened", cell: (a) => <span className="line-clamp-2">{a.description}</span> },
+              { key: "status", label: "Status", cell: (a) => <StatusPill tone={a.status === "closed" ? "green" : "red"}>{labelOf(ACCIDENT_STATUSES, a.status)}</StatusPill> },
+              { key: "from", label: "From", cell: (a) => (a.source === "team" ? "Team app" : "Office") },
+            ]} />
+        )}
       </div>
 
       <FleetDrawer open={open} data={data} today={today} onOpen={setOpen} saved={saved} deleted={deleted} />
@@ -171,36 +175,23 @@ function isOffRoad(checks: CheckRow[], vehicleId: number): boolean {
   return latest?.status === "off_road";
 }
 
-function Row({ title, sub, chips, onClick }: { title: string; sub: string; chips: React.ReactNode; onClick: () => void }) {
-  return (
-    <li>
-      <button type="button" onClick={onClick} className="w-full text-left px-4 py-3 hover:bg-paper flex flex-wrap items-center gap-x-3 gap-y-1">
-        <span className="min-w-44 flex-1">
-          <span className="block font-bold">{title}</span>
-          {sub && <span className="block text-sm text-muted truncate">{sub}</span>}
-        </span>
-        <span className="flex flex-wrap gap-1.5">{chips}</span>
-      </button>
-    </li>
-  );
-}
-
-function VehicleChips({ v, today, offRoad }: { v: VehicleRow; today: string; offRoad: boolean }) {
-  const service = worst(dueState(v.serviceDue, today), milesState(v.serviceDueMiles, v.latestMiles));
-  return (
-    <>
-      {offRoad && <Chip tone="overdue">Off road</Chip>}
-      <Chip tone={dueState(v.vehicleTaxDue, today)}>Vehicle Tax {v.vehicleTaxDue ? niceDate(v.vehicleTaxDue) : "not set"}</Chip>
-      <Chip tone={dueState(v.motExpiry, today)}>MOT {v.motExpiry ? niceDate(v.motExpiry) : "not set"}</Chip>
-      <Chip tone={service}>Service {v.serviceDue ? niceDate(v.serviceDue) : "not set"}</Chip>
-      {v.inspectionFrequency !== "not_required" && (
-        <Chip tone={dueState(v.nextInspectionOn, today)}>
-          {labelOf(FREQUENCIES, v.inspectionFrequency)} inspection {v.nextInspectionOn ? niceDate(v.nextInspectionOn) : "not set"}
-        </Chip>
-      )}
-      {!v.holdsStock && <Chip>Fleet only</Chip>}
-    </>
-  );
+// Vehicles as table rows: each date is a pill coloured by how close it is.
+function vehicleColumns(checks: CheckRow[], today: string): Column<VehicleRow>[] {
+  const date = (d: string | null) => (d ? niceDate(d) : "Not set");
+  return [
+    { key: "reg", label: "Vehicle", className: "whitespace-nowrap", cell: (v) => v.reg, sub: (v) => [v.makeModel, v.driver].filter(Boolean).join(" · ") },
+    { key: "tax", label: "Vehicle Tax", cell: (v) => <StatusPill tone={dueTone(dueState(v.vehicleTaxDue, today))}>{date(v.vehicleTaxDue)}</StatusPill> },
+    { key: "mot", label: "MOT", cell: (v) => <StatusPill tone={dueTone(dueState(v.motExpiry, today))}>{date(v.motExpiry)}</StatusPill> },
+    { key: "service", label: "Service", cell: (v) => (
+      <StatusPill tone={dueTone(worst(dueState(v.serviceDue, today), milesState(v.serviceDueMiles, v.latestMiles)))}>{date(v.serviceDue)}</StatusPill>
+    ) },
+    { key: "inspection", label: "Inspection", cell: (v) => (v.inspectionFrequency === "not_required"
+      ? <StatusPill tone="grey">Not required</StatusPill>
+      : <StatusPill tone={dueTone(dueState(v.nextInspectionOn, today))}>{date(v.nextInspectionOn)}</StatusPill>) },
+    { key: "status", label: "Status", cell: (v) => (isOffRoad(checks, v.id)
+      ? <StatusPill tone="red">Off road</StatusPill>
+      : <StatusPill tone="green">On the road</StatusPill>) },
+  ];
 }
 
 function FleetDrawer({

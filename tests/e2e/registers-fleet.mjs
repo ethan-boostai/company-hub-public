@@ -147,10 +147,10 @@ try {
 
   // Search on each list.
   await page.getByLabel("Search vehicles").fill(REG.slice(0, 5).toLowerCase());
-  check("vehicle search finds it", (await page.locator("[data-testid=fleet-list] li").filter({ hasText: REG }).count()) >= 1);
+  check("vehicle search finds it", (await page.locator("[data-testid=fleet-list] tbody tr").filter({ hasText: REG }).count()) >= 1);
   await page.getByRole("button", { name: /^Vehicle checks/ }).click();
   await page.getByLabel("Search checks").fill("nearside");
-  check("check search finds the defect", (await page.locator("[data-testid=fleet-list] li").filter({ hasText: "Defects logged" }).count()) === 1);
+  check("check search finds the defect", (await page.locator("[data-testid=fleet-list] tbody tr").filter({ hasText: "Defects logged" }).count()) === 1);
 
   // Duplicate reg refused.
   await page.getByRole("button", { name: /^Vehicles/ }).click();
@@ -163,7 +163,7 @@ try {
 
   // Delete the vehicle (in-app are-you-sure).
   await page.getByLabel("Search vehicles").fill(REG);
-  await page.locator("[data-testid=fleet-list] li").filter({ hasText: REG }).first().click();
+  await page.locator("[data-testid=fleet-list] tbody tr").filter({ hasText: REG }).first().click();
   await drawer.getByRole("button", { name: `Delete ${REG}` }).click();
   const confirm = page.getByRole("dialog").last();
   await confirm.getByText(/1 check\(s\), 1 service\(s\) and 1 accident/).waitFor();
