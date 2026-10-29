@@ -110,7 +110,8 @@ export function TaskPanel({
   }
 
   return (
-    <Drawer open={open} onClose={onClose} title={title} busy={busy}>
+    // The old hub's task drawer (#ctd): 560px from the right, full height (docs/decisions.md).
+    <Drawer open={open} onClose={onClose} title={title} busy={busy} width="max-w-[560px]">
       {loadError && <p role="alert" className="text-sm text-danger">{loadError}</p>}
       {!isNew && !t && !loadError && <p className="text-sm text-muted">Opening…</p>}
       {(isNew || t) && (

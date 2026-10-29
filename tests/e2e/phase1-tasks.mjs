@@ -9,6 +9,17 @@ const SHOTS = process.argv[2];
   const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1400, height: 900 } }); const p = await ctx.newPage();
   let popups = 0; p.on("dialog", (d) => { popups++; d.dismiss(); });
   const log = (...a) => console.log(...a);
+  // The task drawer: 560px from the right, full height, and the page behind it can't scroll.
+  const drawerCheck = async (dlg, where) => {
+    const bb = await dlg.boundingBox();
+    const vw = p.viewportSize().width;
+    const locked = await p.evaluate(() => document.documentElement.classList.contains("scroll-locked"));
+    const y0 = await p.evaluate(() => window.scrollY);
+    await p.mouse.move(100, 400); await p.mouse.wheel(0, 600); await p.waitForTimeout(200);
+    const y1 = await p.evaluate(() => window.scrollY);
+    const ok = bb && Math.round(bb.width) === 560 && Math.abs(bb.x + bb.width - vw) < 2 && Math.round(bb.height) === p.viewportSize().height && locked && y0 === y1;
+    console.log(`${ok ? "PASS" : "FAIL"} task drawer from ${where}: width ${Math.round(bb?.width)}, right edge ${Math.round((bb?.x ?? 0) + (bb?.width ?? 0))}/${vw}, page locked ${locked}, page scrolled ${y1 - y0}`);
+  };
   await p.goto(`${BASE}/sign-in`);
   await p.getByRole("button", { name: "Test Office One" }).click();
   await p.locator("#pin").fill("1234"); await p.getByRole("button", { name: "Sign in" }).click();
@@ -33,6 +44,7 @@ const SHOTS = process.argv[2];
   const opened = p.getByRole("dialog", { name: "CBS RAMS" });
   await opened.waitFor({ timeout: 10000 });
   log("RAMS added and opened");
+  await drawerCheck(opened, "the job Tasks panel");
   await opened.getByText("In progress", { exact: true }).click();
   await opened.getByLabel("In hand").fill("Waiting for the site visit");
   await opened.getByRole("button", { name: "Save" }).click();
@@ -124,11 +136,19 @@ const SHOTS = process.argv[2];
   await list.getByRole("option", { name: /order stationery/ }).click();
   await p.getByRole("dialog", { name: "Test task order stationery" }).waitFor();
   log("clicking a task opens it in the task panel");
+  await drawerCheck(p.getByRole("dialog", { name: "Test task order stationery" }), "search results");
   await p.getByRole("dialog", { name: "Test task order stationery" }).getByRole("button", { name: "Close" }).first().click();
   await gs.fill("Test Office");
   await list.getByRole("option", { name: /Test Office One/ }).waitFor();
   log("search finds people");
   await gs.fill("");
+
+  // Home: a task opened from the header search there uses the same drawer.
+  await p.goto(`${BASE}/`, { waitUntil: "networkidle" });
+  await gs.fill("scaffold");
+  await list.getByRole("option", { name: /book scaffold check/ }).click();
+  await drawerCheck(p.getByRole("dialog", { name: "Test task book scaffold check" }), "Home");
+  await p.getByRole("dialog", { name: "Test task book scaffold check" }).getByRole("button", { name: "Close" }).first().click();
 
   // Jobs page search
   await p.goto(`${BASE}/jobs`, { waitUntil: "networkidle" });
