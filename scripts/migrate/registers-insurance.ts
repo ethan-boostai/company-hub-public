@@ -16,7 +16,8 @@
 //   a blank status is "Open" (the old form's defaults, listed in the report); any other value is
 //   flagged and the claim is skipped.
 // - Claim links (policy, vehicle, equipment) are matched exactly; anything that doesn't match is
-//   flagged and kept in the claim's notes. The job number and incident reference stay as text.
+//   flagged and kept in the claim's notes. The job number links to the hub's job with that number
+//   (flagged and kept as text when the hub doesn't hold it). The incident reference stays as text.
 // - Old claim numbers (CLM-nnn) are kept, and new claims carry on after the highest one.
 // - Accreditation contact notes that look like they hold a password are flagged and not imported.
 // - Old document links (doc_url, docs_json) become files rows holding the SharePoint link.
@@ -243,6 +244,8 @@ try {
       (await tx<{ id: string; reg: string }[]>`select id, reg from vehicles`).map((v) => [v.reg.replace(/\s+/g, "").toUpperCase(), Number(v.id)]),
     );
     const assets = await tx<{ id: string; name: string; asset_tag: string | null; legacy_id: string | null }[]>`select id, name, asset_tag, legacy_id from assets`;
+    // Jobs the hub holds (from the ServiceM8 sync), by job number.
+    const jobs = new Map((await tx<{ id: string; job_no: string }[]>`select id, job_no from jobs`).map((j) => [j.job_no, Number(j.id)]));
     const one = (ids: number[] | undefined) => (ids && new Set(ids).size === 1 ? ids[0] : null);
     let claims = 0;
     let claimFiles = 0;
@@ -313,6 +316,7 @@ try {
         if (p.bad) notes.push(`${k.replace("_", " ")} (old hub): ${p.bad}`);
         return [k, p.value];
       }));
+      if (text(r.job_no) && !jobs.has(text(r.job_no)!)) flags.push(`${what}: job ${text(r.job_no)} isn't in the hub (kept as a number, not linked)`);
       const claimNo = text(r.claim_no);
       const m = claimNo ? /^CLM-(\d+)$/i.exec(claimNo) : null;
       if (claimNo && !m) flags.push(`${what}: claim number "${claimNo}" isn't CLM-nnn (kept as it is)`);
@@ -326,7 +330,8 @@ try {
         policy_id: policyId, insurer: text(r.insurer), insurer_claim_no: text(r.insurer_claim_no),
         other_party: text(r.other_party), other_contact: text(r.other_contact), description: longText(r.description),
         ...amounts, vehicle_id: vehicleId, asset_id: assetId,
-        incident_ref: text(r.incident_ref), job_no: text(r.job_no), site: text(r.site), client: text(r.client),
+        incident_ref: text(r.incident_ref), job_no: text(r.job_no), job_id: text(r.job_no) ? jobs.get(text(r.job_no)!) ?? null : null,
+        site: text(r.site), client: text(r.client),
         next_action: text(r.next_action), next_action_due: dateOf(r.next_action_due, `${what} next action date`, flags),
         notes: joinNotes(...notes), legacy_id: Number(r.id), created_by: "Import",
       };

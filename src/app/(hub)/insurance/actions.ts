@@ -127,7 +127,7 @@ export async function savePolicy(form: FormData): Promise<ActionResult<Saved>> {
 const CLAIM_FIELDS = [
   "claim_type", "direction", "status", "incident_date", "lodged_on", "closed_on", "policy_id", "insurer", "insurer_claim_no", "other_party",
   "other_contact", "description", "amount_claimed", "excess", "amount_settled", "vehicle_id", "accident_id", "asset_id", "incident_ref",
-  "job_no", "site", "client", "next_action", "next_action_due", "notes",
+  "job_no", "job_id", "site", "client", "next_action", "next_action_due", "notes",
 ];
 
 export async function saveClaim(form: FormData): Promise<ActionResult<Saved>> {
@@ -167,6 +167,17 @@ export async function saveClaim(form: FormData): Promise<ActionResult<Saved>> {
   return guarded<Saved>(form.get(REQUEST_KEY_FIELD), async (person) => {
     try {
       const rowId = await db().begin(async (tx) => {
+        // The job: a number picked from the hub's jobs links to that job. A number the hub doesn't hold
+        // (an old claim's) is kept as it is, but a new one has to be picked from the list.
+        v.job_id = null;
+        if (v.job_no) {
+          const [job] = await tx<{ id: string }[]>`select id from jobs where job_no = ${v.job_no as string}`;
+          if (job) v.job_id = Number(job.id);
+          else {
+            const [prev] = id ? await tx<{ job_no: string | null }[]>`select job_no from claims where id = ${id}` : [];
+            if (prev?.job_no !== v.job_no) throw new Refused(`Job ${v.job_no} isn't in the hub. Pick the job from the list.`);
+          }
+        }
         // An accident belongs to a vehicle: fill the vehicle in, and refuse a different one.
         if (v.accident_id) {
           const [a] = await tx<{ vehicle_id: string }[]>`select vehicle_id from vehicle_accidents where id = ${v.accident_id as number}`;

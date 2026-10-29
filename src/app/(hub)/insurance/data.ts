@@ -1,6 +1,7 @@
 import "server-only";
 import type postgres from "postgres";
 import { readDb } from "@/lib/db";
+import { jobTitle } from "@/lib/jobs/stages";
 import { isoDate, isoTime } from "../_registers/form-values";
 import { mergeOptions } from "../subcontractors/rules";
 import {
@@ -47,6 +48,8 @@ export type ClaimRow = {
   assetId: number | null;
   incidentRef: string;
   jobNo: string;
+  jobId: number | null;   // the job in the hub, when the number matches one
+  jobTitle: string;
   site: string;
   client: string;
   nextAction: string;
@@ -99,7 +102,7 @@ function toClaim(r: any): ClaimRow {
     insurer: s(r.insurer), insurerClaimNo: s(r.insurer_claim_no), otherParty: s(r.other_party), otherContact: s(r.other_contact),
     description: s(r.description), amountClaimed: n(r.amount_claimed), excess: n(r.excess), amountSettled: n(r.amount_settled),
     vehicleId: idOrNull(r.vehicle_id), accidentId: idOrNull(r.accident_id), assetId: idOrNull(r.asset_id), incidentRef: s(r.incident_ref),
-    jobNo: s(r.job_no), site: s(r.site), client: s(r.client), nextAction: s(r.next_action), nextActionDue: isoDate(r.next_action_due),
+    jobNo: s(r.job_no), jobId: idOrNull(r.job_id), jobTitle: r.job_description ? jobTitle(r.job_description) : "", site: s(r.site), client: s(r.client), nextAction: s(r.next_action), nextActionDue: isoDate(r.next_action_due),
     notes: s(r.notes), createdAt: isoTime(r.created_at) ?? "",
   };
 }
@@ -121,7 +124,7 @@ export async function loadInsurance(given?: Sql): Promise<InsuranceData> {
   const [policies, covers, claims, certs, vehicles, accidents, assets, types, coverOpts, claimTypes, certNames] = await Promise.all([
     sql`select * from insurance_policies order by lower(policy_type), lower(coalesce(name, '')), starts_on desc nulls last, id desc`,
     sql`select * from insurance_covers order by policy_id, sort, id`,
-    sql`select * from claims order by id desc`,
+    sql`select c.*, j.sm8_description as job_description from claims c left join jobs j on j.id = c.job_id order by c.id desc`,
     sql`select * from company_certs order by lower(name), expires_on desc nulls last`,
     sql`select id, reg, make_model from vehicles order by reg`,
     sql`select a.id, a.vehicle_id, a.occurred_at, v.reg from vehicle_accidents a join vehicles v on v.id = a.vehicle_id order by a.occurred_at desc nulls last, a.id desc`,
