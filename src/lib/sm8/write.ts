@@ -1,9 +1,10 @@
 import "server-only";
 import { db } from "@/lib/db";
 
-// Changes made in the hub go to ServiceM8 (the master) through the n8n workflow "CBS Hub - ServiceM8",
-// webhook cbs-hub-sm8-write, protected by the X-CBS-SM8-Key header (N8N_SM8_KEY). n8n also adds a
-// ServiceM8 job note naming who made the change. ServiceM8 then sends its own webhook back, which
+// Changes made in the hub go to ServiceM8 (the master) through the n8n workflow "CBS Hub - ServiceM8
+// Write", webhook cbs-hub-sm8-write, protected by the X-CBS-SM8-Key header (N8N_SM8_KEY). n8n checks
+// with ServiceM8 that the job id really is an allowed job number, and adds a ServiceM8 job note
+// naming who made the change. ServiceM8 then sends its own webhook back, which
 // confirms the change in the hub.
 
 export const SM8_NOT_ALLOWED =
