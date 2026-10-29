@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { SearchSuggest, type Suggestion } from "@/components/ui/search-suggest";
 import { useScrollLock } from "@/components/ui/scroll-lock";
 import { NavLinks } from "./nav";
 import { useTasks } from "@/components/tasks/task-provider";
@@ -33,38 +34,75 @@ export function MobileMenu() {
   );
 }
 
+type Results = { jobs: Hit[]; tasks: Hit[]; people: Hit[] };
+type Hit = { kind: "job" | "task" | "person"; id: number; title: string; sub: string; href: string };
+
+// Header search: jobs, tasks and people listed under the box as you type. Click one to open it.
 export function GlobalSearch({ initial = "" }: { initial?: string }) {
   const router = useRouter();
+  const { openTask } = useTasks();
   const [q, setQ] = useState(initial);
+  // Results are kept with the words they were for, so stale results never show.
+  const [found, setFound] = useState<{ term: string; hits: Hit[] }>({ term: "", hits: [] });
+  const term = q.trim();
+  const hits = found.term === term ? found.hits : [];
+  const busy = !!term && found.term !== term;
+
+  useEffect(() => {
+    if (!term) return;
+    const ctl = new AbortController();
+    const t = setTimeout(() => {
+      fetch(`/api/search?q=${encodeURIComponent(term)}`, { signal: ctl.signal, cache: "no-store" })
+        .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+        .then((r: Results) => setFound({ term, hits: [...r.jobs, ...r.tasks, ...r.people] }))
+        .catch((e) => {
+          if (ctl.signal.aborted) return;
+          console.error("Search failed", e);
+          setFound({ term, hits: [] });
+        });
+    }, 150);
+    return () => {
+      clearTimeout(t);
+      ctl.abort();
+    };
+  }, [term]);
+
+  const GROUP = { job: "Jobs", task: "Tasks", person: "People" } as const;
+  const results: Suggestion[] = hits.map((h) => ({ key: `${h.kind}-${h.id}`, group: GROUP[h.kind], title: h.title, sub: h.sub }));
+
   return (
-    <form
-      role="search"
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (q.trim()) router.push(`/search?q=${encodeURIComponent(q.trim())}`);
-      }}
-      className="flex-1 min-w-0 max-w-md"
-    >
-      <input
-        type="search"
+    <div role="search" className="flex-1 min-w-0 max-w-md">
+      <SearchSuggest
+        dark
         value={q}
-        onChange={(e) => setQ(e.target.value)}
-        placeholder="Search the hub"
-        aria-label="Search the hub"
-        spellCheck
-        className="w-full rounded-lg border border-white/30 bg-white/10 text-white placeholder:text-white/60 px-3 py-1.5 focus:outline-none focus:bg-white focus:text-ink"
+        onChange={setQ}
+        results={results}
+        busy={busy}
+        label="Search the hub"
+        placeholder="Search jobs, tasks and people"
+        emptyText={`Nothing matches "${q.trim()}".`}
+        onPick={(s) => {
+          const h = hits.find((x) => `${x.kind}-${x.id}` === s.key);
+          if (!h) return;
+          if (h.kind === "task") openTask(h.id);
+          else router.push(h.href);
+        }}
+        onSubmit={() => {
+          if (q.trim()) router.push(`/search?q=${encodeURIComponent(q.trim())}`);
+        }}
       />
-    </form>
+    </div>
   );
 }
 
-// "+ New task" is on every page. On a job's pages the job is chosen already.
+// "+ New task" is on every page: a one-off task (as the old hub's header button). On a job's pages
+// it is linked to that job to start with. Requirements are added from the job page's Tasks panel.
 export function NewTaskButton() {
-  const { newTask } = useTasks();
+  const { newGenericTask } = useTasks();
   return (
     <button
       type="button"
-      onClick={() => newTask({ jobNo: /^\/jobs\/(\d+)/.exec(window.location.pathname)?.[1] ?? null })}
+      onClick={() => newGenericTask({ jobNo: /^\/jobs\/(\d+)/.exec(window.location.pathname)?.[1] ?? null })}
       className="rounded-lg bg-brand px-3 py-1.5 text-sm font-semibold text-white hover:bg-brand-dark whitespace-nowrap"
     >
       + New task

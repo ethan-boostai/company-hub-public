@@ -1,34 +1,51 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { readDb } from "@/lib/db";
+import { searchHub } from "@/lib/search";
+import { OpenTask } from "./open-task";
 import { PageHeader } from "@/components/shell/page-header";
 
-// Global search. Searches people for now; jobs, tasks and records are added as each phase lands.
+// Global search: jobs (number, description, client), tasks and people. The header box lists the
+// same results as you type; this page shows them all.
+function Group({ title, q, children, count }: { title: string; q: string; children: React.ReactNode; count: number }) {
+  return (
+    <section className="bg-white border border-line rounded-xl mb-4" aria-label={title}>
+      <h2 className="px-4 pt-4 pb-2 font-semibold">{title} ({count})</h2>
+      {count === 0 ? <p className="px-4 pb-4 text-sm text-muted">No {title.toLowerCase()} match &ldquo;{q}&rdquo;.</p> : <ul className="divide-y divide-line">{children}</ul>}
+    </section>
+  );
+}
+
 async function Results({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const q = String((await searchParams).q || "").trim().slice(0, 100);
   if (!q) return <p className="text-sm text-muted">Type in the search box at the top.</p>;
-  const like = `%${q.replace(/[\\%_]/g, (c) => `\\${c}`)}%`;
-  const sql = await readDb();
-  const people = await sql<{ id: string; name: string; role: string | null; active: boolean }[]>`
-    select id, name, role, active from people
-    where name ilike ${like} or role ilike ${like} or email ilike ${like}
-    order by active desc, lower(name) limit 50`;
+  const r = await searchHub(q, 50);
   return (
-    <div className="bg-white border border-line rounded-xl">
-      <h2 className="px-4 pt-4 pb-2 font-semibold">People ({people.length})</h2>
-      {people.length === 0 ? (
-        <p className="px-4 pb-4 text-sm text-muted">No people match &ldquo;{q}&rdquo;.</p>
-      ) : (
-        <ul className="divide-y divide-line">
-          {people.map((p) => (
-            <li key={p.id} className="px-4 py-3">
-              <Link href={`/settings/people?open=${p.id}`} className="font-medium underline">{p.name}</Link>
-              <span className="text-sm text-muted"> {p.role ? `· ${p.role}` : ""}{p.active ? "" : " · left"}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <>
+      <Group title="Jobs" q={q} count={r.jobs.length}>
+        {r.jobs.map((h) => (
+          <li key={h.id} className="px-4 py-3">
+            <Link href={h.href} className="font-medium underline">{h.title}</Link>
+            <span className="block text-sm text-muted">{h.sub}</span>
+          </li>
+        ))}
+      </Group>
+      <Group title="Tasks" q={q} count={r.tasks.length}>
+        {r.tasks.map((h) => (
+          <li key={h.id} className="px-4 py-3">
+            <OpenTask id={h.id} title={h.title} />
+            <span className="block text-sm text-muted">{h.sub}</span>
+          </li>
+        ))}
+      </Group>
+      <Group title="People" q={q} count={r.people.length}>
+        {r.people.map((h) => (
+          <li key={h.id} className="px-4 py-3">
+            <Link href={h.href} className="font-medium underline">{h.title}</Link>
+            {h.sub && <span className="text-sm text-muted"> · {h.sub}</span>}
+          </li>
+        ))}
+      </Group>
+    </>
   );
 }
 

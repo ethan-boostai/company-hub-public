@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { SearchBox } from "@/components/ui/search-box";
+import { SearchSuggest, type Suggestion } from "@/components/ui/search-suggest";
 import { STAGES, jobTitle, shownByDefault, stageOf } from "@/lib/jobs/stages";
 import type { Folder, JobListRow } from "./data";
 
@@ -118,20 +118,30 @@ export function JobsClient({ folders, jobs }: { folders: Folder[]; jobs: JobList
     return map;
   }, [jobs, showUnsuccessful]);
 
-  const needle = q.trim().toLowerCase().replace(/^#/, "");
-  const matches = (j: JobListRow) =>
-    !needle || [j.jobNo, jobTitle(j.description), j.client, j.site, j.po].some((f) => f.toLowerCase().includes(needle));
   const shownSections = sections.filter(isShown);
-  const visible = shownSections
-    .map((s) => ({ s, rows: (bySection.get(s.key) || []).filter(matches) }))
-    .filter((x) => !needle || x.rows.length > 0);
-  const matchCount = visible.reduce((n, x) => n + x.rows.length, 0);
+  const visible = shownSections.map((s) => ({ s, rows: bySection.get(s.key) || [] }));
 
-  const openFromSearch = () => {
-    const all = visible.flatMap((x) => x.rows);
-    if (all.length === 1) router.push(`/jobs/${all[0].jobNo}`);
-    else if (/^\d+$/.test(needle)) router.push(`/jobs/${needle}`);
-  };
+  // Search: matching jobs listed under the box as you type (every folder; Unsuccessful jobs only
+  // when shown, or by their exact number). Click one to open it.
+  const needle = q.trim().toLowerCase().replace(/^#/, "");
+  const found = useMemo(() => {
+    if (!needle) return [];
+    const hit = jobs.filter((j) => {
+      if (j.jobNo === needle) return true;
+      if (j.stage === "unsuccessful" && !showUnsuccessful) return false;
+      return j.jobNo.startsWith(needle) || [jobTitle(j.description), j.client, j.site, j.po].some((f) => f.toLowerCase().includes(needle));
+    });
+    hit.sort((a, b) => Number(b.jobNo === needle) - Number(a.jobNo === needle) || Number(b.jobNo.startsWith(needle)) - Number(a.jobNo.startsWith(needle)) || Number(b.jobNo) - Number(a.jobNo));
+    return hit.slice(0, 12);
+  }, [jobs, needle, showUnsuccessful]);
+  const suggestions: Suggestion[] = found.map((j) => ({
+    key: j.jobNo,
+    title: `#${j.jobNo} ${jobTitle(j.description)}`,
+    sub: [j.client, STAGES[stageOf(j.stage)].label, (j.folderUuid ? folders.find((f) => f.uuid === j.folderUuid)?.name : j.status === "Work Order" ? "Booked / on site" : "No folder")].filter(Boolean).join(" · "),
+  }));
+  if (/^\d+$/.test(needle) && !found.some((j) => j.jobNo === needle)) {
+    suggestions.push({ key: needle, title: `Open job ${needle}`, sub: "Not in the hub's list yet" });
+  }
 
   return (
     <div>
@@ -161,22 +171,17 @@ export function JobsClient({ folders, jobs }: { folders: Folder[]; jobs: JobList
         <span className="text-muted">Enquiry, Reactive, Maintenance and Approved show by default. Your choices are remembered on this device.</span>
       </div>
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          openFromSearch();
-        }}
-        className="mb-2"
-      >
-        <SearchBox value={q} onChange={setQ} placeholder="Find a job: number, title, client or site" label="Search jobs" />
-      </form>
-      {needle && (
-        <p className="text-sm text-muted mb-3" aria-live="polite">
-          {matchCount
-            ? `${matchCount} ${matchCount === 1 ? "match" : "matches"} in the folders shown`
-            : `No match in the folders shown.${/^\d+$/.test(needle) ? ` Press Enter to open job ${needle}.` : ""}`}
-        </p>
-      )}
+      <div className="mb-4">
+        <SearchSuggest
+          value={q}
+          onChange={setQ}
+          results={suggestions}
+          onPick={(s) => router.push(`/jobs/${s.key}`)}
+          placeholder="Find a job: number, title, client or site"
+          label="Search jobs"
+          emptyText="No job matches."
+        />
+      </div>
 
       {shownSections.length === 0 && <p className="text-sm text-muted">Every folder is hidden. Tap a folder above to show it.</p>}
       {jobs.length === 0 && <p className="text-sm text-muted">No jobs yet. Jobs arrive from ServiceM8.</p>}
