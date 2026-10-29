@@ -5,7 +5,7 @@ How several Claude Code sessions build the hub at the same time without getting 
 ## Before a parallel session starts
 
 1. **Phase 0 is on `main`** (pull request #1 merged). Every workstream branches from `main` and needs the shared parts.
-2. **Dev database for previews.** Every preview uses the shared dev database `cbs-hub-dev` (never live). **Only Core applies migrations to it:** `MIGRATE_ON_BUILD=1` is set for Core's branch (`phase-1-jobs-tasks`) only, and never for Production until Ethan approves switch-over (`docs/environments.md`). Other sessions test their tables on a local database (see "Local database" below) and send schema changes to Core as requests.
+2. **Dev database for previews.** Every preview uses the shared dev database `cbs-hub-dev` (never live), and every preview build applies its branch's new migrations to it. Production applies migrations when a pull request merges to `main`. `MIGRATE_ON_BUILD=1` is set for Production and all Preview branches (`docs/environments.md`). So never edit a migration file once it has been pushed: add a new one.
 3. Ethan merges every pull request. No session merges its own.
 
 ## Who owns what
@@ -78,7 +78,7 @@ Not in Registers, because these need jobs or other phases:
    - files and PDFs: `UploadFile` and `DocViewer` for files, `HousePdf` for every PDF.
 5. **Tasks:** never write to the `tasks` table directly; use the Core helper in `src/lib/tasks` once Phase 1 is on `main`. Saving a record never completes a task.
 6. **Before each pull request:** `git fetch origin main && git rebase origin/main`, then run `npm run lint && npm run typecheck && npm test` and a production build. Open the pull request with numbered test steps for Ethan.
-7. **Testing:** use a local database only, test job 12 (the only ServiceM8 test job) and fake test data. Never run migrations or scripts against the environment's `DATABASE_URL`: it is the live database, and the hard block refuses it. Never apply migrations to the shared dev database yourself: only Core migrates `cbs-hub-dev`. **Never change Vercel, Supabase, GitHub or n8n settings**: read-only unless Ethan explicitly asks.
+7. **Testing:** use a local database only, test job 12 (the only ServiceM8 test job) and fake test data. Never run migrations or scripts against the environment's `DATABASE_URL` yourself: it can be the live database, and the hard block refuses it. **Never change Vercel, Supabase, GitHub or n8n settings**: read-only unless Ethan explicitly asks.
 8. **n8n:** never change an existing workflow. A new workflow needs Ethan's OK and is named "CBS Hub - <thing>".
 9. **Approach first:** explain your approach for anything non-trivial and wait for Ethan's go-ahead (`CLAUDE.md`).
 10. **Secrets:** never in chat, code or commits.
