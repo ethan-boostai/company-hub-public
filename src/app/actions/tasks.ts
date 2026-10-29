@@ -104,6 +104,34 @@ export async function saveTask(form: FormData): Promise<ActionResult<{ id: numbe
   });
 }
 
+// The job page's + New task: every ticked requirement added in one go (one save, all or nothing).
+// Returns the new task ids in the order ticked.
+export async function addRequirements(
+  jobNo: string,
+  picks: { reqKey: string; side: "office" | "site" }[],
+  requestKey: string,
+): Promise<ActionResult<{ ids: number[] }>> {
+  return guarded<{ ids: number[] }>(requestKey, async (person) => {
+    if (!/^\d{1,10}$/.test(jobNo) || !Array.isArray(picks) || picks.length === 0 || picks.length > 40) {
+      return { ok: false, message: "Tick at least one task." };
+    }
+    const [j] = await db()<{ id: string }[]>`select id from jobs where job_no = ${jobNo}`;
+    if (!j) return { ok: false, message: "Job not found." };
+    try {
+      const ids = await db().begin(async (tx) => {
+        const out: number[] = [];
+        for (const p of picks) {
+          out.push(await createTask(tx, { jobId: Number(j.id), reqKey: String(p.reqKey), side: p.side === "site" ? "site" : "office", title: "" }, person.name));
+        }
+        return out;
+      });
+      return { ok: true, data: { ids }, message: ids.length === 1 ? "Task added." : `${ids.length} tasks added.` };
+    } catch (e) {
+      return failed(e);
+    }
+  });
+}
+
 export async function changeTaskStatus(id: number, status: TaskStatus, requestKey: string): Promise<ActionResult> {
   return guarded(requestKey, async (person) => {
     try {

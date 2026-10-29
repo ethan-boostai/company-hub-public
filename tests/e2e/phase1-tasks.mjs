@@ -31,20 +31,36 @@ const SHOTS = process.argv[2];
   const box = await tasks.boundingBox();
   log("tasks panel on the right:", box && box.x > 900 ? `yes (x=${Math.round(box.x)}, width ${Math.round(box.width)})` : `NO ${JSON.stringify(box)}`);
   if (SHOTS) await p.screenshot({ path: `${SHOTS}/job12-wide.png` });
+  // The job's + New task: centred box over a blurred page, as the live Job File.
+  const centredCheck = async (dlg, what) => {
+    const bb = await dlg.boundingBox(); const vw = p.viewportSize().width; const vh = p.viewportSize().height;
+    const blur = await p.locator('[data-backdrop="blur"]').last().evaluate((el) => getComputedStyle(el).backdropFilter);
+    const locked = await p.evaluate(() => document.documentElement.classList.contains("scroll-locked"));
+    const ok = bb && Math.round(bb.width) === 620 && Math.abs(bb.x + bb.width / 2 - vw / 2) < 2 && bb.height <= vh * 0.92 + 1 && /blur/.test(blur) && locked;
+    console.log(`${ok ? "PASS" : "FAIL"} ${what} is centred: width ${Math.round(bb?.width)}, centre ${Math.round((bb?.x ?? 0) + (bb?.width ?? 0) / 2)}/${vw / 2}, height ${Math.round(bb?.height)}/${vh}, backdrop ${blur}, page locked ${locked}`);
+  };
   await tasks.getByRole("button", { name: "+ New task" }).click();
   const picker = p.getByRole("dialog", { name: "New task" });
-  await picker.getByText("Job 12").waitFor();
+  await picker.getByText("Job 12. Tick everything this job needs, then Add.").waitFor();
+  await centredCheck(picker, "the + New task picker");
+  if (SHOTS) await p.screenshot({ path: `${SHOTS}/picker.png` });
+  const addBtn = picker.getByRole("button", { name: /^Add (\d+ )?tasks?$/ });
+  log("Add tasks faded until something is ticked:", await addBtn.isDisabled() ? "yes" : "NO", "| Cancel beside it:", await picker.getByRole("button", { name: "Cancel" }).count());
+  log("Other at the top:", (await picker.getByRole("button").filter({ hasText: "any one-off task" }).count()) === 1);
+  log("Now label on the job's stage:", (await picker.getByRole("region", { name: "Approved: Planning" }).getByText("Now", { exact: true }).count()) === 1);
   log("site survey under Office tasks:", await picker.getByRole("button", { name: /^Site survey/ }).count());
   await picker.getByRole("button", { name: "On site tasks" }).click();
   log("site survey under On site tasks:", await picker.getByRole("button", { name: /^Site survey/ }).count());
   await picker.getByRole("button", { name: "Office tasks" }).click();
+  // tick one: CBS RAMS -> Add 1 task opens it, centred
   await picker.getByRole("button", { name: /^CBS RAMS/ }).click();
-  const panel = p.getByRole("dialog", { name: /New task/ });
-  await panel.getByRole("button", { name: "Add task" }).dblclick();
+  log("tick shows:", await picker.getByRole("button", { name: /^CBS RAMS \(selected\)/ }).count() ? "✓ Selected" : "NOT selected", "| button:", await addBtn.innerText());
+  await addBtn.dblclick();
   const opened = p.getByRole("dialog", { name: "CBS RAMS" });
   await opened.waitFor({ timeout: 10000 });
   log("RAMS added and opened");
-  await drawerCheck(opened, "the job Tasks panel");
+  await centredCheck(opened, "a task opened from the job page");
+  if (SHOTS) await p.screenshot({ path: `${SHOTS}/task-centred.png` });
   await opened.getByText("In progress", { exact: true }).click();
   await opened.getByLabel("In hand").fill("Waiting for the site visit");
   await opened.getByRole("button", { name: "Save" }).click();
@@ -58,19 +74,37 @@ const SHOTS = process.argv[2];
   await p.getByRole("dialog", { name: "CBS RAMS" }).waitFor();
   log("RAMS tile shows On and opens the same task");
   await p.getByRole("dialog", { name: "CBS RAMS" }).getByRole("button", { name: "Close" }).first().click();
-  // Site survey added from the Office tab is an Office task
+  // tick several, then one Add: Site survey (from the Office tab) + Supplier POs + Toolbox talks (On site)
   await tasks.getByRole("button", { name: "+ New task" }).click();
   await picker.getByRole("button", { name: /^Site survey/ }).click();
-  await p.getByRole("dialog", { name: /New task/ }).getByRole("button", { name: "Add task" }).click();
+  await picker.getByRole("button", { name: /^Supplier POs/ }).click();
+  await picker.getByRole("button", { name: "On site tasks" }).click();
+  await picker.getByRole("button", { name: /^Toolbox talks/ }).click();
+  log("three ticked:", await addBtn.innerText());
+  await addBtn.dblclick();
+  await picker.waitFor({ state: "detached", timeout: 10000 });
+  await p.waitForTimeout(1200);
+  log("one Add made them all:", ["Site survey", "Supplier POs", "Toolbox talks"].map((t) => t).join(", "), "->",
+    (await Promise.all(["Site survey", "Supplier POs", "Toolbox talks"].map((t) => tasks.getByRole("button", { name: new RegExp(`^${t}`) }).count()))).join("/"));
+  await tasks.getByRole("button", { name: /^Site survey/ }).click();
   const sv = p.getByRole("dialog", { name: "Site survey" });
   await sv.waitFor({ timeout: 10000 });
   log("site survey from Office tab is On site:", await sv.getByText("On site", { exact: true }).count() ? "yes (WRONG)" : "no (office task)");
   await sv.getByRole("button", { name: "Close" }).first().click();
+  // Other: the one-off task form on this job
+  await tasks.getByRole("button", { name: "+ New task" }).click();
+  await picker.getByRole("button").filter({ hasText: "any one-off task" }).click();
+  const other = p.getByRole("dialog", { name: "New task" });
+  await other.getByLabel("Title").fill("Test task other on job 12");
+  await other.getByRole("button", { name: "Add task" }).click();
+  await p.getByRole("dialog", { name: "Test task other on job 12" }).waitFor({ timeout: 10000 });
+  log("Other made a one-off task on job 12:", await p.getByRole("dialog", { name: "Test task other on job 12" }).getByRole("link", { name: /Job 12/ }).count() ? "yes" : "NO");
+  await p.getByRole("dialog", { name: "Test task other on job 12" }).getByRole("button", { name: "Close" }).first().click();
   // CDM lock on a project job
   await tasks.getByRole("button", { name: "+ New task" }).click();
   await picker.getByRole("button", { name: /^Visitors log/ }).click();
-  log("lock message:", await picker.getByRole("alert").innerText());
-  await picker.getByRole("button", { name: "Close", exact: true }).click();
+  log("lock message:", await picker.getByRole("alert").innerText(), "| still nothing ticked:", await addBtn.isDisabled());
+  await picker.getByRole("button", { name: "Cancel" }).click();
   // upload, done, verify
   await tasks.getByRole("button", { name: /CBS RAMS/ }).click();
   const r = p.getByRole("dialog", { name: "CBS RAMS" });

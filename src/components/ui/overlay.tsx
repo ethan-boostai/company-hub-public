@@ -127,3 +127,63 @@ export function Modal({
     </div>
   );
 }
+
+// Centred panel over a dimmed, blurred page (the live Job File's + New task box): 620px wide, at
+// most 92% of the screen high; only its body scrolls. Used by the job page's + New task picker and
+// by the task panel when a task is opened from the job page.
+export function CentredPanel({
+  open,
+  onClose,
+  title,
+  subtitle,
+  head,
+  children,
+  footer,
+  busy,
+}: {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  subtitle?: ReactNode;
+  head?: ReactNode; // under the title (e.g. the Office / On site toggle)
+  children: ReactNode;
+  footer?: ReactNode;
+  busy?: boolean;
+}) {
+  useScrollLock(open);
+  useEscape(open, onClose, busy);
+  const ref = useInitialFocus(open);
+  const titleId = useId();
+  if (!open) return null;
+  return (
+    <div className="fixed inset-0 z-40 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-[rgba(30,32,34,0.5)] backdrop-blur-[3px]" onClick={() => !busy && onClose()} aria-hidden="true" data-backdrop="blur" />
+      <div
+        ref={ref}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        tabIndex={-1}
+        data-panel="centred"
+        className="relative flex w-full max-w-[620px] max-h-[92vh] flex-col rounded-[14px] bg-white shadow-2xl outline-none"
+      >
+        <div className="border-b border-[#ecece9] px-[18px] pt-4 pb-2.5">
+          <div className="flex items-start gap-3">
+            <div className="flex-1 min-w-0">
+              <h2 id={titleId} className="text-[19px] font-bold">{title}</h2>
+              {subtitle && <div className="mt-0.5 text-[13px] text-[#5c5f62]">{subtitle}</div>}
+            </div>
+            <button type="button" onClick={onClose} disabled={busy} aria-label="Close" className="rounded-md px-2 text-2xl leading-none text-muted hover:text-ink disabled:opacity-50">
+              ×
+            </button>
+          </div>
+          {head}
+        </div>
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-[18px] pt-1 pb-3" data-drawer-body>
+          {children}
+        </div>
+        {footer && <div className="border-t border-[#ecece9] px-[18px] py-3">{footer}</div>}
+      </div>
+    </div>
+  );
+}
