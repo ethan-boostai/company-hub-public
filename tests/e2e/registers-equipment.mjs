@@ -262,7 +262,7 @@ try {
   await closeDrawer();
   await page.goto(`${BASE}/requests`);
   await page.getByLabel("Search requests").fill(KIT);
-  const req = page.getByTestId("request-list").locator("li").filter({ hasText: "Replace:" });
+  const req = page.getByTestId("request-list").locator("tbody tr").filter({ hasText: "Replace:" });
   check("replacement request raised for today", (await req.getByText("Today").count()) === 1 && (await req.getByText("Team app").count()) === 1);
 
   // The report PDF.
@@ -287,10 +287,10 @@ try {
 
   // Clean up: requests, reports, equipment, material, stocktake, van.
   await page.goto(`${BASE}/requests`);
-  await page.getByRole("tab", { name: /^All/ }).click();
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: /^All/ }).click();
   for (;;) {
     await page.getByLabel("Search requests").fill(KIT);
-    const r = page.getByTestId("request-list").locator("li").filter({ hasText: KIT });
+    const r = page.getByTestId("request-list").locator("tbody tr").filter({ hasText: KIT });
     if ((await r.count()) === 0) break;
     await r.first().click();
     await page.getByRole("dialog").first().getByRole("button", { name: "Delete this request" }).click();

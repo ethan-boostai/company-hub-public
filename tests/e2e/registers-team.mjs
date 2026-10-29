@@ -143,9 +143,18 @@ try {
     (await office.getByRole("navigation", { name: "Team" }).getByRole("link", { name: "Team requests" }).getAttribute("aria-current")) === "page" &&
     (await office.getByRole("navigation", { name: "Main menu" }).getByRole("link", { name: "Team" }).getAttribute("aria-current")) === "page");
   await office.getByLabel("Search requests").fill(DETAILS);
-  const req = office.getByTestId("request-list").locator("li").filter({ hasText: DETAILS });
+  const req = office.getByTestId("request-list").locator("tbody tr").filter({ hasText: DETAILS });
   check("request shows as Today, New, Team app", (await req.getByText("Today").count()) === 1 && (await req.getByText("Team app").count()) === 1);
   check("typed category kept", (await req.getByText(`ZZ Ladder ${REG}`).count()) === 1);
+  const attention = office.getByRole("complementary", { name: "Needs attention" });
+  check("new Today request is overdue in Needs attention", (await attention.getByRole("region", { name: "Overdue" }).getByText(`ZZ Ladder ${REG}`).count()) === 1);
+  await office.getByRole("button", { name: "Reports", exact: true }).click();
+  await office.getByRole("menuitem", { name: /^Create report/ }).click();
+  await office.getByRole("dialog").getByRole("button", { name: "Create report" }).click();
+  await office.getByRole("link", { name: "Open full screen" }).waitFor();
+  const reqPdf = await office.request.get(`${BASE}${await office.getByRole("link", { name: "Open full screen" }).getAttribute("href")}`);
+  check("Team requests report is a PDF", reqPdf.ok() && (reqPdf.headers()["content-type"] ?? "").includes("pdf"));
+  await office.getByRole("button", { name: "Close" }).last().click();
   await req.click();
   await drawer.getByText(/Request \d+ - photo 1\.png/).waitFor();
   check("the good request photo arrived, the bad one didn't", (await drawer.getByText(/Request \d+ - photo \d\./).count()) === 1);
@@ -160,7 +169,7 @@ try {
   await shot(office, "03-requests");
   await drawer.getByRole("button", { name: "Delete this request" }).click();
   await office.getByRole("dialog").last().getByRole("button", { name: "Delete" }).click();
-  await office.getByRole("tab", { name: /^All/ }).click();
+  await office.getByRole("group", { name: "Show" }).getByRole("button", { name: /^All/ }).click();
   await office.getByTestId("request-list").getByText("Nothing matches the search.").waitFor();
   check("request deleted after the in-app are-you-sure", true);
 

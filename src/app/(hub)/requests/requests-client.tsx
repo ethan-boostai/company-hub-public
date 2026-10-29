@@ -9,7 +9,11 @@ import { SelectWithAdd } from "@/components/ui/select-with-add";
 import { niceDateTime } from "../_registers/dates";
 import { DeleteButton } from "../_registers/delete-button";
 import { RecordFiles } from "../_registers/record-files";
-import { Chip, Choice, RecordSelect, ViewSwitch } from "../_registers/ui";
+import { Choice, RecordSelect } from "../_registers/ui";
+import { TeamTabs } from "@/components/shell/team-tabs";
+import { PageTop, RegisterLayout, type AttentionItem } from "@/components/ui/page-top";
+import { DataTable, FilterPills, FilterRow, StatusPill } from "@/components/ui/register";
+import { ReportDialog } from "./report-dialog";
 import { addSelectOption } from "@/app/actions/select-options";
 import { deleteRequest, saveRequest } from "./actions";
 import type { RequestRow, RequestsData } from "./data";
@@ -24,6 +28,7 @@ export function RequestsClient({ initial, openId = null }: { initial: RequestsDa
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState<number | "new" | null>(() => (openId && initial.requests.some((r) => r.id === openId) ? openId : null));
   const [categories, setCategories] = useState(initial.categories);
+  const [reporting, setReporting] = useState(false);
 
   const q = query.trim().toLowerCase();
   const shown = rows.filter((r) => {
@@ -39,48 +44,60 @@ export function RequestsClient({ initial, openId = null }: { initial: RequestsDa
     setOpen(r.id);
   }
 
+  // New requests not yet picked up, as the old Actions board showed them: Today is urgent.
+  const attention: AttentionItem[] = rows.filter((r) => r.status === "new").map((r) => ({
+    key: `r${r.id}`,
+    level: r.urgency === "today" ? "overdue" : "soon",
+    tag: label(URGENCIES, r.urgency),
+    name: `${r.requestedBy} · ${r.category}`,
+    detail: `New ${niceDateTime(r.requestedAt)}${r.source === "team" ? " · team app" : ""}`,
+    onOpen: () => setOpen(r.id),
+  }));
+  const openCount = rows.filter((r) => isOpen(r.status)).length;
+
   return (
-    <div>
-      <ViewSwitch<Filter>
+    <RegisterLayout attention={attention}>
+      <PageTop
+        title="Team"
+        countLabel={`${openCount} open request${openCount === 1 ? "" : "s"}`}
+        reports={[{ label: "Create report", hint: "Choose which requests and what to include", onSelect: () => setReporting(true) }]}
+        newAction={{ label: "New request", onSelect: () => setOpen("new") }}
+      >
+        <TeamTabs active="requests" />
+      </PageTop>
+
+      <FilterPills<Filter>
+        label="Show"
         value={filter}
         onChange={setFilter}
         options={[
-          { value: "open", label: "Open", count: rows.filter((r) => isOpen(r.status)).length },
+          { value: "open", label: "Open", count: openCount },
           { value: "done", label: "Done", count: rows.filter((r) => r.status === "done").length },
           { value: "declined", label: "Declined", count: rows.filter((r) => r.status === "declined").length },
           { value: "all", label: "All", count: rows.length },
         ]}
       />
-      <div className="flex flex-wrap items-center gap-3 mb-4">
-        <div className="flex-1 min-w-56">
-          <SearchBox value={query} onChange={setQuery} placeholder="Search requests" label="Search requests" />
-        </div>
-        <button type="button" onClick={() => setOpen("new")} className="px-4 py-2 rounded-lg bg-brand text-white font-semibold">
-          Add request
-        </button>
+      <FilterRow>
+        <SearchBox value={query} onChange={setQuery} placeholder="Search requests" label="Search requests" />
+      </FilterRow>
+
+      <div data-testid="request-list">
+        <DataTable label="Team requests" rows={shown} rowKey={(r) => r.id} onOpen={(r) => setOpen(r.id)}
+          empty={q ? "Nothing matches the search." : "No requests here."} columns={[
+            { key: "who", label: "Requested by", className: "whitespace-nowrap", cell: (r) => r.requestedBy, sub: (r) => niceDateTime(r.requestedAt) },
+            { key: "what", label: "What for", cell: (r) => r.category },
+            { key: "details", label: "Details", cell: (r) => <span className="line-clamp-2">{r.details}</span> },
+            { key: "urgency", label: "Urgency", cell: (r) => (isOpen(r.status)
+              ? <StatusPill tone={r.urgency === "today" ? "red" : r.urgency === "this_week" ? "amber" : "grey"}>{label(URGENCIES, r.urgency)}</StatusPill>
+              : null) },
+            { key: "status", label: "Status", cell: (r) => (
+              <StatusPill tone={r.status === "done" ? "green" : r.status === "declined" ? "grey" : r.status === "new" ? "blue" : "amber"}>{label(REQUEST_STATUSES, r.status)}</StatusPill>
+            ) },
+            { key: "from", label: "From", cell: (r) => (r.source === "team" ? "Team app" : "Office") },
+          ]} />
       </div>
 
-      <div className="bg-white border border-line rounded-xl overflow-hidden">
-        <ul className="divide-y divide-line" data-testid="request-list">
-          {shown.map((r) => (
-            <li key={r.id}>
-              <button type="button" onClick={() => setOpen(r.id)} className="w-full text-left px-4 py-3 hover:bg-paper flex flex-wrap items-center gap-x-3 gap-y-1">
-                <span className="min-w-0 flex-1">
-                  <span className="block font-medium">{r.requestedBy} · {r.category}</span>
-                  <span className="block text-sm text-muted truncate">{niceDateTime(r.requestedAt)} · {r.details}</span>
-                </span>
-                <span className="flex flex-wrap gap-1.5">
-                  {isOpen(r.status) && <Chip tone={r.urgency === "today" ? "overdue" : r.urgency === "this_week" ? "soon" : "none"}>{label(URGENCIES, r.urgency)}</Chip>}
-                  <Chip tone={r.status === "done" ? "ok" : r.status === "declined" ? "none" : "soon"}>{label(REQUEST_STATUSES, r.status)}</Chip>
-                  {r.source === "team" && <Chip>Team app</Chip>}
-                </span>
-              </button>
-            </li>
-          ))}
-          {shown.length === 0 && <li className="px-4 py-6 text-sm text-muted">{q ? "Nothing matches the search." : "No requests here."}</li>}
-        </ul>
-      </div>
-
+      <ReportDialog open={reporting} onClose={() => setReporting(false)} />
       <Drawer open={open !== null} onClose={() => setOpen(null)} title={current ? `${current.requestedBy} · ${current.category}` : "Add request"}>
         {open !== null && (
           <div key={current ? JSON.stringify(current) : "new"}>
@@ -132,7 +149,7 @@ export function RequestsClient({ initial, openId = null }: { initial: RequestsDa
           </div>
         )}
       </Drawer>
-    </div>
+    </RegisterLayout>
   );
 }
 
