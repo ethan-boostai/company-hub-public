@@ -33,6 +33,10 @@ page.on("dialog", async (d) => {
 });
 const drawer = page.getByRole("dialog").first();
 const list = page.getByTestId("company-list");
+const newMenu = async (what) => {
+  await page.getByRole("button", { name: "+ New", exact: true }).click();
+  await page.getByRole("menuitem", { name: what, exact: true }).click();
+};
 
 try {
   await page.goto(`${BASE}/sign-in?next=/subcontractors`);
@@ -43,7 +47,7 @@ try {
   check("Subcontractors and suppliers is in the left menu", await page.getByRole("link", { name: "Subcontractors and suppliers" }).isVisible());
 
   // Add a subcontractor, with a trade from the list.
-  await page.getByRole("button", { name: "Add subcontractor" }).click();
+  await newMenu("Subcontractor");
   await drawer.getByLabel("Company").fill(SUB);
   await drawer.getByLabel("Trade").selectOption("Scaffolding");
   await drawer.getByLabel("Mobile").fill("07700 900123");
@@ -90,7 +94,7 @@ try {
   await page.getByRole("button", { name: "Close" }).first().click();
 
   // Add a supplier: suppliers hold documents too.
-  await page.getByRole("button", { name: "Add supplier" }).click();
+  await newMenu("Supplier");
   await drawer.getByLabel("Company").fill(SUP);
   await drawer.getByLabel("Our account number").fill("ACC-1");
   await drawer.getByRole("button", { name: "Add supplier" }).click();
@@ -104,18 +108,18 @@ try {
   await page.getByRole("button", { name: "Close" }).first().click();
 
   // Due panel and filters.
-  const panel = page.locator("section", { hasText: "Documents expired or expiring" });
-  check("expiring list shows both documents", (await panel.getByText(SUB).count()) === 1 && (await panel.getByText(SUP).count()) === 1);
+  const panel = page.getByRole("complementary", { name: "Needs attention" });
+  check("Needs attention shows both documents", (await panel.getByText(SUB).count()) === 1 && (await panel.getByText(SUP).count()) === 1);
   await page.getByLabel("Search subcontractors and suppliers").fill(`ZZ Test`);
-  await page.getByRole("tab", { name: /^Suppliers/ }).click();
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: /^Suppliers/ }).click();
   check("type filter shows suppliers only", (await list.getByText(SUP).count()) === 1 && (await list.getByText(SUB).count()) === 0);
-  await page.getByRole("tab", { name: /^All/ }).click();
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: /^All/ }).click();
   await page.getByLabel("Search subcontractors and suppliers").fill("PL-TEST-1");
   check("search finds a company by document reference", (await list.getByText(SUB).count()) === 1);
   await shot(page, "01-list");
 
   // Duplicate name refused.
-  await page.getByRole("button", { name: "Add subcontractor" }).click();
+  await newMenu("Subcontractor");
   await drawer.getByLabel("Company").fill(SUB.toLowerCase());
   await drawer.getByRole("button", { name: "Add subcontractor" }).click();
   await drawer.getByText("There is already a subcontractor with that name.").waitFor();
@@ -123,7 +127,8 @@ try {
   await page.getByRole("button", { name: "Close" }).first().click();
 
   // Report.
-  await page.getByRole("button", { name: "Create report" }).click();
+  await page.getByRole("button", { name: "Reports" }).click();
+  await page.getByRole("menuitem", { name: /^Create report/ }).click();
   await page.getByLabel("Email").check();
   await page.getByLabel("Only expired or expiring documents").check();
   await page.getByRole("dialog").getByRole("button", { name: "Create report" }).click();
