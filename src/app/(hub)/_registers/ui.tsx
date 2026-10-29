@@ -174,3 +174,8 @@ export function MiniList({ items, empty }: { items: { key: number | string; titl
     </ul>
   );
 }
+
+// The shared table's StatusPill colour for a due state: overdue red, due soon amber, fine green.
+export function dueTone(d: Due): "red" | "amber" | "green" | "grey" {
+  return d === "overdue" ? "red" : d === "soon" || d === "up" ? "amber" : d === "ok" ? "green" : "grey";
+}
