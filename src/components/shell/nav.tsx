@@ -26,6 +26,7 @@ export const NAV: Group[] = [
     items: [
       { href: "/safety/policy", label: "Policy and manual" },
       { href: "/safety/hazards", label: "Hazards and CoSHH" },
+      { href: "/safety/templates", label: "Templates" },
     ],
   },
   {
