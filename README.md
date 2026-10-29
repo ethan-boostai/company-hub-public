@@ -96,7 +96,7 @@ Everything that connects to a database refuses an address containing the live pr
 Three n8n workflows (all new; no old hub workflow changes):
 
 - **CBS Hub - ServiceM8** (`6xcBApl7dD83ADxK`): ServiceM8 webhooks for jobs and clients → `sm8_apply_event`.
-- **CBS Hub - ServiceM8 Reads** (`7c343MXG3Y8owEsG`): every 5 minutes, records changed since the last read (folders, staff, jobs, clients, client contacts, schedule) → `sm8_apply_records`; at 02:40 the last 3 days again. Successful runs keep no data in n8n.
+- **CBS Hub - ServiceM8 Reads** (`7c343MXG3Y8owEsG`): every 5 minutes, records changed since the last read (folders, staff, jobs, clients, client contacts, schedule) → `sm8_apply_records`; at 02:40 the last 3 days again, plus every client and contact (so a job's client loads even if it hasn't been edited lately). Successful runs keep no data in n8n.
 - **CBS Hub - ServiceM8 Write** (`IEHudBoxjGmXV53t`): webhook `cbs-hub-sm8-write` (header `X-CBS-SM8-Key` = `N8N_SM8_KEY`) sets a job's folder or status and adds a job note naming who did it. It refuses every job but 12, and checks with ServiceM8 that the job id really is job 12.
 
 They call three database functions through one locked-down login, `cbs_n8n_sync`:

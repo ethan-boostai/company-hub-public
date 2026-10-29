@@ -46,7 +46,7 @@ const BASE = process.env.BASE_URL || "http://localhost:3100";
   await p.keyboard.press("Escape");
   // requirement types
   await p.goto(`${BASE}/settings/requirement-types`, { waitUntil: "networkidle" });
-  await p.getByRole("button", { name: "Add type" }).click();
+  await p.getByRole("main").getByRole("button", { name: "Add type" }).first().click();
   const d = p.getByRole("dialog", { name: "Add type" });
   await d.getByLabel("Name").fill("Test skip hire check");
   await d.getByLabel("Approved: on site").check();
@@ -56,7 +56,7 @@ const BASE = process.env.BASE_URL || "http://localhost:3100";
   await p.waitForTimeout(1500);
   log("custom list:", (await p.getByTestId("custom-types").innerText()).replace(/\n/g, " | "));
   // duplicate name
-  await p.getByRole("button", { name: "Add type" }).click();
+  await p.getByRole("main").getByRole("button", { name: "Add type" }).first().click();
   await d.getByLabel("Name").fill("test SKIP hire check");
   await d.getByRole("button", { name: "Add type" }).click();
   await p.waitForTimeout(1000);
