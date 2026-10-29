@@ -69,6 +69,16 @@ describe.skipIf(!local)("ServiceM8 sync (database functions)", () => {
     expect((await job()).sm8_status).toBe("Work Order");
   });
 
+  it("links a client read after its job to that job", async () => {
+    await sql`select cbs_sync.sm8_apply_records('job', ${sql.json([
+      { uuid: JOB, generated_job_id: "12", status: "Work Order", active: 1, edit_date: "2026-10-29 09:00:00", company_uuid: "test-late-client" },
+    ] as never)})`;
+    expect((await job()).client_id).toBeNull();
+    await sql`select cbs_sync.sm8_apply_records('client', ${sql.json([{ uuid: "test-late-client", name: "Test Late Client", edit_date: "2026-10-29 09:01:00" }] as never)})`;
+    const [c] = await sql`select id from clients where sm8_uuid = 'test-late-client'`;
+    expect((await job()).client_id).toBe(c.id);
+  });
+
   it("ignores an older copy that arrives late", async () => {
     await apply(events[5]); // 12:58:34, Maintenance
     const late = await apply(events[4]); // 12:57:25
