@@ -4,7 +4,7 @@ import { useId, useState, type ReactElement, type ReactNode } from "react";
 import type { TeamData } from "./data";
 
 // Layout and wording follow the old team page. The name is picked on each form and never remembered.
-type Screen = "home" | "check" | "accident" | "request" | "tool" | { done: string };
+type Screen = "home" | "check" | "accident" | "request" | "tool" | "leave" | { done: string };
 
 const ITEMS = [
   ["tyres_ok", "Tyres and wheels"],
@@ -56,6 +56,7 @@ export function TeamApp({ data, teamKey }: { data: TeamData; teamKey: string }) 
         {screen === "accident" && <AccidentForm data={data} teamKey={teamKey} done={(m) => setScreen({ done: m })} />}
         {screen === "request" && <RequestForm data={data} teamKey={teamKey} done={(m) => setScreen({ done: m })} />}
         {screen === "tool" && <ToolForm data={data} teamKey={teamKey} done={(m) => setScreen({ done: m })} />}
+        {screen === "leave" && <LeaveForm data={data} teamKey={teamKey} done={(m) => setScreen({ done: m })} />}
         {typeof screen === "object" && (
           <div className="text-center py-10">
             <div className="text-[54px] text-ok" aria-hidden="true">✓</div>
@@ -94,6 +95,8 @@ function Home({ data, go }: { data: TeamData; go: (s: Screen) => void }) {
       <Big title="Make a request" sub="Tools, PPE, lost fuel card, anything you need" onClick={() => go("request")} />
       <Group>TOOLS</Group>
       <Big title="Report a lost, stolen or damaged tool" sub="Report it and ask for a replacement" onClick={() => go("tool")} />
+      <Group>TIME OFF</Group>
+      <Big title="Ask for time off" sub="Holiday, sick leave, a day in lieu" onClick={() => go("leave")} />
     </div>
   );
 }
@@ -478,6 +481,47 @@ function ToolForm({ data, teamKey, done }: { data: TeamData; teamKey: string; do
         </>
       )}
       <SendButton busy={busy} progress={progress} reportSent={reportSent} onSkip={finish}>Send report</SendButton>
+      <Msg text={msg} />
+    </form>
+  );
+}
+
+// Time off: asked here, decided by the office. No photos: sick notes go to the office directly until
+// the hub's file routes check the Time off tick.
+function LeaveForm({ data, teamKey, done }: { data: TeamData; teamKey: string; done: (m: string) => void }) {
+  const { busy, msg, setMsg, send } = useSend(teamKey);
+  const [name, setName] = useState("");
+  const [kind, setKind] = useState(data.leaveKinds[0] ?? "Annual leave");
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [part, setPart] = useState("full");
+  const [notes, setNotes] = useState("");
+  const single = !to || to === from;
+  return (
+    <form noValidate onSubmit={(e) => {
+      e.preventDefault();
+      if (!name) return setMsg("Pick your name.");
+      if (!from) return setMsg("Pick the first day off.");
+      if (to && to < from) return setMsg("The last day is before the first day.");
+      send({ type: "leave", name, kind, from, to: to || from, part: single ? part : "full", notes }, [], () => done("Time off request sent to the office."));
+    }}>
+      <NameField names={data.names} value={name} onChange={setName} />
+      <Labelled label="Type of time off">{(id) => (<select id={id} className={field} value={kind} onChange={(e) => setKind(e.target.value)}>
+          {data.leaveKinds.map((k) => <option key={k}>{k}</option>)}
+        </select>)}</Labelled>
+      <Labelled label="First day off">{(id) => (<input id={id} type="date" className={field} value={from} onChange={(e) => setFrom(e.target.value)} />)}</Labelled>
+      <Labelled label="Last day off (leave blank for one day)">{(id) => (<input id={id} type="date" className={field} value={to} onChange={(e) => setTo(e.target.value)} />)}</Labelled>
+      {single && (
+        <Labelled label="Full or part day">{(id) => (<select id={id} className={field} value={part} onChange={(e) => setPart(e.target.value)}>
+            <option value="full">Full day</option>
+            <option value="morning">Morning only</option>
+            <option value="afternoon">Afternoon only</option>
+          </select>)}</Labelled>
+      )}
+      <Labelled label="Notes for the office (optional)">{(id) => (<textarea id={id} className={`${field} min-h-[90px]`} spellCheck value={notes} onChange={(e) => setNotes(e.target.value)} />)}</Labelled>
+      <button type="submit" disabled={busy} className="mt-[22px] block w-full rounded-xl bg-brand p-4 text-[17px] font-bold text-white disabled:opacity-60">
+        {busy ? "Sending..." : "Send request"}
+      </button>
       <Msg text={msg} />
     </form>
   );

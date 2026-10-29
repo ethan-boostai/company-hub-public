@@ -9,6 +9,7 @@ import { CHECK_ITEMS, nextInspectionAfterCheck, type Frequency } from "@/app/(hu
 import { mergeOptions } from "@/app/(hub)/subcontractors/rules";
 import { CATEGORY_LIST, DEFAULT_CATEGORIES } from "@/app/(hub)/requests/rules";
 import { createToolReport } from "@/app/(hub)/equipment/stock";
+import { DEFAULT_KINDS, KIND_LIST, workingDays } from "@/app/(hub)/people/time-off/rules";
 
 // Saves one report from the team app. No sign-in: the secret team key (X-Team-Key header) lets the
 // device in, the name is picked for this report and checked against People, and the one-time
@@ -63,7 +64,16 @@ const Tool = z.object({
   repairNotes: text(2000),
   replaceNotes: text(2000),
 });
-const Body = z.object({ requestKey: z.string(), report: z.discriminatedUnion("type", [Check, Accident, Request, Tool]) });
+const Leave = z.object({
+  type: z.literal("leave"),
+  name,
+  kind: z.string().trim().min(1).max(120),
+  from: z.string().trim().max(10),
+  to: z.string().trim().max(10),
+  part: z.enum(["full", "morning", "afternoon"]),
+  notes: text(4000),
+});
+const Body = z.object({ requestKey: z.string(), report: z.discriminatedUnion("type", [Check, Accident, Request, Tool, Leave]) });
 
 const fail = (message: string, status = 400) => Response.json({ ok: false, message }, { status });
 
@@ -103,6 +113,13 @@ export async function POST(req: Request) {
     const ok = mergeOptions(DEFAULT_CATEGORIES, listed.map((r) => r.value)).some((c) => c.toLowerCase() === report.category.toLowerCase());
     if (!ok) return fail("Choose what it is for from the list.");
   }
+  if (report.type === "leave") {
+    if (!isIsoDate(report.from) || !isIsoDate(report.to)) return fail("Pick the days off.");
+    if (report.to < report.from) return fail("The last day is before the first day.");
+    if (report.part !== "full" && report.from !== report.to) return fail("Morning or afternoon only works for a single day.");
+    const listed = await sql<{ value: string }[]>`select value from select_options where list = ${KIND_LIST}`;
+    if (!mergeOptions(DEFAULT_KINDS, listed.map((r) => r.value)).some((k) => k.toLowerCase() === report.kind.toLowerCase())) return fail("Choose the type of time off from the list.");
+  }
   if (report.type === "check" || report.type === "accident") {
     const [v] = await sql`select 1 from vehicles where id = ${report.vehicleId}`;
     if (!v) return fail("Pick a vehicle from the list.");
@@ -112,7 +129,7 @@ export async function POST(req: Request) {
     // Sent again (the first reply was lost): hand back the photo ticket for the record it created.
     const [ref] = await sql<{ entity_table: string; entity_id: string }[]>`
       select entity_table, entity_id from team_report_refs where request_key = ${requestKey.toLowerCase()}`;
-    const ticket = ref ? photoTicket({ table: ref.entity_table, id: Number(ref.entity_id), by, key: requestKey }) : null;
+    const ticket = ref && ref.entity_table !== "time_off" ? photoTicket({ table: ref.entity_table, id: Number(ref.entity_id), by, key: requestKey }) : null;
     return Response.json({ ok: false, duplicate: true, photoTicket: ticket, message: "This was already sent." }, { status: 409 });
   }
 
@@ -165,6 +182,17 @@ export async function POST(req: Request) {
         }, by);
         return { table: "tool_reports", id, faults: false };
       }
+      if (report.type === "leave") {
+        const days = workingDays(report.from, report.to, report.part).days;
+        const row = {
+          person_id: Number(person.id), kind: report.kind, from_date: report.from, to_date: report.to, part_day: report.part, days,
+          notes: report.notes || null, status: "pending", source: "team", created_by: by,
+        };
+        const [r] = await tx<{ id: string }[]>`insert into time_off ${tx(row as Record<string, unknown>)} returning id`;
+        // The log says what and when, never the notes (they can hold health details).
+        await logActivity(tx, { person: by, table: "time_off", rowId: Number(r.id), action: "create", changes: { kind: [null, report.kind], from_date: [null, report.from], to_date: [null, report.to] } });
+        return { table: "time_off", id: Number(r.id), faults: false };
+      }
       const row = {
         requested_by: person.name, requested_by_id: Number(person.id), category: report.category, urgency: report.urgency,
         details: report.details, status: "new", source: "team", created_by: by,
@@ -178,5 +206,7 @@ export async function POST(req: Request) {
     return made;
   });
 
-  return Response.json({ ok: true, ...result, photoTicket: photoTicket({ table: result.table, id: result.id, by, key: requestKey }) });
+  // No photos on time off (see LeaveForm), so no photo ticket for it.
+  const ticket = result.table === "time_off" ? null : photoTicket({ table: result.table, id: result.id, by, key: requestKey });
+  return Response.json({ ok: true, ...result, photoTicket: ticket });
 }
