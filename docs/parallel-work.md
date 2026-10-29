@@ -6,7 +6,7 @@ How several Claude Code sessions build the hub at the same time without getting 
 
 1. **Phase 0 is on `main`** (pull request #1 merged). Every workstream branches from `main` and needs the shared parts.
 2. **Dev database for previews.** Every preview uses the shared dev database `cbs-hub-dev` and migrates it on build; Production migrates the live database when a pull request is merged (`docs/environments.md` is the record). So never edit a migration file once it has been pushed: add a new one.
-3. Ethan merges every pull request. No session merges its own.
+3. **Ethan merges every pull request, after testing its preview.** No session merges any pull request or commits to `main` (see "Change process" below).
 
 ## Who owns what
 
@@ -59,6 +59,20 @@ Not in Registers, because these need jobs or other phases:
 - **Safety:** owns the crew portal (no sign-in, name picked per action). Site and Plan ask Core before adding to it.
 - **Site:** uses `suppliers`, `assets` and `materials` from Registers. QuickBooks and PO reading go through new n8n workflows, with Ethan's OK.
 - **Plan:** the programme is the only place a job's start date lives.
+
+## Change process (every session, Core included)
+
+Never merge a pull request and never commit or push to `main`. That includes docs-only changes and conflict fixes. Every change:
+
+1. Work on a branch, commit, push.
+2. Open a pull request with a plain summary of what changed and why.
+3. Make sure the pull request's preview deploys.
+4. Give Ethan numbered test steps for that preview (job 12 and fake data only).
+5. Ethan tests. He approves by replying "approved, merge #N", and only then is the pull request merged, by Ethan. If he reports a problem, fix it on the same branch and give fresh steps.
+
+- **Conflicts with `main`:** merge `main` into your own branch and fix them there, then give fresh test steps. Never fix them on `main`.
+- **Only Ethan merges, and only an approved pull request.** Production changes only that way.
+- **Branch protection:** `main` is protected (pull request required, no direct pushes, no bypass), so a direct push is refused anyway.
 
 ## Rules for every session except Core
 
@@ -122,6 +136,8 @@ Scope (tables as defined in docs/plan.md section 3.3): Fleet (vehicles, vehicle 
 
 Use the shared parts for everything (GuardedForm/SaveButton, guarded(), logActivity(), readDb(), ConfirmDialog, Drawer/Modal, SearchBox on every list, SelectWithAdd, UploadFile/DocViewer, HousePdf). Test on a local database only (setup in docs/parallel-work.md); never run anything against the environment's DATABASE_URL.
 
+Change process (docs/parallel-work.md, binding): never merge a pull request and never commit to main, not even docs or conflict fixes. Every change is a branch, a pull request with a plain summary, a preview that deploys, and numbered test steps for me on that preview (job 12 and fake data only). I test and reply "approved, merge #N"; only then is it merged, by me. If I report a problem, fix it on the same branch and give fresh steps.
+
 First step: don't build yet. Read the docs and the old hub for these areas, then give me your approach: the tables and pages per area, the order you'll build them in (one small pull request per area is fine), anything in docs/plan.md you think needs changing, and any shared change you'd need from the Core session. Wait for my go-ahead.
 ```
 
@@ -133,6 +149,8 @@ You're joining the CBS Operations Hub rebuild as the Safety workstream (Phase 2)
 Scope: everything in Phase 2 of docs/plan.md: RAMS (templates, hazard library), CPHSP (wording), permits, pre-starts, inspections (site and scaffold), toolbox talks (topics), sign-ons, visitors, incidents (reports, RIDDOR), CoSHH (substances, job CoSHH), the H&S policy, and the crew job portal (no sign-in, name picked per action, never remembered). Each record creates its PDF in the house format and its SharePoint copy in the job's folder (src/lib/requirements.ts gives the folder). Job pages go in their own route folders under src/app/(hub)/jobs/[jobNo]/<slug>/ using the slugs in src/lib/jobs/menu.ts. Saving a record never completes its task; use the src/lib/tasks helper for anything task-related. The old hub's builders are in /legacy (pages/cbs-rams-builder.html, cbs-cphsp-builder.html, cbs-toolbox-builder.html, cbs-permit.html, cbs-prestart.html, cbs-site-inspection.html, cbs-incident-report.html, cbs-coshh-builder.html, cbs-sign.html, cbs-visit.html, cbs-hs.html and the matching workflows); reference only, never copy docs/inventory.md section 5 behaviour.
 
 Test on a local database with test job 12 (setup in docs/parallel-work.md); never run anything against the environment's DATABASE_URL.
+
+Change process (docs/parallel-work.md, binding): never merge a pull request and never commit to main, not even docs or conflict fixes. Every change is a branch, a pull request with a plain summary, a preview that deploys, and numbered test steps for me on that preview (job 12 and fake data only). I test and reply "approved, merge #N"; only then is it merged, by me. If I report a problem, fix it on the same branch and give fresh steps.
 
 First step: don't build yet. Give me your approach: tables, pages, the order of small pull requests, anything in docs/plan.md to change, and any shared change you'd need from the Core session. Wait for my go-ahead.
 ```
@@ -146,6 +164,8 @@ Scope: Phase 3 of docs/plan.md, building on the registers already on main (suppl
 
 Test on a local database with test job 12 (setup in docs/parallel-work.md); never run anything against the environment's DATABASE_URL.
 
+Change process (docs/parallel-work.md, binding): never merge a pull request and never commit to main, not even docs or conflict fixes. Every change is a branch, a pull request with a plain summary, a preview that deploys, and numbered test steps for me on that preview (job 12 and fake data only). I test and reply "approved, merge #N"; only then is it merged, by me. If I report a problem, fix it on the same branch and give fresh steps.
+
 First step: don't build yet. Give me your approach: tables, pages, the order of small pull requests, anything in docs/plan.md to change, and any shared change you'd need from the Core session. Wait for my go-ahead.
 ```
 
@@ -157,6 +177,8 @@ You're joining the CBS Operations Hub rebuild as the Plan workstream (Phase 4), 
 Scope: Phase 4 of docs/plan.md: scope of works, programme (the only place a job's start date lives), drawings (with markups and task pins), pre-construction information, RFIs, variations, site surveys and enquiry prep (estimate-stage records). The pages open at Estimate are Scope, Programme, Drawings and Pre-con info; the rest unlock once the job is Approved (src/lib/jobs/menu.ts). Job pages go in their own route folders under src/app/(hub)/jobs/[jobNo]/<slug>/. Saving a record never completes its task; use the src/lib/tasks helper for anything task-related. The old hub is in /legacy (programme, scope, drawings, rfis, variations, site-survey and enquiry-prep workflows, cbs-pci.html); reference only, never copy docs/inventory.md section 5 behaviour (the old programme, RFI and variation pages use browser pop-ups: all prompts are in-app here).
 
 Test on a local database with test job 12 (setup in docs/parallel-work.md); never run anything against the environment's DATABASE_URL.
+
+Change process (docs/parallel-work.md, binding): never merge a pull request and never commit to main, not even docs or conflict fixes. Every change is a branch, a pull request with a plain summary, a preview that deploys, and numbered test steps for me on that preview (job 12 and fake data only). I test and reply "approved, merge #N"; only then is it merged, by me. If I report a problem, fix it on the same branch and give fresh steps.
 
 First step: don't build yet. Give me your approach: tables, pages, the order of small pull requests, anything in docs/plan.md to change, and any shared change you'd need from the Core session. Wait for my go-ahead.
 ```
