@@ -121,7 +121,9 @@ try {
   await drawer.getByText("Lodged", { exact: true }).click();
   await drawer.getByLabel("Our policy").selectOption({ label: `${TITLE} (ZZ Test Insurer)` });
   await drawer.getByLabel("Claimed (£)").fill("1,200");
-  await drawer.getByLabel("ServiceM8 job number").fill("12");
+  await drawer.getByRole("combobox", { name: "Find the job" }).fill("12");
+  await drawer.getByRole("option", { name: /^#12\b/ }).click();
+  check("claim links to job 12", (await drawer.getByTestId("claim-job").getByRole("link", { name: "Job 12" }).count()) === 1);
   await drawer.getByLabel("Next action", { exact: true }).fill("Chase insurer");
   await drawer.getByLabel("Due by").fill(plus(-1));
   await drawer.getByRole("button", { name: "Add claim" }).dblclick();
@@ -129,6 +131,7 @@ try {
   await heading.waitFor();
   const claimNo = (await heading.textContent()).split(" ")[0];
   check("claim saved with an automatic CLM number", /^CLM-\d{3,}$/.test(claimNo), claimNo);
+  check("saved claim keeps its job link", (await drawer.getByTestId("claim-job").getByRole("link", { name: "Job 12" }).count()) === 1);
   await closeDrawer();
   check("overdue claim is in Needs attention", (await attention.getByText(`${claimNo} Vehicle`).count()) === 1);
   await shot(page, "02-claims");

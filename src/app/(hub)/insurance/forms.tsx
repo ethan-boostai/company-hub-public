@@ -7,6 +7,7 @@ import { GuardedForm, SaveButton } from "@/components/ui/guarded-form";
 import { SelectWithAdd } from "@/components/ui/select-with-add";
 import { niceDate, niceDateTime } from "../_registers/dates";
 import { RecordFiles } from "../_registers/record-files";
+import { ClaimJobField } from "./job-field";
 import { Chip, Choice, MiniList, RecordSelect, Section, SmallButton, StatusBox } from "../_registers/ui";
 import { deleteInsuranceRecord, saveCert, saveClaim, savePolicy, type Deletable, type Saved } from "./actions";
 import type { ClaimRow, CertRow, InsuranceData, PolicyRow } from "./data";
@@ -38,7 +39,7 @@ export function policyChain(data: InsuranceData, p: PolicyRow): PolicyRow[] {
 export function claimLinks(data: InsuranceData, c: ClaimRow): string {
   const v = data.vehicles.find((x) => x.id === c.vehicleId);
   const a = data.assets.find((x) => x.id === c.assetId);
-  return [v?.reg, a ? (a.assetTag ? `${a.assetTag} ${a.name}` : a.name) : "", c.jobNo ? `Job ${c.jobNo}` : "", c.site].filter(Boolean).join(" · ");
+  return [v?.reg, a ? (a.assetTag ? `${a.assetTag} ${a.name}` : a.name) : "", c.jobNo ? `Job ${c.jobNo}${c.jobTitle ? ` ${c.jobTitle}` : ""}` : "", c.site].filter(Boolean).join(" · ");
 }
 
 /* ---------- Policy ---------- */
@@ -226,7 +227,7 @@ export function ClaimForm({
                   options={data.accidents.map((a) => ({ value: String(a.id), label: `${a.reg} · ${a.occurredAt ? niceDateTime(a.occurredAt) : "date not given"}` }))} />
                 <RecordSelect label="Equipment" name="asset_id" placeholder="None" defaultValue={assetId ? String(assetId) : ""}
                   options={data.assets.map((a) => ({ value: String(a.id), label: a.assetTag ? `${a.assetTag} ${a.name}` : a.name }))} />
-                <TextField label="ServiceM8 job number" name="job_no" defaultValue={c?.jobNo} error={err.job_no} spellCheck={false} inputMode="numeric" />
+                <div className="sm:col-span-2"><ClaimJobField jobNo={c?.jobNo ?? ""} jobId={c?.jobId ?? null} jobTitle={c?.jobTitle ?? ""} error={err.job_no} /></div>
                 <TextField label="Site" name="site" defaultValue={c?.site} error={err.site} />
                 <TextField label="Client" name="client" defaultValue={c?.client} error={err.client} />
                 <TextField label="Safety incident reference" name="incident_ref" defaultValue={c?.incidentRef} error={err.incident_ref} spellCheck={false} />
