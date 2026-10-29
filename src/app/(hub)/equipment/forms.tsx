@@ -197,6 +197,15 @@ export function MaterialForm({ material: m, data, today, me, onOpen, onSaved }: 
                   <RecordSelect label="Supplier" name="supplier_id" placeholder="None" defaultValue={m?.supplierId ? String(m.supplierId) : ""}
                     options={data.suppliers.map((x) => ({ value: String(x.id), label: x.name }))} />
                   <TextField label="Supplier code" name="supplier_code" defaultValue={m?.supplierCode} spellCheck={false} />
+                  <div>
+                    <RecordSelect label="CoSHH substance" name="sds_substance_id" placeholder="None" defaultValue={m?.sdsSubstanceId ? String(m.sdsSubstanceId) : ""}
+                      options={data.substances.map((x) => ({ value: String(x.id), label: x.label }))} />
+                    {m?.sdsSubstanceId ? (
+                      <a href={`/safety/coshh?open=${m.sdsSubstanceId}`} className="-mt-3 mb-4 block text-sm text-brand underline">Open CoSHH assessment</a>
+                    ) : (
+                      <p className="-mt-3 mb-4 text-xs text-muted">Substances are added on Hazards and CoSHH.</p>
+                    )}
+                  </div>
                   <TextField label="Cost each (£)" name="cost" inputMode="decimal" defaultValue={m?.cost ?? ""} error={err.cost} spellCheck={false} />
                   <TextField label="Minimum level" name="min_level" inputMode="decimal" defaultValue={m?.minLevel ?? ""} error={err.min_level} spellCheck={false}
                     hint="Shows as low stock at or below this (all locations together)" />
