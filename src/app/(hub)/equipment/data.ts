@@ -51,6 +51,8 @@ export type MaterialRow = {
   supplierId: number | null;
   supplierName: string;
   supplierCode: string;
+  sdsSubstanceId: number | null;
+  sdsProduct: string;
   cost: string | null;
   minLevel: number | null;
   reorderQty: number | null;
@@ -125,6 +127,8 @@ export type EquipmentData = {
   vehicles: VehicleLoc[];
   people: { id: number; name: string }[];
   suppliers: { id: number; name: string }[];
+  // CoSHH substances from Hazards and CoSHH (added there, not here).
+  substances: { id: number; label: string }[];
   places: string[];
   assetCategories: string[];
   materialCategories: string[];
@@ -157,7 +161,7 @@ function toService(r: any): AssetServiceRow {
 function toMaterial(r: any, stock: StockAt[]): MaterialRow {
   return {
     id: Number(r.id), name: r.name, category: s(r.category), unit: s(r.unit) || "each", supplierId: n(r.supplier_id), supplierName: s(r.supplier_name),
-    supplierCode: s(r.supplier_code), cost: r.cost == null ? null : String(r.cost), minLevel: n(r.min_level), reorderQty: n(r.reorder_qty),
+    supplierCode: s(r.supplier_code), sdsSubstanceId: n(r.sds_substance_id), sdsProduct: s(r.sds_product), cost: r.cost == null ? null : String(r.cost), minLevel: n(r.min_level), reorderQty: n(r.reorder_qty),
     status: r.status, lastCountedOn: isoDate(r.last_counted_on), lastCountedBy: s(r.last_counted_by), notes: s(r.notes),
     stock, total: Math.round(stock.reduce((t, x) => t + x.qty, 0) * 1000) / 1000,
   };
@@ -195,7 +199,8 @@ async function stockFor(sql: Sql, materialId: number | null): Promise<Map<number
 
 function materialQuery(sql: Sql, id: number | null) {
   return sql`
-    select m.*, s.name as supplier_name from materials m left join suppliers s on s.id = m.supplier_id
+    select m.*, s.name as supplier_name, c.product as sds_product from materials m left join suppliers s on s.id = m.supplier_id
+    left join substances c on c.id = m.sds_substance_id
     ${id ? sql`where m.id = ${id}` : sql``}
     order by lower(m.name), lower(m.unit)`;
 }
@@ -221,7 +226,7 @@ async function stocktakeRows(sql: Sql, id: number | null): Promise<StocktakeRow[
 // Everything the page shows. Saves return it fresh too, since one stock move can change several lists.
 export async function loadEquipment(given?: Sql): Promise<EquipmentData> {
   const sql = given ?? (await readDb());
-  const [assets, services, materials, stock, stocktakes, reports, vehicles, people, suppliers, places, assetCats, matCats, units, reasons, usedPlaces] = await Promise.all([
+  const [assets, services, materials, stock, stocktakes, reports, vehicles, people, suppliers, places, assetCats, matCats, units, reasons, usedPlaces, substances] = await Promise.all([
     sql`select * from assets order by lower(name), asset_tag`,
     sql`select * from asset_services order by serviced_on desc, id desc`,
     materialQuery(sql, null),
@@ -239,6 +244,8 @@ export async function loadEquipment(given?: Sql): Promise<EquipmentData> {
     optionsOf(sql, REASON_LIST),
     sql<{ p: string }[]>`select distinct location_place as p from assets where location_place is not null
                          union select distinct location_place from material_stock where location_place is not null`,
+    sql<{ id: string; product: string; supplier: string | null }[]>`
+      select c.id, c.product, s.name as supplier from substances c left join suppliers s on s.id = c.supplier_id order by lower(c.product), c.id`,
   ]);
   return {
     assets: assets.map(toAsset),
@@ -249,6 +256,7 @@ export async function loadEquipment(given?: Sql): Promise<EquipmentData> {
     vehicles: vehicles.map((v) => ({ id: Number(v.id), reg: v.reg, makeModel: s(v.make_model), driver: s(v.driver), holdsStock: v.holds_stock })),
     people: people.map((p) => ({ id: Number(p.id), name: p.name })),
     suppliers: suppliers.map((x) => ({ id: Number(x.id), name: x.name })),
+    substances: substances.map((x) => ({ id: Number(x.id), label: x.supplier ? `${x.product} (${x.supplier})` : x.product })),
     places: mergeOptions(DEFAULT_PLACES, [...places, ...usedPlaces.map((r) => r.p)]),
     assetCategories: mergeOptions([], [...assetCats, ...assets.map((a) => s(a.category)).filter(Boolean)]),
     materialCategories: mergeOptions([], [...matCats, ...materials.map((m) => s(m.category)).filter(Boolean)]),
