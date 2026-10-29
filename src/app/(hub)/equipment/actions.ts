@@ -212,7 +212,7 @@ export async function saveAssetService(form: FormData): Promise<ActionResult<Sav
 
 /* ---------- Materials ---------- */
 
-const MATERIAL_FIELDS = ["name", "category", "unit", "supplier_id", "supplier_code", "cost", "min_level", "reorder_qty", "status", "notes"];
+const MATERIAL_FIELDS = ["name", "category", "unit", "supplier_id", "supplier_code", "sds_substance_id", "cost", "min_level", "reorder_qty", "status", "notes"];
 
 export async function saveMaterial(form: FormData): Promise<ActionResult<Saved>> {
   const f = new FormValues(form);
@@ -223,6 +223,7 @@ export async function saveMaterial(form: FormData): Promise<ActionResult<Saved>>
     unit: f.text("unit", 30) ?? "each",
     supplier_id: f.id("supplier_id"),
     supplier_code: f.text("supplier_code", 80),
+    sds_substance_id: f.id("sds_substance_id"),
     cost: f.money("cost"),
     min_level: decimal(f, "min_level"),
     reorder_qty: decimal(f, "reorder_qty"),
@@ -235,6 +236,10 @@ export async function saveMaterial(form: FormData): Promise<ActionResult<Saved>>
   return guarded(form.get(REQUEST_KEY_FIELD), async (person) => {
     try {
       const rowId = await db().begin(async (tx) => {
+        if (v.sds_substance_id) {
+          const [c] = await tx`select id from substances where id = ${v.sds_substance_id}`;
+          if (!c) throw new Refused("That CoSHH substance no longer exists. Choose another.");
+        }
         if (id) {
           const [before] = await tx`select ${tx(MATERIAL_FIELDS)} from materials where id = ${id} for update`;
           if (!before) throw new Missing();

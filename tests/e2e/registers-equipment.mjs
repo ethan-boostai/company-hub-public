@@ -107,6 +107,19 @@ try {
   await drawer.getByRole("button", { name: "Add material" }).click();
   await drawer.getByText("Stock by location").waitFor();
   check("opening stock is at the warehouse", (await stockIn("CBS Warehouse")).includes("10 bag"), await stockIn("CBS Warehouse"));
+
+  // CoSHH substance dropdown: lists Hazards and CoSHH's substances (no add new), saves the link.
+  const coshh = drawer.getByLabel("CoSHH substance");
+  const subs = await coshh.locator("option").allTextContents();
+  check("CoSHH substance dropdown has None and no add new", subs[0] === "None" && !subs.some((o) => /add new/i.test(o)), subs.join(" | "));
+  const zzSub = subs.find((o) => o.startsWith("ZZ"));
+  if (zzSub) {
+    await coshh.selectOption({ label: zzSub });
+    await drawer.getByRole("button", { name: "Save", exact: true }).click();
+    await drawer.getByRole("link", { name: "Open CoSHH assessment" }).waitFor();
+    const href = await drawer.getByRole("link", { name: "Open CoSHH assessment" }).getAttribute("href");
+    check("saved substance links to its CoSHH assessment", /^\/safety\/coshh\?open=\d+$/.test(href ?? ""), href ?? "");
+  } else check("a ZZ test substance exists for the CoSHH check", false, "add one on Hazards and CoSHH first");
   await closeDrawer();
 
   // Move 4 bags and the equipment onto the van.
