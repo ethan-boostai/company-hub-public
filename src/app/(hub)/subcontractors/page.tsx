@@ -12,9 +12,9 @@ async function Loader() {
 export default function SubcontractorsPage() {
   return (
     <>
-      <PageHeader title="Subcontractors and suppliers" />
-      <main className="p-4 sm:p-6 max-w-6xl">
-        <Suspense fallback={<p className="text-sm text-muted">Loading subcontractors and suppliers…</p>}>
+      <PageHeader title="Subcontractors and suppliers" bare />
+      <main>
+        <Suspense fallback={<p className="p-6 text-sm text-muted">Loading subcontractors and suppliers…</p>}>
           <Loader />
         </Suspense>
       </main>
