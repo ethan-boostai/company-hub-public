@@ -23,7 +23,9 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import postgres from "postgres";
-import { BANK_HOLIDAYS } from "../../src/app/(hub)/people/time-off/bank-holidays.ts";
+
+// The app's stored bank holiday list, loaded by file path (plain Node can't follow the app's imports).
+const { BANK_HOLIDAYS } = (await import(new URL("../../src/app/(hub)/people/time-off/bank-holidays.ts", import.meta.url).href)) as { BANK_HOLIDAYS: Record<string, string> };
 
 type PartDay = "full" | "morning" | "afternoon";
 // The same count as the app (src/app/(hub)/people/time-off/rules.ts): Mon to Fri, skipping England
