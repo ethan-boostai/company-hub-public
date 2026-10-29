@@ -6,6 +6,7 @@ import { CheckboxField, TextArea, TextField } from "@/components/ui/fields";
 import { GuardedForm, SaveButton } from "@/components/ui/guarded-form";
 import { dueState, niceDate, niceDateTime, relative, ukLocalInput } from "../_registers/dates";
 import { RecordFiles } from "../_registers/record-files";
+import { LinkedClaims } from "../insurance/linked-claims";
 import { Chip, Choice, RecordSelect, StatusBox } from "../_registers/ui";
 import { deleteFleetRecord, saveAccident, saveCheck, saveService, saveVehicle } from "./actions";
 import type { AccidentRow, CheckRow, FleetData, ServiceRow, VehicleRow } from "./data";
@@ -177,6 +178,7 @@ export function VehicleForm({
               chips: <Chip tone={a.status === "closed" ? "ok" : "overdue"}>{labelOf(ACCIDENT_STATUSES, a.status)}</Chip>,
             }))} />
           </Section>
+          <LinkedClaims kind="vehicle" id={v.id} />
           <RecordFiles entityTable="vehicles" entityId={v.id} title="Documents" />
           <DeleteRecord kind="vehicles" id={v.id} label={`Delete ${v.reg}`} onDeleted={() => onDeleted(v.id)}
             message={`This deletes ${v.reg} and its ${checks.length} check(s), ${services.length} service(s) and ${accidents.length} accident record(s). Files stay in SharePoint. It cannot be undone.`} />
@@ -366,6 +368,7 @@ export function AccidentForm({
       </GuardedForm>
       {a && (
         <>
+          <LinkedClaims kind="accident" id={a.id} />
           <RecordFiles entityTable="vehicle_accidents" entityId={a.id} title="Photos and files" />
           <DeleteRecord kind="vehicle_accidents" id={a.id} label="Delete this accident" onDeleted={(v) => onDeleted(a.id, v)}
             message={`This deletes the accident record for ${vehicle?.reg ?? "this vehicle"}. Files stay in SharePoint. It cannot be undone.`} />

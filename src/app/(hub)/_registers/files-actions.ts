@@ -11,6 +11,7 @@ const TABLES = new Set([
   "vehicles", "vehicle_checks", "vehicle_services", "vehicle_accidents",
   "subcontractors", "suppliers", "subcontractor_docs", "requests",
   "assets", "asset_services", "materials", "tool_reports",
+  "insurance_policies", "claims", "company_certs",
 ]);
 
 // Files attached to one register record, newest first.
