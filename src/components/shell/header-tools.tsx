@@ -44,7 +44,7 @@ export function BackButton() {
     <button
       type="button"
       onClick={() => (window.history.length > 1 ? router.back() : router.push("/"))}
-      className="rounded-lg px-2 py-1.5 text-sm font-medium text-ink hover:bg-paper whitespace-nowrap"
+      className="rounded-lg px-2 py-2 text-base font-semibold text-ink hover:bg-paper whitespace-nowrap"
     >
       ‹ Back
     </button>
@@ -60,7 +60,7 @@ export function NameMenu({ name, signOut }: { name: string; signOut: () => Promi
       ariaLabel={`Signed in as ${name}`}
       label={
         <>
-          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-dark text-xs font-bold text-white">{initials}</span>
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">{initials}</span>
           <span className="hidden sm:inline font-semibold" data-testid="signed-in-name">{name}</span>
         </>
       }
@@ -144,7 +144,7 @@ export function NewTaskButton() {
     <button
       type="button"
       onClick={() => newGenericTask({ jobNo: /^\/jobs\/(\d+)/.exec(window.location.pathname)?.[1] ?? null })}
-      className="rounded-lg bg-brand px-3.5 py-2 text-sm font-semibold text-white hover:bg-brand-dark whitespace-nowrap"
+      className="h-11 rounded-lg bg-brand px-4 text-[15px] font-semibold text-white hover:bg-brand-dark whitespace-nowrap"
     >
       + New task
     </button>

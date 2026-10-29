@@ -11,7 +11,7 @@ async function SignedInOnly({ children }: { children: ReactNode }) {
 
 export default function HubLayout({ children }: LayoutProps<"/">) {
   return (
-    <div className="min-h-dvh lg:pl-60">
+    <div className="min-h-dvh lg:pl-72">
       <Sidebar actionsBadge={<ActionsBadge />} />
       <TaskProvider>
         <Suspense fallback={<p className="p-6 text-muted">Loading…</p>}>

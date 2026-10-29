@@ -45,7 +45,7 @@ export function MenuButton({
     tone === "orange"
       ? "bg-brand text-white font-semibold hover:bg-brand-dark border border-brand"
       : tone === "pill"
-        ? "bg-white border border-line rounded-full pl-1 pr-3 text-ink hover:bg-paper"
+        ? "bg-white border border-line rounded-full pl-1.5 pr-4 text-ink hover:bg-paper"
         : "bg-white border border-line text-ink font-medium hover:bg-paper";
 
   return (
@@ -57,7 +57,7 @@ export function MenuButton({
         aria-controls={id}
         aria-label={ariaLabel}
         onClick={() => setOpen(!open)}
-        className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm whitespace-nowrap ${btn}`}
+        className={`inline-flex h-11 items-center gap-1.5 whitespace-nowrap ${tone === "pill" ? "text-[15px]" : "rounded-lg px-4 text-[15px]"} ${btn}`}
       >
         {label}
         {caret && <span aria-hidden="true" className="text-xs opacity-80">▾</span>}

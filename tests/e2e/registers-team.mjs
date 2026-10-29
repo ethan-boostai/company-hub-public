@@ -58,7 +58,7 @@ try {
   await office.locator("#pin").fill("1234");
   await office.getByRole("button", { name: "Sign in" }).click();
   await office.waitForURL(`${BASE}/fleet`);
-  await office.getByRole("button", { name: "+ New", exact: true }).click(); await office.getByRole("menuitem", { name: "Vehicle", exact: true }).click();
+  await office.getByRole("button", { name: "+ New vehicle", exact: true }).click();
   await drawer.getByLabel("Registration").fill(REG);
   await drawer.getByLabel("Make and model").fill("Ford Transit");
   await drawer.getByRole("button", { name: "Add vehicle" }).click();
@@ -123,10 +123,8 @@ try {
 
   // Office: the check (once, unreviewed, from the team app) and the accident show in Fleet.
   await office.reload();
-  await office.getByRole("button", { name: /^Needs attention/ }).click();
-  const panel = office.getByRole("dialog", { name: "Needs attention" });
+  const panel = office.getByRole("complementary", { name: "Needs attention" });
   check("unreviewed team check shows in Needs attention", (await panel.getByText(REG).count()) >= 2);
-  await panel.getByRole("button", { name: "Close" }).click();
   await office.getByRole("button", { name: /^Vehicle checks/ }).click();
   await office.getByLabel("Search checks").fill(REG);
   const rows = office.getByTestId("fleet-list").locator("li").filter({ hasText: REG });

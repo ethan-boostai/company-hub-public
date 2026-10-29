@@ -144,8 +144,10 @@ try {
   await page.goto(`${BASE}/people`);
   const name = `Test Person ${Date.now() % 100000}`;
   const crewBefore = Number((await page.getByRole("button", { name: /^Crew/ }).innerText()).replace(/\D/g, ""));
-  await page.getByRole("button", { name: "+ New person" }).click();
-  const drawer = page.getByRole("dialog", { name: "New person" });
+  check("Team: one orange + New team member", await page.getByRole("button", { name: "+ New team member" }).isVisible());
+  check("Team: Needs attention panel shows All clear", await page.getByRole("complementary", { name: "Needs attention" }).getByTestId("all-clear").isVisible());
+  await page.getByRole("button", { name: "+ New team member" }).click();
+  const drawer = page.getByRole("dialog", { name: "New team member" });
   await drawer.getByLabel("Name").fill(name);
   const roleTag = await drawer.getByLabel("Role").evaluate((el) => el.tagName);
   check("Role is a plain text box", roleTag === "INPUT", roleTag);
@@ -153,7 +155,7 @@ try {
   await drawer.getByLabel("Can sign in to the hub (office)").check();
   await drawer.getByLabel(/^Crew/).check();
   await page.waitForTimeout(300);
-  await drawer.getByRole("button", { name: "Add person" }).dblclick();
+  await drawer.getByRole("button", { name: "Add team member" }).dblclick();
   await page.getByRole("dialog", { name }).waitFor({ timeout: 10000 });
   await page.waitForTimeout(800);
   const rows = await page.locator("main tbody tr").filter({ hasText: name }).count();

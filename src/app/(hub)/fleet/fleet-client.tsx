@@ -1,11 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Drawer } from "@/components/ui/overlay";
+import { Drawer, Modal } from "@/components/ui/overlay";
+import { DocViewer, type ViewableFile } from "@/components/ui/doc-viewer";
 import { SearchBox } from "@/components/ui/search-box";
 import { dueState, niceDate, niceDateTime } from "../_registers/dates";
 import { Chip } from "../_registers/ui";
-import { PageTop } from "@/components/ui/page-top";
+import { PageTop, RegisterLayout, type AttentionItem } from "@/components/ui/page-top";
 import { FilterPills, FilterRow } from "@/components/ui/register";
 import type { AccidentRow, CheckRow, FleetData, ServiceRow, VehicleRow } from "./data";
 import { AccidentForm, CheckForm, ServiceForm, VehicleForm } from "./forms";
@@ -37,6 +38,16 @@ export function FleetClient({ initial, today, openVehicleId }: { initial: FleetD
   const regOf = useMemo(() => new Map(data.vehicles.map((v) => [v.id, v.reg])), [data.vehicles]);
   const q = query.trim().toLowerCase();
   const due = useMemo(() => fleetDueItems(data.vehicles, data.checks, data.accidents, today), [data, today]);
+  const attention: AttentionItem[] = due.map((it, i) => ({
+    key: `${i}-${it.vehicleId}-${it.what}`,
+    level: it.tone === "overdue" ? "overdue" : "soon",
+    tag: it.what,
+    name: it.reg,
+    detail: it.detail,
+    onOpen: () => setOpen(it.open ?? { kind: "vehicle", id: it.vehicleId }),
+  }));
+  const [reportOpen, setReportOpen] = useState(false);
+  const [report, setReport] = useState<ViewableFile | null>(null);
 
   // Saves hand back the record and its vehicle as it now is (dates may have moved on).
   const saved = {
@@ -85,31 +96,13 @@ export function FleetClient({ initial, today, openVehicleId }: { initial: FleetD
 
 
   return (
-    <div>
+    <RegisterLayout attention={attention}>
       <PageTop
         title="Fleet"
         count={data.vehicles.length}
-        attention={due.map((it, i) => ({
-          key: `${i}-${it.vehicleId}-${it.what}`,
-          level: it.tone === "overdue" ? "overdue" : "soon",
-          tag: it.what,
-          name: it.reg,
-          detail: it.detail,
-          onOpen: () => setOpen(it.open ?? { kind: "vehicle", id: it.vehicleId }),
-        }))}
-        newAction={{
-          label: "New",
-          items: [
-            { label: "Vehicle", onSelect: () => setOpen({ kind: "vehicle", id: null }) },
-            ...(data.vehicles.length
-              ? [
-                  { label: "Vehicle check", onSelect: () => setOpen({ kind: "check", id: null }) },
-                  { label: "Service", onSelect: () => setOpen({ kind: "service", id: null }) },
-                  { label: "Accident", onSelect: () => setOpen({ kind: "accident", id: null }) },
-                ]
-              : []),
-          ],
-        }}
+        reports={[{ label: "Create report", hint: "Choose which vehicles and what to include", onSelect: () => setReportOpen(true) }]}
+        // Checks, services and accidents are added from inside the vehicle, as live.
+        newAction={{ label: "New vehicle", onSelect: () => setOpen({ kind: "vehicle", id: null }) }}
       />
 
       <FilterPills
@@ -167,7 +160,9 @@ export function FleetClient({ initial, today, openVehicleId }: { initial: FleetD
       </div>
 
       <FleetDrawer open={open} data={data} today={today} onOpen={setOpen} saved={saved} deleted={deleted} />
-    </div>
+      <FleetReport open={reportOpen} onClose={() => setReportOpen(false)} onCreate={setReport} />
+      <DocViewer file={report} onClose={() => setReport(null)} />
+    </RegisterLayout>
   );
 }
 
@@ -180,8 +175,8 @@ function Row({ title, sub, chips, onClick }: { title: string; sub: string; chips
   return (
     <li>
       <button type="button" onClick={onClick} className="w-full text-left px-4 py-3 hover:bg-paper flex flex-wrap items-center gap-x-3 gap-y-1">
-        <span className="min-w-0 flex-1">
-          <span className="block font-medium">{title}</span>
+        <span className="min-w-44 flex-1">
+          <span className="block font-bold">{title}</span>
           {sub && <span className="block text-sm text-muted truncate">{sub}</span>}
         </span>
         <span className="flex flex-wrap gap-1.5">{chips}</span>
@@ -251,5 +246,53 @@ function FleetDrawer({
     <Drawer open onClose={() => onOpen(null)} title={title} width="max-w-2xl">
       {body}
     </Drawer>
+  );
+}
+
+const REPORT_COLUMNS = [
+  { key: "make", label: "Make and model" },
+  { key: "year", label: "Year" },
+  { key: "driver", label: "Driver" },
+  { key: "tax", label: "Vehicle Tax" },
+  { key: "mot", label: "MOT" },
+  { key: "service", label: "Service" },
+  { key: "inspection", label: "Next inspection" },
+  { key: "miles", label: "Miles" },
+] as const;
+
+// Fleet report: the office chooses which vehicles and which columns. Opens in-window.
+function FleetReport({ open, onClose, onCreate }: { open: boolean; onClose: () => void; onCreate: (f: ViewableFile) => void }) {
+  return (
+    <Modal open={open} onClose={onClose} title="Create report" size="max-w-md">
+      <form
+        className="p-5"
+        onSubmit={(e) => {
+          e.preventDefault();
+          const f = new FormData(e.currentTarget);
+          const cols = REPORT_COLUMNS.map((c) => c.key).filter((k) => f.get(`col_${k}`) === "on");
+          const which = String(f.get("which") || "all");
+          onClose();
+          onCreate({ id: 0, name: "Fleet list.pdf", mime: "application/pdf", url: `/api/fleet/report?which=${which}&cols=${cols.join(",")}` });
+        }}
+      >
+        <fieldset className="mb-4">
+          <legend className="block text-sm font-medium mb-1">Vehicles</legend>
+          <select name="which" defaultValue="all" className="w-full rounded-lg border border-line bg-white px-3 py-2">
+            <option value="all">All vehicles</option>
+            <option value="attention">Only vehicles that need attention</option>
+          </select>
+        </fieldset>
+        <fieldset className="mb-5">
+          <legend className="block text-sm font-medium mb-1">Include</legend>
+          {REPORT_COLUMNS.map((c) => (
+            <label key={c.key} className="flex items-center gap-2 py-1 text-sm">
+              <input type="checkbox" name={`col_${c.key}`} defaultChecked={c.key !== "year" && c.key !== "miles"} className="h-4 w-4 accent-brand" />
+              {c.label}
+            </label>
+          ))}
+        </fieldset>
+        <button type="submit" className="px-4 py-2 rounded-lg bg-brand text-white font-semibold">Create report</button>
+      </form>
+    </Modal>
   );
 }

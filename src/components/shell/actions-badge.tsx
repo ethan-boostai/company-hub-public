@@ -7,7 +7,7 @@ async function Count() {
   const n = await openActionsCount().catch(() => 0);
   if (!n) return null;
   return (
-    <span className="rounded-full bg-danger px-2 py-0.5 text-xs font-bold text-white" aria-label={`${n} open`}>
+    <span className="rounded-full bg-danger px-2.5 py-0.5 text-[13px] font-bold text-white" aria-label={`${n} open`}>
       {n}
     </span>
   );

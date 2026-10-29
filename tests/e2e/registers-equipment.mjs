@@ -66,7 +66,7 @@ try {
   await page.locator("#pin").fill("1234");
   await page.getByRole("button", { name: "Sign in" }).click();
   await page.waitForURL(`${BASE}/fleet`);
-  await page.getByRole("button", { name: "+ New", exact: true }).click(); await page.getByRole("menuitem", { name: "Vehicle", exact: true }).click();
+  await page.getByRole("button", { name: "+ New vehicle", exact: true }).click();
   await drawer.getByLabel("Registration").fill(REG);
   await drawer.getByLabel("Make and model").fill("Ford Transit");
   await drawer.getByRole("button", { name: "Add vehicle" }).click();

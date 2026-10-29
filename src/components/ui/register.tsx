@@ -26,7 +26,7 @@ export function FilterPills<T extends string>({
             type="button"
             aria-pressed={on}
             onClick={() => onChange(o.value)}
-            className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-semibold ${on ? "border-dark bg-dark text-white" : "border-line bg-white text-ink hover:bg-paper"}`}
+            className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[15px] font-semibold ${on ? "border-dark bg-dark text-white" : "border-line bg-white text-ink hover:bg-paper"}`}
           >
             {o.label}
             {o.count !== undefined && <span className="text-brand">{o.count}</span>}
@@ -43,18 +43,20 @@ export function FilterRow({ children }: { children: ReactNode }) {
 }
 
 export type PillTone = "green" | "amber" | "red" | "grey" | "blue";
+// Pale tinted pills with dark text, as live; they fill the column (up to 14rem).
 const PILL: Record<PillTone, string> = {
-  green: "bg-[#1a7f37] text-white",
-  amber: "bg-[#b46b00] text-white",
-  red: "bg-danger text-white",
-  grey: "bg-[#6b6e70] text-white",
-  blue: "bg-[#2c5d8a] text-white",
+  green: "bg-[#dcf2e3] text-[#17713a]",
+  amber: "bg-[#f8e7bf] text-[#7a4a00]",
+  red: "bg-[#f9dcda] text-[#a3231b]",
+  grey: "bg-[#ebebe8] text-[#3d4043]",
+  blue: "bg-[#dce8f4] text-[#24527d]",
 };
 export function StatusPill({ tone, children }: { tone: PillTone; children: ReactNode }) {
-  return <span className={`inline-block whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-semibold ${PILL[tone]}`}>{children}</span>;
+  return <span className={`block w-full max-w-56 truncate rounded-full px-3 py-0.5 text-sm font-semibold ${PILL[tone]}`}>{children}</span>;
 }
 
-export type Column<R> = { key: string; label: string; cell: (r: R) => ReactNode; className?: string };
+// The first column is the record's name (bold); `sub` adds the grey line under it.
+export type Column<R> = { key: string; label: string; cell: (r: R) => ReactNode; sub?: (r: R) => ReactNode; className?: string };
 
 export function DataTable<R>({
   rows,
@@ -73,11 +75,11 @@ export function DataTable<R>({
 }) {
   return (
     <div className="bg-white border border-line rounded-xl overflow-x-auto">
-      <table className="w-full text-sm" aria-label={label}>
+      <table className="w-full text-[15px]" aria-label={label}>
         <thead>
-          <tr className="border-b border-line text-left">
+          <tr className="border-b border-line bg-[#f7f7f5] text-left">
             {columns.map((c) => (
-              <th key={c.key} scope="col" className={`px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-muted whitespace-nowrap ${c.className ?? ""}`}>
+              <th key={c.key} scope="col" className={`px-5 py-3 text-xs font-bold uppercase tracking-[0.1em] text-muted whitespace-nowrap ${c.className ?? ""}`}>
                 {c.label}
               </th>
             ))}
@@ -92,17 +94,24 @@ export function DataTable<R>({
               className={onOpen ? "cursor-pointer hover:bg-paper" : ""}
             >
               {columns.map((c, i) => (
-                <td key={c.key} className={`px-4 py-3 align-middle ${c.className ?? ""}`}>
-                  {i === 0 && onOpen ? (
-                    <button type="button" onClick={(e) => { e.stopPropagation(); onOpen(r); }} className="text-left font-medium hover:underline">
-                      {c.cell(r)}
-                    </button>
+                <td key={c.key} className={`px-5 py-3.5 align-middle ${c.className ?? ""}`}>
+                  {i === 0 ? (
+                    <>
+                      {onOpen ? (
+                        <button type="button" onClick={(e) => { e.stopPropagation(); onOpen(r); }} className="text-left font-bold hover:underline">
+                          {c.cell(r)}
+                        </button>
+                      ) : (
+                        <span className="font-bold">{c.cell(r)}</span>
+                      )}
+                      {c.sub && <span className="block text-sm text-muted">{c.sub(r)}</span>}
+                    </>
                   ) : (
                     c.cell(r)
                   )}
                 </td>
               ))}
-              {onOpen && <td aria-hidden="true" className="pr-4 text-right text-lg text-muted">›</td>}
+              {onOpen && <td aria-hidden="true" className="pr-5 text-right text-lg text-muted">›</td>}
             </tr>
           ))}
           {rows.length === 0 && (

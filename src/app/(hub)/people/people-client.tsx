@@ -6,7 +6,7 @@ import { DocViewer, type ViewableFile } from "@/components/ui/doc-viewer";
 import { CheckboxField, TextField } from "@/components/ui/fields";
 import { GuardedForm, SaveButton } from "@/components/ui/guarded-form";
 import { Drawer, Modal } from "@/components/ui/overlay";
-import { PageTop } from "@/components/ui/page-top";
+import { PageTop, RegisterLayout } from "@/components/ui/page-top";
 import { DataTable, FilterPills, FilterRow, StatusPill, type Column } from "@/components/ui/register";
 import { SearchBox } from "@/components/ui/search-box";
 import { TeamTabs } from "@/components/shell/team-tabs";
@@ -33,9 +33,9 @@ const REPORT_COLUMNS = [
   { key: "status", label: "Status" },
 ] as const;
 
+// Yes / No as live; whether they have a PIN yet shows in their drawer.
 function signIn(p: PersonRow) {
-  if (!p.canSignIn) return <span className="text-muted">No</span>;
-  return p.hasPin ? <StatusPill tone="green">Can sign in</StatusPill> : <StatusPill tone="amber">No PIN yet</StatusPill>;
+  return p.canSignIn ? <StatusPill tone="green">Yes</StatusPill> : <StatusPill tone="grey">No</StatusPill>;
 }
 
 export function PeopleClient({ people: initial, openId }: { people: PersonRow[]; openId: number | null }) {
@@ -64,21 +64,20 @@ export function PeopleClient({ people: initial, openId }: { people: PersonRow[];
 
   const current = editing && editing !== "new" ? editing : null;
   const columns: Column<PersonRow>[] = [
-    { key: "name", label: "Name", cell: (p) => p.name },
-    { key: "role", label: "Role", cell: (p) => p.role || <span className="text-muted">Not set</span> },
-    { key: "mobile", label: "Mobile", cell: (p) => p.mobile || <span className="text-muted">Not set</span> },
+    { key: "name", label: "Name", cell: (p) => p.name, sub: (p) => p.email },
+    { key: "role", label: "Role", cell: (p) => p.role },
+    { key: "mobile", label: "Mobile", cell: (p) => p.mobile },
     { key: "signin", label: "Hub sign-in", cell: signIn },
     { key: "status", label: "Status", cell: (p) => (p.active ? <StatusPill tone="green">Current</StatusPill> : <StatusPill tone="grey">Left</StatusPill>) },
   ];
 
   return (
-    <div>
+    <RegisterLayout attention={[]}>
       <PageTop
         title="Team"
         count={people.length}
-        attention={[]}
         reports={[{ label: "Create report", hint: "Choose who and what to include", onSelect: () => setReportOpen(true) }]}
-        newAction={{ label: "New person", onSelect: () => setEditing("new") }}
+        newAction={{ label: "New team member", onSelect: () => setEditing("new") }}
       >
         <TeamTabs active="team" />
       </PageTop>
@@ -94,7 +93,7 @@ export function PeopleClient({ people: initial, openId }: { people: PersonRow[];
       </FilterRow>
       <DataTable label="Team" rows={shown} columns={columns} rowKey={(p) => p.id} onOpen={(p) => setEditing(p)} empty="No people match." />
 
-      <Drawer open={!!editing} onClose={() => setEditing(null)} title={current ? current.name : "New person"} width="max-w-[560px]">
+      <Drawer open={!!editing} onClose={() => setEditing(null)} title={current ? current.name : "New team member"} width="max-w-[560px]">
         {editing && (
           <div key={current ? `${current.id}-${current.name}-${current.active}-${current.crew}` : "new"}>
             <GuardedForm action={savePerson} onSaved={(r) => r.data && upsert(r.data)}>
@@ -110,7 +109,7 @@ export function PeopleClient({ people: initial, openId }: { people: PersonRow[];
                     <CheckboxField label="Crew (shown in the team app and the training matrix's crew list)" name="crew" defaultChecked={current?.crew} />
                     <CheckboxField label="Can sign in to the hub (office)" name="can_sign_in" defaultChecked={current?.canSignIn} />
                     {current && <CheckboxField label="Still works here" name="active" defaultChecked={current.active} />}
-                    <SaveButton>{current ? "Save" : "Add person"}</SaveButton>
+                    <SaveButton>{current ? "Save" : "Add team member"}</SaveButton>
                   </>
                 );
               }}
@@ -118,7 +117,7 @@ export function PeopleClient({ people: initial, openId }: { people: PersonRow[];
 
             {current && current.canSignIn && current.active && (
               <div className="mt-8 border-t border-line pt-5">
-                <h3 className="font-semibold mb-1">Sign-in PIN</h3>
+                <h3 className="font-semibold mb-1">Sign-in PIN: {current.hasPin ? "set" : "not set yet"}</h3>
                 <p className="text-sm text-muted mb-3">{current.hasPin ? "Set a new PIN if they've forgotten theirs." : "They need a PIN before they can sign in."}</p>
                 <GuardedForm action={setPersonPin} onSaved={(r) => r.data && upsert(r.data)}>
                   {(state) => {
@@ -194,6 +193,6 @@ export function PeopleClient({ people: initial, openId }: { people: PersonRow[];
         </form>
       </Modal>
       <DocViewer file={report} onClose={() => setReport(null)} />
-    </div>
+    </RegisterLayout>
   );
 }

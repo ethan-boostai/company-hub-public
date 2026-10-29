@@ -5,9 +5,11 @@ import { usePathname } from "next/navigation";
 import { Suspense, type ReactNode } from "react";
 
 // Main left menu, grouped as in the live hub. Only pages that exist so far are listed; a group with
-// no pages yet (Purchasing, Health and safety, Compliance, Settings) is left out until it has one.
-type Item = { href: string; label: string; icon: keyof typeof ICONS; count?: "actions" };
-type Group = { group?: string; items: Item[]; bottom?: boolean };
+// no pages yet (Purchasing, Health and safety, Compliance) is left out until it has one. As live: the
+// top items and Settings carry an icon; inside a group the heading carries the icon and its items
+// sit indented under it.
+type Item = { href: string; label: string; icon?: keyof typeof ICONS; count?: "actions" };
+type Group = { group?: string; icon?: keyof typeof ICONS; items: Item[] };
 
 export const NAV: Group[] = [
   {
@@ -17,24 +19,27 @@ export const NAV: Group[] = [
       { href: "/jobs", label: "Jobs", icon: "jobs" },
     ],
   },
-  { group: "Purchasing", items: [] },
-  { group: "Health and safety", items: [] },
+  { group: "Purchasing", icon: "receipt", items: [] },
+  { group: "Health and safety", icon: "shield", items: [] },
   {
     group: "Assets",
+    icon: "van",
     items: [
-      { href: "/fleet", label: "Fleet", icon: "van" },
-      { href: "/equipment", label: "Equipment and materials", icon: "tools" },
+      { href: "/fleet", label: "Fleet" },
+      { href: "/equipment", label: "Equipment and materials" },
     ],
   },
   {
     group: "People and companies",
+    icon: "team",
     items: [
-      { href: "/people", label: "Team", icon: "team" },
-      { href: "/subcontractors", label: "Subcontractors and suppliers", icon: "company" },
+      { href: "/people", label: "Team" },
+      { href: "/subcontractors", label: "Subcontractors and suppliers" },
     ],
   },
-  { group: "Compliance", items: [] },
-  { group: "Settings", items: [], bottom: true },
+  { group: "Compliance", icon: "award", items: [] },
+  // Settings is the last item (no settings pages yet, so it isn't shown).
+  { items: [] },
 ];
 
 // Pages that belong to a menu item without sitting under its address (Team requests is a Team tab).
@@ -42,8 +47,11 @@ const ALSO: Record<string, string[]> = { "/people": ["/requests"] };
 
 const ICONS = {
   home: <path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" />,
-  actions: <><rect x="3" y="4" width="5" height="16" rx="1" /><rect x="10" y="4" width="5" height="10" rx="1" /><rect x="17" y="4" width="4" height="13" rx="1" /></>,
-  jobs: <><path d="M3 7h18v13H3z" /><path d="M8 7V4h8v3" /></>,
+  actions: <><rect x="4" y="4" width="16" height="16" rx="2" /><path d="M8.5 12l2.5 2.5 5-5" /></>,
+  jobs: <><rect x="3" y="7" width="18" height="13" rx="1.5" /><path d="M8 7V4h8v3" /></>,
+  receipt: <><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z" /><path d="M9 8h6M9 12h6M9 16h4" /></>,
+  shield: <path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z" />,
+  award: <><circle cx="12" cy="9" r="5" /><path d="M9 13.5L8 21l4-2 4 2-1-7.5" /></>,
   van: <><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7" /><circle cx="7" cy="18" r="1.8" /><circle cx="17" cy="18" r="1.8" /></>,
   tools: <path d="M14.5 6.5a4 4 0 0 0-5 5L4 17l3 3 5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z" />,
   team: <><circle cx="9" cy="8" r="3.2" /><path d="M3 20a6 6 0 0 1 12 0" /><circle cx="17" cy="9" r="2.5" /><path d="M16 14.2a5 5 0 0 1 5 5.8" /></>,
@@ -80,31 +88,34 @@ function isActive(href: string, path: string) {
 
 function Links({ path, onNavigate, actionsBadge }: { path: string; onNavigate?: () => void; actionsBadge?: ReactNode }) {
   const shown = NAV.filter((g) => g.items.length > 0);
-  const section = (g: Group, i: number): ReactNode => (
-    <div key={g.group ?? i} className="mb-3">
-      {g.group && <p className="px-3 pt-2 pb-1 text-[11px] font-bold uppercase tracking-wider text-white/55">{g.group}</p>}
-      {g.items.map((item) => {
-        const active = isActive(item.href, path);
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            onClick={onNavigate}
-            aria-current={active ? "page" : undefined}
-            className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm ${active ? "bg-brand text-white font-semibold" : "text-white/90 hover:bg-white/10"}`}
-          >
-            <Icon name={item.icon} />
-            <span className="flex-1">{item.label}</span>
-            {item.count === "actions" && actionsBadge}
-          </Link>
-        );
-      })}
-    </div>
-  );
   return (
-    <nav aria-label="Main menu" className="flex min-h-full flex-col">
-      <div>{shown.filter((g) => !g.bottom).map(section)}</div>
-      <div className="mt-auto">{shown.filter((g) => g.bottom).map(section)}</div>
+    <nav aria-label="Main menu">
+      {shown.map((g, gi) => (
+        <div key={g.group ?? gi} className={g.group ? "mt-4" : ""}>
+          {g.group && (
+            <p className="flex items-center gap-2.5 px-3 pb-1 text-[13px] font-bold uppercase tracking-[0.12em] text-[#b9bbbd]">
+              {g.icon && <Icon name={g.icon} />}
+              {g.group}
+            </p>
+          )}
+          {g.items.map((item) => {
+            const active = isActive(item.href, path);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={onNavigate}
+                aria-current={active ? "page" : undefined}
+                className={`mb-0.5 flex items-center gap-2.5 rounded-lg py-2 pr-3 text-[15px] ${item.icon ? "pl-3" : "pl-[2.45rem]"} ${active ? "bg-brand text-white font-semibold" : "text-white hover:bg-white/10"}`}
+              >
+                {item.icon && <Icon name={item.icon} />}
+                <span className="flex-1">{item.label}</span>
+                {item.count === "actions" && actionsBadge}
+              </Link>
+            );
+          })}
+        </div>
+      ))}
     </nav>
   );
 }
@@ -122,7 +133,7 @@ export function MenuLogo() {
 // Always-visible menu on wide screens.
 export function Sidebar({ actionsBadge }: { actionsBadge?: ReactNode }) {
   return (
-    <aside className="hidden lg:flex fixed inset-y-0 left-0 w-60 flex-col bg-dark text-white">
+    <aside className="hidden lg:flex fixed inset-y-0 left-0 w-72 flex-col bg-dark text-white">
       <MenuLogo />
       <div className="flex-1 overflow-y-auto p-3">
         <NavLinks actionsBadge={actionsBadge} />

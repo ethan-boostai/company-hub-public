@@ -103,12 +103,13 @@ Never commit or push to `main`; every change goes through a pull request (`main`
 Ethan approved one page layout on 29/10/2026 (`docs/decisions.md`, "Page standard"). Build every page from the shared parts, never your own copies:
 
 - `PageHeader` (white header) with `bare` when the page has a `PageTop`.
-- `PageTop` (`src/components/ui/page-top.tsx`): title and "N records"; Needs attention (pass your own `AttentionItem`s: overdue / soon, tag, name, detail, open); Reports ▾; More ▾ only if needed; one orange + New.
-- `FilterPills`, `FilterRow`, `DataTable` and `StatusPill` (`src/components/ui/register.tsx`).
-- No due or attention panels at the top of pages: those items go into Needs attention.
+- `RegisterLayout` (`src/components/ui/page-top.tsx`) around the page: pass your own `AttentionItem`s (overdue / soon, tag, name, detail, open) and it draws the Needs attention panel down the right (320px, » to hide, All clear when empty, a button bottom right under 1100px). The page's own `main` has no padding; `RegisterLayout` adds it.
+- `PageTop`: title and "N records"; Reports ▾ (Create report, choosing what to include); More ▾ only if needed; one orange + New (one kind: "+ New vehicle"; several kinds: "+ New ▾").
+- Under it, in this order: `FilterPills`, then `FilterRow` (with `SearchBox`), then `DataTable` (first column bold, `sub` for the grey line) and `StatusPill` (`src/components/ui/register.tsx`).
+- No due or attention panels, or extra buttons, between the page top and the filter pills: those items go into Needs attention.
 - Team tabs (`src/components/shell/team-tabs.tsx`) on Training and qualifications and Team requests.
 
-Fleet's page top is already converted (Core did it as the example). Registers: move the rest of Fleet (the lists to `DataTable`), Equipment and materials, Subcontractors and suppliers, Team requests and Training and qualifications onto these parts.
+Fleet is converted (Core did it as the example: `src/app/(hub)/fleet/fleet-client.tsx`; it also gained `src/app/api/fleet/report/route.ts` for Reports ▾ and lost the + New ▾ list, as checks, services and accidents are added inside the vehicle). Registers: convert Equipment and materials (its "due" list becomes Needs attention items), Subcontractors and suppliers, Team requests and Training and qualifications the same way, and move Fleet's other lists to `DataTable` if you want them as tables. The old `NeedsAttention` button and drawer are gone; `PageTop` no longer takes `attention`.
 
 ## Local database (each new session)
 

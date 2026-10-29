@@ -42,7 +42,7 @@ try {
   check("Fleet is in the left menu", await page.getByRole("link", { name: "Fleet" }).isVisible());
 
   // Add a vehicle (reg typed in lower case with a space).
-  await page.getByRole("button", { name: "+ New", exact: true }).click(); await page.getByRole("menuitem", { name: "Vehicle", exact: true }).click();
+  await page.getByRole("button", { name: "+ New vehicle", exact: true }).click();
   await drawer.getByLabel("Registration").fill(SPACED);
   await drawer.getByLabel("Make and model").fill("Ford Transit");
   await drawer.getByLabel("MOT expires").fill(plus(10));
@@ -112,13 +112,37 @@ try {
   await page.getByRole("button", { name: "Close" }).first().click();
 
   // Due list shows the MOT, the unreviewed defect check and the open accident.
-  // (Needs attention: the page top's button opens the 560px drawer, Overdue then Due soon.)
-  await page.getByRole("button", { name: /^Needs attention/ }).click();
-  const panel = page.getByRole("dialog", { name: "Needs attention" });
+  // (Needs attention: the panel open down the right, Overdue then Due soon.)
+  const panel = page.getByRole("complementary", { name: "Needs attention" });
+  check("Needs attention panel is open down the right", await panel.getByRole("heading", { name: /^Needs attention \(\d+\)$/ }).isVisible());
+  const box = await panel.boundingBox();
+  check("panel is about 320px wide, on the right", !!box && Math.round(box.width) === 320 && box.x + box.width >= 1270, JSON.stringify(box));
   check("Needs attention shows the MOT", await panel.getByText("MOT").first().isVisible());
   check("Needs attention shows the open accident", await panel.getByText(/Accident/).first().isVisible());
+  check("Overdue comes before Due soon", (await panel.locator("section").first().getAttribute("aria-label")) === "Overdue");
   await shot(page, "02-needs-attention");
-  await panel.getByRole("button", { name: "Close" }).click();
+  // » hides it to a « tab; the choice is remembered after a reload; « brings it back.
+  await panel.getByRole("button", { name: "Hide Needs attention" }).click();
+  await page.reload({ waitUntil: "networkidle" });
+  check("hidden panel stays hidden after a reload", await page.getByRole("button", { name: /^Show Needs attention/ }).isVisible());
+  await page.getByRole("button", { name: /^Show Needs attention/ }).click();
+  check("« shows it again", await panel.getByRole("heading", { name: /^Needs attention/ }).isVisible());
+  // Clicking an item opens its record.
+  await panel.getByRole("button").filter({ hasText: "MOT" }).filter({ hasText: REG }).first().click();
+  check("clicking an item opens the vehicle", await page.getByRole("dialog", { name: new RegExp(REG) }).isVisible());
+  await page.getByRole("dialog", { name: new RegExp(REG) }).getByRole("button", { name: "Close" }).first().click();
+  // Narrow screen: the panel tucks behind a button bottom right that opens it full screen.
+  await page.setViewportSize({ width: 900, height: 900 });
+  check("narrow: panel hidden", !(await panel.isVisible()));
+  await page.getByRole("button", { name: /^Needs attention \d+$/ }).click();
+  const full = page.getByRole("dialog", { name: "Needs attention" });
+  const fb = await full.boundingBox();
+  check("narrow: button opens it full screen", !!fb && Math.round(fb.width) === 900, JSON.stringify(fb));
+  const overflow = await page.evaluate(() => getComputedStyle(document.documentElement).overflow + getComputedStyle(document.body).overflow);
+  check("narrow: no page scroll behind it", overflow.includes("hidden"), overflow);
+  await shot(page, "02-needs-attention-narrow");
+  await full.getByRole("button", { name: "Close Needs attention" }).click();
+  await page.setViewportSize({ width: 1280, height: 900 });
   await shot(page, "02-list");
 
   // Search on each list.
@@ -130,7 +154,7 @@ try {
 
   // Duplicate reg refused.
   await page.getByRole("button", { name: /^Vehicles/ }).click();
-  await page.getByRole("button", { name: "+ New", exact: true }).click(); await page.getByRole("menuitem", { name: "Vehicle", exact: true }).click();
+  await page.getByRole("button", { name: "+ New vehicle", exact: true }).click();
   await drawer.getByLabel("Registration").fill(SPACED.toUpperCase());
   await drawer.getByRole("button", { name: "Add vehicle" }).click();
   await drawer.getByText("That vehicle is already on the register.").waitFor();

@@ -13,8 +13,8 @@ export default function TeamPage(props: PageProps<"/people">) {
   return (
     <>
       <PageHeader title="Team" bare />
-      <main className="p-4 sm:p-6">
-        <Suspense fallback={<p className="text-sm text-muted">Loading the team…</p>}>
+      <main>
+        <Suspense fallback={<p className="p-6 text-sm text-muted">Loading the team…</p>}>
           <PeopleLoader searchParams={props.searchParams as Promise<{ open?: string }>} />
         </Suspense>
       </main>
