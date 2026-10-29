@@ -50,7 +50,7 @@ This repo replaces the original n8n-served hub (pages served from n8n webhooks o
 - No browser pop-ups (alert/confirm/prompt). All prompts are in-app.
 - No page scrollbar behind a drawer or modal. Only the drawer scrolls.
 - Left menu always available. On mobile: menu button and a narrow drawer, no sticky menu.
-- Standard page header: title, global search, + New task, signed-in person top right. No back or nav buttons in headers.
+- Standard page layout (`docs/decisions.md`, "Page standard"): white header with ‹ Back, global search, + New task and the signed-in name pill (Sign out in its menu); the page top with the title and "N records", then Needs attention, Reports ▾, More ▾ and one orange + New. Build pages from the shared parts only.
 - Every list that holds data gets its own search box.
 - Every dropdown lets users add new options.
 - Documents and photos open in-window (dark backdrop) with an option to open full screen in a new tab.

@@ -17,6 +17,7 @@ export function SearchSuggest({
   label = "Search",
   emptyText,
   dark = false,
+  light = false,
 }: {
   value: string;
   onChange: (v: string) => void;
@@ -28,6 +29,7 @@ export function SearchSuggest({
   label?: string;
   emptyText?: string;
   dark?: boolean;
+  light?: boolean; // the header's light grey box
 }) {
   const [open, setOpen] = useState(false);
   const [hi, setHi] = useState(-1);
@@ -88,7 +90,9 @@ export function SearchSuggest({
         className={
           dark
             ? "w-full rounded-lg border border-white/30 bg-white/10 text-white placeholder:text-white/60 px-3 py-1.5 focus:outline-none focus:bg-white focus:text-ink"
-            : "w-full rounded-lg border border-line bg-white px-3 py-2 focus:outline-none focus:border-brand"
+            : light
+              ? "w-full rounded-lg border border-transparent bg-paper px-3 py-2 text-sm placeholder:text-muted focus:outline-none focus:bg-white focus:border-brand"
+              : "w-full rounded-lg border border-line bg-white px-3 py-2 focus:outline-none focus:border-brand"
         }
       />
       {showList && (

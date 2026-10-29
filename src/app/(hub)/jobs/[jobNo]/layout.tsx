@@ -11,7 +11,7 @@ async function JobFrame({ params, children }: { params: Promise<{ jobNo: string 
   if (!job) notFound();
   return (
     <>
-      <PageHeader title={`#${job.jobNo} ${jobTitle(job.description)}`} />
+      <PageHeader title={`#${job.jobNo} ${jobTitle(job.description)}`} bare />
       <div className="md:flex">
         <JobMenu jobNo={job.jobNo} atEstimate={job.stage === "estimate"} />
         <div className="flex-1 min-w-0">{children}</div>

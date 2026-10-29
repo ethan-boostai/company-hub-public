@@ -98,6 +98,18 @@ Never commit or push to `main`; every change goes through a pull request (`main`
 9. **Approach first:** explain your approach for anything non-trivial and wait for Ethan's go-ahead (`CLAUDE.md`).
 10. **Secrets:** never in chat, code or commits.
 
+## Page standard (every page, every session)
+
+Ethan approved one page layout on 29/10/2026 (`docs/decisions.md`, "Page standard"). Build every page from the shared parts, never your own copies:
+
+- `PageHeader` (white header) with `bare` when the page has a `PageTop`.
+- `PageTop` (`src/components/ui/page-top.tsx`): title and "N records"; Needs attention (pass your own `AttentionItem`s: overdue / soon, tag, name, detail, open); Reports ▾; More ▾ only if needed; one orange + New.
+- `FilterPills`, `FilterRow`, `DataTable` and `StatusPill` (`src/components/ui/register.tsx`).
+- No due or attention panels at the top of pages: those items go into Needs attention.
+- Team tabs (`src/components/shell/team-tabs.tsx`) on Training and qualifications and Team requests.
+
+Fleet's page top is already converted (Core did it as the example). Registers: move the rest of Fleet (the lists to `DataTable`), Equipment and materials, Subcontractors and suppliers, Team requests and Training and qualifications onto these parts.
+
 ## Local database (each new session)
 
 Every session runs in its own container. Set up a local Postgres 16 once (if `/usr/lib/postgresql/16` is missing, install it first with `apt-get install -y postgresql-16`):

@@ -138,3 +138,10 @@ export async function pickerTiles(job: { id: number; stage: string; jobType: str
     })
     .sort((a, b) => (order.get(a.stage as never) ?? 9) - (order.get(b.stage as never) ?? 9));
 }
+
+// The red count on the menu's Actions item: every live task on the board that isn't done.
+export async function openActionsCount(): Promise<number> {
+  const sql = await readDb();
+  const [r] = await sql<{ n: number }[]>`select count(*)::int as n from tasks where removed_at is null and status <> 'done'`;
+  return r?.n ?? 0;
+}

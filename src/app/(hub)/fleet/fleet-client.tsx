@@ -4,7 +4,9 @@ import { useMemo, useState } from "react";
 import { Drawer } from "@/components/ui/overlay";
 import { SearchBox } from "@/components/ui/search-box";
 import { dueState, niceDate, niceDateTime } from "../_registers/dates";
-import { Chip, ViewSwitch } from "../_registers/ui";
+import { Chip } from "../_registers/ui";
+import { PageTop } from "@/components/ui/page-top";
+import { FilterPills, FilterRow } from "@/components/ui/register";
 import type { AccidentRow, CheckRow, FleetData, ServiceRow, VehicleRow } from "./data";
 import { AccidentForm, CheckForm, ServiceForm, VehicleForm } from "./forms";
 import { ACCIDENT_STATUSES, CHECK_STATUSES, fleetDueItems, FREQUENCIES, labelOf, milesState, worst } from "./rules";
@@ -81,14 +83,37 @@ export function FleetClient({ initial, today, openVehicleId }: { initial: FleetD
   const accidents = data.accidents.filter((a) =>
     matches(q, regOf.get(a.vehicleId), a.driver, a.location, a.description, a.damage, a.thirdParty, a.thirdPartyReg, labelOf(ACCIDENT_STATUSES, a.status)));
 
-  const addLabel = { vehicles: "Add vehicle", checks: "Add check", services: "Add service", accidents: "Add accident" }[view];
-  const addKind = ({ vehicles: "vehicle", checks: "check", services: "service", accidents: "accident" } as const)[view];
 
   return (
     <div>
-      <DuePanel items={due} onOpen={setOpen} />
+      <PageTop
+        title="Fleet"
+        count={data.vehicles.length}
+        attention={due.map((it, i) => ({
+          key: `${i}-${it.vehicleId}-${it.what}`,
+          level: it.tone === "overdue" ? "overdue" : "soon",
+          tag: it.what,
+          name: it.reg,
+          detail: it.detail,
+          onOpen: () => setOpen(it.open ?? { kind: "vehicle", id: it.vehicleId }),
+        }))}
+        newAction={{
+          label: "New",
+          items: [
+            { label: "Vehicle", onSelect: () => setOpen({ kind: "vehicle", id: null }) },
+            ...(data.vehicles.length
+              ? [
+                  { label: "Vehicle check", onSelect: () => setOpen({ kind: "check", id: null }) },
+                  { label: "Service", onSelect: () => setOpen({ kind: "service", id: null }) },
+                  { label: "Accident", onSelect: () => setOpen({ kind: "accident", id: null }) },
+                ]
+              : []),
+          ],
+        }}
+      />
 
-      <ViewSwitch
+      <FilterPills
+        label="Show"
         value={view}
         onChange={(v) => setView(v)}
         options={[
@@ -99,19 +124,9 @@ export function FleetClient({ initial, today, openVehicleId }: { initial: FleetD
         ]}
       />
 
-      <div className="flex flex-wrap items-center gap-3 mb-4">
-        <div className="flex-1 min-w-56">
-          <SearchBox value={query} onChange={setQuery} placeholder={`Search ${view === "checks" ? "vehicle checks" : view}`} label={`Search ${view}`} />
-        </div>
-        <button
-          type="button"
-          onClick={() => setOpen({ kind: addKind, id: null } as Open)}
-          disabled={addKind !== "vehicle" && data.vehicles.length === 0}
-          className="px-4 py-2 rounded-lg bg-brand text-white font-semibold disabled:opacity-50"
-        >
-          {addLabel}
-        </button>
-      </div>
+      <FilterRow>
+        <SearchBox value={query} onChange={setQuery} placeholder={`Search ${view === "checks" ? "vehicle checks" : view}`} label={`Search ${view}`} />
+      </FilterRow>
 
       <div className="bg-white border border-line rounded-xl overflow-hidden">
         <ul className="divide-y divide-line" data-testid="fleet-list">
@@ -190,35 +205,6 @@ function VehicleChips({ v, today, offRoad }: { v: VehicleRow; today: string; off
       )}
       {!v.holdsStock && <Chip>Fleet only</Chip>}
     </>
-  );
-}
-
-function DuePanel({ items, onOpen }: { items: ReturnType<typeof fleetDueItems>; onOpen: (o: Open) => void }) {
-  const [shown, setShown] = useState(true);
-  return (
-    <section className="mb-5 bg-white border border-line rounded-xl">
-      <button type="button" onClick={() => setShown((s) => !s)} aria-expanded={shown}
-        className="w-full flex items-center gap-2 px-4 py-3 text-left">
-        <h2 className="font-semibold flex-1">Due and overdue</h2>
-        <span className="text-sm text-muted">{items.length === 0 ? "Nothing due in the next 30 days" : `${items.length} item${items.length === 1 ? "" : "s"}`}</span>
-        <span aria-hidden="true" className="text-muted">{shown ? "▲" : "▼"}</span>
-      </button>
-      {shown && items.length > 0 && (
-        <ul className="divide-y divide-line border-t border-line">
-          {items.map((it, i) => (
-            <li key={i}>
-              <button type="button" onClick={() => onOpen(it.open ?? { kind: "vehicle", id: it.vehicleId })}
-                className="w-full text-left px-4 py-2 hover:bg-paper flex flex-wrap items-center gap-x-3">
-                <Chip tone={it.tone}>{it.tone === "overdue" ? "Overdue" : "Due soon"}</Chip>
-                <span className="font-medium">{it.reg}</span>
-                <span>{it.what}</span>
-                <span className="text-sm text-muted">{it.detail}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </section>
   );
 }
 

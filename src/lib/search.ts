@@ -54,7 +54,7 @@ export async function searchHub(raw: string, limit = 8): Promise<SearchResults> 
       id: Number(p.id),
       title: p.name,
       sub: [p.role, p.active ? "" : "left"].filter(Boolean).join(" · "),
-      href: `/settings/people?open=${p.id}`,
+      href: `/people?open=${p.id}`,
     })),
   };
 }

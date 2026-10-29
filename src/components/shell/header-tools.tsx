@@ -1,36 +1,77 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState, type ReactNode } from "react";
 import { SearchSuggest, type Suggestion } from "@/components/ui/search-suggest";
 import { useScrollLock } from "@/components/ui/scroll-lock";
-import { NavLinks } from "./nav";
+import { MenuLogo, NavLinks } from "./nav";
+import { MenuButton } from "@/components/ui/menu-button";
 import { useTasks } from "@/components/tasks/task-provider";
 
 // Mobile: a menu button that opens a narrow drawer (the menu is never sticky on mobile).
-export function MobileMenu() {
+export function MobileMenu({ actionsBadge }: { actionsBadge?: ReactNode }) {
   const [open, setOpen] = useState(false);
   useScrollLock(open);
   return (
     <>
-      <button type="button" onClick={() => setOpen(true)} className="lg:hidden rounded-md border border-white/40 px-3 py-1.5 text-sm text-white" aria-expanded={open}>
+      <button type="button" onClick={() => setOpen(true)} className="lg:hidden rounded-lg border border-line px-3 py-1.5 text-sm text-ink" aria-expanded={open}>
         Menu
       </button>
       {open && (
         <div className="fixed inset-0 z-40 lg:hidden">
           <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} aria-hidden="true" />
           <div role="dialog" aria-modal="true" aria-label="Main menu" className="absolute left-0 top-0 h-full w-64 max-w-[80vw] bg-dark text-white flex flex-col">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-              <span className="font-semibold">Menu</span>
-              <button type="button" onClick={() => setOpen(false)} className="rounded-md border border-white/40 px-3 py-1 text-sm">Close</button>
+            <div className="flex items-stretch">
+              <div className="flex-1"><MenuLogo /></div>
+              <button type="button" onClick={() => setOpen(false)} className="bg-white border-b-4 border-brand px-3 text-sm text-ink">Close</button>
             </div>
             <div className="flex-1 overflow-y-auto overscroll-contain p-3">
-              <NavLinks onNavigate={() => setOpen(false)} />
+              <NavLinks onNavigate={() => setOpen(false)} actionsBadge={actionsBadge} />
             </div>
           </div>
         </div>
       )}
     </>
+  );
+}
+
+// ‹ Back: the page you came from (hidden on Home, where there's nowhere to go back to).
+export function BackButton() {
+  const router = useRouter();
+  const path = usePathname();
+  if (path === "/") return null;
+  return (
+    <button
+      type="button"
+      onClick={() => (window.history.length > 1 ? router.back() : router.push("/"))}
+      className="rounded-lg px-2 py-1.5 text-sm font-medium text-ink hover:bg-paper whitespace-nowrap"
+    >
+      ‹ Back
+    </button>
+  );
+}
+
+// The signed-in person: a pill with their initials and name. Sign out is inside its menu.
+export function NameMenu({ name, signOut }: { name: string; signOut: () => Promise<void> }) {
+  const initials = name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]!.toUpperCase()).join("");
+  return (
+    <MenuButton
+      tone="pill"
+      ariaLabel={`Signed in as ${name}`}
+      label={
+        <>
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-dark text-xs font-bold text-white">{initials}</span>
+          <span className="hidden sm:inline font-semibold" data-testid="signed-in-name">{name}</span>
+        </>
+      }
+      items={[]}
+      footer={
+        <form action={signOut}>
+          <p className="px-3 pt-1 pb-2 text-xs text-muted">Signed in as {name}</p>
+          <button type="submit" role="menuitem" className="block w-full text-left px-3 py-2 text-sm text-ink hover:bg-paper">Sign out</button>
+        </form>
+      }
+    />
   );
 }
 
@@ -71,15 +112,15 @@ export function GlobalSearch({ initial = "" }: { initial?: string }) {
   const results: Suggestion[] = hits.map((h) => ({ key: `${h.kind}-${h.id}`, group: GROUP[h.kind], title: h.title, sub: h.sub }));
 
   return (
-    <div role="search" className="flex-1 min-w-0 max-w-md">
+    <div role="search" className="flex-1 min-w-0 max-w-xl">
       <SearchSuggest
-        dark
+        light
         value={q}
         onChange={setQ}
         results={results}
         busy={busy}
         label="Search the hub"
-        placeholder="Search jobs, tasks and people"
+        placeholder="Search jobs, people, documents…"
         emptyText={`Nothing matches "${q.trim()}".`}
         onPick={(s) => {
           const h = hits.find((x) => `${x.kind}-${x.id}` === s.key);
@@ -103,7 +144,7 @@ export function NewTaskButton() {
     <button
       type="button"
       onClick={() => newGenericTask({ jobNo: /^\/jobs\/(\d+)/.exec(window.location.pathname)?.[1] ?? null })}
-      className="rounded-lg bg-brand px-3 py-1.5 text-sm font-semibold text-white hover:bg-brand-dark whitespace-nowrap"
+      className="rounded-lg bg-brand px-3.5 py-2 text-sm font-semibold text-white hover:bg-brand-dark whitespace-nowrap"
     >
       + New task
     </button>

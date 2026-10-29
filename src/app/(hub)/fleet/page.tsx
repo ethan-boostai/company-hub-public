@@ -12,7 +12,7 @@ async function FleetLoader({ searchParams }: { searchParams: Promise<{ vehicle?:
 export default function FleetPage(props: PageProps<"/fleet">) {
   return (
     <>
-      <PageHeader title="Fleet" />
+      <PageHeader title="Fleet" bare />
       <main className="p-4 sm:p-6 max-w-6xl">
         <Suspense fallback={<p className="text-sm text-muted">Loading the fleet…</p>}>
           <FleetLoader searchParams={props.searchParams as Promise<{ vehicle?: string }>} />

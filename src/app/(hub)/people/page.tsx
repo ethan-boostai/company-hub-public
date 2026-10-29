@@ -8,12 +8,13 @@ async function PeopleLoader({ searchParams }: { searchParams: Promise<{ open?: s
   return <PeopleClient people={people} openId={Number(sp.open) || null} />;
 }
 
-export default function PeoplePage(props: PageProps<"/settings/people">) {
+// People and companies > Team (the Team tab).
+export default function TeamPage(props: PageProps<"/people">) {
   return (
     <>
-      <PageHeader title="People" />
-      <main className="p-4 sm:p-6 max-w-5xl">
-        <Suspense fallback={<p className="text-sm text-muted">Loading people…</p>}>
+      <PageHeader title="Team" bare />
+      <main className="p-4 sm:p-6">
+        <Suspense fallback={<p className="text-sm text-muted">Loading the team…</p>}>
           <PeopleLoader searchParams={props.searchParams as Promise<{ open?: string }>} />
         </Suspense>
       </main>

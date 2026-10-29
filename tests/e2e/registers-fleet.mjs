@@ -42,7 +42,7 @@ try {
   check("Fleet is in the left menu", await page.getByRole("link", { name: "Fleet" }).isVisible());
 
   // Add a vehicle (reg typed in lower case with a space).
-  await page.getByRole("button", { name: "Add vehicle" }).click();
+  await page.getByRole("button", { name: "+ New", exact: true }).click(); await page.getByRole("menuitem", { name: "Vehicle", exact: true }).click();
   await drawer.getByLabel("Registration").fill(SPACED);
   await drawer.getByLabel("Make and model").fill("Ford Transit");
   await drawer.getByLabel("MOT expires").fill(plus(10));
@@ -112,21 +112,25 @@ try {
   await page.getByRole("button", { name: "Close" }).first().click();
 
   // Due list shows the MOT, the unreviewed defect check and the open accident.
-  const panel = page.locator("section", { hasText: "Due and overdue" });
-  check("due list shows the MOT", await panel.getByText("MOT").first().isVisible());
-  check("due list shows the open accident", await panel.getByText("Accident").first().isVisible());
+  // (Needs attention: the page top's button opens the 560px drawer, Overdue then Due soon.)
+  await page.getByRole("button", { name: /^Needs attention/ }).click();
+  const panel = page.getByRole("dialog", { name: "Needs attention" });
+  check("Needs attention shows the MOT", await panel.getByText("MOT").first().isVisible());
+  check("Needs attention shows the open accident", await panel.getByText(/Accident/).first().isVisible());
+  await shot(page, "02-needs-attention");
+  await panel.getByRole("button", { name: "Close" }).click();
   await shot(page, "02-list");
 
   // Search on each list.
   await page.getByLabel("Search vehicles").fill(REG.slice(0, 5).toLowerCase());
   check("vehicle search finds it", (await page.locator("[data-testid=fleet-list] li").filter({ hasText: REG }).count()) >= 1);
-  await page.getByRole("tab", { name: /Vehicle checks/ }).click();
+  await page.getByRole("button", { name: /^Vehicle checks/ }).click();
   await page.getByLabel("Search checks").fill("nearside");
   check("check search finds the defect", (await page.locator("[data-testid=fleet-list] li").filter({ hasText: "Defects logged" }).count()) === 1);
 
   // Duplicate reg refused.
-  await page.getByRole("tab", { name: /^Vehicles/ }).click();
-  await page.getByRole("button", { name: "Add vehicle" }).click();
+  await page.getByRole("button", { name: /^Vehicles/ }).click();
+  await page.getByRole("button", { name: "+ New", exact: true }).click(); await page.getByRole("menuitem", { name: "Vehicle", exact: true }).click();
   await drawer.getByLabel("Registration").fill(SPACED.toUpperCase());
   await drawer.getByRole("button", { name: "Add vehicle" }).click();
   await drawer.getByText("That vehicle is already on the register.").waitFor();
