@@ -276,6 +276,7 @@ files: belongs to one row anywhere via (entity_table, entity_id), plus job_id fo
 2. Converts types ("Yes"/"No" → boolean, "" → null, text dates → `date`), splits JSON columns into child tables, maps names to `people.id` and job numbers to `jobs.id`, and creates `files` rows for every URL.
 3. Prints a count check (rows in vs rows out) and a list of rows it could not map.
 4. Re-runnable until switch-over; after switch-over the old n8n table is read-only.
+5. Registers scripts (all dry run by default; `--apply` only at switch-over, when Ethan says so; trial runs on the local or dev database only). Run order: People (Core) → `registers-fleet.ts` → `registers-subcontractors.ts` → `registers-requests.ts` → `registers-equipment.ts` → `registers-insurance.ts` (policies, covers, claims, accreditations; claims link to vehicles and equipment) → `registers-training.ts` (records matched to People by name). Anything that can't be matched exactly is listed under "Needs checking" and kept in the record's notes or skipped, never guessed.
 
 ## 5. Risks
 
