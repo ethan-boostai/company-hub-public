@@ -2,7 +2,7 @@ import { afterAll, describe, expect, it } from "vitest";
 import { PDFDocument } from "pdf-lib";
 import { HousePdf } from "@/lib/pdf/house";
 import {
-  bestFor, bestRecords, cellText, isSuperseded, matrixPeople, matrixTickets, pdfCellText, ticketLabel, ticketState, trainingDueItems,
+  bestFor, bestRecords, cellText, isSuperseded, MATRIX_COLOURS, matrixPeople, matrixTickets, pdfCellText, ticketLabel, ticketState, trainingDueItems,
 } from "@/app/(hub)/training/rules";
 
 const today = "2026-10-30";
@@ -84,6 +84,15 @@ describe("matrix", () => {
 });
 
 describe("house PDF", () => {
+  it("colours table cells only when asked", async () => {
+    const pdf = await HousePdf.create({ title: "ZZ Test", landscape: true });
+    pdf.table([{ label: "A", width: 0.5 }, { label: "B", width: 0.5 }], [["plain", "plain"]]);
+    pdf.table([{ label: "A", width: 0.5 }, { label: "B", width: 0.5 }], [["x", "y"]], { cellColours: [[null, MATRIX_COLOURS.expired]] });
+    const doc = await PDFDocument.load(await pdf.finish(), { updateMetadata: false });
+    expect(doc.getPageCount()).toBe(1);
+    expect(Object.keys(MATRIX_COLOURS)).toEqual(["valid", "expiring", "expired", "missing"]);
+  });
+
   it("is portrait by default and A4 landscape when asked", async () => {
     for (const landscape of [false, true]) {
       const pdf = await HousePdf.create({ title: "ZZ Test", landscape });

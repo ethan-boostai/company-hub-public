@@ -18,6 +18,15 @@ const LINE = rgb(217 / 255, 217 / 255, 214 / 255);
 const COMPANY = "Chelmsford Building Services Ltd";
 
 export type Column = { label: string; width: number }; // width as a fraction of the content width
+// Optional background and text colour for one table cell, as "#rrggbb" (e.g. the training matrix).
+export type CellColour = { fill: string; text?: string };
+
+function hex(c: string) {
+  const m = /^#?([0-9a-f]{6})$/i.exec(c.trim());
+  if (!m) return INK;
+  const n = parseInt(m[1], 16);
+  return rgb(((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255);
+}
 
 export class HousePdf {
   private page!: PDFPage;
@@ -149,7 +158,9 @@ export class HousePdf {
     this.y -= 6;
   }
 
-  table(columns: Column[], rows: string[][]) {
+  // `cellColours` (optional, off by default): a colour per cell, same shape as `rows`; null or
+  // missing cells keep the plain style.
+  table(columns: Column[], rows: string[][], opts: { cellColours?: (CellColour | null | undefined)[][] } = {}) {
     const size = 8.5;
     const pad = 4;
     const widths = columns.map((c) => c.width * this.contentW);
@@ -166,7 +177,7 @@ export class HousePdf {
       this.y -= h;
     };
     header();
-    for (const row of rows) {
+    for (const [r, row] of rows.entries()) {
       const cells = columns.map((_, i) => this.wrap(row[i] ?? "", size, widths[i] - pad * 2));
       const h = Math.max(...cells.map((l) => l.length)) * (size + 2) + pad * 2;
       if (this.y - h < MARGIN + FOOTER_SPACE) {
@@ -175,7 +186,10 @@ export class HousePdf {
       }
       let x = MARGIN;
       cells.forEach((lines, i) => {
-        lines.forEach((l, j) => this.page.drawText(l, { x: x + pad, y: this.y - pad - size - j * (size + 2), size, font: this.font, color: INK }));
+        const colour = opts.cellColours?.[r]?.[i];
+        if (colour) this.page.drawRectangle({ x: x + 0.5, y: this.y - h + 0.5, width: widths[i] - 1, height: h - 1, color: hex(colour.fill) });
+        const text = colour?.text ? hex(colour.text) : INK;
+        lines.forEach((l, j) => this.page.drawText(l, { x: x + pad, y: this.y - pad - size - j * (size + 2), size, font: this.font, color: text }));
         x += widths[i];
       });
       this.y -= h;

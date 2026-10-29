@@ -9,18 +9,13 @@ import type { TrainingData } from "./data";
 import { TrainingForm, type Open } from "./forms";
 import { ReportDialog, type MatrixChoice } from "./report-dialog";
 import {
-  bestFor, bestRecords, cellText, isSuperseded, matrixPeople, matrixTickets, STANDARD_QUALS, STATE_TONE, ticketLabel, ticketState,
+  bestFor, bestRecords, cellText, isSuperseded, MATRIX_COLOURS, matrixPeople, matrixTickets, STANDARD_QUALS, STATE_TONE, ticketLabel, ticketState,
   trainingDueItems, type PeopleChoice, type TicketChoice, type TicketState,
 } from "./rules";
 
 type Tab = "records" | "matrix";
 
-const CELL: Record<TicketState, string> = {
-  valid: "bg-green-50 text-ok",
-  expiring: "bg-orange-50 text-orange-800",
-  expired: "bg-red-50 text-danger",
-  missing: "bg-paper text-muted",
-};
+const cellStyle = (s: TicketState) => ({ backgroundColor: MATRIX_COLOURS[s].fill, color: MATRIX_COLOURS[s].text });
 
 export function TrainingClient({ initial, today, start }: { initial: TrainingData; today: string; start: Tab }) {
   const [data, setData] = useState(initial);
@@ -160,10 +155,9 @@ export function TrainingClient({ initial, today, start }: { initial: TrainingDat
             </fieldset>
           )}
           <p className="text-sm text-muted mb-2 flex flex-wrap gap-2 items-center">
-            <span className={`rounded px-2 py-0.5 ${CELL.valid}`}>Valid</span>
-            <span className={`rounded px-2 py-0.5 ${CELL.expiring}`}>Expires within 60 days</span>
-            <span className={`rounded px-2 py-0.5 ${CELL.expired}`}>Expired</span>
-            <span className={`rounded px-2 py-0.5 ${CELL.missing}`}>Missing</span>
+            {(["valid", "expiring", "expired", "missing"] as const).map((k) => (
+              <span key={k} className="rounded px-2 py-0.5" style={cellStyle(k)}>{MATRIX_COLOURS[k].label}</span>
+            ))}
             <span>Select a ticket to open it, or a gap to add one.</span>
           </p>
           {people.length === 0 || tickets.length === 0 ? (
@@ -195,7 +189,7 @@ export function TrainingClient({ initial, today, start }: { initial: TrainingDat
                           <td key={t} className="p-0 border border-white">
                             <button type="button" aria-label={`${p.name}, ${t}: ${s === "missing" ? "missing" : text}`}
                               onClick={() => setOpen(r ? { id: r.id } : { id: null, personId: p.id, qualification: t })}
-                              className={`w-full px-2 py-2 font-semibold text-center whitespace-nowrap ${CELL[s]}`}>
+                              style={cellStyle(s)} className="w-full px-2 py-2 font-semibold text-center whitespace-nowrap hover:brightness-95">
                               {text}
                             </button>
                           </td>
