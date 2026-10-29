@@ -13,9 +13,9 @@ async function EquipmentLoader({ searchParams }: { searchParams: Promise<{ repor
 export default function EquipmentPage(props: PageProps<"/equipment">) {
   return (
     <>
-      <PageHeader title="Equipment and materials" />
-      <main className="p-4 sm:p-6 max-w-6xl">
-        <Suspense fallback={<p className="text-sm text-muted">Loading equipment and materials…</p>}>
+      <PageHeader title="Equipment and materials" bare />
+      <main>
+        <Suspense fallback={<p className="p-6 text-sm text-muted">Loading equipment and materials…</p>}>
           <EquipmentLoader searchParams={props.searchParams as Promise<{ report?: string }>} />
         </Suspense>
       </main>

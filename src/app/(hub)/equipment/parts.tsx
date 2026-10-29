@@ -15,7 +15,7 @@ const ADD = "__add_place__";
 // Where something is: a place, a vehicle that holds stock, or (equipment only) a person.
 // Places are a dropdown list the office can add to; vehicles and people come from their registers.
 export function LocationSelect({
-  data, name, label, defaultValue = "", allowPerson = false, allowNone = false, noneLabel = "No location", error, onChange, exclude,
+  data, name, label, defaultValue = "", allowPerson = false, allowNone = false, noneLabel = "No location", error, onChange, exclude, compact = false,
 }: {
   data: EquipmentData;
   name: string;
@@ -27,6 +27,7 @@ export function LocationSelect({
   error?: string;
   onChange?: (key: string) => void;
   exclude?: string;
+  compact?: boolean; // in a filter row: the label is read out but not shown
 }) {
   const id = useId();
   const [value, setValue] = useState(defaultValue);
@@ -64,8 +65,8 @@ export function LocationSelect({
   }
 
   return (
-    <div className="mb-4">
-      <label htmlFor={id} className="block text-sm font-medium mb-1">{label}</label>
+    <div className={compact ? "min-w-56" : "mb-4"}>
+      <label htmlFor={id} className={compact ? "sr-only" : "block text-sm font-medium mb-1"}>{label}</label>
       <select id={id} name={name} value={value} aria-invalid={!!error} className={inputClass}
         onChange={(e) => (e.target.value === ADD ? setAdding(true) : set(e.target.value))}>
         <option value="">{allowNone ? noneLabel : "Choose…"}</option>

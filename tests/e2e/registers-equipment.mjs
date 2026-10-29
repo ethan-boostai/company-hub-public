@@ -48,6 +48,10 @@ async function openRow(text) {
 async function closeDrawer() {
   await page.getByRole("button", { name: "Close", exact: true }).first().click();
 }
+async function menu(button, item) {
+  await page.getByRole("button", { name: button, exact: true }).click();
+  await page.getByRole("menuitem", { name: new RegExp(`^${item}`) }).click();
+}
 async function pickLocation(scope, label, option) {
   const sel = scope.getByLabel(label, { exact: true });
   const value = await sel.evaluate((el, re) => [...el.options].find((o) => new RegExp(re).test(o.textContent))?.value ?? "", option.source ?? option);
@@ -80,7 +84,7 @@ try {
   await page.waitForURL(`${BASE}/equipment`);
 
   // Add equipment at the warehouse, service due in 10 days.
-  await page.getByRole("button", { name: "Add equipment" }).click();
+  await menu("+ New", "Equipment");
   await drawer.getByLabel("Name").fill(KIT);
   await drawer.getByLabel("Asset tag").fill(TAG);
   await pickLocation(drawer, "Where it is kept", /^CBS Warehouse$/);
@@ -90,11 +94,11 @@ try {
   await drawer.getByRole("heading", { name: new RegExp(TAG) }).waitFor();
   await closeDrawer();
   await page.getByLabel("Search the list").fill(TAG);
-  check("double click added the equipment once", (await list.locator("li").filter({ hasText: TAG }).count()) === 1);
-  check("service due soon shows under Needs attention", (await page.getByTestId("due-list").locator("li").filter({ hasText: TAG }).filter({ hasText: "Service" }).count()) === 1);
+  check("double click added the equipment once", (await list.locator("tbody tr").filter({ hasText: TAG }).count()) === 1);
+  check("service due soon shows under Needs attention", (await page.getByRole("complementary", { name: "Needs attention" }).getByRole("listitem").filter({ hasText: TAG }).filter({ hasText: "Service" }).count()) === 1);
 
   // Add a material with 10 bags at the warehouse, minimum 5.
-  await page.getByRole("button", { name: "Add material" }).click();
+  await menu("+ New", "Material");
   await drawer.getByLabel("Name").fill(SAND);
   await drawer.getByLabel("Unit").selectOption("bag");
   await drawer.getByLabel("Minimum level").fill("5");
@@ -106,7 +110,7 @@ try {
   await closeDrawer();
 
   // Move 4 bags and the equipment onto the van.
-  await page.getByRole("button", { name: "Move stock" }).click();
+  await menu("More", "Move stock");
   await pickLocation(drawer, "From", /^CBS Warehouse$/);
   await pickLocation(drawer, "To", vanLabel);
   const moving = drawer.getByTestId("move-items");
@@ -133,11 +137,11 @@ try {
   // Filter by the van: both items show, the material with the van's quantity.
   await page.getByLabel("Search the list").fill(STAMP);
   await pickLocation(page, "Location", vanLabel);
-  const here = list.locator("li").filter({ hasText: SAND });
-  check("location filter shows the van's stock", (await here.getByText("4 bag here").count()) === 1 && (await list.locator("li").filter({ hasText: TAG }).count()) === 1);
+  const here = list.locator("tbody tr").filter({ hasText: SAND });
+  check("location filter shows the van's stock", (await here.getByText("4 bag here").count()) === 1 && (await list.locator("tbody tr").filter({ hasText: TAG }).count()) === 1);
   await shot(page, "02-filter-van");
   await pickLocation(page, "Location", /^CBS Office$/);
-  check("nothing of ours at the office", (await list.locator("li").filter({ hasText: STAMP }).count()) === 0);
+  check("nothing of ours at the office", (await list.locator("tbody tr").filter({ hasText: STAMP }).count()) === 0);
   await page.getByLabel("Location", { exact: true }).selectOption("");
 
   // Use 2 bags on a job from the van; trying to take 10 is refused.
@@ -160,7 +164,7 @@ try {
   await closeDrawer();
 
   // Stocktake at the warehouse: count 5. A delivery of 1 comes in before the office approves.
-  await page.getByRole("button", { name: "Start stocktake" }).click();
+  await menu("More", "Start stocktake");
   await pickLocation(drawer, "Location counted", /^CBS Warehouse$/);
   await drawer.getByLabel("Search materials to count").fill(SAND);
   await drawer.getByLabel(`Count of ${SAND}`).fill("5");
@@ -168,7 +172,7 @@ try {
   await drawer.getByText("Waiting for approval").waitFor();
   check("stocktake saved as waiting for approval", true);
   await closeDrawer();
-  check("stocktake shows under Needs attention", (await page.getByTestId("due-list").getByText("Stocktake to approve").count()) > 0);
+  check("stocktake shows under Needs attention", (await page.getByRole("complementary", { name: "Needs attention" }).getByText("Stocktake to approve").count()) > 0);
   await openRow(SAND);
   check("stock unchanged until approved", (await stockIn("CBS Warehouse")).includes("6 bag"));
   await drawer.getByRole("button", { name: "Add or remove stock" }).click();
@@ -178,9 +182,9 @@ try {
   await drawer.getByRole("button", { name: "Update stock" }).click();
   await drawer.getByText("Delivered").first().waitFor();
   await closeDrawer();
-  await page.getByRole("tab", { name: /Stocktakes/ }).click();
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: /Stocktakes/ }).click();
   await page.getByLabel("Search the list").fill("CBS Warehouse");
-  await list.locator("li").filter({ hasText: "Waiting for approval" }).first().click();
+  await list.locator("tbody tr").filter({ hasText: "Waiting for approval" }).first().click();
   const line = drawer.getByTestId("stocktake-lines").locator("tr").filter({ hasText: SAND });
   check("approval shows counted + the delivery since", (await line.innerText()).includes("6 bag"), (await line.innerText()).replace(/\s+/g, " "));
   await shot(page, "03-stocktake");
@@ -188,14 +192,14 @@ try {
   await drawer.getByText("Approved", { exact: true }).waitFor();
   check("stocktake approved", true);
   await closeDrawer();
-  await page.getByRole("tab", { name: /^All/ }).click();
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: /^All/ }).click();
   await openRow(SAND);
   check("warehouse set to 6 after approval", (await stockIn("CBS Warehouse")).includes("6 bag"), await stockIn("CBS Warehouse"));
   check("stocktake adjustment not needed (no change), last counted set", (await drawer.getByText("Test Office One").count()) > 0);
   await closeDrawer();
 
   // Office tool report: damaged, repair it. The equipment needs repair; a Team request is raised.
-  await page.getByRole("button", { name: "Add tool report" }).click();
+  await menu("+ New", "Tool report");
   await drawer.getByText("Damaged", { exact: true }).click();
   await drawer.getByLabel("Which tool").selectOption({ label: `${TAG} · ${KIT}` });
   await drawer.getByLabel("What happened / details").fill("ZZ test: chisel holder cracked");
@@ -241,10 +245,10 @@ try {
   await phone.close();
 
   await page.reload();
-  await page.getByRole("tab", { name: /Tool reports/ }).click();
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: /Tool reports/ }).click();
   await page.getByLabel("Search the list").fill(TAG);
-  const rep = list.locator("li").filter({ hasText: "Stolen" });
-  check("team report listed as Team app, replacement asked for", (await rep.getByText("Team app").count()) === 1 && (await rep.getByText("Replacement asked for").count()) === 1);
+  const rep = list.locator("tbody tr").filter({ hasText: "Stolen" });
+  check("team report listed as Team app, replacement asked for", (await rep.getByText("Team app").count()) === 1 && (await rep.getByText("Replacement", { exact: true }).count()) === 1);
   await rep.first().click();
   await drawer.getByText(/Tool report \d+ - photo 1\.png/).waitFor();
   check("its photo arrived on the report", true);
@@ -263,7 +267,7 @@ try {
 
   // The report PDF.
   await page.goto(`${BASE}/equipment`);
-  await page.getByRole("button", { name: "Create report" }).click();
+  await menu("Reports", "Create report");
   await page.getByRole("dialog").getByRole("button", { name: "Create report" }).click();
   await page.getByRole("dialog").locator("iframe, object, embed").first().waitFor();
   const pdf = await page.request.get(`${BASE}/equipment/report?include=equipment,materials&kit=tag,location&mat=qty,locations`);
@@ -295,23 +299,23 @@ try {
     await page.waitForTimeout(300);
   }
   await page.goto(`${BASE}/equipment`);
-  await page.getByRole("tab", { name: /Tool reports/ }).click();
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: /Tool reports/ }).click();
   for (;;) {
     await page.getByLabel("Search the list").fill(TAG);
-    const r = list.locator("li").filter({ hasText: KIT });
+    const r = list.locator("tbody tr").filter({ hasText: KIT });
     if ((await r.count()) === 0) break;
     await r.first().click();
     await drawer.getByRole("button", { name: "Delete this tool report" }).click();
     await page.getByRole("dialog").last().getByRole("button", { name: "Delete" }).click();
     await drawer.waitFor({ state: "detached" });
   }
-  await page.getByRole("tab", { name: /Stocktakes/ }).click();
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: /Stocktakes/ }).click();
   await page.getByLabel("Search the list").fill("CBS Warehouse");
-  await list.locator("li").filter({ hasText: "Approved" }).first().click();
+  await list.locator("tbody tr").filter({ hasText: "Approved" }).first().click();
   await drawer.getByRole("button", { name: "Delete this stocktake" }).click();
   await page.getByRole("dialog").last().getByRole("button", { name: "Delete" }).click();
   await drawer.waitFor({ state: "detached" });
-  await page.getByRole("tab", { name: /^All/ }).click();
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: /^All/ }).click();
   await openRow(TAG);
   await drawer.getByRole("button", { name: `Delete ${KIT}` }).click();
   await page.getByRole("dialog").last().getByRole("button", { name: "Delete" }).click();
@@ -321,7 +325,7 @@ try {
   await page.getByRole("dialog").last().getByRole("button", { name: "Delete" }).click();
   await drawer.waitFor({ state: "detached" });
   await page.getByLabel("Search the list").fill(STAMP);
-  check("our equipment and material are deleted", (await list.locator("li").filter({ hasText: STAMP }).count()) === 0);
+  check("our equipment and material are deleted", (await list.locator("tbody tr").filter({ hasText: STAMP }).count()) === 0);
   await page.goto(`${BASE}/fleet`);
   await page.getByLabel("Search vehicles").fill(REG);
   await page.getByTestId("fleet-list").getByText(REG).click();
