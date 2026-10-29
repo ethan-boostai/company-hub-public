@@ -1,6 +1,6 @@
 import postgres from "postgres";
 import { describe, expect, it } from "vitest";
-import { POOL_OPTIONS, withReservedBegin } from "@/lib/db";
+import { DbTimeoutError, POOL_OPTIONS, withReservedBegin } from "@/lib/db";
 
 // Supabase's transaction pooler hangs on pipelined queries (preview pages stuck on "Loading…",
 // 29/10/2026). The shared pool must send one query at a time per connection.
@@ -53,6 +53,42 @@ describe("database pool settings", () => {
     } finally {
       await sql`drop table if exists test_pool_begin`;
       await sql.end();
+    }
+  });
+
+  it.skipIf(!/@(127\.0\.0\.1|localhost)[:/]/.test(url))("a stuck query fails within its limit with a clear error, and the pool is reset", async () => {
+    let stuck = 0;
+    const sql = withReservedBegin(postgres(url, { ...POOL_OPTIONS, max: 2 }), { queryMs: 500, transactionMs: 800, onStuck: () => stuck++ });
+    const started = Date.now();
+    await expect(sql`select pg_sleep(3)`).rejects.toBeInstanceOf(DbTimeoutError);
+    expect(Date.now() - started).toBeLessThan(1500);
+    expect(stuck).toBe(1);
+    // the old pool is closed; a fresh one works normally
+    const fresh = withReservedBegin(postgres(url, { ...POOL_OPTIONS, max: 2 }), { queryMs: 500 });
+    try {
+      expect((await fresh`select 1 as one`)[0].one).toBe(1);
+      expect((await fresh.unsafe("select 2 as two"))[0].two).toBe(2);
+      await expect(fresh.unsafe("select pg_sleep(3)")).rejects.toBeInstanceOf(DbTimeoutError);
+    } finally {
+      await fresh.end({ timeout: 0 }).catch(() => undefined);
+    }
+  });
+
+  it.skipIf(!/@(127\.0\.0\.1|localhost)[:/]/.test(url))("a save sets database-side limits and fails within its own limit", async () => {
+    const sql = withReservedBegin(postgres(url, { ...POOL_OPTIONS, max: 2 }), { queryMs: 1000, transactionMs: 1500 });
+    try {
+      const shown = await sql.begin(async (tx) => {
+        const [a] = await tx`show statement_timeout`;
+        const [b] = await tx`show idle_in_transaction_session_timeout`;
+        return [a.statement_timeout, b.idle_in_transaction_session_timeout];
+      });
+      expect(shown).toEqual(["1s", "2s"]);
+      // outside the save, the connection is back to normal (set local ends with the transaction)
+      expect((await sql`show statement_timeout`)[0].statement_timeout).not.toBe("1s");
+      // a statement inside a save is stopped by the database after statement_timeout
+      await expect(sql.begin((tx) => tx`select pg_sleep(3)`)).rejects.toThrow(/statement timeout|didn't answer/);
+    } finally {
+      await sql.end({ timeout: 0 }).catch(() => undefined);
     }
   });
 });
