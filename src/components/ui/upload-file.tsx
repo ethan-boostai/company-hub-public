@@ -41,6 +41,8 @@ export function UploadFile({
   jobId,
   role,
   label = "Upload file",
+  accept,
+  fileName,
   onUploaded,
 }: {
   entityTable?: string;
@@ -48,6 +50,9 @@ export function UploadFile({
   jobId?: number;
   role?: string;
   label?: string;
+  // Any file type unless a page has a reason to limit it (the H&S manual is PDF only).
+  accept?: { types: string; check: (f: File) => boolean; message: string };
+  fileName?: string; // the name to store the file as, instead of the chosen file's own name
   onUploaded: (file: UploadedFile) => void;
 }) {
   const input = useRef<HTMLInputElement>(null);
@@ -56,6 +61,10 @@ export function UploadFile({
   const [error, setError] = useState("");
 
   async function upload(file: File) {
+    if (accept && !accept.check(file)) {
+      setError(accept.message);
+      return;
+    }
     setBusy(true);
     setError("");
     setProgress(0);
@@ -65,7 +74,7 @@ export function UploadFile({
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            name: file.name, size: file.size, mime: file.type, entityTable: entityTable ?? null,
+            name: fileName || file.name, size: file.size, mime: file.type, entityTable: entityTable ?? null,
             entityId: entityId ?? null, jobId: jobId ?? null, role: role ?? null, requestKey: crypto.randomUUID(),
           }),
         }),
@@ -104,6 +113,7 @@ export function UploadFile({
       <input
         ref={input}
         type="file"
+        accept={accept?.types}
         className="sr-only"
         tabIndex={-1}
         aria-hidden="true"
