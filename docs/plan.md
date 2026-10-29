@@ -158,7 +158,7 @@ Columns listed are the business columns; the standard columns from 3.1 are on ev
 
 #### Safety (Phase 2)
 
-- **hazards** (library) — `hazard`, `activity`, `harm`, `likelihood`, `consequence`, `risk_rating`, `controls`, `control_level`, `control_codes text[]`, `residual_likelihood`, `residual_consequence`, `residual_risk`, `owner`, `plant_categories text[]`, `rams_key`, `source`, `status`, `last_reviewed_on date`, `review_on date`, `notes`.
+- **hazards** (library; built 30/10/2026, migration `20261030140000_safety_hazards_coshh.sql`) — `hazard` (unique, any case), `activity`, `harm`, `likelihood` and `consequence` (1–5), `risk_rating` (worked out: L×C 20+ Extreme, 10+ High, 5+ Medium, else Low), `controls`, `control_codes text[]` (E S I G A P, ticked), `residual_likelihood`, `residual_consequence`, `residual_risk` (worked out), `owner_id → people`, `plant_categories text[]` (equipment categories), `rams_key` (unique), `source`, `status` (active / archived), `last_reviewed_on`, `review_on`, `notes`, `legacy_id`. The old `control_level` text is dropped (the ticks replace it).
 - **rams_templates** (from `cbs_rams_types`) — `key text unique`, `name`, `status`, `template jsonb` (activity, scope, plant, materials, hazard keys, PPE, permits, steps), `notes`.
 - **rams** — `job_id`, `revision int`, `status`, `activity`, `task`, `site`, `prepared_by`, `dated date`, `data jsonb` (builder state, old `job_json`), `pdf_file_id → files`, `notes`.
 - **cphsp** — `job_id`, `cphsp_no`, `revision`, `status`, `project`, `client`, `site`, `prepared_by`, `dated`, `approved_by`, `approved_on`, `subcontractors text[]`, `subcontractors_not_approved text[]`, `data jsonb` (old `state_json`), `pdf_file_id`, `register_pdf_file_id`, `notes`.
@@ -171,7 +171,7 @@ Columns listed are the business columns; the standard columns from 3.1 are on ev
 - **sign_ons** — `job_id`, `doc_type` (site sign-in, induction, RAMS, …), `doc_ref` (old `doc_id`), `doc_revision`, `doc_label`, `name`, `company`, `person_id → people null` (when a worker), `signed_at`, `signature_file_id`, `inducted_by`, `reviewed boolean`, `record_file_id`.
 - **visitors** — `job_id`, `visit_key`, `visit_date`, `name`, `company`, `phone`, `vehicle_reg`, `visiting`, `reason`, `inducted boolean`, `signed_in_at`, `signed_out_at`, `signature_file_id`, `notes`.
 - **incidents** (from `cbs_incidents` + `cbs_incident_reports`) — `ref`, `job_id`, `kind`, `severity`, `occurred_at`, `location`, `person`, `reported_by`, `description`, `immediate_action`, `injury_detail`, `treatment`, `first_aid`, `notifiable boolean`, `riddor_required boolean`, `riddor_notified_at`, `requires_investigation boolean`, `investigation`, `root_cause`, `corrective_actions`, `action_owner`, `action_due`, `review_hazard_register boolean`, `hazard_register_done_on`, `status`, `closed_at`, `report_signed_by`, `report_signed_on`, `report_data jsonb`, `record_file_id`, `report_file_id`.
-- **substances** (CoSHH register) — `product`, `supplier`, `use_for`, `location`, `quantity`, `coshh_class`, `controls`, `ppe`, `sds_date`, `sds_url`, `assessed_by`, `assessed_on`, `review_on`, `status`, `version`, `assessment jsonb`, `sds_file_id`, `pack_file_id`, `notes`.
+- **substances** (CoSHH register; built 30/10/2026, same migration) — `product`, `supplier_id → suppliers`, `use_for`, `location`, `quantity`, `ghs text[]` (the 9 GHS pictograms, replacing the old four ticks and `coshh_class`), `ingredients`, `exposure jsonb` (inhaled / swallowed / skin / eyes: effect, control, first aid), `who_exposed text[]`, `frequency`, `duration`, `controls`, `storage`, `spills_disposal`, `ppe text[]`, `ppe_other`, `assessed_by_id → people`, `assessed_on`, `review_on`, `sds_date`, `sds_file_id → files`, `status` (draft / assessed), `version`, `pack_file_id → files`, `pack_content_hash`, `pack_made_on`, `notes`, `legacy_id`. Unique product per supplier. The old muddled `sds_url` and `assessment jsonb` are replaced by these columns.
 - **job_substances** (from `cbs_job_coshh`) — `job_id`, `substance_id → substances`, unique pair.
 - **hs_policy** — `version`, `status`, `scope`, `commitment`, `objectives`, `effective_on`, `review_due`, `approved_by`, `approver_role`, `approved_on`, `data jsonb`, `pdf_file_id`, `manual_file_id`, `notes`.
 
@@ -371,3 +371,6 @@ Kept tables lose the `cbs_` prefix.
 | `cbs_vehicles` | keep | `vehicles` |
 | `cbs_visitors` | keep | `visitors` |
 | `cbs_workers` | merge | `people` |
+
+### Health and safety > Templates (old hub)
+Live's Templates menu item holds three lists: toolbox talk topics (`cbs_tb_topics` → `toolbox_topics`), RAMS job types (`cbs_rams_types` → `rams_templates`) and CPHSP wording (`cbs_cphsp_wording` → `cphsp_wording`). Each is built with the builder that uses it (toolbox talks, RAMS, CPHSP), later in Phase 2, and then gets a Templates page under Health and safety.

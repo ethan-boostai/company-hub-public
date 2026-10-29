@@ -98,6 +98,12 @@ Never commit or push to `main`; every change goes through a pull request (`main`
 9. **Approach first:** explain your approach for anything non-trivial and wait for Ethan's go-ahead (`CLAUDE.md`).
 10. **Secrets:** never in chat, code or commits.
 
+## Safety changes to Registers' tables (Core, 30/10/2026)
+
+- `materials.sds_substance_id → substances` (migration `20261030140000_safety_hazards_coshh.sql`, later than everything on main when it was added). It links a material to its CoSHH substance (and so its safety data sheet). Nothing in Registers' screens uses it yet: Registers, add a "CoSHH substance" dropdown to the material form when convenient (read `substances`: id, product, supplier name; no add-new, substances are added on Hazards and CoSHH).
+- Hazards list equipment categories from Registers' `equipment.category` options (read-only).
+- The CoSHH supplier dropdown can add a supplier with just a name to `suppliers` (logged as usual).
+
 ## Page standard (every page, every session)
 
 Ethan approved one page layout on 29/10/2026 (`docs/decisions.md`, "Page standard"). Build every page from the shared parts, never your own copies:

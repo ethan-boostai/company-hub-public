@@ -2,6 +2,14 @@
 
 Ethan's decisions that change the plan, newest first. The full detail sits in `docs/plan.md` (sections 3.5 and 3.6); this log says what changed and when.
 
+## Phase 2 Safety, company level (Ethan, 29/10/2026)
+
+- **Hazards and CoSHH** is one Health and safety menu item with two tabs, Hazards (`/safety/hazards`) and CoSHH (`/safety/coshh`). Policy and manual is its own page (next PR). Templates (toolbox talk topics, RAMS job types, CPHSP wording) come with the builders that use them.
+- **Hazards library:** one library (live has the RAMS builder's built-in list plus a register). Risk ratings are worked out from likelihood × consequence as live. Control types are ticked. Archive instead of delete; delete only after the in-app are-you-sure. Needs attention: review overdue or due within 30 days.
+- **CoSHH:** the 9 GHS hazard pictograms (not live's four ticks). Controls are split into Controls, Storage, and Spills and disposal. Supplier links to Subcontractors and suppliers, with add-new. Assessed needs a supplier, what it's used for, controls, assessed by and on, review due and the safety data sheet; otherwise it saves as a Draft with an in-app note. Needs attention: review overdue or due within 30 days, Draft, and a pack that couldn't be made.
+- **CoSHH pack version** (Ethan): the version only goes up, and a new pack file is only made, when the assessment content changes: hazard pictograms, ingredients, exposure (routes, who, how often, how long), controls, storage, spills and disposal, PPE, or the safety data sheet. Edits to anything else just save. The pack is built on the server in the house format: Part 1 the assessment, Part 2 the SDS appended (PDF pages, or a photo on its own page). Files: `CBS System/H&S/COSHH/<product>/<product> - COSHH Assessment v<N> - <date>.pdf` and the SDS in `…/<product>/SDS/` (the test folder until switch-over).
+- **Import at switch-over:** live's hazard register merged with the RAMS builder's list (27 hazards), plus the CoSHH register. Duplicate or near-duplicate hazard names are listed for Ethan to choose; never merged automatically. Dev and local use `scripts/seed/dev-safety.sql` (the 27 builder hazards and two fake substances).
+
 ## Page standard (Ethan, 29/10/2026; revised the same day from his wireframes and live screenshots)
 
 Every page uses the shared parts; nobody builds their own. Layout follows Ethan's three wireframes.
