@@ -58,7 +58,7 @@ try {
   await office.locator("#pin").fill("1234");
   await office.getByRole("button", { name: "Sign in" }).click();
   await office.waitForURL(`${BASE}/fleet`);
-  await office.getByRole("button", { name: "Add vehicle" }).click();
+  await office.getByRole("button", { name: "+ New vehicle", exact: true }).click();
   await drawer.getByLabel("Registration").fill(REG);
   await drawer.getByLabel("Make and model").fill("Ford Transit");
   await drawer.getByRole("button", { name: "Add vehicle" }).click();
@@ -123,9 +123,10 @@ try {
 
   // Office: the check (once, unreviewed, from the team app) and the accident show in Fleet.
   await office.reload();
-  const panel = office.locator("section", { hasText: "Due and overdue" });
-  check("unreviewed team check shows in the due list", (await panel.getByText(REG).count()) >= 2);
-  await office.getByRole("tab", { name: /Vehicle checks/ }).click();
+  const panel = office.getByRole("complementary", { name: "Needs attention" });
+  await panel.getByText(REG).first().waitFor({ timeout: 10000 }).catch(() => {});
+  check("unreviewed team check shows in Needs attention", (await panel.getByText(REG).count()) >= 2);
+  await office.getByRole("button", { name: /^Vehicle checks/ }).click();
   await office.getByLabel("Search checks").fill(REG);
   const rows = office.getByTestId("fleet-list").locator("li").filter({ hasText: REG });
   check("double tap sent the check once", (await rows.count()) === 1, String(await rows.count()));
@@ -137,7 +138,10 @@ try {
 
   // Office: team request, then mark it done with a reply.
   await office.goto(`${BASE}/requests`);
-  check("Team requests is in the left menu", await office.getByRole("link", { name: "Team requests" }).isVisible());
+  // Team requests is a tab of People and companies > Team (page standard, 29/10/2026).
+  check("Team requests is a Team tab (Team highlighted in the menu)",
+    (await office.getByRole("navigation", { name: "Team" }).getByRole("link", { name: "Team requests" }).getAttribute("aria-current")) === "page" &&
+    (await office.getByRole("navigation", { name: "Main menu" }).getByRole("link", { name: "Team" }).getAttribute("aria-current")) === "page");
   await office.getByLabel("Search requests").fill(DETAILS);
   const req = office.getByTestId("request-list").locator("li").filter({ hasText: DETAILS });
   check("request shows as Today, New, Team app", (await req.getByText("Today").count()) === 1 && (await req.getByText("Team app").count()) === 1);

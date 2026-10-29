@@ -1,10 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Drawer } from "@/components/ui/overlay";
+import { Drawer, Modal } from "@/components/ui/overlay";
+import { DocViewer, type ViewableFile } from "@/components/ui/doc-viewer";
 import { SearchBox } from "@/components/ui/search-box";
 import { dueState, niceDate, niceDateTime } from "../_registers/dates";
-import { Chip, ViewSwitch } from "../_registers/ui";
+import { Chip } from "../_registers/ui";
+import { PageTop, RegisterLayout, type AttentionItem } from "@/components/ui/page-top";
+import { FilterPills, FilterRow } from "@/components/ui/register";
 import type { AccidentRow, CheckRow, FleetData, ServiceRow, VehicleRow } from "./data";
 import { AccidentForm, CheckForm, ServiceForm, VehicleForm } from "./forms";
 import { ACCIDENT_STATUSES, CHECK_STATUSES, fleetDueItems, FREQUENCIES, labelOf, milesState, worst } from "./rules";
@@ -35,6 +38,16 @@ export function FleetClient({ initial, today, openVehicleId }: { initial: FleetD
   const regOf = useMemo(() => new Map(data.vehicles.map((v) => [v.id, v.reg])), [data.vehicles]);
   const q = query.trim().toLowerCase();
   const due = useMemo(() => fleetDueItems(data.vehicles, data.checks, data.accidents, today), [data, today]);
+  const attention: AttentionItem[] = due.map((it, i) => ({
+    key: `${i}-${it.vehicleId}-${it.what}`,
+    level: it.tone === "overdue" ? "overdue" : "soon",
+    tag: it.what,
+    name: it.reg,
+    detail: it.detail,
+    onOpen: () => setOpen(it.open ?? { kind: "vehicle", id: it.vehicleId }),
+  }));
+  const [reportOpen, setReportOpen] = useState(false);
+  const [report, setReport] = useState<ViewableFile | null>(null);
 
   // Saves hand back the record and its vehicle as it now is (dates may have moved on).
   const saved = {
@@ -81,14 +94,19 @@ export function FleetClient({ initial, today, openVehicleId }: { initial: FleetD
   const accidents = data.accidents.filter((a) =>
     matches(q, regOf.get(a.vehicleId), a.driver, a.location, a.description, a.damage, a.thirdParty, a.thirdPartyReg, labelOf(ACCIDENT_STATUSES, a.status)));
 
-  const addLabel = { vehicles: "Add vehicle", checks: "Add check", services: "Add service", accidents: "Add accident" }[view];
-  const addKind = ({ vehicles: "vehicle", checks: "check", services: "service", accidents: "accident" } as const)[view];
 
   return (
-    <div>
-      <DuePanel items={due} onOpen={setOpen} />
+    <RegisterLayout attention={attention}>
+      <PageTop
+        title="Fleet"
+        count={data.vehicles.length}
+        reports={[{ label: "Create report", hint: "Choose which vehicles and what to include", onSelect: () => setReportOpen(true) }]}
+        // Checks, services and accidents are added from inside the vehicle, as live.
+        newAction={{ label: "New vehicle", onSelect: () => setOpen({ kind: "vehicle", id: null }) }}
+      />
 
-      <ViewSwitch
+      <FilterPills
+        label="Show"
         value={view}
         onChange={(v) => setView(v)}
         options={[
@@ -99,19 +117,9 @@ export function FleetClient({ initial, today, openVehicleId }: { initial: FleetD
         ]}
       />
 
-      <div className="flex flex-wrap items-center gap-3 mb-4">
-        <div className="flex-1 min-w-56">
-          <SearchBox value={query} onChange={setQuery} placeholder={`Search ${view === "checks" ? "vehicle checks" : view}`} label={`Search ${view}`} />
-        </div>
-        <button
-          type="button"
-          onClick={() => setOpen({ kind: addKind, id: null } as Open)}
-          disabled={addKind !== "vehicle" && data.vehicles.length === 0}
-          className="px-4 py-2 rounded-lg bg-brand text-white font-semibold disabled:opacity-50"
-        >
-          {addLabel}
-        </button>
-      </div>
+      <FilterRow>
+        <SearchBox value={query} onChange={setQuery} placeholder={`Search ${view === "checks" ? "vehicle checks" : view}`} label={`Search ${view}`} />
+      </FilterRow>
 
       <div className="bg-white border border-line rounded-xl overflow-hidden">
         <ul className="divide-y divide-line" data-testid="fleet-list">
@@ -152,7 +160,9 @@ export function FleetClient({ initial, today, openVehicleId }: { initial: FleetD
       </div>
 
       <FleetDrawer open={open} data={data} today={today} onOpen={setOpen} saved={saved} deleted={deleted} />
-    </div>
+      <FleetReport open={reportOpen} onClose={() => setReportOpen(false)} onCreate={setReport} />
+      <DocViewer file={report} onClose={() => setReport(null)} />
+    </RegisterLayout>
   );
 }
 
@@ -165,8 +175,8 @@ function Row({ title, sub, chips, onClick }: { title: string; sub: string; chips
   return (
     <li>
       <button type="button" onClick={onClick} className="w-full text-left px-4 py-3 hover:bg-paper flex flex-wrap items-center gap-x-3 gap-y-1">
-        <span className="min-w-0 flex-1">
-          <span className="block font-medium">{title}</span>
+        <span className="min-w-44 flex-1">
+          <span className="block font-bold">{title}</span>
           {sub && <span className="block text-sm text-muted truncate">{sub}</span>}
         </span>
         <span className="flex flex-wrap gap-1.5">{chips}</span>
@@ -190,35 +200,6 @@ function VehicleChips({ v, today, offRoad }: { v: VehicleRow; today: string; off
       )}
       {!v.holdsStock && <Chip>Fleet only</Chip>}
     </>
-  );
-}
-
-function DuePanel({ items, onOpen }: { items: ReturnType<typeof fleetDueItems>; onOpen: (o: Open) => void }) {
-  const [shown, setShown] = useState(true);
-  return (
-    <section className="mb-5 bg-white border border-line rounded-xl">
-      <button type="button" onClick={() => setShown((s) => !s)} aria-expanded={shown}
-        className="w-full flex items-center gap-2 px-4 py-3 text-left">
-        <h2 className="font-semibold flex-1">Due and overdue</h2>
-        <span className="text-sm text-muted">{items.length === 0 ? "Nothing due in the next 30 days" : `${items.length} item${items.length === 1 ? "" : "s"}`}</span>
-        <span aria-hidden="true" className="text-muted">{shown ? "▲" : "▼"}</span>
-      </button>
-      {shown && items.length > 0 && (
-        <ul className="divide-y divide-line border-t border-line">
-          {items.map((it, i) => (
-            <li key={i}>
-              <button type="button" onClick={() => onOpen(it.open ?? { kind: "vehicle", id: it.vehicleId })}
-                className="w-full text-left px-4 py-2 hover:bg-paper flex flex-wrap items-center gap-x-3">
-                <Chip tone={it.tone}>{it.tone === "overdue" ? "Overdue" : "Due soon"}</Chip>
-                <span className="font-medium">{it.reg}</span>
-                <span>{it.what}</span>
-                <span className="text-sm text-muted">{it.detail}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </section>
   );
 }
 
@@ -265,5 +246,53 @@ function FleetDrawer({
     <Drawer open onClose={() => onOpen(null)} title={title} width="max-w-2xl">
       {body}
     </Drawer>
+  );
+}
+
+const REPORT_COLUMNS = [
+  { key: "make", label: "Make and model" },
+  { key: "year", label: "Year" },
+  { key: "driver", label: "Driver" },
+  { key: "tax", label: "Vehicle Tax" },
+  { key: "mot", label: "MOT" },
+  { key: "service", label: "Service" },
+  { key: "inspection", label: "Next inspection" },
+  { key: "miles", label: "Miles" },
+] as const;
+
+// Fleet report: the office chooses which vehicles and which columns. Opens in-window.
+function FleetReport({ open, onClose, onCreate }: { open: boolean; onClose: () => void; onCreate: (f: ViewableFile) => void }) {
+  return (
+    <Modal open={open} onClose={onClose} title="Create report" size="max-w-md">
+      <form
+        className="p-5"
+        onSubmit={(e) => {
+          e.preventDefault();
+          const f = new FormData(e.currentTarget);
+          const cols = REPORT_COLUMNS.map((c) => c.key).filter((k) => f.get(`col_${k}`) === "on");
+          const which = String(f.get("which") || "all");
+          onClose();
+          onCreate({ id: 0, name: "Fleet list.pdf", mime: "application/pdf", url: `/api/fleet/report?which=${which}&cols=${cols.join(",")}` });
+        }}
+      >
+        <fieldset className="mb-4">
+          <legend className="block text-sm font-medium mb-1">Vehicles</legend>
+          <select name="which" defaultValue="all" className="w-full rounded-lg border border-line bg-white px-3 py-2">
+            <option value="all">All vehicles</option>
+            <option value="attention">Only vehicles that need attention</option>
+          </select>
+        </fieldset>
+        <fieldset className="mb-5">
+          <legend className="block text-sm font-medium mb-1">Include</legend>
+          {REPORT_COLUMNS.map((c) => (
+            <label key={c.key} className="flex items-center gap-2 py-1 text-sm">
+              <input type="checkbox" name={`col_${c.key}`} defaultChecked={c.key !== "year" && c.key !== "miles"} className="h-4 w-4 accent-brand" />
+              {c.label}
+            </label>
+          ))}
+        </fieldset>
+        <button type="submit" className="px-4 py-2 rounded-lg bg-brand text-white font-semibold">Create report</button>
+      </form>
+    </Modal>
   );
 }

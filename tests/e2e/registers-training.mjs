@@ -40,20 +40,22 @@ const matrix = page.getByTestId("matrix");
 const cell = (who, ticket) => matrix.getByRole("button", { name: new RegExp(`^${who}, ${ticket.replace(/[()]/g, "\\$&")}:`) });
 
 try {
-  await page.goto(`${BASE}/sign-in?next=/settings/people`);
+  await page.goto(`${BASE}/sign-in?next=/people`);
   await page.getByRole("button", { name: "Test Office One" }).click();
   await page.locator("#pin").fill("1234");
   await page.getByRole("button", { name: "Sign in" }).click();
-  await page.waitForURL(`${BASE}/settings/people`);
+  await page.waitForURL(`${BASE}/people`);
 
   // A fake person, not on the crew list.
-  await page.getByRole("button", { name: "Add person" }).click();
+  await page.getByRole("button", { name: "+ New team member" }).click();
   await drawer.getByLabel("Name").fill(WHO);
-  await drawer.getByRole("button", { name: "Add person" }).click();
+  await drawer.getByRole("button", { name: "Add team member" }).click();
   await page.getByText(WHO).first().waitFor();
 
   await page.goto(`${BASE}/training`);
-  check("Team training is in the left menu", await page.getByRole("link", { name: "Team training" }).isVisible());
+  // Team training is the Team page's "Training and qualifications" tab (People and companies > Team).
+  check("Team is highlighted in the menu on Team training", (await page.getByRole("navigation", { name: "Main menu" }).getByRole("link", { name: "Team", exact: true }).getAttribute("aria-current")) === "page");
+  check("Training and qualifications tab is current", (await page.getByRole("link", { name: "Training and qualifications" }).getAttribute("aria-current")) === "page");
 
   // SMSTS expiring in 20 days, with a file.
   await page.getByRole("button", { name: "Add training" }).click();
@@ -145,8 +147,8 @@ try {
     await drawer.waitFor({ state: "detached" });
   }
   check("training records deleted", (await list.getByRole("button").count()) === 0);
-  await page.goto(`${BASE}/settings/people`);
-  await page.getByLabel("Search people").fill(WHO);
+  await page.goto(`${BASE}/people`);
+  await page.getByLabel("Search the team").fill(WHO);
   await page.getByText(WHO).first().click();
   await drawer.getByLabel("Still works here").uncheck();
   await drawer.getByRole("button", { name: "Save" }).click();

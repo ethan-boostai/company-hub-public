@@ -52,6 +52,16 @@ Browser test of the whole Phase 0 flow (app running on port 3100 against the see
 node tests/e2e/phase0.mjs
 ```
 
+Phase 1 browser tests (test job 12 must be at Approved in the local database):
+
+```bash
+node tests/e2e/phase1-tasks.mjs
+```
+
+```bash
+node tests/e2e/phase1-board.mjs
+```
+
 ## Live database safety (hard block)
 
 Everything that connects to a database refuses an address containing the live project ref (`chvyskcfjmxxprxoczon`), in any form (pooler, direct, encoded). The rule is in `src/lib/live-guard.mjs`.
@@ -68,7 +78,7 @@ Everything that connects to a database refuses an address containing the live pr
 
 - Supabase project `cbs-hub-dev`, ref `fbfkwwaeigrggcdrduit`, London, free plan. All Vercel previews use it; live is only for production.
 - Locked down like live: RLS on every table, no policies, no public access. Only the app's server and the n8n sync role connect.
-- Migrations run on each preview build (`MIGRATE_ON_BUILD=1` on Preview only).
+- Every preview build migrates it (`MIGRATE_ON_BUILD=1` for all previews); Production migrates the live database on merge. `docs/environments.md` is the record for Vercel settings.
 - Tests may use it: set `TEST_DEV_DATABASE_REF=fbfkwwaeigrggcdrduit` and `TEST_DATABASE_URL` to its pooler address.
 - A free project pauses after a week with no use; restore it from the Supabase dashboard.
 
@@ -80,6 +90,31 @@ Everything that connects to a database refuses an address containing the live pr
 - **Every migration must keep the previous release working**: add tables and columns; remove or rename only in a later release once nothing uses the old one. The database changes just before new code goes live, and a Vercel instant rollback doesn't undo a migration.
 - By hand (local database): `npm run db:migrate`. `supabase/setup/phase0-sql-editor.sql` was the one-off first setup and is no longer needed.
 - First office user: `node scripts/add-person.mjs "Full Name" 1234`. Everyone else is added on the People page.
+
+## ServiceM8 sync (n8n → database)
+
+Three n8n workflows (all new; no old hub workflow changes):
+
+- **CBS Hub - ServiceM8** (`6xcBApl7dD83ADxK`): ServiceM8 webhooks for jobs and clients → `sm8_apply_event`.
+- **CBS Hub - ServiceM8 Reads** (`7c343MXG3Y8owEsG`): every 5 minutes, records changed since the last read (folders, staff, jobs, clients, client contacts, schedule) → `sm8_apply_records`; at 02:40 the last 3 days again, plus every client and contact (so a job's client loads even if it hasn't been edited lately). Successful runs keep no data in n8n.
+- **CBS Hub - ServiceM8 Write** (`IEHudBoxjGmXV53t`): webhook `cbs-hub-sm8-write` (header `X-CBS-SM8-Key` = `N8N_SM8_KEY`) sets a job's folder or status and adds a job note naming who did it. It refuses every job but 12, and checks with ServiceM8 that the job id really is job 12.
+
+They call three database functions through one locked-down login, `cbs_n8n_sync`:
+
+- `cbs_sync.sm8_apply_event(event)` for each ServiceM8 webhook;
+- `cbs_sync.sm8_apply_records(kind, rows)` for the 5-minute and nightly reads, where kind is `folder`, `client`, `contact`, `staff`, `booking` or `job`;
+- `cbs_sync.sm8_sync_since(kind)`, which gives where the last 5-minute read got to.
+
+Rules for the login and the data:
+
+- **What the login can do:** no rights on any table, no access to the `public` schema, no CREATE, a 15-second statement timeout, and at most 5 connections. The functions sit in `cbs_sync`, which the Supabase API doesn't expose. They run as their owner with a fixed search_path.
+- **The sync filter:** until Ethan approves the trial copy, only jobs in the locked allow list (job 12) are stored, with their client, the client's contacts, the job's bookings and moves. Other jobs' events and records are ignored and leave nothing behind. Staff and folders sync in full. The write-back reads the same list.
+- **Where n8n connects:** `cbs-hub-dev` first, never live, until switch-over. Use the **Session pooler** address (port 5432, IPv4) from Supabase → Connect, user `cbs_n8n_sync.<project ref>`, with SSL required.
+- **Turning the login on:** it is created without a password. Once the dev tables exist, Ethan runs this once in the project's SQL editor with his own password:
+
+  ```sql
+  alter role cbs_n8n_sync with login password 'choose-a-long-password';
+  ```
 
 ## Environment variables (Vercel)
 

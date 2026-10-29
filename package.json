@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen >/dev/null && tsc --noEmit",
     "db:migrate": "node scripts/db-migrate.mjs",
     "db:seed-local": "node scripts/db-seed-local.mjs"
   },

@@ -36,8 +36,8 @@ async function signIn(p, name, pin) {
 
 try {
   // Signed out: any page goes to sign-in.
-  await page.goto(`${BASE}/settings/people`);
-  check("signed-out visit goes to sign-in", page.url().includes("/sign-in?next=%2Fsettings%2Fpeople"), page.url());
+  await page.goto(`${BASE}/people`);
+  check("signed-out visit goes to sign-in", page.url().includes("/sign-in?next=%2Fpeople"), page.url());
   await shot(page, "01-sign-in");
 
   await page.getByRole("button", { name: "Test Office One" }).click();
@@ -48,10 +48,15 @@ try {
 
   await page.locator("#pin").fill("1234");
   await page.getByRole("button", { name: "Sign in" }).click();
-  await page.waitForURL(`${BASE}/settings/people`);
+  await page.waitForURL(`${BASE}/people`);
   check("sign-in returns to the page asked for", true);
   const who = await page.getByTestId("signed-in-name").textContent();
   check("signed-in name shown top right", who === "Test Office One", who);
+  const pill = (await page.getByRole("banner").getByRole("button", { name: "Signed in as Test Office One" }).innerText()).replace(/\s+/g, " ");
+  check("name pill has the initials", pill.startsWith("TO "), pill);
+  check("header has ‹ Back", (await page.getByRole("banner").getByRole("button", { name: "‹ Back" }).count()) === 1);
+  const old = await page.goto(`${BASE}/settings/people`);
+  check("the old People address goes to the Team page", page.url() === `${BASE}/people` && !!old && old.ok(), page.url());
   await shot(page, "02-people");
 
   // Shared parts page
@@ -106,14 +111,12 @@ try {
   const fBefore = await files.filter({ hasNotText: "No test files yet." }).count();
   const png = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFBQIAX8jx0gAAAABJRU5ErkJggg==", "base64");
   await page.locator('input[type="file"]').setInputFiles({ name: "test-photo.png", mimeType: "image/png", buffer: png });
-  await page.waitForFunction(
-    (n) => document.querySelectorAll('[data-testid="demo-files"] li').length > n || (n === 0 && document.querySelector('[data-testid="demo-files"] li')?.textContent?.includes("test-photo.png")),
-    fBefore, { timeout: 15000 },
-  );
+  const realRows = () => [...document.querySelectorAll('[data-testid="demo-files"] li')].filter((li) => !li.textContent.includes("No test files yet.")).length;
+  await page.waitForFunction(`(${realRows.toString()})() > ${fBefore}`, null, { timeout: 15000 });
   const fAfter = await files.filter({ hasNotText: "No test files yet." }).count();
   check("Upload file records one file", fAfter === fBefore + 1, `${fBefore} -> ${fAfter}`);
   await page.locator('input[type="file"]').setInputFiles({ name: "notes.xyz", mimeType: "application/octet-stream", buffer: Buffer.from("any type of file") });
-  await page.waitForFunction((n) => document.querySelectorAll('[data-testid="demo-files"] li').length > n, fAfter, { timeout: 15000 });
+  await page.waitForFunction(`(${realRows.toString()})() > ${fAfter}`, null, { timeout: 15000 });
   check("Upload file accepts any file type", true);
 
   await files.filter({ hasText: "test-photo.png" }).first().getByRole("button", { name: "Open file" }).click();
@@ -138,23 +141,38 @@ try {
   if (SHOTS) writeFileSync(path.join(SHOTS, "06-sample.pdf"), pdfBody);
 
   // People: add once (double click), set PIN, mark as left
-  await page.goto(`${BASE}/settings/people`);
+  await page.goto(`${BASE}/people`);
   const name = `Test Person ${Date.now() % 100000}`;
-  await page.getByRole("button", { name: "Add person" }).click();
-  const drawer = page.getByRole("dialog", { name: "Add person" });
+  const crewBefore = Number((await page.getByRole("button", { name: /^Crew/ }).innerText()).replace(/\D/g, ""));
+  check("Team: one orange + New team member", await page.getByRole("button", { name: "+ New team member" }).isVisible());
+  check("Team: Needs attention panel shows All clear", await page.getByRole("complementary", { name: "Needs attention" }).getByTestId("all-clear").isVisible());
+  await page.getByRole("button", { name: "+ New team member" }).click();
+  const drawer = page.getByRole("dialog", { name: "New team member" });
   await drawer.getByLabel("Name").fill(name);
   const roleTag = await drawer.getByLabel("Role").evaluate((el) => el.tagName);
   check("Role is a plain text box", roleTag === "INPUT", roleTag);
   await drawer.getByLabel("Role").fill("Test role");
   await drawer.getByLabel("Can sign in to the hub (office)").check();
+  await drawer.getByLabel(/^Crew/).check();
+  check("Time off tick is off by default", !(await drawer.getByLabel(/^Time off/).isChecked()));
+  await drawer.getByLabel(/^Time off/).check();
   await page.waitForTimeout(300);
-  await drawer.getByRole("button", { name: "Add person" }).dblclick();
+  await drawer.getByRole("button", { name: "Add team member" }).dblclick();
   await page.getByRole("dialog", { name }).waitFor({ timeout: 10000 });
   await page.waitForTimeout(800);
-  const rows = await page.locator("main li").filter({ hasText: name }).count();
+  const rows = await page.locator("main tbody tr").filter({ hasText: name }).count();
   check("adding a person with a double click adds one person", rows === 1, String(rows));
+  const crewAfter = Number((await page.getByRole("button", { name: /^Crew/ }).innerText()).replace(/\D/g, ""));
+  check("the Crew tick puts them on the crew list (Crew filter count)", crewAfter === crewBefore + 1, `${crewBefore} -> ${crewAfter}`);
+  await page.keyboard.press("Escape");
+  await page.reload({ waitUntil: "networkidle" });
+  await page.getByRole("button", { name: /^Crew/ }).click();
+  check("the Crew filter lists them after a reload (saved)", (await page.locator("main tbody tr").filter({ hasText: name }).count()) === 1);
+  await page.getByRole("button", { name: /^Current/ }).click();
+  await page.locator("main tbody tr").filter({ hasText: name }).getByRole("button").first().click();
 
   const pd = page.getByRole("dialog", { name });
+  check("the Time off tick is saved (after a reload)", await pd.getByLabel(/^Time off/).isChecked());
   await pd.getByLabel("New 4-digit PIN").fill("2468");
   await pd.getByLabel("Type it again").fill("2468");
   await pd.getByRole("button", { name: "Set PIN" }).click();
@@ -166,12 +184,12 @@ try {
   await cd.getByRole("button", { name: "Mark as left" }).click();
   await cd.waitFor({ state: "detached" });
   await page.keyboard.press("Escape");
-  const stillListed = await page.locator("main li").filter({ hasText: name }).count();
+  const stillListed = await page.locator("main tbody tr").filter({ hasText: name }).count();
   check("person marked as left drops off the list", stillListed === 0);
 
   // Global search
-  await page.getByLabel("Search the hub").fill("Test Office");
-  await page.getByLabel("Search the hub").press("Enter");
+  await page.getByLabel("Search the hub", { exact: true }).fill("Test Office");
+  await page.getByLabel("Search the hub", { exact: true }).press("Enter");
   await page.waitForURL(/\/search\?q=/);
   await page.getByRole("link", { name: "Test Office Two" }).waitFor();
   check("global search finds people", true);
@@ -195,9 +213,10 @@ try {
 
   // Sign out
   await page.goto(`${BASE}/`);
-  await page.getByRole("button", { name: "Sign out" }).click();
+  await page.getByRole("banner").getByRole("button", { name: "Signed in as Test Office One" }).click();
+  await page.getByRole("menuitem", { name: "Sign out" }).click();
   await page.waitForURL(/\/sign-in/);
-  const back = await page.goto(`${BASE}/settings/people`);
+  const back = await page.goto(`${BASE}/people`);
   check("signed out: pages need sign-in again", page.url().includes("/sign-in") && back.ok());
 
   // Lock-out after 5 wrong PINs

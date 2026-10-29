@@ -102,7 +102,7 @@ try {
 
   /* ---------- Claim from a vehicle ---------- */
   await page.goto(`${BASE}/fleet`);
-  await page.getByRole("button", { name: "Add vehicle" }).click();
+  await page.getByRole("button", { name: "+ New vehicle" }).click();
   await drawer.getByLabel("Registration").fill(REG);
   await drawer.getByRole("button", { name: "Add vehicle" }).click();
   await drawer.getByRole("heading", { name: new RegExp(REG) }).waitFor();

@@ -98,6 +98,21 @@ Never commit or push to `main`; every change goes through a pull request (`main`
 9. **Approach first:** explain your approach for anything non-trivial and wait for Ethan's go-ahead (`CLAUDE.md`).
 10. **Secrets:** never in chat, code or commits.
 
+## Page standard (every page, every session)
+
+Ethan approved one page layout on 29/10/2026 (`docs/decisions.md`, "Page standard"). Build every page from the shared parts, never your own copies:
+
+- `PageHeader` (white header) with `bare` when the page has a `PageTop`.
+- `RegisterLayout` (`src/components/ui/page-top.tsx`) around the page: pass your own `AttentionItem`s (overdue / soon, tag, name, detail, open) and it draws the Needs attention panel down the right (320px, » to hide, All clear when empty, a button bottom right under 1100px). The page's own `main` has no padding; `RegisterLayout` adds it.
+- `PageTop`: title and "N records"; Reports ▾ (Create report, choosing what to include); More ▾ only if needed; one orange + New (one kind: "+ New vehicle"; several kinds: "+ New ▾").
+- Under it, in this order: `FilterPills`, then `FilterRow` (with `SearchBox`), then `DataTable` (first column bold, `sub` for the grey line) and `StatusPill` (`src/components/ui/register.tsx`).
+- No due or attention panels, or extra buttons, between the page top and the filter pills: those items go into Needs attention.
+- Team tabs (`src/components/shell/team-tabs.tsx`) on Training and qualifications (`/training`) and Team requests (`/requests`). Neither is a menu item of its own: the menu highlights Team on them. Core added the "Team" title and the tabs to both pages when merging main; the rest of their layout update is Registers'.
+- Match the build's look, not live (`docs/decisions.md`, "The build's look is the approved standard").
+- Time off tab (Registers): show the tab, its notes and its files only to people with the Time off tick. Check it server-side with `canSeeTimeOff(person.id)` (`src/app/(hub)/people/data.ts`, the `time_off` entry in `people.lists`), on the page and on every route that returns its notes or files, not just by hiding the tab. Nobody is ticked by default; on dev, Ethan Paraha and Preview Admin are.
+
+Fleet is converted (Core did it as the example: `src/app/(hub)/fleet/fleet-client.tsx`; it also gained `src/app/api/fleet/report/route.ts` for Reports ▾ and lost the + New ▾ list, as checks, services and accidents are added inside the vehicle). Registers: convert Insurance and accreditations, Team training, Equipment and materials (its "due" list becomes Needs attention items), Subcontractors and suppliers, Team requests and Training and qualifications the same way, and move Fleet's other lists to `DataTable` if you want them as tables. The old `NeedsAttention` button and drawer are gone; `PageTop` no longer takes `attention`.
+
 ## Local database (each new session)
 
 Every session runs in its own container. Set up a local Postgres 16 once (if `/usr/lib/postgresql/16` is missing, install it first with `apt-get install -y postgresql-16`):

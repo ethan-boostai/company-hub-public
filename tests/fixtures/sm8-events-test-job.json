@@ -1,0 +1,255 @@
+[
+ {
+  "triggerEvent": "job.updated",
+  "id": "smwe_test-01",
+  "type": "job.updated",
+  "data": {
+   "uuid": "01a18295-f573-79fe-9531-536fcf0f1b5d",
+   "active": 1,
+   "date": "2026-10-28 00:00:00",
+   "job_address": "",
+   "billing_address": "",
+   "status": "Quote",
+   "quote_date": "2026-10-28 12:57:08",
+   "work_order_date": "0000-00-00 00:00:00",
+   "generated_job_id": "12",
+   "completion_date": "0000-00-00 00:00:00",
+   "edit_date": "2026-10-28 12:57:19",
+   "company_uuid": "01a18296-2204-79fe-9531-b3059f6d7fbb",
+   "total_invoice_amount": "0.0000",
+   "job_is_scheduled_until_stamp": "0000-00-00 00:00:00",
+   "queue_uuid": "",
+   "queue_expiry_date": "0000-00-00 00:00:00",
+   "purchase_order_number": "",
+   "job_description": "",
+   "created_by_staff_uuid": "01a0d899-81ce-79b3-962a-c4960bfd76ab"
+  },
+  "related": {
+   "company": {
+    "uuid": "01a18296-2204-79fe-9531-b3059f6d7fbb",
+    "name": "TEST - Hub rebuild - do not invoice",
+    "address": "",
+    "is_individual": 0
+   },
+   "jobContacts": [
+    {
+     "job_uuid": "01a18295-f573-79fe-9531-536fcf0f1b5d",
+     "first": "",
+     "last": "",
+     "email": "",
+     "phone": "",
+     "mobile": "",
+     "type": "JOB",
+     "uuid": "01a18296-1591-79fe-9530-6105df600b2d"
+    }
+   ]
+  }
+ },
+ {
+  "triggerEvent": "job.updated",
+  "id": "smwe_test-02",
+  "type": "job.updated",
+  "data": {
+   "uuid": "01a18295-f573-79fe-9531-536fcf0f1b5d",
+   "active": 1,
+   "date": "2026-10-28 00:00:00",
+   "job_address": "",
+   "billing_address": "",
+   "status": "Quote",
+   "quote_date": "2026-10-28 12:57:08",
+   "work_order_date": "0000-00-00 00:00:00",
+   "generated_job_id": "12",
+   "completion_date": "0000-00-00 00:00:00",
+   "edit_date": "2026-10-28 12:57:19",
+   "company_uuid": "",
+   "total_invoice_amount": "0.0000",
+   "job_is_scheduled_until_stamp": "0000-00-00 00:00:00",
+   "queue_uuid": "",
+   "queue_expiry_date": "0000-00-00 00:00:00",
+   "purchase_order_number": "",
+   "job_description": "",
+   "created_by_staff_uuid": "01a0d899-81ce-79b3-962a-c4960bfd76ab"
+  },
+  "related": {
+   "jobContacts": [
+    {
+     "job_uuid": "01a18295-f573-79fe-9531-536fcf0f1b5d",
+     "first": "",
+     "last": "",
+     "email": "",
+     "phone": "",
+     "mobile": "",
+     "type": "JOB",
+     "uuid": "01a18296-1591-79fe-9530-6105df600b2d"
+    }
+   ]
+  }
+ },
+ {
+  "triggerEvent": "job.created",
+  "id": "smwe_test-03",
+  "type": "job.created",
+  "data": {
+   "uuid": "01a18295-f573-79fe-9531-536fcf0f1b5d",
+   "active": 1,
+   "date": "2026-10-28 00:00:00",
+   "job_address": "",
+   "billing_address": "",
+   "status": "Quote",
+   "quote_date": "2026-10-28 12:57:08",
+   "work_order_date": "0000-00-00 00:00:00",
+   "generated_job_id": "12",
+   "completion_date": "0000-00-00 00:00:00",
+   "edit_date": "2026-10-28 12:57:19",
+   "company_uuid": "",
+   "total_invoice_amount": "0.0000",
+   "job_is_scheduled_until_stamp": "0000-00-00 00:00:00",
+   "queue_uuid": "",
+   "queue_expiry_date": "0000-00-00 00:00:00",
+   "purchase_order_number": "",
+   "job_description": "",
+   "created_by_staff_uuid": "01a0d899-81ce-79b3-962a-c4960bfd76ab"
+  },
+  "related": {
+   "jobContacts": [
+    {
+     "job_uuid": "01a18295-f573-79fe-9531-536fcf0f1b5d",
+     "first": "",
+     "last": "",
+     "email": "",
+     "phone": "",
+     "mobile": "",
+     "type": "JOB",
+     "uuid": "01a18296-1591-79fe-9530-6105df600b2d"
+    }
+   ]
+  }
+ },
+ {
+  "triggerEvent": "company.created",
+  "id": "smwe_test-04",
+  "type": "company.created",
+  "data": {
+   "uuid": "01a18296-2204-79fe-9531-b3059f6d7fbb",
+   "name": "TEST - Hub rebuild - do not invoice",
+   "address": "",
+   "is_individual": 0,
+   "edit_date": "2026-10-28 12:57:19",
+   "active": 1
+  },
+  "related": {}
+ },
+ {
+  "triggerEvent": "job.status_changed",
+  "id": "smwe_test-05",
+  "type": "job.status_changed",
+  "data": {
+   "uuid": "01a18295-f573-79fe-9531-536fcf0f1b5d",
+   "active": 1,
+   "date": "2026-10-28 00:00:00",
+   "job_address": "",
+   "billing_address": "",
+   "status": "Work Order",
+   "quote_date": "2026-10-28 12:57:08",
+   "work_order_date": "2026-10-28 12:57:25",
+   "generated_job_id": "12",
+   "completion_date": "0000-00-00 00:00:00",
+   "edit_date": "2026-10-28 12:57:25",
+   "company_uuid": "01a18296-2204-79fe-9531-b3059f6d7fbb",
+   "total_invoice_amount": "0.0000",
+   "job_is_scheduled_until_stamp": "0000-00-00 00:00:00",
+   "queue_uuid": "",
+   "queue_expiry_date": "0000-00-00 00:00:00",
+   "purchase_order_number": "",
+   "job_description": "",
+   "created_by_staff_uuid": "01a0d899-81ce-79b3-962a-c4960bfd76ab"
+  },
+  "related": {
+   "company": {
+    "uuid": "01a18296-2204-79fe-9531-b3059f6d7fbb",
+    "name": "TEST - Hub rebuild - do not invoice",
+    "address": "",
+    "is_individual": 0
+   }
+  }
+ },
+ {
+  "triggerEvent": "job.queued",
+  "id": "smwe_test-06",
+  "type": "job.queued",
+  "data": {
+   "uuid": "01a18295-f573-79fe-9531-536fcf0f1b5d",
+   "active": 1,
+   "date": "2026-10-28 00:00:00",
+   "job_address": "",
+   "billing_address": "",
+   "status": "Work Order",
+   "quote_date": "2026-10-28 12:57:08",
+   "work_order_date": "0000-00-00 00:00:00",
+   "generated_job_id": "12",
+   "completion_date": "0000-00-00 00:00:00",
+   "edit_date": "2026-10-28 12:58:34",
+   "company_uuid": "01a18296-2204-79fe-9531-b3059f6d7fbb",
+   "total_invoice_amount": "0.0000",
+   "job_is_scheduled_until_stamp": "0000-00-00 00:00:00",
+   "queue_uuid": "01a15ea9-6031-79fe-9531-85247ade10bb",
+   "queue_expiry_date": "2027-10-28 12:58:34",
+   "purchase_order_number": "",
+   "job_description": "",
+   "created_by_staff_uuid": "01a0d899-81ce-79b3-962a-c4960bfd76ab"
+  },
+  "related": {
+   "company": {
+    "uuid": "01a18296-2204-79fe-9531-b3059f6d7fbb",
+    "name": "TEST - Hub rebuild - do not invoice",
+    "address": "",
+    "is_individual": 0
+   },
+   "queue": {
+    "uuid": "01a15ea9-6031-79fe-9531-85247ade10bb",
+    "name": "Maintenance ",
+    "default_timeframe": 365
+   },
+   "Queue": {
+    "uuid": "01a15ea9-6031-79fe-9531-85247ade10bb",
+    "name": "Maintenance ",
+    "default_timeframe": 365,
+    "active": 1
+   }
+  }
+ },
+ {
+  "triggerEvent": "job.updated",
+  "id": "smwe_test-07",
+  "type": "job.updated",
+  "data": {
+   "uuid": "01a18295-f573-79fe-9531-536fcf0f1b5d",
+   "active": 1,
+   "date": "2026-10-28 00:00:00",
+   "job_address": "",
+   "billing_address": "",
+   "status": "Work Order",
+   "quote_date": "2026-10-28 12:57:08",
+   "work_order_date": "0000-00-00 00:00:00",
+   "generated_job_id": "12",
+   "completion_date": "0000-00-00 00:00:00",
+   "edit_date": "2026-10-28 12:59:17",
+   "company_uuid": "01a18296-2204-79fe-9531-b3059f6d7fbb",
+   "total_invoice_amount": "0.0000",
+   "job_is_scheduled_until_stamp": "2026-10-30 17:00:00",
+   "queue_uuid": "",
+   "queue_expiry_date": "0000-00-00 00:00:00",
+   "purchase_order_number": "",
+   "job_description": "",
+   "created_by_staff_uuid": "01a0d899-81ce-79b3-962a-c4960bfd76ab"
+  },
+  "related": {
+   "company": {
+    "uuid": "01a18296-2204-79fe-9531-b3059f6d7fbb",
+    "name": "TEST - Hub rebuild - do not invoice",
+    "address": "",
+    "is_individual": 0
+   }
+  }
+ }
+]
