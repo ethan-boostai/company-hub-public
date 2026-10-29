@@ -5,8 +5,8 @@ How several Claude Code sessions build the hub at the same time without getting 
 ## Before a parallel session starts
 
 1. **Phase 0 is on `main`** (pull request #1 merged). Every workstream branches from `main` and needs the shared parts.
-2. **Dev database for previews.** Every preview uses the shared dev database `cbs-hub-dev` and migrates it on build; Production migrates the live database when a pull request is merged (`docs/environments.md` is the record). So never edit a migration file once it has been pushed: add a new one.
-3. **Ethan merges every pull request, after testing its preview.** No session merges any pull request or commits to `main` (see "Change process" below).
+2. **Dev database for previews.** Every preview uses the shared dev database `cbs-hub-dev` (never live), and every preview build applies its branch's new migrations to it. Production applies migrations when a pull request merges to `main`. `MIGRATE_ON_BUILD=1` is set for Production and all Preview branches (`docs/environments.md`). So never edit a migration file once it has been pushed: add a new one.
+3. **Each session merges its own pull requests once every check passes; Ethan tests at the end of each stage.** No session commits to `main` (see "Change process" below).
 
 ## Who owns what
 
@@ -62,17 +62,18 @@ Not in Registers, because these need jobs or other phases:
 
 ## Change process (every session, Core included)
 
-Never merge a pull request and never commit or push to `main`. That includes docs-only changes and conflict fixes. Every change:
+Never commit or push to `main`; every change goes through a pull request (`main` is protected, so a direct push is refused anyway). Every change:
 
 1. Work on a branch, commit, push.
-2. Open a pull request with a plain summary of what changed and why.
+2. Open a pull request that lists what changed and why, and every migration it adds (file name and what it creates or alters), so Ethan can see what went in.
 3. Make sure the pull request's preview deploys.
-4. Give Ethan numbered test steps for that preview (job 12 and fake data only).
-5. Ethan tests. He approves by replying "approved, merge #N", and only then is the pull request merged, by Ethan. If he reports a problem, fix it on the same branch and give fresh steps.
+4. Run every check: lint, typecheck, unit tests, the production build, and your browser tests (on the local database, plus the preview where it can be reached). All must pass.
+5. When they all pass, merge your own pull request. If any fails, fix it on the same branch first.
 
-- **Conflicts with `main`:** merge `main` into your own branch and fix them there, then give fresh test steps. Never fix them on `main`.
-- **Only Ethan merges, and only an approved pull request.** Production changes only that way.
-- **Branch protection:** `main` is protected (pull request required, no direct pushes, no bypass), so a direct push is refused anyway.
+- **Stage testing:** Ethan tests at the end of each stage, with one numbered checklist from the session covering the whole area (job 12 and fake data only). Problems he finds are fixed in a new pull request.
+- **Conflicts with `main`:** merge `main` into your own branch and fix them there, re-run the checks, then merge. Never fix them on `main`.
+- **Switch-over** (importing old data, or moving the team onto a new area) happens only when Ethan says so.
+- **Settings:** never change Vercel, Supabase, GitHub or n8n settings, or anything in the live n8n hub, unless Ethan asks.
 
 ## Rules for every session except Core
 
@@ -91,8 +92,8 @@ Never merge a pull request and never commit or push to `main`. That includes doc
    - screens: `ConfirmDialog` for deleting, `Drawer`/`Modal`, `SearchBox` on every list, `SelectWithAdd` for dropdowns;
    - files and PDFs: `UploadFile` and `DocViewer` for files, `HousePdf` for every PDF.
 5. **Tasks:** never write to the `tasks` table directly; use the Core helper in `src/lib/tasks` once Phase 1 is on `main`. Saving a record never completes a task.
-6. **Before each pull request:** `git fetch origin main && git rebase origin/main`, then run `npm run lint && npm run typecheck && npm test` and a production build. Open the pull request with numbered test steps for Ethan.
-7. **Testing:** use a local database only, test job 12 and fake test data. Never run migrations or scripts against the environment's `DATABASE_URL`: it is the live database.
+6. **Before each pull request:** `git fetch origin main && git rebase origin/main`, then run `npm run lint && npm run typecheck && npm test` and a production build. Open the pull request listing what changed and any migrations, then follow "Change process" above.
+7. **Testing:** use a local database only, test job 12 (the only ServiceM8 test job) and fake test data. Never run migrations or scripts against the environment's `DATABASE_URL` yourself: it can be the live database, and the hard block refuses it. **Never change Vercel, Supabase, GitHub or n8n settings**: read-only unless Ethan explicitly asks.
 8. **n8n:** never change an existing workflow. A new workflow needs Ethan's OK and is named "CBS Hub - <thing>".
 9. **Approach first:** explain your approach for anything non-trivial and wait for Ethan's go-ahead (`CLAUDE.md`).
 10. **Secrets:** never in chat, code or commits.
@@ -136,7 +137,7 @@ Scope (tables as defined in docs/plan.md section 3.3): Fleet (vehicles, vehicle 
 
 Use the shared parts for everything (GuardedForm/SaveButton, guarded(), logActivity(), readDb(), ConfirmDialog, Drawer/Modal, SearchBox on every list, SelectWithAdd, UploadFile/DocViewer, HousePdf). Test on a local database only (setup in docs/parallel-work.md); never run anything against the environment's DATABASE_URL.
 
-Change process (docs/parallel-work.md, binding): never merge a pull request and never commit to main, not even docs or conflict fixes. Every change is a branch, a pull request with a plain summary, a preview that deploys, and numbered test steps for me on that preview (job 12 and fake data only). I test and reply "approved, merge #N"; only then is it merged, by me. If I report a problem, fix it on the same branch and give fresh steps.
+Change process (docs/parallel-work.md, binding): never commit to main. Every change is a branch and a pull request that lists what changed and any migrations. Once lint, typecheck, unit tests, the build and your browser tests all pass and the preview deploys, merge it yourself. I test at the end of each stage with one numbered checklist from you covering the whole area (job 12 and fake data only). Switch-over happens only when I say so. Never change Vercel, Supabase, GitHub or n8n settings, or the live n8n hub, unless I ask.
 
 First step: don't build yet. Read the docs and the old hub for these areas, then give me your approach: the tables and pages per area, the order you'll build them in (one small pull request per area is fine), anything in docs/plan.md you think needs changing, and any shared change you'd need from the Core session. Wait for my go-ahead.
 ```
@@ -150,7 +151,7 @@ Scope: everything in Phase 2 of docs/plan.md: RAMS (templates, hazard library), 
 
 Test on a local database with test job 12 (setup in docs/parallel-work.md); never run anything against the environment's DATABASE_URL.
 
-Change process (docs/parallel-work.md, binding): never merge a pull request and never commit to main, not even docs or conflict fixes. Every change is a branch, a pull request with a plain summary, a preview that deploys, and numbered test steps for me on that preview (job 12 and fake data only). I test and reply "approved, merge #N"; only then is it merged, by me. If I report a problem, fix it on the same branch and give fresh steps.
+Change process (docs/parallel-work.md, binding): never commit to main. Every change is a branch and a pull request that lists what changed and any migrations. Once lint, typecheck, unit tests, the build and your browser tests all pass and the preview deploys, merge it yourself. I test at the end of each stage with one numbered checklist from you covering the whole area (job 12 and fake data only). Switch-over happens only when I say so. Never change Vercel, Supabase, GitHub or n8n settings, or the live n8n hub, unless I ask.
 
 First step: don't build yet. Give me your approach: tables, pages, the order of small pull requests, anything in docs/plan.md to change, and any shared change you'd need from the Core session. Wait for my go-ahead.
 ```
@@ -164,7 +165,7 @@ Scope: Phase 3 of docs/plan.md, building on the registers already on main (suppl
 
 Test on a local database with test job 12 (setup in docs/parallel-work.md); never run anything against the environment's DATABASE_URL.
 
-Change process (docs/parallel-work.md, binding): never merge a pull request and never commit to main, not even docs or conflict fixes. Every change is a branch, a pull request with a plain summary, a preview that deploys, and numbered test steps for me on that preview (job 12 and fake data only). I test and reply "approved, merge #N"; only then is it merged, by me. If I report a problem, fix it on the same branch and give fresh steps.
+Change process (docs/parallel-work.md, binding): never commit to main. Every change is a branch and a pull request that lists what changed and any migrations. Once lint, typecheck, unit tests, the build and your browser tests all pass and the preview deploys, merge it yourself. I test at the end of each stage with one numbered checklist from you covering the whole area (job 12 and fake data only). Switch-over happens only when I say so. Never change Vercel, Supabase, GitHub or n8n settings, or the live n8n hub, unless I ask.
 
 First step: don't build yet. Give me your approach: tables, pages, the order of small pull requests, anything in docs/plan.md to change, and any shared change you'd need from the Core session. Wait for my go-ahead.
 ```
@@ -178,7 +179,7 @@ Scope: Phase 4 of docs/plan.md: scope of works, programme (the only place a job'
 
 Test on a local database with test job 12 (setup in docs/parallel-work.md); never run anything against the environment's DATABASE_URL.
 
-Change process (docs/parallel-work.md, binding): never merge a pull request and never commit to main, not even docs or conflict fixes. Every change is a branch, a pull request with a plain summary, a preview that deploys, and numbered test steps for me on that preview (job 12 and fake data only). I test and reply "approved, merge #N"; only then is it merged, by me. If I report a problem, fix it on the same branch and give fresh steps.
+Change process (docs/parallel-work.md, binding): never commit to main. Every change is a branch and a pull request that lists what changed and any migrations. Once lint, typecheck, unit tests, the build and your browser tests all pass and the preview deploys, merge it yourself. I test at the end of each stage with one numbered checklist from you covering the whole area (job 12 and fake data only). Switch-over happens only when I say so. Never change Vercel, Supabase, GitHub or n8n settings, or the live n8n hub, unless I ask.
 
 First step: don't build yet. Give me your approach: tables, pages, the order of small pull requests, anything in docs/plan.md to change, and any shared change you'd need from the Core session. Wait for my go-ahead.
 ```
