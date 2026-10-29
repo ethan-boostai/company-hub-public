@@ -18,11 +18,11 @@ import { CATEGORY_LIST, isOpen, REQUEST_STATUSES, URGENCIES } from "./rules";
 type Filter = "open" | "done" | "declined" | "all";
 const label = (list: readonly { value: string; label: string }[], v: string) => list.find((o) => o.value === v)?.label ?? v;
 
-export function RequestsClient({ initial }: { initial: RequestsData }) {
+export function RequestsClient({ initial, openId = null }: { initial: RequestsData; openId?: number | null }) {
   const [rows, setRows] = useState(initial.requests);
   const [filter, setFilter] = useState<Filter>("open");
   const [query, setQuery] = useState("");
-  const [open, setOpen] = useState<number | "new" | null>(null);
+  const [open, setOpen] = useState<number | "new" | null>(() => (openId && initial.requests.some((r) => r.id === openId) ? openId : null));
   const [categories, setCategories] = useState(initial.categories);
 
   const q = query.trim().toLowerCase();

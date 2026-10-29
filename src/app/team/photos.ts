@@ -15,6 +15,7 @@ export const PHOTO_TABLES: Record<string, string> = {
   vehicle_checks: "Vehicle check",
   vehicle_accidents: "Accident",
   requests: "Request",
+  tool_reports: "Tool report",
 };
 
 export type PhotoTicket = { table: string; id: number; by: string; key: string };

@@ -10,6 +10,7 @@ export type RecordFile = { id: number; name: string; mime: string; size: number;
 const TABLES = new Set([
   "vehicles", "vehicle_checks", "vehicle_services", "vehicle_accidents",
   "subcontractors", "suppliers", "subcontractor_docs", "requests",
+  "assets", "asset_services", "materials", "tool_reports",
 ]);
 
 // Files attached to one register record, newest first.
