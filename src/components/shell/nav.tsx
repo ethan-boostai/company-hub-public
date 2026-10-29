@@ -10,6 +10,7 @@ export const NAV: { group?: string; items: { href: string; label: string }[] }[]
   { items: [{ href: "/equipment", label: "Equipment and materials" }] },
   { items: [{ href: "/subcontractors", label: "Subcontractors and suppliers" }] },
   { items: [{ href: "/insurance", label: "Insurance and accreditations" }] },
+  { items: [{ href: "/training", label: "Team training" }] },
   { items: [{ href: "/requests", label: "Team requests" }] },
   {
     group: "Settings",
