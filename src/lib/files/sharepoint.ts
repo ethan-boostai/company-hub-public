@@ -1,4 +1,5 @@
 import "server-only";
+import { uploadFolderFor } from "./storage";
 
 // SharePoint through n8n. The app never holds a Microsoft credential: the n8n workflow "CBS Hub - Files"
 // talks to SharePoint, and each webhook is protected by the X-CBS-Files-Key header (N8N_FILES_KEY).
@@ -47,8 +48,13 @@ async function call<T>(route: Route, body: Record<string, unknown>): Promise<T> 
 }
 
 // Starts a resumable upload. The browser then sends the file in chunks straight to the returned URL.
+// Outside the live site the folder is always the test folder (see uploadFolderFor).
 export function startUpload(folder: string, fileName: string, size: number) {
-  return call<{ uploadUrl: string; expires: string | null; folder: string; name: string }>("start", { folder, fileName, size });
+  return call<{ uploadUrl: string; expires: string | null; folder: string; name: string }>("start", {
+    folder: uploadFolderFor(folder),
+    fileName,
+    size,
+  });
 }
 
 export type SharePointFile = { id: string; name: string; size: number; webUrl: string; mime: string; path: string };
