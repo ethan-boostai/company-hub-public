@@ -128,7 +128,7 @@ try {
   check("unreviewed team check shows in Needs attention", (await panel.getByText(REG).count()) >= 2);
   await office.getByRole("button", { name: /^Vehicle checks/ }).click();
   await office.getByLabel("Search checks").fill(REG);
-  const rows = office.getByTestId("fleet-list").locator("li").filter({ hasText: REG });
+  const rows = office.getByTestId("fleet-list").locator("tbody tr").filter({ hasText: REG });
   check("double tap sent the check once", (await rows.count()) === 1, String(await rows.count()));
   check("check marked Team app and not reviewed", (await rows.first().getByText("Team app").count()) === 1 && (await rows.first().getByText("Not reviewed").count()) === 1);
   await rows.first().click();

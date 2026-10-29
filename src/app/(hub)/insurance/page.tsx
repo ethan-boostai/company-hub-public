@@ -27,9 +27,9 @@ async function Loader({ searchParams }: { searchParams: Promise<Params> }) {
 export default function InsurancePage(props: PageProps<"/insurance">) {
   return (
     <>
-      <PageHeader title="Insurance and accreditations" />
-      <main className="p-4 sm:p-6 max-w-6xl">
-        <Suspense fallback={<p className="text-sm text-muted">Loading insurance and accreditations…</p>}>
+      <PageHeader title="Insurance and accreditations" bare />
+      <main>
+        <Suspense fallback={<p className="p-6 text-sm text-muted">Loading insurance and accreditations…</p>}>
           <Loader searchParams={props.searchParams as Promise<Params>} />
         </Suspense>
       </main>
