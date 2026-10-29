@@ -4,12 +4,14 @@ import { useMemo, useState } from "react";
 import { Drawer } from "@/components/ui/overlay";
 import { SearchBox } from "@/components/ui/search-box";
 import { niceDate } from "../_registers/dates";
-import { Chip, ViewSwitch } from "../_registers/ui";
+import { dueTone } from "../_registers/ui";
+import { PageTop, RegisterLayout, type AttentionItem as PanelItem } from "@/components/ui/page-top";
+import { DataTable, FilterPills, FilterRow, StatusPill } from "@/components/ui/register";
 import type { Saved } from "./actions";
 import type { InsuranceData } from "./data";
-import { CertForm, ClaimForm, ClaimList, claimLinks, PolicyForm } from "./forms";
+import { CertForm, ClaimForm, claimLinks, PolicyForm } from "./forms";
 import { ReportDialog } from "./report-dialog";
-import { attentionItems, CLAIM_STATUSES, expiryLabel, expiryState, isClosed, labelOf, money, policyTitle, type AttentionItem } from "./rules";
+import { actionState, attentionItems, CLAIM_STATUSES, expiryLabel, expiryState, isClosed, labelOf, money, policyTitle } from "./rules";
 import type { Open } from "./types";
 
 export type Tab = "policies" | "claims" | "certs";
@@ -38,17 +40,35 @@ export function InsuranceClient({ initial, today, start, startTab }: { initial: 
   const certs = data.certs.filter((c) => has(c.name, c.issuer, c.reference, c.level, c.notes));
   const openClaims = data.claims.filter((c) => !isClosed(c.status)).length;
 
-  const addButton = {
-    policies: { label: "Add policy", open: { kind: "policy", id: null } as Open },
-    claims: { label: "Add claim", open: { kind: "claim", id: null } as Open },
-    certs: { label: "Add accreditation", open: { kind: "cert", id: null } as Open },
-  }[tab];
+  const attention: PanelItem[] = due.map((it) => ({
+    key: it.key,
+    level: it.tone === "overdue" ? "overdue" : "soon",
+    tag: it.what,
+    name: it.name,
+    detail: it.detail,
+    onOpen: () => setOpen({ kind: it.open.kind, id: it.open.id } as Open),
+  }));
+  const linked = (c: (typeof claims)[number]) => claimLinks(data, c);
+  const empty = (none: string) => (q ? "Nothing matches the search." : none);
 
   return (
-    <div>
-      <AttentionPanel items={due} onOpen={setOpen} />
+    <RegisterLayout attention={attention}>
+      <PageTop
+        title="Insurance and accreditations"
+        count={data.policies.filter((p) => !p.renewedById).length + data.claims.length + data.certs.length}
+        reports={[{ label: "Create report", hint: "Choose policies, claims and accreditations", onSelect: () => setReporting(true) }]}
+        newAction={{
+          label: "New",
+          items: [
+            { label: "Policy", onSelect: () => setOpen({ kind: "policy", id: null }) },
+            { label: "Claim", onSelect: () => setOpen({ kind: "claim", id: null }) },
+            { label: "Accreditation", onSelect: () => setOpen({ kind: "cert", id: null }) },
+          ],
+        }}
+      />
 
-      <ViewSwitch<Tab>
+      <FilterPills<Tab>
+        label="Show"
         value={tab}
         onChange={(t) => { setTab(t); setQuery(""); }}
         options={[
@@ -58,12 +78,10 @@ export function InsuranceClient({ initial, today, start, startTab }: { initial: 
         ]}
       />
 
-      <div className="flex flex-wrap items-center gap-3 mb-4">
-        <div className="flex-1 min-w-56">
-          <SearchBox value={query} onChange={setQuery}
-            label={`Search ${tab === "certs" ? "accreditations" : tab}`}
-            placeholder={tab === "policies" ? "Search policies, insurers and covers" : tab === "claims" ? "Search claims, parties, vehicles and jobs" : "Search accreditations"} />
-        </div>
+      <FilterRow>
+        <SearchBox value={query} onChange={setQuery}
+          label={`Search ${tab === "certs" ? "accreditations" : tab}`}
+          placeholder={tab === "policies" ? "Search policies, insurers and covers" : tab === "claims" ? "Search claims, parties, vehicles and jobs" : "Search accreditations"} />
         {tab === "policies" && (
           <label className="flex items-center gap-2 text-sm">
             <input type="checkbox" className="h-4 w-4 accent-brand" checked={pastPeriods} onChange={(e) => setPastPeriods(e.target.checked)} /> Show earlier periods
@@ -76,86 +94,47 @@ export function InsuranceClient({ initial, today, start, startTab }: { initial: 
             <option value="all">All claims</option>
           </select>
         )}
-        <button type="button" onClick={() => setOpen(addButton.open)} className="px-4 py-2 rounded-lg bg-brand text-white font-semibold">{addButton.label}</button>
-        <button type="button" onClick={() => setReporting(true)} className="px-4 py-2 rounded-lg border border-dark font-semibold hover:bg-white">Create report</button>
-      </div>
+      </FilterRow>
 
-      <div className="bg-white border border-line rounded-xl overflow-hidden">
-        {tab === "policies" && (
-          <ul className="divide-y divide-line" data-testid="policy-list">
-            {policies.map((p) => (
-              <li key={p.id}>
-                <button type="button" onClick={() => setOpen({ kind: "policy", id: p.id })} className="w-full text-left px-4 py-3 hover:bg-paper flex flex-wrap items-center gap-x-3 gap-y-1">
-                  <span className="min-w-0 flex-1">
-                    <span className="block font-medium">{policyTitle(p)}</span>
-                    <span className="block text-sm text-muted truncate">
-                      {[p.insurer, p.policyNo, p.covers.map((c) => `${c.cover}${c.limit != null ? ` ${money(c.limit)}` : ""}`).join(", ")].filter(Boolean).join(" · ")}
-                    </span>
-                  </span>
-                  <span className="flex flex-wrap gap-1.5">
-                    {p.renewedById ? <Chip>Earlier period{p.expiresOn ? `, ended ${niceDate(p.expiresOn)}` : ""}</Chip>
-                      : <Chip tone={expiryState(p.expiresOn, today)}>{expiryLabel(p.expiresOn, today)}</Chip>}
-                  </span>
-                </button>
-              </li>
-            ))}
-            {policies.length === 0 && <li className="px-4 py-6 text-sm text-muted">{q ? "Nothing matches the search." : "No policies yet."}</li>}
-          </ul>
-        )}
-        {tab === "claims" && (
-          <div className="p-3" data-testid="claim-list">
-            {claims.length === 0
-              ? <p className="px-1 py-3 text-sm text-muted">{q ? "Nothing matches the search." : claimFilter === "open" ? "No open claims." : "No claims yet."}</p>
-              : <ClaimList claims={claims} data={data} today={today} onOpen={setOpen} />}
-          </div>
-        )}
-        {tab === "certs" && (
-          <ul className="divide-y divide-line" data-testid="cert-list">
-            {certs.map((c) => (
-              <li key={c.id}>
-                <button type="button" onClick={() => setOpen({ kind: "cert", id: c.id })} className="w-full text-left px-4 py-3 hover:bg-paper flex flex-wrap items-center gap-x-3 gap-y-1">
-                  <span className="min-w-0 flex-1">
-                    <span className="block font-medium">{c.name}</span>
-                    <span className="block text-sm text-muted truncate">{[c.issuer, c.level, c.reference].filter(Boolean).join(" · ")}</span>
-                  </span>
-                  <Chip tone={expiryState(c.expiresOn, today)}>{expiryLabel(c.expiresOn, today)}</Chip>
-                </button>
-              </li>
-            ))}
-            {certs.length === 0 && <li className="px-4 py-6 text-sm text-muted">{q ? "Nothing matches the search." : "No accreditations yet."}</li>}
-          </ul>
-        )}
-      </div>
+      {tab === "policies" && (
+        <div data-testid="policy-list">
+          <DataTable label="Policies" rows={policies} rowKey={(p) => p.id} onOpen={(p) => setOpen({ kind: "policy", id: p.id })} empty={empty("No policies yet.")} columns={[
+            { key: "policy", label: "Policy", cell: (p) => policyTitle(p), sub: (p) => [p.insurer, p.policyNo].filter(Boolean).join(" · ") },
+            { key: "covers", label: "Covers", cell: (p) => <span className="line-clamp-2">{p.covers.map((c) => `${c.cover}${c.limit != null ? ` ${money(c.limit)}` : ""}`).join(", ")}</span> },
+            { key: "period", label: "Period", className: "whitespace-nowrap", cell: (p) => (p.startsOn || p.expiresOn ? `${p.startsOn ? niceDate(p.startsOn) : "?"} – ${p.expiresOn ? niceDate(p.expiresOn) : "?"}` : "") },
+            { key: "status", label: "Status", cell: (p) => (p.renewedById
+              ? <StatusPill tone="grey">Earlier period</StatusPill>
+              : <StatusPill tone={dueTone(expiryState(p.expiresOn, today))}>{expiryLabel(p.expiresOn, today)}</StatusPill>) },
+          ]} />
+        </div>
+      )}
+      {tab === "claims" && (
+        <div data-testid="claim-list">
+          <DataTable label="Claims" rows={claims} rowKey={(c) => c.id} onOpen={(c) => setOpen({ kind: "claim", id: c.id })}
+            empty={empty(claimFilter === "open" ? "No open claims." : "No claims yet.")} columns={[
+              { key: "claim", label: "Claim", className: "whitespace-nowrap", cell: (c) => `${c.claimNo} ${c.claimType}`, sub: (c) => (c.incidentDate ? `Incident ${niceDate(c.incidentDate)}` : "") },
+              { key: "linked", label: "Linked to", cell: linked },
+              { key: "status", label: "Status", cell: (c) => <StatusPill tone={isClosed(c.status) ? "green" : "amber"}>{labelOf(CLAIM_STATUSES, c.status)}</StatusPill> },
+              { key: "next", label: "Next action", cell: (c) => (isClosed(c.status) ? (c.closedOn ? `Closed ${niceDate(c.closedOn)}` : "")
+                : c.nextActionDue ? <StatusPill tone={dueTone(actionState(c.nextActionDue, today)) === "grey" ? "blue" : dueTone(actionState(c.nextActionDue, today))}>{[c.nextAction, `by ${niceDate(c.nextActionDue)}`].filter(Boolean).join(" ")}</StatusPill>
+                : c.nextAction) },
+            ]} />
+        </div>
+      )}
+      {tab === "certs" && (
+        <div data-testid="cert-list">
+          <DataTable label="Accreditations" rows={certs} rowKey={(c) => c.id} onOpen={(c) => setOpen({ kind: "cert", id: c.id })} empty={empty("No accreditations yet.")} columns={[
+            { key: "name", label: "Accreditation", cell: (c) => c.name, sub: (c) => c.issuer },
+            { key: "ref", label: "Number / level", cell: (c) => [c.reference, c.level].filter(Boolean).join(" · ") },
+            { key: "cost", label: "Annual cost", cell: (c) => money(c.annualCost) },
+            { key: "status", label: "Status", cell: (c) => <StatusPill tone={dueTone(expiryState(c.expiresOn, today))}>{expiryLabel(c.expiresOn, today)}</StatusPill> },
+          ]} />
+        </div>
+      )}
 
       <InsuranceDrawer open={open} data={data} today={today} onOpen={setOpen} onSaved={saved} />
       <ReportDialog open={reporting} onClose={() => setReporting(false)} />
-    </div>
-  );
-}
-
-function AttentionPanel({ items, onOpen }: { items: AttentionItem[]; onOpen: (o: Open) => void }) {
-  const [shown, setShown] = useState(true);
-  return (
-    <section className="mb-5 bg-white border border-line rounded-xl" data-testid="attention">
-      <button type="button" onClick={() => setShown((s) => !s)} aria-expanded={shown} className="w-full flex items-center gap-2 px-4 py-3 text-left">
-        <h2 className="font-semibold flex-1">Needs attention</h2>
-        <span className="text-sm text-muted">{items.length === 0 ? "Nothing expiring in the next 60 days and no open claims" : `${items.length} item${items.length === 1 ? "" : "s"}`}</span>
-        <span aria-hidden="true" className="text-muted">{shown ? "▲" : "▼"}</span>
-      </button>
-      {shown && items.length > 0 && (
-        <ul className="divide-y divide-line border-t border-line">
-          {items.map((it) => (
-            <li key={it.key}>
-              <button type="button" onClick={() => onOpen({ kind: it.open.kind, id: it.open.id } as Open)} className="w-full text-left px-4 py-2 hover:bg-paper flex flex-wrap items-center gap-x-3">
-                <Chip tone={it.tone}>{it.what}</Chip>
-                <span className="font-medium">{it.name}</span>
-                <span className="text-sm text-muted">{it.detail}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </section>
+    </RegisterLayout>
   );
 }
 
