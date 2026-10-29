@@ -6,7 +6,7 @@ import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { DocViewer, type ViewableFile } from "@/components/ui/doc-viewer";
 import { TextArea, TextField } from "@/components/ui/fields";
 import { GuardedForm, SaveButton } from "@/components/ui/guarded-form";
-import { CentredPanel, Drawer } from "@/components/ui/overlay";
+import { Drawer } from "@/components/ui/overlay";
 import { UploadFile } from "@/components/ui/upload-file";
 import { JobLinkField } from "./job-link";
 import { builtIn, REQ_STAGES, taskCategory } from "@/lib/requirements";
@@ -31,7 +31,6 @@ export function TaskPanel({
   taskId,
   draft,
   people,
-  centred = false,
   onClose,
   onSaved,
   onOpenTask,
@@ -39,7 +38,6 @@ export function TaskPanel({
   taskId: number | null;
   draft: NewTaskDraft | null;
   people: { id: number; name: string }[];
-  centred?: boolean; // opened from the job page: a centred box; anywhere else the 560px drawer
   onClose: () => void;
   onSaved: (id: number) => void;
   onOpenTask: (id: number) => void;
@@ -112,9 +110,8 @@ export function TaskPanel({
   }
 
   return (
-    // One task panel, shown two ways (docs/decisions.md): from the job page a centred box over a
-    // blurred, dimmed page; anywhere else the old hub's 560px right-hand drawer (#ctd).
-    <Shell centred={centred} open={open} onClose={onClose} title={title} busy={busy}>
+    // Every task opens in the old hub's 560px right-hand drawer (#ctd), wherever it's opened from.
+    <Drawer open={open} onClose={onClose} title={title} busy={busy} width="max-w-[560px]">
       {loadError && <p role="alert" className="text-sm text-danger">{loadError}</p>}
       {!isNew && !t && !loadError && <p className="text-sm text-muted">Opening…</p>}
       {(isNew || t) && (
@@ -319,16 +316,6 @@ export function TaskPanel({
         </div>
       )}
       <DocViewer file={viewing} onClose={() => setViewing(null)} />
-    </Shell>
-  );
-}
-
-function Shell({ centred, children, ...p }: { centred: boolean; open: boolean; onClose: () => void; title: string; busy: boolean; children: React.ReactNode }) {
-  return centred ? (
-    <CentredPanel {...p}>
-      <div className="pt-3">{children}</div>
-    </CentredPanel>
-  ) : (
-    <Drawer {...p} width="max-w-[560px]">{children}</Drawer>
+    </Drawer>
   );
 }

@@ -7,10 +7,9 @@ import { loadPeople } from "@/app/actions/tasks";
 import { NewTaskPicker } from "./new-task";
 import { TaskPanel } from "./task-panel";
 
-type View = { centred?: boolean };
 type TaskApi = {
-  // Opens a task in the one task panel: centred when opened from the job page, else the 560px drawer.
-  openTask: (id: number, view?: View) => void;
+  // Opens a task in the one task panel (the 560px right-hand drawer), from anywhere.
+  openTask: (id: number) => void;
   // Job page: the requirement picker for that job (centred, tick several, then Add).
   newTask: (opts?: { jobNo?: string | null }) => void;
   // Header + New task: a one-off task, linked to a job (pre-set on a job's pages) or to nothing.
@@ -23,14 +22,12 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [openId, setOpenId] = useState<number | null>(null);
   const [draft, setDraft] = useState<NewTaskDraft | null>(null);
-  const [centred, setCentred] = useState(false);
   const [draftPeople, setDraftPeople] = useState<{ id: number; name: string }[]>([]);
   const [picker, setPicker] = useState<{ jobNo: string | null } | null>(null);
 
-  const openTask = useCallback((id: number, view?: View) => {
+  const openTask = useCallback((id: number) => {
     setPicker(null);
     setDraft(null);
-    setCentred(!!view?.centred);
     setOpenId(id);
   }, []);
   const newTask = useCallback((opts?: { jobNo?: string | null }) => {
@@ -38,16 +35,15 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     setDraft(null);
     setPicker({ jobNo: opts?.jobNo ?? null });
   }, []);
-  const startDraft = useCallback((d: NewTaskDraft, asCentred: boolean) => {
+  const startDraft = useCallback((d: NewTaskDraft) => {
     setOpenId(null);
     setPicker(null);
-    setCentred(asCentred);
     setDraft(d);
     loadPeople().then(setDraftPeople).catch(() => setDraftPeople([]));
   }, []);
   const newGenericTask = useCallback(
     (opts?: { jobNo?: string | null }) =>
-      startDraft({ jobId: null, jobNo: opts?.jobNo ?? null, reqKey: null, title: "", side: "office", linkJob: true }, false),
+      startDraft({ jobId: null, jobNo: opts?.jobNo ?? null, reqKey: null, title: "", side: "office", linkJob: true }),
     [startDraft],
   );
   const api = useMemo(() => ({ openTask, newTask, newGenericTask }), [openTask, newTask, newGenericTask]);
@@ -59,27 +55,26 @@ export function TaskProvider({ children }: { children: ReactNode }) {
         open={!!picker}
         jobNo={picker?.jobNo ?? null}
         onClose={() => setPicker(null)}
-        onOpenTask={(id) => openTask(id, { centred: true })}
+        onOpenTask={(id) => openTask(id)}
         // Other / On site task: the one-off task form, on this job.
-        onOther={(side) => startDraft({ jobId: null, jobNo: picker?.jobNo ?? null, reqKey: null, title: "", side }, true)}
+        onOther={(side) => startDraft({ jobId: null, jobNo: picker?.jobNo ?? null, reqKey: null, title: "", side })}
         onAdded={(ids) => {
           setPicker(null);
           router.refresh();
-          if (ids.length === 1) openTask(ids[0], { centred: true });
+          if (ids.length === 1) openTask(ids[0]);
         }}
       />
       <TaskPanel
         taskId={openId}
         draft={draft}
         people={draftPeople}
-        centred={centred}
         onClose={() => {
           setOpenId(null);
           setDraft(null);
         }}
-        onOpenTask={(id) => openTask(id, { centred })}
+        onOpenTask={(id) => openTask(id)}
         onSaved={(id) => {
-          if (draft) openTask(id, { centred });
+          if (draft) openTask(id);
           router.refresh();
         }}
       />

@@ -52,15 +52,15 @@ const SHOTS = process.argv[2];
   await picker.getByRole("button", { name: "On site tasks" }).click();
   log("site survey under On site tasks:", await picker.getByRole("button", { name: /^Site survey/ }).count());
   await picker.getByRole("button", { name: "Office tasks" }).click();
-  // tick one: CBS RAMS -> Add 1 task opens it, centred
+  // tick one: CBS RAMS -> Add 1 task opens it in the drawer
   await picker.getByRole("button", { name: /^CBS RAMS/ }).click();
   log("tick shows:", await picker.getByRole("button", { name: /^CBS RAMS \(selected\)/ }).count() ? "✓ Selected" : "NOT selected", "| button:", await addBtn.innerText());
   await addBtn.dblclick();
   const opened = p.getByRole("dialog", { name: "CBS RAMS" });
   await opened.waitFor({ timeout: 10000 });
   log("RAMS added and opened");
-  await centredCheck(opened, "a task opened from the job page");
-  if (SHOTS) await p.screenshot({ path: `${SHOTS}/task-centred.png` });
+  await drawerCheck(opened, "the job page (a newly added task)");
+  if (SHOTS) await p.screenshot({ path: `${SHOTS}/task-drawer-job.png` });
   await opened.getByText("In progress", { exact: true }).click();
   await opened.getByLabel("In hand").fill("Waiting for the site visit");
   await opened.getByRole("button", { name: "Save" }).click();
@@ -73,6 +73,11 @@ const SHOTS = process.argv[2];
   await tile.waitFor(); await tile.click();
   await p.getByRole("dialog", { name: "CBS RAMS" }).waitFor();
   log("RAMS tile shows On and opens the same task");
+  await p.getByRole("dialog", { name: "CBS RAMS" }).getByRole("button", { name: "Close" }).first().click();
+  // A task clicked in the job's Tasks panel opens in the same 560px drawer (not centred).
+  await tasks.getByRole("button", { name: /CBS RAMS/ }).first().click();
+  await drawerCheck(p.getByRole("dialog", { name: "CBS RAMS" }), "the job page's Tasks panel");
+  log("no centred task box:", (await p.locator('[data-panel="centred"]').count()) === 0);
   await p.getByRole("dialog", { name: "CBS RAMS" }).getByRole("button", { name: "Close" }).first().click();
   // tick several, then one Add: Site survey (from the Office tab) + Supplier POs + Toolbox talks (On site)
   await tasks.getByRole("button", { name: "+ New task" }).click();

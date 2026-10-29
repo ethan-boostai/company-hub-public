@@ -75,7 +75,7 @@ export function JobTasks({ jobNo, tasks, meId }: { jobNo: string; tasks: TaskVie
                 <ul className="divide-y divide-line border border-line rounded-lg bg-white">
                   {rows.map((t) => (
                     <li key={t.id}>
-                      <button type="button" onClick={() => openTask(t.id, { centred: true })} className="w-full text-left px-3 py-2 hover:bg-paper">
+                      <button type="button" onClick={() => openTask(t.id)} className="w-full text-left px-3 py-2 hover:bg-paper">
                         <span className="block text-sm font-medium">{t.title}</span>
                         <TaskMarkers t={t} />
                         {overdue(t) && <span className="text-xs font-semibold text-danger">Overdue</span>}
