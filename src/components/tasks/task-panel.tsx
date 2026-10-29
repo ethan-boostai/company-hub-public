@@ -8,6 +8,7 @@ import { TextArea, TextField } from "@/components/ui/fields";
 import { GuardedForm, SaveButton } from "@/components/ui/guarded-form";
 import { Drawer } from "@/components/ui/overlay";
 import { UploadFile } from "@/components/ui/upload-file";
+import { JobLinkField } from "./job-link";
 import { builtIn, REQ_STAGES, taskCategory } from "@/lib/requirements";
 import { STATUS_LABEL, type NewTaskDraft, type TaskStatus } from "@/lib/tasks/types";
 import { changeTaskStatus, deleteTask, loadTaskPanel, saveTask, sendTaskBack, verifyTask, type PanelData } from "@/app/actions/tasks";
@@ -82,7 +83,7 @@ export function TaskPanel({
   const side = t ? t.side : draft?.side ?? "office";
   const req = reqKey ? builtIn(reqKey) : undefined;
   const stageLabel = REQ_STAGES.find((s) => s.key === (t?.stage ?? req?.stage))?.label;
-  const category = t ? t.category : taskCategory(reqKey, side);
+  const category = t ? t.category : taskCategory(reqKey);
   const choices = data?.people ?? people;
   const title = isNew ? (draft!.title ? `New task: ${draft!.title}` : "New task") : t ? t.title : "Task";
 
@@ -115,7 +116,7 @@ export function TaskPanel({
       {(isNew || t) && (
         <div key={t ? `t${t.id}` : "new"}>
           <div className="flex flex-wrap items-center gap-1.5 mb-4 text-sm">
-            {jobNo ? (
+            {isNew && draft!.linkJob ? null : jobNo ? (
               <Link href={`/jobs/${jobNo}`} className="underline font-medium" onClick={onClose}>
                 Job {jobNo}{t?.jobTitle ? ` · ${t.jobTitle}` : ""}
               </Link>
@@ -151,13 +152,14 @@ export function TaskPanel({
             {t && <input type="hidden" name="id" value={t.id} />}
             {isNew && (
               <>
-                <input type="hidden" name="jobNo" value={draft!.jobNo || ""} />
+                {!draft!.linkJob && <input type="hidden" name="jobNo" value={draft!.jobNo || ""} />}
                 <input type="hidden" name="reqKey" value={draft!.reqKey || ""} />
                 <input type="hidden" name="side" value={draft!.side} />
               </>
             )}
             <TextField label="Title" name="title" defaultValue={t ? t.title : draft?.title} required={!reqKey} placeholder={reqKey ? "Leave blank for the usual name" : ""} />
             <TextArea label="Description" name="notes" defaultValue={t?.notes} rows={3} />
+            {isNew && draft!.linkJob && <JobLinkField initialJobNo={draft!.jobNo} />}
 
             <fieldset className="mb-4">
               <legend className="block text-sm font-medium mb-1">Status</legend>

@@ -3,10 +3,17 @@
 import { useRouter } from "next/navigation";
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 import type { NewTaskDraft } from "@/lib/tasks/types";
+import { loadPeople } from "@/app/actions/tasks";
 import { NewTaskPicker } from "./new-task";
 import { TaskPanel } from "./task-panel";
 
-type TaskApi = { openTask: (id: number) => void; newTask: (opts?: { jobNo?: string | null }) => void };
+type TaskApi = {
+  openTask: (id: number) => void;
+  // Job page: the requirement picker for that job.
+  newTask: (opts?: { jobNo?: string | null }) => void;
+  // Header + New task: a one-off task, linked to a job (pre-set on a job's pages) or to nothing.
+  newGenericTask: (opts?: { jobNo?: string | null }) => void;
+};
 const Ctx = createContext<TaskApi | null>(null);
 
 // One task panel and one + New task picker for the whole hub. Every page opens tasks through this.
@@ -27,7 +34,13 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     setDraft(null);
     setPicker({ jobNo: opts?.jobNo ?? null });
   }, []);
-  const api = useMemo(() => ({ openTask, newTask }), [openTask, newTask]);
+  const newGenericTask = useCallback((opts?: { jobNo?: string | null }) => {
+    setOpenId(null);
+    setPicker(null);
+    setDraft({ jobId: null, jobNo: opts?.jobNo ?? null, reqKey: null, title: "", side: "office", linkJob: true });
+    loadPeople().then(setDraftPeople).catch(() => setDraftPeople([]));
+  }, []);
+  const api = useMemo(() => ({ openTask, newTask, newGenericTask }), [openTask, newTask, newGenericTask]);
 
   return (
     <Ctx.Provider value={api}>

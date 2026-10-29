@@ -168,8 +168,8 @@ try {
   check("person marked as left drops off the list", stillListed === 0);
 
   // Global search
-  await page.getByLabel("Search the hub").fill("Test Office");
-  await page.getByLabel("Search the hub").press("Enter");
+  await page.getByLabel("Search the hub", { exact: true }).fill("Test Office");
+  await page.getByLabel("Search the hub", { exact: true }).press("Enter");
   await page.waitForURL(/\/search\?q=/);
   await page.getByRole("link", { name: "Test Office Two" }).waitFor();
   check("global search finds people", true);

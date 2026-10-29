@@ -50,6 +50,11 @@ export async function loadPicker(jobNo: string | null): Promise<PickerData | nul
   return { job, tiles, people };
 }
 
+export async function loadPeople(): Promise<{ id: number; name: string }[]> {
+  if (!(await getCurrentPerson())) return [];
+  return activePeople();
+}
+
 export async function findJobs(q: string): Promise<{ jobNo: string; title: string; client: string }[]> {
   if (!(await getCurrentPerson())) return [];
   const needle = String(q || "").trim().replace(/^#/, "").slice(0, 60);

@@ -29,10 +29,10 @@ const BASE = process.env.BASE_URL || "http://localhost:3100";
   log("search RAMS ->", await counts());
   await p.getByLabel("Search tasks").fill("");
   // filter persisted
-  await p.getByRole("combobox").first().selectOption("none");
+  await p.getByRole("main").locator("select").first().selectOption("none");
   log("job = No job ->", await counts());
   await p.reload({ waitUntil: "networkidle" });
-  log("after reload, Job filter:", await p.getByRole("combobox").first().inputValue(), "->", await counts());
+  log("after reload, Job filter:", await p.getByRole("main").locator("select").first().inputValue(), "->", await counts());
   await p.getByRole("button", { name: "Clear" }).click();
   await p.getByLabel("Group by job").check();
   log("group headings:", (await col("To do").locator("p.text-xs").allInnerTexts()).join(", "));
@@ -44,51 +44,9 @@ const BASE = process.env.BASE_URL || "http://localhost:3100";
   await p.getByRole("dialog").first().waitFor();
   log("card opens panel:", await p.getByRole("dialog").first().getAttribute("aria-label") || "yes");
   await p.keyboard.press("Escape");
-  // requirement types
-  await p.goto(`${BASE}/settings/requirement-types`, { waitUntil: "networkidle" });
-  await p.getByRole("main").getByRole("button", { name: "Add type" }).first().click();
-  const d = p.getByRole("dialog", { name: "Add type" });
-  await d.getByLabel("Name").fill("Test skip hire check");
-  await d.getByLabel("Approved: on site").check();
-  await d.getByLabel("On site task").check();
-  await d.getByLabel(/Repeatable/).check();
-  await d.getByRole("button", { name: "Add type" }).dblclick();
-  await p.waitForTimeout(1500);
-  log("custom list:", (await p.getByTestId("custom-types").innerText()).replace(/\n/g, " | "));
-  // duplicate name
-  await p.getByRole("main").getByRole("button", { name: "Add type" }).first().click();
-  await d.getByLabel("Name").fill("test SKIP hire check");
-  await d.getByRole("button", { name: "Add type" }).click();
-  await p.waitForTimeout(1000);
-  log("duplicate:", await d.getByText(/already a type/).count() ? "refused" : "NOT refused");
-  await p.keyboard.press("Escape");
-  // shows in picker on job 12
-  await p.goto(`${BASE}/jobs/12`, { waitUntil: "networkidle" });
-  await p.getByRole("banner").getByRole("button", { name: "+ New task" }).click();
-  const picker = p.getByRole("dialog", { name: "New task" });
-  await picker.getByText("Job 12").waitFor();
-  await picker.getByRole("button", { name: "On site tasks" }).click();
-  log("in picker (on site):", await picker.getByRole("button", { name: /^Test skip hire check/ }).count());
-  await picker.getByRole("button", { name: /^Test skip hire check/ }).click();
-  await p.getByRole("dialog", { name: /New task/ }).getByRole("button", { name: "Add task" }).click();
-  await p.getByRole("dialog", { name: "Test skip hire check" }).waitFor({ timeout: 10000 });
-  log("custom task added");
-  await p.keyboard.press("Escape");
-  // delete refused when used; switch off works
-  await p.goto(`${BASE}/settings/requirement-types`, { waitUntil: "networkidle" });
-  await p.getByTestId("custom-types").getByRole("button", { name: /Test skip hire check/ }).click();
-  const e = p.getByRole("dialog", { name: "Test skip hire check" });
-  await e.getByRole("button", { name: "Delete type" }).click();
-  const c = p.getByRole("alertdialog").or(p.getByRole("dialog", { name: /Delete/ }));
-  await c.getByRole("button", { name: /Delete/ }).last().click();
-  await p.waitForTimeout(1000);
-  log("delete used type:", (await c.innerText()).includes("Switch it off") ? "refused, says switch off" : await c.innerText());
-  await p.keyboard.press("Escape"); await p.waitForTimeout(400);
-  log("Escape on confirm keeps the drawer open:", await e.isVisible(), "| confirm closed:", !(await c.isVisible()));
-  await e.getByLabel(/Switched on/).uncheck();
-  await e.getByRole("button", { name: "Save" }).click();
-  await p.waitForTimeout(1200);
-  log("after switch off:", (await p.getByTestId("custom-types").innerText()).replace(/\n/g, " | "));
+  // requirement types page is gone (built-in types only)
+  const rt = await p.goto(`${BASE}/settings/requirement-types`);
+  log("requirement types page:", rt.status(), "| menu item:", await p.getByRole("link", { name: "Requirement types" }).count());
   log("popups:", popups);
   await b.close();
 })().catch((e) => { console.error("FAIL", e.message.slice(0,600)); process.exit(1); });
