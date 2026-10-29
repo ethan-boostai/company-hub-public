@@ -39,18 +39,96 @@ export function db(): postgres.Sql {
     const url = process.env.DATABASE_URL;
     if (!url) throw new Error("DATABASE_URL is not set");
     assertNotLive(url, "Connecting to the database");
-    globalForSql.cbsSql = withReservedBegin(postgres(url, POOL_OPTIONS));
+    const pool = withReservedBegin(postgres(url, POOL_OPTIONS), {
+      // A stuck query or save: drop this pool so the next request starts with fresh connections.
+      onStuck: () => {
+        if (globalForSql.cbsSql === pool) globalForSql.cbsSql = undefined;
+        console.error("Database query timed out; the connection pool was reset.");
+      },
+    });
+    globalForSql.cbsSql = pool;
   }
   return globalForSql.cbsSql;
 }
 
-// db().begin(fn): the same as postgres.js's sql.begin, but on a connection reserved for the whole
-// transaction (works with max_pipeline 0). Commits when fn resolves, rolls back when it throws.
-export function withReservedBegin(sql: postgres.Sql): postgres.Sql {
-  async function begin<T>(fn: (tx: postgres.TransactionSql) => T | Promise<T>): Promise<T> {
+// Time limits, so a stuck query fails visibly in seconds instead of hanging the page for minutes.
+// - Every query: QUERY_TIMEOUT_MS on the app side (the pooler gives no server-side limit for a
+//   single query).
+// - Every db().begin(): TRANSACTION_TIMEOUT_MS overall on the app side, and on the database side
+//   statement_timeout and idle_in_transaction_session_timeout for that transaction (set local).
+// When a limit is hit, the query is cancelled and the whole pool is closed, because a connection
+// stuck in the pooler never recovers; the next request opens fresh connections.
+export const QUERY_TIMEOUT_MS = 15_000;
+export const TRANSACTION_TIMEOUT_MS = 20_000;
+
+export class DbTimeoutError extends Error {
+  constructor(what: string, ms: number) {
+    super(`The database didn't answer within ${Math.round(ms / 1000)} seconds (${what}). Try again.`);
+    this.name = "DbTimeoutError";
+  }
+}
+
+function withTimeout<T>(work: PromiseLike<T>, ms: number, what: string, onTimeout: () => void): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => {
+      onTimeout();
+      reject(new DbTimeoutError(what, ms));
+    }, ms);
+    work.then(
+      (v) => {
+        clearTimeout(timer);
+        resolve(v);
+      },
+      (e) => {
+        clearTimeout(timer);
+        reject(e);
+      },
+    );
+  });
+}
+
+type Limits = { queryMs?: number; transactionMs?: number; onStuck?: () => void };
+
+// Wraps a postgres.js pool: every query gets the time limit, and db().begin(fn) runs on a
+// connection reserved for the whole transaction (postgres.js's own sql.begin can't reserve one
+// with max_pipeline 0). begin commits when fn resolves and rolls back when it throws.
+export function withReservedBegin(sql: postgres.Sql, limits: Limits = {}): postgres.Sql {
+  const queryMs = limits.queryMs ?? QUERY_TIMEOUT_MS;
+  const transactionMs = limits.transactionMs ?? TRANSACTION_TIMEOUT_MS;
+  const stuck = () => {
+    limits.onStuck?.();
+    void sql.end({ timeout: 0 }).catch(() => undefined);
+  };
+  const secs = (ms: number) => `${Math.max(1, Math.round(ms / 1000))}s`;
+
+  // A postgres.js query runs when it is first awaited (then); race that against the limit.
+  function limit<Q>(q: Q): Q {
+    const query = q as unknown as { then?: unknown; cancel?: () => void };
+    if (!query || typeof query.then !== "function" || typeof query.cancel !== "function") return q;
+    const original = (query.then as (a?: unknown, b?: unknown) => Promise<unknown>).bind(query);
+    let raced: Promise<unknown> | null = null;
+    (query as { then: unknown }).then = (onOk?: (v: unknown) => unknown, onErr?: (e: unknown) => unknown) => {
+      raced ??= withTimeout({ then: original } as PromiseLike<unknown>, queryMs, "query", () => {
+        try {
+          query.cancel?.();
+        } catch {
+          // already finished or never started
+        }
+        stuck();
+      });
+      return raced.then(onOk, onErr);
+    };
+    return q;
+  }
+
+  async function run<T>(fn: (tx: postgres.TransactionSql) => T | Promise<T>): Promise<T> {
     const tx = await sql.reserve();
     try {
-      await tx`begin`;
+      await tx
+        .unsafe(
+          `begin; set local statement_timeout = '${secs(queryMs)}'; set local idle_in_transaction_session_timeout = '${secs(transactionMs)}'`,
+        )
+        .simple();
       let result: T;
       try {
         result = await fn(tx as unknown as postgres.TransactionSql);
@@ -64,8 +142,16 @@ export function withReservedBegin(sql: postgres.Sql): postgres.Sql {
       tx.release();
     }
   }
+  const begin = <T>(fn: (tx: postgres.TransactionSql) => T | Promise<T>) =>
+    withTimeout(run(fn), transactionMs, "save", stuck);
+
   return new Proxy(sql, {
-    get: (target, prop, receiver) => (prop === "begin" ? begin : Reflect.get(target, prop, receiver)),
+    apply: (target, thisArg, args) => limit(Reflect.apply(target, thisArg, args)),
+    get: (target, prop, receiver) => {
+      if (prop === "begin") return begin;
+      if (prop === "unsafe") return (...args: Parameters<postgres.Sql["unsafe"]>) => limit(target.unsafe(...args));
+      return Reflect.get(target, prop, receiver);
+    },
   });
 }
 
