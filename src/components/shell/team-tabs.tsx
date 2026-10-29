@@ -4,7 +4,7 @@ import Link from "next/link";
 // Training and qualifications and Team requests, Core the Team tab and Time off.
 export const TEAM_TABS = [
   { key: "team", label: "Team", href: "/people" },
-  { key: "training", label: "Training and qualifications", href: "/people/training" },
+  { key: "training", label: "Training and qualifications", href: "/training" },
   { key: "time-off", label: "Time off", href: "/people/time-off" },
   { key: "requests", label: "Team requests", href: "/requests" },
 ] as const;

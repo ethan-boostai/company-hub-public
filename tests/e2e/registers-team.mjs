@@ -124,6 +124,7 @@ try {
   // Office: the check (once, unreviewed, from the team app) and the accident show in Fleet.
   await office.reload();
   const panel = office.getByRole("complementary", { name: "Needs attention" });
+  await panel.getByText(REG).first().waitFor({ timeout: 10000 }).catch(() => {});
   check("unreviewed team check shows in Needs attention", (await panel.getByText(REG).count()) >= 2);
   await office.getByRole("button", { name: /^Vehicle checks/ }).click();
   await office.getByLabel("Search checks").fill(REG);

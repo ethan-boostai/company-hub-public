@@ -6,6 +6,7 @@ import { GuardedForm, SaveButton } from "@/components/ui/guarded-form";
 import { SelectWithAdd } from "@/components/ui/select-with-add";
 import { dueState, niceDate, niceDateTime, relative, ukLocalInput } from "../_registers/dates";
 import { RecordFiles } from "../_registers/record-files";
+import { LinkedClaims } from "../insurance/linked-claims";
 import { Chip, Choice, RecordSelect, StatusBox } from "../_registers/ui";
 import { returnToService, saveAsset, saveAssetService, saveMaterial, saveToolReport } from "./actions";
 import type { AssetRow, AssetServiceRow, EquipmentData, MaterialRow, ToolReportRow } from "./data";
@@ -105,6 +106,7 @@ export function AssetForm({ asset: a, data, today, onOpen, onSaved }: Common & {
             }))} />
           </Section>
           <History kind="asset" id={a.id} />
+          <LinkedClaims kind="asset" id={a.id} />
           <RecordFiles entityTable="assets" entityId={a.id} title="Documents and photos" />
           <DeleteRecord kind="assets" id={a.id} label={`Delete ${a.name}`} onDeleted={(s) => onSaved(s, null)}
             message={`This deletes ${assetTitle(a)}, its ${services.length} service(s) and its history. Tool reports stay. Files stay in SharePoint. It cannot be undone.`} />

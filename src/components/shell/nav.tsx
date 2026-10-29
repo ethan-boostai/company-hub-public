@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { Suspense, type ReactNode } from "react";
 
 // Main left menu, grouped as in the live hub. Only pages that exist so far are listed; a group with
-// no pages yet (Purchasing, Health and safety, Compliance) is left out until it has one. As live: the
+// no pages yet (Purchasing, Health and safety) is left out until it has one. As live: the
 // top items and Settings carry an icon; inside a group the heading carries the icon and its items
 // sit indented under it.
 type Item = { href: string; label: string; icon?: keyof typeof ICONS; count?: "actions" };
@@ -37,13 +37,18 @@ export const NAV: Group[] = [
       { href: "/subcontractors", label: "Subcontractors and suppliers" },
     ],
   },
-  { group: "Compliance", icon: "award", items: [] },
+  {
+    group: "Compliance",
+    icon: "award",
+    items: [{ href: "/insurance", label: "Insurance and accreditations" }],
+  },
   // Settings is the last item (no settings pages yet, so it isn't shown).
   { items: [] },
 ];
 
-// Pages that belong to a menu item without sitting under its address (Team requests is a Team tab).
-const ALSO: Record<string, string[]> = { "/people": ["/requests"] };
+// Pages that belong to a menu item without sitting under its address (Team requests and Team
+// training are Team tabs).
+const ALSO: Record<string, string[]> = { "/people": ["/requests", "/training"] };
 
 const ICONS = {
   home: <path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" />,

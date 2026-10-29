@@ -125,3 +125,52 @@ export function RecordSelect({
     </div>
   );
 }
+
+// A titled part of a drawer, with an optional button on the right.
+export function Section({ title, action, children }: { title: string; action?: ReactNode; children: ReactNode }) {
+  return (
+    <section className="mt-6 border-t border-line pt-4">
+      <div className="flex flex-wrap items-center gap-3 mb-2">
+        <h3 className="font-semibold flex-1">{title}</h3>
+        {action}
+      </div>
+      {children}
+    </section>
+  );
+}
+
+export function SmallButton({ children, onClick, disabled }: { children: ReactNode; onClick: () => void; disabled?: boolean }) {
+  return (
+    <button type="button" onClick={onClick} disabled={disabled} className="px-3 py-1.5 rounded-lg border border-dark text-sm font-semibold hover:bg-paper disabled:opacity-50">
+      {children}
+    </button>
+  );
+}
+
+export function MiniList({ items, empty }: { items: { key: number | string; title: string; sub?: string; chips?: ReactNode; onClick?: () => void }[]; empty: string }) {
+  if (items.length === 0) return <p className="text-sm text-muted">{empty}</p>;
+  return (
+    <ul className="divide-y divide-line border border-line rounded-lg">
+      {items.map((i) => {
+        const inner = (
+          <>
+            <span className="min-w-0 flex-1">
+              <span className="block text-sm font-medium">{i.title}</span>
+              {i.sub && <span className="block text-xs text-muted">{i.sub}</span>}
+            </span>
+            {i.chips && <span className="flex flex-wrap gap-1">{i.chips}</span>}
+          </>
+        );
+        return (
+          <li key={i.key}>
+            {i.onClick ? (
+              <button type="button" onClick={i.onClick} className="w-full text-left px-3 py-2 hover:bg-paper flex flex-wrap items-center gap-x-2">{inner}</button>
+            ) : (
+              <div className="px-3 py-2 flex flex-wrap items-center gap-x-2">{inner}</div>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
