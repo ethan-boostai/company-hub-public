@@ -66,14 +66,16 @@ This repo replaces the original n8n-served hub (pages served from n8n webhooks o
 - Give Ethan test instructions as clear numbered steps.
 
 ## Change process (every change, every session)
-Never merge a pull request and never commit or push to `main`. That includes docs-only changes and conflict fixes. Every change goes through these steps:
+Never commit or push to `main`; every change goes through a pull request. Every change:
 1. Work on a branch, commit, push.
-2. Open a pull request with a plain summary of what changed and why.
+2. Open a pull request that lists what changed and why, and every migration it adds (file name and what it creates or alters), so Ethan can see what went in.
 3. Make sure the pull request's preview deploys.
-4. Give Ethan numbered test steps for that preview (job 12 and fake data only).
-5. Ethan tests. He approves by replying "approved, merge #N", and only then is the pull request merged, by Ethan. If he reports a problem, fix it on the same branch and give fresh steps.
+4. Run every check: lint, typecheck, unit tests, the production build, and your browser tests (on the local database, plus the preview where it can be reached). All must pass.
+5. When they all pass, merge your own pull request. If any fails, fix it on the same branch first.
+- Ethan tests at the end of each stage, with one numbered checklist from the session covering the whole area (job 12 and fake data only). Problems he finds are fixed in a new pull request.
 - A conflict with `main` is fixed on your own branch (merge `main` into it), never on `main`.
-- Production changes only when Ethan merges an approved pull request.
+- Switch-over (importing old data, or moving the team onto a new area) happens only when Ethan says so.
+- Never change Vercel, Supabase, GitHub or n8n settings, or anything in the live n8n hub, unless Ethan asks.
 
 ## Working process
 - Explain the approach before building anything non-trivial and wait for a go-ahead.
