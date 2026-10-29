@@ -35,7 +35,11 @@ page.on("dialog", async (d) => {
   await d.dismiss();
 });
 const drawer = page.getByRole("dialog").first();
-const attention = page.getByTestId("attention");
+const attention = page.getByRole("complementary", { name: "Needs attention" });
+const newMenu = async (what) => {
+  await page.getByRole("button", { name: "+ New", exact: true }).click();
+  await page.getByRole("menuitem", { name: what, exact: true }).click();
+};
 const closeDrawer = () => page.getByRole("button", { name: "Close", exact: true }).first().click();
 
 try {
@@ -47,7 +51,7 @@ try {
   check("Insurance and accreditations is in the left menu", await page.getByRole("link", { name: "Insurance and accreditations" }).isVisible());
 
   /* ---------- Policy with two covers ---------- */
-  await page.getByRole("button", { name: "Add policy" }).click();
+  await newMenu("Policy");
   await drawer.getByLabel("Type of policy").selectOption("Public liability");
   await drawer.getByLabel("Name (optional)").fill(POLICY);
   await drawer.getByLabel("Insurer").fill("ZZ Test Insurer");
@@ -95,7 +99,7 @@ try {
   check("policy list shows the current period only", (await page.getByTestId("policy-list").getByText(TITLE).count()) === 1);
   await page.getByLabel("Show earlier periods").check();
   check("earlier periods can be shown", (await page.getByTestId("policy-list").getByText(TITLE).count()) === 2);
-  await page.getByTestId("policy-list").getByRole("button").filter({ hasText: "Earlier period" }).filter({ hasText: TITLE }).click();
+  await page.getByTestId("policy-list").locator("tbody tr").filter({ hasText: "Earlier period" }).filter({ hasText: TITLE }).click();
   check("an earlier period can't be renewed again", (await drawer.getByRole("button", { name: "Add renewal" }).count()) === 0);
   await closeDrawer();
   await page.getByLabel("Show earlier periods").uncheck();
@@ -147,15 +151,15 @@ try {
   check("settling a claim sets the closed date", true);
   await closeDrawer();
   check("settled claim leaves Needs attention", (await attention.getByText(`${claimNo} Vehicle`).count()) === 0);
-  await page.getByRole("tab", { name: /^Claims/ }).click();
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: /^Claims/ }).click();
   check("open claims list hides it", (await page.getByTestId("claim-list").getByText(claimNo).count()) === 0);
   await page.getByLabel("Which claims").selectOption("all");
   await page.getByLabel("Search claims").fill("car park");
   check("all claims list and search find it", (await page.getByTestId("claim-list").getByText(claimNo).count()) === 1);
 
   /* ---------- Accreditation ---------- */
-  await page.getByRole("tab", { name: /^Accreditations/ }).click();
-  await page.getByRole("button", { name: "Add accreditation" }).click();
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: /^Accreditations/ }).click();
+  await newMenu("Accreditation");
   await drawer.getByLabel("Accreditation").selectOption({ label: "+ Add new…" });
   await drawer.getByLabel("New accreditation").fill(CERT_LIST);
   await drawer.getByRole("button", { name: "Add", exact: true }).click();
@@ -176,7 +180,8 @@ try {
   check("expiring accreditation is in Needs attention", (await attention.getByText(CERT_LIST).count()) === 1);
 
   /* ---------- Report ---------- */
-  await page.getByRole("button", { name: "Create report" }).click();
+  await page.getByRole("button", { name: "Reports", exact: true }).click();
+  await page.getByRole("menuitem", { name: /^Create report/ }).click();
   await page.getByLabel("All claims").check();
   await page.getByLabel("Show annual costs").check();
   await page.getByRole("dialog").getByRole("button", { name: "Create report" }).click();
@@ -195,11 +200,11 @@ try {
   };
   await page.getByTestId("cert-list").getByText(CERT_LIST).click();
   await del(`Delete ${CERT_LIST}`);
-  await page.getByRole("tab", { name: /^Claims/ }).click();
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: /^Claims/ }).click();
   await page.getByLabel("Which claims").selectOption("all");
   await page.getByTestId("claim-list").getByText(claimNo).click();
   await del(`Delete ${claimNo}`);
-  await page.getByRole("tab", { name: /^Policies/ }).click();
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: /^Policies/ }).click();
   await page.getByLabel("Show earlier periods").check();
   for (let i = 0; i < 2; i++) {
     await page.getByTestId("policy-list").getByText(TITLE).first().click();
