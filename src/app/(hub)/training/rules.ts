@@ -31,6 +31,14 @@ export function ticketLabel(r: { expiresOn: string | null }, today: string): str
   return `Valid to ${niceDate(r.expiresOn)}`;
 }
 
+// Matrix cell colours, shared by the screen and the PDF so they match (the old hub's matrix colours).
+export const MATRIX_COLOURS: Record<TicketState, { fill: string; text: string; label: string }> = {
+  valid: { fill: "#e3f3e8", text: "#1a7f37", label: "Valid" },
+  expiring: { fill: "#fff4e0", text: "#8a5a00", label: "Expires within 60 days" },
+  expired: { fill: "#fde7e7", text: "#b3261e", label: "Expired" },
+  missing: { fill: "#f2f2f0", text: "#6b6e70", label: "Not on file" },
+};
+
 // The Chip / StatusBox tone for each state.
 export const STATE_TONE = { valid: "ok", expiring: "soon", expired: "overdue", missing: "none" } as const;
 

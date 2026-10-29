@@ -5,7 +5,7 @@ import { niceDate, ukToday } from "../../_registers/dates";
 import { isoDate } from "../../_registers/form-values";
 import { expiryLabel } from "../../insurance/rules";
 import { loadTraining } from "../data";
-import { bestFor, bestRecords, matrixPeople, matrixTickets, pdfCellText, type PeopleChoice, type TicketChoice } from "../rules";
+import { bestFor, bestRecords, MATRIX_COLOURS, matrixPeople, matrixTickets, pdfCellText, ticketState, type PeopleChoice, type TicketChoice, type TicketState } from "../rules";
 
 const PER_TABLE = 10; // ticket columns per table, so cells stay readable on A4 landscape
 
@@ -35,7 +35,11 @@ export async function GET(req: Request) {
     landscape: true,
   });
   pdf.heading("Team tickets and qualifications");
-  pdf.paragraph(`OK = valid${withDates ? " (date shown is the expiry)" : ""}. DUE = expires within 60 days. EXPIRED = has expired. - = not on file. Only the latest record for each ticket counts.`, 8.5);
+  // Colour legend, drawn with the same cell colours as the matrix.
+  const states: TicketState[] = ["valid", "expiring", "expired", "missing"];
+  const sample: Record<TicketState, string> = { valid: withDates ? "OK 12 Mar 27" : "OK", expiring: withDates ? "DUE 3 Dec 26" : "DUE", expired: withDates ? "EXPIRED 1 Jan 26" : "EXPIRED", missing: "-" };
+  pdf.table(states.map((k) => ({ label: MATRIX_COLOURS[k].label, width: 0.25 })), [states.map((k) => sample[k])], { cellColours: [states.map((k) => MATRIX_COLOURS[k])] });
+  pdf.paragraph(`Cells also say OK, DUE or EXPIRED${withDates ? " with the expiry date" : ""}, so the matrix reads in black and white too. Only the latest record for each ticket counts.`, 8.5);
 
   if (people.length === 0 || tickets.length === 0) {
     pdf.paragraph(people.length === 0 ? "Nobody to show." : "No tickets to show.");
@@ -49,6 +53,7 @@ export async function GET(req: Request) {
       pdf.table(
         [{ label: "Person", width: nameW }, ...cols.map((c) => ({ label: c, width: w }))],
         people.map((p) => [p.active ? p.name : `${p.name} (left)`, ...cols.map((t) => pdfCellText(bestFor(best, p.id, t), today, withDates))]),
+        { cellColours: people.map((p) => [null, ...cols.map((t) => MATRIX_COLOURS[ticketState(bestFor(best, p.id, t), today)])]) },
       );
     }
   }
