@@ -4,6 +4,7 @@ import { z } from "zod";
 import { getCurrentPerson } from "@/lib/auth/session";
 import { cleanFileName, MAX_UPLOAD_BYTES, storageMode, UPLOAD_FOLDER } from "@/lib/files/storage";
 import { signTicket } from "@/lib/files/ticket";
+import { recordFolder } from "@/lib/files/record-folder";
 import { SharePointError, startUpload, UNREACHABLE } from "@/lib/files/sharepoint";
 
 const Body = z.object({
@@ -31,6 +32,13 @@ export async function POST(req: Request) {
   if (b.entityTable === "tasks" && !b.jobId) {
     return NextResponse.json({ ok: false, message: "Files can only be added to tasks on a job." }, { status: 400 });
   }
+  // A record whose table has a folder function (upload_folder_<table>) gets its own folder.
+  let folder = UPLOAD_FOLDER;
+  if (b.entityTable && b.entityTable !== "tasks") {
+    const f = await recordFolder(b.entityTable, b.entityId ?? 0);
+    if (f === null) return NextResponse.json({ ok: false, message: "That record no longer exists. Refresh the page." }, { status: 400 });
+    if (f) folder = f;
+  }
 
   const name = cleanFileName(b.name);
   const mode = storageMode();
@@ -54,7 +62,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, mode, uploadUrl: `/api/files/local?t=${encodeURIComponent(ticket)}`, ticket });
   }
   try {
-    const s = await startUpload(UPLOAD_FOLDER, name, b.size);
+    const s = await startUpload(folder, name, b.size);
     // SharePoint may rename the file if the name is taken; the ticket keeps the folder it must land in.
     return NextResponse.json({ ok: true, mode, uploadUrl: s.uploadUrl, ticket: ticketFor(`${s.folder}/${s.name}`) });
   } catch (e) {

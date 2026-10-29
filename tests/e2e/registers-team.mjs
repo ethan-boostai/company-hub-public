@@ -21,6 +21,10 @@ const check = (name, ok, detail = "") => {
 const shot = async (page, name) => SHOTS && page.screenshot({ path: path.join(SHOTS, `${name}.png`), fullPage: true });
 
 const REG = `ZZ${String(Date.now()).slice(-5)}T`;
+// A real 1x1 PNG, and a text file pretending to be a photo.
+const PNG = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==", "base64");
+const photo = (name) => ({ name, mimeType: "image/png", buffer: PNG });
+const notPhoto = { name: "fake.jpg", mimeType: "image/jpeg", buffer: Buffer.from("this is not a photo") };
 const DETAILS = `ZZ test request ${REG}`;
 const browser = await chromium.launch();
 let popups = 0;
@@ -76,6 +80,9 @@ try {
   await team.getByRole("button", { name: "Submit check" }).click();
   check("a fault needs a description", await team.getByText("Describe the fault before submitting.").isVisible());
   await team.getByLabel("Faults or notes").fill("ZZ test: offside indicator out");
+  await team.locator('input[type="file"]').setInputFiles([photo("a.png"), photo("b.png"), photo("c.png")]);
+  await team.getByRole("button", { name: "Remove photo 3" }).click();
+  check("two photos ready to send", (await team.getByRole("img", { name: /^Photo \d$/ }).count()) === 2);
   await shot(team, "02-team-check");
   await team.getByRole("button", { name: "Submit check" }).dblclick();
   await team.getByText("Check submitted - faults have been flagged to the office.").waitFor();
@@ -104,7 +111,13 @@ try {
   await team.getByLabel("Other: say what it is for").fill(`ZZ Ladder ${REG}`);
   await team.getByLabel("Details").fill(DETAILS);
   await team.getByLabel("How urgent").selectOption("today");
+  await team.locator('input[type="file"]').setInputFiles([photo("ladder.png"), notPhoto]);
   await team.getByRole("button", { name: "Send request" }).click();
+  await team.getByText("Your report was sent, but 1 photo didn't.", { exact: false }).waitFor();
+  check("a file that isn't a photo is refused, the request still sent", true);
+  await team.getByRole("button", { name: "Send photos again" }).click();
+  await team.getByText("Your report was sent, but 1 photo didn't.", { exact: false }).waitFor();
+  await team.getByRole("button", { name: "Skip photos" }).click();
   await team.getByText("Request sent to the office.").waitFor();
   check("request sent", true);
 
@@ -117,6 +130,10 @@ try {
   const rows = office.getByTestId("fleet-list").locator("li").filter({ hasText: REG });
   check("double tap sent the check once", (await rows.count()) === 1, String(await rows.count()));
   check("check marked Team app and not reviewed", (await rows.first().getByText("Team app").count()) === 1 && (await rows.first().getByText("Not reviewed").count()) === 1);
+  await rows.first().click();
+  await drawer.getByText(/Vehicle check \d+ - photo 2\.png/).waitFor();
+  check("both check photos are on the check, once each", (await drawer.getByText(/Vehicle check \d+ - photo \d\.png/).count()) === 2);
+  await office.getByRole("button", { name: "Close" }).first().click();
 
   // Office: team request, then mark it done with a reply.
   await office.goto(`${BASE}/requests`);
@@ -126,6 +143,8 @@ try {
   check("request shows as Today, New, Team app", (await req.getByText("Today").count()) === 1 && (await req.getByText("Team app").count()) === 1);
   check("typed category kept", (await req.getByText(`ZZ Ladder ${REG}`).count()) === 1);
   await req.click();
+  await drawer.getByText(/Request \d+ - photo 1\.png/).waitFor();
+  check("the good request photo arrived, the bad one didn't", (await drawer.getByText(/Request \d+ - photo \d\./).count()) === 1);
   await drawer.getByRole("button", { name: `Add “ZZ Ladder ${REG}” to the list` }).click();
   await drawer.getByText("isn't on the list").waitFor({ state: "detached" });
   check("office turned the typed category into a list option", true);
