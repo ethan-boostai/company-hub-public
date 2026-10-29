@@ -1,0 +1,169 @@
+{
+ "openSteps": [
+  {
+   "task": "Contractor induction, site sign-in and permits: complete the client's contractor induction, sign in at the gatehouse or reception and report to the engineering office / site contact to obtain all relevant permits under the site's permit to work system.",
+   "hazards": "Unfamiliar site, live production areas, site vehicles and FLTs, client permit requirements not met.",
+   "controls": "No operative works on site without the site-specific induction. Work carried out to approved RAMS only; the site engineering team issues all permits. Supervisor briefs all operatives on this RAMS before starting and all sign section 10.",
+   "il": 3,
+   "ic": 4,
+   "rl": 1,
+   "rc": 3,
+   "who": "Supervisor",
+   "codes": [
+    "A"
+   ]
+  },
+  {
+   "task": "Standard PPE and care-ware: hi-vis, safety boots and overalls worn at all times; additional task PPE as listed in this RAMS. Medium and standard care work-ware used when entering designated areas.",
+   "hazards": "Injury from site hazards where PPE is not worn; hygiene / food-safety breaches in designated care areas.",
+   "controls": "PPE checked at the start of each shift. Site hygiene and care-area rules followed as briefed at induction. Correct gloves used for each task.",
+   "il": 3,
+   "ic": 3,
+   "rl": 1,
+   "rc": 3,
+   "who": "All operatives",
+   "codes": [
+    "A",
+    "P"
+   ]
+  },
+  {
+   "task": "Agree the safe working area with site management and cordon it off with safety barriers (Chapter 8 barriers where vehicles may pass). Access only under supervision.",
+   "hazards": "Staff, visitors and site vehicles entering the work area; FLT and pedestrian conflict.",
+   "controls": "Work area agreed with management before starting and fully barriered. Segregated vehicle and pedestrian routes maintained. Banksman for any vehicle or plant movement. Barriers checked through the day.",
+   "il": 4,
+   "ic": 4,
+   "rl": 1,
+   "rc": 4,
+   "who": "Supervisor",
+   "codes": [
+    "I",
+    "A"
+   ]
+  },
+  {
+   "task": "Liaise with staff in and around the work area: inform them of the day's activities and the risks that may affect them, and put the agreed controls in place.",
+   "hazards": "Client staff unaware of the works and exposed to dust, noise, falling objects or moving plant.",
+   "controls": "Daily briefing with the area manager / site contact. Signage at the barrier line. Work stopped if unauthorised people enter the area.",
+   "il": 3,
+   "ic": 3,
+   "rl": 1,
+   "rc": 3,
+   "who": "Supervisor",
+   "codes": [
+    "A"
+   ]
+  }
+ ],
+ "closeSteps": [
+  {
+   "task": "Housekeeping and waste: keep the work area clean and tidy throughout; separate waste into the site skips (scrap metal to the site metal skip or removed by scrap metal merchant); remove all hazardous waste from site.",
+   "hazards": "Slips, trips and falls; sharp offcuts; manual handling of waste; incorrect waste disposal.",
+   "controls": "Daily housekeeping. Waste bagged and taken to the skips as work proceeds. Cut-resistant gloves for offcuts. Hazardous waste segregated and removed by CBS.",
+   "il": 3,
+   "ic": 2,
+   "rl": 1,
+   "rc": 2,
+   "who": "All operatives",
+   "codes": [
+    "A",
+    "P"
+   ]
+  },
+  {
+   "task": "Hand back: remove barriers, inspect the area with the site contact, hand back permits and sign out of site.",
+   "hazards": "Area returned to use with hazards left behind; permits left open.",
+   "controls": "Joint inspection with the site contact before the area is reopened. Permits closed with the issuing engineer. Sign out at the gatehouse or reception.",
+   "il": 2,
+   "ic": 3,
+   "rl": 1,
+   "rc": 2,
+   "who": "Supervisor",
+   "codes": [
+    "A"
+   ]
+  }
+ ],
+ "standard": {
+  "hospital": "North Middlesex University Hospital Emergency Department, Sterling Way, London N18 1QX (confirm the nearest A&E for each site)",
+  "assembly": "As directed at the site induction",
+  "emergency": "In an emergency call 999. Stop work, make the area safe and follow the client's site emergency procedures as briefed at induction. Report to the site contact and the CBS office immediately.",
+  "firstAid": "First aid kits are carried in CBS vans. All operatives attend the site safety induction and are aware of the first aid arrangements on site. Any accident or first aid administered must be reported to the site contact and to the CBS office the same day.",
+  "fire": "All operatives attend the site safety induction and are aware of the fire safety arrangements on site. The works do not require the isolation of fire detection or prevention systems unless stated in this RAMS.",
+  "welfare": "All operatives attend the site safety induction and are aware of the welfare arrangements on site.",
+  "notifiable": "RIDDOR reportable incidents (deaths, specified injuries, over-7-day injuries, occupational diseases and dangerous occurrences) are reported to HSE at hse.gov.uk/riddor (or 0345 300 9923 for fatal and specified injuries). All incidents and near misses are reported to the site contact, recorded in the CBS incident register and investigated.",
+  "consultation": "Operatives are briefed on this RAMS and sign to confirm they have received and understood it (section 10). They can raise safety concerns at any time and must stop work and tell the supervisor if they believe there is a serious risk.",
+  "overlap": "CBS cooperates and coordinates with the client, the site engineering team and other contractors on site, and follows the client's permit to work system and site rules.",
+  "monitoring": "The site supervisor monitors the implementation of and compliance with the controls in this RAMS, the risk assessments and the site rules, and stops work if they are not in place. Any change to the method is added to this document and briefed to all operatives, who sign again.",
+  "review": "This RAMS is reviewed when the scope, method, site conditions or crew change, after any incident or near miss, and at least annually as a template."
+ },
+ "ppe": [
+  "Safety boots",
+  "Hi-vis vest",
+  "Overalls",
+  "Hard hat",
+  "Safety gloves",
+  "Cut-resistant gloves",
+  "Chemical-resistant gloves",
+  "Eye protection",
+  "Hearing protection",
+  "FFP3 / P3 respirator",
+  "Disposable coveralls",
+  "Knee pads",
+  "Harness & lanyard"
+ ],
+ "permits": [
+  {
+   "key": "induction",
+   "label": "Client site induction completed (all operatives)"
+  },
+  {
+   "key": "ptw",
+   "label": "Client permit to work issued by the site engineering team"
+  },
+  {
+   "key": "cscs",
+   "label": "CSCS cards held by all operatives"
+  },
+  {
+   "key": "smsts",
+   "label": "SMSTS / SSSTS-trained supervisor on site"
+  },
+  {
+   "key": "coshh",
+   "label": "COSHH assessments and SDS on site"
+  },
+  {
+   "key": "manual",
+   "label": "Manufacturer's instructions / data sheets on site"
+  },
+  {
+   "key": "asbestos",
+   "label": "Asbestos register checked for the work area"
+  },
+  {
+   "key": "dig",
+   "label": "Permit to dig and service drawings (CAT and Genny scan)"
+  },
+  {
+   "key": "isolation",
+   "label": "Isolation / lock-out confirmed by the site engineer"
+  },
+  {
+   "key": "hotwork",
+   "label": "Hot works permit"
+  },
+  {
+   "key": "pasma",
+   "label": "PASMA / IPAF training for access equipment"
+  },
+  {
+   "key": "loler",
+   "label": "Lifting plan and LOLER certificates"
+  },
+  {
+   "key": "first",
+   "label": "Trained first aider on site"
+  }
+ ]
+}

@@ -1,0 +1,1250 @@
+[
+ {
+  "key": "general",
+  "name": "General building works (start blank)",
+  "template": {
+   "activity": "",
+   "taskShort": "",
+   "scope": "",
+   "plant": "110v, cordless and hand tools.",
+   "materials": "",
+   "hazards": [
+    "client_site",
+    "slips",
+    "manual",
+    "hand_tools",
+    "electrical",
+    "flt"
+   ],
+   "ppe": [
+    "Safety boots",
+    "Hi-vis vest",
+    "Overalls",
+    "Safety gloves"
+   ],
+   "permits": [
+    "induction",
+    "ptw",
+    "cscs",
+    "first"
+   ],
+   "openSteps": null,
+   "steps": []
+  }
+ },
+ {
+  "key": "resin",
+  "name": "Resin floor & concrete plinths (Ucrete)",
+  "template": {
+   "activity": "Semi-Treated Water Tank Plinths",
+   "taskShort": "Concrete plinths and Ucrete UD200 resin top layer",
+   "scope": "Form reinforced concrete plinths within a fenced compound, then grind and apply a Ucrete UD200 resin top layer with Ucrete RG coving and sealed expansion joints. Work supervised by an SMSTS-trained supervisor.",
+   "plant": "Various hand, battery and 110v tools, petrol tamper and vibrating poker, floor grinder with extraction, 110v forced-action mixer, floor saw, automatic rebar tying tool. Ready-mix lorry and pump.",
+   "materials": "Portland cement / ready-mix concrete, DPM, reinforcement mesh and bent bars, timber shuttering, chamfer profile, Ucrete UD200, PRG and RG, Sikaflex CR460 mastic.",
+   "hazards": [
+    "flt",
+    "resin",
+    "dust",
+    "silica",
+    "electrical",
+    "manual",
+    "access",
+    "noise",
+    "lighting",
+    "buried",
+    "havs",
+    "wacker",
+    "wet_concrete",
+    "hand_tools",
+    "slips"
+   ],
+   "ppe": [
+    "Safety boots",
+    "Hi-vis vest",
+    "Hard hat",
+    "Safety gloves",
+    "Chemical-resistant gloves",
+    "Eye protection",
+    "Hearing protection",
+    "FFP3 / P3 respirator",
+    "Knee pads"
+   ],
+   "permits": [
+    "induction",
+    "ptw",
+    "cscs",
+    "smsts",
+    "coshh",
+    "manual",
+    "first"
+   ],
+   "openSteps": null,
+   "steps": [
+    {
+     "task": "Set up a working compound around the area with Heras fencing covered in flame-retardant sheeting.",
+     "hazards": "Manual handling of fence panels; vehicles and FLTs near the compound; panels blowing over.",
+     "controls": "Two-person handling of panels; fence blocks and clamps fitted, stabilised against wind. Banksman for deliveries. Segregated pedestrian route kept open.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 3,
+     "who": "All operatives",
+     "codes": [
+      "I",
+      "G",
+      "A"
+     ]
+    },
+    {
+     "task": "Form timber shuttering around the marked-out area, fixed to the floor with plugs and screws (200 mm high), screwed together for easy dismantling.",
+     "hazards": "Cuts from hand and power tools; drilling dust; buried services in the slab.",
+     "controls": "Services checked with the site engineer and scanned before drilling. Battery or 110v tools with dust extraction. Cut-resistant gloves and eye protection.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "G",
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Lay DPM within the shuttering and cut to size with hand tools.",
+     "hazards": "Cuts from knives; slips on sheeting.",
+     "controls": "Retractable safety knives, cut away from the body. Cut-resistant gloves. Keep offcuts cleared.",
+     "il": 3,
+     "ic": 2,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Construct and tie the reinforcement mesh and bent bars using the automatic tying tool; fix the chamfer profile to the shuttering.",
+     "hazards": "Cuts and puncture wounds from bar ends; manual handling; eye injury.",
+     "controls": "Rebar caps on exposed ends. Gloves and eye protection. Mesh handled by two people.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Pour concrete from the ready-mix lorry and pump, then vibrate and tamp.",
+     "hazards": "Wet concrete skin burns; reversing lorry; pump line whip; vibration and noise.",
+     "controls": "Banksman for the lorry, exclusion zone around the pump. Chemical-resistant gloves, boots and eye protection; barrier cream and wash station. Vibration exposure limited and rotated; hearing protection.",
+     "il": 4,
+     "ic": 4,
+     "rl": 1,
+     "rc": 3,
+     "who": "Supervisor",
+     "codes": [
+      "I",
+      "G",
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Trowel and brush the concrete to the required finish; once cured, strike the shuttering and clean the area.",
+     "hazards": "Wet concrete contact; manual handling; protruding screws in timber.",
+     "controls": "Gloves and knee pads. Shuttering de-nailed as it is struck and stacked tidily.",
+     "il": 3,
+     "ic": 2,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Mechanically grind the floor with a floor grinder to remove contamination and form anchoring grooves.",
+     "hazards": "Respirable crystalline silica dust; noise; vibration; rotating disc.",
+     "controls": "Grinder with on-tool extraction to an M/H-class vacuum; FFP3 respirator. Hearing protection. Guards checked before use; competent operator only. Area screened from staff.",
+     "il": 4,
+     "ic": 4,
+     "rl": 1,
+     "rc": 3,
+     "who": "Competent operator",
+     "codes": [
+      "G",
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Mix the Ucrete components with a 110v forced-action mixer and apply the UD200 with hand tools to the correct levels.",
+     "hazards": "Resin and hardener fumes and skin contact (dermatitis); manual handling of tubs; slips on wet resin.",
+     "controls": "COSHH assessment and SDS on site and briefed. Chemical-resistant gloves, safety glasses, overalls. Good ventilation; area kept clear of non-essential people while resin cures. Spill kit available.",
+     "il": 4,
+     "ic": 3,
+     "rl": 1,
+     "rc": 3,
+     "who": "All operatives",
+     "codes": [
+      "S",
+      "G",
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Mix and apply the Ucrete PRG and RG to form the floor coving against the plinths once the UD200 has cured.",
+     "hazards": "Resin fumes and skin contact; awkward kneeling posture.",
+     "controls": "As above for resin. Knee pads and regular breaks. Area kept clear while curing.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Cut expansion joints with a floor saw and fill with Sikaflex CR460 mastic where required.",
+     "hazards": "Silica dust; noise; saw blade contact; water and slurry slip hazard.",
+     "controls": "Water suppression or extraction on the saw; FFP3 respirator; hearing protection. Blade guard in place. Slurry cleaned up as work proceeds.",
+     "il": 4,
+     "ic": 4,
+     "rl": 1,
+     "rc": 3,
+     "who": "Competent operator",
+     "codes": [
+      "G",
+      "A",
+      "P"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "key": "cableduct",
+  "name": "Civil works - cable duct & concrete pad",
+  "template": {
+   "activity": "Civil Works for Cable Duct Installation",
+   "taskShort": "Cable duct and concrete pad in block paving",
+   "scope": "Saw cut existing block paving, form a concrete pad for a bolt-fixed pedestal, excavate the sand bedding to install a 20 mm flexible duct for cable routing and reinstate the block paving.",
+   "plant": "110v, cordless and hand tools, floor / road saw with water suppression.",
+   "materials": "Sika Tecfast Parex concrete, 20 mm flexible duct, sharp sand.",
+   "hazards": [
+    "adverse_weather",
+    "hand_tools",
+    "manual",
+    "slips",
+    "excavation",
+    "buried",
+    "silica",
+    "noise",
+    "wet_concrete",
+    "flt"
+   ],
+   "ppe": [
+    "Safety boots",
+    "Hi-vis vest",
+    "Overalls",
+    "Hard hat",
+    "Safety gloves",
+    "Eye protection",
+    "Hearing protection",
+    "FFP3 / P3 respirator"
+   ],
+   "permits": [
+    "induction",
+    "ptw",
+    "cscs",
+    "dig",
+    "first"
+   ],
+   "openSteps": null,
+   "steps": [
+    {
+     "task": "Cordon off the area with Chapter 8 barriers, keeping access to the front entrance door open for staff.",
+     "hazards": "Pedestrians and vehicles entering the works; staff walking past open excavations.",
+     "controls": "Chapter 8 barriers and signage; a clear, defined walkway to the entrance door maintained at all times.",
+     "il": 4,
+     "ic": 3,
+     "rl": 1,
+     "rc": 3,
+     "who": "Supervisor",
+     "codes": [
+      "I",
+      "A"
+     ]
+    },
+    {
+     "task": "Saw cut the existing block paving and form the concrete pad for the pedestal; hand mix Sika Tecfast Parex.",
+     "hazards": "Silica dust; noise; saw contact; wet concrete skin contact; buried services.",
+     "controls": "Permit to dig and service drawings checked; CAT and Genny scan before cutting. Saw with water suppression; FFP3 respirator, hearing and eye protection. Chemical-resistant gloves for concrete.",
+     "il": 4,
+     "ic": 4,
+     "rl": 1,
+     "rc": 3,
+     "who": "Competent operator",
+     "codes": [
+      "G",
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Excavate the sand bedding below the paving and install the 20 mm flexible duct for cable routing.",
+     "hazards": "Striking buried services; open excavation trip and fall; manual handling.",
+     "controls": "Hand dig only near services. Excavation barriered at all times and covered when unattended. Spoil kept back from the edge.",
+     "il": 4,
+     "ic": 4,
+     "rl": 1,
+     "rc": 3,
+     "who": "All operatives",
+     "codes": [
+      "I",
+      "G",
+      "A"
+     ]
+    },
+    {
+     "task": "Reinstate the block paving on sharp sand bedding on completion.",
+     "hazards": "Manual handling; trapped fingers; kneeling.",
+     "controls": "Blocks handled in small loads; gloves and knee pads; regular breaks. Paving checked level before reopening.",
+     "il": 3,
+     "ic": 2,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "A",
+      "P"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "key": "ceiling_grid",
+  "name": "Suspended ceiling & MF plasterboard",
+  "template": {
+   "activity": "Stairwell Ceiling Replacement",
+   "taskShort": "Suspended ceiling grid and MF plasterboard light tunnel",
+   "scope": "Strip out the existing suspended ceiling tiles and grid, install a new shadow batten, perimeter and grid with new tiles, and form a plasterboard light tunnel with MF ceiling trims, filled and painted. Subcontractor elements to their own RAMS.",
+   "plant": "Scaffold / access equipment, laser level, 110v and cordless tools, hand tools.",
+   "materials": "Ceiling grid, tiles, shadow batten and fixings, hanging wires, plasterboard, MF ceiling trims, filler, paint.",
+   "hazards": [
+    "height",
+    "ladders",
+    "falling",
+    "manual",
+    "slips",
+    "electrical",
+    "hand_tools",
+    "silica",
+    "dust",
+    "noise",
+    "lone",
+    "paint"
+   ],
+   "ppe": [
+    "Safety boots",
+    "Hi-vis vest",
+    "Overalls",
+    "Hard hat",
+    "Safety gloves",
+    "Eye protection",
+    "FFP3 / P3 respirator"
+   ],
+   "permits": [
+    "induction",
+    "ptw",
+    "cscs",
+    "pasma",
+    "asbestos",
+    "first"
+   ],
+   "openSteps": null,
+   "steps": [
+    {
+     "task": "Access the suspended ceiling using access equipment (scaffold). Subcontractor elements to their own RAMS.",
+     "hazards": "Falls from height; falling objects onto people below.",
+     "controls": "Access equipment (podium, scaffold tower or step ladder) selected for the task and inspected before use; towers erected by PASMA-trained operatives and tagged. Ladders and stepladders only for short-duration light work, visually inspected before use, on firm level ground, three points of contact. Exclusion zone set up below the work. Tools and materials kept secure at height.",
+     "il": 4,
+     "ic": 4,
+     "rl": 1,
+     "rc": 4,
+     "who": "Supervisor",
+     "codes": [
+      "I",
+      "G",
+      "A"
+     ]
+    },
+    {
+     "task": "Remove tiles and grid, checking carefully for materials and debris on top; bag the tiles and take to the skip.",
+     "hazards": "Dust and debris falling from the void; unknown materials including suspect asbestos; manual handling of bags.",
+     "controls": "Asbestos register checked before starting; stop and report any suspect material. Eye protection and FFP3 respirator. Bags kept to a manageable weight.",
+     "il": 4,
+     "ic": 4,
+     "rl": 1,
+     "rc": 3,
+     "who": "All operatives",
+     "codes": [
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Mark level lines with a laser level and fix the new shadow batten to the walls with a battery drill.",
+     "hazards": "Laser in eyes; drilling into hidden services; dust.",
+     "controls": "Class 2 laser, never look into the beam. Services checked before drilling. Battery tools with dust extraction.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "G",
+      "A"
+     ]
+    },
+    {
+     "task": "Install the perimeter and infill grid, hanging wires from the soffit where needed, and fit the new tiles.",
+     "hazards": "Working overhead; sharp grid edges; falling items.",
+     "controls": "Work from the scaffold platform. Cut-resistant gloves. Exclusion zone below.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "I",
+      "G",
+      "P"
+     ]
+    },
+    {
+     "task": "Form the light tunnel in plasterboard and MF trims; fill and paint with hand tools.",
+     "hazards": "Manual handling of plasterboard at height; filler and paint skin and eye contact; plaster dust when sanding.",
+     "controls": "Two-person lifts of boards. Dust-free sanding or extraction, FFP3 respirator. COSHH for filler and paint; gloves; ventilation.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "A",
+      "P"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "key": "floor_alter",
+  "name": "Floor alterations - grind, ramp & line marking",
+  "template": {
+   "activity": "FLT Charging Area Alterations",
+   "taskShort": "Floor grind, barrier relocation, concrete ramp and line marking",
+   "scope": "Surface grind the floor to remove paint, relocate A-SAFE barriers, form a 1:12 concrete ramp in Tecfast Parex and apply new acrylic line marking.",
+   "plant": "110v, cordless and hand tools, Hilti DCH 300 with vacuum extraction, concrete saw, breaker.",
+   "materials": "Sika Tecfast Parex concrete, timber shuttering, acrylic line-marking primer and paint (white).",
+   "hazards": [
+    "silica",
+    "dust",
+    "flt",
+    "hand_tools",
+    "manual",
+    "noise",
+    "paint",
+    "lighting",
+    "electrical",
+    "slips",
+    "wet_concrete"
+   ],
+   "ppe": [
+    "Safety boots",
+    "Hi-vis vest",
+    "Overalls",
+    "Hard hat",
+    "Safety gloves",
+    "Eye protection",
+    "Hearing protection",
+    "FFP3 / P3 respirator"
+   ],
+   "permits": [
+    "induction",
+    "ptw",
+    "cscs",
+    "coshh",
+    "first"
+   ],
+   "openSteps": null,
+   "steps": [
+    {
+     "task": "Cordon off the area with Chapter 8 barriers.",
+     "hazards": "FLTs and pedestrians entering the work area.",
+     "controls": "Barriers agreed with the site and FLT routes diverted. Banksman available.",
+     "il": 4,
+     "ic": 4,
+     "rl": 1,
+     "rc": 3,
+     "who": "Supervisor",
+     "codes": [
+      "I",
+      "A"
+     ]
+    },
+    {
+     "task": "Surface grind the floor to remove paint and prepare for new line marking using a Hilti DCH 300 with vacuum to control dust.",
+     "hazards": "Silica dust; noise; vibration; rotating disc.",
+     "controls": "On-tool extraction to an M/H-class vacuum; FFP3 respirator; hearing protection. Guards checked; competent operator.",
+     "il": 4,
+     "ic": 4,
+     "rl": 1,
+     "rc": 3,
+     "who": "Competent operator",
+     "codes": [
+      "G",
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Relocate the A-SAFE barriers: unbolt and rebolt with battery tools; cut redundant fixings level with the floor.",
+     "hazards": "Manual handling of barrier sections; trip hazards from fixings; cuts.",
+     "controls": "Two-person or trolley handling. Redundant fixings cut flush the same day. Gloves and eye protection.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Form the 1:12 concrete ramp: saw cut and break out to form the toe, timber shuttering for ramps and falls, infill with Tecfast Parex.",
+     "hazards": "Silica dust; noise and vibration from saw and breaker; wet concrete contact.",
+     "controls": "Water suppression / extraction; FFP3 respirator; hearing protection; vibration time limited and rotated. Chemical-resistant gloves and eye protection for concrete.",
+     "il": 4,
+     "ic": 4,
+     "rl": 1,
+     "rc": 3,
+     "who": "All operatives",
+     "codes": [
+      "G",
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Apply internal acrylic line-marking primer and paint (white).",
+     "hazards": "Paint skin and eye contact; vapour; wet paint slips.",
+     "controls": "COSHH and SDS briefed. Gloves and eye protection; natural ventilation. Area kept barriered until dry.",
+     "il": 3,
+     "ic": 2,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "A",
+      "P"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "key": "breakout",
+  "name": "Bund wall / concrete removal & new footpath",
+  "template": {
+   "activity": "Removal of Bund Wall",
+   "taskShort": "Break out bund wall and form new footpath",
+   "scope": "Remove the Key Clamp handrail, saw cut and break out the redundant concrete, set new kerbs, lay a reinforced C40 concrete footpath and refit the handrail to suit.",
+   "plant": "110v concrete floor saw, 110v Hilti breaker, battery paddle mixer, wacker plate, hand tools.",
+   "materials": "Kerb stones, fast-setting concrete, sub-base, reinforcement mesh, dowels and ties, C40 concrete.",
+   "hazards": [
+    "flt",
+    "dust",
+    "silica",
+    "electrical",
+    "manual",
+    "access",
+    "noise",
+    "havs",
+    "slips",
+    "wet_concrete",
+    "wacker",
+    "hand_tools",
+    "buried"
+   ],
+   "ppe": [
+    "Safety boots",
+    "Hi-vis vest",
+    "Overalls",
+    "Hard hat",
+    "Safety gloves",
+    "Eye protection",
+    "Hearing protection",
+    "FFP3 / P3 respirator"
+   ],
+   "permits": [
+    "induction",
+    "ptw",
+    "cscs",
+    "dig",
+    "first"
+   ],
+   "openSteps": null,
+   "steps": [
+    {
+     "task": "Unbolt and remove the Key Clamp handrail with hand tools; set aside for reuse.",
+     "hazards": "Manual handling; trapped fingers; open edge once the rail is removed.",
+     "controls": "Two-person handling. Temporary barrier in place wherever a rail is removed.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "I",
+      "A"
+     ]
+    },
+    {
+     "task": "Saw cut the raised concrete and footpath with a 110v concrete floor saw.",
+     "hazards": "Silica dust; noise; blade contact; buried services.",
+     "controls": "Services checked and scanned. Water suppression; FFP3 respirator; hearing protection. Blade guard in place.",
+     "il": 4,
+     "ic": 4,
+     "rl": 1,
+     "rc": 3,
+     "who": "Competent operator",
+     "codes": [
+      "G",
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Break up and excavate the redundant area with a 110v Hilti breaker; remove waste in tonne bags on pallets.",
+     "hazards": "Hand-arm vibration; noise; flying debris; manual handling of waste.",
+     "controls": "Vibration exposure recorded and limited, tasks rotated. Hearing and eye protection. Tonne bags moved by FLT or pallet truck, not by hand.",
+     "il": 4,
+     "ic": 4,
+     "rl": 1,
+     "rc": 3,
+     "who": "All operatives",
+     "codes": [
+      "G",
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Set new kerbs in fast-setting concrete mixed with a battery paddle mixer.",
+     "hazards": "Heavy kerb lifting; wet concrete contact.",
+     "controls": "Kerb lifter or two-person lift. Chemical-resistant gloves and eye protection.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "G",
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Compact the sub-base, install two layers of mesh with dowels into the existing slab and tie together.",
+     "hazards": "Wacker plate vibration and noise; cuts from mesh.",
+     "controls": "Wacker plate operated by a competent person to the manual; hearing protection; gloves.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "G",
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Supply and lay C40 concrete with a brush and trowel finish; amend the Key Clamp handrail to suit the new layout.",
+     "hazards": "Wet concrete contact; manual handling; open edges until the rail is refitted.",
+     "controls": "Gloves, boots, eye protection, wash station. Barriers kept in place until the handrail is complete.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "I",
+      "A",
+      "P"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "key": "pb_ceiling",
+  "name": "Plasterboard ceiling replacement & decoration",
+  "template": {
+   "activity": "Staff Shop Ceiling Replacement Works",
+   "taskShort": "Cut out and replace mouldy plasterboard, joint and paint",
+   "scope": "Cut out plasterboard where mould is present, fix new plasterboard to the timber joists, tape and joint, stain-block and paint the whole ceiling. Lights removed and isolated by others.",
+   "plant": "Step ladders / podium, battery multi-tool, battery drill-driver, trowels, decorating tools.",
+   "materials": "Plasterboard, drywall screws 3.5 x 38 mm, Toupret Joint & Skim, Zinsser Bulls Eye 1-2-3 Plus, Zinsser Perma-White Matt.",
+   "hazards": [
+    "height",
+    "ladders",
+    "chemicals",
+    "dust",
+    "fire",
+    "hand_tools",
+    "manual",
+    "paint",
+    "slips",
+    "waste"
+   ],
+   "ppe": [
+    "Safety boots",
+    "Hi-vis vest",
+    "Overalls",
+    "Safety gloves",
+    "Eye protection",
+    "FFP3 / P3 respirator"
+   ],
+   "permits": [
+    "induction",
+    "ptw",
+    "cscs",
+    "isolation",
+    "coshh",
+    "first"
+   ],
+   "openSteps": null,
+   "steps": [
+    {
+     "task": "Access the ceiling with step ladders / podium. Light fittings removed and supplies isolated by others before work starts.",
+     "hazards": "Falls from ladders; contact with live cables.",
+     "controls": "Access equipment (podium, scaffold tower or step ladder) selected for the task and inspected before use; towers erected by PASMA-trained operatives and tagged. Ladders and stepladders only for short-duration light work, visually inspected before use, on firm level ground, three points of contact. Exclusion zone set up below the work. Tools and materials kept secure at height. Isolation confirmed by the electrician and locked off before any cutting.",
+     "il": 4,
+     "ic": 5,
+     "rl": 1,
+     "rc": 4,
+     "who": "Supervisor",
+     "codes": [
+      "I",
+      "G",
+      "A"
+     ]
+    },
+    {
+     "task": "Cut out the mouldy plasterboard with a battery multi-tool.",
+     "hazards": "Mould spores and dust; debris falling into eyes; hidden cables and pipes.",
+     "controls": "FFP3 respirator and goggles; area screened; affected board bagged immediately. Check the void before cutting.",
+     "il": 4,
+     "ic": 3,
+     "rl": 1,
+     "rc": 3,
+     "who": "All operatives",
+     "codes": [
+      "G",
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Cut new plasterboard to suit and fix to the joists with drywall screws.",
+     "hazards": "Manual handling of boards overhead; cuts.",
+     "controls": "Two-person lift or board lifter. Gloves.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "G",
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Tape and joint with Toupret Joint & Skim applied with a trowel.",
+     "hazards": "Skin and eye contact with filler; sanding dust.",
+     "controls": "COSHH and SDS briefed. Gloves and eye protection; dust-free sanding.",
+     "il": 3,
+     "ic": 2,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Apply one coat of Zinsser Bulls Eye 1-2-3 Plus over stained areas and two coats of Zinsser Perma-White Matt over the whole ceiling.",
+     "hazards": "Paint vapour; splashes in eyes; slips on drips.",
+     "controls": "Ventilation maintained; eye protection; dust sheets and drips cleaned up immediately. No naked flames.",
+     "il": 3,
+     "ic": 2,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "G",
+      "A",
+      "P"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "key": "linemark",
+  "name": "Car park line marking (MMA)",
+  "template": {
+   "activity": "Car Park 1 and Dusmo Line Marking",
+   "taskShort": "Grind existing lines and apply MMA cold plastic line marking",
+   "scope": "Grind off existing line marking and apply MMA cold plastic paint: white zebra crossing, yellow disabled bays and black to cover existing lines.",
+   "plant": "Hilti DCH 300 grinder with vacuum extraction, line-marking applicators, hand tools.",
+   "materials": "Methyl methacrylate (MMA) cold plastic paint - white, yellow and black.",
+   "hazards": [
+    "flt",
+    "grinder",
+    "manual",
+    "paint",
+    "slips"
+   ],
+   "ppe": [
+    "Safety boots",
+    "Hi-vis vest",
+    "Overalls",
+    "Safety gloves",
+    "Chemical-resistant gloves",
+    "Eye protection",
+    "Hearing protection",
+    "FFP3 / P3 respirator"
+   ],
+   "permits": [
+    "induction",
+    "ptw",
+    "cscs",
+    "coshh",
+    "first"
+   ],
+   "openSteps": null,
+   "steps": [
+    {
+     "task": "Cordon off the area with Chapter 8 barriers and divert vehicles and pedestrians.",
+     "hazards": "Moving vehicles and HGVs in the car park.",
+     "controls": "Chapter 8 barriers and signs; works phased to keep routes open; banksman where vehicles pass close.",
+     "il": 4,
+     "ic": 4,
+     "rl": 1,
+     "rc": 3,
+     "who": "Supervisor",
+     "codes": [
+      "I",
+      "A"
+     ]
+    },
+    {
+     "task": "Surface grind the existing lines with a Hilti DCH 300 and vacuum to control dust.",
+     "hazards": "Dust; noise; abrasive wheel contact and disc burst.",
+     "controls": "Guards checked; on-tool extraction; hearing and eye protection; FFP3 respirator; competent operator.",
+     "il": 4,
+     "ic": 3,
+     "rl": 1,
+     "rc": 3,
+     "who": "Competent operator",
+     "codes": [
+      "G",
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Apply MMA cold plastic paint: white zebra crossing, yellow disabled bays, black over existing lines.",
+     "hazards": "MMA vapour (strong odour, flammable); skin and eye contact; wet paint slips.",
+     "controls": "COSHH and SDS on site; mixed and applied in open air; chemical-resistant gloves and eye protection; no ignition sources. Area kept closed until cured.",
+     "il": 4,
+     "ic": 3,
+     "rl": 1,
+     "rc": 3,
+     "who": "All operatives",
+     "codes": [
+      "S",
+      "G",
+      "A",
+      "P"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "key": "speedbump",
+  "name": "HGV speed bump installation",
+  "template": {
+   "activity": "HGV Speed Bump Installation",
+   "taskShort": "Install 2 no. bolt-down HGV speed bumps",
+   "scope": "Mark out and drill the concrete for through-bolts and bolt down two HGV speed bumps, then clean the area and hand over to the client.",
+   "plant": "Battery SDS drill, hand and battery tools, 110v tools.",
+   "materials": "HGV speed bumps, concrete through-bolts.",
+   "hazards": [
+    "flt",
+    "silica",
+    "noise",
+    "manual",
+    "hand_tools",
+    "buried",
+    "slips"
+   ],
+   "ppe": [
+    "Safety boots",
+    "Hi-vis vest",
+    "Overalls",
+    "Hard hat",
+    "Safety gloves",
+    "Eye protection",
+    "Hearing protection",
+    "FFP3 / P3 respirator"
+   ],
+   "permits": [
+    "induction",
+    "ptw",
+    "cscs",
+    "first"
+   ],
+   "openSteps": null,
+   "steps": [
+    {
+     "task": "Mark out the location and drill holes for the through-bolts with a battery SDS drill.",
+     "hazards": "HGV and FLT movements; silica dust; noise; buried services.",
+     "controls": "Area closed to traffic with barriers and a banksman. Services checked before drilling. Drill with extraction; FFP3 respirator, eye and hearing protection.",
+     "il": 4,
+     "ic": 4,
+     "rl": 1,
+     "rc": 3,
+     "who": "Supervisor",
+     "codes": [
+      "I",
+      "G",
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Bolt down the speed bumps with through-bolts using hand and battery tools; repeat for the second bump.",
+     "hazards": "Manual handling of bump sections; trapped fingers.",
+     "controls": "Sections handled by two people; gloves; keep fingers clear when positioning.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Clean the area of waste and hand over to the client.",
+     "hazards": "Debris left on the road; reopening before bolts are tight.",
+     "controls": "Torque check on all bolts; joint inspection with the client before barriers are removed.",
+     "il": 2,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "Supervisor",
+     "codes": [
+      "A"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "key": "plumbing",
+  "name": "Plumbing repairs & alterations",
+  "template": {
+   "activity": "Various Plumbing Works",
+   "taskShort": "Investigate and repair leaks, replace valves and pipework",
+   "scope": "Access the affected areas, trace leaks and repair pipework with crimp, solvent-weld or compression fittings (no hot works), then test and commission before handover.",
+   "plant": "Ladders / platform steps, battery crimping tool, hand and cordless tools.",
+   "materials": "Various plumbing sundries, pipe, fittings and valves.",
+   "hazards": [
+    "fire",
+    "lone",
+    "flt",
+    "noise",
+    "slips",
+    "client_site",
+    "dust",
+    "ladders",
+    "height",
+    "electrical"
+   ],
+   "ppe": [
+    "Safety boots",
+    "Hi-vis vest",
+    "Overalls",
+    "Safety gloves",
+    "Eye protection"
+   ],
+   "permits": [
+    "induction",
+    "ptw",
+    "cscs",
+    "isolation",
+    "first"
+   ],
+   "openSteps": null,
+   "steps": [
+    {
+     "task": "Access the area by ladder or platform and investigate the source of the leak.",
+     "hazards": "Falls from ladders; water near electrics; slips on wet floors.",
+     "controls": "Access equipment (podium, scaffold tower or step ladder) selected for the task and inspected before use; towers erected by PASMA-trained operatives and tagged. Ladders and stepladders only for short-duration light work, visually inspected before use, on firm level ground, three points of contact. Exclusion zone set up below the work. Tools and materials kept secure at height. Electrical items near the leak isolated or protected. Wet floor signs and water cleared.",
+     "il": 4,
+     "ic": 4,
+     "rl": 1,
+     "rc": 3,
+     "who": "All operatives",
+     "codes": [
+      "I",
+      "G",
+      "A"
+     ]
+    },
+    {
+     "task": "Repair pipework with hand and battery tools using crimp, solvent-weld or compression joints (no hot works).",
+     "hazards": "Pressurised water; solvent cement vapour; cuts.",
+     "controls": "Supply isolated and drained before cutting. Solvent cement used with ventilation and gloves. No hot works.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "E",
+      "G",
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Test and commission all new valves and pipework before handover.",
+     "hazards": "Leaks causing slips or damage to equipment.",
+     "controls": "Pressure test before reinstating; checks made after 15 minutes; client signs off.",
+     "il": 2,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "Supervisor",
+     "codes": [
+      "A"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "key": "kitchen",
+  "name": "Kitchen equipment / coffee machine install",
+  "template": {
+   "activity": "Coffee Machine Installation",
+   "taskShort": "Remove and install catering coffee machines",
+   "scope": "Isolate and disconnect existing coffee machines, remove and store them as directed by the client, then position and connect the new machines.",
+   "plant": "Cordless and hand tools, sack truck / trolley.",
+   "materials": "Site-supplied coffee machines, fittings.",
+   "hazards": [
+    "hand_tools",
+    "manual",
+    "slips"
+   ],
+   "ppe": [
+    "Safety boots",
+    "Hi-vis vest",
+    "Overalls",
+    "Safety gloves",
+    "Eye protection"
+   ],
+   "permits": [
+    "induction",
+    "ptw",
+    "cscs",
+    "isolation",
+    "first"
+   ],
+   "openSteps": null,
+   "steps": [
+    {
+     "task": "Isolate the water supply to each machine and carefully disconnect the inlet and waste.",
+     "hazards": "Water spills near electrics; slips.",
+     "controls": "Machine unplugged and water isolated before disconnecting. Spills cleaned up immediately.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "I",
+      "A"
+     ]
+    },
+    {
+     "task": "Remove drip trays and standing water and discard in an appropriate sink.",
+     "hazards": "Slips; hot water.",
+     "controls": "Allow the machine to cool. Carry trays level; mop up spills.",
+     "il": 2,
+     "ic": 2,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Remove the old machine and set aside (client to confirm the storage location).",
+     "hazards": "Manual handling of heavy, awkward items.",
+     "controls": "Two-person lift or trolley; route checked clear before moving.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "G",
+      "A"
+     ]
+    },
+    {
+     "task": "Unpack the new machines and dispose of packaging in the site skips.",
+     "hazards": "Cuts from banding and knives; trip hazards from packaging.",
+     "controls": "Safety knives; packaging cleared straight away.",
+     "il": 2,
+     "ic": 2,
+     "rl": 1,
+     "rc": 1,
+     "who": "All operatives",
+     "codes": [
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Position the new machines and connect the water inlet pipes.",
+     "hazards": "Manual handling; leaks.",
+     "controls": "Two-person lift; connections checked for leaks before handover.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "G",
+      "A"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "key": "fencing",
+  "name": "Fencing removal / relocation",
+  "template": {
+   "activity": "Compressor Fencing Removal",
+   "taskShort": "Unbolt, remove and relocate fencing",
+   "scope": "Unbolt and dismantle the fencing with hand and battery tools, then palletise for relocation by FLT or pallet truck to a location confirmed by the client.",
+   "plant": "Hand and battery tools, pallet truck.",
+   "materials": "N/A",
+   "hazards": [
+    "flt",
+    "manual",
+    "hand_tools",
+    "noise",
+    "dust",
+    "slips"
+   ],
+   "ppe": [
+    "Safety boots",
+    "Hi-vis vest",
+    "Overalls",
+    "Hard hat",
+    "Safety gloves",
+    "Eye protection",
+    "Hearing protection",
+    "FFP3 / P3 respirator"
+   ],
+   "permits": [
+    "induction",
+    "ptw",
+    "cscs",
+    "first"
+   ],
+   "openSteps": null,
+   "steps": [
+    {
+     "task": "Carefully unbolt the fencing with hand and battery tools and set aside.",
+     "hazards": "Panels falling; manual handling; trapped fingers.",
+     "controls": "Panels supported by a second person while the last bolts are removed. Gloves.",
+     "il": 3,
+     "ic": 3,
+     "rl": 1,
+     "rc": 2,
+     "who": "All operatives",
+     "codes": [
+      "A",
+      "P"
+     ]
+    },
+    {
+     "task": "Confirm the storage location with the client once dismantled.",
+     "hazards": "Panels left loose in walkways.",
+     "controls": "Panels stacked flat and secured in the barriered area until moved.",
+     "il": 2,
+     "ic": 2,
+     "rl": 1,
+     "rc": 1,
+     "who": "Supervisor",
+     "codes": [
+      "A"
+     ]
+    },
+    {
+     "task": "Lift panels onto a pallet for relocation by FLT or pallet truck.",
+     "hazards": "Manual handling; FLT and pedestrian conflict.",
+     "controls": "Two-person lifts; FLT moved by a licensed site operator with a banksman.",
+     "il": 3,
+     "ic": 4,
+     "rl": 1,
+     "rc": 3,
+     "who": "Supervisor",
+     "codes": [
+      "G",
+      "A"
+     ]
+    }
+   ]
+  }
+ }
+]
