@@ -1,4 +1,4 @@
-import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFImage, type PDFPage } from "pdf-lib";
+import { PDFDocument, StandardFonts, degrees, rgb, type PDFFont, type PDFImage, type PDFPage } from "pdf-lib";
 import { CBS_LOGO_PNG_BASE64 } from "./logo";
 
 // The one house PDF format for every builder PDF (as the old hub: A4, orange top bar, logo,
@@ -196,6 +196,27 @@ export class HousePdf {
       this.page.drawLine({ start: { x: MARGIN, y: this.y }, end: { x: MARGIN + this.contentW, y: this.y }, thickness: 0.5, color: LINE });
     }
     this.y -= 10;
+  }
+
+  // An image (e.g. a signature) at the current position, `widthMm` wide at most.
+  async image(bytes: Uint8Array, opts: { widthMm: number; heightMm: number }) {
+    const isPng = bytes[0] === 0x89 && bytes[1] === 0x50;
+    const img = isPng ? await this.doc.embedPng(bytes) : await this.doc.embedJpg(bytes);
+    const scale = Math.min((opts.widthMm * MM) / img.width, (opts.heightMm * MM) / img.height);
+    const w = img.width * scale;
+    const h = img.height * scale;
+    this.room(h + 4);
+    this.page.drawImage(img, { x: MARGIN, y: this.y - h, width: w, height: h });
+    this.y -= h + 4;
+  }
+
+  // Draft copies: a large grey "DRAFT" across every page.
+  watermark(text = "DRAFT") {
+    for (const p of this.doc.getPages()) {
+      const size = 110;
+      const w = this.bold.widthOfTextAtSize(text, size);
+      p.drawText(text, { x: (this.pageW - w * 0.7) / 2, y: this.pageH / 2 - w * 0.35, size, font: this.bold, color: rgb(0.85, 0.85, 0.85), rotate: degrees(35), opacity: 0.6 });
+    }
   }
 
   async finish(): Promise<Uint8Array> {

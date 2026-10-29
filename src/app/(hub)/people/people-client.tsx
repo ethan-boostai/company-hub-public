@@ -95,7 +95,7 @@ export function PeopleClient({ people: initial, openId }: { people: PersonRow[];
 
       <Drawer open={!!editing} onClose={() => setEditing(null)} title={current ? current.name : "New team member"} width="max-w-[560px]">
         {editing && (
-          <div key={current ? `${current.id}-${current.name}-${current.active}-${current.crew}-${current.timeOff}` : "new"}>
+          <div key={current ? `${current.id}-${current.name}-${current.active}-${current.crew}-${current.timeOff}-${current.hsIssue}` : "new"}>
             <GuardedForm action={savePerson} onSaved={(r) => r.data && upsert(r.data)}>
               {(state) => {
                 const err = state && !state.ok ? state.fieldErrors ?? {} : {};
@@ -108,6 +108,7 @@ export function PeopleClient({ people: initial, openId }: { people: PersonRow[];
                     <TextField label="Email" name="email" type="email" defaultValue={current?.email} error={err.email} spellCheck={false} />
                     <CheckboxField label="Crew (shown in the team app and the training matrix's crew list)" name="crew" defaultChecked={current?.crew} />
                     <CheckboxField label="Time off (can see the Time off tab, its notes and files, including sick notes)" name="time_off" defaultChecked={current?.timeOff} />
+                    <CheckboxField label="Issue H&S policy (can issue the H&S policy statement and manual)" name="hs_issue" defaultChecked={current?.hsIssue} />
                     <CheckboxField label="Can sign in to the hub (office)" name="can_sign_in" defaultChecked={current?.canSignIn} />
                     {current && <CheckboxField label="Still works here" name="active" defaultChecked={current.active} />}
                     <SaveButton>{current ? "Save" : "Add team member"}</SaveButton>

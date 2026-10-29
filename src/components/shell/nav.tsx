@@ -23,7 +23,10 @@ export const NAV: Group[] = [
   {
     group: "Health and safety",
     icon: "shield",
-    items: [{ href: "/safety/hazards", label: "Hazards and CoSHH" }],
+    items: [
+      { href: "/safety/policy", label: "Policy and manual" },
+      { href: "/safety/hazards", label: "Hazards and CoSHH" },
+    ],
   },
   {
     group: "Assets",
