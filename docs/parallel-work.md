@@ -102,6 +102,8 @@ Never commit or push to `main`; every change goes through a pull request (`main`
 
 - `materials.sds_substance_id → substances` (migration `20261030140000_safety_hazards_coshh.sql`, later than everything on main when it was added). It links a material to its CoSHH substance (and so its safety data sheet). Nothing in Registers' screens uses it yet: Registers, add a "CoSHH substance" dropdown to the material form when convenient (read `substances`: id, product, supplier name; no add-new, substances are added on Hazards and CoSHH).
 - People: the "Issue H&S policy" tick is the `hs_issue` entry in `people.lists` (like `crew` and `time_off`). Check it with `canIssuePolicy(person.id)` in `src/app/(hub)/people/data.ts`.
+- People: the "Can approve permits" tick is `permit_approve` in `people.lists`; check it with `canApprovePermits(person.id)`.
+- `/crew/<job>` and `/api/crew/…` are open without sign-in (like `/team`), checked by the job's crew link token (`src/lib/signons/crew-link.ts`).
 - Hazards list equipment categories from Registers' `equipment.category` options (read-only).
 - The CoSHH supplier dropdown can add a supplier with just a name to `suppliers` (logged as usual).
 

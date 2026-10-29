@@ -2,6 +2,21 @@
 
 Ethan's decisions that change the plan, newest first. The full detail sits in `docs/plan.md` (sections 3.5 and 3.6); this log says what changed and when.
 
+## Phase 2 Safety, job level (Ethan, 30/10/2026)
+
+Plan approved with these answers:
+1. **Job-level PDFs go in the job folder** (`CBS System/Operations/Jobs/Job N/<folder>`, `taskFolder()`), not live's company `H&S/<type>` folders.
+2. **Revisions:** each revision is its own file ("… rev 2.pdf"); the old one is marked Superseded.
+3. **Signed copies** are re-saved automatically every time someone signs (`src/lib/signons/service.ts`). The SharePoint service ("CBS Hub - Files") never overwrites (it renames on a clash), so each re-save is a new file named with the count ("… - signed (3).pdf"), and the hub marks the earlier copy replaced; the earlier copies stay in SharePoint unless a delete step is added to that workflow (Ethan's call).
+4. **"Can approve permits" tick** on People (`permit_approve` in `people.lists`), off by default; Ethan Paraha and Preview Admin on dev. `canApprovePermits()`.
+5. **Crew pages** are built inside each PR (not one PR at the end).
+6. **No CoSHH public share link.**
+7. **Order:** Sign-ons, RAMS, Toolbox talks, Pre-starts, CPHSP, Permits, Inspections, Visitors, Incidents, Job CoSHH, CDM site file. A checklist for Ethan after every 2 or 3 merged PRs.
+8. **Templates:** dev is seeded from the old builders' lists; live's versions are imported at switch-over.
+
+- **Sign-ons** (`sign_ons`, migration `20261030160000_safety_sign_ons.sql`): one signing system for RAMS, pre-starts, toolbox talks and CPHSP inductions. Each person signs a document's current revision once (name picked: on site today from the ServiceM8 schedule first, then the crew list, or typed; CBS or another company; tick to accept; signature). "Next person" clears it for the next on the same device. A new revision needs everyone to sign again. Job > Sign-ons lists them, with Needs attention for ones not yet reviewed, Mark reviewed, and Remove (in-app are-you-sure; the signed copy is made again without them). Document types plug in through `src/lib/signons/docs.ts`.
+- **Crew page** (`/crew/<job no>?t=<token>`): the job's onsite page, no sign-in, name picked per action, never remembered. The token is worked out from the job number and `TEAM_LINK_KEY`, so each job's link opens only that job and changing the key cuts off every link. The office copies it from Job > Sign-ons > More ▾ > Crew page link. Pointing the ServiceM8 Onsite button at it is a switch-over step (it now goes to the old hub's crew page).
+
 ## Phase 2 Safety, company level (Ethan, 29/10/2026)
 
 - **Hazards and CoSHH** is one Health and safety menu item with two tabs, Hazards (`/safety/hazards`) and CoSHH (`/safety/coshh`). Policy and manual is its own page (next PR). Templates (toolbox talk topics, RAMS job types, CPHSP wording) come with the builders that use them.
