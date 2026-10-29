@@ -8,6 +8,7 @@ import { isIsoDate, LOCAL_DATETIME, ukToday } from "@/app/(hub)/_registers/dates
 import { CHECK_ITEMS, nextInspectionAfterCheck, type Frequency } from "@/app/(hub)/fleet/rules";
 import { mergeOptions } from "@/app/(hub)/subcontractors/rules";
 import { CATEGORY_LIST, DEFAULT_CATEGORIES } from "@/app/(hub)/requests/rules";
+import { createToolReport } from "@/app/(hub)/equipment/stock";
 
 // Saves one report from the team app. No sign-in: the secret team key (X-Team-Key header) lets the
 // device in, the name is picked for this report and checked against People, and the one-time
@@ -47,7 +48,22 @@ const Request = z.object({
   details: z.string().trim().min(1).max(4000),
   urgency: z.enum(["today", "this_week", "no_rush"]),
 });
-const Body = z.object({ requestKey: z.string(), report: z.discriminatedUnion("type", [Check, Accident, Request]) });
+const Tool = z.object({
+  type: z.literal("tool"),
+  name,
+  kind: z.enum(["lost", "stolen", "damaged"]),
+  assetId: z.number().int().positive().nullable().optional().default(null),
+  toolName: text(200),
+  when: z.string().trim().max(20).optional().default(""),
+  location: text(300),
+  policeRef: text(60),
+  details: text(4000),
+  wants: z.enum(["none", "replace", "repair"]),
+  urgency: z.enum(["today", "this_week", "no_rush"]).optional().default("this_week"),
+  repairNotes: text(2000),
+  replaceNotes: text(2000),
+});
+const Body = z.object({ requestKey: z.string(), report: z.discriminatedUnion("type", [Check, Accident, Request, Tool]) });
 
 const fail = (message: string, status = 400) => Response.json({ ok: false, message }, { status });
 
@@ -69,6 +85,14 @@ export async function POST(req: Request) {
     if (odo && !/^\d{1,7}$/.test(odo)) return fail("Odometer: enter the miles as a number.");
     if (CHECK_ITEMS.some((i) => report.items[i.key] === false) && !report.defects) return fail("Describe the fault before submitting.");
   }
+  if (report.type === "tool") {
+    if (!report.assetId && !report.toolName) return fail("Pick the tool, or type its name.");
+    if (report.when && !(LOCAL_DATETIME.test(report.when) && isIsoDate(report.when.slice(0, 10)))) return fail("Enter a valid date and time.");
+    if (report.assetId) {
+      const [a] = await sql`select 1 from assets where id = ${report.assetId} and status not in ('lost', 'retired')`;
+      if (!a) return fail("That tool isn't on the list any more. Choose Not on the list and type its name.");
+    }
+  }
   if (report.type === "accident" && report.when && !(LOCAL_DATETIME.test(report.when) && isIsoDate(report.when.slice(0, 10)))) {
     return fail("Enter a valid date and time.");
   }
@@ -79,7 +103,7 @@ export async function POST(req: Request) {
     const ok = mergeOptions(DEFAULT_CATEGORIES, listed.map((r) => r.value)).some((c) => c.toLowerCase() === report.category.toLowerCase());
     if (!ok) return fail("Choose what it is for from the list.");
   }
-  if (report.type !== "request") {
+  if (report.type === "check" || report.type === "accident") {
     const [v] = await sql`select 1 from vehicles where id = ${report.vehicleId}`;
     if (!v) return fail("Pick a vehicle from the list.");
   }
@@ -131,6 +155,15 @@ export async function POST(req: Request) {
         }
         await logActivity(tx, { person: by, table: "vehicle_accidents", rowId: Number(r.id), action: "create", changes: { status: [null, "reported"] } });
         return { table: "vehicle_accidents", id: Number(r.id), faults: false };
+      }
+      if (report.type === "tool") {
+        const id = await createToolReport(tx, {
+          kind: report.kind, assetId: report.assetId, toolName: report.toolName, occurredAt: report.when || null, location: report.location || null,
+          policeRef: report.policeRef || null, details: report.details || null, wants: report.wants, urgency: report.urgency,
+          repairNotes: report.repairNotes || null, replaceNotes: report.replaceNotes || null, reportedBy: person.name,
+          reportedById: Number(person.id), source: "team",
+        }, by);
+        return { table: "tool_reports", id, faults: false };
       }
       const row = {
         requested_by: person.name, requested_by_id: Number(person.id), category: report.category, urgency: report.urgency,

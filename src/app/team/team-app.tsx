@@ -4,7 +4,7 @@ import { useId, useState, type ReactElement, type ReactNode } from "react";
 import type { TeamData } from "./data";
 
 // Layout and wording follow the old team page. The name is picked on each form and never remembered.
-type Screen = "home" | "check" | "accident" | "request" | { done: string };
+type Screen = "home" | "check" | "accident" | "request" | "tool" | { done: string };
 
 const ITEMS = [
   ["tyres_ok", "Tyres and wheels"],
@@ -55,6 +55,7 @@ export function TeamApp({ data, teamKey }: { data: TeamData; teamKey: string }) 
         {screen === "check" && <CheckForm data={data} teamKey={teamKey} done={(m) => setScreen({ done: m })} />}
         {screen === "accident" && <AccidentForm data={data} teamKey={teamKey} done={(m) => setScreen({ done: m })} />}
         {screen === "request" && <RequestForm data={data} teamKey={teamKey} done={(m) => setScreen({ done: m })} />}
+        {screen === "tool" && <ToolForm data={data} teamKey={teamKey} done={(m) => setScreen({ done: m })} />}
         {typeof screen === "object" && (
           <div className="text-center py-10">
             <div className="text-[54px] text-ok" aria-hidden="true">✓</div>
@@ -91,6 +92,8 @@ function Home({ data, go }: { data: TeamData; go: (s: Screen) => void }) {
       {noVans && <p className="text-sm text-muted mb-2">No vehicles are set up yet. Ask the office.</p>}
       <Group>REQUESTS</Group>
       <Big title="Make a request" sub="Tools, PPE, lost fuel card, anything you need" onClick={() => go("request")} />
+      <Group>TOOLS</Group>
+      <Big title="Report a lost, stolen or damaged tool" sub="Report it and ask for a replacement" onClick={() => go("tool")} />
     </div>
   );
 }
@@ -395,6 +398,86 @@ function RequestForm({ data, teamKey, done }: { data: TeamData; teamKey: string;
         </select>)}</Labelled>
       <PhotoField photos={photos} onChange={setPhotos} locked={busy || reportSent} />
       <SendButton busy={busy} progress={progress} reportSent={reportSent} onSkip={() => done("Request sent to the office.")}>Send request</SendButton>
+      <Msg text={msg} />
+    </form>
+  );
+}
+
+function ToolForm({ data, teamKey, done }: { data: TeamData; teamKey: string; done: (m: string) => void }) {
+  const { busy, msg, setMsg, send, progress, reportSent } = useSend(teamKey);
+  const [photos, setPhotos] = useState<File[]>([]);
+  const [f, setF] = useState({ name: "", kind: "Lost", tool: "", toolName: "", when: nowLocal(), where: "", police: "", details: "", wants: "no", repair: "", urgency: "this_week", notes: "" });
+  const set = (k: keyof typeof f) => (e: { target: { value: string } }) => setF((s) => ({ ...s, [k]: e.target.value }));
+  const other = f.tool === "other" || data.tools.length === 0;
+  const finish = () => done(f.wants === "yes" ? "Report sent and a replacement has been requested."
+    : f.wants === "repair" ? "Report sent and a repair has been requested." : "Report sent to the office.");
+  return (
+    <form noValidate onSubmit={(e) => {
+      e.preventDefault();
+      if (!reportSent) {
+        if (!f.name) return setMsg("Pick your name.");
+        if (data.tools.length && !f.tool) return setMsg("Pick the tool, or choose Not on the list.");
+        if (other && !f.toolName.trim()) return setMsg("Type the tool name.");
+      }
+      send({
+        type: "tool", name: f.name, kind: f.kind.toLowerCase(), assetId: other ? null : Number(f.tool), toolName: other ? f.toolName : "",
+        when: f.when, location: f.where, policeRef: f.kind === "Stolen" ? f.police : "", details: f.details,
+        wants: f.wants === "yes" ? "replace" : f.wants === "repair" ? "repair" : "none", urgency: f.urgency,
+        repairNotes: f.wants === "repair" ? f.repair : "", replaceNotes: f.wants !== "no" ? f.notes : "",
+      }, photos, finish);
+    }}>
+      <NameField names={data.names} value={f.name} onChange={(v) => setF((s) => ({ ...s, name: v }))} />
+      <Labelled label="What happened">{(id) => (<select id={id} className={field} value={f.kind} onChange={set("kind")}>
+          {["Lost", "Stolen", "Damaged"].map((k) => <option key={k}>{k}</option>)}
+        </select>)}</Labelled>
+      {data.tools.length > 0 && (
+        <Labelled label="Which tool">{(id) => (<select id={id} className={field} value={f.tool} onChange={set("tool")}>
+            <option value="" />
+            {data.tools.map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
+            <option value="other">Not on the list</option>
+          </select>)}</Labelled>
+      )}
+      {other && <Labelled label="Tool name">{(id) => <input id={id} className={field} spellCheck value={f.toolName} onChange={set("toolName")} placeholder="e.g. Makita grinder" />}</Labelled>}
+      <Labelled label="When">{(id) => <input id={id} type="datetime-local" className={field} value={f.when} onChange={set("when")} />}</Labelled>
+      <Labelled label="Where">{(id) => <input id={id} className={field} spellCheck value={f.where} onChange={set("where")} placeholder="Site address, van or location" />}</Labelled>
+      {f.kind === "Stolen" && (
+        <Labelled label="Police event number (if reported)">{(id) => <input id={id} className={field} spellCheck={false} value={f.police} onChange={set("police")} />}</Labelled>
+      )}
+      <Labelled label="What happened / details">{(id) => (
+        <textarea id={id} className={`${field} min-h-[90px]`} spellCheck placeholder="How it was lost, stolen or damaged" value={f.details} onChange={set("details")} />
+      )}</Labelled>
+      <PhotoField photos={photos} onChange={setPhotos} locked={busy || reportSent} />
+      <Group>REPLACEMENT</Group>
+      <Labelled label="Do you need it replaced or repaired?">{(id) => (<select id={id} className={field} value={f.wants} onChange={set("wants")}>
+          <option value="no">No</option>
+          <option value="yes">Yes - request a replacement</option>
+          <option value="repair">Repair it - it can be fixed</option>
+        </select>)}</Labelled>
+      {f.wants === "repair" && (
+        <>
+          <Labelled label="What needs repairing">{(id) => (
+            <textarea id={id} className={`${field} min-h-[70px]`} spellCheck placeholder="What is wrong with it and what needs fixing" value={f.repair} onChange={set("repair")} />
+          )}</Labelled>
+          <p className="mt-1 text-[13px] text-muted">Add a photo of the damage using Photos above.</p>
+        </>
+      )}
+      {f.wants !== "no" && (
+        <>
+          {f.kind === "Stolen" ? (
+            <p className="mt-3 text-sm text-muted">A stolen tool is always asked for today.</p>
+          ) : (
+            <Labelled label="How urgent">{(id) => (<select id={id} className={field} value={f.urgency} onChange={set("urgency")}>
+                <option value="today">Today</option>
+                <option value="this_week">This week</option>
+                <option value="no_rush">No rush</option>
+              </select>)}</Labelled>
+          )}
+          <Labelled label="Anything else about it (optional)">{(id) => (
+            <textarea id={id} className={`${field} min-h-[70px]`} spellCheck placeholder="e.g. same model, or a bigger size" value={f.notes} onChange={set("notes")} />
+          )}</Labelled>
+        </>
+      )}
+      <SendButton busy={busy} progress={progress} reportSent={reportSent} onSkip={finish}>Send report</SendButton>
       <Msg text={msg} />
     </form>
   );
