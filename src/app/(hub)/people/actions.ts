@@ -8,7 +8,7 @@ import { hashPin, isValidPin } from "@/lib/auth/pin";
 import { loadPerson, type PersonRow } from "./data";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const FIELDS = ["name", "role", "mobile", "email", "can_sign_in", "active", "crew", "time_off", "hs_issue"];
+const FIELDS = ["name", "role", "mobile", "email", "can_sign_in", "active", "crew", "time_off", "hs_issue", "permit_approve"];
 
 export async function savePerson(form: FormData): Promise<ActionResult<PersonRow>> {
   const id = Number(formText(form, "id")) || null;
@@ -25,6 +25,8 @@ export async function savePerson(form: FormData): Promise<ActionResult<PersonRow
     time_off: form.get("time_off") === "on",
     // May issue the H&S policy and manual: 'hs_issue' in people.lists (ZZ Person A on live at switch-over).
     hs_issue: form.get("hs_issue") === "on",
+    // May approve permits to work: 'permit_approve' in people.lists (Ethan, 30/10/2026).
+    permit_approve: form.get("permit_approve") === "on",
   };
   const fieldErrors: Record<string, string> = {};
   if (!v.name) fieldErrors.name = "Enter a name.";
@@ -37,13 +39,14 @@ export async function savePerson(form: FormData): Promise<ActionResult<PersonRow
     try {
       const rowId = await sql.begin(async (tx) => {
         if (id) {
-          const [before] = await tx`select name, role, mobile, email, can_sign_in, active, 'crew' = any(lists) as crew, 'time_off' = any(lists) as time_off, 'hs_issue' = any(lists) as hs_issue from people where id = ${id} for update`;
+          const [before] = await tx`select name, role, mobile, email, can_sign_in, active, 'crew' = any(lists) as crew, 'time_off' = any(lists) as time_off, 'hs_issue' = any(lists) as hs_issue, 'permit_approve' = any(lists) as permit_approve from people where id = ${id} for update`;
           if (!before) throw new Error("missing");
           await tx`update people set name = ${v.name}, role = ${v.role}, mobile = ${v.mobile}, email = ${v.email},
                    can_sign_in = ${v.can_sign_in}, active = ${v.active},
-                   -- the crew, time_off and hs_issue ticks, keeping any other lists entries as they are
-                   lists = array(select distinct x from unnest(lists || array['crew', 'time_off', 'hs_issue']) x
-                                 where (x <> 'crew' or ${v.crew}) and (x <> 'time_off' or ${v.time_off}) and (x <> 'hs_issue' or ${v.hs_issue})),
+                   -- the crew, time_off, hs_issue and permit_approve ticks, keeping any other lists entries as they are
+                   lists = array(select distinct x from unnest(lists || array['crew', 'time_off', 'hs_issue', 'permit_approve']) x
+                                 where (x <> 'crew' or ${v.crew}) and (x <> 'time_off' or ${v.time_off}) and (x <> 'hs_issue' or ${v.hs_issue})
+                                   and (x <> 'permit_approve' or ${v.permit_approve})),
                    updated_by = ${person.name} where id = ${id}`;
           if (!v.active || !v.can_sign_in) await tx`update sessions set revoked_at = now() where person_id = ${id} and revoked_at is null`;
           const changes = diff(before, v, FIELDS);
@@ -52,7 +55,7 @@ export async function savePerson(form: FormData): Promise<ActionResult<PersonRow
         }
         const [row] = await tx<{ id: string }[]>`
           insert into people (name, role, mobile, email, can_sign_in, active, lists, created_by)
-          values (${v.name}, ${v.role}, ${v.mobile}, ${v.email}, ${v.can_sign_in}, true, (case when ${v.crew} then array['crew'] else '{}'::text[] end) || (case when ${v.time_off} then array['time_off'] else '{}'::text[] end) || (case when ${v.hs_issue} then array['hs_issue'] else '{}'::text[] end), ${person.name}) returning id`;
+          values (${v.name}, ${v.role}, ${v.mobile}, ${v.email}, ${v.can_sign_in}, true, (case when ${v.crew} then array['crew'] else '{}'::text[] end) || (case when ${v.time_off} then array['time_off'] else '{}'::text[] end) || (case when ${v.hs_issue} then array['hs_issue'] else '{}'::text[] end) || (case when ${v.permit_approve} then array['permit_approve'] else '{}'::text[] end), ${person.name}) returning id`;
         await logActivity(tx, { person: person.name, table: "people", rowId: Number(row.id), action: "create", changes: diff(null, v, FIELDS) });
         return Number(row.id);
       });

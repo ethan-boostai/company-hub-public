@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE } from "@/lib/auth/token";
 
-// Quick check only: no session cookie means go to sign-in. Pages and API routes still check the
+// Quick check only: no session cookie means go to sign-in. The team app and the job crew pages
+// (/crew/<job>?t=…) have no sign-in; they check their own link key. Pages and API routes still check the
 // session properly on the server.
 export function proxy(req: NextRequest) {
   if (req.cookies.get(SESSION_COOKIE)) return NextResponse.next();
@@ -17,5 +18,5 @@ export function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!sign-in|api/health|team$|team/|api/team/|_next/|favicon.ico|cbs-logo.png).*)"],
+  matcher: ["/((?!sign-in|api/health|team$|team/|api/team/|crew/|api/crew/|_next/|favicon.ico|cbs-logo.png).*)"],
 };
