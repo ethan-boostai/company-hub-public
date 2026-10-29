@@ -3,13 +3,17 @@
 import { useMemo, useState } from "react";
 import { Drawer } from "@/components/ui/overlay";
 import { SearchBox } from "@/components/ui/search-box";
-import { Chip, ViewSwitch } from "../_registers/ui";
+import { TeamTabs } from "@/components/shell/team-tabs";
+import { PageTop, RegisterLayout, type AttentionItem } from "@/components/ui/page-top";
+import { DataTable, FilterPills, FilterRow, StatusPill, type PillTone } from "@/components/ui/register";
+
+const PILL_TONE: Record<TicketState, PillTone> = { valid: "green", expiring: "amber", expired: "red", missing: "grey" };
 import type { Saved } from "./actions";
 import type { TrainingData } from "./data";
 import { TrainingForm, type Open } from "./forms";
 import { ReportDialog, type MatrixChoice } from "./report-dialog";
 import {
-  bestFor, bestRecords, cellText, isSuperseded, MATRIX_COLOURS, matrixPeople, matrixTickets, STANDARD_QUALS, STATE_TONE, ticketLabel, ticketState,
+  bestFor, bestRecords, cellText, isSuperseded, MATRIX_COLOURS, matrixPeople, matrixTickets, STANDARD_QUALS, ticketLabel, ticketState,
   trainingDueItems, type PeopleChoice, type TicketChoice, type TicketState,
 } from "./rules";
 
@@ -54,40 +58,36 @@ export function TrainingClient({ initial, today, start }: { initial: TrainingDat
   const allTickets = matrixTickets(data.records, "standard");
   const matrix: MatrixChoice = { people: peopleChoice, tickets: ticketChoice, chosen };
 
-  return (
-    <div>
-      <section className="mb-5 bg-white border border-line rounded-xl" data-testid="attention">
-        <h2 className="font-semibold px-4 py-3 flex items-center gap-2">
-          <span className="flex-1">Tickets expired or expiring</span>
-          <span className="text-sm text-muted font-normal">{due.length === 0 ? "Nothing expiring in the next 60 days" : `${due.length} ticket${due.length === 1 ? "" : "s"}`}</span>
-        </h2>
-        {due.length > 0 && (
-          <ul className="divide-y divide-line border-t border-line">
-            {due.map((d) => (
-              <li key={d.id}>
-                <button type="button" onClick={() => setOpen({ id: d.id })} className="w-full text-left px-4 py-2 hover:bg-paper flex flex-wrap items-center gap-x-3">
-                  <Chip tone={STATE_TONE[d.state]}>{d.state === "expired" ? "Expired" : "Expiring"}</Chip>
-                  <span className="font-medium">{d.person}</span>
-                  <span>{d.qualification}</span>
-                  <span className="text-sm text-muted">{d.detail}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+  const attention: AttentionItem[] = due.map((d) => ({
+    key: `t${d.id}`,
+    level: d.state === "expired" ? "overdue" : "soon",
+    tag: d.state === "expired" ? "Expired" : "Expiring",
+    name: d.person,
+    detail: `${d.qualification} · ${d.detail}`,
+    onOpen: () => setOpen({ id: d.id }),
+  }));
+  const current = data.records.filter((r) => !isSuperseded(best, r)).length;
 
-      <ViewSwitch<Tab> value={tab} onChange={setTab} options={[
-        { value: "records", label: "Training records", count: data.records.filter((r) => !isSuperseded(best, r)).length },
+  return (
+    <RegisterLayout attention={attention}>
+      <PageTop
+        title="Team"
+        countLabel={`${current} training record${current === 1 ? "" : "s"}`}
+        reports={[{ label: "Create report", hint: "The training matrix, A4 landscape", onSelect: () => setReporting(true) }]}
+        newAction={{ label: "New training record", onSelect: () => setOpen({ id: null, personId: Number(personFilter) || undefined }) }}
+      >
+        <TeamTabs active="training" />
+      </PageTop>
+
+      <FilterPills<Tab> label="Show" value={tab} onChange={setTab} options={[
+        { value: "records", label: "Training records", count: current },
         { value: "matrix", label: "Matrix" },
       ]} />
 
       {tab === "records" && (
         <>
-          <div className="flex flex-wrap items-center gap-3 mb-4">
-            <div className="flex-1 min-w-56">
-              <SearchBox value={query} onChange={setQuery} label="Search training" placeholder="Search people, tickets, providers and numbers" />
-            </div>
+          <FilterRow>
+            <SearchBox value={query} onChange={setQuery} label="Search training" placeholder="Search people, tickets, providers and numbers" />
             <select aria-label="Person" value={personFilter} onChange={(e) => setPersonFilter(e.target.value)} className="rounded-lg border border-line bg-white px-3 py-2">
               <option value="">Everyone</option>
               {listPeople.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
@@ -95,37 +95,25 @@ export function TrainingClient({ initial, today, start }: { initial: TrainingDat
             <label className="flex items-center gap-2 text-sm">
               <input type="checkbox" className="h-4 w-4 accent-brand" checked={showOld} onChange={(e) => setShowOld(e.target.checked)} /> Show replaced records
             </label>
-            <button type="button" onClick={() => setOpen({ id: null, personId: Number(personFilter) || undefined })} className="px-4 py-2 rounded-lg bg-brand text-white font-semibold">Add training</button>
-            <button type="button" onClick={() => setReporting(true)} className="px-4 py-2 rounded-lg border border-dark font-semibold hover:bg-white">Create report</button>
-          </div>
-          <div className="bg-white border border-line rounded-xl overflow-hidden">
-            <ul className="divide-y divide-line" data-testid="training-list">
-              {records.map((r) => {
-                const old = isSuperseded(best, r);
-                return (
-                  <li key={r.id}>
-                    <button type="button" onClick={() => setOpen({ id: r.id })} className="w-full text-left px-4 py-3 hover:bg-paper flex flex-wrap items-center gap-x-3 gap-y-1">
-                      <span className="min-w-0 flex-1">
-                        <span className="block font-medium">{nameOf.get(r.personId)} · {r.qualification}</span>
-                        <span className="block text-sm text-muted truncate">{[r.provider, r.reference].filter(Boolean).join(" · ")}</span>
-                      </span>
-                      {old ? <Chip>Replaced</Chip> : <Chip tone={STATE_TONE[ticketState(r, today)]}>{ticketLabel(r, today)}</Chip>}
-                    </button>
-                  </li>
-                );
-              })}
-              {records.length === 0 && <li className="px-4 py-6 text-sm text-muted">{q || personFilter ? "Nothing matches." : "No training recorded yet."}</li>}
-            </ul>
+          </FilterRow>
+          <div data-testid="training-list">
+            <DataTable label="Training records" rows={records} rowKey={(r) => r.id} onOpen={(r) => setOpen({ id: r.id })}
+              empty={q || personFilter ? "Nothing matches." : "No training recorded yet."} columns={[
+                { key: "person", label: "Person", cell: (r) => nameOf.get(r.personId) ?? "" },
+                { key: "ticket", label: "Ticket or qualification", cell: (r) => r.qualification },
+                { key: "ref", label: "Provider / number", cell: (r) => [r.provider, r.reference].filter(Boolean).join(" · ") },
+                { key: "status", label: "Status", cell: (r) => (isSuperseded(best, r)
+                  ? <StatusPill tone="grey">Replaced</StatusPill>
+                  : <StatusPill tone={PILL_TONE[ticketState(r, today)]}>{ticketLabel(r, today)}</StatusPill>) },
+              ]} />
           </div>
         </>
       )}
 
       {tab === "matrix" && (
         <>
-          <div className="flex flex-wrap items-center gap-3 mb-3">
-            <div className="flex-1 min-w-56">
-              <SearchBox value={matrixQuery} onChange={setMatrixQuery} label="Search people on the matrix" placeholder="Search people" />
-            </div>
+          <FilterRow>
+            <SearchBox value={matrixQuery} onChange={setMatrixQuery} label="Search people on the matrix" placeholder="Search people" />
             <select aria-label="People" value={peopleChoice} onChange={(e) => setPeopleChoice(e.target.value as PeopleChoice)} className="rounded-lg border border-line bg-white px-3 py-2">
               <option value="active">Everyone active</option>
               <option value="crew">Crew list only</option>
@@ -139,8 +127,7 @@ export function TrainingClient({ initial, today, start }: { initial: TrainingDat
               <option value="standard">All standard tickets</option>
               <option value="chosen">Choose tickets…</option>
             </select>
-            <button type="button" onClick={() => setReporting(true)} className="px-4 py-2 rounded-lg border border-dark font-semibold hover:bg-white">Create report</button>
-          </div>
+          </FilterRow>
           {ticketChoice === "chosen" && (
             <fieldset className="mb-3 bg-white border border-line rounded-xl p-3">
               <legend className="text-sm font-medium px-1">Tickets to show</legend>
@@ -216,6 +203,6 @@ export function TrainingClient({ initial, today, start }: { initial: TrainingDat
         );
       })()}
       <ReportDialog open={reporting} onClose={() => setReporting(false)} matrix={matrix} standardCount={STANDARD_QUALS.length} />
-    </div>
+    </RegisterLayout>
   );
 }

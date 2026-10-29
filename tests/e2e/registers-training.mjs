@@ -58,7 +58,7 @@ try {
   check("Training and qualifications tab is current", (await page.getByRole("link", { name: "Training and qualifications" }).getAttribute("aria-current")) === "page");
 
   // SMSTS expiring in 20 days, with a file.
-  await page.getByRole("button", { name: "Add training" }).click();
+  await page.getByRole("button", { name: "+ New training record", exact: true }).click();
   await drawer.getByLabel("Person").selectOption({ label: WHO });
   await drawer.getByLabel("Ticket or qualification").selectOption("SMSTS");
   await drawer.getByLabel("Provider").fill("ZZ Test Training Ltd");
@@ -76,13 +76,13 @@ try {
   await drawer.getByText("zz-test-card.txt").waitFor();
   check("file uploaded to the training record", true);
   await closeDrawer();
-  const attention = page.getByTestId("attention");
+  const attention = page.getByRole("complementary", { name: "Needs attention" });
   check("expiring ticket is in the expiring list", (await attention.getByText(WHO).count()) === 1);
   await page.getByLabel("Search training").fill(WHO);
   check("only one record was saved", (await list.getByRole("button").count()) === 1);
 
   // A newer SMSTS replaces it: off the expiring list, kept as history.
-  await page.getByRole("button", { name: "Add training" }).click();
+  await page.getByRole("button", { name: "+ New training record", exact: true }).click();
   await drawer.getByLabel("Person").selectOption({ label: WHO });
   await drawer.getByLabel("Ticket or qualification").selectOption("SMSTS");
   await drawer.getByLabel("Issued").fill(plus(-1));
@@ -99,7 +99,7 @@ try {
   await shot(page, "01-records");
 
   // Matrix.
-  await page.getByRole("tab", { name: "Matrix" }).click();
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: "Matrix" }).click();
   await cell(WHO, "SMSTS").waitFor();
   check("matrix shows the current SMSTS", (await cell(WHO, "SMSTS").textContent()) !== "Expired");
   await page.getByLabel("People", { exact: true }).selectOption("crew");
@@ -124,7 +124,8 @@ try {
 
   // Report: A4 landscape PDF.
   await page.getByLabel("Tickets", { exact: true }).selectOption("on_file");
-  await page.getByRole("button", { name: "Create report" }).click();
+  await page.getByRole("button", { name: "Reports", exact: true }).click();
+  await page.getByRole("menuitem", { name: /^Create report/ }).click();
   await page.getByLabel("Add the company accreditations").check();
   await page.getByRole("dialog").getByRole("button", { name: "Create report" }).click();
   await page.getByRole("link", { name: "Open full screen" }).waitFor();
@@ -137,7 +138,7 @@ try {
   await page.getByRole("button", { name: "Close" }).last().click();
 
   // Clean up: delete the three records (in-app are-you-sure), then mark the person as left.
-  await page.getByRole("tab", { name: /^Training records/ }).click();
+  await page.getByRole("group", { name: "Show" }).getByRole("button", { name: /^Training records/ }).click();
   await page.getByLabel("Search training").fill(WHO);
   await page.getByLabel("Show replaced records").check();
   for (let i = 0; i < 3; i++) {
