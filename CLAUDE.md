@@ -37,7 +37,7 @@ This repo replaces the original n8n-served hub (pages served from n8n webhooks o
 - Generic tasks with no job don't get file uploads.
 - No Category field. Category is automatic (requirement tasks by requirement, one-off tasks Office).
 - Tasks are created through + New task: Office tasks / On site tasks toggle, requirements grouped by stage (Estimate, Approved: Planning, Approved: on site, Completed), Other (one-off) at the top.
-- Requirement types: types that open a builder or page are defined in code. The office can add simple custom types (a plain task with a stage) from a table.
+- Requirement types are built in, defined in code only. The office can't add its own types.
 - Saving a record (e.g. a survey) never auto-completes its task. Office closes tasks by hand.
 - The TV dashboard's tasks show exactly what's on the Actions board, no filters.
 

@@ -1,9 +1,8 @@
 import "server-only";
 import type postgres from "postgres";
 import { readDb } from "@/lib/db";
-import { builtIn, lockReason, REQ_STAGES, taskCategory } from "@/lib/requirements";
+import { builtIn, lockReason, REQ_STAGES, REQUIREMENTS, reqSides, taskCategory } from "@/lib/requirements";
 import { jobTitle } from "@/lib/jobs/stages";
-import { builtInTypes, customTypes } from "./requirement-types";
 import type { PickerTile, TaskStatus, TaskView } from "./types";
 
 type Row = {
@@ -12,7 +11,7 @@ type Row = {
   assignee_id: string | null; assignee: string | null; due_on: Date | string | null; done_at: Date | null; done_by: string | null;
   verified_at: Date | null; verified_by: string | null; side: "office" | "site"; submitted_at: Date | null; submitted_by: string | null;
   sent_back_note: string | null; sent_back_at: Date | null; sent_back_by: string | null; req_key: string | null; stage: string | null;
-  repeat_no: number | null; is_repeat: boolean; created_at: Date; created_by: string | null; custom_name: string | null; custom_side: string | null;
+  repeat_no: number | null; is_repeat: boolean; created_at: Date; created_by: string | null;
 };
 
 const iso = (d: Date | null) => (d ? d.toISOString() : null);
@@ -46,7 +45,7 @@ function view(r: Row): TaskView {
     sentBackBy: r.sent_back_by,
     reqKey: r.req_key,
     stage: r.stage,
-    category: taskCategory(r.req_key, (r.custom_side as "office" | "site") || r.side),
+    category: taskCategory(r.req_key),
     repeatNo: r.repeat_no,
     isRepeat: r.is_repeat,
     page: r.req_key ? builtIn(r.req_key)?.page ?? null : null,
@@ -57,13 +56,11 @@ function view(r: Row): TaskView {
 
 function select(sql: postgres.Sql | postgres.TransactionSql) {
   return sql`
-    select t.*, j.job_no, j.sm8_description, c.name as client, p.name as assignee,
-           rt.name as custom_name, rt.side as custom_side
+    select t.*, j.job_no, j.sm8_description, c.name as client, p.name as assignee
     from tasks t
     left join jobs j on j.id = t.job_id
     left join clients c on c.id = j.client_id
-    left join people p on p.id = t.assignee_id
-    left join requirement_types rt on t.req_key = 'custom:' || rt.id`;
+    left join people p on p.id = t.assignee_id`;
 }
 
 export async function getTask(id: number): Promise<TaskView | null> {
@@ -110,7 +107,7 @@ export async function activePeople() {
 
 // The + New task tiles for a job, with each requirement's state on that job.
 export async function pickerTiles(job: { id: number; stage: string; jobType: string } | null): Promise<PickerTile[]> {
-  const types = [...builtInTypes(), ...(await customTypes())];
+  const types = REQUIREMENTS;
   const counts = new Map<string, { open: number; done: number; liveId: number | null; liveDone: boolean }>();
   if (job) {
     const sql = await readDb();
@@ -134,7 +131,7 @@ export async function pickerTiles(job: { id: number; stage: string; jobType: str
       const c = counts.get(t.key);
       const state: PickerTile["state"] = t.repeatable || !c?.liveId ? "available" : c.liveDone ? "done" : "on";
       return {
-        key: t.key, label: t.label, stage: t.stage, side: t.side, repeatable: t.repeatable, cdm: t.cdm,
+        key: t.key, label: t.label, stage: t.stage, side: t.side, sides: reqSides(t), repeatable: !!t.repeatable, cdm: !!t.cdm,
         state, taskId: t.repeatable ? null : c?.liveId ?? null, open: c?.open ?? 0, done: c?.done ?? 0,
         lock: job ? lockReason(t, job) : null,
       };

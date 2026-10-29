@@ -1,5 +1,5 @@
-// Built-in requirement types (defined in code; they open a builder or page as each phase lands).
-// The office adds simple custom types (a plain task with a stage) in Settings > Requirement types.
+// Requirement types: built in, defined here only (they open a builder or page as each phase lands).
+// The office can't add its own types (Ethan, 29/10/2026); anything else is a one-off task.
 // Source: the old Job File's list (docs/inventory.md), with enquiry/job duplicates merged into one key.
 
 export type ReqStage = "estimate" | "approved_planning" | "approved_onsite" | "completed";
@@ -17,6 +17,7 @@ export type Requirement = {
   label: string;
   stage: ReqStage;
   side: Side;
+  bothSides?: boolean;       // also offered under the other side's tab in + New task
   category: string;          // automatic task category
   folder?: string;           // SharePoint subfolder under Jobs/Job N (else Tasks)
   cdm?: boolean;             // CDM jobs only (locked on Project jobs)
@@ -27,7 +28,7 @@ export type Requirement = {
 };
 
 export const REQUIREMENTS: Requirement[] = [
-  { key: "survey", label: "Site survey", stage: "estimate", side: "site", category: "Survey", folder: "Surveys", phase: 4 },
+  { key: "survey", label: "Site survey", stage: "estimate", side: "site", bothSides: true, category: "Survey", folder: "Surveys", phase: 4 },
   { key: "pci", label: "Pre-construction information", stage: "estimate", side: "office", category: "H&S", folder: "CDM", phase: 4, page: "pre-con" },
   { key: "rfis", label: "RFIs (info from client)", stage: "estimate", side: "office", category: "Client", folder: "RFIs", phase: 4, page: "rfis" },
   { key: "docs", label: "Documentation (we supply)", stage: "estimate", side: "office", category: "Paperwork", folder: "Documents" },
@@ -74,13 +75,9 @@ export function builtIn(key: string): Requirement | undefined {
   return BY_KEY.get(key);
 }
 
-// Custom types are stored as 'custom:<id>'.
-export function customKey(id: number): string {
-  return `custom:${id}`;
-}
-export function customId(key: string | null | undefined): number | null {
-  const m = /^custom:(\d+)$/.exec(key || "");
-  return m ? Number(m[1]) : null;
+// Which + New task tabs offer a requirement.
+export function reqSides(r: Pick<Requirement, "side" | "bothSides">): Side[] {
+  return r.bothSides ? ["office", "site"] : [r.side];
 }
 
 // Why a requirement can't be added to this job yet, or null if it can.
@@ -90,12 +87,9 @@ export function lockReason(r: { stage: ReqStage; cdm?: boolean; key?: string; la
   return null;
 }
 
-// Task category: the requirement's group, Office/Site for custom types, Office for one-off tasks.
-export function taskCategory(reqKey: string | null | undefined, side: Side = "office"): string {
-  if (!reqKey) return "Office";
-  const r = builtIn(reqKey);
-  if (r) return r.category;
-  return side === "site" ? "Site" : "Office";
+// Task category: the requirement's group, Office for one-off tasks.
+export function taskCategory(reqKey: string | null | undefined): string {
+  return (reqKey && builtIn(reqKey)?.category) || "Office";
 }
 
 // SharePoint folder for a task's uploads: CBS System/Operations/Jobs/Job N/<folder>.

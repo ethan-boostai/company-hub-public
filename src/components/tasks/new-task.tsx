@@ -100,7 +100,7 @@ export function NewTaskPicker({
   const job = data?.job ?? null;
   const now = nowGroups(job?.stage);
   const needle = filter.trim().toLowerCase();
-  const tiles = (data?.tiles || []).filter((t) => t.side === side && (!needle || t.label.toLowerCase().includes(needle)));
+  const tiles = (data?.tiles || []).filter((t) => t.sides.includes(side) && (!needle || t.label.toLowerCase().includes(needle)));
   const people = data?.people || [];
 
   const pick = (t: PickerTile) => {
@@ -112,7 +112,7 @@ export function NewTaskPicker({
       onOpenTask(t.taskId);
       return;
     }
-    onDraft({ jobId: job?.id ?? null, jobNo: job?.jobNo ?? null, reqKey: t.key, title: "", side: t.side }, people);
+    onDraft({ jobId: job?.id ?? null, jobNo: job?.jobNo ?? null, reqKey: t.key, title: "", side: t.sides.includes(side) ? side : t.side }, people);
   };
 
   return (

@@ -43,6 +43,7 @@ export type PickerTile = {
   label: string;
   stage: string;
   side: "office" | "site";
+  sides: ("office" | "site")[];  // the + New task tabs that offer it
   repeatable: boolean;
   state: TileState;
   taskId: number | null;         // the existing task (non-repeatable)
@@ -58,4 +59,5 @@ export type NewTaskDraft = {
   reqKey: string | null;
   title: string;
   side: "office" | "site";
+  linkJob?: boolean; // header + New task: a one-off task, linked to a job or to nothing
 };

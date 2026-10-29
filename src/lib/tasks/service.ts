@@ -1,7 +1,7 @@
 import "server-only";
 import type postgres from "postgres";
 import { logActivity } from "@/lib/activity";
-import { builtIn, customId, lockReason, type Side } from "@/lib/requirements";
+import { builtIn, lockReason, type Side } from "@/lib/requirements";
 import type { TaskStatus } from "./types";
 
 // The one place tasks are created and changed. Server actions (the task panel, the board) and other
@@ -35,15 +35,9 @@ export type NewTask = {
 const STATUSES: TaskStatus[] = ["todo", "in_progress", "done"];
 const clean = (s: string | undefined | null, max: number) => String(s || "").replace(/\r\n/g, "\n").trim().slice(0, max);
 
-async function requirement(tx: Tx, key: string) {
+function requirement(key: string) {
   const b = builtIn(key);
-  if (b) return { label: b.label, stage: b.stage, side: b.side, repeatable: !!b.repeatable, cdm: !!b.cdm };
-  const id = customId(key);
-  if (!id) return null;
-  const [r] = await tx<{ name: string; stage: string; side: Side; repeatable: boolean; active: boolean }[]>`
-    select name, stage, side, repeatable, active from requirement_types where id = ${id}`;
-  if (!r || !r.active) return null;
-  return { label: r.name, stage: r.stage as never, side: r.side, repeatable: r.repeatable, cdm: false };
+  return b ? { label: b.label, stage: b.stage, side: b.side, bothSides: !!b.bothSides, repeatable: !!b.repeatable, cdm: !!b.cdm } : null;
 }
 
 export async function createTask(tx: Tx, input: NewTask, by: string): Promise<number> {
@@ -59,11 +53,12 @@ export async function createTask(tx: Tx, input: NewTask, by: string): Promise<nu
     const [job] = await tx<{ stage: string; job_type: string }[]>`select stage, job_type from jobs where id = ${input.jobId}`;
     if (!job) throw new TaskError("Job not found.");
     if (input.reqKey) {
-      const req = await requirement(tx, input.reqKey);
+      const req = requirement(input.reqKey);
       if (!req) throw new TaskError("That requirement type isn't available.");
       const lock = lockReason({ ...req, key: input.reqKey }, { stage: job.stage, jobType: job.job_type });
       if (lock) throw new TaskError(lock);
-      side = req.side;
+      // A requirement offered on both tabs (Site survey) takes the tab it was added from.
+      side = req.bothSides && (input.side === "office" || input.side === "site") ? input.side : req.side;
       stage = req.stage;
       if (req.repeatable) {
         isRepeat = true;

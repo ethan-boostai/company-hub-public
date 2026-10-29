@@ -14,7 +14,6 @@ export const NAV: { group?: string; items: { href: string; label: string }[] }[]
     group: "Settings",
     items: [
       { href: "/settings/people", label: "People" },
-      { href: "/settings/requirement-types", label: "Requirement types" },
       { href: "/settings/shared-parts", label: "Shared parts" },
     ],
   },
