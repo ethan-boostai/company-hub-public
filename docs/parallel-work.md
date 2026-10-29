@@ -108,6 +108,7 @@ Ethan approved one page layout on 29/10/2026 (`docs/decisions.md`, "Page standar
 - Under it, in this order: `FilterPills`, then `FilterRow` (with `SearchBox`), then `DataTable` (first column bold, `sub` for the grey line) and `StatusPill` (`src/components/ui/register.tsx`).
 - No due or attention panels, or extra buttons, between the page top and the filter pills: those items go into Needs attention.
 - Team tabs (`src/components/shell/team-tabs.tsx`) on Training and qualifications and Team requests.
+- Time off tab (Registers): show the tab, its notes and its files only to people with the Time off tick. Check it server-side with `canSeeTimeOff(person.id)` (`src/app/(hub)/people/data.ts`, the `time_off` entry in `people.lists`), on the page and on every route that returns its notes or files, not just by hiding the tab. Nobody is ticked by default; on dev, Ethan Paraha and Preview Admin are.
 
 Fleet is converted (Core did it as the example: `src/app/(hub)/fleet/fleet-client.tsx`; it also gained `src/app/api/fleet/report/route.ts` for Reports ▾ and lost the + New ▾ list, as checks, services and accidents are added inside the vehicle). Registers: convert Equipment and materials (its "due" list becomes Needs attention items), Subcontractors and suppliers, Team requests and Training and qualifications the same way, and move Fleet's other lists to `DataTable` if you want them as tables. The old `NeedsAttention` button and drawer are gone; `PageTop` no longer takes `attention`.
 

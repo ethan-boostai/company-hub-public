@@ -154,6 +154,8 @@ try {
   await drawer.getByLabel("Role").fill("Test role");
   await drawer.getByLabel("Can sign in to the hub (office)").check();
   await drawer.getByLabel(/^Crew/).check();
+  check("Time off tick is off by default", !(await drawer.getByLabel(/^Time off/).isChecked()));
+  await drawer.getByLabel(/^Time off/).check();
   await page.waitForTimeout(300);
   await drawer.getByRole("button", { name: "Add team member" }).dblclick();
   await page.getByRole("dialog", { name }).waitFor({ timeout: 10000 });
@@ -170,6 +172,7 @@ try {
   await page.locator("main tbody tr").filter({ hasText: name }).getByRole("button").first().click();
 
   const pd = page.getByRole("dialog", { name });
+  check("the Time off tick is saved (after a reload)", await pd.getByLabel(/^Time off/).isChecked());
   await pd.getByLabel("New 4-digit PIN").fill("2468");
   await pd.getByLabel("Type it again").fill("2468");
   await pd.getByRole("button", { name: "Set PIN" }).click();

@@ -8,7 +8,7 @@ import { hashPin, isValidPin } from "@/lib/auth/pin";
 import { loadPerson, type PersonRow } from "./data";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const FIELDS = ["name", "role", "mobile", "email", "can_sign_in", "active", "crew"];
+const FIELDS = ["name", "role", "mobile", "email", "can_sign_in", "active", "crew", "time_off"];
 
 export async function savePerson(form: FormData): Promise<ActionResult<PersonRow>> {
   const id = Number(formText(form, "id")) || null;
@@ -21,6 +21,8 @@ export async function savePerson(form: FormData): Promise<ActionResult<PersonRow
     active: id ? form.get("active") === "on" : true,
     // The crew list: the same 'crew' entry in people.lists the team app and the training matrix use.
     crew: form.get("crew") === "on",
+    // Time off access: 'time_off' in people.lists. Registers uses it to show the Time off tab (sick notes).
+    time_off: form.get("time_off") === "on",
   };
   const fieldErrors: Record<string, string> = {};
   if (!v.name) fieldErrors.name = "Enter a name.";
@@ -33,11 +35,13 @@ export async function savePerson(form: FormData): Promise<ActionResult<PersonRow
     try {
       const rowId = await sql.begin(async (tx) => {
         if (id) {
-          const [before] = await tx`select name, role, mobile, email, can_sign_in, active, 'crew' = any(lists) as crew from people where id = ${id} for update`;
+          const [before] = await tx`select name, role, mobile, email, can_sign_in, active, 'crew' = any(lists) as crew, 'time_off' = any(lists) as time_off from people where id = ${id} for update`;
           if (!before) throw new Error("missing");
           await tx`update people set name = ${v.name}, role = ${v.role}, mobile = ${v.mobile}, email = ${v.email},
                    can_sign_in = ${v.can_sign_in}, active = ${v.active},
-                   lists = case when ${v.crew} then array(select distinct unnest(lists || array['crew'])) else array_remove(lists, 'crew') end,
+                   -- the crew and time_off ticks, keeping any other lists entries as they are
+                   lists = array(select distinct x from unnest(lists || array['crew', 'time_off']) x
+                                 where (x <> 'crew' or ${v.crew}) and (x <> 'time_off' or ${v.time_off})),
                    updated_by = ${person.name} where id = ${id}`;
           if (!v.active || !v.can_sign_in) await tx`update sessions set revoked_at = now() where person_id = ${id} and revoked_at is null`;
           const changes = diff(before, v, FIELDS);
@@ -46,7 +50,7 @@ export async function savePerson(form: FormData): Promise<ActionResult<PersonRow
         }
         const [row] = await tx<{ id: string }[]>`
           insert into people (name, role, mobile, email, can_sign_in, active, lists, created_by)
-          values (${v.name}, ${v.role}, ${v.mobile}, ${v.email}, ${v.can_sign_in}, true, case when ${v.crew} then array['crew'] else '{}'::text[] end, ${person.name}) returning id`;
+          values (${v.name}, ${v.role}, ${v.mobile}, ${v.email}, ${v.can_sign_in}, true, (case when ${v.crew} then array['crew'] else '{}'::text[] end) || (case when ${v.time_off} then array['time_off'] else '{}'::text[] end), ${person.name}) returning id`;
         await logActivity(tx, { person: person.name, table: "people", rowId: Number(row.id), action: "create", changes: diff(null, v, FIELDS) });
         return Number(row.id);
       });
