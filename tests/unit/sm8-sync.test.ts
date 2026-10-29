@@ -57,6 +57,18 @@ describe.skipIf(!local)("ServiceM8 sync (database functions)", () => {
     expect((await apply(events[0])).outcome).toBe("duplicate");
   });
 
+  it("skips a job whose number another ServiceM8 job already holds, and saves the rest of the batch", async () => {
+    await apply(events[0]); // job 12 under JOB
+    await sql`delete from cbs_sync.read_cursors`;
+    const r = (await sql`select cbs_sync.sm8_apply_records('job', ${sql.json([
+      { uuid: "other-uuid", generated_job_id: "12", status: "Work Order", active: 1, edit_date: "2026-10-21 15:25:05" },
+      { uuid: JOB, generated_job_id: "12", status: "Work Order", active: 1, edit_date: "2026-10-29 09:00:00", queue_uuid: "" },
+    ] as never)}) as r`)[0].r;
+    expect(r).toMatchObject({ received: 2, applied: 1 });
+    expect(await sql`select 1 from jobs where sm8_uuid = 'other-uuid'`).toHaveLength(0);
+    expect((await job()).sm8_status).toBe("Work Order");
+  });
+
   it("ignores an older copy that arrives late", async () => {
     await apply(events[5]); // 12:58:34, Maintenance
     const late = await apply(events[4]); // 12:57:25
