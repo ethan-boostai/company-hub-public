@@ -44,13 +44,14 @@ Tables and pages from `docs/plan.md` §3.3:
 | Insurance and accreditations | `insurance_policies`, `claims`, `company_certs` |
 | Team app (agreed on PR #4) | `/team` (secret link, `TEAM_LINK_KEY`) and `/api/team/*`; vehicle checks, accidents, requests and tool reports from the team; owns the `requests` table (moved from Core) |
 | Equipment and materials registers | `assets`, `asset_services`, `materials`, `stock_moves`, `stocktakes` and `stocktake_lines` |
+| Site: plant and materials on a job (Ethan, 30/10/2026) | `job_plant`, `stock_moves.job_id`, load-up sheets, the yard app (`/yard`, opened with the team-app key) and plant pre-use checks; job pages Plant, Materials and Load-up. Core keeps the daily diary, POs, snagging and the onsite app. |
 
 On `stock_moves`, leave the job link empty until jobs exist on `main`. Its `job_id` column is nullable and gets its foreign key in a later migration.
 
 Not in Registers, because these need jobs or other phases:
 
 - **Clients**: its tables and the ServiceM8 sync/write-back are built in Phase 1 (Core).
-- **`subcontractor_job_docs`, `job_plant`, load-up sheets, stock moves to jobs**: Site.
+- **`subcontractor_job_docs`**: Site. (`job_plant`, load-up sheets and stock moves to jobs moved to Registers on 30/10/2026.)
 - **Claim links to jobs and incidents:** claims get `job_id` and `incident_id` columns, with no foreign key until those tables exist.
 - **Reminders on the Actions board** (MOT due and so on): Core adds the hook once Phase 1 is on `main`. Until then the registers show their own due and overdue lists.
 

@@ -18,7 +18,9 @@ import type { Open } from "./types";
 
 type View = "all" | "equipment" | "materials" | "stocktakes" | "reports";
 
-export function EquipmentClient({ initial, today, me, openReportId }: { initial: EquipmentData; today: string; me: string; openReportId: number | null }) {
+export function EquipmentClient({ initial, today, me, openReportId, openAssetId = null, openMaterialId = null }: {
+  initial: EquipmentData; today: string; me: string; openReportId: number | null; openAssetId?: number | null; openMaterialId?: number | null;
+}) {
   const [data, setData] = useState(initial);
   const [view, setView] = useState<View>("all");
   const [where, setWhere] = useState("");
@@ -26,7 +28,9 @@ export function EquipmentClient({ initial, today, me, openReportId }: { initial:
   const [query, setQuery] = useState("");
   const [reporting, setReporting] = useState(false);
   const [open, setOpen] = useState<Open | null>(() =>
-    openReportId && initial.reports.some((r) => r.id === openReportId) ? { kind: "report", id: openReportId } : null,
+    openReportId && initial.reports.some((r) => r.id === openReportId) ? { kind: "report", id: openReportId }
+      : openAssetId && initial.assets.some((a) => a.id === openAssetId) ? { kind: "asset", id: openAssetId }
+        : openMaterialId && initial.materials.some((m) => m.id === openMaterialId) ? { kind: "material", id: openMaterialId } : null,
   );
   const q = query.trim().toLowerCase();
   const due = useMemo(() => equipmentDueItems(data.assets, data.materials, data.stocktakes, data.reports, today), [data, today]);
@@ -65,7 +69,7 @@ export function EquipmentClient({ initial, today, me, openReportId }: { initial:
       const next = [["Service", a.nextServiceOn], ["PAT", a.testTagDue]].filter(([, d]) => d).sort((x, y) => String(x[1]).localeCompare(String(y[1])))[0];
       return {
         key: `a${a.id}`, name: a.name, title: assetTitle(a), open: { kind: "asset", id: a.id },
-        sub: [a.category, a.makeModel].filter(Boolean).join(" · "), type: "Equipment", where: placeOf(a, data),
+        sub: [a.category, a.makeModel].filter(Boolean).join(" · "), type: "Equipment", where: `${placeOf(a, data)}${a.onJob ? ` · On job ${a.onJob.jobNo}` : ""}`,
         status: <StatusPill tone={dueTone(assetTone(a.status))}>{labelOf(ASSET_STATUSES, a.status)}</StatusPill>,
         due: next ? <StatusPill tone={dueTone(dueState(next[1], today))}>{next[0]} {niceDate(next[1])}</StatusPill> : null,
       };

@@ -41,6 +41,13 @@ export function AssetForm({ asset: a, data, today, onOpen, onSaved }: Common & {
             note={a.testTagDue ? relative(a.testTagDue, today) : undefined} />
         </div>
       )}
+      {a?.onJob && (
+        <p className="mb-5 rounded-lg border border-line bg-paper p-3 text-sm" data-testid="asset-on-job">
+          Out on <a href={`/jobs/${a.onJob.jobNo}/plant`} className="font-semibold text-brand underline">job {a.onJob.jobNo}</a>
+          {a.onJob.outWith ? `, with ${a.onJob.outWith}` : ""}{a.onJob.dueBack ? `, due back ${niceDate(a.onJob.dueBack)}` : ""}.
+          {" "}Return it from the job&apos;s Plant page.
+        </p>
+      )}
       {a && (a.status === "lost" || a.status === "needs_repair" || a.status === "out_for_service") && (
         <div className="mb-5 rounded-lg border border-line bg-paper p-3">
           {!back ? (

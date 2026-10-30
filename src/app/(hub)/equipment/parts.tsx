@@ -12,12 +12,17 @@ import { locKey, PLACE_LIST, qty } from "./rules";
 
 const ADD = "__add_place__";
 
+// What a location dropdown needs (the job pages pass just these).
+export type LocationData = Pick<EquipmentData, "places" | "vehicles" | "people">;
+
 // Where something is: a place, a vehicle that holds stock, or (equipment only) a person.
 // Places are a dropdown list the office can add to; vehicles and people come from their registers.
 export function LocationSelect({
   data, name, label, defaultValue = "", allowPerson = false, allowNone = false, noneLabel = "No location", error, onChange, exclude, compact = false,
+  showPlaces = true,
 }: {
-  data: EquipmentData;
+  data: LocationData;
+  showPlaces?: boolean; // false: vehicles and people only (who has it)
   name: string;
   label: string;
   defaultValue?: string;
@@ -70,10 +75,12 @@ export function LocationSelect({
       <select id={id} name={name} value={value} aria-invalid={!!error} className={inputClass}
         onChange={(e) => (e.target.value === ADD ? setAdding(true) : set(e.target.value))}>
         <option value="">{allowNone ? noneLabel : "Choose…"}</option>
-        <optgroup label="Places">
-          {places.map((p) => `p:${p}` !== exclude && <option key={p} value={`p:${p}`}>{p}</option>)}
-          <option value={ADD}>+ Add a new place…</option>
-        </optgroup>
+        {showPlaces && (
+          <optgroup label="Places">
+            {places.map((p) => `p:${p}` !== exclude && <option key={p} value={`p:${p}`}>{p}</option>)}
+            <option value={ADD}>+ Add a new place…</option>
+          </optgroup>
+        )}
         {vehicles.length > 0 && (
           <optgroup label="Vehicles">
             {vehicles.map((v) => `v:${v.id}` !== exclude && <option key={v.id} value={`v:${v.id}`}>{vehicleLocationLabel(v)}</option>)}

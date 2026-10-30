@@ -102,6 +102,7 @@ export function RecordSelect({
   defaultValue,
   error,
   placeholder = "Choose…",
+  onChange,
 }: {
   label: string;
   name: string;
@@ -109,12 +110,13 @@ export function RecordSelect({
   defaultValue?: string;
   error?: string;
   placeholder?: string;
+  onChange?: (value: string) => void;
 }) {
   const id = useId();
   return (
     <div className="mb-4">
       <label htmlFor={id} className="block text-sm font-medium mb-1">{label}</label>
-      <select id={id} name={name} defaultValue={defaultValue ?? ""} aria-invalid={!!error}
+      <select id={id} name={name} defaultValue={defaultValue ?? ""} aria-invalid={!!error} onChange={(e) => onChange?.(e.target.value)}
         className="w-full rounded-lg border border-line bg-white px-3 py-2 focus:outline-none focus:border-brand">
         <option value="">{placeholder}</option>
         {options.map((o) => (

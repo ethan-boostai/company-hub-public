@@ -31,6 +31,12 @@ export async function locationExists(tx: Tx, l: Loc): Promise<boolean> {
   return (await tx`select 1 from people where id = ${l.personId} and active`).length > 0;
 }
 
+// The job a move belongs to: the given job, else the job whose number was typed (if the hub has it).
+function jobIdSql(tx: Tx, how: { jobRef?: string | null; jobId?: number | null }) {
+  if (how.jobId) return tx`${how.jobId}`;
+  return how.jobRef ? tx`(select id from jobs where job_no = ${how.jobRef})` : tx`null`;
+}
+
 // Current stock of one material at one location (locking the row for the rest of the transaction).
 export async function stockAt(tx: Tx, materialId: number, l: Loc): Promise<number> {
   const [r] = await tx<{ qty: string }[]>`
@@ -47,7 +53,7 @@ export async function changeStock(
   m: { id: number; name: string; unit: string },
   l: Loc,
   delta: number,
-  how: { by: string; reason: string; label?: string; jobRef?: string | null; notes?: string | null; moveGroup?: string | null; stocktakeId?: number | null },
+  how: { by: string; reason: string; label?: string; jobRef?: string | null; jobId?: number | null; notes?: string | null; moveGroup?: string | null; stocktakeId?: number | null },
 ): Promise<number> {
   const label = how.label ?? (await labelFor(tx, l));
   const before = await stockAt(tx, m.id, l);
@@ -58,19 +64,19 @@ export async function changeStock(
     values (${m.id}, ${l.place}, ${l.vehicleId}, ${after})
     on conflict (material_id, coalesce(lower(location_place), ''), coalesce(location_vehicle_id, 0)) do update set qty = excluded.qty`;
   await tx`
-    insert into stock_moves (by, material_id, location_label, location_place, location_vehicle_id, change, qty_after, reason, job_ref, move_group, stocktake_id, notes)
+    insert into stock_moves (by, material_id, location_label, location_place, location_vehicle_id, change, qty_after, reason, job_ref, job_id, move_group, stocktake_id, notes)
     values (${how.by}, ${m.id}, ${label}, ${l.place}, ${l.vehicleId}, ${round3(delta)}, ${after}, ${how.reason}, ${how.jobRef ?? null},
-            ${how.moveGroup ?? null}, ${how.stocktakeId ?? null}, ${how.notes ?? null})`;
+            ${jobIdSql(tx, how)}, ${how.moveGroup ?? null}, ${how.stocktakeId ?? null}, ${how.notes ?? null})`;
   return after;
 }
 
 // Records an equipment move (or a change of where it is) in the stock history.
 export async function logAssetMove(tx: Tx, assetId: number, fromLabel: string, toLabel: string, to: Loc | null,
-  how: { by: string; reason?: string; jobRef?: string | null; notes?: string | null; moveGroup?: string | null }) {
+  how: { by: string; reason?: string; jobRef?: string | null; jobId?: number | null; notes?: string | null; moveGroup?: string | null }) {
   await tx`
-    insert into stock_moves (by, asset_id, location_label, location_place, location_vehicle_id, reason, job_ref, move_group, notes)
+    insert into stock_moves (by, asset_id, location_label, location_place, location_vehicle_id, reason, job_ref, job_id, move_group, notes)
     values (${how.by}, ${assetId}, ${toLabel}, ${to?.place ?? null}, ${to?.vehicleId ?? null},
-            ${how.reason ?? `Moved: ${fromLabel} → ${toLabel}`}, ${how.jobRef ?? null}, ${how.moveGroup ?? null}, ${how.notes ?? null})`;
+            ${how.reason ?? `Moved: ${fromLabel} → ${toLabel}`}, ${how.jobRef ?? null}, ${jobIdSql(tx, how)}, ${how.moveGroup ?? null}, ${how.notes ?? null})`;
 }
 
 export type NewToolReport = {

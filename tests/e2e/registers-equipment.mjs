@@ -1,6 +1,7 @@
 // Equipment and materials end-to-end check. Needs the app running (BASE_URL, default
 // http://localhost:3100) on the local dev database with the local seed (Test Office One, PIN 1234,
-// on the crew list) and TEAM_LINK_KEY set (TEAM_KEY below must match it).
+// on the crew list), TEAM_LINK_KEY set (TEAM_KEY below must match it) and one ZZ test substance on
+// Hazards and CoSHH (for the CoSHH substance dropdown).
 // Creates a fake vehicle (reg ZZ…E), equipment, a material, moves, a stocktake and tool reports,
 // then deletes them.
 // Usage: TEAM_KEY=<key> node tests/e2e/registers-equipment.mjs [screenshot-dir]
