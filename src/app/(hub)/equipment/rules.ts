@@ -34,12 +34,14 @@ export const STOCKTAKE_STATUSES = [
 ] as const;
 export type StocktakeStatus = (typeof STOCKTAKE_STATUSES)[number]["value"];
 
+// What the office and team app can report. The yard can also report equipment as found.
 export const TOOL_KINDS = [
   { value: "lost", label: "Lost" },
   { value: "stolen", label: "Stolen" },
   { value: "damaged", label: "Damaged" },
 ] as const;
-export type ToolKind = (typeof TOOL_KINDS)[number]["value"];
+export const REPORT_KINDS = [...TOOL_KINDS, { value: "found", label: "Found" }] as const;
+export type ToolKind = (typeof REPORT_KINDS)[number]["value"];
 
 export const TOOL_WANTS = [
   { value: "none", label: "No" },
@@ -133,9 +135,10 @@ export function isLow(total: number, minLevel: number | null): boolean {
 
 /* ---------- Tool reports ---------- */
 
-// What a tool report does to the equipment it names: damaged needs repair, lost or stolen is lost.
+// What a tool report does to the equipment it names: damaged needs repair, lost or stolen is lost,
+// found is back in service.
 export function assetStatusAfterReport(kind: ToolKind): AssetStatus {
-  return kind === "damaged" ? "needs_repair" : "lost";
+  return kind === "damaged" ? "needs_repair" : kind === "found" ? "in_service" : "lost";
 }
 
 // A stolen tool is always urgent; otherwise the reporter's choice (This week if not given).
@@ -150,7 +153,7 @@ export function requestFor(r: {
   id: number; kind: ToolKind; wants: ToolWants; toolName: string; replaceNotes: string; repairNotes: string;
 }): { category: string; details: string } | null {
   if (r.wants === "none") return null;
-  const k = labelOf(TOOL_KINDS, r.kind).toLowerCase();
+  const k = labelOf(REPORT_KINDS, r.kind).toLowerCase();
   if (r.wants === "replace") {
     return {
       category: "Tools or equipment",
@@ -202,7 +205,7 @@ export function equipmentDueItems(
     if (s.status === "pending") out.push({ what: "Stocktake to approve", name: s.locationLabel, tone: "soon", detail: `Counted ${niceDate(s.countedAt.slice(0, 10))}`, open: { kind: "stocktake", id: s.id } });
   }
   for (const r of reports) {
-    if (r.status === "new") out.push({ what: "Tool report", name: r.toolName, tone: "overdue", detail: labelOf(TOOL_KINDS, r.kind), open: { kind: "report", id: r.id } });
+    if (r.status === "new") out.push({ what: "Tool report", name: r.toolName, tone: "overdue", detail: labelOf(REPORT_KINDS, r.kind), open: { kind: "report", id: r.id } });
   }
   const rank = (t: Due) => (t === "overdue" ? 0 : 1);
   return out.sort((a, b) => rank(a.tone) - rank(b.tone) || a.name.localeCompare(b.name));

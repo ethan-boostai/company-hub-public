@@ -2,17 +2,17 @@
 
 import { useMemo, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { Drawer } from "@/components/ui/overlay";
+import { Drawer, Modal } from "@/components/ui/overlay";
 import { SearchBox } from "@/components/ui/search-box";
 import { dueState, niceDate, niceDateTime } from "../_registers/dates";
 import { dueTone } from "../_registers/ui";
 import { PageTop, RegisterLayout, type AttentionItem } from "@/components/ui/page-top";
 import { DataTable, FilterPills, FilterRow, StatusPill } from "@/components/ui/register";
-import type { Saved } from "./actions";
+import { markYardReturnDone, type Saved } from "./actions";
 import type { EquipmentData } from "./data";
 import { AssetForm, assetTitle, assetTone, MaterialForm, placeOf, ServiceForm, ToolReportForm } from "./forms";
 import { LocationSelect } from "./parts";
-import { equipmentDueItems, isLow, labelOf, locKey, locLabel, parseLocKey, qty, REPORT_STATUSES, STOCKTAKE_STATUSES, TOOL_KINDS, ASSET_STATUSES } from "./rules";
+import { equipmentDueItems, isLow, labelOf, locKey, locLabel, parseLocKey, qty, REPORT_STATUSES, STOCKTAKE_STATUSES, REPORT_KINDS, ASSET_STATUSES } from "./rules";
 import { ReportDialog } from "./report-dialog";
 import { MoveForm, StocktakeForm } from "./stock-forms";
 import type { Open } from "./types";
@@ -24,6 +24,7 @@ export function EquipmentClient({ initial, today, me, openReportId, openAssetId 
 }) {
   const [data, setData] = useState(initial);
   const router = useRouter();
+  const [yardReturn, setYardReturn] = useState<number | null>(null);
   const [view, setView] = useState<View>("all");
   const [where, setWhere] = useState("");
   const [category, setCategory] = useState("");
@@ -62,7 +63,7 @@ export function EquipmentClient({ initial, today, me, openReportId, openAssetId 
   const stocktakes = view !== "stocktakes" ? [] : data.stocktakes.filter((s) =>
     atWhere(locKey(s)) && (!q || [s.locationLabel, s.countedBy, s.notes, labelOf(STOCKTAKE_STATUSES, s.status)].some((f) => f.toLowerCase().includes(q))));
   const reports = view !== "reports" ? [] : data.reports.filter((r) =>
-    !q || [r.toolName, r.reportedBy, r.details, r.location, labelOf(TOOL_KINDS, r.kind), labelOf(REPORT_STATUSES, r.status)].some((f) => f.toLowerCase().includes(q)));
+    !q || [r.toolName, r.reportedBy, r.details, r.location, labelOf(REPORT_KINDS, r.kind), labelOf(REPORT_STATUSES, r.status)].some((f) => f.toLowerCase().includes(q)));
 
   // Equipment and materials in one table, by name.
   type ItemRow = { key: string; name: string; title: string; sub: string; type: string; where: string; status: ReactNode; due: ReactNode; open: Open };
@@ -96,7 +97,10 @@ export function EquipmentClient({ initial, today, me, openReportId, openAssetId 
     stocktakes: data.stocktakes.length, reports: data.reports.length,
   })[v];
 
-  const attention: AttentionItem[] = [...data.loadUpProblems.map((p): AttentionItem => ({
+  const attention: AttentionItem[] = [...data.yardReturns.map((r): AttentionItem => ({
+    key: `yr-${r.id}`, level: "soon", tag: "Returned, not on the register", name: r.name,
+    detail: `${qty(r.qty)} ${r.unit} at ${r.location}${r.jobNo ? `, from job ${r.jobNo}` : ""}`, onOpen: () => setYardReturn(r.id),
+  })), ...data.loadUpProblems.map((p): AttentionItem => ({
     key: `lu-${p.sheetId}`, level: "overdue", tag: "Load-up problem", name: `Job ${p.jobNo}, load-up sheet ${p.sheetId}`,
     detail: `Reported ${niceDate(p.date)}`, onOpen: () => router.push(`/jobs/${p.jobNo}/load-up?sheet=${p.sheetId}`),
   })), ...due.map((it, i): AttentionItem => ({
@@ -170,7 +174,7 @@ export function EquipmentClient({ initial, today, me, openReportId, openAssetId 
         {view === "reports" && (
           <DataTable label="Tool reports" rows={reports} rowKey={(r) => r.id} onOpen={(r) => setOpen({ kind: "report", id: r.id })} empty={empty} columns={[
             { key: "tool", label: "Tool", cell: (r) => r.toolName, sub: (r) => niceDateTime(r.occurredAt ?? r.createdAt) },
-            { key: "kind", label: "What happened", cell: (r) => labelOf(TOOL_KINDS, r.kind) },
+            { key: "kind", label: "What happened", cell: (r) => labelOf(REPORT_KINDS, r.kind) },
             { key: "by", label: "Reported by", cell: (r) => r.reportedBy },
             { key: "wants", label: "Asked for", cell: (r) => (r.wants === "replace" ? "Replacement" : r.wants === "repair" ? "Repair" : "Nothing") },
             { key: "status", label: "Status", cell: (r) => (
@@ -183,6 +187,8 @@ export function EquipmentClient({ initial, today, me, openReportId, openAssetId 
 
       <ReportDialog open={reporting} where={where} whereLabel={where ? locLabel(parseLocKey(where), data.vehicles, data.people) : ""} onClose={() => setReporting(false)} />
       <EquipmentDrawer open={open} data={data} today={today} me={me} onOpen={setOpen} onSaved={saved} />
+      <YardReturnModal item={data.yardReturns.find((r) => r.id === yardReturn) ?? null} onClose={() => setYardReturn(null)}
+        onDone={(x) => { setData(x.all); setYardReturn(null); }} />
     </RegisterLayout>
   );
 }
@@ -220,4 +226,44 @@ function EquipmentDrawer({ open, data, today, me, onOpen, onSaved }: {
     body = <ToolReportForm key={r ? `${r.id}-${r.status}` : `new-${open.assetId ?? ""}`} report={r} assetId={open.assetId} {...common} />;
   }
   return <Drawer open onClose={() => onOpen(null)} title={title} width="max-w-2xl">{body}</Drawer>;
+}
+
+// A material returned at the yard that isn't on the register: the office adds it (+ New ▾ Material)
+// if it should be, then marks this done.
+function YardReturnModal({ item, onClose, onDone }: { item: EquipmentData["yardReturns"][number] | null; onClose: () => void; onDone: (s: Saved) => void }) {
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState("");
+  async function done() {
+    if (!item || busy) return;
+    setBusy(true);
+    setMsg("");
+    try {
+      const r = await markYardReturnDone(item.id, crypto.randomUUID());
+      if (r.ok && r.data) onDone(r.data);
+      else if (!r.ok) setMsg(r.message);
+    } catch {
+      setMsg("It wasn't saved. Check the connection and try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <Modal open={!!item} onClose={onClose} title="Returned, not on the register" size="max-w-lg">
+      {item && (
+        <div className="p-5 text-sm">
+          <dl className="mb-4 grid grid-cols-[8rem_1fr] gap-y-1.5">
+            <dt className="font-semibold">What</dt><dd>{item.name}</dd>
+            <dt className="font-semibold">How many</dt><dd>{qty(item.qty)} {item.unit}</dd>
+            <dt className="font-semibold">Put at</dt><dd>{item.location}</dd>
+            <dt className="font-semibold">From job</dt><dd>{item.jobNo || "Not given"}</dd>
+            <dt className="font-semibold">Returned by</dt><dd>{item.returnedBy}, {niceDateTime(item.at)}</dd>
+            {item.notes && <><dt className="font-semibold">Notes</dt><dd>{item.notes}</dd></>}
+          </dl>
+          <p className="mb-4 text-muted">If it should be on the register, add it with + New ▾ Material (with this as opening stock), then mark this done.</p>
+          <button type="button" disabled={busy} onClick={done} className="px-4 py-2 rounded-lg bg-dark text-white font-semibold disabled:opacity-50">{busy ? "Saving…" : "Mark done"}</button>
+          {msg && <p role="alert" className="mt-2 text-danger">{msg}</p>}
+        </div>
+      )}
+    </Modal>
+  );
 }

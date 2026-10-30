@@ -97,8 +97,12 @@ export type ToolReportRow = {
   repairNotes: string;
   replaceNotes: string;
   reportedBy: string;
-  source: "office" | "team";
+  source: "office" | "team" | "yard";
   status: ReportStatus;
+  pendingStatus: AssetStatus | null; // yard reports: the status waiting for the office to confirm
+  pendingPlace: string;
+  statusConfirmedBy: string;
+  statusConfirmedAt: string | null;
   requestId: number | null;
   closedAt: string | null;
   closedBy: string;
@@ -138,6 +142,8 @@ export type EquipmentData = {
   reasons: string[];
   // Load-up sheets with problems the office hasn't sorted (shown under Needs attention).
   loadUpProblems: { sheetId: number; jobNo: string; date: string }[];
+  // Materials returned at the yard that aren't on the register, waiting for the office.
+  yardReturns: { id: number; name: string; qty: number; unit: string; jobNo: string; location: string; returnedBy: string; notes: string; at: string }[];
 };
 
 type Sql = postgres.Sql | postgres.TransactionSql;
@@ -177,6 +183,8 @@ function toReport(r: any): ToolReportRow {
     id: Number(r.id), kind: r.kind, assetId: n(r.asset_id), toolName: r.tool_name, occurredAt: isoTime(r.occurred_at), location: s(r.location),
     policeRef: s(r.police_ref), details: s(r.details), wants: r.wants, urgency: r.urgency ?? null, repairNotes: s(r.repair_notes),
     replaceNotes: s(r.replace_notes), reportedBy: r.reported_by, source: r.source, status: r.status, requestId: n(r.request_id),
+    pendingStatus: r.pending_status ?? null, pendingPlace: s(r.pending_location_place), statusConfirmedBy: s(r.status_confirmed_by),
+    statusConfirmedAt: isoTime(r.status_confirmed_at),
     closedAt: isoTime(r.closed_at), closedBy: s(r.closed_by), officeNotes: s(r.office_notes), createdAt: isoTime(r.created_at)!,
   };
 }
@@ -231,7 +239,7 @@ async function stocktakeRows(sql: Sql, id: number | null): Promise<StocktakeRow[
 // Everything the page shows. Saves return it fresh too, since one stock move can change several lists.
 export async function loadEquipment(given?: Sql): Promise<EquipmentData> {
   const sql = given ?? (await readDb());
-  const [assets, services, materials, stock, stocktakes, reports, vehicles, people, suppliers, places, assetCats, matCats, units, reasons, usedPlaces, substances, loadUpProblems] = await Promise.all([
+  const [assets, services, materials, stock, stocktakes, reports, vehicles, people, suppliers, places, assetCats, matCats, units, reasons, usedPlaces, substances, loadUpProblems, yardReturns] = await Promise.all([
     sql`select a.*, j.job_no as on_job_no, p.due_back as on_job_due_back, p.out_with_label as on_job_with
       from assets a left join job_plant p on p.asset_id = a.id and p.returned_at is null left join jobs j on j.id = p.job_id
       order by lower(a.name), a.asset_tag`,
@@ -256,6 +264,7 @@ export async function loadEquipment(given?: Sql): Promise<EquipmentData> {
     sql<{ id: string; job_no: string; at: Date }[]>`
       select s.id, j.job_no, coalesce(s.loaded_at, s.updated_at, s.created_at) as at from load_up_sheets s join jobs j on j.id = s.job_id
       where s.problems_open order by at`,
+    sql`select r.*, j.job_no from yard_returns r left join jobs j on j.id = r.job_id where r.status = 'new' order by r.created_at`,
   ]);
   return {
     assets: assets.map(toAsset),
@@ -272,6 +281,10 @@ export async function loadEquipment(given?: Sql): Promise<EquipmentData> {
     materialCategories: mergeOptions([], [...matCats, ...materials.map((m) => s(m.category)).filter(Boolean)]),
     units: mergeOptions(DEFAULT_UNITS, units),
     reasons: mergeOptions(DEFAULT_REASONS, reasons),
+    yardReturns: yardReturns.map((r) => ({
+      id: Number(r.id), name: r.name, qty: Number(r.qty), unit: s(r.unit), jobNo: s(r.job_no), location: r.location_label, returnedBy: r.returned_by,
+      notes: s(r.notes), at: isoTime(r.created_at)!,
+    })),
     loadUpProblems: loadUpProblems.map((p) => ({ sheetId: Number(p.id), jobNo: p.job_no, date: isoTime(p.at)!.slice(0, 10) })),
   };
 }

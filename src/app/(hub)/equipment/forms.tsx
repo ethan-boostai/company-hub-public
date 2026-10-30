@@ -8,12 +8,12 @@ import { dueState, niceDate, niceDateTime, relative, ukLocalInput } from "../_re
 import { RecordFiles } from "../_registers/record-files";
 import { LinkedClaims } from "../insurance/linked-claims";
 import { Chip, Choice, RecordSelect, StatusBox } from "../_registers/ui";
-import { returnToService, saveAsset, saveAssetService, saveMaterial, saveToolReport } from "./actions";
+import { confirmToolReport, returnToService, saveAsset, saveAssetService, saveMaterial, saveToolReport } from "./actions";
 import type { AssetRow, AssetServiceRow, EquipmentData, MaterialRow, ToolReportRow } from "./data";
 import { DeleteRecord, errorsOf, History, LocationSelect, MiniList, Section, SmallButton } from "./parts";
 import {
   ASSET_CATEGORY_LIST, ASSET_STATUSES, isLow, labelOf, locKey, locLabel, MATERIAL_CATEGORY_LIST, MATERIAL_STATUSES, qty,
-  REPORT_STATUSES, TOOL_KINDS, TOOL_WANTS, UNIT_LIST,
+  REPORT_KINDS, REPORT_STATUSES, TOOL_KINDS, TOOL_WANTS, UNIT_LIST,
 } from "./rules";
 import { AdjustStock } from "./stock-forms";
 import type { Common } from "./types";
@@ -108,7 +108,7 @@ export function AssetForm({ asset: a, data, today, onOpen, onSaved }: Common & {
           <Section title="Tool reports" action={<SmallButton onClick={() => onOpen({ kind: "report", id: null, assetId: a.id })}>Add tool report</SmallButton>}>
             <MiniList empty="No reports." items={reports.map((r) => ({
               key: r.id, onClick: () => onOpen({ kind: "report", id: r.id }),
-              title: `${labelOf(TOOL_KINDS, r.kind)} · ${niceDateTime(r.occurredAt ?? r.createdAt)}`, sub: [r.reportedBy, r.details].filter(Boolean).join(" · "),
+              title: `${labelOf(REPORT_KINDS, r.kind)} · ${niceDateTime(r.occurredAt ?? r.createdAt)}`, sub: [r.reportedBy, r.details].filter(Boolean).join(" · "),
               chips: <Chip tone={r.status === "closed" ? "ok" : "overdue"}>{labelOf(REPORT_STATUSES, r.status)}</Chip>,
             }))} />
           </Section>
@@ -309,7 +309,7 @@ function NewToolReport({ assetId, data, me, onSaved }: Pick<Common, "data" | "me
 function ToolReportView({ report: r, data, onOpen, onSaved }: Pick<Common, "data" | "onOpen" | "onSaved"> & { report: ToolReportRow }) {
   const asset = data.assets.find((a) => a.id === r.assetId);
   const rows: [string, string][] = [
-    ["What happened", labelOf(TOOL_KINDS, r.kind)],
+    ["What happened", labelOf(REPORT_KINDS, r.kind)],
     ["Tool", r.toolName],
     ["When", niceDateTime(r.occurredAt)],
     ["Where", r.location],
@@ -318,7 +318,7 @@ function ToolReportView({ report: r, data, onOpen, onSaved }: Pick<Common, "data
     ["Replace or repair", labelOf(TOOL_WANTS, r.wants)],
     ["What needs repairing", r.repairNotes],
     ["Other notes", r.replaceNotes],
-    ["Reported by", `${r.reportedBy}${r.source === "team" ? " (team app)" : ""}, ${niceDateTime(r.createdAt)}`],
+    ["Reported by", `${r.reportedBy}${r.source === "team" ? " (team app)" : r.source === "yard" ? " (yard)" : ""}, ${niceDateTime(r.createdAt)}`],
   ];
   return (
     <div>
@@ -331,6 +331,8 @@ function ToolReportView({ report: r, data, onOpen, onSaved }: Pick<Common, "data
         {asset && <button type="button" className="text-brand-dark font-semibold underline" onClick={() => onOpen({ kind: "asset", id: asset.id })}>Open {assetTitle(asset)} ({labelOf(ASSET_STATUSES, asset.status)})</button>}
         {r.requestId && <a className="text-brand-dark font-semibold underline" href={`/requests?request=${r.requestId}`}>Open the Team request</a>}
       </p>
+      {r.pendingStatus && asset && <ConfirmStatus report={r} asset={asset} onSaved={onSaved} />}
+      {r.statusConfirmedBy && <p className="mb-4 text-sm text-muted">Equipment updated: confirmed by {r.statusConfirmedBy}, {niceDateTime(r.statusConfirmedAt)}.</p>}
       {r.closedAt && <p className="mb-4 text-sm text-muted">Closed {niceDateTime(r.closedAt)} by {r.closedBy}.</p>}
       <GuardedForm action={saveToolReport} onSaved={(x) => x.data && onSaved(x.data, { kind: "report", id: r.id })}>
         <input type="hidden" name="id" value={r.id} />
@@ -345,3 +347,36 @@ function ToolReportView({ report: r, data, onOpen, onSaved }: Pick<Common, "data
   );
 }
 
+
+// A yard report proposes a status; nothing changes on the equipment until the office confirms it.
+function ConfirmStatus({ report: r, asset, onSaved }: { report: ToolReportRow; asset: AssetRow; onSaved: Common["onSaved"] }) {
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState("");
+  const to = labelOf(ASSET_STATUSES, r.pendingStatus!);
+  async function confirm() {
+    if (busy) return;
+    setBusy(true);
+    setMsg("");
+    try {
+      const x = await confirmToolReport(r.id, crypto.randomUUID());
+      if (x.ok && x.data) onSaved(x.data, { kind: "report", id: r.id });
+      else if (!x.ok) setMsg(x.message);
+    } catch {
+      setMsg("It wasn't saved. Check the connection and try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <div className="mb-4 rounded-lg border border-orange-200 bg-orange-50 p-3 text-sm" data-testid="confirm-status">
+      <p className="mb-2">
+        The yard reported {assetTitle(asset)} as <strong>{labelOf(REPORT_KINDS, r.kind).toLowerCase()}</strong>. It is still {labelOf(ASSET_STATUSES, asset.status)} until
+        you confirm{r.pendingPlace ? `; confirming also puts it at ${r.pendingPlace}` : ""}.
+      </p>
+      <button type="button" disabled={busy} onClick={confirm} className="px-3 py-1.5 rounded-lg bg-dark text-white font-semibold disabled:opacity-50">
+        {busy ? "Saving…" : `Confirm: mark ${to}`}
+      </button>
+      {msg && <p role="alert" className="mt-2 text-danger">{msg}</p>}
+    </div>
+  );
+}

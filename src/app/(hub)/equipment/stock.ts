@@ -93,11 +93,15 @@ export type NewToolReport = {
   replaceNotes: string | null;
   reportedBy: string;
   reportedById: number | null;
-  source: "office" | "team";
+  source: "office" | "team" | "yard";
+  // Yard reports: the equipment's status waits for the office to confirm (found: and where it is).
+  confirmFirst?: boolean;
+  foundAtPlace?: string | null;
 };
 
-// Saves a lost, stolen or damaged tool report. On the equipment it names, damaged sets Needs repair
-// and lost or stolen sets Lost. A replacement or repair raises a Team request, linked both ways.
+// Saves a lost, stolen, damaged (or, from the yard, found) tool report. On the equipment it names,
+// damaged sets Needs repair and lost or stolen sets Lost; a yard report only proposes the status and
+// the office confirms it (confirmToolReportStatus). A replacement or repair raises a Team request, linked both ways.
 // Saving a report never closes anything: the office closes the report and the request by hand.
 export async function createToolReport(tx: Tx, r: NewToolReport, by: string): Promise<number> {
   let toolName = r.toolName;
@@ -113,6 +117,8 @@ export async function createToolReport(tx: Tx, r: NewToolReport, by: string): Pr
     details: r.details, wants: r.wants, urgency, repair_notes: r.wants === "repair" ? r.repairNotes : null,
     replace_notes: r.wants !== "none" ? r.replaceNotes : null, reported_by: r.reportedBy, reported_by_id: r.reportedById,
     source: r.source, status: "new", created_by: by,
+    pending_status: r.confirmFirst && r.assetId ? assetStatusAfterReport(r.kind) : null,
+    pending_location_place: r.confirmFirst && r.assetId && r.kind === "found" ? r.foundAtPlace ?? null : null,
   };
   const [ins] = await tx<{ id: string }[]>`insert into tool_reports ${tx(row as Record<string, unknown>)} returning id`;
   const id = Number(ins.id);
@@ -120,7 +126,7 @@ export async function createToolReport(tx: Tx, r: NewToolReport, by: string): Pr
   else await tx`update tool_reports set occurred_at = now() where id = ${id}`;
   await logActivity(tx, { person: by, table: "tool_reports", rowId: id, action: "create", changes: { kind: [null, r.kind], tool_name: [null, toolName], wants: [null, r.wants] } });
 
-  if (r.assetId) {
+  if (r.assetId && !r.confirmFirst) {
     const [a] = await tx<{ status: string }[]>`select status from assets where id = ${r.assetId}`;
     const next = assetStatusAfterReport(r.kind);
     if (a.status !== next) {
@@ -140,4 +146,56 @@ export async function createToolReport(tx: Tx, r: NewToolReport, by: string): Pr
     await logActivity(tx, { person: by, table: "requests", rowId: Number(q.id), action: "create", changes: { category: [null, req.category], tool_report: [null, id] } });
   }
   return id;
+}
+
+// The office confirms a yard report: the equipment gets the status the report asked for (found: back
+// in service, where the yard said it is). The report itself stays open until the office closes it.
+export async function confirmReportStatus(tx: Tx, reportId: number, by: string): Promise<string> {
+  const [r] = await tx<{ asset_id: string | null; pending_status: string | null; pending_location_place: string | null }[]>`
+    select asset_id, pending_status, pending_location_place from tool_reports where id = ${reportId} for update`;
+  if (!r) throw new Error("report-gone");
+  if (!r.pending_status || !r.asset_id) throw new Error("nothing-to-confirm");
+  const [a] = await tx<{ status: string; location_place: string | null; location_vehicle_id: string | null; location_person_id: string | null }[]>`
+    select status, location_place, location_vehicle_id, location_person_id from assets where id = ${r.asset_id} for update`;
+  if (a) {
+    const changes: Record<string, [unknown, unknown]> = {};
+    if (a.status !== r.pending_status) changes.status = [a.status, r.pending_status];
+    await tx`update assets set status = ${r.pending_status}, updated_by = ${by} where id = ${r.asset_id}`;
+    if (r.pending_location_place) {
+      const from = a.location_place ? { place: a.location_place, vehicleId: null, personId: null } as Loc
+        : a.location_vehicle_id ? { place: null, vehicleId: Number(a.location_vehicle_id), personId: null } as Loc
+          : a.location_person_id ? { place: null, vehicleId: null, personId: Number(a.location_person_id) } as Loc : null;
+      const to: Loc = { place: r.pending_location_place, vehicleId: null, personId: null };
+      const fromLabel = await labelFor(tx, from);
+      if (fromLabel.toLowerCase() !== r.pending_location_place.toLowerCase()) {
+        await tx`update assets set location_place = ${to.place}, location_vehicle_id = null, location_person_id = null where id = ${r.asset_id}`;
+        await logAssetMove(tx, Number(r.asset_id), fromLabel, to.place!, to, { by, reason: `Found (tool report ${reportId})` });
+        changes.location = [fromLabel, to.place];
+      }
+    }
+    changes.reason = [null, `Tool report ${reportId} confirmed`];
+    await logActivity(tx, { person: by, table: "assets", rowId: Number(r.asset_id), action: "update", changes });
+  }
+  await tx`update tool_reports set pending_status = null, pending_location_place = null, status_confirmed_by = ${by}, status_confirmed_at = now(), updated_by = ${by}
+           where id = ${reportId}`;
+  await logActivity(tx, { person: by, table: "tool_reports", rowId: reportId, action: "update", changes: { confirmed: [null, r.pending_status] } });
+  return r.pending_status;
+}
+
+// A count of materials at one location, saved as Pending for the office to approve (stock doesn't
+// change yet). Returns the stocktake's id, or null if a material is no longer on the register.
+export async function createStocktake(tx: Tx, loc: Loc, counts: { materialId: number; counted: number }[], countedBy: string, notes: string | null, by: string): Promise<number | null> {
+  const label = await labelFor(tx, loc);
+  const [st] = await tx<{ id: string }[]>`
+    insert into stocktakes (location_label, location_place, location_vehicle_id, counted_by, notes, created_by)
+    values (${label}, ${loc.place}, ${loc.vehicleId}, ${countedBy}, ${notes}, ${by}) returning id`;
+  const sid = Number(st.id);
+  for (const c of counts) {
+    const [m] = await tx`select 1 from materials where id = ${c.materialId}`;
+    if (!m) return null;
+    const expected = await stockAt(tx, c.materialId, loc);
+    await tx`insert into stocktake_lines (stocktake_id, material_id, expected, counted) values (${sid}, ${c.materialId}, ${expected}, ${c.counted})`;
+  }
+  await logActivity(tx, { person: by, table: "stocktakes", rowId: sid, action: "create", changes: { location: [null, label], lines: [null, counts.length] } });
+  return sid;
 }
