@@ -99,6 +99,12 @@ Never commit or push to `main`; every change goes through a pull request (`main`
 9. **Approach first:** explain your approach for anything non-trivial and wait for Ethan's go-ahead (`CLAUDE.md`).
 10. **Secrets:** never in chat, code or commits.
 
+## Public copy and client settings (Core, 30/10/2026; read before your next push)
+
+- **`ethan-boostai/company-hub-public`** is a public, cleaned copy of `cbs-hub`'s `main`. `cbs-hub` stays private and its history was **not** rewritten, so no re-clone is needed. After every merge to `main`, run `node scripts/public-mirror.mjs` then `--push` (see `CLAUDE.md`, "Public copy"). If the scan reports anything, stop and tell Ethan.
+- Fake data only from now on (ZZ names, `ZZ01ZZA` registrations, `07700 900nnn`, `ZZ99`, `example.com`). New real names go in `private/public-denylist.txt`.
+- **Client-specific settings, not hard-coded** (`CLAUDE.md`): this is a starter template copied for other clients; move anything CBS-specific you touch into settings in the same PR.
+
 ## Safety changes to Registers' tables (Core, 30/10/2026)
 
 - `materials.sds_substance_id → substances` (migration `20261030140000_safety_hazards_coshh.sql`, later than everything on main when it was added). It links a material to its CoSHH substance (and so its safety data sheet). Nothing in Registers' screens uses it yet: Registers, add a "CoSHH substance" dropdown to the material form when convenient (read `substances`: id, product, supplier name; no add-new, substances are added on Hazards and CoSHH).
