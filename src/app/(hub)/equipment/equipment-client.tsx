@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import { Drawer } from "@/components/ui/overlay";
 import { SearchBox } from "@/components/ui/search-box";
 import { dueState, niceDate, niceDateTime } from "../_registers/dates";
@@ -22,6 +23,7 @@ export function EquipmentClient({ initial, today, me, openReportId, openAssetId 
   initial: EquipmentData; today: string; me: string; openReportId: number | null; openAssetId?: number | null; openMaterialId?: number | null;
 }) {
   const [data, setData] = useState(initial);
+  const router = useRouter();
   const [view, setView] = useState<View>("all");
   const [where, setWhere] = useState("");
   const [category, setCategory] = useState("");
@@ -94,14 +96,17 @@ export function EquipmentClient({ initial, today, me, openReportId, openAssetId 
     stocktakes: data.stocktakes.length, reports: data.reports.length,
   })[v];
 
-  const attention: AttentionItem[] = due.map((it, i) => ({
+  const attention: AttentionItem[] = [...data.loadUpProblems.map((p): AttentionItem => ({
+    key: `lu-${p.sheetId}`, level: "overdue", tag: "Load-up problem", name: `Job ${p.jobNo}, load-up sheet ${p.sheetId}`,
+    detail: `Reported ${niceDate(p.date)}`, onOpen: () => router.push(`/jobs/${p.jobNo}/load-up?sheet=${p.sheetId}`),
+  })), ...due.map((it, i): AttentionItem => ({
     key: `${i}-${it.open.kind}-${it.open.id}-${it.what}`,
     level: it.tone === "overdue" ? "overdue" : "soon",
     tag: it.what,
     name: it.name,
     detail: it.detail,
     onOpen: () => setOpen({ kind: it.open.kind, id: it.open.id } as Open),
-  }));
+  }))];
   const empty = q || where || cat ? "Nothing matches." : "Nothing here yet.";
 
   return (

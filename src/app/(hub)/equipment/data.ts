@@ -136,6 +136,8 @@ export type EquipmentData = {
   materialCategories: string[];
   units: string[];
   reasons: string[];
+  // Load-up sheets with problems the office hasn't sorted (shown under Needs attention).
+  loadUpProblems: { sheetId: number; jobNo: string; date: string }[];
 };
 
 type Sql = postgres.Sql | postgres.TransactionSql;
@@ -229,7 +231,7 @@ async function stocktakeRows(sql: Sql, id: number | null): Promise<StocktakeRow[
 // Everything the page shows. Saves return it fresh too, since one stock move can change several lists.
 export async function loadEquipment(given?: Sql): Promise<EquipmentData> {
   const sql = given ?? (await readDb());
-  const [assets, services, materials, stock, stocktakes, reports, vehicles, people, suppliers, places, assetCats, matCats, units, reasons, usedPlaces, substances] = await Promise.all([
+  const [assets, services, materials, stock, stocktakes, reports, vehicles, people, suppliers, places, assetCats, matCats, units, reasons, usedPlaces, substances, loadUpProblems] = await Promise.all([
     sql`select a.*, j.job_no as on_job_no, p.due_back as on_job_due_back, p.out_with_label as on_job_with
       from assets a left join job_plant p on p.asset_id = a.id and p.returned_at is null left join jobs j on j.id = p.job_id
       order by lower(a.name), a.asset_tag`,
@@ -251,6 +253,9 @@ export async function loadEquipment(given?: Sql): Promise<EquipmentData> {
                          union select distinct location_place from material_stock where location_place is not null`,
     sql<{ id: string; product: string; supplier: string | null }[]>`
       select c.id, c.product, s.name as supplier from substances c left join suppliers s on s.id = c.supplier_id order by lower(c.product), c.id`,
+    sql<{ id: string; job_no: string; at: Date }[]>`
+      select s.id, j.job_no, coalesce(s.loaded_at, s.updated_at, s.created_at) as at from load_up_sheets s join jobs j on j.id = s.job_id
+      where s.problems_open order by at`,
   ]);
   return {
     assets: assets.map(toAsset),
@@ -267,6 +272,7 @@ export async function loadEquipment(given?: Sql): Promise<EquipmentData> {
     materialCategories: mergeOptions([], [...matCats, ...materials.map((m) => s(m.category)).filter(Boolean)]),
     units: mergeOptions(DEFAULT_UNITS, units),
     reasons: mergeOptions(DEFAULT_REASONS, reasons),
+    loadUpProblems: loadUpProblems.map((p) => ({ sheetId: Number(p.id), jobNo: p.job_no, date: isoTime(p.at)!.slice(0, 10) })),
   };
 }
 
