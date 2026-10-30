@@ -130,6 +130,16 @@ Never commit or push to `main`; every change goes through a pull request (`main`
 - **Screenshots show real data:** save them outside the repo (the script's default is the OS temp folder) or in `private/screens/` (git-ignored). Never commit them; never put them in the public copy.
 - The faking map (`private/fakemap.py`) now also fakes mobiles and geographic phone numbers, emails and postcodes. Run it on anything you bring into `/legacy`.
 
+## Parity decisions for Registers (Ethan, 30/10/2026)
+
+From the parity report and the live screenshots (Core took them 30/10; take your own with `scripts/old-hub.mjs`).
+
+- **Done by Registers (PR #51):** "Found" closes the job booking; the yard app has live's four tabs; the overdue plant list and its Back in the yard / Extend / Move actions (below).
+- **Plant overdue back cards:** Core builds the Actions board cards and their drawer on Registers' functions in `src/app/(hub)/_site/plant.ts` (see "Plant overdue back" below). Registers owns the functions; Core owns the board.
+- **Equipment:** live has no Service log, Movement history or Materials to order lists (they are report types: Movements, Low stock). The item record has a Photos tab; status pills are All / In service / Needs repair / Due soon.
+- **Report dialogs:** every register page now uses the shared `ReportDialog` (`src/components/ui/report-dialog.tsx`) and `Button` (`src/components/ui/button.tsx`). Core switched Fleet, Team, Training, Insurance, Requests, Equipment, Subcontractors and Time off. Pull `main` before your next change to those pages.
+- **Person pickers** don't need "add new"; they link to Team instead (`docs/decisions.md`).
+
 ## Plant overdue back (Registers, 30/10/2026; for Core's Actions board cards)
 - **The list:** `overduePlant(sql, today)` in `src/app/(hub)/_site/plant.ts` returns plant still out on a job whose due back date is before today, oldest first: `{ bookingId, assetId, item, jobId, jobNo, outWith, dueBack }`. Group the cards by job (`jobNo`) or by `outWith`.
 - **The actions** (server-side, one transaction each, all in the same file): `returnPlant(tx, { bookingId, to, by })` (Back in the yard; `to` is a location, normally `{ place: "CBS Warehouse" }`), `extendPlant(tx, { bookingId, dueBack, by })` (Extend) and `movePlant(tx, { bookingId, toJobId, to: null, dueBack, by })` (Move to another job, with whoever has it). They throw `PlantRefused` with a message to show. The yard Plant tab and the job's Plant page already use them.
@@ -142,7 +152,8 @@ Ethan approved one page layout on 29/10/2026 (`docs/decisions.md`, "Page standar
 - `PageHeader` (white header) with `bare` when the page has a `PageTop`.
 - `RegisterLayout` (`src/components/ui/page-top.tsx`) around the page: pass your own `AttentionItem`s (overdue / soon, tag, name, detail, open) and it draws the Needs attention panel down the right (320px, » to hide, All clear when empty, a button bottom right under 1100px). The page's own `main` has no padding; `RegisterLayout` adds it.
 - `PageTop`: title and "N records"; Reports ▾ (Create report, choosing what to include); More ▾ only if needed; one orange + New (one kind: "+ New vehicle"; several kinds: "+ New ▾").
-- Under it, in this order: `FilterPills`, then `FilterRow` (with `SearchBox`), then `DataTable` (first column bold, `sub` for the grey line) and `StatusPill` (`src/components/ui/register.tsx`).
+- Under it, in this order: `FilterPills`, then `FilterRow` (with `SearchBox`), then `DataTable` (first column bold, `sub` for the grey line; on phones it shows stacked rows, and `phone: false` leaves a column out there) and `StatusPill` (`src/components/ui/register.tsx`).
+- `Button` (`src/components/ui/button.tsx`) for every button (tones primary / secondary / danger / quiet; it disables itself while its click is saving), and `ReportDialog` (`src/components/ui/report-dialog.tsx`) for every Create report. No hand-built page tops, panels, tables, buttons or report dialogs; menu items change only in `nav.tsx`.
 - No due or attention panels, or extra buttons, between the page top and the filter pills: those items go into Needs attention.
 - Team tabs (`src/components/shell/team-tabs.tsx`) on Training and qualifications (`/training`) and Team requests (`/requests`). Neither is a menu item of its own: the menu highlights Team on them. Core added the "Team" title and the tabs to both pages when merging main; the rest of their layout update is Registers'.
 - Match the build's look, not live (`docs/decisions.md`, "The build's look is the approved standard").

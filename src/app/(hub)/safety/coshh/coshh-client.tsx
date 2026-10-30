@@ -14,7 +14,7 @@ import { addMonths, dueState, niceDate } from "../../_registers/dates";
 import { Choice, Section } from "../../_registers/ui";
 import { deleteSubstance, saveSubstance, setSdsFile } from "../actions";
 import type { SubstanceData, SubstanceRow } from "../data";
-import { CheckGroup, GhsIcon, GhsPicker, PersonSelect, ReportDialog, SupplierSelect } from "../parts";
+import { CheckGroup, GhsIcon, GhsPicker, PersonSelect, SafetyReport, SupplierSelect } from "../parts";
 import { GHS, PPE, ROUTES, substanceDueItems, SUBSTANCE_STATUSES, WHO } from "../rules";
 import { SafetyTabs } from "../tabs";
 
@@ -234,7 +234,7 @@ export function CoshhClient({ initial, today, openId }: { initial: SubstanceData
       />
       <DocViewer file={viewing} onClose={() => setViewing(null)} />
 
-      <ReportDialog
+      <SafetyReport
         open={reportOpen}
         onClose={() => setReportOpen(false)}
         title="CoSHH register report"

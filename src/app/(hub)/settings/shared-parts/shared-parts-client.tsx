@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { ReportDialog } from "@/components/ui/report-dialog";
 import { DocViewer, type ViewableFile } from "@/components/ui/doc-viewer";
 import { TextField } from "@/components/ui/fields";
 import { GuardedForm, SaveButton } from "@/components/ui/guarded-form";
@@ -32,6 +34,7 @@ export function SharedPartsClient({
   const [notes, setNotes] = useState(initialNotes);
   const [noteQuery, setNoteQuery] = useState("");
   const [deleting, setDeleting] = useState<DemoNote | null>(null);
+  const [reportOpen, setReportOpen] = useState(false);
   const [drawer, setDrawer] = useState(false);
   const [files, setFiles] = useState(initialFiles);
   const [viewing, setViewing] = useState<ViewableFile | null>(null);
@@ -101,6 +104,37 @@ export function SharedPartsClient({
         <p className="text-sm text-muted mb-3">A sample document in the one house format every builder PDF uses (test job 12).</p>
         <button type="button" onClick={() => setPdfOpen(true)} className="px-4 py-2 rounded-lg border border-dark font-semibold">Open sample PDF</button>
       </Card>
+
+      <Card title="Buttons and Create report">
+        <p className="text-sm text-muted mb-3">The one Button: primary (orange, one per page or dialog), secondary, danger and quiet. The slow one disables itself until its click finishes, so it can&apos;t be pressed twice. Create report is the one report dialog every page uses.</p>
+        <div className="flex flex-wrap gap-2">
+          <Button tone="primary">Primary</Button>
+          <Button>Secondary</Button>
+          <Button tone="danger">Danger</Button>
+          <Button tone="quiet">Quiet</Button>
+          <Button busyLabel="Working…" onClick={() => new Promise((r) => setTimeout(r, 1500))}>Slow click</Button>
+          <Button tone="primary" onClick={() => setReportOpen(true)}>Create report</Button>
+        </div>
+      </Card>
+
+      <ReportDialog
+        open={reportOpen}
+        onClose={() => setReportOpen(false)}
+        id="shared-parts"
+        note="A test report. It opens the sample PDF."
+        fileName="Job 12 - Sample document.pdf"
+        groups={[
+          { key: "which", label: "Which records", type: "pick", initial: "all", options: [{ value: "all", label: "All" }, { value: "due", label: "Only those due" }] },
+          { key: "cols", label: "Columns", type: "ticks", twoColumns: true, initial: ["a", "b"], options: [
+            { value: "a", label: "Name" }, { value: "b", label: "Status" },
+            { value: "c", label: "Cost", hint: "3 with costs" },
+            { value: "d", label: "Notes", off: (st) => (st.which === "due" ? "Not on the due list" : false) },
+          ] },
+          { key: "when", label: "Dates", type: "dates", initial: ["", ""], options: [{ value: "from", label: "From" }, { value: "to", label: "To" }] },
+        ]}
+        check={(h) => (h.ticked("cols").length ? null : "Tick at least one column.")}
+        url={() => "/api/pdf/sample"}
+      />
 
       <Drawer open={drawer} onClose={() => setDrawer(false)} title="Test drawer">
         {Array.from({ length: 60 }, (_, i) => (

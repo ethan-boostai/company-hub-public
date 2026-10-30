@@ -14,7 +14,7 @@ async function Loader({ searchParams }: { searchParams: Promise<{ older?: string
 export default function ActionsPage(props: PageProps<"/actions">) {
   return (
     <>
-      <PageHeader title="Actions board" />
+      <PageHeader title="Actions board" bare />
       <main className="p-4 sm:p-6">
         <Suspense fallback={<p className="text-sm text-muted">Loading tasks…</p>}>
           <Loader searchParams={props.searchParams as Promise<{ older?: string }>} />

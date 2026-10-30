@@ -4,11 +4,14 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { PageTabs } from "@/components/shell/page-tabs";
 import { inputClass } from "@/components/ui/fields";
+import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/overlay";
-import { PageTop } from "@/components/ui/page-top";
+import { PageTop, RegisterLayout } from "@/components/ui/page-top";
+import { ReportDialog } from "@/components/ui/report-dialog";
 import { DataTable, FilterPills, FilterRow, StatusPill, type Column } from "@/components/ui/register";
 import { SearchBox } from "@/components/ui/search-box";
 import { createJobType } from "./actions";
+import { TEMPLATE_REPORT_COLUMNS, TEMPLATE_REPORT_DETAIL, TEMPLATE_REPORT_WHICH } from "./report-options";
 
 type Row = { id: number; key: string; name: string; status: "active" | "retired"; steps: number; hazards: number; used: number };
 type Filter = "active" | "retired" | "all";
@@ -21,6 +24,7 @@ export function TemplatesClient({ rows }: { rows: Row[] }) {
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState("");
+  const [reportOpen, setReportOpen] = useState(false);
 
   const FILTERS: { value: Filter; label: string; test: (r: Row) => boolean }[] = [
     { value: "active", label: "In use", test: (r) => r.status === "active" },
@@ -53,8 +57,14 @@ export function TemplatesClient({ rows }: { rows: Row[] }) {
   ];
 
   return (
-    <div className="p-4 sm:p-6">
-      <PageTop title="Templates" count={shown.length} newAction={{ label: "New job type", onSelect: () => { setName(""); setMsg(""); setAdding(true); } }}>
+    // Job types have no review dates, so Needs attention stays "All clear" (it's on every register page).
+    <RegisterLayout attention={[]}>
+      <PageTop
+        title="Templates"
+        count={shown.length}
+        reports={[{ label: "Create report", hint: "Choose which job types and what to show", onSelect: () => setReportOpen(true) }]}
+        newAction={{ label: "New job type", onSelect: () => { setName(""); setMsg(""); setAdding(true); } }}
+      >
         <PageTabs label="Templates" tabs={[{ key: "rams", label: "RAMS job types", href: "/safety/templates" }]} active="rams" />
       </PageTop>
       <p className="mb-3 text-sm text-muted">Each job type is what a new CBS RAMS starts with (Job &gt; RAMS &gt; + New &gt; CBS RAMS): its steps, hazards from the library, PPE and permits.</p>
@@ -72,9 +82,22 @@ export function TemplatesClient({ rows }: { rows: Row[] }) {
             <input value={name} onChange={(e) => setName(e.target.value)} spellCheck className={inputClass} placeholder="e.g. Loft conversion" />
           </label>
           {msg && <p role="alert" className="mb-3 text-sm text-danger">{msg}</p>}
-          <button type="button" onClick={create} disabled={busy} className="px-4 py-2 rounded-lg bg-brand text-white font-semibold disabled:opacity-50">{busy ? "Creating…" : "Create job type"}</button>
+          <Button tone="primary" onClick={create} busy={busy} busyLabel="Creating…">Create job type</Button>
         </div>
       </Modal>
-    </div>
+
+      <ReportDialog
+        open={reportOpen}
+        onClose={() => setReportOpen(false)}
+        id="templates"
+        fileName="RAMS job types.pdf"
+        groups={[
+          { key: "which", label: "Job types", type: "pick", initial: filter, options: TEMPLATE_REPORT_WHICH.map((w) => ({ value: w.value, label: w.label })) },
+          { key: "cols", label: "Columns", type: "ticks", initial: TEMPLATE_REPORT_COLUMNS.filter((c) => c.default).map((c) => c.key), options: TEMPLATE_REPORT_COLUMNS.map((c) => ({ value: c.key, label: c.label })) },
+          { key: "detail", label: "Under the list", type: "ticks", initial: [], options: TEMPLATE_REPORT_DETAIL.map((d) => ({ value: d.key, label: d.label })) },
+        ]}
+        url={(h) => `/safety/templates/report?which=${h.pick("which")}&cols=${h.ticked("cols").join(",")}&detail=${h.ticked("detail").join(",")}`}
+      />
+    </RegisterLayout>
   );
 }

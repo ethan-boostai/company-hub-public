@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PageHeader } from "@/components/shell/page-header";
+import { isLiveSite } from "@/lib/preview-only";
 
 export default function HomePage() {
   return (
@@ -13,7 +14,9 @@ export default function HomePage() {
           </p>
           <ul className="text-sm list-disc pl-5 space-y-1">
             <li><Link className="underline" href="/people">Team</Link>: who can sign in, their PINs and the crew list.</li>
-            <li><Link className="underline" href="/settings/shared-parts">Shared parts</Link>: the building blocks every page will use, to test.</li>
+            {!isLiveSite() && (
+              <li><Link className="underline" href="/settings/shared-parts">Shared parts</Link>: the building blocks every page uses, to test (previews only).</li>
+            )}
           </ul>
         </div>
       </main>

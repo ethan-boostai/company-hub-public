@@ -7,7 +7,8 @@ import { PageTop, RegisterLayout, type AttentionItem } from "@/components/ui/pag
 import { DataTable, FilterPills, FilterRow, StatusPill, type Column } from "@/components/ui/register";
 import type { CompaniesData, CompanyRow, DocRow } from "./data";
 import { CompanyForm, DocForm } from "./forms";
-import { ReportDialog } from "./report-dialog";
+import { ReportDialog } from "@/components/ui/report-dialog";
+import { REPORT_COLUMNS } from "./report-options";
 import { docDueItems, docState, KIND_LABEL, type Kind } from "./rules";
 
 type Filter = "all" | Kind;
@@ -135,7 +136,7 @@ export function CompaniesClient({ initial, today }: { initial: CompaniesData; to
 
       <CompanyDrawer open={open} data={data} today={today} onOpen={setOpen}
         companySaved={companySaved} companyDeleted={companyDeleted} docSaved={docSaved} docDeleted={docDeleted} />
-      <ReportDialog open={report} onClose={() => setReport(false)} />
+      <CompaniesReport open={report} onClose={() => setReport(false)} />
     </RegisterLayout>
   );
 }
@@ -169,5 +170,58 @@ function CompanyDrawer({
       <DocForm key={doc ? JSON.stringify(doc) : "new"} kind={open.kind} companyId={open.companyId} company={company} doc={doc}
         items={data.docItems} today={today} onOpen={onOpen} onSaved={docSaved} onDeleted={() => doc && docDeleted(doc)} />
     </Drawer>
+  );
+}
+
+// "Create report": the office chooses what goes in, then the PDF opens in-window.
+function CompaniesReport({ open, onClose }: { open: boolean; onClose: () => void }) {
+  return (
+    <ReportDialog
+      open={open}
+      onClose={onClose}
+      id="subcontractors"
+      fileName="Subcontractors and suppliers.pdf"
+      groups={[
+        {
+          key: "include",
+          label: "Include",
+          type: "ticks",
+          initial: ["subcontractor", "supplier"],
+          options: [
+            { value: "subcontractor", label: "Subcontractors" },
+            { value: "supplier", label: "Suppliers" },
+            { value: "approved", label: "Only subcontractors approved to work" },
+          ],
+        },
+        {
+          key: "cols",
+          label: "Columns",
+          type: "ticks",
+          twoColumns: true,
+          initial: REPORT_COLUMNS.filter((c) => c.default).map((c) => c.key),
+          options: REPORT_COLUMNS.map((c) => ({ value: c.key, label: c.label })),
+        },
+        {
+          key: "docs",
+          label: "Documents",
+          type: "pick",
+          initial: "all",
+          options: [
+            { value: "all", label: "List every document" },
+            { value: "due", label: "Only expired or expiring documents" },
+            { value: "none", label: "Leave documents out" },
+          ],
+        },
+      ]}
+      check={(h) => (!h.on("include", "subcontractor") && !h.on("include", "supplier") ? "Tick subcontractors, suppliers or both." : null)}
+      url={(h) => {
+        const p = new URLSearchParams();
+        p.set("include", ["subcontractor", "supplier"].filter((v) => h.on("include", v)).join(","));
+        p.set("cols", h.ticked("cols").join(","));
+        p.set("docs", h.pick("docs") || "all");
+        if (h.on("include", "approved")) p.set("approved", "1");
+        return `/subcontractors/report?${p}`;
+      }}
+    />
   );
 }

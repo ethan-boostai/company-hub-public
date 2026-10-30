@@ -11,7 +11,7 @@ async function Loader() {
 export default function JobsPage() {
   return (
     <>
-      <PageHeader title="Jobs" />
+      <PageHeader title="Jobs" bare />
       <main className="p-4 sm:p-6 max-w-6xl">
         <Suspense fallback={<p className="text-sm text-muted">Loading jobs…</p>}>
           <Loader />

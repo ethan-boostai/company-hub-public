@@ -83,6 +83,7 @@ export function GlobalSearch({ initial = "" }: { initial?: string }) {
   const router = useRouter();
   const { openTask } = useTasks();
   const [q, setQ] = useState(initial);
+  const [phoneOpen, setPhoneOpen] = useState(false);
   // Results are kept with the words they were for, so stale results never show.
   const [found, setFound] = useState<{ term: string; hits: Hit[] }>({ term: "", hits: [] });
   const term = q.trim();
@@ -111,28 +112,57 @@ export function GlobalSearch({ initial = "" }: { initial?: string }) {
   const GROUP = { job: "Jobs", task: "Tasks", person: "People" } as const;
   const results: Suggestion[] = hits.map((h) => ({ key: `${h.kind}-${h.id}`, group: GROUP[h.kind], title: h.title, sub: h.sub }));
 
+  const box = (onDone?: () => void) => (
+    <SearchSuggest
+      light
+      value={q}
+      onChange={setQ}
+      results={results}
+      busy={busy}
+      label="Search the hub"
+      placeholder="Search jobs, people, documents…"
+      emptyText={`Nothing matches "${q.trim()}".`}
+      onPick={(s) => {
+        const h = hits.find((x) => `${x.kind}-${x.id}` === s.key);
+        if (!h) return;
+        onDone?.();
+        if (h.kind === "task") openTask(h.id);
+        else router.push(h.href);
+      }}
+      onSubmit={() => {
+        if (!q.trim()) return;
+        onDone?.();
+        router.push(`/search?q=${encodeURIComponent(q.trim())}`);
+      }}
+    />
+  );
+
   return (
-    <div role="search" className="flex-1 min-w-0 max-w-xl">
-      <SearchSuggest
-        light
-        value={q}
-        onChange={setQ}
-        results={results}
-        busy={busy}
-        label="Search the hub"
-        placeholder="Search jobs, people, documents…"
-        emptyText={`Nothing matches "${q.trim()}".`}
-        onPick={(s) => {
-          const h = hits.find((x) => `${x.kind}-${x.id}` === s.key);
-          if (!h) return;
-          if (h.kind === "task") openTask(h.id);
-          else router.push(h.href);
-        }}
-        onSubmit={() => {
-          if (q.trim()) router.push(`/search?q=${encodeURIComponent(q.trim())}`);
-        }}
-      />
-    </div>
+    <>
+      {/* Wider screens: the box sits in the header row. */}
+      <div role="search" className="hidden sm:block flex-1 min-w-0 max-w-xl">{box()}</div>
+      {/* Phones: a search button; the box opens as a full-width row under the header. */}
+      <button
+        type="button"
+        onClick={() => setPhoneOpen(!phoneOpen)}
+        aria-expanded={phoneOpen}
+        aria-label="Open search"
+        className="sm:hidden flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-line bg-white text-ink"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 fill-none stroke-current" strokeWidth={2} strokeLinecap="round">
+          <circle cx="11" cy="11" r="6.5" />
+          <path d="M16 16l4 4" />
+        </svg>
+      </button>
+      {phoneOpen && (
+        <div role="search" className="sm:hidden absolute inset-x-0 top-full z-30 flex items-start gap-2 border-b border-line bg-white px-3 py-3 shadow-md">
+          <div className="min-w-0 flex-1">{box(() => setPhoneOpen(false))}</div>
+          <button type="button" onClick={() => setPhoneOpen(false)} className="h-11 rounded-lg border border-line px-3 text-sm text-ink">
+            Close
+          </button>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -144,9 +174,10 @@ export function NewTaskButton() {
     <button
       type="button"
       onClick={() => newGenericTask({ jobNo: /^\/jobs\/(\d+)/.exec(window.location.pathname)?.[1] ?? null })}
-      className="h-11 rounded-lg bg-brand px-4 text-[15px] font-semibold text-white hover:bg-brand-dark whitespace-nowrap"
+      className="h-11 rounded-lg bg-brand px-3 sm:px-4 text-[15px] font-semibold text-white hover:bg-brand-dark whitespace-nowrap"
     >
-      + New task
+      + <span className="sm:hidden">Task</span>
+      <span className="hidden sm:inline">New task</span>
     </button>
   );
 }

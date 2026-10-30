@@ -5,7 +5,7 @@ import { getCurrentPerson } from "@/lib/auth/session";
 import { formText, guarded, type ActionResult } from "@/lib/actions";
 import { jobTitle } from "@/lib/jobs/stages";
 import { activePeople, getTask, pickerTiles, taskFiles, taskHistory } from "@/lib/tasks/data";
-import { createTask, removeTask, sendBack, setStatus, setVerified, TaskError, updateTask } from "@/lib/tasks/service";
+import { createTask, removeTask, sendBack, setSide, setStatus, setVerified, TaskError, updateTask } from "@/lib/tasks/service";
 import type { PickerTile, TaskStatus, TaskView } from "@/lib/tasks/types";
 
 const STATUSES: TaskStatus[] = ["todo", "in_progress", "done"];
@@ -159,6 +159,18 @@ export async function sendTaskBack(id: number, to: "todo" | "in_progress", note:
     try {
       await db().begin((tx) => sendBack(tx, id, to === "in_progress" ? "in_progress" : "todo", note, person.name));
       return { ok: true, message: "Sent back to site." };
+    } catch (e) {
+      return failed(e);
+    }
+  });
+}
+
+// Send to site / Move to office (task panel).
+export async function moveTaskSide(id: number, side: "site" | "office", requestKey: string): Promise<ActionResult> {
+  return guarded(requestKey, async (person) => {
+    try {
+      await db().begin((tx) => setSide(tx, id, side === "site" ? "site" : "office", person.name));
+      return { ok: true, message: side === "site" ? "Sent to site. The crew see it on the job portal." : "Moved to the office. It's off the job portal." };
     } catch (e) {
       return failed(e);
     }

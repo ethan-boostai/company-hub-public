@@ -13,7 +13,7 @@ import { addMonths, dueState, niceDate } from "../../_registers/dates";
 import { Choice } from "../../_registers/ui";
 import { deleteHazard, saveHazard, setHazardStatus } from "../actions";
 import type { HazardData, HazardRow } from "../data";
-import { CheckGroup, PersonSelect, RatingPill, ReportDialog, RiskFields } from "../parts";
+import { CheckGroup, PersonSelect, RatingPill, SafetyReport, RiskFields } from "../parts";
 import { ACTIVITY_LIST, CONTROL_CODES, hazardDueItems, HAZARD_STATUSES } from "../rules";
 import { SafetyTabs } from "../tabs";
 
@@ -167,7 +167,7 @@ export function HazardsClient({ initial, today, openId }: { initial: HazardData;
         }}
       />
 
-      <ReportDialog
+      <SafetyReport
         open={reportOpen}
         onClose={() => setReportOpen(false)}
         title="Hazard register report"

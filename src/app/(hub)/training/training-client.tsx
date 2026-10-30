@@ -11,11 +11,13 @@ const PILL_TONE: Record<TicketState, PillTone> = { valid: "green", expiring: "am
 import type { Saved } from "./actions";
 import type { TrainingData } from "./data";
 import { TrainingForm, type Open } from "./forms";
-import { ReportDialog, type MatrixChoice } from "./report-dialog";
+import { ReportDialog } from "@/components/ui/report-dialog";
 import {
   bestFor, bestRecords, cellText, isSuperseded, MATRIX_COLOURS, matrixPeople, matrixTickets, STANDARD_QUALS, ticketLabel, ticketState,
   trainingDueItems, type PeopleChoice, type TicketChoice, type TicketState,
 } from "./rules";
+
+type MatrixChoice = { people: PeopleChoice; tickets: TicketChoice; chosen: string[] };
 
 type Tab = "records" | "matrix";
 
@@ -202,7 +204,68 @@ export function TrainingClient({ initial, today, start }: { initial: TrainingDat
           </Drawer>
         );
       })()}
-      <ReportDialog open={reporting} onClose={() => setReporting(false)} matrix={matrix} standardCount={STANDARD_QUALS.length} />
+      <TrainingReport open={reporting} onClose={() => setReporting(false)} matrix={matrix} standardCount={STANDARD_QUALS.length} />
     </RegisterLayout>
+  );
+}
+
+// "Create report": the training matrix as a landscape house PDF. Starts from what the matrix shows
+// (the remembered choices are kept per matrix view, so a new view starts from that view).
+function TrainingReport({ open, onClose, matrix, standardCount }: { open: boolean; onClose: () => void; matrix: MatrixChoice; standardCount: number }) {
+  const none = matrix.chosen.length === 0;
+  const startTickets = matrix.tickets === "chosen" && none ? "on_file" : matrix.tickets;
+  return (
+    <ReportDialog
+      open={open}
+      onClose={onClose}
+      id={`training-${matrix.people}-${startTickets}`}
+      note="Training matrix, A4 landscape."
+      fileName="Training matrix.pdf"
+      groups={[
+        {
+          key: "people",
+          label: "People",
+          type: "pick",
+          initial: matrix.people,
+          options: [
+            { value: "active", label: "Everyone active" },
+            { value: "crew", label: "Crew list only (ticked on People)" },
+          ],
+        },
+        { key: "empty", label: "People with no tickets", type: "ticks", initial: ["empty"], options: [{ value: "empty", label: "Include people with no tickets" }] },
+        {
+          key: "tickets",
+          label: "Tickets",
+          type: "pick",
+          initial: startTickets,
+          options: [
+            { value: "on_file", label: "Tickets on file" },
+            { value: "standard", label: `All standard tickets (${standardCount})` },
+            { value: "chosen", label: `The tickets chosen on the matrix (${matrix.chosen.length})`, off: () => (none ? "No tickets chosen on the matrix" : false) },
+          ],
+        },
+        {
+          key: "also",
+          label: "Also",
+          type: "ticks",
+          initial: ["dates", "certs"],
+          options: [
+            { value: "dates", label: "Show expiry dates" },
+            { value: "certs", label: "Add the company accreditations" },
+          ],
+        },
+      ]}
+      url={(h) => {
+        const p = new URLSearchParams();
+        const tickets = h.pick("tickets") === "chosen" && none ? "on_file" : h.pick("tickets") || "on_file";
+        p.set("people", h.pick("people") || "active");
+        p.set("tickets", tickets);
+        if (tickets === "chosen") for (const t of matrix.chosen) p.append("t", t);
+        if (h.on("also", "dates")) p.set("dates", "1");
+        if (h.on("empty", "empty")) p.set("empty", "1");
+        if (h.on("also", "certs")) p.set("certs", "1");
+        return `/training/report?${p}`;
+      }}
+    />
   );
 }

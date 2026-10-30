@@ -81,6 +81,33 @@ describe.skipIf(!/@(127\.0\.0\.1|localhost)[:/]/.test(url))("tasks", async () =>
     expect(await task(id)).toMatchObject({ status: "todo", submitted_at: null, sent_back_note: "Photo of the guard missing", sent_back_by: by });
   });
 
+  it("send to site / move to office: one-off and two-sided tasks move; office-only requirements stay", async () => {
+    const one = await run((tx) => svc.createTask(tx, { jobId: approved, reqKey: null, title: "Test task move sides" }, by));
+    await run((tx) => svc.setSide(tx, one, "site", by));
+    expect(await task(one)).toMatchObject({ side: "site" });
+    await sql`update tasks set submitted_at = now(), submitted_by = 'Test Site Lead' where id = ${one}`;
+    await run((tx) => svc.setSide(tx, one, "office", by));
+    expect(await task(one)).toMatchObject({ side: "office", submitted_at: null });
+
+    const survey = await run((tx) => svc.createTask(tx, { jobId: approved, reqKey: "survey", side: "office" }, by));
+    await run((tx) => svc.setSide(tx, survey, "site", by));
+    expect((await task(survey)).side).toBe("site");
+
+    const pos = await run((tx) => svc.createTask(tx, { jobId: approved, reqKey: "sub_pos" }, by));
+    await expect(run((tx) => svc.setSide(tx, pos, "site", by))).rejects.toThrow(/office task/);
+
+    const permit = await run((tx) => svc.createTask(tx, { jobId: approved, reqKey: "permits" }, by)).catch(() => 0);
+    if (permit) {
+      await run((tx) => svc.setSide(tx, permit, "office", by));
+      expect((await task(permit)).side).toBe("office");
+    }
+
+    const generic = await run((tx) => svc.createTask(tx, { jobId: null, reqKey: null, title: "Test task no job side" }, by));
+    await expect(run((tx) => svc.setSide(tx, generic, "site", by))).rejects.toThrow(/no job/);
+    await run((tx) => svc.setStatus(tx, one, "done", by));
+    await expect(run((tx) => svc.setSide(tx, one, "site", by))).rejects.toThrow(/Done/);
+  });
+
   it("remove from job hides the task and switches the requirement off; it can be added again", async () => {
     const id = await run((tx) => svc.createTask(tx, { jobId: approved, reqKey: "coshh" }, by));
     await run((tx) => svc.removeTask(tx, id, by));

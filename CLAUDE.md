@@ -55,6 +55,7 @@ This repo replaces the original n8n-served hub (pages served from webhooks on th
 - No page scrollbar behind a drawer or modal. Only the drawer scrolls.
 - Left menu always available. On mobile: menu button and a narrow drawer, no sticky menu.
 - Standard page layout (`docs/decisions.md`, "Page standard"): white header with ‹ Back, global search, + New task and the signed-in name pill (Sign out in its menu); the page top with the title and "N records", then Needs attention, Reports ▾, More ▾ and one orange + New. Build pages from the shared parts only.
+- Every hub page uses `PageHeader`, `PageTop`, `RegisterLayout`, `FilterPills`, `DataTable`, `Button` and `ReportDialog`. No hand-built page tops, panels, tables, buttons or report dialogs. Menu items only change in `nav.tsx`.
 - Every list that holds data gets its own search box.
 - Every dropdown lets users add new options.
 - Documents and photos open in-window (dark backdrop) with an option to open full screen in a new tab.

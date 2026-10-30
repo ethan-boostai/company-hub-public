@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Drawer, Modal } from "@/components/ui/overlay";
-import { DocViewer, type ViewableFile } from "@/components/ui/doc-viewer";
+import { Drawer } from "@/components/ui/overlay";
+import { ReportDialog } from "@/components/ui/report-dialog";
 import { SearchBox } from "@/components/ui/search-box";
 import { dueState, niceDate, niceDateTime } from "../_registers/dates";
 import { dueTone } from "../_registers/ui";
@@ -47,7 +47,6 @@ export function FleetClient({ initial, today, openVehicleId }: { initial: FleetD
     onOpen: () => setOpen(it.open ?? { kind: "vehicle", id: it.vehicleId }),
   }));
   const [reportOpen, setReportOpen] = useState(false);
-  const [report, setReport] = useState<ViewableFile | null>(null);
 
   // Saves hand back the record and its vehicle as it now is (dates may have moved on).
   const saved = {
@@ -164,8 +163,7 @@ export function FleetClient({ initial, today, openVehicleId }: { initial: FleetD
       </div>
 
       <FleetDrawer open={open} data={data} today={today} onOpen={setOpen} saved={saved} deleted={deleted} />
-      <FleetReport open={reportOpen} onClose={() => setReportOpen(false)} onCreate={setReport} />
-      <DocViewer file={report} onClose={() => setReport(null)} />
+      <FleetReport open={reportOpen} onClose={() => setReportOpen(false)} />
     </RegisterLayout>
   );
 }
@@ -252,38 +250,33 @@ const REPORT_COLUMNS = [
 ] as const;
 
 // Fleet report: the office chooses which vehicles and which columns. Opens in-window.
-function FleetReport({ open, onClose, onCreate }: { open: boolean; onClose: () => void; onCreate: (f: ViewableFile) => void }) {
+function FleetReport({ open, onClose }: { open: boolean; onClose: () => void }) {
   return (
-    <Modal open={open} onClose={onClose} title="Create report" size="max-w-md">
-      <form
-        className="p-5"
-        onSubmit={(e) => {
-          e.preventDefault();
-          const f = new FormData(e.currentTarget);
-          const cols = REPORT_COLUMNS.map((c) => c.key).filter((k) => f.get(`col_${k}`) === "on");
-          const which = String(f.get("which") || "all");
-          onClose();
-          onCreate({ id: 0, name: "Fleet list.pdf", mime: "application/pdf", url: `/api/fleet/report?which=${which}&cols=${cols.join(",")}` });
-        }}
-      >
-        <fieldset className="mb-4">
-          <legend className="block text-sm font-medium mb-1">Vehicles</legend>
-          <select name="which" defaultValue="all" className="w-full rounded-lg border border-line bg-white px-3 py-2">
-            <option value="all">All vehicles</option>
-            <option value="attention">Only vehicles that need attention</option>
-          </select>
-        </fieldset>
-        <fieldset className="mb-5">
-          <legend className="block text-sm font-medium mb-1">Include</legend>
-          {REPORT_COLUMNS.map((c) => (
-            <label key={c.key} className="flex items-center gap-2 py-1 text-sm">
-              <input type="checkbox" name={`col_${c.key}`} defaultChecked={c.key !== "year" && c.key !== "miles"} className="h-4 w-4 accent-brand" />
-              {c.label}
-            </label>
-          ))}
-        </fieldset>
-        <button type="submit" className="px-4 py-2 rounded-lg bg-brand text-white font-semibold">Create report</button>
-      </form>
-    </Modal>
+    <ReportDialog
+      open={open}
+      onClose={onClose}
+      id="fleet"
+      fileName="Fleet list.pdf"
+      groups={[
+        {
+          key: "which",
+          label: "Vehicles",
+          type: "pick",
+          initial: "all",
+          options: [
+            { value: "all", label: "All vehicles" },
+            { value: "attention", label: "Only vehicles that need attention" },
+          ],
+        },
+        {
+          key: "cols",
+          label: "Include",
+          type: "ticks",
+          initial: REPORT_COLUMNS.map((c) => c.key).filter((k) => k !== "year" && k !== "miles"),
+          options: REPORT_COLUMNS.map((c) => ({ value: c.key, label: c.label })),
+        },
+      ]}
+      url={(h) => `/api/fleet/report?which=${h.pick("which") || "all"}&cols=${h.ticked("cols").join(",")}`}
+    />
   );
 }

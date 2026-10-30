@@ -1,9 +1,8 @@
 "use client";
 
+import { ReportDialog as SharedReportDialog } from "@/components/ui/report-dialog";
 import { useId, useState } from "react";
-import { DocViewer, type ViewableFile } from "@/components/ui/doc-viewer";
 import { inputClass } from "@/components/ui/fields";
-import { Modal } from "@/components/ui/overlay";
 import { StatusPill } from "@/components/ui/register";
 import { addSupplier } from "./actions";
 import type { Pick } from "./data";
@@ -185,8 +184,8 @@ export function SupplierSelect({ suppliers, defaultValue, error }: { suppliers: 
   );
 }
 
-// Reports ▾ > Create report: choose which records and which columns; the PDF opens in-window.
-export function ReportDialog({ open, onClose, title, fileName, url, whoOptions, columns }: {
+// Reports ▾ > Create report for Hazards and CoSHH: which records and which columns, in the shared dialog.
+export function SafetyReport({ open, onClose, title, fileName, url, whoOptions, columns }: {
   open: boolean;
   onClose: () => void;
   title: string;
@@ -195,39 +194,18 @@ export function ReportDialog({ open, onClose, title, fileName, url, whoOptions, 
   whoOptions: { value: string; label: string }[];
   columns: { key: string; label: string; on?: boolean }[];
 }) {
-  const [file, setFile] = useState<ViewableFile | null>(null);
   return (
-    <>
-      <Modal open={open} onClose={onClose} title={title} size="max-w-md">
-        <form
-          className="p-5"
-          onSubmit={(e) => {
-            e.preventDefault();
-            const f = new FormData(e.currentTarget);
-            const cols = columns.map((c) => c.key).filter((k) => f.get(`col_${k}`) === "on");
-            onClose();
-            setFile({ id: 0, name: fileName, mime: "application/pdf", url: `${url}?which=${encodeURIComponent(String(f.get("which") || ""))}&cols=${cols.join(",")}` });
-          }}
-        >
-          <fieldset className="mb-4">
-            <legend className="block text-sm font-medium mb-1">Include</legend>
-            <select name="which" aria-label="Which records" defaultValue={whoOptions[0]?.value} className={inputClass}>
-              {whoOptions.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-            </select>
-          </fieldset>
-          <fieldset className="mb-5">
-            <legend className="block text-sm font-medium mb-1">Columns</legend>
-            {columns.map((c) => (
-              <label key={c.key} className="flex items-center gap-2 py-1 text-sm">
-                <input type="checkbox" name={`col_${c.key}`} defaultChecked={c.on !== false} className="h-4 w-4 accent-brand" />
-                {c.label}
-              </label>
-            ))}
-          </fieldset>
-          <button type="submit" className="px-4 py-2 rounded-lg bg-brand text-white font-semibold">Create report</button>
-        </form>
-      </Modal>
-      <DocViewer file={file} onClose={() => setFile(null)} />
-    </>
+    <SharedReportDialog
+      open={open}
+      onClose={onClose}
+      id={`safety-${url}`}
+      title={title}
+      fileName={fileName}
+      groups={[
+        { key: "which", label: "Include", type: "pick", initial: whoOptions[0]?.value ?? "", options: whoOptions },
+        { key: "cols", label: "Columns", type: "ticks", initial: columns.filter((c) => c.on !== false).map((c) => c.key), options: columns.map((c) => ({ value: c.key, label: c.label })) },
+      ]}
+      url={(h) => `${url}?which=${encodeURIComponent(h.pick("which"))}&cols=${h.ticked("cols").join(",")}`}
+    />
   );
 }

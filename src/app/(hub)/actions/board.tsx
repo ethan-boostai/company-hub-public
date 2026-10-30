@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { PageTop } from "@/components/ui/page-top";
+import { FilterRow } from "@/components/ui/register";
 import { SearchBox } from "@/components/ui/search-box";
 import { isOverdue, TaskMarkers } from "@/components/tasks/task-bits";
 import { useTasks } from "@/components/tasks/task-provider";
@@ -30,14 +33,12 @@ function saveFilters(f: Filters) {
   }
 }
 
+// A filter dropdown in the shared filter row (filters pick from what's on the board, so no "add new").
 function Select({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: { value: string; label: string }[] }) {
   return (
-    <label className="text-sm">
-      <span className="block text-xs text-muted mb-0.5">{label}</span>
-      <select value={value} onChange={(e) => onChange(e.target.value)} className="rounded-lg border border-line bg-white px-2 py-1.5 text-sm max-w-[12rem]">
-        {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-      </select>
-    </label>
+    <select aria-label={label} value={value} onChange={(e) => onChange(e.target.value)} className="h-11 max-w-[13rem] rounded-lg border border-line bg-white px-3 text-[15px]">
+      {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+    </select>
   );
 }
 
@@ -68,12 +69,14 @@ export function ActionsBoard({ tasks: initial, olderShown }: { tasks: TaskView[]
     const jobs = new Map<string, string>();
     const who = new Map<string, string>();
     const cats = new Set<string>();
+    const heads = new Map<string, string>();
     for (const t of tasks) {
       if (t.jobNo) jobs.set(t.jobNo, `#${t.jobNo} ${t.jobTitle || ""}`.trim());
+      if (t.jobNo && !heads.has(t.jobNo)) heads.set(t.jobNo, ["Job " + t.jobNo, t.client, t.jobTitle].filter(Boolean).join(" · "));
       if (t.assigneeId) who.set(String(t.assigneeId), t.assignee || "");
       cats.add(t.category);
     }
-    return { jobs: [...jobs].sort((a, b) => Number(b[0]) - Number(a[0])), who: [...who].sort((a, b) => a[1].localeCompare(b[1])), cats: [...cats].sort() };
+    return { heads, jobs: [...jobs].sort((a, b) => Number(b[0]) - Number(a[0])), who: [...who].sort((a, b) => a[1].localeCompare(b[1])), cats: [...cats].sort() };
   }, [tasks]);
 
   const needle = q.trim().toLowerCase().replace(/^#/, "");
@@ -114,19 +117,17 @@ export function ActionsBoard({ tasks: initial, olderShown }: { tasks: TaskView[]
 
   return (
     <div>
-      <p className="text-sm text-muted mb-3">
-        {openCount} open · <span className={overdueCount ? "text-danger font-semibold" : ""}>{overdueCount} overdue</span>
-      </p>
-      <div className="flex flex-wrap items-end gap-3 mb-3">
-        <div className="w-full sm:w-72"><SearchBox value={q} onChange={setQ} placeholder="Search tasks, jobs, people" label="Search tasks" /></div>
+      <PageTop title="Actions board" countLabel={`${openCount} open · ${overdueCount} overdue`} />
+      <FilterRow>
+        <SearchBox value={q} onChange={setQ} placeholder="Search tasks, jobs, people" label="Search tasks" />
         <Select label="Job" value={f.job} onChange={(v) => setFilter({ job: v })} options={[{ value: "", label: "All jobs" }, { value: "none", label: "No job (office)" }, ...options.jobs.map(([v, l]) => ({ value: v, label: l }))]} />
         <Select label="Assigned to" value={f.who} onChange={(v) => setFilter({ who: v })} options={[{ value: "", label: "Anyone" }, { value: "none", label: "Not assigned" }, ...options.who.map(([v, l]) => ({ value: v, label: l }))]} />
-        <Select label="Category" value={f.category} onChange={(v) => setFilter({ category: v })} options={[{ value: "", label: "All" }, ...options.cats.map((c) => ({ value: c, label: c }))]} />
-        <Select label="Stage" value={f.stage} onChange={(v) => setFilter({ stage: v })} options={[{ value: "", label: "All" }, ...REQ_STAGES.map((s) => ({ value: s.key, label: s.label })), { value: "none", label: "One-off tasks" }]} />
-        <label className="flex items-center gap-1.5 text-sm pb-1.5"><input type="checkbox" checked={f.overdue} onChange={(e) => setFilter({ overdue: e.target.checked })} /> Overdue only</label>
-        <label className="flex items-center gap-1.5 text-sm pb-1.5"><input type="checkbox" checked={f.group} onChange={(e) => setFilter({ group: e.target.checked })} /> Group by job</label>
-        {filtered && <button type="button" className="text-sm underline pb-1.5" onClick={() => { setQ(""); setFilter(NO_FILTERS); }}>Clear</button>}
-      </div>
+        <Select label="Category" value={f.category} onChange={(v) => setFilter({ category: v })} options={[{ value: "", label: "All categories" }, ...options.cats.map((c) => ({ value: c, label: c }))]} />
+        <Select label="Stage" value={f.stage} onChange={(v) => setFilter({ stage: v })} options={[{ value: "", label: "All stages" }, ...REQ_STAGES.map((s) => ({ value: s.key, label: s.label })), { value: "none", label: "One-off tasks" }]} />
+        <Button size="page" aria-pressed={f.overdue} onClick={() => setFilter({ overdue: !f.overdue })}>{f.overdue && <span aria-hidden="true">✓</span>}Overdue</Button>
+        <Button size="page" aria-pressed={f.group} onClick={() => setFilter({ group: !f.group })}>{f.group && <span aria-hidden="true">✓</span>}Group by job</Button>
+        {filtered && <Button size="page" tone="quiet" onClick={() => { setQ(""); setFilter(NO_FILTERS); }}>Clear</Button>}
+      </FilterRow>
       {error && <p role="alert" className="text-sm text-danger mb-3">{error}</p>}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -151,7 +152,11 @@ export function ActionsBoard({ tasks: initial, olderShown }: { tasks: TaskView[]
               </h2>
               {groups.map((g) => (
                 <div key={g ?? "all"}>
-                  {g !== null && <p className="px-1 pt-1 pb-1 text-xs font-semibold text-muted">{g ? `Job ${g}` : "No job"}</p>}
+                  {g !== null && (
+                    <h3 className="px-1 pt-2 pb-1 text-xs font-semibold text-muted">
+                      {g ? options.heads.get(g) || `Job ${g}` : "No job"} ({list.filter((t) => (t.jobNo || "") === g).length})
+                    </h3>
+                  )}
                   <ul className="flex flex-col gap-2">
                     {list.filter((t) => g === null || (t.jobNo || "") === g).map((t) => (
                       <li key={t.id} draggable onDragStart={() => setDragId(t.id)} onDragEnd={() => setDragId(null)}
@@ -180,7 +185,7 @@ export function ActionsBoard({ tasks: initial, olderShown }: { tasks: TaskView[]
       {undo && (
         <div role="status" className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 rounded-lg bg-dark text-white px-4 py-2 text-sm flex gap-3 items-center shadow-lg">
           Moved “{undo.title}”.
-          <button type="button" className="underline font-semibold" onClick={() => move(undo.id, undo.from, true)}>Undo</button>
+          <Button size="small" tone="quiet" className="text-white underline hover:bg-transparent" onClick={() => move(undo.id, undo.from, true)}>Undo</Button>
         </div>
       )}
     </div>

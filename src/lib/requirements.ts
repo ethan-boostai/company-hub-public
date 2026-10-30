@@ -50,6 +50,8 @@ export const REQUIREMENTS: Requirement[] = [
   { key: "loadup", label: "Load-up (plant & materials)", stage: "approved_planning", side: "office", category: "Procurement", phase: 3, page: "load-up" },
   { key: "reactive_estimate", label: "Reactive Estimate", stage: "approved_planning", side: "office", category: "Paperwork" },
   { key: "order_materials", label: "Order Materials", stage: "approved_planning", side: "office", category: "Procurement" },
+  // Book the job into the ServiceM8 schedule (who's on site and when). One open task per job, as live.
+  { key: "book_in", label: "Book in Job", stage: "approved_planning", side: "office", category: "Office" },
 
   { key: "meetings", label: "Site meetings", stage: "approved_onsite", side: "office", category: "H&S", phase: 2 },
   { key: "permits", label: "Permits to work", stage: "approved_onsite", side: "site", category: "H&S", folder: "Permits", cdm: true, phase: 2, page: "permits", repeatable: true },
@@ -78,6 +80,15 @@ export function builtIn(key: string): Requirement | undefined {
 // Which + New task tabs offer a requirement.
 export function reqSides(r: Pick<Requirement, "side" | "bothSides">): Side[] {
   return r.bothSides ? ["office", "site"] : [r.side];
+}
+
+// Send to site / Move to office (Ethan, 30/10/2026): any on-site job task can move to the office;
+// an office job task can go to site if it's a one-off task or a requirement that also exists on the
+// site side. Office-only requirements (CBS RAMS, Supplier POs and so on) stay in the office.
+export function canSendToSite(reqKey: string | null | undefined): boolean {
+  if (!reqKey) return true;
+  const r = builtIn(reqKey);
+  return !!r && reqSides(r).includes("site");
 }
 
 // Why a requirement can't be added to this job yet, or null if it can.

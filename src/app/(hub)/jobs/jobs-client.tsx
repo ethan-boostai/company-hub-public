@@ -1,9 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { SearchSuggest, type Suggestion } from "@/components/ui/search-suggest";
+import { Button } from "@/components/ui/button";
+import { PageTop } from "@/components/ui/page-top";
+import { DataTable, FilterRow, type Column } from "@/components/ui/register";
+import { SearchBox } from "@/components/ui/search-box";
 import { STAGES, jobTitle, shownByDefault, stageOf } from "@/lib/jobs/stages";
 import type { Folder, JobListRow } from "./data";
 
@@ -118,107 +120,97 @@ export function JobsClient({ folders, jobs }: { folders: Folder[]; jobs: JobList
     return map;
   }, [jobs, showUnsuccessful]);
 
-  const shownSections = sections.filter(isShown);
-  const visible = shownSections.map((s) => ({ s, rows: bySection.get(s.key) || [] }));
-
-  // Search: matching jobs listed under the box as you type (every folder; Unsuccessful jobs only
-  // when shown, or by their exact number). Click one to open it.
+  // Search filters the list in place as you type. While searching, every folder is searched (so a
+  // job is never hidden by a folder choice); Unsuccessful jobs only when shown, or by exact number.
   const needle = q.trim().toLowerCase().replace(/^#/, "");
-  const found = useMemo(() => {
-    if (!needle) return [];
-    const hit = jobs.filter((j) => {
-      if (j.jobNo === needle) return true;
-      if (j.stage === "unsuccessful" && !showUnsuccessful) return false;
-      return j.jobNo.startsWith(needle) || [jobTitle(j.description), j.client, j.site, j.po].some((f) => f.toLowerCase().includes(needle));
-    });
-    hit.sort((a, b) => Number(b.jobNo === needle) - Number(a.jobNo === needle) || Number(b.jobNo.startsWith(needle)) - Number(a.jobNo.startsWith(needle)) || Number(b.jobNo) - Number(a.jobNo));
-    return hit.slice(0, 12);
-  }, [jobs, needle, showUnsuccessful]);
-  const suggestions: Suggestion[] = found.map((j) => ({
-    key: j.jobNo,
-    title: `#${j.jobNo} ${jobTitle(j.description)}`,
-    sub: [j.client, STAGES[stageOf(j.stage)].label, (j.folderUuid ? folders.find((f) => f.uuid === j.folderUuid)?.name : j.status === "Work Order" ? "Booked / on site" : "No folder")].filter(Boolean).join(" · "),
-  }));
-  if (/^\d+$/.test(needle) && !found.some((j) => j.jobNo === needle)) {
-    suggestions.push({ key: needle, title: `Open job ${needle}`, sub: "Not in the hub's list yet" });
-  }
+  const matches = (j: JobListRow) => {
+    if (!needle) return true;
+    if (j.jobNo === needle) return true;
+    if (j.stage === "unsuccessful" && !showUnsuccessful) return false;
+    return j.jobNo.startsWith(needle) || [jobTitle(j.description), j.client, j.site, j.po].some((f) => f.toLowerCase().includes(needle));
+  };
+  const listFor = (key: string) => {
+    if (!needle) return bySection.get(key) || [];
+    // Searching: Unsuccessful jobs are kept out of bySection when hidden, but an exact number still finds them.
+    return jobs.filter((j) => sectionOf(j) === key && matches(j));
+  };
+  const shownSections = needle ? sections : sections.filter(isShown);
+  const visible = shownSections.map((s) => ({ s, rows: listFor(s.key) })).filter((v) => !needle || v.rows.length > 0);
+  const total = visible.reduce((n, v) => n + v.rows.length, 0);
+  const unknownNumber = /^\d+$/.test(needle) && !jobs.some((j) => j.jobNo === needle);
+
+  const columns: Column<JobListRow>[] = [
+    {
+      key: "job",
+      label: "Job",
+      cell: (j) => `#${j.jobNo} ${jobTitle(j.description)}`,
+      sub: (j) => [j.client, j.site && j.site !== j.client ? j.site : "", j.po ? `Client ref ${j.po}` : ""].filter(Boolean).join(" · "),
+    },
+    {
+      key: "stage",
+      label: "Stage",
+      cell: (j) => {
+        const st = STAGES[stageOf(j.stage)];
+        return <span className={`inline-block whitespace-nowrap rounded-full px-3 py-0.5 text-sm font-semibold ${st.chip}`}>{st.label}</span>;
+      },
+    },
+    {
+      key: "booking",
+      label: "Booking",
+      cell: (j) => {
+        const b = bookingChip(j);
+        return b ? <span className={`inline-block whitespace-nowrap rounded-full px-3 py-0.5 text-sm font-semibold ${TONES[b.tone]}`}>{b.text}</span> : null;
+      },
+    },
+    { key: "type", label: "Type", cell: (j) => (j.jobType === "cdm" ? "CDM" : "Project") },
+    { key: "value", label: "Value", cell: (j) => (j.value > 0 ? money(j.value) : ""), className: "text-right whitespace-nowrap" },
+  ];
 
   return (
     <div>
-      <div className="flex flex-wrap gap-2 mb-2" role="group" aria-label="Folders">
+      <PageTop title="Jobs" count={total} />
+
+      <div role="group" aria-label="Folders" className="mb-2 flex flex-wrap gap-2">
         {sections.map((s) => {
           const on = isShown(s);
           return (
-            <button
-              key={s.key}
-              type="button"
-              aria-pressed={on}
-              onClick={() => toggle(s)}
-              className={`rounded-full border px-3 py-1.5 text-sm ${on ? "border-brand bg-brand/10 font-semibold" : "border-line text-muted line-through"}`}
-            >
-              {s.name} <span className="ml-1 text-xs">{(bySection.get(s.key) || []).length}</span>
-            </button>
+            <Button key={s.key} size="small" aria-pressed={on} onClick={() => toggle(s)}>
+              {on && <span aria-hidden="true">✓</span>}
+              <span className={on ? "font-semibold" : "text-muted line-through"}>{s.name}</span>
+              <span className="text-brand">{(bySection.get(s.key) || []).length}</span>
+            </Button>
           );
         })}
       </div>
-      <div className="flex flex-wrap items-center gap-3 mb-4 text-sm">
-        <button type="button" onClick={showAll} className="underline">Show all</button>
-        {chosen && <button type="button" onClick={resetDefault} className="underline">Default</button>}
-        <label className="flex items-center gap-2">
-          <input type="checkbox" checked={showUnsuccessful} onChange={toggleUnsuccessful} />
-          Show unsuccessful
-        </label>
+      <div className="mb-4 flex flex-wrap items-center gap-2 text-sm">
+        <Button size="small" onClick={showAll}>Show all</Button>
+        {chosen && <Button size="small" onClick={resetDefault}>Default</Button>}
+        <Button size="small" aria-pressed={showUnsuccessful} onClick={toggleUnsuccessful}>
+          {showUnsuccessful && <span aria-hidden="true">✓</span>}Show unsuccessful
+        </Button>
         <span className="text-muted">Enquiry, Reactive, Maintenance and Approved show by default. Your choices are remembered on this device.</span>
       </div>
 
-      <div className="mb-4">
-        <SearchSuggest
-          value={q}
-          onChange={setQ}
-          results={suggestions}
-          onPick={(s) => router.push(`/jobs/${s.key}`)}
-          placeholder="Find a job: number, title, client or site"
-          label="Search jobs"
-          emptyText="No job matches."
-        />
-      </div>
+      <FilterRow>
+        <SearchBox value={q} onChange={setQ} placeholder="Find a job: number, title, client or site" label="Search jobs" />
+      </FilterRow>
 
-      {shownSections.length === 0 && <p className="text-sm text-muted">Every folder is hidden. Tap a folder above to show it.</p>}
+      {needle && <p className="mb-3 text-sm text-muted">{total} {total === 1 ? "job matches" : "jobs match"}, searching every folder.</p>}
+      {unknownNumber && (
+        <p className="mb-3 text-sm">
+          Job {needle} isn&apos;t in the hub&apos;s list yet.{" "}
+          <Button size="small" onClick={() => router.push(`/jobs/${needle}`)}>Open job {needle}</Button>
+        </p>
+      )}
+      {!needle && shownSections.length === 0 && <p className="text-sm text-muted">Every folder is hidden. Tap a folder above to show it.</p>}
       {jobs.length === 0 && <p className="text-sm text-muted">No jobs yet. Jobs arrive from ServiceM8.</p>}
 
       {visible.map(({ s, rows }) => (
         <section key={s.key} className="mb-5" aria-label={s.name}>
-          <h2 className="font-semibold mb-2">
-            {s.name} <span className="text-muted font-normal">({rows.length})</span>
+          <h2 className="mb-2 font-semibold">
+            {s.name} <span className="font-normal text-muted">({rows.length})</span>
           </h2>
-          {rows.length === 0 ? (
-            <p className="text-sm text-muted border border-line rounded-lg px-3 py-2 bg-white">No jobs in this folder.</p>
-          ) : (
-            <ul className="bg-white border border-line rounded-lg divide-y divide-line">
-              {rows.map((j) => {
-                const st = STAGES[stageOf(j.stage)];
-                const booking = bookingChip(j);
-                const sub = [j.client, j.site && j.site !== j.client ? j.site : "", j.po ? `Client ref ${j.po}` : ""].filter(Boolean).join(" · ");
-                return (
-                  <li key={j.id}>
-                    <Link href={`/jobs/${j.jobNo}`} className="flex gap-3 px-3 py-2.5 hover:bg-paper">
-                      <span className={`mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${st.dot}`} aria-hidden="true" />
-                      <span className="min-w-0 flex-1">
-                        <span className="block font-medium truncate">#{j.jobNo} {jobTitle(j.description)}</span>
-                        {sub && <span className="block text-sm text-muted truncate">{sub}</span>}
-                        <span className="mt-1 flex flex-wrap gap-1.5 text-xs">
-                          <span className={`rounded px-1.5 py-0.5 ${st.chip}`}>{st.label}</span>
-                          {booking && <span className={`rounded px-1.5 py-0.5 ${TONES[booking.tone]}`}>{booking.text}</span>}
-                          <span className="rounded px-1.5 py-0.5 bg-[#ececea] text-[#3d4043]">{j.jobType === "cdm" ? "CDM" : "Project"}</span>
-                          {j.value > 0 && <span className="rounded px-1.5 py-0.5 bg-[#ececea] text-[#3d4043]">{money(j.value)}</span>}
-                        </span>
-                      </span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
+          <DataTable label={s.name} rows={rows} rowKey={(j) => j.id} onOpen={(j) => router.push(`/jobs/${j.jobNo}`)} columns={columns} empty="No jobs in this folder." />
         </section>
       ))}
     </div>

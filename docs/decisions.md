@@ -2,6 +2,20 @@
 
 Ethan's decisions that change the plan, newest first. The full detail sits in `docs/plan.md` (sections 3.5 and 3.6); this log says what changed and when.
 
+## Page standard and parity (Ethan, 30/10/2026, from the parity report and the live screenshots)
+
+- **Every hub page is built from the shared parts:** `PageHeader`, `PageTop`, `RegisterLayout`, `FilterPills`, `DataTable`, `Button` and `ReportDialog`. No hand-built page tops, panels, tables, buttons or report dialogs. Menu items change only in `nav.tsx`. Pages still using their own buttons switch to `Button` when they're next touched (the same rule as client settings).
+- **One report dialog** (`ReportDialog`, `src/components/ui/report-dialog.tsx`), as live's "Include in report" picker: boxed groups (tick boxes, radios, a drop-down or a date range), Select all / Clear on tick groups, greyed choices with the reason, a short note under the title, Cancel and Create report, and the last choices remembered on that device. Every page's Reports ▾ > Create report uses it.
+- **Jobs list and Actions board** are on the shared page top and list parts. The Actions board has no Needs attention panel: the board is that list. Its count reads "N open · N overdue".
+- **Jobs list search** filters the list as you type, searching every folder while you type.
+- **Templates** sits on `RegisterLayout` (Needs attention stays All clear, as job types have no review dates) and has Reports ▾ > Create report.
+- **Shared parts** (Settings) is on previews and local machines only, never on the live site.
+- **Phones:** the header's search becomes a search button that opens a full-width search row, and + New task reads + Task. `DataTable` shows stacked rows (name, the grey line, the other cells under it, ›) instead of scrolling sideways.
+- **Pages that don't exist** show the hub's not-found page with the normal header and menu.
+- **Person pickers are exempt from "every dropdown lets users add new options".** They link to Team instead, where people are added.
+- **Send to site / Move to office** (task panel): every on-site job task has **Move to office**. Every office job task has **Send to site**, except requirements that exist only on the office side (for example CBS RAMS, Supplier POs). Tasks with no job stay in the office, and a Done task doesn't move. The box sits first in the task drawer, above Status, as live: orange "On site task · <type> · on the job portal" with Move to office (plus Approve and mark done / Send back to site), or grey "Office task · not on the job portal" with Send to site. Live shows these on one-off tasks only; ours is wider on purpose.
+- **Book in Job** is a built-in Office requirement, last under Approved: Planning (one per job).
+
 ## Phase 2 Safety, job level (Ethan, 30/10/2026)
 
 Plan approved with these answers:
@@ -48,7 +62,7 @@ Every page uses the shared parts; nobody builds their own. Layout follows Ethan'
 
 - **No custom requirement types.** Requirement types are built in only, defined in `src/lib/requirements.ts`. The Requirement types settings page, its menu item and the `requirement_types` table are removed (migration `20261029150000_drop_custom_requirement_types.sql`). Replaces plan 3.5 point 1 ("both"). Plan 3.6 point 13.
 - **Site survey** is offered under Office tasks as well as On site tasks in + New task. Plan 3.6 point 14.
-- **Search shows results as you type** in a list under the box; click a result to open it. Global search finds jobs (number, description, client), tasks and people; the Jobs page search works the same way for jobs. Plan 3.6 point 15.
+- **Search shows results as you type** in a list under the box; click a result to open it. Global search finds jobs (number, description, client), tasks and people. Plan 3.6 point 15. **Changed 30/10/2026:** the Jobs page uses the shared list search, which filters the list as you type (see "Page standard and parity" below).
 - **One task view everywhere** (Ethan, 29/10/2026; replaces the earlier "shown two ways" note): every task opens in the old hub's 560px right-hand drawer (`#ctd`), full height, wherever it's opened from (the job page's Tasks panel, a task just added on the job page, the Actions board, search results, Home), as in the live hub. Same panel, same Save; the page behind never scrolls. The only centred box is the job page's + New task picker (below).
 - **Job page + New task** (the only centred box) matches the live Job File (Task Types, Stage Pick, Site Pick and Multi Pick in CBS - Job File): a centred box (620px, at most 92% of the screen high, only the box scrolls) over a blurred, dimmed page; subtitle "Job N. Tick everything this job needs, then Add."; Office tasks / On site tasks; Other · any one-off task at the top (On site task on the On site side), opening the one-off task form on the job; tiles grouped Estimate, Approved: Planning, Approved: on site, Completed, with Now on the job's current stage; tick several tiles (✓ Selected), then one Add tasks button (faded until something is ticked) next to Cancel. Tiles already on the job show On or Done and open their task; one-per-job and locked rules stay. No Category filter.
 - **Header + New task** opens the generic task form (Link to Nothing or a job; the job pre-set on a job's pages), as the old hub's header button did. The requirement picker is the job Tasks panel's own + New task.

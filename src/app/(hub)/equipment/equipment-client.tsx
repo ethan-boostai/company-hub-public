@@ -13,7 +13,8 @@ import type { EquipmentData } from "./data";
 import { AssetForm, assetTitle, assetTone, MaterialForm, placeOf, ServiceForm, ToolReportForm } from "./forms";
 import { LocationSelect } from "./parts";
 import { equipmentDueItems, isLow, labelOf, locKey, locLabel, parseLocKey, qty, REPORT_STATUSES, STOCKTAKE_STATUSES, REPORT_KINDS, ASSET_STATUSES } from "./rules";
-import { ReportDialog } from "./report-dialog";
+import { ReportDialog } from "@/components/ui/report-dialog";
+import { EQUIPMENT_COLUMNS, MATERIAL_COLUMNS } from "./report-options";
 import { MoveForm, StocktakeForm } from "./stock-forms";
 import type { Open } from "./types";
 
@@ -185,7 +186,7 @@ export function EquipmentClient({ initial, today, me, openReportId, openAssetId 
         )}
       </div>
 
-      <ReportDialog open={reporting} where={where} whereLabel={where ? locLabel(parseLocKey(where), data.vehicles, data.people) : ""} onClose={() => setReporting(false)} />
+      <EquipmentReport open={reporting} where={where} whereLabel={where ? locLabel(parseLocKey(where), data.vehicles, data.people) : ""} onClose={() => setReporting(false)} />
       <EquipmentDrawer open={open} data={data} today={today} me={me} onOpen={setOpen} onSaved={saved} />
       <YardReturnModal item={data.yardReturns.find((r) => r.id === yardReturn) ?? null} onClose={() => setYardReturn(null)}
         onDone={(x) => { setData(x.all); setYardReturn(null); }} />
@@ -265,5 +266,64 @@ function YardReturnModal({ item, onClose, onDone }: { item: EquipmentData["yardR
         </div>
       )}
     </Modal>
+  );
+}
+
+// "Create report": the office chooses what goes in, then the PDF opens in-window.
+function EquipmentReport({ open, where, whereLabel, onClose }: { open: boolean; where: string; whereLabel: string; onClose: () => void }) {
+  const has = (s: Record<string, string | string[]>, v: string) => (s.include as string[]).includes(v);
+  return (
+    <ReportDialog
+      open={open}
+      onClose={onClose}
+      id="equipment"
+      fileName="Equipment and materials.pdf"
+      groups={[
+        {
+          key: "include",
+          label: "Include",
+          type: "ticks",
+          initial: ["equipment", "materials", "here"],
+          options: [
+            { value: "equipment", label: "Equipment" },
+            { value: "materials", label: "Materials" },
+            ...(where ? [{ value: "here", label: `Only ${whereLabel}` }] : []),
+            { value: "attention", label: "Only equipment needing attention (repair, lost, service or PAT due)" },
+            { value: "low", label: "Only materials at or below their minimum" },
+            { value: "retired", label: "Include retired equipment and discontinued materials" },
+          ],
+        },
+        {
+          key: "kit",
+          label: "Equipment columns",
+          type: "ticks",
+          twoColumns: true,
+          show: (s) => has(s, "equipment"),
+          initial: EQUIPMENT_COLUMNS.filter((c) => c.default).map((c) => c.key),
+          options: EQUIPMENT_COLUMNS.map((c) => ({ value: c.key, label: c.label })),
+        },
+        {
+          key: "mat",
+          label: "Material columns",
+          type: "ticks",
+          twoColumns: true,
+          show: (s) => has(s, "materials"),
+          initial: MATERIAL_COLUMNS.filter((c) => c.default).map((c) => c.key),
+          options: MATERIAL_COLUMNS.map((c) => ({ value: c.key, label: c.label })),
+        },
+      ]}
+      check={(h) => (!h.on("include", "equipment") && !h.on("include", "materials") ? "Tick equipment, materials or both." : null)}
+      url={(h, s) => {
+        const p = new URLSearchParams();
+        p.set("include", ["equipment", "materials"].filter((v) => h.on("include", v)).join(","));
+        p.set("kit", (s.kit as string[]).join(","));
+        p.set("mat", (s.mat as string[]).join(","));
+        if (where && h.on("include", "here")) p.set("where", where);
+        if (h.on("include", "low")) p.set("low", "1");
+        if (h.on("include", "attention")) p.set("attention", "1");
+        if (h.on("include", "retired")) p.set("retired", "1");
+        return `/equipment/report?${p}`;
+      }}
+    />
   );
 }

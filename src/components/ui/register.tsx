@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useSyncExternalStore, type ReactNode } from "react";
 
 // Shared register parts under the page top: filter pills, the search + dropdown filter row, and the
 // list as a table (white card, uppercase grey headings, coloured status pills, › at the end of rows).
@@ -55,8 +55,10 @@ export function StatusPill({ tone, children }: { tone: PillTone; children: React
   return <span className={`block w-full max-w-56 truncate rounded-full px-3 py-0.5 text-sm font-semibold ${PILL[tone]}`}>{children}</span>;
 }
 
-// The first column is the record's name (bold); `sub` adds the grey line under it.
-export type Column<R> = { key: string; label: string; cell: (r: R) => ReactNode; sub?: (r: R) => ReactNode; className?: string };
+// The first column is the record's name (bold); `sub` adds the grey line under it. On phones the
+// table becomes stacked rows (name, grey line, then the other cells wrapped under it, ›);
+// `phone: false` leaves a column out there.
+export type Column<R> = { key: string; label: string; cell: (r: R) => ReactNode; sub?: (r: R) => ReactNode; className?: string; phone?: boolean };
 
 export function DataTable<R>({
   rows,
@@ -73,6 +75,42 @@ export function DataTable<R>({
   empty?: string;
   label: string;
 }) {
+  const phone = usePhone();
+  const [first, ...rest] = columns;
+  const phoneCols = rest.filter((c) => c.phone !== false);
+  // Phones: stacked rows, no sideways scrolling. One or the other is rendered, never both.
+  if (phone) return (
+    <ul aria-label={label} className="bg-white border border-line rounded-xl divide-y divide-line">
+      {rows.map((r) => {
+        const inner = (
+          <>
+            <span className="min-w-0 flex-1">
+              <span className="block font-bold">{first?.cell(r)}</span>
+              {first?.sub && <span className="block text-sm text-muted">{first.sub(r)}</span>}
+              {phoneCols.length > 0 && (
+                <span className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm [&_.max-w-56]:w-auto">
+                  {phoneCols.map((c) => (
+                    <span key={c.key} className="min-w-0">{c.cell(r)}</span>
+                  ))}
+                </span>
+              )}
+            </span>
+            {onOpen && <span aria-hidden="true" className="text-lg text-muted">›</span>}
+          </>
+        );
+        return (
+          <li key={rowKey(r)}>
+            {onOpen ? (
+              <button type="button" onClick={() => onOpen(r)} className="flex w-full items-center gap-3 px-4 py-3 text-left hover:bg-paper">{inner}</button>
+            ) : (
+              <div className="flex items-center gap-3 px-4 py-3">{inner}</div>
+            )}
+          </li>
+        );
+      })}
+      {rows.length === 0 && <li className="px-4 py-6 text-muted">{empty}</li>}
+    </ul>
+  );
   return (
     <div className="bg-white border border-line rounded-xl overflow-x-auto">
       <table className="w-full text-[15px]" aria-label={label}>
@@ -122,5 +160,19 @@ export function DataTable<R>({
         </tbody>
       </table>
     </div>
+  );
+}
+
+// Under 640px wide (the `sm` break). The server and first paint assume a wide screen.
+const PHONE = "(max-width: 639.98px)";
+function usePhone() {
+  return useSyncExternalStore(
+    (l) => {
+      const m = window.matchMedia(PHONE);
+      m.addEventListener("change", l);
+      return () => m.removeEventListener("change", l);
+    },
+    () => window.matchMedia(PHONE).matches,
+    () => false,
   );
 }

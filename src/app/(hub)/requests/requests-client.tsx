@@ -13,7 +13,8 @@ import { Choice, RecordSelect } from "../_registers/ui";
 import { TeamTabs } from "@/components/shell/team-tabs";
 import { PageTop, RegisterLayout, type AttentionItem } from "@/components/ui/page-top";
 import { DataTable, FilterPills, FilterRow, StatusPill } from "@/components/ui/register";
-import { ReportDialog } from "./report-dialog";
+import { ReportDialog } from "@/components/ui/report-dialog";
+import { REQUEST_REPORT_COLUMNS, REQUEST_REPORT_WHICH } from "./report-options";
 import { addSelectOption } from "@/app/actions/select-options";
 import { deleteRequest, saveRequest } from "./actions";
 import type { RequestRow, RequestsData } from "./data";
@@ -97,7 +98,7 @@ export function RequestsClient({ initial, openId = null }: { initial: RequestsDa
           ]} />
       </div>
 
-      <ReportDialog open={reporting} onClose={() => setReporting(false)} />
+      <RequestsReport open={reporting} onClose={() => setReporting(false)} />
       <Drawer open={open !== null} onClose={() => setOpen(null)} title={current ? `${current.requestedBy} · ${current.category}` : "Add request"}>
         {open !== null && (
           <div key={current ? JSON.stringify(current) : "new"}>
@@ -178,5 +179,28 @@ function TypedCategory({ value, onAdded }: { value: string; onAdded: (v: string)
       </button>
       {error && <p role="alert" className="mt-1 text-danger">{error}</p>}
     </div>
+  );
+}
+
+// "Create report": the office chooses which requests and which columns; the PDF opens in-window.
+function RequestsReport({ open, onClose }: { open: boolean; onClose: () => void }) {
+  return (
+    <ReportDialog
+      open={open}
+      onClose={onClose}
+      id="requests"
+      fileName="Team requests.pdf"
+      groups={[
+        { key: "which", label: "Requests", type: "pick", initial: "open", options: REQUEST_REPORT_WHICH.map((w) => ({ value: w.value, label: w.label })) },
+        {
+          key: "cols",
+          label: "Columns",
+          type: "ticks",
+          initial: REQUEST_REPORT_COLUMNS.filter((c) => c.default).map((c) => c.key),
+          options: REQUEST_REPORT_COLUMNS.map((c) => ({ value: c.key, label: c.label })),
+        },
+      ]}
+      url={(h) => `/requests/report?which=${h.pick("which") || "open"}&cols=${h.ticked("cols").join(",")}`}
+    />
   );
 }

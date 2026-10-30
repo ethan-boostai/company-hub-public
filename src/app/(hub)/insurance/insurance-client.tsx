@@ -10,7 +10,7 @@ import { DataTable, FilterPills, FilterRow, StatusPill } from "@/components/ui/r
 import type { Saved } from "./actions";
 import type { InsuranceData } from "./data";
 import { CertForm, ClaimForm, claimLinks, PolicyForm } from "./forms";
-import { ReportDialog } from "./report-dialog";
+import { ReportDialog } from "@/components/ui/report-dialog";
 import { actionState, attentionItems, CLAIM_STATUSES, expiryLabel, expiryState, isClosed, labelOf, money, policyTitle } from "./rules";
 import type { Open } from "./types";
 
@@ -133,7 +133,7 @@ export function InsuranceClient({ initial, today, start, startTab }: { initial: 
       )}
 
       <InsuranceDrawer open={open} data={data} today={today} onOpen={setOpen} onSaved={saved} />
-      <ReportDialog open={reporting} onClose={() => setReporting(false)} />
+      <InsuranceReport open={reporting} onClose={() => setReporting(false)} />
     </RegisterLayout>
   );
 }
@@ -168,5 +168,71 @@ function InsuranceDrawer({ open, data, today, onOpen, onSaved }: { open: Open | 
     <Drawer open onClose={close} title={c ? c.name : "Add accreditation"} width="max-w-2xl">
       <CertForm key={c ? JSON.stringify(c) : "new"} cert={c} {...common} />
     </Drawer>
+  );
+}
+
+// "Create report": the office chooses what goes in, then the PDF opens in-window.
+function InsuranceReport({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const noPolicies = (s: Record<string, string | string[]>) => (!(s.policies as string[]).includes("policies") ? "Tick Include policies first" : false);
+  return (
+    <ReportDialog
+      open={open}
+      onClose={onClose}
+      id="insurance"
+      fileName="Insurance and accreditations.pdf"
+      groups={[
+        {
+          key: "policies",
+          label: "Policies",
+          type: "ticks",
+          initial: ["policies", "covers"],
+          options: [
+            { value: "policies", label: "Include policies" },
+            { value: "covers", label: "List each policy's covers, limits and excesses", indent: true, off: noPolicies },
+            { value: "past", label: "Include earlier periods", indent: true, off: noPolicies },
+          ],
+        },
+        {
+          key: "claims",
+          label: "Claims",
+          type: "pick",
+          initial: "open",
+          options: [
+            { value: "open", label: "Open claims" },
+            { value: "all", label: "All claims" },
+            { value: "none", label: "Leave claims out" },
+          ],
+        },
+        {
+          key: "claimDetail",
+          label: "Claim amounts",
+          type: "ticks",
+          initial: ["amounts"],
+          options: [{ value: "amounts", label: "Show amounts claimed, excess and settled", off: (s) => (s.claims === "none" ? "Choose open or all claims first" : false) }],
+        },
+        {
+          key: "certs",
+          label: "Accreditations",
+          type: "ticks",
+          initial: ["certs"],
+          options: [
+            { value: "certs", label: "Include accreditations" },
+            { value: "costs", label: "Show annual costs", indent: true, off: (s) => (!(s.certs as string[]).includes("certs") ? "Tick Include accreditations first" : false) },
+          ],
+        },
+      ]}
+      check={(h) => (!h.on("policies", "policies") && h.pick("claims") === "none" && !h.on("certs", "certs") ? "Choose at least one part to include." : null)}
+      url={(h) => {
+        const p = new URLSearchParams();
+        const claims = h.pick("claims") || "open";
+        if (h.on("policies", "policies")) p.set("policies", h.on("policies", "past") ? "all" : "current");
+        if (h.on("policies", "covers")) p.set("covers", "1");
+        p.set("claims", claims);
+        if (claims !== "none" && h.on("claimDetail", "amounts")) p.set("amounts", "1");
+        if (h.on("certs", "certs")) p.set("certs", "1");
+        if (h.on("certs", "costs")) p.set("costs", "1");
+        return `/insurance/report?${p}`;
+      }}
+    />
   );
 }

@@ -9,9 +9,10 @@ import { GuardedForm, SaveButton } from "@/components/ui/guarded-form";
 import { Drawer } from "@/components/ui/overlay";
 import { UploadFile } from "@/components/ui/upload-file";
 import { JobLinkField } from "./job-link";
-import { builtIn, REQ_STAGES, taskCategory } from "@/lib/requirements";
+import { builtIn, canSendToSite, REQ_STAGES, taskCategory } from "@/lib/requirements";
+import { Button } from "@/components/ui/button";
 import { STATUS_LABEL, type NewTaskDraft, type TaskStatus } from "@/lib/tasks/types";
-import { changeTaskStatus, deleteTask, loadTaskPanel, saveTask, sendTaskBack, verifyTask, type PanelData } from "@/app/actions/tasks";
+import { changeTaskStatus, deleteTask, loadTaskPanel, moveTaskSide, saveTask, sendTaskBack, verifyTask, type PanelData } from "@/app/actions/tasks";
 
 const fmt = (iso: string | null) =>
   iso ? new Date(iso).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "";
@@ -139,6 +140,51 @@ export function TaskPanel({
             </div>
           )}
 
+          {/* Office or site (as the live drawer): first in the drawer, above Status. Job tasks only. */}
+          {t && t.jobId && t.status !== "done" && (
+            t.side === "site" ? (
+              <section aria-label="On site" className="mb-4 rounded-lg border border-[#f4b27a] bg-[#fff4ea] px-3 py-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="flex-1 text-sm">
+                    <strong>On site task</strong> · {req?.label ?? "One-off task"} · on the job portal
+                  </p>
+                  <Button size="small" disabled={busy} onClick={() => run((k) => moveTaskSide(t.id, "office", k))}>Move to office</Button>
+                </div>
+                {t.submittedAt && (
+                  <p className="mt-2 text-sm"><strong>Submitted</strong> by {t.submittedBy} {fmt(t.submittedAt)}. Check the form, then approve it or send it back.</p>
+                )}
+                <div className="mt-2 flex flex-wrap gap-2">
+                  <Button tone="primary" size="small" disabled={busy} onClick={() => run((k) => changeTaskStatus(t.id, "done", k), () => setMessage("Approved and marked Done."))}>
+                    Approve and mark done
+                  </Button>
+                  <Button size="small" disabled={busy} onClick={() => setSendBackOpen(!sendBackOpen)} aria-expanded={sendBackOpen}>
+                    Send back to site
+                  </Button>
+                </div>
+                {sendBackOpen && (
+                  <div className="mt-3 rounded-lg border border-line bg-white p-3">
+                    <TextArea label="What needs doing again? The crew see this on the job portal." value={sendBackNote} onChange={(e) => setSendBackNote(e.target.value)} rows={2} />
+                    <div className="flex gap-4 text-sm mb-3">
+                      <label className="flex items-center gap-1.5"><input type="radio" checked={sendBackTo === "todo"} onChange={() => setSendBackTo("todo")} /> Back to To do</label>
+                      <label className="flex items-center gap-1.5"><input type="radio" checked={sendBackTo === "in_progress"} onChange={() => setSendBackTo("in_progress")} /> Keep In progress</label>
+                    </div>
+                    <Button size="small" tone="primary" disabled={!sendBackNote.trim()} busy={busy} busyLabel="Sending…"
+                      onClick={() => run((k) => sendTaskBack(t.id, sendBackTo, sendBackNote, k), () => { setSendBackOpen(false); setSendBackNote(""); })}>
+                      Send back
+                    </Button>
+                  </div>
+                )}
+              </section>
+            ) : (
+              <section aria-label="Office or site" className="mb-4 flex flex-wrap items-center gap-2 rounded-lg border border-line bg-paper px-3 py-3">
+                <p className="flex-1 text-sm"><strong>Office task</strong> · not on the job portal</p>
+                {canSendToSite(t.reqKey) && (
+                  <Button size="small" disabled={busy} onClick={() => run((k) => moveTaskSide(t.id, "site", k))}>Send to site</Button>
+                )}
+              </section>
+            )
+          )}
+
           <GuardedForm
             action={saveTask}
             onSaved={(r) => {
@@ -230,35 +276,6 @@ export function TaskPanel({
                   <p className="text-sm text-muted">Tasks with no job don&apos;t take files.</p>
                 )}
               </section>
-
-              {t.side === "site" && t.status !== "done" && (
-                <section className="mt-6 border-t border-line pt-4" aria-label="On site">
-                  <h3 className="font-semibold mb-2">On site</h3>
-                  <div className="flex flex-wrap gap-2">
-                    <button type="button" disabled={busy} onClick={() => run((k) => changeTaskStatus(t.id, "done", k), () => setMessage("Approved and marked Done."))}
-                      className="rounded-lg bg-brand px-3 py-1.5 text-sm font-semibold text-white disabled:opacity-50">
-                      Approve and mark done
-                    </button>
-                    <button type="button" disabled={busy} onClick={() => setSendBackOpen(!sendBackOpen)} className="rounded-lg border border-line px-3 py-1.5 text-sm">
-                      Send back to site
-                    </button>
-                  </div>
-                  {sendBackOpen && (
-                    <div className="mt-3 rounded-lg border border-line p-3">
-                      <TextArea label="What needs doing" value={sendBackNote} onChange={(e) => setSendBackNote(e.target.value)} rows={2} />
-                      <div className="flex gap-4 text-sm mb-3">
-                        <label className="flex items-center gap-1.5"><input type="radio" checked={sendBackTo === "todo"} onChange={() => setSendBackTo("todo")} /> Back to To do</label>
-                        <label className="flex items-center gap-1.5"><input type="radio" checked={sendBackTo === "in_progress"} onChange={() => setSendBackTo("in_progress")} /> Keep In progress</label>
-                      </div>
-                      <button type="button" disabled={busy || !sendBackNote.trim()}
-                        onClick={() => run((k) => sendTaskBack(t.id, sendBackTo, sendBackNote, k), () => { setSendBackOpen(false); setSendBackNote(""); })}
-                        className="rounded-lg bg-dark px-3 py-1.5 text-sm text-white disabled:opacity-50">
-                        {busy ? "Sending…" : "Send back"}
-                      </button>
-                    </div>
-                  )}
-                </section>
-              )}
 
               {t.status === "done" && (
                 <section className="mt-6 border-t border-line pt-4" aria-label="Sign-off">

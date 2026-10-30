@@ -189,14 +189,15 @@ const SHOTS = process.argv[2];
   await drawerCheck(p.getByRole("dialog", { name: "Test task book scaffold check" }), "Home");
   await p.getByRole("dialog", { name: "Test task book scaffold check" }).getByRole("button", { name: "Close" }).first().click();
 
-  // Jobs page search
+  // Jobs page search: filters the list in place (every folder), then a row opens the job.
   await p.goto(`${BASE}/jobs`, { waitUntil: "networkidle" });
-  const js = p.getByRole("main").getByRole("combobox", { name: "Search jobs" });
-  await js.fill("12");
-  const jl = p.getByRole("listbox", { name: "Search jobs results" });
-  await jl.getByRole("option", { name: /#12/ }).click();
+  await p.getByRole("main").getByLabel("Search jobs").fill("12");
+  const hit = p.getByRole("main").getByRole("button", { name: /^#12 / });
+  await hit.first().waitFor();
+  log("Jobs page search filters in place: rows for 12:", await hit.count(), "| record count:", await p.getByTestId("record-count").innerText());
+  await hit.first().click();
   await p.waitForURL(`${BASE}/jobs/12`);
-  log("Jobs page search: typed 12, clicked, opened job 12");
+  log("Jobs page search: typed 12, clicked the row, opened job 12");
 
   // Narrow screen: Tasks button opens the panel full screen.
   await p.setViewportSize({ width: 900, height: 900 });

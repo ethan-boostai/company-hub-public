@@ -2,11 +2,11 @@
 
 import { useMemo, useState } from "react";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
-import { DocViewer, type ViewableFile } from "@/components/ui/doc-viewer";
 import { CheckboxField, TextField } from "@/components/ui/fields";
 import { GuardedForm, SaveButton } from "@/components/ui/guarded-form";
-import { Drawer, Modal } from "@/components/ui/overlay";
+import { Drawer } from "@/components/ui/overlay";
 import { PageTop, RegisterLayout } from "@/components/ui/page-top";
+import { ReportDialog } from "@/components/ui/report-dialog";
 import { DataTable, FilterPills, FilterRow, StatusPill, type Column } from "@/components/ui/register";
 import { SearchBox } from "@/components/ui/search-box";
 import { TeamTabs } from "@/components/shell/team-tabs";
@@ -45,7 +45,6 @@ export function PeopleClient({ people: initial, openId }: { people: PersonRow[];
   const [editing, setEditing] = useState<Editing>(() => initial.find((p) => p.id === openId) ?? null);
   const [confirmLeft, setConfirmLeft] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
-  const [report, setReport] = useState<ViewableFile | null>(null);
 
   const shown = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -165,37 +164,23 @@ export function PeopleClient({ people: initial, openId }: { people: PersonRow[];
         }}
       />
 
-      <Modal open={reportOpen} onClose={() => setReportOpen(false)} title="Create report" size="max-w-md">
-        <form
-          className="p-5"
-          onSubmit={(e) => {
-            e.preventDefault();
-            const f = new FormData(e.currentTarget);
-            const cols = REPORT_COLUMNS.map((c) => c.key).filter((k) => f.get(`col_${k}`) === "on");
-            const who = String(f.get("who") || "current");
-            setReportOpen(false);
-            setReport({ id: 0, name: "Team list.pdf", mime: "application/pdf", url: `/api/people/report?who=${who}&cols=${cols.join(",")}` });
-          }}
-        >
-          <fieldset className="mb-4">
-            <legend className="block text-sm font-medium mb-1">Who</legend>
-            <select name="who" defaultValue={filter} className="w-full rounded-lg border border-line bg-white px-3 py-2">
-              {FILTERS.map((f) => <option key={f.value} value={f.value}>{f.label}</option>)}
-            </select>
-          </fieldset>
-          <fieldset className="mb-5">
-            <legend className="block text-sm font-medium mb-1">Include</legend>
-            {REPORT_COLUMNS.map((c) => (
-              <label key={c.key} className="flex items-center gap-2 py-1 text-sm">
-                <input type="checkbox" name={`col_${c.key}`} defaultChecked={c.key !== "email"} className="h-4 w-4 accent-brand" />
-                {c.label}
-              </label>
-            ))}
-          </fieldset>
-          <button type="submit" className="px-4 py-2 rounded-lg bg-brand text-white font-semibold">Create report</button>
-        </form>
-      </Modal>
-      <DocViewer file={report} onClose={() => setReport(null)} />
+      <ReportDialog
+        open={reportOpen}
+        onClose={() => setReportOpen(false)}
+        id={`team-${filter}`}
+        fileName="Team list.pdf"
+        groups={[
+          { key: "who", label: "Who", type: "pick", initial: filter, options: FILTERS.map((f) => ({ value: f.value, label: f.label })) },
+          {
+            key: "cols",
+            label: "Include",
+            type: "ticks",
+            initial: REPORT_COLUMNS.map((c) => c.key).filter((k) => k !== "email"),
+            options: REPORT_COLUMNS.map((c) => ({ value: c.key, label: c.label })),
+          },
+        ]}
+        url={(h) => `/api/people/report?who=${h.pick("who") || "current"}&cols=${h.ticked("cols").join(",")}`}
+      />
     </RegisterLayout>
   );
 }

@@ -1,11 +1,11 @@
 "use client";
 
+import { ReportDialog } from "@/components/ui/report-dialog";
 import { useMemo, useState } from "react";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
-import { DocViewer } from "@/components/ui/doc-viewer";
 import { TextArea, TextField } from "@/components/ui/fields";
 import { GuardedForm, SaveButton } from "@/components/ui/guarded-form";
-import { Drawer, Modal } from "@/components/ui/overlay";
+import { Drawer } from "@/components/ui/overlay";
 import { PageTop, RegisterLayout, type AttentionItem } from "@/components/ui/page-top";
 import { DataTable, FilterPills, FilterRow, StatusPill, type PillTone } from "@/components/ui/register";
 import { SearchBox } from "@/components/ui/search-box";
@@ -112,7 +112,7 @@ export function TimeOffClient({ initial, today, openId }: { initial: TimeOffData
           return <TimeOffForm key={r ? JSON.stringify(r) : `new-${open.personId ?? ""}`} row={r} personId={open.personId} data={data} onSaved={saved} />;
         })()}
       </Drawer>
-      <ReportDialog open={reporting} onClose={() => setReporting(false)} people={listPeople} today={today} />
+      <TimeOffReport open={reporting} onClose={() => setReporting(false)} people={listPeople} today={today} />
     </RegisterLayout>
   );
 }
@@ -188,48 +188,30 @@ function TimeOffForm({ row: r, personId, data, onSaved }: { row: TimeOffRow | nu
 }
 
 // "Create report": the office chooses people, dates and what to include; the PDF opens in-window.
-function ReportDialog({ open, onClose, people, today }: { open: boolean; onClose: () => void; people: { id: number; name: string }[]; today: string }) {
-  const [who, setWho] = useState("");
-  const [from, setFrom] = useState(`${today.slice(0, 4)}-01-01`);
-  const [to, setTo] = useState(`${today.slice(0, 4)}-12-31`);
-  const [declined, setDeclined] = useState(false);
-  const [notes, setNotes] = useState(false);
-  const [url, setUrl] = useState("");
-  const box = "h-4 w-4 accent-brand";
-  const bad = !from || !to || to < from;
+function TimeOffReport({ open, onClose, people, today }: { open: boolean; onClose: () => void; people: { id: number; name: string }[]; today: string }) {
   return (
-    <>
-      <Modal open={open && !url} onClose={onClose} title="Create report" size="max-w-md">
-        <div className="p-5">
-          <p className="text-lg font-semibold mb-3" aria-hidden="true">Create report</p>
-          <label htmlFor="time-off-report-who" className="block text-sm font-medium mb-1">People</label>
-          <select id="time-off-report-who" value={who} onChange={(e) => setWho(e.target.value)} className="mb-4 w-full rounded-lg border border-line bg-white px-3 py-2">
-            <option value="">Everyone</option>
-            {people.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
-          </select>
-          <div className="grid grid-cols-2 gap-x-3">
-            <TextField label="From" type="date" value={from} onChange={(e) => setFrom(e.target.value)} />
-            <TextField label="To" type="date" value={to} onChange={(e) => setTo(e.target.value)} />
-          </div>
-          <label className="flex items-center gap-2 text-sm mb-1"><input type="checkbox" className={box} checked={declined} onChange={(e) => setDeclined(e.target.checked)} /> Include declined requests</label>
-          <label className="flex items-center gap-2 text-sm mb-4"><input type="checkbox" className={box} checked={notes} onChange={(e) => setNotes(e.target.checked)} /> Include notes and office responses</label>
-          {bad && <p role="alert" className="text-sm text-danger mb-2">Choose a date range.</p>}
-          <div className="flex justify-end gap-2">
-            <button type="button" onClick={onClose} className="px-4 py-2 rounded-lg border border-line">Cancel</button>
-            <button type="button" disabled={bad} className="px-4 py-2 rounded-lg bg-brand text-white font-semibold disabled:opacity-50"
-              onClick={() => {
-                const p = new URLSearchParams({ from, to });
-                if (who) p.set("person", who);
-                if (declined) p.set("declined", "1");
-                if (notes) p.set("notes", "1");
-                setUrl(`/people/time-off/report?${p}`);
-              }}>
-              Create report
-            </button>
-          </div>
-        </div>
-      </Modal>
-      <DocViewer file={url ? { id: 0, name: "Time off.pdf", mime: "application/pdf", url } : null} onClose={() => { setUrl(""); onClose(); }} />
-    </>
+    <ReportDialog
+      open={open}
+      onClose={onClose}
+      id="time-off"
+      fileName="Time off.pdf"
+      groups={[
+        { key: "who", label: "People", type: "select", initial: "", options: [{ value: "", label: "Everyone" }, ...people.map((p) => ({ value: String(p.id), label: p.name }))] },
+        { key: "when", label: "Dates", type: "dates", initial: [`${today.slice(0, 4)}-01-01`, `${today.slice(0, 4)}-12-31`], options: [{ value: "from", label: "From" }, { value: "to", label: "To" }] },
+        { key: "extra", label: "Include", type: "ticks", initial: [], options: [{ value: "declined", label: "Include declined requests" }, { value: "notes", label: "Include notes and office responses" }] },
+      ]}
+      check={(h) => {
+        const [from, to] = h.dates("when");
+        return !from || !to || to < from ? "Choose a date range." : null;
+      }}
+      url={(h) => {
+        const [from, to] = h.dates("when");
+        const p = new URLSearchParams({ from, to });
+        if (h.pick("who")) p.set("person", h.pick("who"));
+        if (h.on("extra", "declined")) p.set("declined", "1");
+        if (h.on("extra", "notes")) p.set("notes", "1");
+        return `/people/time-off/report?${p}`;
+      }}
+    />
   );
 }

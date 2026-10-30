@@ -16,7 +16,7 @@ async function SignedInAs() {
 export function PageHeader({ title, search = "", bare = false }: { title: string; search?: string; bare?: boolean }) {
   return (
     <>
-      <header className="bg-white border-b border-line">
+      <header className="relative bg-white border-b border-line">
         <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3">
           <MobileMenu actionsBadge={<ActionsBadge />} />
           <BackButton />

@@ -1,7 +1,7 @@
 import "server-only";
 import type postgres from "postgres";
 import { logActivity } from "@/lib/activity";
-import { builtIn, lockReason, type Side } from "@/lib/requirements";
+import { builtIn, canSendToSite, lockReason, type Side } from "@/lib/requirements";
 import type { TaskStatus } from "./types";
 
 // The one place tasks are created and changed. Server actions (the task panel, the board) and other
@@ -178,6 +178,24 @@ export async function sendBack(tx: Tx, id: number, to: "todo" | "in_progress", n
     where id = ${id}`;
   await logActivity(tx, { person: by, table: "tasks", rowId: id, jobId: t.job_id ? Number(t.job_id) : null, action: "status",
     changes: { status: [t.status, to], sent_back: [null, n] } });
+}
+
+// Send to site / Move to office: which side of the job the task is on. Site tasks show on the crew's
+// job portal; office tasks don't. Only job tasks move, and only while they aren't Done.
+export async function setSide(tx: Tx, id: number, side: Side, by: string): Promise<void> {
+  const t = await current(tx, id);
+  const [r] = await tx<{ req_key: string | null; side: Side }[]>`select req_key, side from tasks where id = ${id}`;
+  if (!t.job_id) throw new TaskError("Tasks with no job stay in the office.");
+  if (t.status === "done") throw new TaskError("This task is Done. Set it back to To do or In progress first.");
+  if (side !== "site" && side !== "office") throw new TaskError("Choose site or office.");
+  if (r.side === side) return;
+  if (side === "site" && !canSendToSite(r.req_key)) {
+    throw new TaskError(`${builtIn(r.req_key ?? "")?.label ?? "This task"} is an office task. It can't go to site.`);
+  }
+  await tx`
+    update tasks set side = ${side}, submitted_at = null, submitted_by = null, updated_by = ${by}
+    where id = ${id}`;
+  await logActivity(tx, { person: by, table: "tasks", rowId: id, jobId: Number(t.job_id), action: "update", changes: { side: [r.side, side] } });
 }
 
 // Remove from job (requirement task) or delete (one-off): hidden, never erased, files kept.
