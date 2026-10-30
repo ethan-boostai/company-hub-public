@@ -13,7 +13,7 @@ import {
   type AssetStatus, type Loc, type MaterialStatus, type ReportStatus, type ToolKind, type ToolWants,
 } from "./rules";
 import { loadEquipment, loadMoves, type EquipmentData, type MoveRow } from "./data";
-import { changeStock, createToolReport, labelFor, locationExists, logAssetMove, NotEnough, stockAt } from "./stock";
+import { changeStock, confirmReportStatus, createStocktake, createToolReport, labelFor, locationExists, logAssetMove, NotEnough, stockAt } from "./stock";
 
 // Every save hands back the whole register as it now is (one move can change several lists) and
 // the id of the record to show.
@@ -372,18 +372,8 @@ export async function saveStocktake(form: FormData): Promise<ActionResult<Saved>
     try {
       const id = await db().begin(async (tx) => {
         if (!(await locationExists(tx, loc!))) throw new Refused("That location no longer exists. Choose another.");
-        const label = await labelFor(tx, loc);
-        const [st] = await tx<{ id: string }[]>`
-          insert into stocktakes (location_label, location_place, location_vehicle_id, counted_by, notes, created_by)
-          values (${label}, ${loc!.place}, ${loc!.vehicleId}, ${countedBy}, ${notes}, ${person.name}) returning id`;
-        const sid = Number(st.id);
-        for (const c of counts) {
-          const [m] = await tx`select 1 from materials where id = ${c.materialId}`;
-          if (!m) throw new Missing();
-          const expected = await stockAt(tx, c.materialId, loc!);
-          await tx`insert into stocktake_lines (stocktake_id, material_id, expected, counted) values (${sid}, ${c.materialId}, ${expected}, ${c.counted})`;
-        }
-        await logActivity(tx, { person: person.name, table: "stocktakes", rowId: sid, action: "create", changes: { location: [null, label], lines: [null, counts.length] } });
+        const sid = await createStocktake(tx, loc!, counts, countedBy, notes, person.name);
+        if (!sid) throw new Missing();
         return sid;
       });
       return done(id);
@@ -516,6 +506,38 @@ const DELETABLE = {
   stocktakes: "stocktake",
   tool_reports: "tool report",
 } as const;
+
+// The office confirms a yard report's status change on the equipment (Needs repair, Lost or back in service).
+export async function confirmToolReport(id: number, requestKey: string): Promise<ActionResult<Saved>> {
+  if (!Number.isInteger(id) || id <= 0) return GONE;
+  return guarded(requestKey, async (person) => {
+    try {
+      await db().begin((tx) => confirmReportStatus(tx, id, person.name));
+    } catch (e) {
+      const m = (e as Error).message;
+      if (m === "report-gone") return GONE;
+      if (m === "nothing-to-confirm") return { ok: false, message: "This report has already been confirmed." };
+      throw e;
+    }
+    return { ok: true, message: "Confirmed: the equipment is updated.", data: { all: await loadEquipment(db()), id } };
+  });
+}
+
+// Materials returned at the yard that aren't on the register: the office marks them done once dealt with.
+export async function markYardReturnDone(id: number, requestKey: string): Promise<ActionResult<Saved>> {
+  if (!Number.isInteger(id) || id <= 0) return GONE;
+  return guarded(requestKey, async (person) => {
+    const found = await db().begin(async (tx) => {
+      const [r] = await tx`select status from yard_returns where id = ${id} for update`;
+      if (!r) return false;
+      await tx`update yard_returns set status = 'done', done_by = ${person.name}, done_at = now() where id = ${id}`;
+      await logActivity(tx, { person: person.name, table: "yard_returns", rowId: id, action: "update", changes: { status: [r.status, "done"] } });
+      return true;
+    });
+    if (!found) return GONE;
+    return { ok: true, message: "Marked done.", data: { all: await loadEquipment(db()), id: null } };
+  });
+}
 
 export async function deleteEquipmentRecord(kind: keyof typeof DELETABLE, id: number, requestKey: string): Promise<ActionResult<Saved>> {
   if (!(kind in DELETABLE) || !Number.isInteger(id) || id <= 0) return { ok: false, message: "Unknown record." };
