@@ -2,7 +2,7 @@
 
 Operations Hub for Chelmsford Building Services (CBS), UK. A build for CBS only — not a multi-tenant product. Keep it simple and direct.
 
-This repo replaces the original n8n-served hub (pages served from n8n webhooks on https://old-hub.example, data in n8n data tables). The old hub stays live until each area here is tested and switched over.
+This repo replaces the original n8n-served hub (pages served from webhooks on the old hub's n8n instance, data in n8n data tables). The old hub stays live until each area here is tested and switched over.
 
 ## Stack
 - Next.js (App Router, TypeScript), Tailwind
