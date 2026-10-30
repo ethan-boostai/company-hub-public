@@ -50,7 +50,7 @@ const idxDir = mkdtempSync(path.join(tmpdir(), "mirror-"));
 const publicTree = (commit) => {
   const env = { ...process.env, GIT_INDEX_FILE: path.join(idxDir, "index") };
   git(["read-tree", commit], { env });
-  for (const p of EXCLUDE) git(["rm", "-r", "-q", "--cached", "--ignore-unmatch", p], { env });
+  for (const p of EXCLUDE) git(["rm", "-r", "-q", "-f", "--cached", "--ignore-unmatch", p], { env });
   return git(["write-tree"], { env });
 };
 if (publicTree(last) !== git(["rev-parse", "public/main^{tree}"])) {
