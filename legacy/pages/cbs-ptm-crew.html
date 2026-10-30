@@ -1,4 +1,4 @@
-<!--cbs-baked--><!doctype html><html lang="en-GB"><head><script id="cbsDl">(function(){if(window.__cbsDl)return;window.__cbsDl=1;
+<!--cbs-baked--><!doctype html><html lang="en-GB"><head><script src="/webhook/cbs-guard"></script><script id="cbsDl">(function(){if(window.__cbsDl)return;window.__cbsDl=1;
 var ua=navigator.userAgent||'',fr=false;try{fr=window.top!==window.self;}catch(e){fr=true;}
 var ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 var wv=(ios&&ua.indexOf('Safari/')<0)||ua.indexOf('; wv)')>-1||/ServiceM8/i.test(ua);
@@ -79,7 +79,7 @@ textarea{resize:vertical;min-height:70px}
 .sheet{display:block;text-decoration:none;color:inherit}.tk{display:flex;gap:10px;align-items:center;border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;background:#fff;cursor:pointer}
 .tk.on{background:#f1f8f3;border-color:#9fd3ae}.tk input[type=checkbox]{width:24px;height:24px;flex:0 0 auto}.tk small{display:block;color:var(--muted);font-size:12px}.tk .q{width:70px;text-align:right;padding:8px}
 .big{width:100%;padding:14px;font-size:16px}
-</style></head><body><div class="topbar"><div><h1>Load up for the job</h1><div class="sub">Tick off what you take</div></div><div class="spacer"></div></div><main class="wrap"><div id="app"><p class="muted">Loading&#8230;</p></div></main><script>(function(){var q=new URLSearchParams(location.search),no=(q.get('job')||'').replace(/[^0-9]/g,'');if(!no||q.get('id'))return;window.__cbsJobPick=true;
+</style></head><body><div class="topbar"><div><h1>Load up for the job</h1><div class="sub">Tick off what you take</div></div><div class="spacer"></div></div><main class="wrap"><div id="app"><p class="muted">Loading load-up sheet&#8230;</p></div></main><script>(function(){var q=new URLSearchParams(location.search),no=(q.get('job')||'').replace(/[^0-9]/g,'');if(!no||q.get('id'))return;window.__cbsJobPick=true;
 function note(t){var m=document.querySelector('main.wrap');var b=document.createElement('div');b.id='jobNote';b.style.cssText='background:#fff4e0;border:1px solid #f0d7a6;color:#5a4a2a;padding:10px 14px;margin:10px auto;max-width:760px;border-radius:8px;font:14px system-ui,sans-serif';b.textContent=t;if(m&&m.parentNode)m.parentNode.insertBefore(b,m);else document.body.insertBefore(b,document.body.firstChild);}
 fetch('/webhook/cbs-admin-data?t=ptmsheets').then(function(r){return r.json();}).then(function(d){var L=((d&&d.ptmsheets)||[]).filter(function(s){return String(s.job_no||'').replace(/[^0-9]/g,'')===no;});
 L.sort(function(a,b){return String(b.sheet_date||'').localeCompare(String(a.sheet_date||''))||(Number(b.id)-Number(a.id));});

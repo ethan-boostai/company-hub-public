@@ -4343,6 +4343,32 @@
           "type": "string"
         }
       ]
+    },
+    {
+      "id": "tP0YZjWjLbV0vd0r",
+      "name": "CBS Stocktake Docs",
+      "columns": [
+        {
+          "name": "col",
+          "type": "string"
+        },
+        {
+          "name": "data",
+          "type": "string"
+        },
+        {
+          "name": "docId",
+          "type": "string"
+        },
+        {
+          "name": "docKey",
+          "type": "string"
+        },
+        {
+          "name": "ts",
+          "type": "number"
+        }
+      ]
     }
   ]
 }

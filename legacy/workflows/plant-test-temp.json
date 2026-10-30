@@ -1,0 +1,84 @@
+{
+  "id": "ZpnznVjQ74YjNYNa",
+  "name": "CBS - Plant Test (temp)",
+  "active": false,
+  "isArchived": false,
+  "versionId": "591fd25b-8168-4bf3-b1b0-2b31239c41d3",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "createdAt": "2026-10-28T11:45:57.484Z",
+  "updatedAt": "2026-10-28T11:45:57.484Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "af5f4fa2-84da-427b-9eff-b571a71a01d0",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "ab96a2a3-e818-4262-b8c4-692f628560d4",
+      "name": "Check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const H='https://old-hub.example/webhook/';\nconst post=b=>this.helpers.httpRequest({method:'POST',url:H+'cbs-plant-act',body:b,json:true,timeout:30000}).catch(e=>({err:String(e.message).slice(0,120)}));\nconst t1=await post({a:'nope',ids:[1]}),t2=await post({a:'back',ids:[]}),t3=await post({a:'extend',ids:[1]});\nconst f=await this.helpers.httpRequest({url:H+'cbs-actions-data?x='+Date.now(),json:true,timeout:120000});\nconst P=(f.items||[]).filter(i=>i.t==='plantback').map(i=>i.key+' | '+i.dtitle+' | '+i.status+' | '+i.sub+' | ids '+(i.items||[]).join(','));\nreturn [{json:{t1,t2,t3,plant:f._plant,cards:P,counts:f.counts}}];"
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": null,
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Temporary: safe tests of cbs-plant-act and the plant cards. Safe to delete.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

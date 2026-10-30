@@ -1,0 +1,654 @@
+{
+  "id": "SaLkyZbvGW3wsS5l",
+  "name": "CBS - Plant Return",
+  "active": true,
+  "isArchived": false,
+  "versionId": "73d95ed0-55f1-4613-ad48-1e0c3bc8d063",
+  "activeVersionId": "73d95ed0-55f1-4613-ad48-1e0c3bc8d063",
+  "triggerCount": 1,
+  "createdAt": "2026-10-28T11:45:47.054Z",
+  "updatedAt": "2026-10-28T11:45:47.054Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Plant Act Hook": {
+      "main": [
+        [
+          {
+            "node": "Assets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assets": {
+      "main": [
+        [
+          {
+            "node": "Plan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Plan": {
+      "main": [
+        [
+          {
+            "node": "Ok?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ok?": {
+      "main": [
+        [
+          {
+            "node": "Update Asset",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Asset": {
+      "main": [
+        [
+          {
+            "node": "Done",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Done": {
+      "main": [
+        [
+          {
+            "node": "Respond Ok",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "9523a277-b521-4fee-b1c7-9280a03a5768",
+      "name": "Plant Act Hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        96
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cbs-plant-act",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "0368bcda-f87e-4afd-b9e5-eab8caf73347"
+    },
+    {
+      "id": "5cac50da-72c2-428e-ba8f-7e10272b98d4",
+      "name": "Assets",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        96
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "8CWS3fZeytjpf4HX"
+        },
+        "returnAll": true
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "f762471f-6762-496b-be5a-0601f2e81952",
+      "name": "Plan",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        96
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/* PLANT RETURN (keep, Ethan 28/10): actions for the 'Plant overdue back' card. Body {a, ids:[asset ids], due:'YYYY-MM-DD', job, van, by}.\n   back   = back in the yard: out_job/out_with/out_since/due_back cleared, yard_status In, location CBS Warehouse.\n   extend = new due_back only.\n   move   = to a job (out_job, location 'Job N') or to a van (out_with + location = van, no job); new due_back; out_since today; yard_status Out.\n   Nothing is written unless every id exists and the action's fields are valid. */\nconst S=v=>v==null?'':String(v).trim();\nconst b=($('Plant Act Hook').first().json.body)||{};const a=S(b.a);const ids=(Array.isArray(b.ids)?b.ids:[b.ids]).map(x=>Number(x)).filter(x=>x>0);\nconst err=m=>[{json:{ok:false,message:m}}];\nif(!/^(back|extend|move)$/.test(a))return err('Unknown action.');\nif(!ids.length)return err('No items chosen.');\nconst R={};$input.all().forEach(i=>{const r=i.json;if(r&&r.id!=null)R[Number(r.id)]=r;});\nconst miss=ids.filter(i=>!R[i]);if(miss.length)return err('Item not found: '+miss.join(', '));\nconst due=S(b.due).slice(0,10),ISO=/^\\d{4}-\\d\\d-\\d\\d$/;\nconst today=new Date().toLocaleDateString('en-CA',{timeZone:'Europe/London'});\nif((a==='extend'||a==='move')&&!ISO.test(due))return err('Choose a due-back date.');\nconst job=S(b.job).replace(/^#/,''),van=S(b.van);\nif(a==='move'&&!job&&!van)return err('Choose a job or a van.');\nreturn ids.map(id=>{const r=R[id];let f;\n if(a==='back')f={out_job:'',out_with:'',out_since:'',due_back:'',yard_status:'In',location:'CBS Warehouse'};\n else if(a==='extend')f={out_job:S(r.out_job),out_with:S(r.out_with),out_since:S(r.out_since),due_back:due,yard_status:S(r.yard_status)||'Out',location:S(r.location)};\n else if(job)f={out_job:job,out_with:S(r.out_with),out_since:today,due_back:due,yard_status:'Out',location:'Job '+job};\n else f={out_job:'',out_with:van,out_since:today,due_back:due,yard_status:'Out',location:van};\n return {json:Object.assign({ok:true,id,name:S(r.name),a},f)};});"
+      }
+    },
+    {
+      "id": "5630163a-b404-4189-941b-894db5b75e12",
+      "name": "Ok?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        96
+      ],
+      "parameters": {
+        "conditions": {
+          "combinator": "and",
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.ok }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "ac75b977-1e10-46af-8886-49e9f1dd3fe8",
+      "name": "Update Asset",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "8CWS3fZeytjpf4HX"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "out_job": "={{ $json.out_job }}",
+            "out_with": "={{ $json.out_with }}",
+            "out_since": "={{ $json.out_since }}",
+            "due_back": "={{ $json.due_back }}",
+            "yard_status": "={{ $json.yard_status }}",
+            "location": "={{ $json.location }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "out_job",
+              "displayName": "out_job",
+              "type": "string",
+              "display": true,
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "out_with",
+              "displayName": "out_with",
+              "type": "string",
+              "display": true,
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "out_since",
+              "displayName": "out_since",
+              "type": "string",
+              "display": true,
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "due_back",
+              "displayName": "due_back",
+              "type": "string",
+              "display": true,
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "yard_status",
+              "displayName": "yard_status",
+              "type": "string",
+              "display": true,
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "location",
+              "displayName": "location",
+              "type": "string",
+              "display": true,
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "4776e46a-5ec0-4c4e-a41e-2414155257f5",
+      "name": "Done",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const P=$('Plan').all().map(i=>i.json).filter(x=>x&&x.ok);const a=P.length?P[0].a:'';\nconst w={back:'back in the yard',extend:'due-back date changed',move:'moved'}[a]||'saved';\nreturn [{json:{ok:true,n:P.length,message:P.length+(P.length===1?' item ':' items ')+w+'.'}}];"
+      }
+    },
+    {
+      "id": "748e0037-bd8f-4da8-af04-624be2b8f19b",
+      "name": "Respond Ok",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        0
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "2f344c3c-fee7-409d-80fa-39753493cbbc",
+      "name": "Respond Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        192
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "executeOnce": true
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": {
+    "nodes": [
+      {
+        "id": "9523a277-b521-4fee-b1c7-9280a03a5768",
+        "name": "Plant Act Hook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          96
+        ],
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cbs-plant-act",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "webhookId": "0368bcda-f87e-4afd-b9e5-eab8caf73347"
+      },
+      {
+        "id": "5cac50da-72c2-428e-ba8f-7e10272b98d4",
+        "name": "Assets",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          224,
+          96
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "8CWS3fZeytjpf4HX"
+          },
+          "returnAll": true
+        },
+        "executeOnce": true,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "f762471f-6762-496b-be5a-0601f2e81952",
+        "name": "Plan",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          96
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "/* PLANT RETURN (keep, Ethan 28/10): actions for the 'Plant overdue back' card. Body {a, ids:[asset ids], due:'YYYY-MM-DD', job, van, by}.\n   back   = back in the yard: out_job/out_with/out_since/due_back cleared, yard_status In, location CBS Warehouse.\n   extend = new due_back only.\n   move   = to a job (out_job, location 'Job N') or to a van (out_with + location = van, no job); new due_back; out_since today; yard_status Out.\n   Nothing is written unless every id exists and the action's fields are valid. */\nconst S=v=>v==null?'':String(v).trim();\nconst b=($('Plant Act Hook').first().json.body)||{};const a=S(b.a);const ids=(Array.isArray(b.ids)?b.ids:[b.ids]).map(x=>Number(x)).filter(x=>x>0);\nconst err=m=>[{json:{ok:false,message:m}}];\nif(!/^(back|extend|move)$/.test(a))return err('Unknown action.');\nif(!ids.length)return err('No items chosen.');\nconst R={};$input.all().forEach(i=>{const r=i.json;if(r&&r.id!=null)R[Number(r.id)]=r;});\nconst miss=ids.filter(i=>!R[i]);if(miss.length)return err('Item not found: '+miss.join(', '));\nconst due=S(b.due).slice(0,10),ISO=/^\\d{4}-\\d\\d-\\d\\d$/;\nconst today=new Date().toLocaleDateString('en-CA',{timeZone:'Europe/London'});\nif((a==='extend'||a==='move')&&!ISO.test(due))return err('Choose a due-back date.');\nconst job=S(b.job).replace(/^#/,''),van=S(b.van);\nif(a==='move'&&!job&&!van)return err('Choose a job or a van.');\nreturn ids.map(id=>{const r=R[id];let f;\n if(a==='back')f={out_job:'',out_with:'',out_since:'',due_back:'',yard_status:'In',location:'CBS Warehouse'};\n else if(a==='extend')f={out_job:S(r.out_job),out_with:S(r.out_with),out_since:S(r.out_since),due_back:due,yard_status:S(r.yard_status)||'Out',location:S(r.location)};\n else if(job)f={out_job:job,out_with:S(r.out_with),out_since:today,due_back:due,yard_status:'Out',location:'Job '+job};\n else f={out_job:'',out_with:van,out_since:today,due_back:due,yard_status:'Out',location:van};\n return {json:Object.assign({ok:true,id,name:S(r.name),a},f)};});"
+        }
+      },
+      {
+        "id": "5630163a-b404-4189-941b-894db5b75e12",
+        "name": "Ok?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          672,
+          96
+        ],
+        "parameters": {
+          "conditions": {
+            "combinator": "and",
+            "options": {
+              "caseSensitive": true,
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.ok }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ]
+          },
+          "options": {}
+        }
+      },
+      {
+        "id": "ac75b977-1e10-46af-8886-49e9f1dd3fe8",
+        "name": "Update Asset",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          0
+        ],
+        "parameters": {
+          "resource": "row",
+          "operation": "update",
+          "dataTableId": {
+            "__rl": true,
+            "mode": "id",
+            "value": "8CWS3fZeytjpf4HX"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $json.id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "out_job": "={{ $json.out_job }}",
+              "out_with": "={{ $json.out_with }}",
+              "out_since": "={{ $json.out_since }}",
+              "due_back": "={{ $json.due_back }}",
+              "yard_status": "={{ $json.yard_status }}",
+              "location": "={{ $json.location }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "out_job",
+                "displayName": "out_job",
+                "type": "string",
+                "display": true,
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "out_with",
+                "displayName": "out_with",
+                "type": "string",
+                "display": true,
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "out_since",
+                "displayName": "out_since",
+                "type": "string",
+                "display": true,
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "due_back",
+                "displayName": "due_back",
+                "type": "string",
+                "display": true,
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "yard_status",
+                "displayName": "yard_status",
+                "type": "string",
+                "display": true,
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "location",
+                "displayName": "location",
+                "type": "string",
+                "display": true,
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "4776e46a-5ec0-4c4e-a41e-2414155257f5",
+        "name": "Done",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          0
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const P=$('Plan').all().map(i=>i.json).filter(x=>x&&x.ok);const a=P.length?P[0].a:'';\nconst w={back:'back in the yard',extend:'due-back date changed',move:'moved'}[a]||'saved';\nreturn [{json:{ok:true,n:P.length,message:P.length+(P.length===1?' item ':' items ')+w+'.'}}];"
+        }
+      },
+      {
+        "id": "748e0037-bd8f-4da8-af04-624be2b8f19b",
+        "name": "Respond Ok",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          1344,
+          0
+        ],
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {}
+        }
+      },
+      {
+        "id": "2f344c3c-fee7-409d-80fa-39753493cbbc",
+        "name": "Respond Error",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          896,
+          192
+        ],
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify($json) }}",
+          "options": {}
+        },
+        "executeOnce": true
+      }
+    ],
+    "connections": {
+      "Plant Act Hook": {
+        "main": [
+          [
+            {
+              "node": "Assets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Assets": {
+        "main": [
+          [
+            {
+              "node": "Plan",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Plan": {
+        "main": [
+          [
+            {
+              "node": "Ok?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ok?": {
+        "main": [
+          [
+            {
+              "node": "Update Asset",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Respond Error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update Asset": {
+        "main": [
+          [
+            {
+              "node": "Done",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Done": {
+        "main": [
+          [
+            {
+              "node": "Respond Ok",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": []
+  },
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "CBS plant actions for the Plant overdue back card: POST cbs-plant-act {a: back|extend|move, ids, due, job, van, by}. Back in yard / extend due-back date / move to a job or van, writes cbs_assets.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}

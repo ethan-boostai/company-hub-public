@@ -1,0 +1,218 @@
+<!doctype html><html lang="en-GB"><head><script src="/webhook/cbs-guard"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CBS - Yard</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f2f2f0;color:#161616;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:15px;line-height:1.45}
+.top{background:#3d4043;color:#fff;border-bottom:4px solid #F47920;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:20}
+.top h1{margin:0;font-size:19px;flex:1;min-width:120px}.top select{font:inherit;font-size:14px;padding:7px 10px;border-radius:8px;border:0;max-width:200px}
+.top .who{font-size:13px;color:#ddd;display:flex;align-items:center;gap:6px}
+.tabs{display:flex;gap:6px;padding:10px 16px 0;max-width:1400px;margin:0 auto;flex-wrap:wrap}
+.tabs button{font:inherit;font-size:15px;font-weight:600;border:1px solid #d9d9d6;background:#fff;border-radius:10px;padding:10px 16px;cursor:pointer;color:#161616}
+.tabs button.on{background:#F47920;border-color:#F47920;color:#fff}.tabs .n{display:inline-block;min-width:22px;padding:1px 7px;margin-left:6px;border-radius:999px;background:#eee;color:#333;font-size:12px}
+.tabs button.on .n{background:rgba(255,255,255,.25);color:#fff}.tabs .n.red{background:#b3261e;color:#fff}
+.wrap{max-width:1400px;margin:0 auto;padding:12px 16px 40px}
+#status{max-width:1400px;margin:0 auto;padding:6px 16px 0;font-size:13px;color:#555}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 12px}
+.bar input[type=search]{flex:1;min-width:200px;font:inherit;padding:10px 12px;border:1px solid #ccc;border-radius:10px;background:#fff}
+.chip{font:inherit;font-size:13px;font-weight:600;border:1px solid #d9d9d6;background:#fff;border-radius:999px;padding:6px 12px;cursor:pointer;color:#161616}.chip.on{border-color:#F47920;background:#fff4e0}
+.cols{display:grid;grid-template-columns:repeat(5,minmax(220px,1fr));gap:12px;align-items:start}
+@media(max-width:1100px){.cols{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:640px){.cols{grid-template-columns:1fr}}
+.col{background:#e7e7e3;border-radius:12px;padding:10px;min-height:80px}.col h2{margin:2px 4px 10px;font-size:15px;display:flex;justify-content:space-between}
+.col.red h2{color:#b3261e}.col.done{background:#e4efe6}
+.card{display:block;background:#fff;border:1px solid #e2e0dc;border-left:5px solid #F47920;border-radius:10px;padding:12px;margin:0 0 10px;text-decoration:none;color:#161616;cursor:pointer;width:100%;text-align:left;font:inherit}
+.card:hover{border-color:#F47920}.card.ok{border-left-color:#1a7f37;opacity:.85}.card.bad{border-left-color:#b3261e}
+.card b{font-size:16px}.card .s{font-size:13px;color:#555;margin-top:3px}.card .w{font-size:13px;color:#b3261e;font-weight:600;margin-top:4px}
+.pill{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:2px 9px;background:#eee;margin:4px 4px 0 0}
+.pill.o{background:#fff1d6;color:#7a4b00}.pill.g{background:#dff3e4;color:#1a7f37}.pill.r{background:#fbdedb;color:#b3261e}.pill.b{background:#e6efff;color:#1f5fbf}
+.box{background:#fff;border:1px solid #e2e0dc;border-radius:12px;overflow:hidden;margin:0 0 14px}
+.box .h{background:#f4f4f2;padding:8px 12px;font-size:13px;font-weight:700;border-bottom:1px solid #e3e3e0;display:flex;justify-content:space-between}
+.row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid #ececea;cursor:pointer}.row:last-child{border-bottom:0}.row:hover{background:#fafaf8}
+.row .nm{flex:1;min-width:0}.row .nm small{display:block;color:#6b6e70;font-size:12px}.row .rt{text-align:right;font-size:13px;color:#555;white-space:nowrap}
+.row.cnt{cursor:default}.row input.q{width:90px;font:inherit;font-size:16px;padding:8px;text-align:right;border:1px solid #ccc;border-radius:8px}
+.row input.q.diff{border-color:#F47920;background:#fff4e0}
+.muted{color:#6b6e70;font-size:13px}.warn{color:#b3261e;font-weight:600}
+.btn{font:inherit;font-size:15px;font-weight:600;border:1px solid #ccc;background:#fff;border-radius:10px;padding:10px 14px;cursor:pointer;color:#161616;text-decoration:none;display:inline-block}
+.btn.p{background:#F47920;border-color:#F47920;color:#fff}.btn.r{background:#b3261e;border-color:#b3261e;color:#fff}.btn:disabled{opacity:.6;cursor:default}
+.note{background:#fff4e0;border:1px solid #f0d7a6;border-radius:10px;padding:10px 12px;margin:0 0 12px;font-size:14px}
+.empty{color:#6b6e70;font-size:13px;padding:8px 4px}
+#ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;z-index:50;align-items:flex-start;justify-content:center;padding:30px 12px;overflow:auto}
+#ov.on{display:flex}#md{background:#fff;border-radius:14px;max-width:640px;width:100%;padding:18px}
+#md h3{margin:0 0 6px;font-size:18px}#md label.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:#555;margin:10px 0}
+#md input,#md select,#md textarea{font:inherit;font-size:15px;padding:9px 10px;border:1px solid #ccc;border-radius:8px;width:100%}
+#md textarea{min-height:70px}.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+table.l{width:100%;border-collapse:collapse;margin-top:8px}table.l th{text-align:left;font-size:12px;color:#555;padding:6px 4px;border-bottom:1px solid #ddd}table.l td{padding:6px 4px;border-bottom:1px solid #eee;vertical-align:middle}
+table.l input{width:90px;text-align:right}
+</style></head><body>
+<div class="top"><h1>CBS Yard</h1><span class="who">Your name <select id="who"><option value="">Choose&#8230;</option></select></span></div>
+<div class="tabs" id="tabs"></div>
+<div id="status">Loading&#8230;</div>
+<main class="wrap" id="app"></main>
+<div id="ov"><div id="md"></div></div>
+<script>
+(function(){
+var H="/webhook/",D={ptmsheets:[],assets:[],materials:[],pos:[],vehicles:[],workers:[]},ST=[],TAB=(location.hash||"#loadups").slice(1),Q={},CHIP="all",COUNT=null,BUSY=false,LOADED=false;
+function el(i){return document.getElementById(i);}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");}
+function num(v){var x=parseFloat(String(v==null?"":v).replace(/[^0-9.-]/g,""));return isNaN(x)?0:x;}
+function f2(x){return String(Math.round(x*100)/100);}
+function today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}
+function addDays(s,n){var d=new Date(s+"T12:00:00");d.setDate(d.getDate()+n);return d.toISOString().slice(0,10);}
+function uk(d){d=String(d||"").slice(0,10);var p=d.split("-");return p.length===3?p[2]+"/"+p[1]+"/"+p[0]:d;}
+function day(d){d=String(d||"").slice(0,10);if(!d)return "";var t=today();if(d===t)return "Today";if(d===addDays(t,1))return "Tomorrow";if(d===addDays(t,-1))return "Yesterday";var x=new Date(d+"T12:00:00");return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][x.getDay()]+" "+uk(d);}
+function status(t,bad){var s=el("status");s.textContent=t||"";s.style.color=bad?"#b3261e":"#555";}
+function who(){return el("who").value;}
+function needWho(){if(who())return true;alert("Choose your name at the top first.");el("who").focus();return false;}
+function words(q){return String(q||"").toLowerCase().split(/ +/).filter(Boolean);}
+function hit(txt,ws){txt=String(txt||"").toLowerCase();return ws.every(function(w){return txt.indexOf(w)>-1;});}
+function vlabel(v){var d=String(v.assigned_to||"").trim().split(" ")[0];return String(v.make_model||"Vehicle").trim()+(d?" - "+d:"")+" ("+String(v.reg||"").trim()+")";}
+function vn(r){var v=(D.vehicles||[]).filter(function(x){return x.reg===r;})[0],n=v?String(v.assigned_to||"").trim():"";return r+(n?" - "+n:"");}
+function vans(){return (D.vehicles||[]).filter(function(v){return !/^yes$/i.test(String(v.fleet_only||""));}).map(vlabel);}
+function warnA(a){var w=[],t=today();if(a.status==="Needs repair")w.push("Faulty");if(a.status==="Lost")w.push("Missing");if(a.test_tag_due&&String(a.test_tag_due).slice(0,10)<t)w.push("PAT overdue");if(a.next_service&&String(a.next_service).slice(0,10)<t)w.push("Service overdue");return w;}
+function items(s){try{return JSON.parse(s.items_json||"{}")||{};}catch(e){return {};}}
+function lines(p){try{return JSON.parse(p.lines_json||"[]")||[];}catch(e){return [];}}
+function recd(p){try{return JSON.parse(p.received_json||"{}")||{};}catch(e){return {};}}
+function fileUrl(u){return u?H+"cbs-file?u="+encodeURIComponent(u):"";}
+
+/* ---------- data ---------- */
+function load(quiet){if(BUSY||COUNT||el("ov").classList.contains("on")){return;}
+ if(!quiet)status("Loading…");
+ Promise.all([fetch(H+"cbs-admin-data?t=ptmsheets,assets,materials,pos,vehicles,workers").then(function(r){return r.json();}),fetch(H+"cbs-yard-data").then(function(r){return r.json();}).catch(function(){return {stocktakes:[]};})]).then(function(a){
+  D=a[0]||D;ST=(a[1]&&a[1].stocktakes)||[];
+  if(!LOADED){var w=(D.workers||[]).filter(function(x){return x.name&&x.active!==false;}).map(function(x){return String(x.name).trim();}).sort();var saved="";try{saved=localStorage.getItem("cbsYardWho")||"";}catch(e){}
+   el("who").innerHTML="<option value=''>Choose…</option>"+w.map(function(n){return "<option"+(n===saved?" selected":"")+">"+esc(n)+"</option>";}).join("");LOADED=true;}
+  status("Updated "+new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"})+". Refreshes every minute.");render();
+ }).catch(function(){status("Couldn't load. Check your connection; it will try again.",1);});}
+el("who").onchange=function(){try{localStorage.setItem("cbsYardWho",who());}catch(e){}};
+
+/* ---------- tabs ---------- */
+function loadups(){var t=today();return (D.ptmsheets||[]).filter(function(s){return s.status!=="Loaded"||String(s.loaded_at||"").slice(0,10)===t;});}
+function yardPos(){return (D.pos||[]).filter(function(p){return /^yard/i.test(String(p.deliver_to||""))&&p.status!=="Draft"&&p.status!=="Cancelled";});}
+function openPos(){return yardPos().filter(function(p){return p.status==="Ordered"||p.status==="Part received";});}
+function render(){var t=today();
+ var lu=(D.ptmsheets||[]).filter(function(s){return s.status!=="Loaded";}),luOver=lu.filter(function(s){return String(s.sheet_date||"").slice(0,10)<t;}).length;
+ var op=openPos(),poOver=op.filter(function(p){return p.needed_by&&String(p.needed_by).slice(0,10)<t;}).length;
+ var pf=(D.assets||[]).filter(function(a){return a.status==="Needs repair"||a.status==="Lost";}).length;
+ var pend=ST.filter(function(s){return s.status==="Pending";}).length;
+ var T=[["loadups","Load-ups",lu.length,luOver],["deliveries","Deliveries",op.length,poOver],["plant","Plant",pf,0],["stock","Stock",pend,0]];
+ el("tabs").innerHTML=T.map(function(x){return "<button data-tab='"+x[0]+"' class='"+(TAB===x[0]?"on":"")+"'>"+x[1]+(x[2]?"<span class='n"+(x[3]?" red":"")+"'>"+x[2]+"</span>":"")+"</button>";}).join("");
+ Array.prototype.forEach.call(document.querySelectorAll("[data-tab]"),function(b){b.onclick=function(){if(COUNT&&!confirm("Leave the stock take? Your counts so far will be lost."))return;COUNT=null;TAB=b.getAttribute("data-tab");location.hash=TAB;render();};});
+ if(TAB==="deliveries")rDel();else if(TAB==="plant")rPlant();else if(TAB==="stock")rStock();else rLoad();}
+function searchBar(k,ph,extra){return "<div class='bar' data-nosearch><input type='search' id='q' data-k='"+k+"' placeholder='"+esc(ph)+"' value='"+esc(Q[k]||"")+"' autocomplete='off'>"+(extra||"")+"</div>";}
+function wireSearch(fn){var q=el("q");if(!q)return;q.oninput=function(){Q[q.getAttribute("data-k")]=q.value;fn(true);};}
+
+/* ---------- load-ups ---------- */
+function luCard(s){var it=items(s),p=(it.plant||[]).length+((it.custom||[]).filter(function(c){return c.kind!=="mat";}).length),m=(it.mats||[]).filter(function(x){return x.id;}).length+((it.custom||[]).filter(function(c){return c.kind==="mat";}).length);
+ var done=s.status==="Loaded",sh=String(s.shortages||"").trim();
+ return "<a class='card"+(s.load_issues?" bad":(done?" ok":""))+"' href='"+H+"cbs-ptm-crew?id="+s.id+"'><b>Load-up #"+s.id+(s.job_no?" • Job "+esc(s.job_no):"")+"</b>"+
+ "<div class='s'>"+esc(s.site||s.job_desc||"")+(s.client?" • "+esc(s.client):"")+"</div>"+
+ "<div class='s'>"+(s.vehicle?"🚐 "+esc(vn(s.vehicle)):"No vehicle set")+"</div>"+(s.crew?"<div class='s'>Crew: "+esc(s.crew)+"</div>":"")+
+ "<div><span class='pill'>"+p+" plant</span><span class='pill'>"+m+" materials</span><span class='pill "+(done?"g":"o")+"'>"+(done?"Loaded by "+esc(s.loaded_by||"")+" "+esc(String(s.loaded_at||"").slice(11,16)):day(s.sheet_date))+"</span></div>"+
+ (s.load_issues?"<div class='w'>Problem reported: "+esc(String(s.load_issues).split(String.fromCharCode(10)).slice(-1)[0])+"</div>":"")+"</a>";}
+function rLoad(){var t=today(),t1=addDays(t,1),ws=words(Q.lu),L=loadups().filter(function(s){return !ws.length||hit([s.id,s.job_no,s.site,s.client,s.job_desc,s.vehicle,s.crew].join(" "),ws);});
+ L.sort(function(a,b){return String(a.sheet_date).localeCompare(String(b.sheet_date))||a.id-b.id;});
+ function d(s){return String(s.sheet_date||"").slice(0,10);}
+ var C=[["Overdue","red",L.filter(function(s){return s.status!=="Loaded"&&d(s)&&d(s)<t;})],["Today","",L.filter(function(s){return s.status!=="Loaded"&&(d(s)===t||!d(s));})],["Tomorrow","",L.filter(function(s){return s.status!=="Loaded"&&d(s)===t1;})],["Later","",L.filter(function(s){return s.status!=="Loaded"&&d(s)>t1;})],["Loaded today","done",L.filter(function(s){return s.status==="Loaded";})]];
+ var h=searchBar("lu","Search load-ups (job, site, vehicle, crew)")+"<div class='cols'>"+C.map(function(c){return "<div class='col "+c[1]+"'><h2><span>"+c[0]+"</span><span>"+c[2].length+"</span></h2>"+(c[2].length?c[2].map(luCard).join(""):"<div class='empty'>Nothing here.</div>")+"</div>";}).join("")+"</div>";
+ el("app").innerHTML=h;wireSearch(function(){var v=el("q").value,p=el("q").selectionStart;rLoad();var q=el("q");q.focus();q.setSelectionRange(p,p);});}
+
+/* ---------- deliveries ---------- */
+function poCard(p){var L=lines(p),R=recd(p),left=L.filter(function(l,i){return num(l.qty)-num(R[i])>1e-9;}).length,done=p.status==="Received";
+ var late=!done&&p.needed_by&&String(p.needed_by).slice(0,10)<today();
+ return "<button class='card"+(done?" ok":(late?" bad":""))+"' data-po='"+p.id+"'><b>"+esc(p.po_no||("PO "+p.id))+"</b><div class='s'>"+esc(p.supplier||"")+"</div>"+
+ "<div class='s'>"+(p.job_no?"For job "+esc(p.job_no):"Yard stock")+"</div>"+
+ "<div><span class='pill "+(p.po_type==="Plant"?"b":"")+"'>"+esc(p.po_type||"Material")+"</span><span class='pill "+(done?"g":(p.status==="Part received"?"b":"o"))+"'>"+esc(done?"Received":(p.status==="Part received"?"Part received":(p.needed_by?"Due "+day(p.needed_by):"No date")))+"</span>"+(L.length?"<span class='pill'>"+L.length+" line"+(L.length>1?"s":"")+(left&&!done?", "+left+" to come":"")+"</span>":"")+"</div></button>";}
+function rDel(){var t=today(),ws=words(Q.po),P=yardPos().filter(function(p){return !ws.length||hit([p.po_no,p.supplier,p.job_no,p.po_type,lines(p).map(function(l){return l.desc;}).join(" ")].join(" "),ws);});
+ function d(p){return String(p.needed_by||"").slice(0,10);}function open(p){return p.status==="Ordered"||p.status==="Part received";}
+ var recToday=P.filter(function(p){return p.status==="Received"&&String(p.updatedAt||"").slice(0,10)===t;});
+ var C=[["Overdue","red",P.filter(function(p){return open(p)&&d(p)&&d(p)<t;})],["Today","",P.filter(function(p){return open(p)&&d(p)===t;})],["Upcoming","",P.filter(function(p){return open(p)&&d(p)>t;})],["No date","",P.filter(function(p){return open(p)&&!d(p);})],["Received today","done",recToday]];
+ C.forEach(function(c){c[2].sort(function(a,b){return d(a).localeCompare(d(b));});});
+ el("app").innerHTML=searchBar("po","Search deliveries (PO, supplier, item)")+"<div class='note'>Only orders being delivered to the <b>yard</b> show here. Job-site deliveries are handled on site.</div><div class='cols'>"+C.map(function(c){return "<div class='col "+c[1]+"'><h2><span>"+c[0]+"</span><span>"+c[2].length+"</span></h2>"+(c[2].length?c[2].map(poCard).join(""):"<div class='empty'>Nothing here.</div>")+"</div>";}).join("")+"</div>";
+ Array.prototype.forEach.call(document.querySelectorAll("[data-po]"),function(b){b.onclick=function(){poModal(Number(b.getAttribute("data-po")));};});
+ wireSearch(function(){var p=el("q").selectionStart;rDel();var q=el("q");q.focus();q.setSelectionRange(p,p);});}
+function poModal(id){var p=(D.pos||[]).filter(function(x){return Number(x.id)===id;})[0];if(!p)return;var L=lines(p),R=recd(p),open=p.status==="Ordered"||p.status==="Part received";
+ var h="<h3>"+esc(p.po_no)+" • "+esc(p.supplier||"")+"</h3><div class='muted'>"+(p.job_no?"For job "+esc(p.job_no)+" • ":"Yard stock • ")+esc(p.po_type||"Material")+(p.needed_by?" • expected "+uk(p.needed_by):"")+(p.hire_end?" • off-hire "+uk(p.hire_end):"")+"</div>";
+ if(p.pdf_url)h+="<div style='margin-top:8px'><a class='btn' href='"+fileUrl(p.pdf_url)+"' target='_blank' rel='noopener'>Open the PO</a></div>";
+ if(L.length){h+="<table class='l'><thead><tr><th>Item</th><th style='text-align:right'>Ordered</th><th style='text-align:right'>Got</th>"+(open?"<th style='text-align:right'>Arrived now</th>":"")+"</tr></thead><tbody>"+L.map(function(l,i){var left=Math.max(0,num(l.qty)-num(R[i]));return "<tr><td>"+esc(l.desc)+(l.material_id?" <span class='pill g'>stock</span>":"")+"</td><td style='text-align:right'>"+esc(l.qty)+" "+esc(l.unit||"")+"</td><td style='text-align:right'>"+f2(num(R[i]))+"</td>"+(open?"<td style='text-align:right'>"+(left>0?"<input data-rq='"+i+"' inputmode='decimal' value='"+f2(left)+"'>":"✓")+"</td>":"")+"</tr>";}).join("")+"</tbody></table>";
+  if(open)h+="<p class='muted'>Change a quantity if only part arrived. Lines marked <b>stock</b> go straight onto the stock count.</p>";}
+ else h+="<p class='muted'>This PO has no item lines, so it can't be received line by line. Ask the office to add the items.</p>";
+ h+="<div class='acts'>"+(open&&L.length?"<button class='btn p' id='rcv'>Save what arrived</button>":"")+"<button class='btn' id='cls'>Close</button></div><div id='msg' class='muted'></div>";
+ modal(h);el("cls").onclick=closeModal;var b=el("rcv");if(b)b.onclick=function(){if(!needWho())return;var ls=[];Array.prototype.forEach.call(document.querySelectorAll("[data-rq]"),function(x){var q=num(x.value);if(q>0)ls.push({i:Number(x.getAttribute("data-rq")),qty:q});});
+  if(!ls.length){el("msg").textContent="Enter what arrived.";return;}b.disabled=true;BUSY=true;el("msg").textContent="Saving…";
+  fetch(H+"cbs-po-receive",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:p.id,by:who(),lines:ls})}).then(function(r){return r.json();}).then(function(d){BUSY=false;if(!d||!d.ok)throw new Error(d&&d.message||"");closeModal();status(p.po_no+": "+d.status+(d.stocked?" ("+d.stocked+" stock line"+(d.stocked>1?"s":"")+" added)":"")+".");load(true);})
+  .catch(function(e){BUSY=false;b.disabled=false;el("msg").textContent=(e&&e.message)||"Couldn't save. Check your connection and try again.";});};}
+
+/* ---------- plant ---------- */
+function where(a){if(a.out_job)return "On job "+a.out_job;return String(a.location||"").trim()||"No location";}
+function rPlant(){var ws=words(Q.pl),A=(D.assets||[]).filter(function(a){return String(a.name||"").trim()&&a.status!=="Retired";});
+ var chips=[["all","All"],["yard","In the yard"],["vans","In vehicles"],["jobs","On jobs"],["fault","Faulty"],["missing","Missing"],["due","Tests/services due"]];
+ A=A.filter(function(a){var w=warnA(a),loc=where(a);if(CHIP==="yard"&&!(/warehouse|yard/i.test(loc)&&a.status!=="Lost"))return false;if(CHIP==="vans"&&!(/[(]/.test(loc)&&!a.out_job&&a.status!=="Lost"))return false;if(CHIP==="jobs"&&!a.out_job)return false;if(CHIP==="fault"&&a.status!=="Needs repair")return false;if(CHIP==="missing"&&a.status!=="Lost")return false;if(CHIP==="due"&&!w.some(function(x){return /overdue/.test(x);}))return false;
+  return !ws.length||hit([a.name,a.category,a.make_model,a.asset_tag,a.serial_no,loc,a.assigned_to].join(" "),ws);});
+ var g={};A.forEach(function(a){var k=a.status==="Lost"?"Missing":where(a);(g[k]=g[k]||[]).push(a);});
+ var keys=Object.keys(g).sort(function(x,y){function r(k){return k==="Missing"?3:(/warehouse|yard/i.test(k)?0:(/^On job/.test(k)?2:1));}return r(x)-r(y)||x.localeCompare(y);});
+ var h=searchBar("pl","Search plant (name, tag, location)",chips.map(function(c){return "<button class='chip"+(CHIP===c[0]?" on":"")+"' data-chip='"+c[0]+"'>"+c[1]+"</button>";}).join(""));
+ h+="<div class='muted' style='margin:-4px 0 10px'>"+A.length+" item"+(A.length===1?"":"s")+". Tap an item to report a fault, mark it missing or found.</div>";
+ h+=keys.map(function(k){var rows=g[k].sort(function(a,b){return String(a.name).localeCompare(String(b.name));});return "<div class='box'><div class='h'><span>"+esc(k)+"</span><span>"+rows.length+"</span></div>"+rows.map(function(a){var w=warnA(a);return "<div class='row' data-as='"+a.id+"'><div class='nm'><b>"+esc(a.name)+"</b><small>"+esc([a.category,a.asset_tag].filter(Boolean).join(" • "))+"</small></div><div class='rt'>"+w.map(function(x){return "<span class='pill r'>"+esc(x)+"</span>";}).join("")+"</div></div>";}).join("")+"</div>";}).join("")||"<div class='empty'>Nothing matches.</div>";
+ el("app").innerHTML=h;
+ Array.prototype.forEach.call(document.querySelectorAll("[data-chip]"),function(b){b.onclick=function(){CHIP=b.getAttribute("data-chip");rPlant();};});
+ Array.prototype.forEach.call(document.querySelectorAll("[data-as]"),function(b){b.onclick=function(){plantModal(Number(b.getAttribute("data-as")));};});
+ wireSearch(function(){var p=el("q").selectionStart;rPlant();var q=el("q");q.focus();q.setSelectionRange(p,p);});}
+function plantModal(id){var a=(D.assets||[]).filter(function(x){return Number(x.id)===id;})[0];if(!a)return;var w=warnA(a),lost=a.status==="Lost",faulty=a.status==="Needs repair";
+ var locs=["CBS Warehouse"].concat(vans());if(a.location&&locs.indexOf(a.location)<0)locs.push(a.location);
+ var h="<h3>"+esc(a.name)+"</h3><div class='muted'>"+esc([a.category,a.make_model,a.asset_tag?"Tag "+a.asset_tag:"",a.serial_no?"S/N "+a.serial_no:""].filter(Boolean).join(" • "))+"</div>"+
+ "<div style='margin-top:6px'>Where: <b>"+esc(lost?"Missing (last at "+(a.location||"?")+")":where(a))+"</b>"+(a.assigned_to?" • "+esc(a.assigned_to):"")+"</div>"+(w.length?"<div class='warn' style='margin-top:4px'>"+esc(w.join(", "))+"</div>":"")+
+ (a.out_job?"<div class='acts' style='margin-top:10px'><button class='btn p' id='pret'>Back in the yard</button></div><p class='muted' style='margin:10px 0 0'>Or report a problem:</p>":"")+"<label class='f'>What's happened?<select id='pa'>"+(lost?"":"<option value='faulty'>Faulty / damaged</option><option value='missing'>Missing / can't find it</option>")+"<option value='found'"+(lost?" selected":"")+">Found it"+(faulty?" / back in use":"")+"</option></select></label>"+
+ "<label class='f' id='locW'>Where is it now?<select id='pl'>"+locs.map(function(l){return "<option"+(l===(a.location||"CBS Warehouse")?" selected":"")+">"+esc(l)+"</option>";}).join("")+"</select></label>"+
+ "<label class='f'>Note <span id='nreq'></span><textarea id='pn' placeholder='What is wrong, or where it was last seen'></textarea></label>"+
+ "<div class='acts'><button class='btn p' id='psv'>Save</button><button class='btn' id='cls'>Cancel</button></div><div id='msg' class='muted'></div>";
+ modal(h);el("cls").onclick=closeModal;
+ var pr=el("pret");if(pr)pr.onclick=function(){if(!needWho())return;if(!confirm("Return "+a.name+" to the yard?"))return;pr.disabled=true;BUSY=true;el("msg").textContent="Saving…";
+  fetch(H+"cbs-job-plant",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"return",ids:[String(a.id)],by:who(),job:String(a.out_job)})}).then(function(r){return r.json();}).then(function(d){BUSY=false;if(!d||!d.ok)throw new Error(d&&d.message||"");closeModal();status(a.name+" is back in the yard.");load(true);})
+  .catch(function(e){BUSY=false;pr.disabled=false;el("msg").textContent=(e&&e.message)||"Couldn't save. Try again.";});};
+ function sync(){var v=el("pa").value;el("locW").style.display=v==="found"?"":"none";el("nreq").textContent=v==="found"?"(optional)":"(needed)";}el("pa").onchange=sync;sync();
+ el("psv").onclick=function(){if(!needWho())return;var v=el("pa").value,n=el("pn").value.trim();if(v!=="found"&&!n){el("msg").textContent="Add a short note so the office knows what's happened.";return;}
+  if(faulty&&v==="found"&&!confirm("Mark "+a.name+" as back in use? Only do this if it has been repaired or checked."))return;
+  var b=el("psv");b.disabled=true;BUSY=true;el("msg").textContent="Saving…";
+  post("cbs-yard-act",{action:"plant",id:a.id,flag:v,note:n,location:v==="found"?el("pl").value:"",by:who()}).then(function(d){BUSY=false;closeModal();status(d.message||"Saved.");load(true);})
+  .catch(function(e){BUSY=false;b.disabled=false;el("msg").textContent=(e&&e.message)||"Couldn't save. Try again.";});};}
+
+/* ---------- stock ---------- */
+function mats(){return (D.materials||[]).filter(function(m){return String(m.name||"").trim()&&m.status!=="Discontinued";});}
+function rStock(){var ws=words(Q.st),M=mats(),locs={};M.forEach(function(m){locs[m.location||"No location"]=1;});
+ var pend=ST.filter(function(s){return s.status==="Pending";}),recent=ST.filter(function(s){return s.status!=="Pending";}).slice(0,3);
+ var h="";
+ if(COUNT){h+="<div class='note'><b>Stock take: "+esc(COUNT.loc==="__all"?"all locations":COUNT.loc)+".</b> Enter what is actually there. Leave a line blank if you didn't count it. Lines that differ turn orange. When you're done, send it to the office to approve.</div>";}
+ else{pend.forEach(function(s){h+="<div class='note'>Stock take #"+s.id+" by "+esc(s.counted_by)+" ("+esc(s.location)+", "+s.line_count+" lines, "+s.diff_count+" different) is <b>waiting for the office to approve</b>.</div>";});
+  recent.forEach(function(s){h+="<div class='muted' style='margin:0 0 6px'>Stock take #"+s.id+" "+esc(String(s.status).toLowerCase())+(s.decided_by?" by "+esc(s.decided_by):"")+(s.decided_at?" on "+uk(s.decided_at)+" "+esc(String(s.decided_at).slice(11,16)):"")+".</div>";});}
+ var lsel="<select id='stl' style='font:inherit;padding:9px;border:1px solid #ccc;border-radius:10px'><option value='__all'>All locations</option>"+Object.keys(locs).sort().map(function(l){return "<option>"+esc(l)+"</option>";}).join("")+"</select>";
+ h+=searchBar("st","Search stock (name, category)",COUNT?"<button class='btn p' id='stSend'>Send to office</button><button class='btn' id='stCancel'>Cancel</button>":lsel+"<button class='btn p' id='stStart'>Start stock take</button><button class='btn' id='stRet'>Materials back from a job</button>");
+ var show=M.filter(function(m){if(COUNT&&COUNT.loc!=="__all"&&(m.location||"No location")!==COUNT.loc)return false;return !ws.length||hit([m.name,m.category,m.location,m.supplier_code].join(" "),ws);});
+ var g={};show.forEach(function(m){var k=(m.location||"No location")+" • "+(m.category||"Other");(g[k]=g[k]||[]).push(m);});
+ h+=Object.keys(g).sort().map(function(k){var rows=g[k].sort(function(a,b){return String(a.name).localeCompare(String(b.name));});return "<div class='box'><div class='h'><span>"+esc(k)+"</span><span>"+rows.length+"</span></div>"+rows.map(function(m){var on=num(m.qty_on_hand),mn=m.min_level===""||m.min_level==null?null:num(m.min_level),low=mn!==null&&on<=mn;
+  if(COUNT){var v=COUNT.c[m.id];var d=v!==undefined&&v!==""&&num(v)!==on;return "<div class='row cnt'><div class='nm'><b>"+esc(m.name)+"</b><small>System: "+f2(on)+" "+esc(m.unit||"")+"</small></div><input class='q"+(d?" diff":"")+"' data-c='"+m.id+"' inputmode='decimal' placeholder='Count' value='"+esc(v===undefined?"":v)+"'><span class='muted' style='width:40px'>"+esc(m.unit||"")+"</span></div>";}
+  return "<div class='row' style='cursor:default'><div class='nm'><b>"+esc(m.name)+"</b><small>"+esc(m.supplier_code||"")+(m.last_counted_on?(m.supplier_code?" • ":"")+"Counted "+uk(m.last_counted_on):"")+"</small></div><div class='rt'><b style='font-size:16px;color:"+(low?"#b3261e":"#161616")+"'>"+f2(on)+"</b> "+esc(m.unit||"")+(low?"<br><span class='pill r'>Low (min "+f2(mn)+")</span>":"")+"</div></div>";}).join("")+"</div>";}).join("")||"<div class='empty'>Nothing matches.</div>";
+ el("app").innerHTML=h;
+ var s=el("stStart");if(s)s.onclick=function(){if(!needWho())return;if(pend.length&&!confirm("There is already a stock take waiting for approval. Start another one?"))return;COUNT={loc:el("stl").value,c:{}};Q.st="";rStock();window.scrollTo(0,0);};
+ var rt=el("stRet");if(rt)rt.onclick=function(){if(!needWho())return;var MM=mats().slice().sort(function(a,b){return String(a.name).localeCompare(String(b.name));});
+  modal("<h3>Materials back from a job</h3><p class='muted'>Goes straight back into stock.</p><label class='f'>Material<select id='rtM'><option value=''>Choose…</option><option value='__other'>Something not on the list…</option>"+MM.map(function(m){return "<option value='"+m.id+"'>"+esc(m.name)+" ("+esc(m.location||"")+", "+f2(num(m.qty_on_hand))+" "+esc(m.unit||"")+" now)</option>";}).join("")+"</select></label><div id='rtOther' style='display:none'><label class='f'>What is it?<input id='rtN' placeholder='e.g. 3m scaffold boards'></label><label class='f'>Unit (optional)<input id='rtU' placeholder='e.g. each, bags, m'></label></div><label class='f'>How much came back<input id='rtQ' inputmode='decimal'></label><label class='f'>Job number (optional)<input id='rtJ' inputmode='numeric'></label><div class='acts'><button class='btn p' id='rtGo'>Put back in stock</button><button class='btn' id='cls'>Cancel</button></div><div id='msg' class='muted'></div>");
+  var rtm=el("rtM");function rto(){el("rtOther").style.display=rtm.value==="__other"?"":"none";}rtm.addEventListener("change",rto);rtm.addEventListener("input",rto);
+  el("cls").onclick=closeModal;el("rtGo").onclick=function(){var id=el("rtM").value,q=num(el("rtQ").value),bt=this;rto();if(!id||!(q>0)){el("msg").textContent="Choose the material and how much came back.";return;}if(id==="__other"&&!el("rtN").value.trim()){el("msg").textContent="Say what came back.";return;}bt.disabled=true;BUSY=true;el("msg").textContent="Saving…";
+   post("cbs-yard-act",{action:"matreturn",id:id,qty:q,job:el("rtJ").value,name:el("rtN").value,unit:el("rtU").value,by:who()}).then(function(d){BUSY=false;closeModal();status(d.message||"Back in stock.");load(true);}).catch(function(e){BUSY=false;bt.disabled=false;el("msg").textContent=(e&&e.message)||"Couldn't save. Try again.";});};};
+ var c=el("stCancel");if(c)c.onclick=function(){if(Object.keys(COUNT.c).some(function(k){return COUNT.c[k]!=="";})&&!confirm("Cancel this stock take? Your counts will be lost."))return;COUNT=null;rStock();};
+ Array.prototype.forEach.call(document.querySelectorAll("[data-c]"),function(x){x.oninput=function(){var id=x.getAttribute("data-c"),m=mats().filter(function(y){return String(y.id)===id;})[0];COUNT.c[id]=x.value.trim();x.classList.toggle("diff",x.value.trim()!==""&&m&&num(x.value)!==num(m.qty_on_hand));};});
+ var sd=el("stSend");if(sd)sd.onclick=function(){if(!needWho())return;var ls=Object.keys(COUNT.c).filter(function(k){return COUNT.c[k]!==""&&!isNaN(parseFloat(COUNT.c[k]));}).map(function(k){return {id:k,counted:num(COUNT.c[k])};});
+  if(!ls.length){alert("You haven't counted anything yet.");return;}
+  var diff=ls.filter(function(l){var m=mats().filter(function(y){return String(y.id)===String(l.id);})[0];return m&&num(m.qty_on_hand)!==l.counted;}).length;
+  if(!confirm("Send "+ls.length+" counted line"+(ls.length>1?"s":"")+" ("+diff+" different from the system) to the office to approve? Stock doesn't change until they approve."))return;
+  sd.disabled=true;BUSY=true;status("Sending…");
+  post("cbs-yard-act",{action:"stocktake",by:who(),location:COUNT.loc==="__all"?"All locations":COUNT.loc,lines:ls}).then(function(d){BUSY=false;COUNT=null;status(d.message||"Sent to the office.");load(true);})
+  .catch(function(e){BUSY=false;sd.disabled=false;status((e&&e.message)||"Couldn't send. Check your connection and try again.",1);});};
+ wireSearch(function(){var p=el("q").selectionStart;rStock();var q=el("q");q.focus();q.setSelectionRange(p,p);});}
+
+/* ---------- helpers ---------- */
+function post(path,body){return fetch(H+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}).then(function(r){return r.json();}).then(function(d){if(!d||!d.ok)throw new Error(d&&d.message||"");return d;});}
+function modal(h){el("md").innerHTML=h;el("ov").classList.add("on");}
+function closeModal(){el("ov").classList.remove("on");el("md").innerHTML="";}
+el("ov").addEventListener("click",function(e){if(e.target===el("ov")&&!BUSY)closeModal();});
+window.addEventListener("hashchange",function(){var t=(location.hash||"#loadups").slice(1);if(t!==TAB&&!COUNT){TAB=t;render();}});
+load();setInterval(function(){load(true);},60000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden)load(true);});
+})();
+</script></body></html>

@@ -120,6 +120,12 @@ Never commit or push to `main`; every change goes through a pull request (`main`
 - Hazards list equipment categories from Registers' `equipment.category` options (read-only).
 - The CoSHH supplier dropdown can add a supplier with just a name to `suppliers` (logged as usual).
 
+## /legacy refreshed and the old hub viewer (Core, 30/10/2026; read before your next page)
+- **/legacy has been refreshed from the live hub** (30/10): all 67 "CBS - …" workflows, every page in `legacy/pages/` (now including `cbs-yard.html`) and the column layouts in `legacy/tables/` (no new data rows). What changed since 27/10 is in `legacy/README.md`. **Registers: your Site work (load-up, yard, plant) must check against the new copy**: plant overdue back cards, Plant Return (`cbs-plant-act`: back in yard / extend / move), Found at the yard clears the job, pre-use checks on the crew portal and Book in Job all arrived on 28–29/10.
+- **Live screenshots: take them yourself.** Before building or checking any page that exists in the old hub, screenshot the live page beside your build. Use only `scripts/old-hub.mjs` (`node scripts/old-hub.mjs "<path?query>" <out.png> [--mobile] [--full]`, or import `openOldHub`). It signs in once with `OLD_HUB_NAME` / `OLD_HUB_PIN` (address in `OLD_HUB_URL`), aborts every request that isn't a GET (and GETs that save), and dismisses pop-ups. Never open the old hub any other way, never type into or submit its forms beyond opening a view, never sign anything.
+- **Screenshots show real data:** save them outside the repo (the script's default is the OS temp folder) or in `private/screens/` (git-ignored). Never commit them; never put them in the public copy.
+- The faking map (`private/fakemap.py`) now also fakes mobiles and geographic phone numbers, emails and postcodes. Run it on anything you bring into `/legacy`.
+
 ## Page standard (every page, every session)
 
 Ethan approved one page layout on 29/10/2026 (`docs/decisions.md`, "Page standard"). Build every page from the shared parts, never your own copies:

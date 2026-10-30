@@ -3,11 +3,11 @@
   "name": "CBS - Tasks",
   "active": true,
   "isArchived": false,
-  "versionId": "275cb9b7-923d-40e6-9077-4fe1ec00f980",
-  "activeVersionId": "275cb9b7-923d-40e6-9077-4fe1ec00f980",
+  "versionId": "0198dd89-ebb9-47a0-8529-4582f9f64e15",
+  "activeVersionId": "0198dd89-ebb9-47a0-8529-4582f9f64e15",
   "triggerCount": 15,
   "createdAt": "2026-10-11T21:21:07.969Z",
-  "updatedAt": "2026-10-27T17:31:39.550Z",
+  "updatedAt": "2026-10-29T16:47:10.852Z",
   "settings": {
     "executionOrder": "v1",
     "availableInMCP": true,
@@ -1022,17 +1022,6 @@
         ]
       ]
     },
-    "Crew CoSHH": {
-      "main": [
-        [
-          {
-            "node": "Serve Crew Page",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Done Rule": {
       "main": [
         [
@@ -1165,17 +1154,6 @@
         ]
       ]
     },
-    "Upload All UI": {
-      "main": [
-        [
-          {
-            "node": "UI Out",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Get Snags": {
       "main": [
         [
@@ -1243,6 +1221,61 @@
         [
           {
             "node": "Build Tasks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload All UI": {
+      "main": [
+        [
+          {
+            "node": "Plant Back UI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Plant Back UI": {
+      "main": [
+        [
+          {
+            "node": "UI Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crew CoSHH": {
+      "main": [
+        [
+          {
+            "node": "Crew PreUse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crew PreUse": {
+      "main": [
+        [
+          {
+            "node": "Crew Docs PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crew Docs PDF": {
+      "main": [
+        [
+          {
+            "node": "Serve Crew Page",
             "type": "main",
             "index": 0
           }
@@ -3745,6 +3778,48 @@
         "jsCode": "/* Tasks Fetch Store: keeps what Tasks Fetch Batch fetched in the workflow's static data, where Build Tasks, Job Details and Fold Items read it.\n   jr: requirement check items + record links. pp: ServiceM8 status per job (SD.sm) and client / description per job (SD.jd, same rules\n   Job Details used). A failed fetch leaves the previous copy in place, as before. */\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();\nconst SD=$getWorkflowStaticData('global');const P=$('Tasks Fetch Items').all().map(i=>i.json||{});\n$input.all().forEach(function(it,idx){\n const pi=(it.pairedItem&&typeof it.pairedItem.item==='number')?it.pairedItem.item:idx;const k=(P[pi]||{}).k;if(!k)return;\n const j=it.json||{};if(j.error)return;let v=null;const raw=j.data;\n if(typeof raw==='string'){if(raw.trim()){try{v=JSON.parse(raw);}catch(e){v=null;}}}else if(raw&&typeof raw==='object')v=raw;\n if(!v||typeof v!=='object')return;\n if(k==='jr'&&Array.isArray(v.items)){SD.jr=v.items;SD.jrAt=Date.now();SD.jrl=Array.isArray(v.links)?v.links:(SD.jrl||[]);}\n if(k==='pp'){const r=v.sm8||{};const SM={};Object.keys(r).forEach(x=>{SM[jk(x)]=S(r[x]);});if(Object.keys(SM).length){SD.sm=SM;SD.smAt=Date.now();}\n  const M={};[].concat(v.jobs||[],v.others||[]).forEach(function(x){const n=S(x&&x.no);if(!n||M[n])return;let t=S(x.title),rf=S(x.ref);\n   if(rf&&t.indexOf(rf+' ')===0)t=t.slice(rf.length+1).trim();else t=t.replace(/^\\d{4,}\\s+/,'');M[n]={client:S(x.client),desc:t,site:S(x.site)};});\n  if(Object.keys(M).length)SD.jd=M;}\n});\nreturn [{json:{ok:true}}];",
         "mode": "runOnceForAllItems"
       }
+    },
+    {
+      "id": "57810ed9-6d54-430d-b1cc-4c9424d1947b",
+      "name": "Plant Back UI",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7568,
+        800
+      ],
+      "parameters": {
+        "jsCode": "/* PLANT BACK UI (keep, Ethan 28/10): the 'Plant overdue back - <job / person / van>' drawer lists that group's overdue items (same rule as\n   the Actions Feed's Plant Overdue: due_back before today AND out on a job or yard_status Out), each with Back in yard (two-step),\n   Extend (new due-back date) and Move (to a job number or a van + new due-back date), plus All items buttons. Saves go to\n   POST cbs-plant-act (CBS - Plant Return). The box sits above Assigned to; the list refreshes after each save. */\nconst j=Object.assign({},$input.first().json);let n=0;\nconst PB=function(){if(window.__cbsPB)return;window.__cbsPB=1;\nvar st=document.createElement('style');st.textContent='#cbsPB{margin:14px 0;border:1.5px dashed #3b8a3b;border-radius:10px;padding:12px}#cbsPB h4{margin:0 0 8px;color:#2e6b2e;font-size:15px}#cbsPB .r{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-bottom:1px solid #eee;padding:8px 0}#cbsPB .r:last-of-type{border-bottom:0}#cbsPB .n{flex:1;min-width:160px}#cbsPB .n b{display:block}#cbsPB .n span{font-size:12.5px;color:#a3282a}#cbsPB button{padding:7px 12px;border:1px solid #c9c7bf;border-radius:8px;background:#fff;font:inherit;font-size:13px;cursor:pointer}#cbsPB button.p{background:#E8833A;border-color:#E8833A;color:#fff}#cbsPB button.arm{background:#c62828;border-color:#c62828;color:#fff}#cbsPB .f{display:flex;flex-wrap:wrap;gap:8px;align-items:center;width:100%;padding:8px 0 2px}#cbsPB .f input,#cbsPB .f select{padding:7px;border:1px solid #c9c7bf;border-radius:8px;font:inherit;font-size:13px}#cbsPB .all{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px;font-size:13px;color:#666}#cbsPB .m{font-size:13px;margin-top:8px}#cbsPB .m.e{color:#a3282a}';document.head.appendChild(st);\nvar H='/webhook/';function S(v){return v==null?'':String(v).trim();}function E(s){return S(s).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c];});}\nfunction t0(){try{return new Date().toLocaleDateString('en-CA',{timeZone:'Europe/London'});}catch(e){return new Date().toISOString().slice(0,10);}}\nfunction dmy(v){var m=S(v).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:'';}\nfunction plus(d,n){var x=new Date((d||t0())+'T12:00:00Z');x.setUTCDate(x.getUTCDate()+n);return x.toISOString().slice(0,10);}\nfunction who(){try{return S(localStorage.getItem('cbsWho'))||S(window.cbsUser)||'Hub';}catch(e){return 'Hub';}}\nfunction grpOf(a){var j=S(a.out_job).replace(/^#/,'');return j?'Job '+j:(S(a.out_with)||S(a.location)||'No job');}\nfunction overdue(a,T){if(!a||!a.id||/^(retired|lost)$/i.test(S(a.status)))return false;var d=S(a.due_back).slice(0,10);if(!/^\\d{4}-\\d\\d-\\d\\d$/.test(d)||d>=T)return false;return !!S(a.out_job)||S(a.yard_status)==='Out';}\nvar VANS=null;\nfunction getJ(u){return fetch(H+u+(u.indexOf('?')>-1?'&':'?')+'x='+Date.now()).then(function(r){return r.json();});}\nfunction render(box,g){box.innerHTML='<h4>Loading overdue items\\u2026</h4>';\n Promise.all([getJ('cbs-admin-data?t=assets'),VANS?Promise.resolve(VANS):getJ('cbs-admin-data?t=vehicles').then(function(v){VANS=((v&&v.vehicles)||[]).filter(function(x){return S(x.reg);}).map(function(x){return S(x.make_model)?S(x.make_model)+' ('+S(x.reg)+')':S(x.reg);});return VANS;}).catch(function(){VANS=[];return VANS;})]).then(function(R){\n  var T=t0(),A=((R[0]&&R[0].assets)||[]).filter(function(a){return overdue(a,T)&&grpOf(a)===g;});\n  if(!A.length){box.innerHTML='<h4>Nothing overdue now</h4><div class=\"m\">All items are sorted. The card clears from the board within a couple of minutes.</div>';return;}\n  var vo='<option value=\"\">Or to a van\\u2026</option>'+(VANS||[]).map(function(v){return '<option>'+E(v)+'</option>';}).join('');\n  var h='<h4>Next step \\u2014 '+A.length+(A.length===1?' item':' items')+' overdue back</h4>';\n  A.forEach(function(a){h+='<div class=\"r\" data-id=\"'+a.id+'\"><div class=\"n\"><b>'+E(a.name||'Item')+'</b><span>Due '+dmy(a.due_back)+(S(a.out_job)?' \\u00b7 Job '+E(S(a.out_job)):'')+(S(a.out_with)?' \\u00b7 '+E(a.out_with):'')+'</span></div>'\n   +'<button data-a=\"back\">Back in yard</button><button data-a=\"ext\">Extend</button><button data-a=\"mov\">Move</button><div class=\"f\" hidden></div></div>';});\n  h+='<div class=\"all\" data-id=\"all\">All items:<button data-a=\"back\">All back in yard</button><button data-a=\"ext\">Extend all</button><button data-a=\"mov\">Move all</button><div class=\"f\" hidden></div></div><div class=\"m\" id=\"cbsPBm\"></div>';\n  box.innerHTML=h;\n  function ids(row){var i=row.getAttribute('data-id');return i==='all'?A.map(function(a){return a.id;}):[Number(i)];}\n  function msg(t,e){var m=document.getElementById('cbsPBm');if(m){m.textContent=t;m.className='m'+(e?' e':'');}}\n  function send(body,btn){btn.disabled=true;body.by=who();\n   fetch(H+'cbs-plant-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){return r.json();}).then(function(d){\n    if(d&&d.ok){if(window.CBSToast)CBSToast(d.message||'Saved.',null,3000);render(box,g);}else{btn.disabled=false;msg((d&&d.message)||'Couldn\\u2019t save. Try again.',true);}\n   }).catch(function(){btn.disabled=false;msg('Couldn\\u2019t save. Check your connection and try again.',true);});}\n  box.querySelectorAll('button[data-a]').forEach(function(b){b.onclick=function(){var row=b.closest('[data-id]'),f=row.querySelector('.f'),a=b.getAttribute('data-a');\n   if(a==='back'){if(b.getAttribute('data-arm')==='1'){send({a:'back',ids:ids(row)},b);return;}\n    var o=b.textContent;b.style.minWidth=b.offsetWidth+'px';b.setAttribute('data-arm','1');b.classList.add('arm');b.textContent='Confirm back in yard';\n    setTimeout(function(){if(b.getAttribute('data-arm')==='1'){b.removeAttribute('data-arm');b.classList.remove('arm');b.textContent=o;}},4000);return;}\n   if(!f.hidden&&f.getAttribute('data-k')===a){f.hidden=true;return;}\n   f.setAttribute('data-k',a);f.hidden=false;var d7=plus(T,7);\n   if(a==='ext')f.innerHTML='<input type=\"date\" value=\"'+d7+'\"><button data-x=\"w\">+1 week</button><button class=\"p\" data-x=\"s\">Save date</button>';\n   else f.innerHTML='<input placeholder=\"To job no.\" style=\"width:110px\"><select>'+vo+'</select><input type=\"date\" value=\"'+d7+'\"><button class=\"p\" data-x=\"s\">Move</button>';\n   var w=f.querySelector('[data-x=\"w\"]');if(w)w.onclick=function(){var i=f.querySelector('input[type=date]');i.value=plus(i.value||T,7);};\n   f.querySelector('[data-x=\"s\"]').onclick=function(){var due=f.querySelector('input[type=date]').value;\n    if(!/^\\d{4}-\\d\\d-\\d\\d$/.test(due)){msg('Choose a due-back date.',true);return;}\n    if(a==='ext'){send({a:'extend',ids:ids(row),due:due},this);return;}\n    var job=S(f.querySelector('input:not([type])').value).replace(/^#/,''),van=S(f.querySelector('select').value);\n    if(!job&&!van){msg('Choose a job or a van.',true);return;}if(job&&van){msg('Choose a job or a van, not both.',true);return;}\n    send({a:'move',ids:ids(row),due:due,job:job,van:van},this);};};});\n }).catch(function(){box.innerHTML='<h4>Couldn\\u2019t load the items</h4><div class=\"m e\">Close and reopen the task to try again.</div>';});}\nfunction scan(){var d=document.getElementById('ctd');if(!d||d.querySelector('#cbsPB'))return;\n var tEl=null;d.querySelectorAll('*').forEach(function(el){if(!tEl&&el.children.length===0&&/^Plant overdue back - /.test(S(el.textContent)))tEl=el;});if(!tEl)return;\n var g=S(tEl.textContent).replace(/^Plant overdue back - /,'');\n var lab=null;d.querySelectorAll('label,div,span,b').forEach(function(el){if(!lab&&el.children.length<=2&&/^Assigned to/.test(S(el.textContent)))lab=el;});\n var row=lab?(lab.closest('.row,.g2,[style*=\"grid\"]')||lab.parentElement):null;\n var box=document.createElement('div');box.id='cbsPB';\n if(row&&row.parentElement)row.parentElement.insertBefore(box,row);else{var b=d.querySelector('.db,.bd')||d;b.appendChild(box);}\n render(box,g);}\nnew MutationObserver(function(){scan();}).observe(document.body,{childList:true,subtree:true});};\nconst INJ='('+String(PB)+')();';\nfunction fix(s){if(s.indexOf('window.__cbsPB')>-1)return s;n++;return s+'\\n'+INJ+'\\n';}\n['html','b','body'].forEach(function(k){if(typeof j[k]==='string')j[k]=fix(j[k]);});\nj.plantBack=n;return [{json:j}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "e8f5b7ec-1856-4547-b67a-a2a912cefdc1",
+      "name": "Crew PreUse",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        1960
+      ],
+      "parameters": {
+        "jsCode": "/* CREW PREUSE (keep): Pre-use checks on the job portal To do tab, straight after Run the site. One tile per CBS - Forms\n   template with kind preuse (Tower, Ladders, MEWP, Breaker, and any added later in the template builder). Tap opens\n   cbs-forms?f=<tkey>&job=N in the app overlay; anyone can do one (no site lead picker), the form asks who did it.\n   Reads GET cbs-forms-data?job=. Any miss leaves the page as it was. */\nconst j=Object.assign({},$input.first().json);let h=String(j.html||'');\nconst S=v=>v==null?'':String(v).trim();\nconst a=h.indexOf('<script>window.D='),b=a>-1?h.indexOf(';</script>',a):-1;\nif(a<0||b<0){j.crewPreuse='skip';return [{json:j}];}\nlet D;try{D=JSON.parse(h.slice(a+17,b));}catch(x){j.crewPreuse='bad D';return [{json:j}];}\nif(!D||!D.job){j.crewPreuse='no job';return [{json:j}];}\nlet P=[];\ntry{const r=await this.helpers.httpRequest({url:'https://old-hub.example/webhook/cbs-forms-data?job='+encodeURIComponent(D.job),json:true,timeout:20000});\n P=((r&&r.templates)||[]).filter(t=>t&&t.kind==='preuse'&&S(t.tkey)).map(t=>({k:S(t.tkey),t:S(t.title)||'Pre-use check'}));}catch(x){}\nif(!P.length){j.crewPreuse='none';return [{json:j}];}\nconst A1=\"Site lead tasks. You pick the site lead before it opens.</div>';\";\nconst A2=\"app.querySelectorAll('[data-run]').forEach(function(b){b.onclick=function(){run(b.getAttribute('data-run'));};});\";\nif(h.split(A1).length!==2||h.split(A2).length!==2){j.crewPreuse='anchors';return [{json:j}];}\nD.preuse=P;\nh=h.slice(0,a)+'<script>window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+h.slice(b);\nh=h.replace(A1,()=>A1+\"\\n if((D.preuse||[]).length)h+='<div class=\\\"sec\\\">Pre-use checks</div><div class=\\\"grid\\\">'+D.preuse.map(function(x){return '<button type=\\\"button\\\" class=\\\"tile\\\" data-pu=\\\"'+e(x.k)+'\\\" data-put=\\\"'+e(x.t)+'\\\">'+ic('shield')+'<b>'+e(x.t)+'</b><span>Check it before you use it</span></button>';}).join('')+'</div><div class=\\\"m\\\" style=\\\"margin:6px 2px\\\">Any fail: stop, don\\\\u2019t use it, and tell your supervisor.</div>';\");\nh=h.replace(A2,()=>A2+\"\\n app.querySelectorAll('[data-pu]').forEach(function(b){b.onclick=function(){form('cbs-forms?f='+encodeURIComponent(b.getAttribute('data-pu')),b.getAttribute('data-put')||'Pre-use check');};});\");\nj.html=h;j.crewPreuse='ok '+P.length;return [{json:j}];\n",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "190e29df-7678-4835-93c8-39e8526552ec",
+      "name": "Crew Docs PDF",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        1960
+      ],
+      "parameters": {
+        "jsCode": "/* CREW DOCS PDF (keep): job portal Job info opens with a Plans card: Scope of works and Programme as PDFs, built in the browser\n   from live data (cbs-scope-data?crew=1, cbs-programme-data) with jsPDF and shown in the file viewer (pdf.js). Replaces the long\n   inline scope and the 2-week programme list. Any miss leaves the page as it was. */\nconst j=Object.assign({},$input.first().json);let h=String(j.html||'');\nconst A1=\"function info(){var h='<div class=\\\"sec\\\">Scope of works</div>'+scopeHtml();\";\nconst A2=\"app.innerHTML=info();\";\nconst A3=\"h+='<div class=\\\"sec\\\">Programme \";\nif([A1,A2,A3].some(a=>h.split(a).length!==2)){j.crewDocPdf='anchors';return [{json:j}];}\nconst CARD=\"function info(){var h='<div class=\\\"sec\\\">Plans</div><div class=\\\"card\\\">'+[['scope','Scope of works','What we are doing, section by section'],['prog','Programme','Gantt chart of phases and tasks']].map(function(x,i){return '<a class=\\\"ln\\\" href=\\\"#\\\" data-pdf=\\\"'+x[0]+'\\\"'+(i?'':' style=\\\"border-top:0\\\"')+'>'+ic('file')+'<span class=\\\"sp\\\"><b>'+x[1]+'</b><br><span class=\\\"m\\\">'+x[2]+' \\\\u00b7 PDF</span></span>'+ic('chev','ar')+'</a>';}).join('')+'</div>';\";\nh=h.replace(A1,()=>CARD);\nh=h.replace(A2,()=>A2+\"app.querySelectorAll('[data-pdf]').forEach(function(b){b.onclick=function(ev){ev.preventDefault();if(window.CBSDocPdf)window.CBSDocPdf(b.getAttribute('data-pdf'),b);};});\");\nh=h.replace(A3,()=>\"if(0)\"+A3);\nconst JS='<script>('+function(){\n var LOGO=null,LIB=null;\n function lib(cb){if(window.jspdf){cb(window.jspdf.jsPDF);return;}var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';s.onload=function(){cb(window.jspdf.jsPDF);};s.onerror=function(){cb(null);};document.head.appendChild(s);}\n function logo(cb){if(LOGO!==null){cb(LOGO);return;}fetch('/webhook/cbs-programme-logo').then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(o){var u=o&&o.lg;if(!u||u.indexOf('data:image')!==0)throw 0;var im=new Image();im.onload=function(){LOGO={d:u,w:im.width,h:im.height};cb(LOGO);};im.onerror=function(){LOGO=false;cb(false);};im.src=u;}).catch(function(){LOGO=false;cb(false);});}\n function S(v){return v==null?'':String(v).trim();}\n function dmy(d){d=S(d).slice(0,10);return /^\\d{4}-\\d\\d-\\d\\d$/.test(d)?d.slice(8)+'/'+d.slice(5,7)+'/'+d.slice(0,4):d;}\n function dd(d){return new Date(S(d).slice(0,10)+'T12:00:00');}\n var OR=[232,125,58],DK=[61,64,67],GR=[110,113,116];\n function head(doc,L,title,sub,W){var x=14;if(L&&L.d){var hh=12,ww=hh*L.w/L.h;if(ww>45){ww=45;hh=ww*L.h/L.w;}try{doc.addImage(L.d,'PNG',14,10,ww,hh);}catch(e){}x=14;}\n  doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(22,22,22);doc.text(title,W-14,16,{align:'right'});\n  doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(GR[0],GR[1],GR[2]);doc.text(sub,W-14,22,{align:'right'});\n  doc.setDrawColor(OR[0],OR[1],OR[2]);doc.setLineWidth(0.8);doc.line(14,26,W-14,26);return 33;}\n function foot(doc,W,H,txt){var n=doc.getNumberOfPages();for(var i=1;i<=n;i++){doc.setPage(i);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(GR[0],GR[1],GR[2]);doc.text(txt,14,H-8);doc.text('Page '+i+' of '+n,W-14,H-8,{align:'right'});}}\n function show(doc,name,btn){var u=URL.createObjectURL(doc.output('blob'));busy(btn,false);if(window.CBSView){window.CBSView.open({u:u,n:name,noOffice:true});}else window.open(u,'_blank');}\n function busy(b,on){if(!b)return;var m=b.querySelector('.m');if(!m)return;if(on){b.setAttribute('data-was',m.textContent);m.textContent='Making the PDF\\u2026';b.style.pointerEvents='none';}else{m.textContent=b.getAttribute('data-was')||m.textContent;b.style.pointerEvents='';}}\n function fail(b,msg){busy(b,false);alert(msg||'Couldn\\u2019t make the PDF. Check your signal and try again.');}\n var D=window.D||{},J=D.job,now=new Date(),stamp=('0'+now.getDate()).slice(-2)+'/'+('0'+(now.getMonth()+1)).slice(-2)+'/'+now.getFullYear()+' '+('0'+now.getHours()).slice(-2)+':'+('0'+now.getMinutes()).slice(-2);\n /* ---------- scope ---------- */\n function scope(Jspdf,L,d,btn){var doc=new Jspdf({unit:'mm',format:'a4'}),W=210,H=297,M=14,y,sc=d.scope||{};\n  y=head(doc,L,'Scope of works','Job '+J+(d.client?' \\u00b7 '+d.client:'')+(d.site?' \\u00b7 '+d.site:''),W);\n  function need(n){if(y+n>H-16){doc.addPage();y=18;}}\n  function para(t,sz,col,bold,ind){doc.setFont('helvetica',bold?'bold':'normal');doc.setFontSize(sz);doc.setTextColor(col[0],col[1],col[2]);var L2=doc.splitTextToSize(t,W-2*M-(ind||0));L2.forEach(function(l){need(sz*0.45);doc.text(l,M+(ind||0),y);y+=sz*0.45;});}\n  var desc=S(sc.desc)||S(d.description);\n  if(desc){para('About the job',11,DK,true);y+=1;para(desc,10,[22,22,22]);y+=4;}\n  var secs=sc.sections||[];\n  if(!secs.length){para('No scope of works has been written for this job yet. Ask the office.',10,GR);}\n  secs.forEach(function(s,si){need(16);doc.setFillColor(242,242,240);doc.rect(M,y-5,W-2*M,8,'F');doc.setFillColor(OR[0],OR[1],OR[2]);doc.rect(M,y-5,1.4,8,'F');\n   doc.setFont('helvetica','bold');doc.setFontSize(11.5);doc.setTextColor(22,22,22);doc.text((si+1)+'. '+(S(s.name)||'Section'),M+4,y);y+=8;\n   (s.items||[]).forEach(function(it,ii){var meta=[];if(S(it.who))meta.push('By: '+S(it.who));if(S(it.supplier))meta.push('Supplier: '+S(it.supplier));if(it.photos&&it.photos.length)meta.push(it.photos.length+' photo'+(it.photos.length===1?'':'s')+' in the app');\n    need(8);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(GR[0],GR[1],GR[2]);doc.text((si+1)+'.'+(ii+1),M+2,y);\n    var tl=doc.splitTextToSize(S(it.text)||'-',W-2*M-14);doc.setTextColor(22,22,22);tl.forEach(function(l,k){if(k)need(4.6);doc.text(l,M+12,y);y+=4.6;});\n    if(S(it.var)){para('Variation: '+S(it.var),9,OR,true,12);}\n    if(meta.length)para(meta.join('   \\u00b7   '),8.5,GR,false,12);\n    if(S(it.notes))para(S(it.notes),9,[60,60,60],false,12);\n    if(S(it.sup_notes))para('Supplier notes: '+S(it.sup_notes),9,[60,60,60],false,12);\n    y+=2.5;doc.setDrawColor(230,230,226);doc.setLineWidth(0.2);doc.line(M+12,y-1.5,W-M,y-1.5);y+=1;});\n   if(!(s.items||[]).length)para('No items in this section.',9,GR,false,4);\n   y+=4;});\n  foot(doc,W,H,'Chelmsford Building Services \\u00b7 Job '+J+' scope of works \\u00b7 printed '+stamp);\n  show(doc,'Job '+J+' - Scope of works.pdf',btn);}\n /* ---------- programme (Gantt) ---------- */\n function prog(Jspdf,L,d,btn){var doc=new Jspdf({unit:'mm',format:'a4',orientation:'landscape'}),W=297,H=210,M=12;\n  var rows=[];(d.phases||[]).forEach(function(p){rows.push({l:0,p:p});(p.tasks||[]).forEach(function(t){rows.push({l:1,p:t});(t.subs||[]).forEach(function(u){rows.push({l:2,p:u});});});});\n  var sm=d.summary||{};\n  var dates=[];rows.forEach(function(r){var a=S(r.p.start_eff||r.p.start_on),b=S(r.p.end_eff||r.p.end_on);if(a)dates.push(a);if(b)dates.push(b);});\n  if(!rows.length||!dates.length){var y0=head(doc,L,'Programme','Job '+J,W);doc.setFontSize(11);doc.setTextColor(GR[0],GR[1],GR[2]);doc.text('There is no programme for this job yet. Ask the office.',M,y0+6);foot(doc,W,H,'Chelmsford Building Services \\u00b7 Job '+J+' programme \\u00b7 printed '+stamp);show(doc,'Job '+J+' - Programme.pdf',btn);return;}\n  dates.sort();var t0=dd(dates[0]),t1=dd(dates[dates.length-1]);\n  t0.setDate(t0.getDate()-((t0.getDay()+6)%7));t1.setDate(t1.getDate()+(7-((t1.getDay()+6)%7)));\n  var days=Math.max(7,Math.round((t1-t0)/864e5)),NX=M+92,DX=NX+34,GW=W-M-DX,px=GW/days;\n  function X(s){return DX+Math.max(0,Math.min(days,Math.round((dd(s)-t0)/864e5)))*px;}\n  var RH=6.4,y,top;\n  function frame(){top=head(doc,L,'Programme','Job '+J+(sm.start?' \\u00b7 '+dmy(sm.start)+' to '+dmy(sm.end):'')+(sm.current?' \\u00b7 now: '+sm.current:''),W);\n   doc.setFont('helvetica','bold');doc.setFontSize(8.5);doc.setTextColor(GR[0],GR[1],GR[2]);doc.text('Phase / task',M,top+3);doc.text('Dates',NX,top+3);\n   var wk=new Date(t0);doc.setFont('helvetica','normal');doc.setFontSize(7);\n   for(var i=0;i<=days;i+=7){var xx=DX+i*px;doc.setDrawColor(222,222,218);doc.setLineWidth(0.15);doc.line(xx,top+5,xx,H-14);if(i<days)doc.text(('0'+wk.getDate()).slice(-2)+'/'+('0'+(wk.getMonth()+1)).slice(-2),xx+0.8,top+3);wk.setDate(wk.getDate()+7);}\n   doc.setDrawColor(DK[0],DK[1],DK[2]);doc.setLineWidth(0.3);doc.line(M,top+5,W-M,top+5);y=top+10;}\n  frame();\n  rows.forEach(function(r,i){if(y+RH>H-16){doc.addPage();frame();}\n   var p=r.p,a=S(p.start_eff||p.start_on),b=S(p.end_eff||p.end_on)||a;\n   if(r.l===0){doc.setFillColor(246,246,244);doc.rect(M,y-4.4,W-2*M,RH,'F');}\n   doc.setFont('helvetica',r.l===0?'bold':'normal');doc.setFontSize(r.l===2?7.6:8.6);doc.setTextColor(22,22,22);\n   var nm=doc.splitTextToSize((r.l===2?'\\u2013 ':'')+(S(p.name)||'-'),90-r.l*4)[0];doc.text(nm,M+r.l*4,y);\n   doc.setFont('helvetica','normal');doc.setFontSize(7.4);doc.setTextColor(GR[0],GR[1],GR[2]);if(a)doc.text(dmy(a).slice(0,5)+(b&&b!==a?' \\u2013 '+dmy(b).slice(0,5):''),NX,y);\n   if(a){var x1=X(a),x2=Math.max(X(b)+px,x1+px*0.6),c=r.l===0?DK:(p.overdue?[200,40,40]:(r.l===2?[240,170,120]:OR));\n    doc.setFillColor(c[0],c[1],c[2]);doc.roundedRect(x1,y-3.3,x2-x1,r.l===0?3.6:3,0.8,0.8,'F');\n    var pc=+p.pct||0;if(pc>0&&r.l){doc.setFillColor(60,140,80);doc.rect(x1,y-0.9,(x2-x1)*Math.min(100,pc)/100,0.9,'F');}}\n   y+=RH;});\n  var td=new Date();td.setHours(12,0,0,0);var tx=DX+Math.round((td-t0)/864e5)*px;\n  if(tx>=DX&&tx<=DX+GW){for(var pg=1;pg<=doc.getNumberOfPages();pg++){doc.setPage(pg);doc.setDrawColor(210,40,40);doc.setLineWidth(0.5);doc.line(tx,top+5,tx,H-14);doc.setFontSize(6.5);doc.setTextColor(210,40,40);doc.text('Today',tx+0.8,top+8);}}\n  foot(doc,W,H,'Chelmsford Building Services \\u00b7 Job '+J+' programme \\u00b7 printed '+stamp+'   Key: dark = phase, orange = task, light = sub-task, red = overdue, green line = % done');\n  show(doc,'Job '+J+' - Programme.pdf',btn);}\n window.CBSDocPdf=function(k,btn){busy(btn,true);\n  var url=k==='scope'?'/webhook/cbs-scope-data?crew=1&job='+encodeURIComponent(J):'/webhook/cbs-programme-data?job='+encodeURIComponent(J);\n  lib(function(Jspdf){if(!Jspdf){fail(btn);return;}logo(function(L){fetch(url+'&x='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){try{(k==='scope'?scope:prog)(Jspdf,L,d||{},btn);}catch(e){fail(btn);}}).catch(function(){fail(btn);});});});};\n}+')();</script>';\nconst z=h.lastIndexOf('</body>');if(z<0){j.crewDocPdf='no body';return [{json:j}];}\nj.html=h.slice(0,z)+JS+h.slice(z);j.crewDocPdf='ok';return [{json:j}];\n",
+        "mode": "runOnceForAllItems"
+      }
     }
   ],
   "nodeGroups": [],
@@ -6244,6 +6319,48 @@
           "jsCode": "/* Tasks Fetch Store: keeps what Tasks Fetch Batch fetched in the workflow's static data, where Build Tasks, Job Details and Fold Items read it.\n   jr: requirement check items + record links. pp: ServiceM8 status per job (SD.sm) and client / description per job (SD.jd, same rules\n   Job Details used). A failed fetch leaves the previous copy in place, as before. */\nconst S=v=>v==null?'':String(v).trim();const jk=v=>S(v).replace(/[^0-9A-Za-z]/g,'').toLowerCase();\nconst SD=$getWorkflowStaticData('global');const P=$('Tasks Fetch Items').all().map(i=>i.json||{});\n$input.all().forEach(function(it,idx){\n const pi=(it.pairedItem&&typeof it.pairedItem.item==='number')?it.pairedItem.item:idx;const k=(P[pi]||{}).k;if(!k)return;\n const j=it.json||{};if(j.error)return;let v=null;const raw=j.data;\n if(typeof raw==='string'){if(raw.trim()){try{v=JSON.parse(raw);}catch(e){v=null;}}}else if(raw&&typeof raw==='object')v=raw;\n if(!v||typeof v!=='object')return;\n if(k==='jr'&&Array.isArray(v.items)){SD.jr=v.items;SD.jrAt=Date.now();SD.jrl=Array.isArray(v.links)?v.links:(SD.jrl||[]);}\n if(k==='pp'){const r=v.sm8||{};const SM={};Object.keys(r).forEach(x=>{SM[jk(x)]=S(r[x]);});if(Object.keys(SM).length){SD.sm=SM;SD.smAt=Date.now();}\n  const M={};[].concat(v.jobs||[],v.others||[]).forEach(function(x){const n=S(x&&x.no);if(!n||M[n])return;let t=S(x.title),rf=S(x.ref);\n   if(rf&&t.indexOf(rf+' ')===0)t=t.slice(rf.length+1).trim();else t=t.replace(/^\\d{4,}\\s+/,'');M[n]={client:S(x.client),desc:t,site:S(x.site)};});\n  if(Object.keys(M).length)SD.jd=M;}\n});\nreturn [{json:{ok:true}}];",
           "mode": "runOnceForAllItems"
         }
+      },
+      {
+        "id": "57810ed9-6d54-430d-b1cc-4c9424d1947b",
+        "name": "Plant Back UI",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          7568,
+          800
+        ],
+        "parameters": {
+          "jsCode": "/* PLANT BACK UI (keep, Ethan 28/10): the 'Plant overdue back - <job / person / van>' drawer lists that group's overdue items (same rule as\n   the Actions Feed's Plant Overdue: due_back before today AND out on a job or yard_status Out), each with Back in yard (two-step),\n   Extend (new due-back date) and Move (to a job number or a van + new due-back date), plus All items buttons. Saves go to\n   POST cbs-plant-act (CBS - Plant Return). The box sits above Assigned to; the list refreshes after each save. */\nconst j=Object.assign({},$input.first().json);let n=0;\nconst PB=function(){if(window.__cbsPB)return;window.__cbsPB=1;\nvar st=document.createElement('style');st.textContent='#cbsPB{margin:14px 0;border:1.5px dashed #3b8a3b;border-radius:10px;padding:12px}#cbsPB h4{margin:0 0 8px;color:#2e6b2e;font-size:15px}#cbsPB .r{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-bottom:1px solid #eee;padding:8px 0}#cbsPB .r:last-of-type{border-bottom:0}#cbsPB .n{flex:1;min-width:160px}#cbsPB .n b{display:block}#cbsPB .n span{font-size:12.5px;color:#a3282a}#cbsPB button{padding:7px 12px;border:1px solid #c9c7bf;border-radius:8px;background:#fff;font:inherit;font-size:13px;cursor:pointer}#cbsPB button.p{background:#E8833A;border-color:#E8833A;color:#fff}#cbsPB button.arm{background:#c62828;border-color:#c62828;color:#fff}#cbsPB .f{display:flex;flex-wrap:wrap;gap:8px;align-items:center;width:100%;padding:8px 0 2px}#cbsPB .f input,#cbsPB .f select{padding:7px;border:1px solid #c9c7bf;border-radius:8px;font:inherit;font-size:13px}#cbsPB .all{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px;font-size:13px;color:#666}#cbsPB .m{font-size:13px;margin-top:8px}#cbsPB .m.e{color:#a3282a}';document.head.appendChild(st);\nvar H='/webhook/';function S(v){return v==null?'':String(v).trim();}function E(s){return S(s).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c];});}\nfunction t0(){try{return new Date().toLocaleDateString('en-CA',{timeZone:'Europe/London'});}catch(e){return new Date().toISOString().slice(0,10);}}\nfunction dmy(v){var m=S(v).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:'';}\nfunction plus(d,n){var x=new Date((d||t0())+'T12:00:00Z');x.setUTCDate(x.getUTCDate()+n);return x.toISOString().slice(0,10);}\nfunction who(){try{return S(localStorage.getItem('cbsWho'))||S(window.cbsUser)||'Hub';}catch(e){return 'Hub';}}\nfunction grpOf(a){var j=S(a.out_job).replace(/^#/,'');return j?'Job '+j:(S(a.out_with)||S(a.location)||'No job');}\nfunction overdue(a,T){if(!a||!a.id||/^(retired|lost)$/i.test(S(a.status)))return false;var d=S(a.due_back).slice(0,10);if(!/^\\d{4}-\\d\\d-\\d\\d$/.test(d)||d>=T)return false;return !!S(a.out_job)||S(a.yard_status)==='Out';}\nvar VANS=null;\nfunction getJ(u){return fetch(H+u+(u.indexOf('?')>-1?'&':'?')+'x='+Date.now()).then(function(r){return r.json();});}\nfunction render(box,g){box.innerHTML='<h4>Loading overdue items\\u2026</h4>';\n Promise.all([getJ('cbs-admin-data?t=assets'),VANS?Promise.resolve(VANS):getJ('cbs-admin-data?t=vehicles').then(function(v){VANS=((v&&v.vehicles)||[]).filter(function(x){return S(x.reg);}).map(function(x){return S(x.make_model)?S(x.make_model)+' ('+S(x.reg)+')':S(x.reg);});return VANS;}).catch(function(){VANS=[];return VANS;})]).then(function(R){\n  var T=t0(),A=((R[0]&&R[0].assets)||[]).filter(function(a){return overdue(a,T)&&grpOf(a)===g;});\n  if(!A.length){box.innerHTML='<h4>Nothing overdue now</h4><div class=\"m\">All items are sorted. The card clears from the board within a couple of minutes.</div>';return;}\n  var vo='<option value=\"\">Or to a van\\u2026</option>'+(VANS||[]).map(function(v){return '<option>'+E(v)+'</option>';}).join('');\n  var h='<h4>Next step \\u2014 '+A.length+(A.length===1?' item':' items')+' overdue back</h4>';\n  A.forEach(function(a){h+='<div class=\"r\" data-id=\"'+a.id+'\"><div class=\"n\"><b>'+E(a.name||'Item')+'</b><span>Due '+dmy(a.due_back)+(S(a.out_job)?' \\u00b7 Job '+E(S(a.out_job)):'')+(S(a.out_with)?' \\u00b7 '+E(a.out_with):'')+'</span></div>'\n   +'<button data-a=\"back\">Back in yard</button><button data-a=\"ext\">Extend</button><button data-a=\"mov\">Move</button><div class=\"f\" hidden></div></div>';});\n  h+='<div class=\"all\" data-id=\"all\">All items:<button data-a=\"back\">All back in yard</button><button data-a=\"ext\">Extend all</button><button data-a=\"mov\">Move all</button><div class=\"f\" hidden></div></div><div class=\"m\" id=\"cbsPBm\"></div>';\n  box.innerHTML=h;\n  function ids(row){var i=row.getAttribute('data-id');return i==='all'?A.map(function(a){return a.id;}):[Number(i)];}\n  function msg(t,e){var m=document.getElementById('cbsPBm');if(m){m.textContent=t;m.className='m'+(e?' e':'');}}\n  function send(body,btn){btn.disabled=true;body.by=who();\n   fetch(H+'cbs-plant-act',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){return r.json();}).then(function(d){\n    if(d&&d.ok){if(window.CBSToast)CBSToast(d.message||'Saved.',null,3000);render(box,g);}else{btn.disabled=false;msg((d&&d.message)||'Couldn\\u2019t save. Try again.',true);}\n   }).catch(function(){btn.disabled=false;msg('Couldn\\u2019t save. Check your connection and try again.',true);});}\n  box.querySelectorAll('button[data-a]').forEach(function(b){b.onclick=function(){var row=b.closest('[data-id]'),f=row.querySelector('.f'),a=b.getAttribute('data-a');\n   if(a==='back'){if(b.getAttribute('data-arm')==='1'){send({a:'back',ids:ids(row)},b);return;}\n    var o=b.textContent;b.style.minWidth=b.offsetWidth+'px';b.setAttribute('data-arm','1');b.classList.add('arm');b.textContent='Confirm back in yard';\n    setTimeout(function(){if(b.getAttribute('data-arm')==='1'){b.removeAttribute('data-arm');b.classList.remove('arm');b.textContent=o;}},4000);return;}\n   if(!f.hidden&&f.getAttribute('data-k')===a){f.hidden=true;return;}\n   f.setAttribute('data-k',a);f.hidden=false;var d7=plus(T,7);\n   if(a==='ext')f.innerHTML='<input type=\"date\" value=\"'+d7+'\"><button data-x=\"w\">+1 week</button><button class=\"p\" data-x=\"s\">Save date</button>';\n   else f.innerHTML='<input placeholder=\"To job no.\" style=\"width:110px\"><select>'+vo+'</select><input type=\"date\" value=\"'+d7+'\"><button class=\"p\" data-x=\"s\">Move</button>';\n   var w=f.querySelector('[data-x=\"w\"]');if(w)w.onclick=function(){var i=f.querySelector('input[type=date]');i.value=plus(i.value||T,7);};\n   f.querySelector('[data-x=\"s\"]').onclick=function(){var due=f.querySelector('input[type=date]').value;\n    if(!/^\\d{4}-\\d\\d-\\d\\d$/.test(due)){msg('Choose a due-back date.',true);return;}\n    if(a==='ext'){send({a:'extend',ids:ids(row),due:due},this);return;}\n    var job=S(f.querySelector('input:not([type])').value).replace(/^#/,''),van=S(f.querySelector('select').value);\n    if(!job&&!van){msg('Choose a job or a van.',true);return;}if(job&&van){msg('Choose a job or a van, not both.',true);return;}\n    send({a:'move',ids:ids(row),due:due,job:job,van:van},this);};};});\n }).catch(function(){box.innerHTML='<h4>Couldn\\u2019t load the items</h4><div class=\"m e\">Close and reopen the task to try again.</div>';});}\nfunction scan(){var d=document.getElementById('ctd');if(!d||d.querySelector('#cbsPB'))return;\n var tEl=null;d.querySelectorAll('*').forEach(function(el){if(!tEl&&el.children.length===0&&/^Plant overdue back - /.test(S(el.textContent)))tEl=el;});if(!tEl)return;\n var g=S(tEl.textContent).replace(/^Plant overdue back - /,'');\n var lab=null;d.querySelectorAll('label,div,span,b').forEach(function(el){if(!lab&&el.children.length<=2&&/^Assigned to/.test(S(el.textContent)))lab=el;});\n var row=lab?(lab.closest('.row,.g2,[style*=\"grid\"]')||lab.parentElement):null;\n var box=document.createElement('div');box.id='cbsPB';\n if(row&&row.parentElement)row.parentElement.insertBefore(box,row);else{var b=d.querySelector('.db,.bd')||d;b.appendChild(box);}\n render(box,g);}\nnew MutationObserver(function(){scan();}).observe(document.body,{childList:true,subtree:true});};\nconst INJ='('+String(PB)+')();';\nfunction fix(s){if(s.indexOf('window.__cbsPB')>-1)return s;n++;return s+'\\n'+INJ+'\\n';}\n['html','b','body'].forEach(function(k){if(typeof j[k]==='string')j[k]=fix(j[k]);});\nj.plantBack=n;return [{json:j}];",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "e8f5b7ec-1856-4547-b67a-a2a912cefdc1",
+        "name": "Crew PreUse",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          560,
+          1960
+        ],
+        "parameters": {
+          "jsCode": "/* CREW PREUSE (keep): Pre-use checks on the job portal To do tab, straight after Run the site. One tile per CBS - Forms\n   template with kind preuse (Tower, Ladders, MEWP, Breaker, and any added later in the template builder). Tap opens\n   cbs-forms?f=<tkey>&job=N in the app overlay; anyone can do one (no site lead picker), the form asks who did it.\n   Reads GET cbs-forms-data?job=. Any miss leaves the page as it was. */\nconst j=Object.assign({},$input.first().json);let h=String(j.html||'');\nconst S=v=>v==null?'':String(v).trim();\nconst a=h.indexOf('<script>window.D='),b=a>-1?h.indexOf(';</script>',a):-1;\nif(a<0||b<0){j.crewPreuse='skip';return [{json:j}];}\nlet D;try{D=JSON.parse(h.slice(a+17,b));}catch(x){j.crewPreuse='bad D';return [{json:j}];}\nif(!D||!D.job){j.crewPreuse='no job';return [{json:j}];}\nlet P=[];\ntry{const r=await this.helpers.httpRequest({url:'https://old-hub.example/webhook/cbs-forms-data?job='+encodeURIComponent(D.job),json:true,timeout:20000});\n P=((r&&r.templates)||[]).filter(t=>t&&t.kind==='preuse'&&S(t.tkey)).map(t=>({k:S(t.tkey),t:S(t.title)||'Pre-use check'}));}catch(x){}\nif(!P.length){j.crewPreuse='none';return [{json:j}];}\nconst A1=\"Site lead tasks. You pick the site lead before it opens.</div>';\";\nconst A2=\"app.querySelectorAll('[data-run]').forEach(function(b){b.onclick=function(){run(b.getAttribute('data-run'));};});\";\nif(h.split(A1).length!==2||h.split(A2).length!==2){j.crewPreuse='anchors';return [{json:j}];}\nD.preuse=P;\nh=h.slice(0,a)+'<script>window.D='+JSON.stringify(D).replace(/</g,'\\\\u003c')+h.slice(b);\nh=h.replace(A1,()=>A1+\"\\n if((D.preuse||[]).length)h+='<div class=\\\"sec\\\">Pre-use checks</div><div class=\\\"grid\\\">'+D.preuse.map(function(x){return '<button type=\\\"button\\\" class=\\\"tile\\\" data-pu=\\\"'+e(x.k)+'\\\" data-put=\\\"'+e(x.t)+'\\\">'+ic('shield')+'<b>'+e(x.t)+'</b><span>Check it before you use it</span></button>';}).join('')+'</div><div class=\\\"m\\\" style=\\\"margin:6px 2px\\\">Any fail: stop, don\\\\u2019t use it, and tell your supervisor.</div>';\");\nh=h.replace(A2,()=>A2+\"\\n app.querySelectorAll('[data-pu]').forEach(function(b){b.onclick=function(){form('cbs-forms?f='+encodeURIComponent(b.getAttribute('data-pu')),b.getAttribute('data-put')||'Pre-use check');};});\");\nj.html=h;j.crewPreuse='ok '+P.length;return [{json:j}];\n",
+          "mode": "runOnceForAllItems"
+        }
+      },
+      {
+        "id": "190e29df-7678-4835-93c8-39e8526552ec",
+        "name": "Crew Docs PDF",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          1960
+        ],
+        "parameters": {
+          "jsCode": "/* CREW DOCS PDF (keep): job portal Job info opens with a Plans card: Scope of works and Programme as PDFs, built in the browser\n   from live data (cbs-scope-data?crew=1, cbs-programme-data) with jsPDF and shown in the file viewer (pdf.js). Replaces the long\n   inline scope and the 2-week programme list. Any miss leaves the page as it was. */\nconst j=Object.assign({},$input.first().json);let h=String(j.html||'');\nconst A1=\"function info(){var h='<div class=\\\"sec\\\">Scope of works</div>'+scopeHtml();\";\nconst A2=\"app.innerHTML=info();\";\nconst A3=\"h+='<div class=\\\"sec\\\">Programme \";\nif([A1,A2,A3].some(a=>h.split(a).length!==2)){j.crewDocPdf='anchors';return [{json:j}];}\nconst CARD=\"function info(){var h='<div class=\\\"sec\\\">Plans</div><div class=\\\"card\\\">'+[['scope','Scope of works','What we are doing, section by section'],['prog','Programme','Gantt chart of phases and tasks']].map(function(x,i){return '<a class=\\\"ln\\\" href=\\\"#\\\" data-pdf=\\\"'+x[0]+'\\\"'+(i?'':' style=\\\"border-top:0\\\"')+'>'+ic('file')+'<span class=\\\"sp\\\"><b>'+x[1]+'</b><br><span class=\\\"m\\\">'+x[2]+' \\\\u00b7 PDF</span></span>'+ic('chev','ar')+'</a>';}).join('')+'</div>';\";\nh=h.replace(A1,()=>CARD);\nh=h.replace(A2,()=>A2+\"app.querySelectorAll('[data-pdf]').forEach(function(b){b.onclick=function(ev){ev.preventDefault();if(window.CBSDocPdf)window.CBSDocPdf(b.getAttribute('data-pdf'),b);};});\");\nh=h.replace(A3,()=>\"if(0)\"+A3);\nconst JS='<script>('+function(){\n var LOGO=null,LIB=null;\n function lib(cb){if(window.jspdf){cb(window.jspdf.jsPDF);return;}var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';s.onload=function(){cb(window.jspdf.jsPDF);};s.onerror=function(){cb(null);};document.head.appendChild(s);}\n function logo(cb){if(LOGO!==null){cb(LOGO);return;}fetch('/webhook/cbs-programme-logo').then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(o){var u=o&&o.lg;if(!u||u.indexOf('data:image')!==0)throw 0;var im=new Image();im.onload=function(){LOGO={d:u,w:im.width,h:im.height};cb(LOGO);};im.onerror=function(){LOGO=false;cb(false);};im.src=u;}).catch(function(){LOGO=false;cb(false);});}\n function S(v){return v==null?'':String(v).trim();}\n function dmy(d){d=S(d).slice(0,10);return /^\\d{4}-\\d\\d-\\d\\d$/.test(d)?d.slice(8)+'/'+d.slice(5,7)+'/'+d.slice(0,4):d;}\n function dd(d){return new Date(S(d).slice(0,10)+'T12:00:00');}\n var OR=[232,125,58],DK=[61,64,67],GR=[110,113,116];\n function head(doc,L,title,sub,W){var x=14;if(L&&L.d){var hh=12,ww=hh*L.w/L.h;if(ww>45){ww=45;hh=ww*L.h/L.w;}try{doc.addImage(L.d,'PNG',14,10,ww,hh);}catch(e){}x=14;}\n  doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(22,22,22);doc.text(title,W-14,16,{align:'right'});\n  doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(GR[0],GR[1],GR[2]);doc.text(sub,W-14,22,{align:'right'});\n  doc.setDrawColor(OR[0],OR[1],OR[2]);doc.setLineWidth(0.8);doc.line(14,26,W-14,26);return 33;}\n function foot(doc,W,H,txt){var n=doc.getNumberOfPages();for(var i=1;i<=n;i++){doc.setPage(i);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(GR[0],GR[1],GR[2]);doc.text(txt,14,H-8);doc.text('Page '+i+' of '+n,W-14,H-8,{align:'right'});}}\n function show(doc,name,btn){var u=URL.createObjectURL(doc.output('blob'));busy(btn,false);if(window.CBSView){window.CBSView.open({u:u,n:name,noOffice:true});}else window.open(u,'_blank');}\n function busy(b,on){if(!b)return;var m=b.querySelector('.m');if(!m)return;if(on){b.setAttribute('data-was',m.textContent);m.textContent='Making the PDF\\u2026';b.style.pointerEvents='none';}else{m.textContent=b.getAttribute('data-was')||m.textContent;b.style.pointerEvents='';}}\n function fail(b,msg){busy(b,false);alert(msg||'Couldn\\u2019t make the PDF. Check your signal and try again.');}\n var D=window.D||{},J=D.job,now=new Date(),stamp=('0'+now.getDate()).slice(-2)+'/'+('0'+(now.getMonth()+1)).slice(-2)+'/'+now.getFullYear()+' '+('0'+now.getHours()).slice(-2)+':'+('0'+now.getMinutes()).slice(-2);\n /* ---------- scope ---------- */\n function scope(Jspdf,L,d,btn){var doc=new Jspdf({unit:'mm',format:'a4'}),W=210,H=297,M=14,y,sc=d.scope||{};\n  y=head(doc,L,'Scope of works','Job '+J+(d.client?' \\u00b7 '+d.client:'')+(d.site?' \\u00b7 '+d.site:''),W);\n  function need(n){if(y+n>H-16){doc.addPage();y=18;}}\n  function para(t,sz,col,bold,ind){doc.setFont('helvetica',bold?'bold':'normal');doc.setFontSize(sz);doc.setTextColor(col[0],col[1],col[2]);var L2=doc.splitTextToSize(t,W-2*M-(ind||0));L2.forEach(function(l){need(sz*0.45);doc.text(l,M+(ind||0),y);y+=sz*0.45;});}\n  var desc=S(sc.desc)||S(d.description);\n  if(desc){para('About the job',11,DK,true);y+=1;para(desc,10,[22,22,22]);y+=4;}\n  var secs=sc.sections||[];\n  if(!secs.length){para('No scope of works has been written for this job yet. Ask the office.',10,GR);}\n  secs.forEach(function(s,si){need(16);doc.setFillColor(242,242,240);doc.rect(M,y-5,W-2*M,8,'F');doc.setFillColor(OR[0],OR[1],OR[2]);doc.rect(M,y-5,1.4,8,'F');\n   doc.setFont('helvetica','bold');doc.setFontSize(11.5);doc.setTextColor(22,22,22);doc.text((si+1)+'. '+(S(s.name)||'Section'),M+4,y);y+=8;\n   (s.items||[]).forEach(function(it,ii){var meta=[];if(S(it.who))meta.push('By: '+S(it.who));if(S(it.supplier))meta.push('Supplier: '+S(it.supplier));if(it.photos&&it.photos.length)meta.push(it.photos.length+' photo'+(it.photos.length===1?'':'s')+' in the app');\n    need(8);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(GR[0],GR[1],GR[2]);doc.text((si+1)+'.'+(ii+1),M+2,y);\n    var tl=doc.splitTextToSize(S(it.text)||'-',W-2*M-14);doc.setTextColor(22,22,22);tl.forEach(function(l,k){if(k)need(4.6);doc.text(l,M+12,y);y+=4.6;});\n    if(S(it.var)){para('Variation: '+S(it.var),9,OR,true,12);}\n    if(meta.length)para(meta.join('   \\u00b7   '),8.5,GR,false,12);\n    if(S(it.notes))para(S(it.notes),9,[60,60,60],false,12);\n    if(S(it.sup_notes))para('Supplier notes: '+S(it.sup_notes),9,[60,60,60],false,12);\n    y+=2.5;doc.setDrawColor(230,230,226);doc.setLineWidth(0.2);doc.line(M+12,y-1.5,W-M,y-1.5);y+=1;});\n   if(!(s.items||[]).length)para('No items in this section.',9,GR,false,4);\n   y+=4;});\n  foot(doc,W,H,'Chelmsford Building Services \\u00b7 Job '+J+' scope of works \\u00b7 printed '+stamp);\n  show(doc,'Job '+J+' - Scope of works.pdf',btn);}\n /* ---------- programme (Gantt) ---------- */\n function prog(Jspdf,L,d,btn){var doc=new Jspdf({unit:'mm',format:'a4',orientation:'landscape'}),W=297,H=210,M=12;\n  var rows=[];(d.phases||[]).forEach(function(p){rows.push({l:0,p:p});(p.tasks||[]).forEach(function(t){rows.push({l:1,p:t});(t.subs||[]).forEach(function(u){rows.push({l:2,p:u});});});});\n  var sm=d.summary||{};\n  var dates=[];rows.forEach(function(r){var a=S(r.p.start_eff||r.p.start_on),b=S(r.p.end_eff||r.p.end_on);if(a)dates.push(a);if(b)dates.push(b);});\n  if(!rows.length||!dates.length){var y0=head(doc,L,'Programme','Job '+J,W);doc.setFontSize(11);doc.setTextColor(GR[0],GR[1],GR[2]);doc.text('There is no programme for this job yet. Ask the office.',M,y0+6);foot(doc,W,H,'Chelmsford Building Services \\u00b7 Job '+J+' programme \\u00b7 printed '+stamp);show(doc,'Job '+J+' - Programme.pdf',btn);return;}\n  dates.sort();var t0=dd(dates[0]),t1=dd(dates[dates.length-1]);\n  t0.setDate(t0.getDate()-((t0.getDay()+6)%7));t1.setDate(t1.getDate()+(7-((t1.getDay()+6)%7)));\n  var days=Math.max(7,Math.round((t1-t0)/864e5)),NX=M+92,DX=NX+34,GW=W-M-DX,px=GW/days;\n  function X(s){return DX+Math.max(0,Math.min(days,Math.round((dd(s)-t0)/864e5)))*px;}\n  var RH=6.4,y,top;\n  function frame(){top=head(doc,L,'Programme','Job '+J+(sm.start?' \\u00b7 '+dmy(sm.start)+' to '+dmy(sm.end):'')+(sm.current?' \\u00b7 now: '+sm.current:''),W);\n   doc.setFont('helvetica','bold');doc.setFontSize(8.5);doc.setTextColor(GR[0],GR[1],GR[2]);doc.text('Phase / task',M,top+3);doc.text('Dates',NX,top+3);\n   var wk=new Date(t0);doc.setFont('helvetica','normal');doc.setFontSize(7);\n   for(var i=0;i<=days;i+=7){var xx=DX+i*px;doc.setDrawColor(222,222,218);doc.setLineWidth(0.15);doc.line(xx,top+5,xx,H-14);if(i<days)doc.text(('0'+wk.getDate()).slice(-2)+'/'+('0'+(wk.getMonth()+1)).slice(-2),xx+0.8,top+3);wk.setDate(wk.getDate()+7);}\n   doc.setDrawColor(DK[0],DK[1],DK[2]);doc.setLineWidth(0.3);doc.line(M,top+5,W-M,top+5);y=top+10;}\n  frame();\n  rows.forEach(function(r,i){if(y+RH>H-16){doc.addPage();frame();}\n   var p=r.p,a=S(p.start_eff||p.start_on),b=S(p.end_eff||p.end_on)||a;\n   if(r.l===0){doc.setFillColor(246,246,244);doc.rect(M,y-4.4,W-2*M,RH,'F');}\n   doc.setFont('helvetica',r.l===0?'bold':'normal');doc.setFontSize(r.l===2?7.6:8.6);doc.setTextColor(22,22,22);\n   var nm=doc.splitTextToSize((r.l===2?'\\u2013 ':'')+(S(p.name)||'-'),90-r.l*4)[0];doc.text(nm,M+r.l*4,y);\n   doc.setFont('helvetica','normal');doc.setFontSize(7.4);doc.setTextColor(GR[0],GR[1],GR[2]);if(a)doc.text(dmy(a).slice(0,5)+(b&&b!==a?' \\u2013 '+dmy(b).slice(0,5):''),NX,y);\n   if(a){var x1=X(a),x2=Math.max(X(b)+px,x1+px*0.6),c=r.l===0?DK:(p.overdue?[200,40,40]:(r.l===2?[240,170,120]:OR));\n    doc.setFillColor(c[0],c[1],c[2]);doc.roundedRect(x1,y-3.3,x2-x1,r.l===0?3.6:3,0.8,0.8,'F');\n    var pc=+p.pct||0;if(pc>0&&r.l){doc.setFillColor(60,140,80);doc.rect(x1,y-0.9,(x2-x1)*Math.min(100,pc)/100,0.9,'F');}}\n   y+=RH;});\n  var td=new Date();td.setHours(12,0,0,0);var tx=DX+Math.round((td-t0)/864e5)*px;\n  if(tx>=DX&&tx<=DX+GW){for(var pg=1;pg<=doc.getNumberOfPages();pg++){doc.setPage(pg);doc.setDrawColor(210,40,40);doc.setLineWidth(0.5);doc.line(tx,top+5,tx,H-14);doc.setFontSize(6.5);doc.setTextColor(210,40,40);doc.text('Today',tx+0.8,top+8);}}\n  foot(doc,W,H,'Chelmsford Building Services \\u00b7 Job '+J+' programme \\u00b7 printed '+stamp+'   Key: dark = phase, orange = task, light = sub-task, red = overdue, green line = % done');\n  show(doc,'Job '+J+' - Programme.pdf',btn);}\n window.CBSDocPdf=function(k,btn){busy(btn,true);\n  var url=k==='scope'?'/webhook/cbs-scope-data?crew=1&job='+encodeURIComponent(J):'/webhook/cbs-programme-data?job='+encodeURIComponent(J);\n  lib(function(Jspdf){if(!Jspdf){fail(btn);return;}logo(function(L){fetch(url+'&x='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){try{(k==='scope'?scope:prog)(Jspdf,L,d||{},btn);}catch(e){fail(btn);}}).catch(function(){fail(btn);});});});};\n}+')();</script>';\nconst z=h.lastIndexOf('</body>');if(z<0){j.crewDocPdf='no body';return [{json:j}];}\nj.html=h.slice(0,z)+JS+h.slice(z);j.crewDocPdf='ok';return [{json:j}];\n",
+          "mode": "runOnceForAllItems"
+        }
       }
     ],
     "connections": {
@@ -7253,17 +7370,6 @@
           ]
         ]
       },
-      "Crew CoSHH": {
-        "main": [
-          [
-            {
-              "node": "Serve Crew Page",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Done Rule": {
         "main": [
           [
@@ -7396,17 +7502,6 @@
           ]
         ]
       },
-      "Upload All UI": {
-        "main": [
-          [
-            {
-              "node": "UI Out",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Get Snags": {
         "main": [
           [
@@ -7474,6 +7569,61 @@
           [
             {
               "node": "Build Tasks",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upload All UI": {
+        "main": [
+          [
+            {
+              "node": "Plant Back UI",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Plant Back UI": {
+        "main": [
+          [
+            {
+              "node": "UI Out",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Crew CoSHH": {
+        "main": [
+          [
+            {
+              "node": "Crew PreUse",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Crew PreUse": {
+        "main": [
+          [
+            {
+              "node": "Crew Docs PDF",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Crew Docs PDF": {
+        "main": [
+          [
+            {
+              "node": "Serve Crew Page",
               "type": "main",
               "index": 0
             }

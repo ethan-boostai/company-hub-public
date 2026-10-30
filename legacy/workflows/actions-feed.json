@@ -3,11 +3,11 @@
   "name": "CBS - Actions Feed",
   "active": true,
   "isArchived": false,
-  "versionId": "569535b0-7789-46b4-9659-0bb4fa97b558",
-  "activeVersionId": "569535b0-7789-46b4-9659-0bb4fa97b558",
+  "versionId": "cb428847-8567-4ec0-b966-42d1699d4830",
+  "activeVersionId": "cb428847-8567-4ec0-b966-42d1699d4830",
   "triggerCount": 1,
   "createdAt": "2026-10-08T15:29:07.538Z",
-  "updatedAt": "2026-10-27T17:29:39.486Z",
+  "updatedAt": "2026-10-28T11:44:52.466Z",
   "settings": {
     "executionOrder": "v1",
     "availableInMCP": true,
@@ -94,6 +94,17 @@
       ]
     },
     "Claim Cards": {
+      "main": [
+        [
+          {
+            "node": "Plant Overdue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Plant Overdue": {
       "main": [
         [
           {
@@ -256,6 +267,20 @@
         "jsCode": "/* CLAIM CARDS (keep, Phase 3): after Claim Keys. One task per open insurance claim, the whole time it is open (not only 7 days before its\n   next action). Replaces the claim cards from Build Board. Key 'claims|<id>' (who has it, its note and In progress are kept from\n   cbs_task_status). Title: the next action (or 'Update the claim'); due: the claim's next action date (i.due); urgent once overdue.\n   A claim goes when it is Settled, Closed, Withdrawn or Declined. */\nconst d=$input.first().json;if(!d||!d.ok||!Array.isArray(d.items))return [{json:d}];\nconst S=v=>v==null?'':String(v).trim();const H='https://old-hub.example/webhook/';\nlet C=null;try{const r=await this.helpers.httpRequest({url:H+'cbs-admin-data?t=claims',json:true,timeout:30000});C=(r&&Array.isArray(r.claims))?r.claims:null;}catch(e){C=null;}\nif(!C){d._claims='unavailable';return [{json:d}];}\nlet TS=[];try{const r=await this.helpers.httpRequest({url:H+'cbs-admin?a=list&t=taskstat',json:true,timeout:20000});TS=Array.isArray(r)?r:[];}catch(e){TS=[];}\nconst TSm={};TS.forEach(r=>{if(r&&r.task_key)TSm[S(r.task_key)]=r;});\nconst T0=new Date().toLocaleDateString('en-CA',{timeZone:'Europe/London'});\nconst dmy=v=>{const m=S(v).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:'';};\nconst days=v=>Math.round((Date.parse(v+'T12:00:00Z')-Date.parse(T0+'T12:00:00Z'))/864e5);\nconst fd=v=>{v=S(v).slice(0,10);if(!/^\\d{4}-\\d\\d-\\d\\d$/.test(v))return '';try{return new Date(v+'T12:00:00Z').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'});}catch(e){return dmy(v);}};\nconst CLOSED=/^(settled|closed|withdrawn|declined)$/i;\nd.items=d.items.filter(i=>!(i&&i.t==='claims'&&i.kind==='auto'));\nC.forEach(c=>{if(!c||!c.id||CLOSED.test(S(c.status)))return;\n const no=S(c.claim_no)||('Claim '+c.id),due=S(c.next_action_due).slice(0,10),ok=/^\\d{4}-\\d\\d-\\d\\d$/.test(due),dl=ok?days(due):null;\n const what=[S(c.claim_type),S(c.vehicle)||S(c.asset)||S(c.site),S(c.insurer)].filter(Boolean).join(' \\u00b7 ');\n const sub=[S(c.status)||'Open',!ok?'No next action date set':(dl<0?'Overdue: next action was due '+dmy(due):(dl===0?'Next action due today':'Next action due in '+dl+(dl===1?' day':' days')+' ('+dmy(due)+')')),what].filter(Boolean).join(' | ');\n const key='claims|'+c.id,st=TSm[key],prog=!!(st&&S(st.status)==='In progress');\n d.items.push({key,kind:'auto',t:'claims',id:c.id,grp:'Insurance',type:'Auto',title:'Claim '+no+': '+(S(c.next_action)||'Update the claim'),sub,urg:ok&&dl<0,due:ok?due:'',\n  col:prog?'prog':'new',chip:prog?[S(st.note)||'In hand',fd(st.note_date),S(st.note_by)].filter(Boolean).join(' \\u00b7 '):''});});\nd._claims='ok';d.counts={new:d.items.filter(i=>i.col==='new').length,prog:d.items.filter(i=>i.col==='prog').length};\nreturn [{json:d}];\n",
         "mode": "runOnceForAllItems"
       }
+    },
+    {
+      "id": "041b6099-47eb-429b-9064-331303bc7047",
+      "name": "Plant Overdue",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        600
+      ],
+      "parameters": {
+        "jsCode": "/* PLANT OVERDUE BACK (keep, Ethan 28/10): one auto card per job (or per person / van when the item has no job) for plant past its\n   due-back date. Overdue = due_back before today AND (out on a job OR yard_status Out). Replaces the old per-item 'Not back in the yard'\n   notes (which never became cards) and the 'Plant overdue back' note that used to reopen the job's Plant & materials task.\n   Key 'plantback|<group>' (who has it / note / In progress kept from cbs_task_status). items = the asset ids, for the drawer's\n   Back in yard / Extend / Move buttons (CBS - Tasks 'Plant Back UI', server cbs-plant-act). */\nconst d=$input.first().json;if(!d||!d.ok||!Array.isArray(d.items))return [{json:d}];\nconst S=v=>v==null?'':String(v).trim();const H='https://old-hub.example/webhook/';\nlet A=null;try{const r=await this.helpers.httpRequest({url:H+'cbs-admin-data?t=assets',json:true,timeout:30000});A=(r&&Array.isArray(r.assets))?r.assets:null;}catch(e){A=null;}\nif(!A){d._plant='unavailable';return [{json:d}];}\nlet TS=[];try{const r=await this.helpers.httpRequest({url:H+'cbs-admin?a=list&t=taskstat',json:true,timeout:20000});TS=Array.isArray(r)?r:[];}catch(e){TS=[];}\nconst TSm={};TS.forEach(r=>{if(r&&r.task_key)TSm[S(r.task_key)]=r;});\nconst T0=new Date().toLocaleDateString('en-CA',{timeZone:'Europe/London'});\nconst dmy=v=>{const m=S(v).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:'';};\nconst fd=v=>{v=S(v).slice(0,10);if(!/^\\d{4}-\\d\\d-\\d\\d$/.test(v))return '';try{return new Date(v+'T12:00:00Z').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'});}catch(e){return dmy(v);}};\nconst G={};\nA.forEach(a=>{if(!a||!a.id||/^(retired|lost)$/i.test(S(a.status)))return;const due=S(a.due_back).slice(0,10);if(!/^\\d{4}-\\d\\d-\\d\\d$/.test(due)||due>=T0)return;\n const job=S(a.out_job).replace(/^#/,'');if(!job&&S(a.yard_status)!=='Out')return;\n const g=job?'Job '+job:(S(a.out_with)||S(a.location)||'No job');(G[g]=G[g]||{job,ids:[],names:[],due}).ids.push(a.id);G[g].names.push(S(a.name)||'item');if(due<G[g].due)G[g].due=due;});\nd.items=d.items.filter(i=>!(i&&i.t==='plantback'));\nObject.keys(G).forEach(g=>{const x=G[g],n=x.ids.length,key='plantback|'+g,st=TSm[key],prog=!!(st&&S(st.status)==='In progress');\n d.items.push({key,kind:'auto',t:'plantback',id:g,job:x.job,grp:'Plant and tools',type:'Auto',title:'Plant overdue back - '+g,\n  sub:n+(n===1?' item':' items')+' overdue | due back '+dmy(x.due)+' | '+x.names.slice(0,4).join(', ')+(n>4?' (+'+(n-4)+' more)':''),urg:true,due:x.due,items:x.ids,\n  col:prog?'prog':'new',chip:prog?[S(st.note)||'In hand',fd(st.note_date),S(st.note_by)].filter(Boolean).join(' \\u00b7 '):''});});\nd._plant='ok';d.counts={new:d.items.filter(i=>i.col==='new').length,prog:d.items.filter(i=>i.col==='prog').length};\nreturn [{json:d}];",
+        "mode": "runOnceForAllItems"
+      }
     }
   ],
   "nodeGroups": [],
@@ -411,6 +436,20 @@
           "jsCode": "/* CLAIM CARDS (keep, Phase 3): after Claim Keys. One task per open insurance claim, the whole time it is open (not only 7 days before its\n   next action). Replaces the claim cards from Build Board. Key 'claims|<id>' (who has it, its note and In progress are kept from\n   cbs_task_status). Title: the next action (or 'Update the claim'); due: the claim's next action date (i.due); urgent once overdue.\n   A claim goes when it is Settled, Closed, Withdrawn or Declined. */\nconst d=$input.first().json;if(!d||!d.ok||!Array.isArray(d.items))return [{json:d}];\nconst S=v=>v==null?'':String(v).trim();const H='https://old-hub.example/webhook/';\nlet C=null;try{const r=await this.helpers.httpRequest({url:H+'cbs-admin-data?t=claims',json:true,timeout:30000});C=(r&&Array.isArray(r.claims))?r.claims:null;}catch(e){C=null;}\nif(!C){d._claims='unavailable';return [{json:d}];}\nlet TS=[];try{const r=await this.helpers.httpRequest({url:H+'cbs-admin?a=list&t=taskstat',json:true,timeout:20000});TS=Array.isArray(r)?r:[];}catch(e){TS=[];}\nconst TSm={};TS.forEach(r=>{if(r&&r.task_key)TSm[S(r.task_key)]=r;});\nconst T0=new Date().toLocaleDateString('en-CA',{timeZone:'Europe/London'});\nconst dmy=v=>{const m=S(v).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:'';};\nconst days=v=>Math.round((Date.parse(v+'T12:00:00Z')-Date.parse(T0+'T12:00:00Z'))/864e5);\nconst fd=v=>{v=S(v).slice(0,10);if(!/^\\d{4}-\\d\\d-\\d\\d$/.test(v))return '';try{return new Date(v+'T12:00:00Z').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'});}catch(e){return dmy(v);}};\nconst CLOSED=/^(settled|closed|withdrawn|declined)$/i;\nd.items=d.items.filter(i=>!(i&&i.t==='claims'&&i.kind==='auto'));\nC.forEach(c=>{if(!c||!c.id||CLOSED.test(S(c.status)))return;\n const no=S(c.claim_no)||('Claim '+c.id),due=S(c.next_action_due).slice(0,10),ok=/^\\d{4}-\\d\\d-\\d\\d$/.test(due),dl=ok?days(due):null;\n const what=[S(c.claim_type),S(c.vehicle)||S(c.asset)||S(c.site),S(c.insurer)].filter(Boolean).join(' \\u00b7 ');\n const sub=[S(c.status)||'Open',!ok?'No next action date set':(dl<0?'Overdue: next action was due '+dmy(due):(dl===0?'Next action due today':'Next action due in '+dl+(dl===1?' day':' days')+' ('+dmy(due)+')')),what].filter(Boolean).join(' | ');\n const key='claims|'+c.id,st=TSm[key],prog=!!(st&&S(st.status)==='In progress');\n d.items.push({key,kind:'auto',t:'claims',id:c.id,grp:'Insurance',type:'Auto',title:'Claim '+no+': '+(S(c.next_action)||'Update the claim'),sub,urg:ok&&dl<0,due:ok?due:'',\n  col:prog?'prog':'new',chip:prog?[S(st.note)||'In hand',fd(st.note_date),S(st.note_by)].filter(Boolean).join(' \\u00b7 '):''});});\nd._claims='ok';d.counts={new:d.items.filter(i=>i.col==='new').length,prog:d.items.filter(i=>i.col==='prog').length};\nreturn [{json:d}];\n",
           "mode": "runOnceForAllItems"
         }
+      },
+      {
+        "id": "041b6099-47eb-429b-9064-331303bc7047",
+        "name": "Plant Overdue",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          560,
+          600
+        ],
+        "parameters": {
+          "jsCode": "/* PLANT OVERDUE BACK (keep, Ethan 28/10): one auto card per job (or per person / van when the item has no job) for plant past its\n   due-back date. Overdue = due_back before today AND (out on a job OR yard_status Out). Replaces the old per-item 'Not back in the yard'\n   notes (which never became cards) and the 'Plant overdue back' note that used to reopen the job's Plant & materials task.\n   Key 'plantback|<group>' (who has it / note / In progress kept from cbs_task_status). items = the asset ids, for the drawer's\n   Back in yard / Extend / Move buttons (CBS - Tasks 'Plant Back UI', server cbs-plant-act). */\nconst d=$input.first().json;if(!d||!d.ok||!Array.isArray(d.items))return [{json:d}];\nconst S=v=>v==null?'':String(v).trim();const H='https://old-hub.example/webhook/';\nlet A=null;try{const r=await this.helpers.httpRequest({url:H+'cbs-admin-data?t=assets',json:true,timeout:30000});A=(r&&Array.isArray(r.assets))?r.assets:null;}catch(e){A=null;}\nif(!A){d._plant='unavailable';return [{json:d}];}\nlet TS=[];try{const r=await this.helpers.httpRequest({url:H+'cbs-admin?a=list&t=taskstat',json:true,timeout:20000});TS=Array.isArray(r)?r:[];}catch(e){TS=[];}\nconst TSm={};TS.forEach(r=>{if(r&&r.task_key)TSm[S(r.task_key)]=r;});\nconst T0=new Date().toLocaleDateString('en-CA',{timeZone:'Europe/London'});\nconst dmy=v=>{const m=S(v).match(/^(\\d{4})-(\\d{2})-(\\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:'';};\nconst fd=v=>{v=S(v).slice(0,10);if(!/^\\d{4}-\\d\\d-\\d\\d$/.test(v))return '';try{return new Date(v+'T12:00:00Z').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',timeZone:'UTC'});}catch(e){return dmy(v);}};\nconst G={};\nA.forEach(a=>{if(!a||!a.id||/^(retired|lost)$/i.test(S(a.status)))return;const due=S(a.due_back).slice(0,10);if(!/^\\d{4}-\\d\\d-\\d\\d$/.test(due)||due>=T0)return;\n const job=S(a.out_job).replace(/^#/,'');if(!job&&S(a.yard_status)!=='Out')return;\n const g=job?'Job '+job:(S(a.out_with)||S(a.location)||'No job');(G[g]=G[g]||{job,ids:[],names:[],due}).ids.push(a.id);G[g].names.push(S(a.name)||'item');if(due<G[g].due)G[g].due=due;});\nd.items=d.items.filter(i=>!(i&&i.t==='plantback'));\nObject.keys(G).forEach(g=>{const x=G[g],n=x.ids.length,key='plantback|'+g,st=TSm[key],prog=!!(st&&S(st.status)==='In progress');\n d.items.push({key,kind:'auto',t:'plantback',id:g,job:x.job,grp:'Plant and tools',type:'Auto',title:'Plant overdue back - '+g,\n  sub:n+(n===1?' item':' items')+' overdue | due back '+dmy(x.due)+' | '+x.names.slice(0,4).join(', ')+(n>4?' (+'+(n-4)+' more)':''),urg:true,due:x.due,items:x.ids,\n  col:prog?'prog':'new',chip:prog?[S(st.note)||'In hand',fd(st.note_date),S(st.note_by)].filter(Boolean).join(' \\u00b7 '):''});});\nd._plant='ok';d.counts={new:d.items.filter(i=>i.col==='new').length,prog:d.items.filter(i=>i.col==='prog').length};\nreturn [{json:d}];",
+          "mode": "runOnceForAllItems"
+        }
       }
     ],
     "connections": {
@@ -492,6 +531,17 @@
         ]
       },
       "Claim Cards": {
+        "main": [
+          [
+            {
+              "node": "Plant Overdue",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Plant Overdue": {
         "main": [
           [
             {

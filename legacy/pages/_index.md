@@ -1,5 +1,7 @@
 # Legacy page parts (cbs_page_parts)
 
+**Refreshed 30/10/2026:** every page below (and `cbs-yard.html`) was fetched again from its live URL on the old hub (GET only), secrets redacted, then run through the faking map (`private/fake-legacy.py`). Live pages are served with the sign-in guard line at the top. `cbs-job-file` now redirects to the Jobs list, so `cbs-job-file.html` is still the 27/10 copy. The table, sizes and dates below describe the 27/10 capture.
+
 Archived from the n8n data table `cbs_page_parts` (id `HOHWTBOJHrHF0TvB`). It holds the page bodies that the old CBS Operations Hub served from n8n webhooks, mainly through **CBS - Pages** (`9Y8IYjM8jsKTtQTH`, node `Get Page`) at `/webhook/cbs-*`.
 
 **Source for every file below:** workflow **CBS - Page Read (temp)** (`i3WbYiE5vjQhWp1h`), execution **1308994** (2026-10-27 16:19 UTC, its most recent run), node `Get Pages`, which returns every row of the table. It was read with the n8n MCP `get_execution` tool, and nothing was written to n8n.
@@ -64,7 +66,7 @@ Notes:
 ## Gaps
 
 - **Rows after id 48 were not retrieved.** The table has more rows than this. The export stops at the first 48 rows (by id) because the MCP transport fails on responses larger than about 8 MB, and rows 33 to 48 are mostly `page:cbs-admin` backups of about 400 KB each. Rows 1 to 48 include every page that **CBS - Pages** serves, so the missing rows are probably more `_bak_*` backups. They could also include pages added later.
-- `page:cbs-yard` is **not archived**. **CBS - Yard** (`djecOV96hfoWcyWA`, node `Get Yard Page`) reads it, but it is not in rows 1 to 48 and that workflow has no saved executions.
+- `page:cbs-yard` was not archived on 27/10; since 30/10 it is in [cbs-yard.html](cbs-yard.html), fetched from the live `cbs-yard` URL.
 - The table `cbs_page_parts_backup_20261006` (`PsatFoq0cDpQsRzp`), a full copy of this table taken on 2026-10-06, was not archived because no workflow reads it.
 - Many other hub pages are not stored in `cbs_page_parts`. Their own workflows build them inline in Code nodes, for example CBS - Nav (cbs-nav, sign-in, summary, layout), CBS - Job Inspections, CBS - Programme Page, CBS - Scope, CBS - Snagging, CBS - Service Sheets, CBS - TV Dashboard and the CBS - File Alerts UI script. Those pages are not covered here.
 

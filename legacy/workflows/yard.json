@@ -3,11 +3,11 @@
   "name": "CBS - Yard",
   "active": true,
   "isArchived": false,
-  "versionId": "4223a50c-529c-409c-b373-b070bb0a108c",
-  "activeVersionId": "4223a50c-529c-409c-b373-b070bb0a108c",
+  "versionId": "63ff861f-04fb-4436-8d79-1e1f4d1bbd95",
+  "activeVersionId": "63ff861f-04fb-4436-8d79-1e1f4d1bbd95",
   "triggerCount": 5,
   "createdAt": "2026-10-09T13:36:38.398Z",
-  "updatedAt": "2026-10-20T14:12:16.473Z",
+  "updatedAt": "2026-10-29T15:23:18.374Z",
   "settings": {
     "executionOrder": "v1",
     "availableInMCP": true
@@ -62,17 +62,6 @@
         [
           {
             "node": "Act",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Act": {
-      "main": [
-        [
-          {
-            "node": "Is Stock Take?",
             "type": "main",
             "index": 0
           }
@@ -230,6 +219,28 @@
         [
           {
             "node": "Respond Yard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Act": {
+      "main": [
+        [
+          {
+            "node": "Found Clears Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Found Clears Job": {
+      "main": [
+        [
+          {
+            "node": "Is Stock Take?",
             "type": "main",
             "index": 0
           }
@@ -809,6 +820,20 @@
         "jsCode": "const r=$input.all().map(i=>i.json).find(x=>x&&x.name==='page:cbs-yard');\nif(!r) return [{json:{html:'<p>Yard page not found.</p>'}}];\nlet h=r.content;try{const o=JSON.parse(r.content);if(o&&o.b)h=o.b;}catch(e){}\nreturn [{json:{html:h}}];",
         "mode": "runOnceForAllItems"
       }
+    },
+    {
+      "id": "56b9b6f6-1539-4eda-bbe4-37e82fb02109",
+      "name": "Found Clears Job",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        900
+      ],
+      "parameters": {
+        "jsCode": "/* FOUND CLEARS JOB (keep, Ethan 29/10): on the Yard page, marking plant Found at the warehouse / yard means it is back: also clear\n   out_job, out_with and due_back and set yard_status In (same as Back in yard on the Plant overdue back card), so it no longer counts\n   as out on a job or overdue. Found somewhere else (a van, a site) only changes the location, as before. Passes Act's reply through. */\nconst r=$input.first().json;const b=($('Act Hook').first().json||{}).body||{};\nconst S=v=>v==null?'':String(v).trim();\nif(r&&r.ok&&r.kind==='plant'&&S(b.action)==='plant'&&S(b.flag)==='found'){\n const loc=S(b.location);\n if(!loc||/warehouse|yard/i.test(loc)){\n  try{await this.helpers.httpRequest({method:'POST',url:'https://old-hub.example/webhook/cbs-admin-save?a=save&t=assets&id='+encodeURIComponent(S(b.id))+'&partial=1',body:{out_job:'',out_with:'',due_back:'',yard_status:'In'},json:true,timeout:20000});}catch(e){}\n }\n}\nreturn [{json:r}];",
+        "mode": "runOnceForAllItems"
+      }
     }
   ],
   "nodeGroups": [],
@@ -1385,6 +1410,20 @@
           "jsCode": "const r=$input.all().map(i=>i.json).find(x=>x&&x.name==='page:cbs-yard');\nif(!r) return [{json:{html:'<p>Yard page not found.</p>'}}];\nlet h=r.content;try{const o=JSON.parse(r.content);if(o&&o.b)h=o.b;}catch(e){}\nreturn [{json:{html:h}}];",
           "mode": "runOnceForAllItems"
         }
+      },
+      {
+        "id": "56b9b6f6-1539-4eda-bbe4-37e82fb02109",
+        "name": "Found Clears Job",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          336,
+          900
+        ],
+        "parameters": {
+          "jsCode": "/* FOUND CLEARS JOB (keep, Ethan 29/10): on the Yard page, marking plant Found at the warehouse / yard means it is back: also clear\n   out_job, out_with and due_back and set yard_status In (same as Back in yard on the Plant overdue back card), so it no longer counts\n   as out on a job or overdue. Found somewhere else (a van, a site) only changes the location, as before. Passes Act's reply through. */\nconst r=$input.first().json;const b=($('Act Hook').first().json||{}).body||{};\nconst S=v=>v==null?'':String(v).trim();\nif(r&&r.ok&&r.kind==='plant'&&S(b.action)==='plant'&&S(b.flag)==='found'){\n const loc=S(b.location);\n if(!loc||/warehouse|yard/i.test(loc)){\n  try{await this.helpers.httpRequest({method:'POST',url:'https://old-hub.example/webhook/cbs-admin-save?a=save&t=assets&id='+encodeURIComponent(S(b.id))+'&partial=1',body:{out_job:'',out_with:'',due_back:'',yard_status:'In'},json:true,timeout:20000});}catch(e){}\n }\n}\nreturn [{json:r}];",
+          "mode": "runOnceForAllItems"
+        }
       }
     ],
     "connections": {
@@ -1437,17 +1476,6 @@
           [
             {
               "node": "Act",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Act": {
-        "main": [
-          [
-            {
-              "node": "Is Stock Take?",
               "type": "main",
               "index": 0
             }
@@ -1605,6 +1633,28 @@
           [
             {
               "node": "Respond Yard",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Act": {
+        "main": [
+          [
+            {
+              "node": "Found Clears Job",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Found Clears Job": {
+        "main": [
+          [
+            {
+              "node": "Is Stock Take?",
               "type": "main",
               "index": 0
             }

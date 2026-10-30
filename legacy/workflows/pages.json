@@ -3,11 +3,11 @@
   "name": "CBS - Pages",
   "active": true,
   "isArchived": false,
-  "versionId": "ae43747e-92b4-4b3d-b822-8ab95b2019d7",
-  "activeVersionId": "ae43747e-92b4-4b3d-b822-8ab95b2019d7",
+  "versionId": "979255f6-b970-4406-880e-4e759f24d403",
+  "activeVersionId": "979255f6-b970-4406-880e-4e759f24d403",
   "triggerCount": 27,
   "createdAt": "2026-10-05T09:42:05.109Z",
-  "updatedAt": "2026-10-27T17:29:53.344Z",
+  "updatedAt": "2026-10-28T10:14:59.391Z",
   "settings": {
     "executionOrder": "v1",
     "availableInMCP": true,
@@ -819,7 +819,7 @@
       ],
       "parameters": {
         "respondWith": "text",
-        "responseBody": "={{ (/text\\/html/i.test(String($json.t||'')) && typeof $json.b === 'string' && $json.b.indexOf('/webhook/cbs-guard') < 0) ? $json.b.replace(/<head[^>]*>/i, '$&<script src=\"/webhook/cbs-guard\"></script>') : $json.b }}",
+        "responseBody": "={{ (function (x) { return typeof x === 'string' ? x.replace(new RegExp('cbstv-[A-Za-z0-9]+', 'g'), '[redacted-secret]') : x; })((/text\\/html/i.test(String($json.t||'')) && typeof $json.b === 'string' && $json.b.indexOf('/webhook/cbs-guard') < 0) ? $json.b.replace(/<head[^>]*>/i, '$&<script src=\"/webhook/cbs-guard\"></script>') : $json.b) }}",
         "options": {
           "responseHeaders": {
             "entries": [
@@ -1587,7 +1587,7 @@
         ],
         "parameters": {
           "respondWith": "text",
-          "responseBody": "={{ (/text\\/html/i.test(String($json.t||'')) && typeof $json.b === 'string' && $json.b.indexOf('/webhook/cbs-guard') < 0) ? $json.b.replace(/<head[^>]*>/i, '$&<script src=\"/webhook/cbs-guard\"></script>') : $json.b }}",
+          "responseBody": "={{ (function (x) { return typeof x === 'string' ? x.replace(new RegExp('cbstv-[A-Za-z0-9]+', 'g'), '[redacted-secret]') : x; })((/text\\/html/i.test(String($json.t||'')) && typeof $json.b === 'string' && $json.b.indexOf('/webhook/cbs-guard') < 0) ? $json.b.replace(/<head[^>]*>/i, '$&<script src=\"/webhook/cbs-guard\"></script>') : $json.b) }}",
           "options": {
             "responseHeaders": {
               "entries": [

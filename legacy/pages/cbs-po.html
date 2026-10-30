@@ -1,4 +1,4 @@
-<!--cbs-baked--><!doctype html><html lang="en-GB"><head><script id="cbsDl">(function(){if(window.__cbsDl)return;window.__cbsDl=1;
+<!--cbs-baked--><!doctype html><html lang="en-GB"><head><script src="/webhook/cbs-guard"></script><script id="cbsDl">(function(){if(window.__cbsDl)return;window.__cbsDl=1;
 var ua=navigator.userAgent||'',fr=false;try{fr=window.top!==window.self;}catch(e){fr=true;}
 var ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 var wv=(ios&&ua.indexOf('Safari/')<0)||ua.indexOf('; wv)')>-1||/ServiceM8/i.test(ua);
@@ -131,7 +131,7 @@ function check(){grab();if(!P.supplier_id)return "Choose a supplier.";if(/^Other
 function pdf(){var J=window.jspdf.jsPDF,d=new J({unit:"pt",format:"a4"}),s=sup()||{},t=totals(),PW=595.28,PH=841.89,L=52,R=PW-52,y=52,OR=[244,121,32];
  function pl(v){return typeof v==="string"?v.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[\u2018\u2019]/g,"'").replace(/[\u201C\u201D]/g,'"').replace(/[\u2013\u2014]/g,"-"):(Array.isArray(v)?v.map(pl):v);}var _tx=d.text.bind(d),_sp=d.splitTextToSize.bind(d);d.text=function(a,b,c,o){return _tx(pl(a),b,c,o);};d.splitTextToSize=function(a,w,o){return _sp(pl(a),w,o);};
  function sp(v){return String(v||"").split(/\s*,\s*|\n/).map(function(x){return x.trim();}).filter(Boolean);}
- var CO=["Chelmsford Building Services Ltd","Trading as Chelmsford Building Services","Unit 1, Example Business Park, Example Road","Bishop's Stortford, Hertfordshire","ZZ99 1ZZ","United Kingdom","contact4@example.com","Phone: 0117 496 0004","VAT Registration No.: GB 425 1034 96"],YARD=["Chelmsford Building Services","Unit 1, Example Business Park, Example Road","Bishop's Stortford, Hertfordshire","ZZ99 1ZZ"];
+ var CO=["Chelmsford Building Services Ltd","Trading as Chelmsford Building Services","Unit 1, Sample Business Centre, Sample Road","Sampletown Z, Hertfordshire","ZZ99 1ZZ","United Kingdom","contact4@example.com","Phone: 0117 496 0004","VAT Registration No.: GB 425 1034 96"],YARD=["Chelmsford Building Services","Unit 1, Sample Business Centre, Sample Road","Sampletown Z, Hertfordshire","ZZ99 1ZZ"];
  d.setFont("helvetica","bold");d.setFontSize(11);d.text(CO[0],L,y);d.setFont("helvetica","normal");d.setFontSize(10.5);for(var i=1;i<CO.length;i++){y+=15.5;d.text(CO[i],L,y);}
  var LG=window.__CBS_LOGO;if(LG){try{var ip=d.getImageProperties(LG),lw=170,lh=lw*ip.height/ip.width;if(lh>54){lh=54;lw=lh*ip.width/ip.height;}d.addImage(LG,"PNG",R-lw,40,lw,lh);}catch(e){LG=null;}}
  if(!LG){d.setFont("helvetica","bold");d.setFontSize(30);d.setTextColor(107,110,112);d.text("CBS",R,80,{align:"right"});d.setFont("helvetica","normal");d.setFontSize(7);d.setTextColor(OR[0],OR[1],OR[2]);d.text("Chelmsford Building Services",R,92,{align:"right"});}

@@ -1,0 +1,27 @@
+{
+  "table": "CBS Stocktake Docs",
+  "n8n_id": "tP0YZjWjLbV0vd0r",
+  "columns": [
+    {
+      "name": "col",
+      "type": "string"
+    },
+    {
+      "name": "data",
+      "type": "string"
+    },
+    {
+      "name": "docId",
+      "type": "string"
+    },
+    {
+      "name": "docKey",
+      "type": "string"
+    },
+    {
+      "name": "ts",
+      "type": "number"
+    }
+  ],
+  "sample_rows": []
+}

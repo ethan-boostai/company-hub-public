@@ -43,6 +43,10 @@ This repo replaces the original n8n-served hub (pages served from webhooks on th
 
 ## Old hub
 - `docs/inventory.md` section 5 lists old behaviour that breaks these rules. Follow it: never copy that behaviour into the rebuild.
+- Use the old live hub only to view and screenshot it, and only through `scripts/old-hub.mjs` (signs in with `OLD_HUB_NAME` / `OLD_HUB_PIN`; aborts every request that isn't a GET except its own sign-in). Never open the old hub any other way.
+- Never type into or submit live forms beyond what's needed to open a view. Never sign documents.
+- Old hub screenshots show real data: never commit them and never put them in the public copy. Keep them outside the repo or in `private/screens/` (git-ignored).
+- Before building or checking any page that exists in the old hub, take the live screenshots yourself and put them beside your build. Keep using the old code in `/legacy` on fake data for anything shared or published.
 
 ## UI rules (non-negotiable)
 - No button may ever double save. Disable on submit, guard server-side.

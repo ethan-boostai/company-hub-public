@@ -45,3 +45,7 @@ next-env.d.ts
 
 # local dev database and uploads
 /.local/
+
+# old hub screenshots (real data): never committed
+/private/screens/
+__pycache__/

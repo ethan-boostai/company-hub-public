@@ -3,11 +3,11 @@
   "name": "CBS - Job File",
   "active": true,
   "isArchived": false,
-  "versionId": "5621bb9f-7b59-425a-8108-6a029de4e0bb",
-  "activeVersionId": "5621bb9f-7b59-425a-8108-6a029de4e0bb",
+  "versionId": "38174579-5a32-4545-ad7a-19a7179d55e0",
+  "activeVersionId": "38174579-5a32-4545-ad7a-19a7179d55e0",
   "triggerCount": 10,
   "createdAt": "2026-10-05T16:20:56.334Z",
-  "updatedAt": "2026-10-27T15:21:49.078Z",
+  "updatedAt": "2026-10-29T09:22:45.811Z",
   "settings": {
     "executionOrder": "v1",
     "availableInMCP": true,
@@ -186,17 +186,6 @@
         [
           {
             "node": "Reqs Upsert",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Regs JR": {
-      "main": [
-        [
-          {
-            "node": "Jobs JR Raw",
             "type": "main",
             "index": 0
           }
@@ -1991,17 +1980,6 @@
         ]
       ]
     },
-    "Plan Extras": {
-      "main": [
-        [
-          {
-            "node": "Page Store",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Scope JR": {
       "main": [
         [
@@ -2040,6 +2018,39 @@
         [
           {
             "node": "Plan Extras",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Regs JR": {
+      "main": [
+        [
+          {
+            "node": "Jobs JR Raw",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Plan Extras": {
+      "main": [
+        [
+          {
+            "node": "Book In Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Book In Job": {
+      "main": [
+        [
+          {
+            "node": "Page Store",
             "type": "main",
             "index": 0
           }
@@ -2580,31 +2591,6 @@
       "webhookId": "850403f6-9f05-41a6-8134-e5a210de6881"
     },
     {
-      "id": "cc578ea8-191a-455f-bf77-3ab3de63dc3a",
-      "name": "Regs JR",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        224,
-        1160
-      ],
-      "parameters": {
-        "method": "GET",
-        "options": {
-          "response": {
-            "response": {
-              "neverError": true,
-              "responseFormat": "json"
-            }
-          },
-          "timeout": 60000
-        },
-        "url": "https://old-hub.example/webhook/cbs-admin-data?t=rams,cphsp,prestarts,toolbox,signons,subjobs,pos,ptmsheets,scaffinsp,assets"
-      },
-      "alwaysOutputData": true,
-      "executeOnce": true
-    },
-    {
       "id": "23ba4acc-2b4e-460e-bc10-6d8ef3c54082",
       "name": "Jobs JR Raw",
       "type": "n8n-nodes-base.dataTable",
@@ -2828,7 +2814,7 @@
         600
       ],
       "parameters": {
-        "jsCode": "/* DASHBOARD PREVIEW on the Job File: this job as the TV's one-job view would show it (preview mode of cbs-tv, TV not changed). */\nvar j = Object.assign({}, $input.first().json); var h = String(j.html || '');\nif (h.indexOf('class=\"acts\"') < 0 || h.indexOf('id=\"tvView\"') > -1) return [{ json: j }];\nvar sec = '<details id=\"tvView\"><summary>Dashboard preview</summary>'\n + '<div style=\"padding:10px 14px;border-top:1px solid #eee\"><div id=\"tvW\" style=\"position:relative;width:100%;overflow:hidden;background:#111;border-radius:8px;height:0\"></div>'\n + '<div class=\"m\" style=\"margin-top:8px\">A preview only. The TV keeps showing whatever it is set to. <a id=\"tvFull\" target=\"_blank\" rel=\"noopener\" href=\"#\">Open the preview full size</a></div></div></details>';\nvar p = h.indexOf('<details id=\"reqs\"'); if (p < 0) p = h.indexOf('<details', h.indexOf('class=\"acts\"'));\nif (p > -1) h = h.slice(0, p) + sec + h.slice(p);\nvar S = '<script id=\"cbsTvView\">' + \"(function(){\\n/* DASHBOARD PREVIEW: shows this job exactly as the TV's one-job view would, in a scaled frame.\\n   Loads /webhook/cbs-tv?k=...&job=N (preview mode: does not change the TV or its settings). */\\nif(typeof JOB===\\\"undefined\\\"||!JOB)return;var d=document.getElementById(\\\"tvView\\\"),w=document.getElementById(\\\"tvW\\\");if(!d||!w)return;\\nvar U=\\\"/webhook/cbs-tv?k=[redacted-secret]&job=\\\"+encodeURIComponent(JOB),f=null;\\nfunction fit(){if(!f)return;var s=w.clientWidth/1920;f.style.transform=\\\"scale(\\\"+s+\\\")\\\";w.style.height=Math.round(1080*s)+\\\"px\\\";}\\nfunction load(){if(f)return;f=document.createElement(\\\"iframe\\\");f.src=U;f.title=\\\"Dashboard preview\\\";f.setAttribute(\\\"loading\\\",\\\"lazy\\\");f.style.cssText=\\\"position:absolute;top:0;left:0;width:1920px;height:1080px;border:0;transform-origin:0 0;pointer-events:none\\\";w.appendChild(f);fit();}\\nd.addEventListener(\\\"toggle\\\",function(){if(d.open){load();setTimeout(fit,50);}});\\nwindow.addEventListener(\\\"resize\\\",fit);\\nvar a=document.getElementById(\\\"tvFull\\\");if(a)a.href=U;\\n})();\\n\" + '</script>';\nvar q = h.lastIndexOf('</body>'); h = q > -1 ? h.slice(0, q) + S + h.slice(q) : h + S;\nj.html = h; return [{ json: j }];",
+        "jsCode": "/* DASHBOARD PREVIEW on the Job File: this job as the TV's one-job view would show it (preview mode of cbs-tv, TV not changed). */\nvar j = Object.assign({}, $input.first().json); var h = String(j.html || '');\nif (h.indexOf('class=\"acts\"') < 0 || h.indexOf('id=\"tvView\"') > -1) return [{ json: j }];\nvar sec = '<details id=\"tvView\"><summary>Dashboard preview</summary>'\n + '<div style=\"padding:10px 14px;border-top:1px solid #eee\"><div id=\"tvW\" style=\"position:relative;width:100%;overflow:hidden;background:#111;border-radius:8px;height:0\"></div>'\n + '<div class=\"m\" style=\"margin-top:8px\">A preview only. The TV keeps showing whatever it is set to. <a id=\"tvFull\" target=\"_blank\" rel=\"noopener\" href=\"#\">Open the preview full size</a></div></div></details>';\nvar p = h.indexOf('<details id=\"reqs\"'); if (p < 0) p = h.indexOf('<details', h.indexOf('class=\"acts\"'));\nif (p > -1) h = h.slice(0, p) + sec + h.slice(p);\nvar S = '<script id=\"cbsTvView\">' + \"(function(){\\n/* DASHBOARD PREVIEW: shows this job exactly as the TV's one-job view would, in a scaled frame.\\n   Loads /webhook/cbs-tv?k=...&job=N (preview mode: does not change the TV or its settings). */\\nif(typeof JOB===\\\"undefined\\\"||!JOB)return;var d=document.getElementById(\\\"tvView\\\"),w=document.getElementById(\\\"tvW\\\");if(!d||!w)return;\\nvar U=\\\"/webhook/cbs-tv?k=[redacted-secret]&job=\\\"+encodeURIComponent(JOB),f=null;\\nfunction fit(){if(!f)return;var s=w.clientWidth/1920;f.style.transform=\\\"scale(\\\"+s+\\\")\\\";w.style.height=Math.round(1080*s)+\\\"px\\\";}\\nfunction load(){if(f)return;f=document.createElement(\\\"iframe\\\");f.src=U;f.title=\\\"Dashboard preview\\\";f.setAttribute(\\\"loading\\\",\\\"lazy\\\");f.style.cssText=\\\"position:absolute;top:0;left:0;width:1920px;height:1080px;border:0;transform-origin:0 0;pointer-events:none\\\";w.appendChild(f);fit();}\\nd.addEventListener(\\\"toggle\\\",function(){if(d.open){load();setTimeout(fit,50);}});\\nwindow.addEventListener(\\\"resize\\\",fit);\\nvar a=document.getElementById(\\\"tvFull\\\");if(a)a.href=U;\\n})();\\n\" + '</script>';\nvar q = h.lastIndexOf('</body>'); h = q > -1 ? h.slice(0, q) + S + h.slice(q) : h + S;\n/* TV link token rotated 28/10/2026: also update the token in the cast button and anything built earlier in the page */\nh = h.replace(/cbstv-[A-Za-z0-9]+/g, '[redacted-secret]');\nj.html = h; return [{ json: j }];",
         "mode": "runOnceForAllItems"
       }
     },
@@ -3533,7 +3519,7 @@
         0
       ],
       "parameters": {
-        "jsCode": "/* First Frame: the Job File layout (Reqs Inject) rebuilds the header and cards at DOMContentLoaded.\n   Hold the header and .wrap back until that has run so the old layout never shows, with a 2.5 s safety\n   timeout so the page can never stay blank. The tab bar (Unify) is already final and stays visible.\n   Skipped for ?embed= views. Runs last, so its reveal listener fires after the layout script. */\nvar P = {}; try { P = $('Params').first().json || {}; } catch (x) {}\nvar job = String(P.job || '').replace(/[^0-9A-Za-z-]/g, '');\nreturn $input.all().map(function (it) {\n  var j = Object.assign({}, it.json), h = typeof j.html === 'string' ? j.html : '';\n  if (!h || h.indexOf('id=\"jfFF\"') > -1) return { json: j };\n  var hm = h.match(/<head[^>]*>/i), bk = h.lastIndexOf('</body>');\n  if (!hm || bk < 0) { j.firstFrame = 'missing'; return { json: j }; }\n  var msg = job ? 'Loading job ' + job + '\\u2026' : 'Loading\\u2026';\n  var HEAD = '<style id=\"jfFF\">html.jf-wait header,html.jf-wait .wrap{visibility:hidden}html.jf-wait body::after{content:\"' + msg + '\";position:fixed;left:0;right:0;top:160px;text-align:center;color:#6b6e70;font:15px system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif}</style>'\n    + '<script id=\"jfFFs\">(function(){try{if(new URLSearchParams(location.search).get(\"embed\"))return;}catch(e){}var R=document.documentElement;R.classList.add(\"jf-wait\");setTimeout(function(){R.classList.remove(\"jf-wait\");},2500);})();</script>';\n  var END = '<script id=\"jfFFe\">(function(){function show(){var R=document.documentElement;(window.requestAnimationFrame||setTimeout)(function(){R.classList.remove(\"jf-wait\");});}if(document.readyState===\"loading\")document.addEventListener(\"DOMContentLoaded\",show);else show();})();</script>';\n  var i = h.indexOf(hm[0]) + hm[0].length;\n  h = h.slice(0, i) + HEAD + h.slice(i);\n  bk = h.lastIndexOf('</body>');\n  h = h.slice(0, bk) + END + h.slice(bk);\n  /* Jobs screen moved to /webhook/cbs-jobs (cbs-enquiry redirects there): link and embed it directly. */\n  h = h.replace(/(?:https:\\/\\/old-hub\\.example)?\\/webhook\\/cbs-enquiry(?=[\"'?#])/g, 'https://old-hub.example/webhook/cbs-jobs');\n  j.html = h; return { json: j };\n});\n",
+        "jsCode": "/* First Frame: the Job File layout (Reqs Inject) rebuilds the header and cards at DOMContentLoaded.\n   Hold the header and .wrap back until that has run so the old layout never shows, with a 2.5 s safety\n   timeout so the page can never stay blank. The tab bar (Unify) is already final and stays visible.\n   Skipped for ?embed= views. Runs last, so its reveal listener fires after the layout script. */\nvar P = {}; try { P = $('Params').first().json || {}; } catch (x) {}\nvar job = String(P.job || '').replace(/[^0-9A-Za-z-]/g, '');\nreturn $input.all().map(function (it) {\n  var j = Object.assign({}, it.json), h = typeof j.html === 'string' ? j.html : '';\n  if (!h || h.indexOf('id=\"jfFF\"') > -1) return { json: j };\n  var hm = h.match(/<head[^>]*>/i), bk = h.lastIndexOf('</body>');\n  if (!hm || bk < 0) { j.firstFrame = 'missing'; return { json: j }; }\n  var msg = job ? 'Loading job ' + job + '\\u2026' : 'Loading\\u2026';\n  var HEAD = '<style id=\"jfFF\">html.jf-wait header,html.jf-wait .wrap{visibility:hidden}html.jf-wait body::after{content:\"' + msg + '\";position:fixed;left:0;right:0;top:160px;text-align:center;color:#6b6e70;font:15px system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif}</style>'\n    + '<script id=\"jfFFs\">(function(){try{if(new URLSearchParams(location.search).get(\"embed\"))return;}catch(e){}var R=document.documentElement;R.classList.add(\"jf-wait\");setTimeout(function(){R.classList.remove(\"jf-wait\");},2500);})();</script>';\n  var END = '<script id=\"jfFFe\">(function(){function show(){var R=document.documentElement;(window.requestAnimationFrame||setTimeout)(function(){R.classList.remove(\"jf-wait\");});}if(document.readyState===\"loading\")document.addEventListener(\"DOMContentLoaded\",show);else show();})();</script>';\n  var i = h.indexOf(hm[0]) + hm[0].length;\n  h = h.slice(0, i) + HEAD + h.slice(i);\n  bk = h.lastIndexOf('</body>');\n  h = h.slice(0, bk) + END + h.slice(bk);\n  /* Jobs screen moved to /webhook/cbs-jobs (cbs-enquiry redirects there): link and embed it directly. */\n  h = h.replace(/(?:https:\\/\\/n8n\\.old-hub\\.example)?\\/webhook\\/cbs-enquiry(?=[\"'?#])/g, 'https://old-hub.example/webhook/cbs-jobs');\n  j.html = h; return { json: j };\n});\n",
         "mode": "runOnceForAllItems"
       }
     },
@@ -5414,7 +5400,7 @@
           }
         },
         "respondWith": "text",
-        "responseBody": "={{ $json.html }}"
+        "responseBody": "={{ String($json.html || '').replace(new RegExp('cbstv-[A-Za-z0-9]+', 'g'), '[redacted-secret]') }}"
       }
     },
     {
@@ -5990,6 +5976,36 @@
         "jsCode": "/* REMOVE QUEUE (keep, 27/10): Remove from job (task drawer) saves the job's whole list of switched-on requirements, built from the page's\n   copy (window.RQD). Several quick removals used to start together, each from the old copy, so the last save switched the earlier ones\n   back on. Now removals wait in line: each starts after the previous one has saved and updated the copy. */\nconst j=Object.assign({},$input.first().json);let n=0;\nfunction fix(s){\n const A='function removeReq(k){var R=window.RQD;';\n if(s.indexOf(A)<0||s.indexOf('function removeReq0(')>-1)return s;\n n++;return s.replace(A,'var RQQ=Promise.resolve();function removeReq(k){var p=RQQ.then(function(){return removeReq0(k);});RQQ=p.then(function(){},function(){});return p;}\\nfunction removeReq0(k){var R=window.RQD;');}\n['html','b','body'].forEach(function(k){if(typeof j[k]==='string')j[k]=fix(j[k]);});\nj.removeQueue=n;return [{json:j}];",
         "mode": "runOnceForAllItems"
       }
+    },
+    {
+      "id": "438d5936-a69c-41f0-90b6-915410a685ef",
+      "name": "Regs JR",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        1160
+      ],
+      "parameters": {
+        "jsCode": "/* REGS JR (keep, Ethan 28/10): the registers for the requirements feed (same fetch as before). Plant due-back dates are blanked here so the\n   Plant & materials requirement goes by its load-up sheets only and never reopens for overdue plant; overdue plant has its own\n   'Plant overdue back' card (CBS - Actions Feed, Plant Overdue). The job page (Regs) still shows the due dates. */\nlet r={};try{r=await this.helpers.httpRequest({url:'https://old-hub.example/webhook/cbs-admin-data?t=rams,cphsp,prestarts,toolbox,signons,subjobs,pos,ptmsheets,scaffinsp,assets',json:true,timeout:60000});if(typeof r==='string')r=JSON.parse(r);}catch(e){r={};}\nif(!r||typeof r!=='object')r={};\nif(Array.isArray(r.assets))r.assets=r.assets.map(a=>Object.assign({},a,{due_back:''}));\nreturn [{json:r}];",
+        "mode": "runOnceForAllItems"
+      },
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "id": "1b2ebfff-938a-43e1-b582-3a3e76fe2394",
+      "name": "Book In Job",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        10624,
+        360
+      ],
+      "parameters": {
+        "jsCode": "/* BOOK IN JOB (keep, Ethan 28/10): + New task picker, Approved: Planning, a fourth simple tile next to Plan Extras' three: 'Book in Job'\n   (Office). Picking it and pressing Add creates a plain task with that name; picking it again opens the open task (no duplicate);\n   the tile shows On while open and Done once completed. Extends Plan Extras' own lines, so runs after it. All-or-nothing; result in bookJob. */\nconst it=$input.first();const j=Object.assign({},it.json);const src=String(j.html||'');let h=src;const rep=[];\nfunction one(a,b,tag){const n=h.split(a).length-1;if(n===1){h=h.replace(a,function(){return b;});rep.push(tag+':ok');}else rep.push(tag+':missing('+n+')');}\none(\"{ k: 'clientpo', l: 'Client PO' }]\",\"{ k: 'clientpo', l: 'Client PO' }, { k: 'bookjob', l: 'Book in Job' }]\",'tile');\none(\"MAP['j:rmest'] = MAP['j:ordermat'] = MAP['j:clientpo'] = 'plan'; ORDER.push('j:rmest', 'j:ordermat');\",\"MAP['j:rmest'] = MAP['j:ordermat'] = MAP['j:clientpo'] = 'plan'; ORDER.push('j:rmest', 'j:ordermat'); MAP['j:bookjob'] = 'plan'; ORDER.push('j:bookjob');\",'section');\none(\"'client po': 'Client' })\",\"'client po': 'Client', 'book in job': 'Office' })\",'category');\none(\".tl[data-j=clientpo]'\",\".tl[data-j=clientpo],.tl[data-j=bookjob]'\",'tag');\nconst ok=rep.every(function(r){return /ok$/.test(r);});\nj.html=ok?h:src;j.bookJob=rep.join(' ');return [{json:j,binary:it.binary}];\n",
+        "mode": "runOnceForAllItems"
+      }
     }
   ],
   "nodeGroups": [],
@@ -6527,31 +6543,6 @@
         "webhookId": "850403f6-9f05-41a6-8134-e5a210de6881"
       },
       {
-        "id": "cc578ea8-191a-455f-bf77-3ab3de63dc3a",
-        "name": "Regs JR",
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          224,
-          1160
-        ],
-        "parameters": {
-          "method": "GET",
-          "options": {
-            "response": {
-              "response": {
-                "neverError": true,
-                "responseFormat": "json"
-              }
-            },
-            "timeout": 60000
-          },
-          "url": "https://old-hub.example/webhook/cbs-admin-data?t=rams,cphsp,prestarts,toolbox,signons,subjobs,pos,ptmsheets,scaffinsp,assets"
-        },
-        "alwaysOutputData": true,
-        "executeOnce": true
-      },
-      {
         "id": "23ba4acc-2b4e-460e-bc10-6d8ef3c54082",
         "name": "Jobs JR Raw",
         "type": "n8n-nodes-base.dataTable",
@@ -6775,7 +6766,7 @@
           600
         ],
         "parameters": {
-          "jsCode": "/* DASHBOARD PREVIEW on the Job File: this job as the TV's one-job view would show it (preview mode of cbs-tv, TV not changed). */\nvar j = Object.assign({}, $input.first().json); var h = String(j.html || '');\nif (h.indexOf('class=\"acts\"') < 0 || h.indexOf('id=\"tvView\"') > -1) return [{ json: j }];\nvar sec = '<details id=\"tvView\"><summary>Dashboard preview</summary>'\n + '<div style=\"padding:10px 14px;border-top:1px solid #eee\"><div id=\"tvW\" style=\"position:relative;width:100%;overflow:hidden;background:#111;border-radius:8px;height:0\"></div>'\n + '<div class=\"m\" style=\"margin-top:8px\">A preview only. The TV keeps showing whatever it is set to. <a id=\"tvFull\" target=\"_blank\" rel=\"noopener\" href=\"#\">Open the preview full size</a></div></div></details>';\nvar p = h.indexOf('<details id=\"reqs\"'); if (p < 0) p = h.indexOf('<details', h.indexOf('class=\"acts\"'));\nif (p > -1) h = h.slice(0, p) + sec + h.slice(p);\nvar S = '<script id=\"cbsTvView\">' + \"(function(){\\n/* DASHBOARD PREVIEW: shows this job exactly as the TV's one-job view would, in a scaled frame.\\n   Loads /webhook/cbs-tv?k=...&job=N (preview mode: does not change the TV or its settings). */\\nif(typeof JOB===\\\"undefined\\\"||!JOB)return;var d=document.getElementById(\\\"tvView\\\"),w=document.getElementById(\\\"tvW\\\");if(!d||!w)return;\\nvar U=\\\"/webhook/cbs-tv?k=[redacted-secret]&job=\\\"+encodeURIComponent(JOB),f=null;\\nfunction fit(){if(!f)return;var s=w.clientWidth/1920;f.style.transform=\\\"scale(\\\"+s+\\\")\\\";w.style.height=Math.round(1080*s)+\\\"px\\\";}\\nfunction load(){if(f)return;f=document.createElement(\\\"iframe\\\");f.src=U;f.title=\\\"Dashboard preview\\\";f.setAttribute(\\\"loading\\\",\\\"lazy\\\");f.style.cssText=\\\"position:absolute;top:0;left:0;width:1920px;height:1080px;border:0;transform-origin:0 0;pointer-events:none\\\";w.appendChild(f);fit();}\\nd.addEventListener(\\\"toggle\\\",function(){if(d.open){load();setTimeout(fit,50);}});\\nwindow.addEventListener(\\\"resize\\\",fit);\\nvar a=document.getElementById(\\\"tvFull\\\");if(a)a.href=U;\\n})();\\n\" + '</script>';\nvar q = h.lastIndexOf('</body>'); h = q > -1 ? h.slice(0, q) + S + h.slice(q) : h + S;\nj.html = h; return [{ json: j }];",
+          "jsCode": "/* DASHBOARD PREVIEW on the Job File: this job as the TV's one-job view would show it (preview mode of cbs-tv, TV not changed). */\nvar j = Object.assign({}, $input.first().json); var h = String(j.html || '');\nif (h.indexOf('class=\"acts\"') < 0 || h.indexOf('id=\"tvView\"') > -1) return [{ json: j }];\nvar sec = '<details id=\"tvView\"><summary>Dashboard preview</summary>'\n + '<div style=\"padding:10px 14px;border-top:1px solid #eee\"><div id=\"tvW\" style=\"position:relative;width:100%;overflow:hidden;background:#111;border-radius:8px;height:0\"></div>'\n + '<div class=\"m\" style=\"margin-top:8px\">A preview only. The TV keeps showing whatever it is set to. <a id=\"tvFull\" target=\"_blank\" rel=\"noopener\" href=\"#\">Open the preview full size</a></div></div></details>';\nvar p = h.indexOf('<details id=\"reqs\"'); if (p < 0) p = h.indexOf('<details', h.indexOf('class=\"acts\"'));\nif (p > -1) h = h.slice(0, p) + sec + h.slice(p);\nvar S = '<script id=\"cbsTvView\">' + \"(function(){\\n/* DASHBOARD PREVIEW: shows this job exactly as the TV's one-job view would, in a scaled frame.\\n   Loads /webhook/cbs-tv?k=...&job=N (preview mode: does not change the TV or its settings). */\\nif(typeof JOB===\\\"undefined\\\"||!JOB)return;var d=document.getElementById(\\\"tvView\\\"),w=document.getElementById(\\\"tvW\\\");if(!d||!w)return;\\nvar U=\\\"/webhook/cbs-tv?k=[redacted-secret]&job=\\\"+encodeURIComponent(JOB),f=null;\\nfunction fit(){if(!f)return;var s=w.clientWidth/1920;f.style.transform=\\\"scale(\\\"+s+\\\")\\\";w.style.height=Math.round(1080*s)+\\\"px\\\";}\\nfunction load(){if(f)return;f=document.createElement(\\\"iframe\\\");f.src=U;f.title=\\\"Dashboard preview\\\";f.setAttribute(\\\"loading\\\",\\\"lazy\\\");f.style.cssText=\\\"position:absolute;top:0;left:0;width:1920px;height:1080px;border:0;transform-origin:0 0;pointer-events:none\\\";w.appendChild(f);fit();}\\nd.addEventListener(\\\"toggle\\\",function(){if(d.open){load();setTimeout(fit,50);}});\\nwindow.addEventListener(\\\"resize\\\",fit);\\nvar a=document.getElementById(\\\"tvFull\\\");if(a)a.href=U;\\n})();\\n\" + '</script>';\nvar q = h.lastIndexOf('</body>'); h = q > -1 ? h.slice(0, q) + S + h.slice(q) : h + S;\n/* TV link token rotated 28/10/2026: also update the token in the cast button and anything built earlier in the page */\nh = h.replace(/cbstv-[A-Za-z0-9]+/g, '[redacted-secret]');\nj.html = h; return [{ json: j }];",
           "mode": "runOnceForAllItems"
         }
       },
@@ -7480,7 +7471,7 @@
           0
         ],
         "parameters": {
-          "jsCode": "/* First Frame: the Job File layout (Reqs Inject) rebuilds the header and cards at DOMContentLoaded.\n   Hold the header and .wrap back until that has run so the old layout never shows, with a 2.5 s safety\n   timeout so the page can never stay blank. The tab bar (Unify) is already final and stays visible.\n   Skipped for ?embed= views. Runs last, so its reveal listener fires after the layout script. */\nvar P = {}; try { P = $('Params').first().json || {}; } catch (x) {}\nvar job = String(P.job || '').replace(/[^0-9A-Za-z-]/g, '');\nreturn $input.all().map(function (it) {\n  var j = Object.assign({}, it.json), h = typeof j.html === 'string' ? j.html : '';\n  if (!h || h.indexOf('id=\"jfFF\"') > -1) return { json: j };\n  var hm = h.match(/<head[^>]*>/i), bk = h.lastIndexOf('</body>');\n  if (!hm || bk < 0) { j.firstFrame = 'missing'; return { json: j }; }\n  var msg = job ? 'Loading job ' + job + '\\u2026' : 'Loading\\u2026';\n  var HEAD = '<style id=\"jfFF\">html.jf-wait header,html.jf-wait .wrap{visibility:hidden}html.jf-wait body::after{content:\"' + msg + '\";position:fixed;left:0;right:0;top:160px;text-align:center;color:#6b6e70;font:15px system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif}</style>'\n    + '<script id=\"jfFFs\">(function(){try{if(new URLSearchParams(location.search).get(\"embed\"))return;}catch(e){}var R=document.documentElement;R.classList.add(\"jf-wait\");setTimeout(function(){R.classList.remove(\"jf-wait\");},2500);})();</script>';\n  var END = '<script id=\"jfFFe\">(function(){function show(){var R=document.documentElement;(window.requestAnimationFrame||setTimeout)(function(){R.classList.remove(\"jf-wait\");});}if(document.readyState===\"loading\")document.addEventListener(\"DOMContentLoaded\",show);else show();})();</script>';\n  var i = h.indexOf(hm[0]) + hm[0].length;\n  h = h.slice(0, i) + HEAD + h.slice(i);\n  bk = h.lastIndexOf('</body>');\n  h = h.slice(0, bk) + END + h.slice(bk);\n  /* Jobs screen moved to /webhook/cbs-jobs (cbs-enquiry redirects there): link and embed it directly. */\n  h = h.replace(/(?:https:\\/\\/old-hub\\.example)?\\/webhook\\/cbs-enquiry(?=[\"'?#])/g, 'https://old-hub.example/webhook/cbs-jobs');\n  j.html = h; return { json: j };\n});\n",
+          "jsCode": "/* First Frame: the Job File layout (Reqs Inject) rebuilds the header and cards at DOMContentLoaded.\n   Hold the header and .wrap back until that has run so the old layout never shows, with a 2.5 s safety\n   timeout so the page can never stay blank. The tab bar (Unify) is already final and stays visible.\n   Skipped for ?embed= views. Runs last, so its reveal listener fires after the layout script. */\nvar P = {}; try { P = $('Params').first().json || {}; } catch (x) {}\nvar job = String(P.job || '').replace(/[^0-9A-Za-z-]/g, '');\nreturn $input.all().map(function (it) {\n  var j = Object.assign({}, it.json), h = typeof j.html === 'string' ? j.html : '';\n  if (!h || h.indexOf('id=\"jfFF\"') > -1) return { json: j };\n  var hm = h.match(/<head[^>]*>/i), bk = h.lastIndexOf('</body>');\n  if (!hm || bk < 0) { j.firstFrame = 'missing'; return { json: j }; }\n  var msg = job ? 'Loading job ' + job + '\\u2026' : 'Loading\\u2026';\n  var HEAD = '<style id=\"jfFF\">html.jf-wait header,html.jf-wait .wrap{visibility:hidden}html.jf-wait body::after{content:\"' + msg + '\";position:fixed;left:0;right:0;top:160px;text-align:center;color:#6b6e70;font:15px system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif}</style>'\n    + '<script id=\"jfFFs\">(function(){try{if(new URLSearchParams(location.search).get(\"embed\"))return;}catch(e){}var R=document.documentElement;R.classList.add(\"jf-wait\");setTimeout(function(){R.classList.remove(\"jf-wait\");},2500);})();</script>';\n  var END = '<script id=\"jfFFe\">(function(){function show(){var R=document.documentElement;(window.requestAnimationFrame||setTimeout)(function(){R.classList.remove(\"jf-wait\");});}if(document.readyState===\"loading\")document.addEventListener(\"DOMContentLoaded\",show);else show();})();</script>';\n  var i = h.indexOf(hm[0]) + hm[0].length;\n  h = h.slice(0, i) + HEAD + h.slice(i);\n  bk = h.lastIndexOf('</body>');\n  h = h.slice(0, bk) + END + h.slice(bk);\n  /* Jobs screen moved to /webhook/cbs-jobs (cbs-enquiry redirects there): link and embed it directly. */\n  h = h.replace(/(?:https:\\/\\/n8n\\.old-hub\\.example)?\\/webhook\\/cbs-enquiry(?=[\"'?#])/g, 'https://old-hub.example/webhook/cbs-jobs');\n  j.html = h; return { json: j };\n});\n",
           "mode": "runOnceForAllItems"
         }
       },
@@ -9361,7 +9352,7 @@
             }
           },
           "respondWith": "text",
-          "responseBody": "={{ $json.html }}"
+          "responseBody": "={{ String($json.html || '').replace(new RegExp('cbstv-[A-Za-z0-9]+', 'g'), '[redacted-secret]') }}"
         }
       },
       {
@@ -9937,6 +9928,36 @@
           "jsCode": "/* REMOVE QUEUE (keep, 27/10): Remove from job (task drawer) saves the job's whole list of switched-on requirements, built from the page's\n   copy (window.RQD). Several quick removals used to start together, each from the old copy, so the last save switched the earlier ones\n   back on. Now removals wait in line: each starts after the previous one has saved and updated the copy. */\nconst j=Object.assign({},$input.first().json);let n=0;\nfunction fix(s){\n const A='function removeReq(k){var R=window.RQD;';\n if(s.indexOf(A)<0||s.indexOf('function removeReq0(')>-1)return s;\n n++;return s.replace(A,'var RQQ=Promise.resolve();function removeReq(k){var p=RQQ.then(function(){return removeReq0(k);});RQQ=p.then(function(){},function(){});return p;}\\nfunction removeReq0(k){var R=window.RQD;');}\n['html','b','body'].forEach(function(k){if(typeof j[k]==='string')j[k]=fix(j[k]);});\nj.removeQueue=n;return [{json:j}];",
           "mode": "runOnceForAllItems"
         }
+      },
+      {
+        "id": "438d5936-a69c-41f0-90b6-915410a685ef",
+        "name": "Regs JR",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          1160
+        ],
+        "parameters": {
+          "jsCode": "/* REGS JR (keep, Ethan 28/10): the registers for the requirements feed (same fetch as before). Plant due-back dates are blanked here so the\n   Plant & materials requirement goes by its load-up sheets only and never reopens for overdue plant; overdue plant has its own\n   'Plant overdue back' card (CBS - Actions Feed, Plant Overdue). The job page (Regs) still shows the due dates. */\nlet r={};try{r=await this.helpers.httpRequest({url:'https://old-hub.example/webhook/cbs-admin-data?t=rams,cphsp,prestarts,toolbox,signons,subjobs,pos,ptmsheets,scaffinsp,assets',json:true,timeout:60000});if(typeof r==='string')r=JSON.parse(r);}catch(e){r={};}\nif(!r||typeof r!=='object')r={};\nif(Array.isArray(r.assets))r.assets=r.assets.map(a=>Object.assign({},a,{due_back:''}));\nreturn [{json:r}];",
+          "mode": "runOnceForAllItems"
+        },
+        "alwaysOutputData": true,
+        "executeOnce": true
+      },
+      {
+        "id": "1b2ebfff-938a-43e1-b582-3a3e76fe2394",
+        "name": "Book In Job",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          10624,
+          360
+        ],
+        "parameters": {
+          "jsCode": "/* BOOK IN JOB (keep, Ethan 28/10): + New task picker, Approved: Planning, a fourth simple tile next to Plan Extras' three: 'Book in Job'\n   (Office). Picking it and pressing Add creates a plain task with that name; picking it again opens the open task (no duplicate);\n   the tile shows On while open and Done once completed. Extends Plan Extras' own lines, so runs after it. All-or-nothing; result in bookJob. */\nconst it=$input.first();const j=Object.assign({},it.json);const src=String(j.html||'');let h=src;const rep=[];\nfunction one(a,b,tag){const n=h.split(a).length-1;if(n===1){h=h.replace(a,function(){return b;});rep.push(tag+':ok');}else rep.push(tag+':missing('+n+')');}\none(\"{ k: 'clientpo', l: 'Client PO' }]\",\"{ k: 'clientpo', l: 'Client PO' }, { k: 'bookjob', l: 'Book in Job' }]\",'tile');\none(\"MAP['j:rmest'] = MAP['j:ordermat'] = MAP['j:clientpo'] = 'plan'; ORDER.push('j:rmest', 'j:ordermat');\",\"MAP['j:rmest'] = MAP['j:ordermat'] = MAP['j:clientpo'] = 'plan'; ORDER.push('j:rmest', 'j:ordermat'); MAP['j:bookjob'] = 'plan'; ORDER.push('j:bookjob');\",'section');\none(\"'client po': 'Client' })\",\"'client po': 'Client', 'book in job': 'Office' })\",'category');\none(\".tl[data-j=clientpo]'\",\".tl[data-j=clientpo],.tl[data-j=bookjob]'\",'tag');\nconst ok=rep.every(function(r){return /ok$/.test(r);});\nj.html=ok?h:src;j.bookJob=rep.join(' ');return [{json:j,binary:it.binary}];\n",
+          "mode": "runOnceForAllItems"
+        }
       }
     ],
     "connections": {
@@ -10110,17 +10131,6 @@
           [
             {
               "node": "Reqs Upsert",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Regs JR": {
-        "main": [
-          [
-            {
-              "node": "Jobs JR Raw",
               "type": "main",
               "index": 0
             }
@@ -11915,17 +11925,6 @@
           ]
         ]
       },
-      "Plan Extras": {
-        "main": [
-          [
-            {
-              "node": "Page Store",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Scope JR": {
         "main": [
           [
@@ -11964,6 +11963,39 @@
           [
             {
               "node": "Plan Extras",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Regs JR": {
+        "main": [
+          [
+            {
+              "node": "Jobs JR Raw",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Plan Extras": {
+        "main": [
+          [
+            {
+              "node": "Book In Job",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Book In Job": {
+        "main": [
+          [
+            {
+              "node": "Page Store",
               "type": "main",
               "index": 0
             }

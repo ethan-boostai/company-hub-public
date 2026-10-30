@@ -1,0 +1,195 @@
+{
+  "id": "MKRwwIWBdN12hLH6",
+  "name": "CBS - JR Refresh (temp)",
+  "active": false,
+  "isArchived": false,
+  "versionId": "18803b73-33db-400f-bef4-07d1922976ee",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "createdAt": "2026-10-28T11:47:47.401Z",
+  "updatedAt": "2026-10-28T11:49:14.496Z",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Expire Jobreqs": {
+      "main": [
+        [
+          {
+            "node": "Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Cache",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cache": {
+      "main": [
+        [
+          {
+            "node": "Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "8f6f1d6f-f9e9-4f0d-a433-a55926c0d9b7",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "0babc7b5-831f-4cd1-afae-ed3b80a28bf6",
+      "name": "Expire Jobreqs",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "bSkjEWvTgJnP818K"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "key",
+              "condition": "eq",
+              "keyValue": "jobreqs"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "at": "0",
+            "busy_at": "0"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "at",
+              "displayName": "at",
+              "type": "string",
+              "display": true,
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "busy_at",
+              "displayName": "busy_at",
+              "type": "string",
+              "display": true,
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            }
+          ]
+        }
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "06235a77-3abb-46c8-bf49-944751f47b9b",
+      "name": "Check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const H='https://old-hub.example/webhook/';\nconst c=$('Cache').all().map(i=>i.json).filter(r=>r&&r.key==='jobreqs').map(r=>'at '+r.at+' busy '+r.busy_at+' size '+String(r.data||'').length+' has10148ptm '+(String(r.data||'').indexOf('Plant overdue back')>-1));\nconst d=await this.helpers.httpRequest({url:H+'cbs-tasks-data?job=10148&x='+Date.now(),json:true,timeout:120000});\nreturn [{json:{now:Date.now(),cache:c,ptm:(d.tasks||[]).filter(t=>t.req==='ptm').map(t=>t.status+' | '+String(t.note||'').slice(0,80))}}];",
+        "mode": "runOnceForAllItems"
+      }
+    },
+    {
+      "id": "d232f9e8-1c75-466b-bbe5-33d0c21efac3",
+      "name": "Cache",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        200,
+        200
+      ],
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "bSkjEWvTgJnP818K"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "condition": "eq",
+              "keyName": "key",
+              "keyValue": "jobreqs"
+            }
+          ]
+        },
+        "matchType": "allConditions",
+        "operation": "get",
+        "resource": "row",
+        "returnAll": true
+      }
+    }
+  ],
+  "nodeGroups": [],
+  "activeVersion": null,
+  "tags": [],
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp"
+  },
+  "parentFolderId": null,
+  "description": "Temporary: expires and rebuilds the requirements list, checks job 10148 Plant & materials. Safe to delete.",
+  "scopes": [
+    "execution:reveal",
+    "workflow:create",
+    "workflow:delete",
+    "workflow:disableRedaction",
+    "workflow:enableRedaction",
+    "workflow:execute",
+    "workflow:execute-chat",
+    "workflow:export",
+    "workflow:import",
+    "workflow:list",
+    "workflow:move",
+    "workflow:publish",
+    "workflow:read",
+    "workflow:share",
+    "workflow:unpublish",
+    "workflow:unshare",
+    "workflow:update"
+  ],
+  "canExecute": true
+}
