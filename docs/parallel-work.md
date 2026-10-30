@@ -99,6 +99,11 @@ Never commit or push to `main`; every change goes through a pull request (`main`
 9. **Approach first:** explain your approach for anything non-trivial and wait for Ethan's go-ahead (`CLAUDE.md`).
 10. **Secrets:** never in chat, code or commits.
 
+## n8n is read-only for every session (Ethan, 30/10/2026)
+
+- Never change anything in n8n, including the hub's own "CBS Hub - …" workflows. Any n8n change goes through Ethan or the adviser. `.claude/settings.json` blocks the n8n change tools.
+- Before building a page, refresh it in `/legacy` from the live hub and run `python3 private/fake-legacy.py` on it before committing (`CLAUDE.md`, Working process).
+
 ## Public copy and client settings (Core, 30/10/2026; read before your next push)
 
 - **`ethan-boostai/company-hub-public`** is a public, cleaned copy of `cbs-hub`'s `main`. `cbs-hub` stays private and its history was **not** rewritten, so no re-clone is needed. After every merge to `main`, run `node scripts/public-mirror.mjs` then `--push` (see `CLAUDE.md`, "Public copy"). If the scan reports anything, stop and tell Ethan.

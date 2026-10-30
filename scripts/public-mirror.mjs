@@ -36,7 +36,11 @@ if (SOURCE === "origin/main") git(["fetch", "-q", "origin", "main"]);
 git(["fetch", "-q", "public", "main"]);
 
 // --- where the last run stopped ---
-const last = git(["log", "-1", "--format=%(trailers:key=Source-Commit,valueonly)", "public/main"]).trim() || fromArg;
+// The public repo started (30/10/2026) as cbs-hub d1f3fb9 with its history cleaned; that first commit
+// has no Source-Commit line.
+const BASELINE = { public: "dc3a7b6e8c9e9aab07f32fad8a996855b9ad5b10", source: "d1f3fb9bcdd7cc6b4a09899772525b48f9883a33" };
+const last = git(["log", "-1", "--format=%(trailers:key=Source-Commit,valueonly)", "public/main"]).trim()
+  || fromArg || (git(["rev-parse", "public/main"]) === BASELINE.public ? BASELINE.source : "");
 if (!last) fail("the public repo's last commit has no Source-Commit line. Pass --from=<cbs-hub sha it matches>.");
 const todo = git(["rev-list", "--reverse", "--first-parent", `${last}..${SOURCE}`]).split("\n").filter(Boolean);
 if (!todo.length) { console.log("The public repo is up to date."); process.exit(0); }

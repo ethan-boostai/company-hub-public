@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "deny": [
+      "mcp__n8n__create_workflow_from_code",
+      "mcp__n8n__update_workflow",
+      "mcp__n8n__archive_workflow",
+      "mcp__n8n__delete_workflow",
+      "mcp__n8n__publish_workflow",
+      "mcp__n8n__unpublish_workflow",
+      "mcp__n8n__restore_workflow_version",
+      "mcp__n8n__execute_workflow",
+      "mcp__n8n__test_workflow",
+      "mcp__n8n__create_data_table",
+      "mcp__n8n__rename_data_table",
+      "mcp__n8n__delete_data_table",
+      "mcp__n8n__add_data_table_column",
+      "mcp__n8n__rename_data_table_column",
+      "mcp__n8n__delete_data_table_column",
+      "mcp__n8n__add_data_table_rows",
+      "mcp__n8n__update_data_table_rows",
+      "mcp__n8n__upsert_data_table_rows",
+      "mcp__n8n__delete_data_table_rows",
+      "mcp__n8n__create_credential",
+      "mcp__n8n__update_credential",
+      "mcp__n8n__delete_credential",
+      "mcp__n8n__create_tag",
+      "mcp__n8n__update_tag",
+      "mcp__n8n__delete_tag",
+      "mcp__n8n__create_folder",
+      "mcp__n8n__update_folder",
+      "mcp__n8n__delete_folder",
+      "mcp__n8n__move_workflow",
+      "mcp__n8n__transfer_workflow"
+    ]
+  }
+}

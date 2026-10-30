@@ -75,7 +75,8 @@ Never commit or push to `main`; every change goes through a pull request. Every 
 - Ethan tests at the end of each stage, with one numbered checklist from the session covering the whole area (job 12 and fake data only). Problems he finds are fixed in a new pull request.
 - A conflict with `main` is fixed on your own branch (merge `main` into it), never on `main`.
 - Switch-over (importing old data, or moving the team onto a new area) happens only when Ethan says so.
-- Never change Vercel, Supabase, GitHub or n8n settings, or anything in the live n8n hub, unless Ethan asks.
+- Never change Vercel, Supabase or GitHub settings unless Ethan asks.
+- Never change anything in n8n: workflows (including the hub's own "CBS Hub - …" workflows), data tables, credentials or settings. Any n8n change goes through Ethan or the adviser. Reading is fine. `.claude/settings.json` blocks the n8n change tools for every session.
 
 ## Client-specific settings, not hard-coded
 This codebase is a starter template that gets copied for other clients. Anything specific to CBS goes in a settings table or config file, never scattered through the code. That includes the company name, logo, address and contacts; SharePoint folder paths; ServiceM8 IDs and job rules; email and notification wording; default document wording (policy statement, RAMS standard steps, CPHSP wording); and test job numbers. When you touch existing code that hard-codes any of these, move it into settings as part of the same PR. Don't do a separate clean-up sweep unless Ethan asks.
@@ -91,5 +92,6 @@ This codebase is a starter template that gets copied for other clients. Anything
 ## Working process
 - Explain the approach before building anything non-trivial and wait for a go-ahead.
 - Small commits, one branch per feature.
-- The old n8n hub is reference only: read it, never change production n8n workflows without asking.
+- The old n8n hub is reference only: read it, never change it.
+- Refresh `/legacy` from live before building each page: fetch the live page (and the scripts it loads) from its URL on the old hub's n8n instance into a scratch folder, run the faking map (`python3 private/fake-legacy.py <files>`), then copy the result into `legacy/pages/` (and update `legacy/pages/_index.md`). Run the faking map before every commit that touches `/legacy`. Never commit live HTML that hasn't been through it.
 - Parallel sessions: `docs/parallel-work.md` says who owns shared parts, schema and migrations, and the rules every session follows.
