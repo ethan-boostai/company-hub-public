@@ -42,6 +42,14 @@ export const CONTROL_CODES = [
 ] as const;
 export type ControlCode = (typeof CONTROL_CODES)[number]["value"];
 
+// Workplace hazards (the site and the work environment) or Task hazards (from the work itself, used
+// in RAMS). Ethan, 30/10/2026.
+export const HAZARD_TYPES = [
+  { value: "task", label: "Task" },
+  { value: "workplace", label: "Workplace" },
+] as const;
+export type HazardType = (typeof HAZARD_TYPES)[number]["value"];
+
 export const HAZARD_STATUSES = [
   { value: "active", label: "Active" },
   { value: "archived", label: "Archived" },

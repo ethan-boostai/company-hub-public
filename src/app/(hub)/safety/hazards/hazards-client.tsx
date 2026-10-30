@@ -14,7 +14,7 @@ import { Choice } from "../../_registers/ui";
 import { deleteHazard, saveHazard, setHazardStatus } from "../actions";
 import type { HazardData, HazardRow } from "../data";
 import { CheckGroup, PersonSelect, RatingPill, SafetyReport, RiskFields } from "../parts";
-import { ACTIVITY_LIST, CONTROL_CODES, hazardDueItems, HAZARD_STATUSES } from "../rules";
+import { ACTIVITY_LIST, CONTROL_CODES, hazardDueItems, HAZARD_STATUSES, HAZARD_TYPES } from "../rules";
 import { SafetyTabs } from "../tabs";
 
 type Filter = "active" | "review" | "archived" | "all";
@@ -25,6 +25,7 @@ export function HazardsClient({ initial, today, openId }: { initial: HazardData;
   const [filter, setFilter] = useState<Filter>("active");
   const [query, setQuery] = useState("");
   const [activity, setActivity] = useState("");
+  const [hazardType, setHazardType] = useState("");
   const [editing, setEditing] = useState<Editing>(() => initial.hazards.find((h) => h.id === openId) ?? null);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
@@ -43,6 +44,7 @@ export function HazardsClient({ initial, today, openId }: { initial: HazardData;
   const test = FILTERS.find((f) => f.value === filter)!.test;
   const shown = data.hazards.filter(test)
     .filter((h) => !activity || h.activity === activity)
+    .filter((h) => !hazardType || h.hazardType === hazardType)
     .filter((h) => !q || [h.hazard, h.activity, h.harm, h.controls, h.ownerName, h.source, h.notes].some((x) => x.toLowerCase().includes(q)));
 
   const current = editing && editing !== "new" ? data.hazards.find((h) => h.id === editing.id) ?? editing : null;
@@ -73,6 +75,7 @@ export function HazardsClient({ initial, today, openId }: { initial: HazardData;
 
   const columns: Column<HazardRow>[] = [
     { key: "hazard", label: "Hazard", cell: (h) => h.hazard, sub: (h) => h.activity },
+    { key: "type", label: "Type", cell: (h) => (h.hazardType === "workplace" ? <StatusPill tone="blue">Workplace</StatusPill> : <StatusPill tone="grey">Task</StatusPill>) },
     { key: "risk", label: "Risk", cell: (h) => <RatingPill rating={h.riskRating} /> },
     { key: "residual", label: "After controls", cell: (h) => <RatingPill rating={h.residualRisk} /> },
     {
@@ -99,12 +102,16 @@ export function HazardsClient({ initial, today, openId }: { initial: HazardData;
         options={FILTERS.map((f) => ({ value: f.value, label: f.label, count: data.hazards.filter(f.test).length }))} />
       <FilterRow>
         <SearchBox value={query} onChange={setQuery} placeholder="Search hazards: name, activity, harm or controls" label="Search hazards" />
+        <select aria-label="Type" value={hazardType} onChange={(e) => setHazardType(e.target.value)} className="h-11 rounded-lg border border-line bg-white px-3 text-[15px]">
+          <option value="">All types</option>
+          {HAZARD_TYPES.map((t) => <option key={t.value} value={t.value}>{t.label} hazards</option>)}
+        </select>
         <select aria-label="Activity" value={activity} onChange={(e) => setActivity(e.target.value)} className="h-11 rounded-lg border border-line bg-white px-3 text-[15px]">
           <option value="">All activities</option>
           {data.activities.map((a) => <option key={a} value={a}>{a}</option>)}
         </select>
       </FilterRow>
-      <DataTable label="Hazards" rows={shown} columns={columns} rowKey={(h) => h.id} onOpen={(h) => setEditing(h)} empty={q || activity ? "No hazards match." : "No hazards here yet."} />
+      <DataTable label="Hazards" rows={shown} columns={columns} rowKey={(h) => h.id} onOpen={(h) => setEditing(h)} empty={q || activity || hazardType ? "No hazards match." : "No hazards here yet."} />
 
       <Drawer open={!!editing} onClose={() => setEditing(null)} title={current ? current.hazard : "New hazard"} width="max-w-[560px]">
         {editing && (
@@ -116,6 +123,8 @@ export function HazardsClient({ initial, today, openId }: { initial: HazardData;
                   <>
                     {current && <input type="hidden" name="id" value={current.id} />}
                     <TextField label="Hazard" name="hazard" defaultValue={current?.hazard} error={err.hazard} required autoComplete="off" />
+                    <Choice label="Type" name="hazard_type" options={HAZARD_TYPES} defaultValue={current?.hazardType ?? "task"} />
+                    <p className="-mt-2 mb-4 text-sm text-muted">Task hazards come from the work and are offered in RAMS. Workplace hazards are about the site and the working environment.</p>
                     <SelectWithAdd list={ACTIVITY_LIST} name="activity" label="Activity" options={data.activities} defaultValue={current?.activity ?? ""} />
                     <TextArea label="Harm (what could happen, and to whom)" name="harm" defaultValue={current?.harm} rows={3} />
                     <RiskFields title="Risk before controls" prefix="" likelihood={current?.likelihood ?? null} consequence={current?.consequence ?? null} />
@@ -173,9 +182,9 @@ export function HazardsClient({ initial, today, openId }: { initial: HazardData;
         title="Hazard register report"
         fileName="Hazard register.pdf"
         url="/api/safety/hazards/report"
-        whoOptions={[{ value: "active", label: "Active hazards" }, { value: "review", label: "Review due or overdue" }, { value: "archived", label: "Archived hazards" }, { value: "all", label: "All hazards" }]}
+        whoOptions={[{ value: "active", label: "Active hazards" }, { value: "task", label: "Active Task hazards" }, { value: "workplace", label: "Active Workplace hazards" }, { value: "review", label: "Review due or overdue" }, { value: "archived", label: "Archived hazards" }, { value: "all", label: "All hazards" }]}
         columns={[
-          { key: "activity", label: "Activity" }, { key: "harm", label: "Harm" }, { key: "risk", label: "Risk before controls" },
+          { key: "type", label: "Type" }, { key: "activity", label: "Activity" }, { key: "harm", label: "Harm" }, { key: "risk", label: "Risk before controls" },
           { key: "controls", label: "Controls" }, { key: "residual", label: "Risk after controls" }, { key: "owner", label: "Owner", on: false },
           { key: "review", label: "Review due" }, { key: "status", label: "Status", on: false },
         ]}

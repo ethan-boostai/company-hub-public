@@ -12,8 +12,8 @@ import { forLog, FormValues } from "../_registers/form-values";
 import { contentHash, hazardQuery, loadHazards, loadSubstances, substanceQuery, type HazardData, type SubstanceData } from "./data";
 import { buildPack } from "./pack";
 import {
-  CONTROL_CODES, GHS, HAZARD_STATUSES, missingForAssessed, packFileName, PPE, ramsKey, ROUTES, SUBSTANCE_STATUSES, WHO,
-  type HazardStatus, type SubstanceStatus,
+  CONTROL_CODES, GHS, HAZARD_STATUSES, HAZARD_TYPES, missingForAssessed, packFileName, PPE, ramsKey, ROUTES, SUBSTANCE_STATUSES, WHO,
+  type HazardStatus, type HazardType, type SubstanceStatus,
 } from "./rules";
 
 const GONE = { ok: false as const, message: "That record no longer exists. Refresh the page." };
@@ -36,7 +36,7 @@ function scale(f: FormValues, name: string): number | null {
 export type HazardSaved = { all: HazardData; id: number | null };
 const hazardsDone = async (id: number | null): Promise<ActionResult<HazardSaved>> => ({ ok: true, message: "Saved.", data: { all: await loadHazards(db()), id } });
 
-const HAZARD_FIELDS = ["hazard", "activity", "harm", "likelihood", "consequence", "controls", "control_codes", "residual_likelihood", "residual_consequence",
+const HAZARD_FIELDS = ["hazard", "hazard_type", "activity", "harm", "likelihood", "consequence", "controls", "control_codes", "residual_likelihood", "residual_consequence",
   "owner_id", "plant_categories", "source", "status", "last_reviewed_on", "review_on", "notes"];
 
 export async function saveHazard(form: FormData): Promise<ActionResult<HazardSaved>> {
@@ -44,6 +44,7 @@ export async function saveHazard(form: FormData): Promise<ActionResult<HazardSav
   const id = f.id("id");
   const v = {
     hazard: f.required("hazard", "Enter the hazard.", 200),
+    hazard_type: f.oneOf<HazardType>("hazard_type", values(HAZARD_TYPES) as HazardType[], "task"),
     activity: f.text("activity", 120),
     harm: f.text("harm", 2000),
     likelihood: scale(f, "likelihood"),

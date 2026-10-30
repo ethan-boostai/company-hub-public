@@ -111,6 +111,7 @@ export function RamsEditor({
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [libQuery, setLibQuery] = useState("");
+  const [withWorkplace, setWithWorkplace] = useState(false);
   const [newHaz, setNewHaz] = useState<(RegisterHazard & { toLibrary: boolean }) | null>(null);
   const c = v.content;
 
@@ -132,7 +133,8 @@ export function RamsEditor({
     return lists.hazards.filter((h) => !inRegister.has(h.ramsKey) && h.plantCategories.some((p) => cats.has(p)));
   }, [c.plantCategories, lists.hazards, c.register]); // eslint-disable-line react-hooks/exhaustive-deps
   const q = libQuery.trim().toLowerCase();
-  const libMatches = q ? lists.hazards.filter((h) => !inRegister.has(h.ramsKey) && h.hazard.toLowerCase().includes(q)).slice(0, 12) : [];
+  // Task hazards by default; Workplace hazards (site and environment) only when asked for.
+  const libMatches = q ? lists.hazards.filter((h) => !inRegister.has(h.ramsKey) && (withWorkplace || h.hazardType !== "workplace") && h.hazard.toLowerCase().includes(q)).slice(0, 12) : [];
 
   async function save() {
     if (busy) return;
@@ -272,10 +274,14 @@ export function RamsEditor({
         <Field label="Add from the hazards library">
           <input type="search" value={libQuery} onChange={(e) => setLibQuery(e.target.value)} placeholder="Search the hazards library" spellCheck className={inputClass} />
         </Field>
+        <label className="-mt-2 mb-3 flex items-center gap-2 text-sm">
+          <input type="checkbox" checked={withWorkplace} onChange={(e) => setWithWorkplace(e.target.checked)} className="h-4 w-4 accent-brand" />
+          Include workplace hazards (the library shows task hazards to start with)
+        </label>
         {libMatches.length > 0 && (
           <ul className="mb-3 divide-y divide-line rounded-lg border border-line">
             {libMatches.map((h) => (
-              <li key={h.id}><button type="button" onClick={() => { setC({ register: [...c.register, fromLibrary(h)] }); setLibQuery(""); }} className="w-full px-3 py-2 text-left text-sm hover:bg-paper">Add {h.hazard}</button></li>
+              <li key={h.id}><button type="button" onClick={() => { setC({ register: [...c.register, fromLibrary(h)] }); setLibQuery(""); }} className="w-full px-3 py-2 text-left text-sm hover:bg-paper">Add {h.hazard}{h.hazardType === "workplace" && <span className="ml-1.5 text-muted">(Workplace)</span>}</button></li>
             ))}
           </ul>
         )}

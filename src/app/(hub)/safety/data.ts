@@ -6,13 +6,14 @@ import { getOptions } from "@/lib/select-options";
 import { isoDate } from "../_registers/form-values";
 import { mergeOptions } from "../subcontractors/rules";
 import { ASSET_CATEGORY_LIST } from "../equipment/rules";
-import { ACTIVITY_LIST, contentKey, type AssessmentContent, DEFAULT_ACTIVITIES, readExposure, type Exposure, type HazardStatus, type SubstanceStatus } from "./rules";
+import { ACTIVITY_LIST, contentKey, type AssessmentContent, DEFAULT_ACTIVITIES, readExposure, type Exposure, type HazardStatus, type HazardType, type SubstanceStatus } from "./rules";
 
 export type Pick = { id: number; name: string };
 
 export type HazardRow = {
   id: number;
   hazard: string;
+  hazardType: HazardType;
   activity: string;
   harm: string;
   likelihood: number | null;
@@ -53,6 +54,7 @@ export async function hazardQuery(sql: Sql, id: number | null): Promise<HazardRo
   return rows.map((r) => ({
     id: Number(r.id),
     hazard: String(r.hazard),
+    hazardType: r.hazard_type === "workplace" ? "workplace" : "task",
     activity: (r.activity as string) ?? "",
     harm: (r.harm as string) ?? "",
     likelihood: n(r.likelihood),

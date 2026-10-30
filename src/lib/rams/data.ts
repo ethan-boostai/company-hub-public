@@ -62,6 +62,7 @@ export async function ramsQuery(sql: Sql, where: { jobId?: number; id?: number }
 export type LibraryHazard = {
   id: number; ramsKey: string; hazard: string; harm: string; controls: string; likelihood: number | null; consequence: number | null;
   residualLikelihood: number | null; residualConsequence: number | null; controlCodes: string[]; plantCategories: string[]; updatedAt: string | null;
+  hazardType: "task" | "workplace"; // the RAMS picker shows Task hazards unless asked for Workplace too
 };
 export type Pick = { id: number; name: string };
 export type JobType = { id: number; key: string; name: string; status: "active" | "retired"; template: Record<string, unknown>; notes: string };
@@ -81,6 +82,7 @@ export async function libraryHazards(sql: Sql, all = false): Promise<LibraryHaza
     id: Number(r.id), ramsKey: String(r.rams_key), hazard: String(r.hazard), harm: (r.harm as string) ?? "", controls: (r.controls as string) ?? "",
     likelihood: n(r.likelihood), consequence: n(r.consequence), residualLikelihood: n(r.residual_likelihood), residualConsequence: n(r.residual_consequence),
     controlCodes: (r.control_codes as string[]) ?? [], plantCategories: (r.plant_categories as string[]) ?? [], updatedAt: iso(r.updated_at ?? r.created_at),
+    hazardType: r.hazard_type === "workplace" ? "workplace" : "task",
   }));
 }
 
