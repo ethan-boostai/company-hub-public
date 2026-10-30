@@ -12,9 +12,9 @@
 //
 // Before anything is pushed, every added line and every commit message is scanned for real names
 // and companies (private/public-denylist.txt, never published), UK vehicle registrations, phone
-// numbers, emails, postcodes, policy-style numbers, SharePoint links, the live n8n address outside
-// the files allowed to hold it, and secrets. Any hit stops the run: nothing is pushed.
+// numbers, emails, postcodes, policy-style numbers, SharePoint links, the live n8n address, and secrets. Any hit stops the run: nothing is pushed.
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -22,10 +22,8 @@ import path from "node:path";
 const PUBLIC_URL = "https://github.com/ethan-boostai/company-hub-public.git";
 const SOURCE = (process.argv.find((a) => a.startsWith("--source=")) || "").slice(9) || "origin/main"; // --source= only for testing
 const EXCLUDE = ["private"]; // paths that never go public
-// Files allowed to name the live n8n address: the app's own default (N8N_WEBHOOK_BASE is not set on Vercel).
 // The H&S policy wording names the director on purpose (Ethan, 30/10/2026).
 const NAMES_ALLOWED = new Set(["src/app/(hub)/safety/policy-rules.ts"]);
-const N8N_ALLOWED = new Set(["src/lib/files/sharepoint.ts", "src/lib/sm8/write.ts", ".env.example", "docs/environments.md", "CLAUDE.md"]);
 const push = process.argv.includes("--push");
 const fromArg = (process.argv.find((a) => a.startsWith("--from=")) || "").slice(7); // first run only
 
@@ -78,7 +76,18 @@ const RULES = [
   ["key with a value", /\b(APP_SECRET|N8N_[A-Z_]*KEY|TEAM_LINK_KEY|SUPABASE_SERVICE_ROLE_KEY|MS_CLIENT_SECRET|LEGACY_PIN_SALT|[A-Z_]*PASSWORD)\s*[=:]\s*["']?(?!process\.env|\$\{|<|your|change|xxx|example|test|local)[A-Za-z0-9+/_=-]{12,}/],
   ["database URL with a password", /postgres(?:ql)?:\/\/[^:/@\s"']+:(?!pw@|p@|x@|\$\{|<)[^@\s"']{6,}@/],
 ];
-const LIVE_N8N = /old-hub\.example/;
+// The live n8n host, kept only as a SHA-256 hash so the address itself is never in the repo.
+// Every host name in a new line (and each parent domain of it) is hashed and compared.
+const LIVE_N8N_HASHES = new Set(["ba8eee7b935a5e5a41ed26346840bb75bcdedf8e49fe34225d1a66756e7ab628"]);
+const hostHit = (text) => {
+  for (const host of text.replace(/\\/g, "").toLowerCase().match(/[a-z0-9-]+(?:\.[a-z0-9-]+)+/g) || []) {
+    const parts = host.split(".");
+    for (let i = 0; i < parts.length - 1; i++) {
+      if (LIVE_N8N_HASHES.has(createHash("sha256").update(parts.slice(i).join(".")).digest("hex"))) return true;
+    }
+  }
+  return false;
+};
 // Words that look like a rule but are fine: fake data, public helplines and offices kept on purpose.
 const ALLOW = /ZZ99|07700 ?900|0117 ?496|0113 ?496|N18 1QX|SE1 9HS|0345 300 9923|0300 |0800 /;
 
@@ -89,7 +98,7 @@ const check = (where, text, file = "") => {
     const m = text.match(rx);
     if (m && !(ALLOW.test(m[0]))) findings.push(`${where}${file ? ` ${file}` : ""}: ${label}: "${m[0].slice(0, 60)}"`);
   }
-  if (LIVE_N8N.test(text) && !N8N_ALLOWED.has(file)) findings.push(`${where} ${file}: the live n8n address`);
+  if (hostHit(text)) findings.push(`${where}${file ? ` ${file}` : ""}: the live n8n address`);
 };
 
 let prevTree = publicTree(last);

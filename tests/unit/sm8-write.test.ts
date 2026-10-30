@@ -6,7 +6,7 @@ const url = process.env.DATABASE_URL || "";
 const local = /@(127\.0\.0\.1|localhost)[:/]/.test(url);
 
 describe.skipIf(!local)("ServiceM8 write-back guard", async () => {
-  const { writeToServiceM8, SM8_NOT_ALLOWED } = await import("@/lib/sm8/write");
+  const { writeToServiceM8, SM8_NOT_ALLOWED, SM8_UNREACHABLE } = await import("@/lib/sm8/write");
   const { db } = await import("@/lib/db");
   const sql = postgres(url, { prepare: false, max: 1, onnotice: () => {} });
   const fetchMock = vi.fn(async () => new Response(JSON.stringify({ ok: true }), { status: 200 }));
@@ -48,5 +48,15 @@ describe.skipIf(!local)("ServiceM8 write-back guard", async () => {
   it("refuses the allowed number paired with another job's ServiceM8 id", async () => {
     await expect(writeToServiceM8(change("9999912", "guard-uuid-13"))).rejects.toThrow(SM8_NOT_ALLOWED);
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("refuses to contact n8n without N8N_WEBHOOK_BASE (no built-in address)", async () => {
+    const err = vi.spyOn(console, "error").mockImplementation(() => {});
+    vi.stubEnv("N8N_WEBHOOK_BASE", "");
+    await expect(writeToServiceM8(change("9999912", "guard-uuid-12"))).rejects.toThrow(SM8_UNREACHABLE);
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(err).toHaveBeenCalledWith(expect.stringContaining("N8N_WEBHOOK_BASE is not set"));
+    vi.stubEnv("N8N_WEBHOOK_BASE", "https://n8n.example.test/webhook");
+    err.mockRestore();
   });
 });

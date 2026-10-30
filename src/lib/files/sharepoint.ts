@@ -1,4 +1,5 @@
 import "server-only";
+import { n8nWebhookBase } from "@/lib/n8n/base";
 import { uploadFolderFor } from "./storage";
 
 // SharePoint through n8n. The app never holds a Microsoft credential: the n8n workflow "CBS Hub - Files"
@@ -15,19 +16,17 @@ export class SharePointError extends Error {
 
 type Route = "start" | "info" | "link";
 
-function base(): string {
-  return (process.env.N8N_WEBHOOK_BASE || "https://old-hub.example/webhook").replace(/\/+$/, "");
-}
-
 async function call<T>(route: Route, body: Record<string, unknown>): Promise<T> {
   const key = process.env.N8N_FILES_KEY;
   if (!key) {
     console.error("N8N_FILES_KEY is not set");
     throw new SharePointError(UNREACHABLE, 502);
   }
+  const base = n8nWebhookBase();
+  if (!base) throw new SharePointError(UNREACHABLE, 502);
   let res: Response;
   try {
-    res = await fetch(`${base()}/cbs-hub-files-${route}`, {
+    res = await fetch(`${base}/cbs-hub-files-${route}`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "X-CBS-Files-Key": key },
       body: JSON.stringify(body),

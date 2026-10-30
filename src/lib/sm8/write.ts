@@ -1,5 +1,6 @@
 import "server-only";
 import { db } from "@/lib/db";
+import { n8nWebhookBase } from "@/lib/n8n/base";
 
 // Changes made in the hub go to ServiceM8 (the master) through the n8n workflow "CBS Hub - ServiceM8
 // Write", webhook cbs-hub-sm8-write, protected by the X-CBS-SM8-Key header (N8N_SM8_KEY). n8n checks
@@ -32,7 +33,8 @@ export async function writeToServiceM8(change: Sm8Write): Promise<void> {
     console.error("N8N_SM8_KEY is not set");
     throw new Sm8Error(SM8_UNREACHABLE);
   }
-  const base = (process.env.N8N_WEBHOOK_BASE || "https://old-hub.example/webhook").replace(/\/+$/, "");
+  const base = n8nWebhookBase();
+  if (!base) throw new Sm8Error(SM8_UNREACHABLE);
   let res: Response;
   try {
     res = await fetch(`${base}/cbs-hub-sm8-write`, {

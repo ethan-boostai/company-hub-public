@@ -48,4 +48,13 @@ describe("SharePoint through n8n", () => {
     await expect(fileInfo("01ABCDEFGHIJ")).rejects.toMatchObject({ status: 502 });
     expect(fetchMock).not.toHaveBeenCalled();
   });
+
+  it("refuses to call n8n without N8N_WEBHOOK_BASE (no built-in address)", async () => {
+    for (const v of ["", "   ", "not-a-url"]) {
+      vi.stubEnv("N8N_WEBHOOK_BASE", v);
+      await expect(fileInfo("01ABCDEFGHIJ")).rejects.toMatchObject({ status: 502, message: UNREACHABLE });
+    }
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(console.error).toHaveBeenCalledWith(expect.stringContaining("N8N_WEBHOOK_BASE is not set"));
+  });
 });

@@ -285,6 +285,20 @@ files: belongs to one row anywhere via (entity_table, entity_id), plus job_id fo
 4. Re-runnable until switch-over; after switch-over the old n8n table is read-only.
 5. Registers scripts (all dry run by default; `--apply` only at switch-over, when Ethan says so; trial runs on the local or dev database only). Run order: People (Core) → `registers-fleet.ts` → `registers-subcontractors.ts` → `registers-requests.ts` → `registers-equipment.ts` → `registers-insurance.ts` (policies, covers, claims, accreditations; claims link to vehicles and equipment) → `registers-training.ts` (records matched to People by name) → `registers-time-off.ts` (matched to People by name). Anything that can't be matched exactly is listed under "Needs checking" and kept in the record's notes or skipped, never guessed.
 
+### 4.1 Switch-over steps (only when Ethan says so)
+
+Settings and one-off steps that wait for each area's switch-over. Tick them off here as they happen.
+
+Phase 1 (Jobs and tasks):
+- [ ] Add `N8N_SM8_KEY` to Vercel **Production** (Ethan or the adviser; it is on Preview only until then, so the live site can't write to ServiceM8).
+- [ ] Widen the ServiceM8 write-back from test job 12 to all jobs (the `sm8_sync` allow list, the n8n "CBS Hub - ServiceM8" check and the app guard).
+
+Later areas (recorded elsewhere, listed here so nothing is missed):
+- [ ] People: set `LEGACY_PIN_SALT` on Production so old PINs work once (`docs/environments.md`).
+- [ ] People: tick "Issue H&S policy" for the director on live (`docs/decisions.md`).
+- [ ] Safety: point the ServiceM8 Onsite button at the job crew page (`docs/decisions.md`, Phase 2 Safety, job level).
+- [ ] Each area: run its `scripts/migrate/` import with `--apply` (section 4 above).
+
 ## 5. Risks
 
 - **ServiceM8 webhooks**: the old hub mostly polls (see inventory). Webhooks need a public HTTPS endpoint (Vercel) and ServiceM8 add-on app registration; until then, n8n can keep polling and push into the app's API.
