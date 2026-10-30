@@ -6,7 +6,8 @@ import { teamKeyOk } from "@/app/team/key";
 import { parseLocKey, round3 } from "@/app/(hub)/equipment/rules";
 import { changeStock, createStocktake, createToolReport, labelFor, locationExists, NotEnough } from "@/app/(hub)/equipment/stock";
 import { LoadUpRefused, markLoaded, reportLoadUpProblem, saveLoadUpPdf } from "@/app/(hub)/_site/load-up";
-import { PlantRefused, returnPlant } from "@/app/(hub)/_site/plant";
+import { extendPlant, foundPlant, movePlant, PlantRefused, returnPlant } from "@/app/(hub)/_site/plant";
+import { niceDate, ukToday } from "@/app/(hub)/_registers/dates";
 
 // The yard tablet's saves. No sign-in: the team-app link key (X-Team-Key header) lets the device in
 // (Ethan, 30/10/2026), the name is picked for each action and checked against the crew list, and a
@@ -23,8 +24,14 @@ const Load = z.object({
   })).max(300),
 });
 const Problem = z.object({ type: z.literal("problem"), name, sheetId: z.number().int().positive(), text: z.string().trim().min(1).max(2000) });
-const ReturnPlant = z.object({ type: z.literal("return_plant"), name, bookingId: z.number().int().positive(), to: z.string().max(100) });
-const ReportPlant = z.object({ type: z.literal("report_plant"), name, assetId: z.number().int().positive(), kind: z.enum(["faulty", "missing", "found"]), note });
+const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+const PlantBack = z.object({ type: z.literal("plant_back"), name, bookingId: z.number().int().positive(), to: z.string().max(100) });
+const PlantExtend = z.object({ type: z.literal("plant_extend"), name, bookingId: z.number().int().positive(), dueBack: date });
+const PlantMove = z.object({ type: z.literal("plant_move"), name, bookingId: z.number().int().positive(), jobId: z.number().int().positive(), dueBack: date.nullable() });
+const ReportPlant = z.object({
+  type: z.literal("report_plant"), name, assetId: z.number().int().positive(), kind: z.enum(["faulty", "missing", "found"]), note,
+  location: z.string().max(100).optional().default(""), // found: where it is now
+});
 const ReturnMaterial = z.object({
   type: z.literal("return_material"), name, materialId: z.number().int().positive().nullable(), otherName: z.string().trim().max(200).optional().default(""),
   otherUnit: z.string().trim().max(30).optional().default(""), qty, jobId: z.number().int().positive().nullable(), to: z.string().max(100), note,
@@ -33,7 +40,7 @@ const Count = z.object({
   type: z.literal("stocktake"), name, location: z.string().max(100), note,
   counts: z.array(z.object({ materialId: z.number().int().positive(), counted: z.number().min(0).max(1e9) })).min(1).max(500),
 });
-const Body = z.object({ requestKey: z.string(), action: z.discriminatedUnion("type", [Load, Problem, ReturnPlant, ReportPlant, ReturnMaterial, Count]) });
+const Body = z.object({ requestKey: z.string(), action: z.discriminatedUnion("type", [Load, Problem, PlantBack, PlantExtend, PlantMove, ReportPlant, ReturnMaterial, Count]) });
 
 const fail = (message: string, status = 400) => Response.json({ ok: false, message }, { status });
 class Refused extends Error {}
@@ -53,7 +60,9 @@ export async function POST(req: Request) {
   // Checks before the one-time key is used up.
   if (a.type === "report_plant" && a.kind !== "found" && !a.note) return fail(a.kind === "faulty" ? "Say what's wrong with it." : "Say where it was last seen.");
   if (a.type === "return_material" && !a.materialId && !a.otherName) return fail("Choose the material, or type what it is.");
-  if ((a.type === "return_plant" || a.type === "return_material") && !parseLocKey(a.to, false)) return fail("Choose where it's going.");
+  if ((a.type === "plant_back" || a.type === "return_material") && !parseLocKey(a.to, false)) return fail("Choose where it's going.");
+  if (a.type === "report_plant" && a.kind === "found" && !parseLocKey(a.location, false)) return fail("Choose where it is now.");
+  if ((a.type === "plant_extend" || a.type === "plant_move") && a.dueBack && a.dueBack < ukToday()) return fail("The due back date is in the past.");
   if (a.type === "stocktake" && !parseLocKey(a.location, false)) return fail("Choose where you counted.");
   if (a.type === "stocktake" && new Set(a.counts.map((c) => c.materialId)).size !== a.counts.length) return fail("Each material can only be counted once.");
   if (!(await claimRequestKey(requestKey, null))) return Response.json({ ok: false, duplicate: true, message: "This was already sent." }, { status: 409 });
@@ -68,19 +77,40 @@ export async function POST(req: Request) {
         await reportLoadUpProblem(tx, a.sheetId, a.text, by);
         return "Problem sent to the office.";
       }
-      if (a.type === "return_plant") {
+      if (a.type === "plant_back") {
         await returnPlant(tx, { bookingId: a.bookingId, to: parseLocKey(a.to, false)!, by });
-        return "Returned.";
+        return "Back in. The job's booking is closed.";
+      }
+      if (a.type === "plant_extend") {
+        await extendPlant(tx, { bookingId: a.bookingId, dueBack: a.dueBack, by });
+        return `Due back ${niceDate(a.dueBack)}.`;
+      }
+      if (a.type === "plant_move") {
+        await movePlant(tx, { bookingId: a.bookingId, toJobId: a.jobId, to: null, dueBack: a.dueBack, by });
+        return "Moved to the other job.";
       }
       if (a.type === "report_plant") {
         const [asset] = await tx<{ status: string }[]>`select status from assets where id = ${a.assetId}`;
         if (!asset) throw new Refused("That equipment isn't on the register any more.");
-        if (a.kind === "found" && asset.status !== "lost" && asset.status !== "needs_repair") throw new Refused("That equipment isn't marked lost or needing repair.");
-        const kind = a.kind === "faulty" ? "damaged" : a.kind === "missing" ? "lost" : "found";
+        if (a.kind === "found") {
+          // Found closes any job booking and moves the item now; a status change (lost or needing
+          // repair back to in service) waits for the office to confirm the report.
+          const f = await foundPlant(tx, { assetId: a.assetId, to: parseLocKey(a.location, false)!, by });
+          const needsOffice = asset.status === "lost" || asset.status === "needs_repair";
+          if (needsOffice) {
+            await createToolReport(tx, {
+              kind: "found", assetId: a.assetId, toolName: "", occurredAt: null, location: f.label, policeRef: null, details: a.note || null,
+              wants: "none", urgency: null, repairNotes: null, replaceNotes: null, reportedBy: person.name, reportedById: Number(person.id),
+              source: "yard", confirmFirst: true, foundAtPlace: null,
+            }, by);
+          }
+          return `Now at ${f.label}.${f.closedJobNo ? ` Job ${f.closedJobNo}'s booking is closed.` : ""}${needsOffice ? " The office will confirm it's back in service." : ""}`;
+        }
+        const kind = a.kind === "faulty" ? "damaged" : "lost";
         await createToolReport(tx, {
-          kind, assetId: a.assetId, toolName: "", occurredAt: null, location: a.kind === "missing" ? a.note : "CBS Warehouse", policeRef: null,
+          kind, assetId: a.assetId, toolName: "", occurredAt: null, location: a.kind === "missing" ? a.note : null, policeRef: null,
           details: a.note || null, wants: "none", urgency: null, repairNotes: null, replaceNotes: null, reportedBy: person.name,
-          reportedById: Number(person.id), source: "yard", confirmFirst: true, foundAtPlace: "CBS Warehouse",
+          reportedById: Number(person.id), source: "yard", confirmFirst: true,
         }, by);
         return "Sent to the office to confirm.";
       }

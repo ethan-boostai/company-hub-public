@@ -1,6 +1,7 @@
 import "server-only";
 import type postgres from "postgres";
 import { readDb } from "@/lib/db";
+import { jobTitle } from "@/lib/jobs/stages";
 import { isoDate, isoTime } from "../../../_registers/form-values";
 import { loadLocations } from "../../../equipment/data";
 import type { LocationData } from "../../../equipment/parts";
@@ -28,7 +29,7 @@ export type Booking = {
 
 export type FreeAsset = { id: number; tag: string; name: string; category: string; status: string; location: string; nextServiceOn: string | null; testTagDue: string | null };
 
-export type PlantData = { bookings: Booking[]; free: FreeAsset[]; locations: LocationData };
+export type PlantData = { bookings: Booking[]; free: FreeAsset[]; locations: LocationData; jobs: { id: number; jobNo: string; title: string }[] };
 
 type Sql = postgres.Sql | postgres.TransactionSql;
 const s = (v: unknown) => (v == null ? "" : String(v));
@@ -36,7 +37,7 @@ const n = (v: unknown) => (v == null ? null : Number(v));
 
 export async function loadJobPlant(jobId: number, given?: Sql): Promise<PlantData> {
   const sql = given ?? (await readDb());
-  const [locations, bookings, free] = await Promise.all([
+  const [locations, bookings, free, jobs] = await Promise.all([
     loadLocations(sql),
     sql`select p.*, a.status as a_status, a.location_place, a.location_vehicle_id, a.location_person_id, a.next_service_on, a.test_tag_due
         from job_plant p left join assets a on a.id = p.asset_id
@@ -45,11 +46,14 @@ export async function loadJobPlant(jobId: number, given?: Sql): Promise<PlantDat
         from assets a
         where a.status not in ${sql(UNBOOKABLE_STATUSES)} and not exists (select 1 from job_plant p where p.asset_id = a.id and p.returned_at is null)
         order by lower(coalesce(a.category, '')), lower(a.name), a.asset_tag`,
+    sql<{ id: string; job_no: string; sm8_description: string | null }[]>`
+      select id, job_no, sm8_description from jobs where stage = 'approved' and id <> ${jobId} order by length(job_no) desc, job_no desc limit 300`,
   ]);
   const where = (r: Record<string, unknown>) =>
     locLabel({ place: r.location_place as string | null, vehicleId: n(r.location_vehicle_id), personId: n(r.location_person_id) }, locations.vehicles, locations.people);
   return {
     locations,
+    jobs: jobs.map((j) => ({ id: Number(j.id), jobNo: j.job_no, title: jobTitle(j.sm8_description ?? "") })),
     bookings: bookings.map((r) => ({
       id: Number(r.id), assetId: n(r.asset_id), assetName: r.asset_name, assetTag: s(r.asset_tag), category: s(r.category), source: r.source,
       outWith: s(r.out_with_label), bookedAt: isoTime(r.booked_at)!, bookedBy: s(r.booked_by), dueBack: isoDate(r.due_back),

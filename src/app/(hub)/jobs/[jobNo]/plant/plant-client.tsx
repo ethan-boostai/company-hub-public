@@ -10,11 +10,11 @@ import { PageTop, RegisterLayout, type AttentionItem } from "@/components/ui/pag
 import { DataTable, FilterPills, FilterRow, StatusPill, type Column } from "@/components/ui/register";
 import { SearchBox } from "@/components/ui/search-box";
 import { niceDate, niceDateTime } from "../../../_registers/dates";
-import { Chip } from "../../../_registers/ui";
+import { Chip, RecordSelect } from "../../../_registers/ui";
 import { TwoLine } from "../../../_site/ui";
 import { errorsOf, LocationSelect } from "../../../equipment/parts";
 import { assetWarnings, dueBackLabel, PLANT_STATE_LABELS, PLANT_STATE_TONES, plantState } from "../../../_site/rules";
-import { bookJobPlant, deleteJobPlant, returnJobPlant, saveJobPlant } from "./actions";
+import { bookJobPlant, deleteJobPlant, moveJobPlant, returnJobPlant, saveJobPlant } from "./actions";
 import type { Booking, PlantData } from "./data";
 
 type Filter = "out" | "returned" | "all";
@@ -99,7 +99,7 @@ export function PlantClient({ jobId, jobNo, today, initial }: { jobId: number; j
 
             {!open.returnedAt && (
               <section className="mb-5 rounded-xl border border-line p-4">
-                <h3 className="mb-2 font-semibold">Return it</h3>
+                <h3 className="mb-2 font-semibold">Back in the yard</h3>
                 <GuardedForm action={returnJobPlant} onSaved={(r) => r.data && setData(r.data)}>
                   {(state) => {
                     const err = errorsOf(state);
@@ -108,7 +108,28 @@ export function PlantClient({ jobId, jobNo, today, initial }: { jobId: number; j
                         <input type="hidden" name="job_id" value={jobId} />
                         <input type="hidden" name="id" value={open.id} />
                         <LocationSelect data={data.locations} name="return_to" label="Back to" defaultValue="p:CBS Warehouse" allowPerson error={err.return_to} />
-                        <SaveButton>Return</SaveButton>
+                        <SaveButton>Back in the yard</SaveButton>
+                      </>
+                    );
+                  }}
+                </GuardedForm>
+              </section>
+            )}
+
+            {!open.returnedAt && (
+              <section className="mb-5 rounded-xl border border-line p-4" aria-label="Move to another job">
+                <h3 className="mb-2 font-semibold">Move to another job</h3>
+                <GuardedForm action={moveJobPlant} onSaved={(r) => r.data && setData(r.data)}>
+                  {(state) => {
+                    const err = errorsOf(state);
+                    return (
+                      <>
+                        <input type="hidden" name="job_id" value={jobId} />
+                        <input type="hidden" name="id" value={open.id} />
+                        <RecordSelect label="To job" name="to_job_id" error={err.to_job_id}
+                          options={data.jobs.map((j) => ({ value: String(j.id), label: `${j.jobNo}${j.title ? ` · ${j.title}` : ""}` }))} />
+                        <TextField label="Due back from that job" name="move_due_back" type="date" min={today} error={err.move_due_back} />
+                        <SaveButton>Move</SaveButton>
                       </>
                     );
                   }}
@@ -123,6 +144,7 @@ export function PlantClient({ jobId, jobNo, today, initial }: { jobId: number; j
                   <>
                     <input type="hidden" name="job_id" value={jobId} />
                     <input type="hidden" name="id" value={open.id} />
+                    {!open.returnedAt && <h3 className="mb-2 font-semibold">Extend</h3>}
                     <TextField label="Due back" name="due_back" type="date" defaultValue={open.dueBack ?? ""} error={err.due_back} />
                     <TextArea label="Notes" name="notes" defaultValue={open.notes} rows={3} error={err.notes} />
                     <SaveButton>Save</SaveButton>

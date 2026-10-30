@@ -6,7 +6,7 @@ import { REQUEST_KEY_FIELD } from "@/lib/action-types";
 import { diff, logActivity } from "@/lib/activity";
 import { forLog, FormValues } from "../../../_registers/form-values";
 import { parseLocKey } from "../../../equipment/rules";
-import { bookPlant, PlantRefused, returnPlant } from "../../../_site/plant";
+import { bookPlant, movePlant, PlantRefused, returnPlant } from "../../../_site/plant";
 import { loadJobPlant, type PlantData } from "./data";
 
 const GONE = { ok: false as const, message: "That booking no longer exists. Refresh the page." };
@@ -104,5 +104,25 @@ export async function deleteJobPlant(jobId: number, id: number, requestKey: stri
     });
     if (!found) return GONE;
     return { ok: true, message: "Booking removed.", data: await loadJobPlant(jobId, db()) };
+  });
+}
+
+// Move: straight from this job to another one (with whoever has it now), with a new due back date.
+export async function moveJobPlant(form: FormData): Promise<ActionResult<PlantData>> {
+  const f = new FormValues(form);
+  const jobId = f.id("job_id");
+  const bookingId = f.id("id");
+  const toJobId = f.id("to_job_id");
+  if (!toJobId) f.errors.to_job_id = "Choose the job it's going to.";
+  const dueBack = f.date("move_due_back");
+  if (!jobId || !bookingId) return GONE;
+  if (!f.ok) return { ok: false, message: "Check the highlighted fields.", fieldErrors: f.errors };
+  return guarded<PlantData>(form.get(REQUEST_KEY_FIELD), async (person) => {
+    try {
+      await db().begin((tx) => movePlant(tx, { bookingId, toJobId: toJobId!, to: null, dueBack, by: person.name, jobId }));
+      return { ok: true, message: "Moved to the other job.", data: await loadJobPlant(jobId, db()) };
+    } catch (e) {
+      return refused(e);
+    }
   });
 }

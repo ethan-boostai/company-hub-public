@@ -73,7 +73,7 @@ describe.skipIf(!url)("plant and stock in the database", async () => {
     await sql`delete from assets where id = ${ids.asset}`;
     await sql`delete from jobs where id in (${ids.job}, ${ids.job2})`;
     await sql`delete from people where id = ${ids.person}`;
-    await sql.end();
+    // The connection closes after the last group below.
   });
 
   it("books an item to one job at a time, moves it, and returns it to the yard", async () => {
@@ -124,5 +124,56 @@ describe.skipIf(!url)("plant and stock in the database", async () => {
     });
     const rows = await sql`select reason, job_id from stock_moves where material_id = ${ids.material} order by id`;
     expect(rows.map((r) => (r.job_id == null ? null : Number(r.job_id)))).toEqual([null, ids.job, ids.job2, null]);
+  });
+});
+
+describe.skipIf(!url)("overdue plant actions and found, in the database", async () => {
+  const { db } = await import("@/lib/db");
+  const { bookPlant, extendPlant, movePlant, foundPlant, overduePlant, PlantRefused } = await import("@/app/(hub)/_site/plant");
+  const sql = db();
+  const stamp = String(Date.now()).slice(-6);
+  const ids = { a: 0, b: 0, person: 0, asset: 0 };
+
+  afterAll(async () => {
+    await sql`delete from job_plant where job_id in (${ids.a}, ${ids.b})`;
+    await sql`delete from stock_moves where asset_id = ${ids.asset}`;
+    await sql`delete from assets where id = ${ids.asset}`;
+    await sql`delete from jobs where id in (${ids.a}, ${ids.b})`;
+    await sql`delete from people where id = ${ids.person}`;
+    await sql.end();
+  });
+
+  it("extends, moves to another job, lists overdue plant, and found closes the booking", async () => {
+    const [a] = await sql`insert into jobs (sm8_uuid, job_no, sm8_status, stage) values (${`zz-ov-a-${stamp}`}, ${`96${stamp}`}, 'Work Order', 'approved') returning id`;
+    const [b] = await sql`insert into jobs (sm8_uuid, job_no, sm8_status, stage) values (${`zz-ov-b-${stamp}`}, ${`95${stamp}`}, 'Work Order', 'approved') returning id`;
+    const [p] = await sql`insert into people (name, created_by) values (${`ZZ Test Mover ${stamp}`}, 'test') returning id`;
+    const [x] = await sql`insert into assets (asset_tag, name, location_place, created_by) values (${`ZZO${stamp}`}, 'ZZ Test Mixer', 'CBS Warehouse', 'test') returning id`;
+    Object.assign(ids, { a: Number(a.id), b: Number(b.id), person: Number(p.id), asset: Number(x.id) });
+    const withP = { place: null, vehicleId: null, personId: ids.person } as const;
+
+    const [first] = await sql.begin((tx) => bookPlant(tx, { jobId: ids.a, assetIds: [ids.asset], to: withP, dueBack: "2020-01-01", notes: null, by: "Test", source: "job" }));
+    expect((await overduePlant(sql, "2026-11-10")).filter((o) => o.assetId === ids.asset).map((o) => [o.jobNo, o.dueBack])).toEqual([[`96${stamp}`, "2020-01-01"]]);
+
+    await sql.begin((tx) => extendPlant(tx, { bookingId: first, dueBack: "2099-12-31", by: "Test" }));
+    expect((await overduePlant(sql, "2026-11-10")).some((o) => o.assetId === ids.asset)).toBe(false);
+
+    await expect(sql.begin((tx) => movePlant(tx, { bookingId: first, toJobId: ids.a, to: null, dueBack: null, by: "Test" }))).rejects.toBeInstanceOf(PlantRefused);
+    const second = await sql.begin((tx) => movePlant(tx, { bookingId: first, toJobId: ids.b, to: null, dueBack: "2099-01-01", by: "Test" }));
+    const bookings = await sql`select id, job_id, returned_to_label, returned_at from job_plant where asset_id = ${ids.asset} order by id`;
+    expect(bookings.map((r) => [Number(r.job_id), r.returned_to_label, r.returned_at == null])).toEqual([
+      [ids.a, `Moved to job 95${stamp}`, false],
+      [ids.b, null, true],
+    ]);
+    const [still] = await sql`select location_person_id from assets where id = ${ids.asset}`;
+    expect(Number(still.location_person_id)).toBe(ids.person); // moved with whoever had it
+
+    const f = await sql.begin((tx) => foundPlant(tx, { assetId: ids.asset, to: { place: "CBS Warehouse", vehicleId: null, personId: null }, by: "ZZ Crew (yard)" }));
+    expect(f).toEqual({ closedJobNo: `95${stamp}`, label: "CBS Warehouse" });
+    const [closed] = await sql`select returned_at, returned_to_label from job_plant where id = ${second}`;
+    expect([closed.returned_at != null, closed.returned_to_label]).toEqual([true, "Found: CBS Warehouse"]);
+    const [here] = await sql`select location_place, status from assets where id = ${ids.asset}`;
+    expect([here.location_place, here.status]).toEqual(["CBS Warehouse", "in_service"]);
+    // Found again with no booking just moves it (nothing to close).
+    expect((await sql.begin((tx) => foundPlant(tx, { assetId: ids.asset, to: withP, by: "ZZ Crew (yard)" }))).closedJobNo).toBe(null);
   });
 });

@@ -130,6 +130,11 @@ Never commit or push to `main`; every change goes through a pull request (`main`
 - **Screenshots show real data:** save them outside the repo (the script's default is the OS temp folder) or in `private/screens/` (git-ignored). Never commit them; never put them in the public copy.
 - The faking map (`private/fakemap.py`) now also fakes mobiles and geographic phone numbers, emails and postcodes. Run it on anything you bring into `/legacy`.
 
+## Plant overdue back (Registers, 30/10/2026; for Core's Actions board cards)
+- **The list:** `overduePlant(sql, today)` in `src/app/(hub)/_site/plant.ts` returns plant still out on a job whose due back date is before today, oldest first: `{ bookingId, assetId, item, jobId, jobNo, outWith, dueBack }`. Group the cards by job (`jobNo`) or by `outWith`.
+- **The actions** (server-side, one transaction each, all in the same file): `returnPlant(tx, { bookingId, to, by })` (Back in the yard; `to` is a location, normally `{ place: "CBS Warehouse" }`), `extendPlant(tx, { bookingId, dueBack, by })` (Extend) and `movePlant(tx, { bookingId, toJobId, to: null, dueBack, by })` (Move to another job, with whoever has it). They throw `PlantRefused` with a message to show. The yard Plant tab and the job's Plant page already use them.
+- Found at the yard (or anywhere) closes the booking straight away (`foundPlant`), so a found item never shows as overdue.
+
 ## Page standard (every page, every session)
 
 Ethan approved one page layout on 29/10/2026 (`docs/decisions.md`, "Page standard"). Build every page from the shared parts, never your own copies:

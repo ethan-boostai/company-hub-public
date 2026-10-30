@@ -10,6 +10,11 @@ import { createRequire } from "node:module";
 const { chromium } = createRequire(import.meta.url)("playwright");
 
 const BASE = process.env.BASE_URL || "http://localhost:3100";
+// On a preview: through Vercel Authentication (bypass header) and signed in as Preview Admin.
+const PREVIEW = !/localhost|127\.0\.0\.1/.test(BASE);
+const ME = PREVIEW ? "Preview Admin" : "Test Office One";
+const PIN = PREVIEW ? process.env.PREVIEW_ADMIN_PIN : "1234";
+const HEADERS = PREVIEW ? { "x-vercel-protection-bypass": process.env.VERCEL_AUTOMATION_BYPASS_SECRET ?? "", "x-vercel-set-bypass-cookie": "true" } : {};
 const SHOTS = process.argv[2] || "";
 if (SHOTS) mkdirSync(SHOTS, { recursive: true });
 let failed = 0;
@@ -30,7 +35,7 @@ const inDays = (n) => new Date(Date.now() + n * 86400000).toISOString().slice(0,
 
 const browser = await chromium.launch();
 let popups = 0;
-const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, locale: "en-GB", timezoneId: "Europe/London" });
+const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, locale: "en-GB", timezoneId: "Europe/London", extraHTTPHeaders: HEADERS });
 const page = await ctx.newPage();
 page.on("dialog", async (d) => {
   popups++;
@@ -66,8 +71,8 @@ async function addEquipment(name, tag, extra) {
 
 try {
   await page.goto(`${BASE}/sign-in?next=/fleet`);
-  await page.getByRole("button", { name: "Test Office One" }).click();
-  await page.locator("#pin").fill("1234");
+  await page.getByRole("button", { name: ME }).click();
+  await page.locator("#pin").fill(PIN);
   await page.getByRole("button", { name: "Sign in" }).click();
   await page.waitForURL(`${BASE}/fleet`);
   await page.getByRole("button", { name: "+ New vehicle", exact: true }).click();
@@ -135,15 +140,15 @@ try {
   await page.getByLabel("Search plant").fill(STAMP);
   await rows.filter({ hasText: TAG1 }).first().click();
   check("the booking links to the register", (await drawer.getByRole("link", { name: "Open in Equipment and materials" }).count()) === 1);
-  await drawer.getByRole("button", { name: "Return", exact: true }).click();
-  await drawer.getByText(/by Test Office One, to CBS Warehouse$/).waitFor();
+  await drawer.getByRole("button", { name: "Back in the yard", exact: true }).click();
+  await drawer.getByText(new RegExp(`by ${ME}, to CBS Warehouse$`)).waitFor();
   await closeDrawer();
   check("a returned item leaves the On job list", (await rows.filter({ hasText: TAG1 }).count()) === 0);
   await page.getByRole("group", { name: "Show" }).getByRole("button", { name: /^Returned/ }).click();
   check("and shows under Returned, back at the warehouse", (await rows.filter({ hasText: TAG1 }).filter({ hasText: "CBS Warehouse" }).count()) === 1);
   // Tidy job 12: remove the returned breaker's booking too (fake data only).
   await rows.filter({ hasText: TAG1 }).first().click();
-  check("a returned booking has no Return form", (await drawer.getByRole("button", { name: "Return", exact: true }).count()) === 0);
+  check("a returned booking has no Return form", (await drawer.getByRole("button", { name: "Back in the yard", exact: true }).count()) === 0);
   await drawer.getByRole("button", { name: "Remove this booking" }).click();
   await page.getByRole("dialog").last().getByRole("button", { name: "Remove booking" }).click();
   await drawer.waitFor({ state: "detached" });
