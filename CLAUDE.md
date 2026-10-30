@@ -76,6 +76,7 @@ Never commit or push to `main`; every change goes through a pull request. Every 
 3. Make sure the pull request's preview deploys.
 4. Run every check: lint, typecheck, unit tests, the production build, and your browser tests (on the local database, plus the preview where it can be reached). All must pass.
 5. When they all pass, merge your own pull request. If any fails, fix it on the same branch first.
+- **Preview check (before every merge):** previews sit behind Vercel Authentication. Open them with the `x-vercel-protection-bypass` header set to `VERCEL_AUTOMATION_BYPASS_SECRET` plus `x-vercel-set-bypass-cookie: true`, and sign in as Preview Admin with `PREVIEW_ADMIN_PIN` (both in the session environment; never print them). `node scripts/preview-open.mjs <preview url> [path] [shot.png]` does both and takes a screenshot; reuse its headers and sign-in in your own preview scripts. On the preview, open the pages the PR changes and do its main actions on job 12 with fake ZZ data (previews use the dev database and the SharePoint test folder). Merge only when that works.
 - Ethan tests at the end of each stage, with one numbered checklist from the session covering the whole area (job 12 and fake data only). Problems he finds are fixed in a new pull request.
 - A conflict with `main` is fixed on your own branch (merge `main` into it), never on `main`.
 - Switch-over (importing old data, or moving the team onto a new area) happens only when Ethan says so.

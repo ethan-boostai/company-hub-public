@@ -99,6 +99,10 @@ Never commit or push to `main`; every change goes through a pull request (`main`
 9. **Approach first:** explain your approach for anything non-trivial and wait for Ethan's go-ahead (`CLAUDE.md`).
 10. **Secrets:** never in chat, code or commits.
 
+## Preview check before every merge (Ethan, 30/10/2026)
+
+- Previews are reachable from cloud sessions now. Before merging, open your PR's preview with the bypass headers and sign in as Preview Admin (`PREVIEW_ADMIN_PIN`); `node scripts/preview-open.mjs <preview url> [path]` does both. Check the pages your PR changes on job 12 with fake ZZ data (`CLAUDE.md`, Change process).
+
 ## n8n is read-only for every session (Ethan, 30/10/2026)
 
 - Never change anything in n8n, including the hub's own "CBS Hub - …" workflows. Any n8n change goes through Ethan or the adviser. `.claude/settings.json` blocks the n8n change tools.
