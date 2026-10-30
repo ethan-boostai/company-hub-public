@@ -11,7 +11,7 @@ export class NotEnough extends Error {
   }
 }
 
-// The label a location has now ("CBS Warehouse", "Ford Transit - ZZ Person H (ZZ01ZZA)", "With Joe").
+// The label a location has now ("CBS Warehouse", "Ford Transit - ZZ Driver (ZZ33ZZZ)", "With ZZ Person").
 export async function labelFor(tx: Tx, l: Loc | null): Promise<string> {
   if (!l) return "No location";
   if (l.place) return l.place;

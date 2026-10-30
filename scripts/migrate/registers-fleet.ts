@@ -164,7 +164,7 @@ try {
     report.push(`vehicles: ${vehicles.length} in, ${n} imported`);
 
     const vehicleOf = (label: unknown, what: string): number | null => {
-      // Old rows hold the reg, sometimes inside a label like "Ford Transit (ZZ01ZZA)".
+      // Old rows hold the reg, sometimes inside a label like "Ford Transit (ZZ33ZZZ)".
       const s = String(label ?? "");
       const id = vehicleIds.get(reg(s)) ?? vehicleIds.get(reg(s.match(/\(([^)]+)\)/)?.[1] ?? ""));
       if (!id) unmapped.push(`${what}: vehicle "${s}" not found`);

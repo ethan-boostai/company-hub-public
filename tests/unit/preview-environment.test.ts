@@ -7,7 +7,7 @@ const LIVE = "postgres://postgres.chvyskcfjmxxprxoczon:x@aws-0-eu-west-2.pooler.
 
 describe("upload folders outside the live site", () => {
   it("only the live site uses the folder asked for", () => {
-    const folder = "CBS System/Fleet/ZZ01ZZA/Service History";
+    const folder = "CBS System/Fleet/ZZ33ZZZ/Service History";
     expect(uploadFolderFor(folder, { VERCEL: "1", VERCEL_ENV: "production" })).toBe(folder);
     expect(uploadFolderFor(folder, { VERCEL: "1", VERCEL_ENV: "preview" })).toBe(UPLOAD_FOLDER);
     expect(uploadFolderFor(folder, { VERCEL_ENV: "production" })).toBe(UPLOAD_FOLDER); // not on Vercel

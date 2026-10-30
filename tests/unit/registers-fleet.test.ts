@@ -32,13 +32,13 @@ describe("register dates", () => {
 
 describe("fleet rules", () => {
   it("stores regs in capitals with no spaces", () => {
-    expect(normaliseReg(" zz03 zzc ")).toBe("ZZ03ZZC");
-    expect(normaliseReg("ZZ02-ZZB")).toBe("ZZ02ZZB");
+    expect(normaliseReg(" zz11 zzz ")).toBe("ZZ11ZZZ");
+    expect(normaliseReg("ZZ22-ZZZ")).toBe("ZZ22ZZZ");
   });
 
   it("names a van as a stock location", () => {
-    expect(vehicleLocationLabel({ reg: "ZZ01ZZA", makeModel: "Ford Transit", driver: "ZZ Person H" })).toBe("Ford Transit - ZZ Person H (ZZ01ZZA)");
-    expect(vehicleLocationLabel({ reg: "ZZ01ZZA", makeModel: "", driver: "" })).toBe("ZZ01ZZA");
+    expect(vehicleLocationLabel({ reg: "ZZ33ZZZ", makeModel: "Ford Transit", driver: "ZZ Driver" })).toBe("Ford Transit - ZZ Driver (ZZ33ZZZ)");
+    expect(vehicleLocationLabel({ reg: "ZZ33ZZZ", makeModel: "", driver: "" })).toBe("ZZ33ZZZ");
   });
 
   it("rolls the next inspection on when a check counts for it", () => {
@@ -66,7 +66,7 @@ describe("fleet rules", () => {
   it("lists what is due without creating or closing anything", () => {
     const today = "2026-10-28";
     const items = fleetDueItems(
-      [{ id: 1, reg: "ZZ01ZZA", vehicleTaxDue: "2026-11-05", motExpiry: "2027-10-31", serviceDue: "2026-10-01", serviceDueMiles: 50000,
+      [{ id: 1, reg: "ZZ33ZZZ", vehicleTaxDue: "2026-11-05", motExpiry: "2027-10-31", serviceDue: "2026-10-01", serviceDueMiles: 50000,
         latestMiles: 49500, inspectionFrequency: "quarterly", nextInspectionOn: "2027-02-01" }],
       [{ id: 7, vehicleId: 1, checkedOn: "2026-10-27", status: "off_road", reviewed: false }],
       [{ id: 3, vehicleId: 1, occurredAt: null, status: "closed" }],
