@@ -23,7 +23,7 @@ export async function savePerson(form: FormData): Promise<ActionResult<PersonRow
     crew: form.get("crew") === "on",
     // Time off access: 'time_off' in people.lists. Registers uses it to show the Time off tab (sick notes).
     time_off: form.get("time_off") === "on",
-    // May issue the H&S policy and manual: 'hs_issue' in people.lists (ZZ Person A on live at switch-over).
+    // May issue the H&S policy and manual: 'hs_issue' in people.lists (the director on live at switch-over).
     hs_issue: form.get("hs_issue") === "on",
     // May approve permits to work: 'permit_approve' in people.lists (Ethan, 30/10/2026).
     permit_approve: form.get("permit_approve") === "on",

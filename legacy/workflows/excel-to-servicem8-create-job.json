@@ -195,7 +195,7 @@
     },
     {
       "parameters": {
-        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/01ZZZZZZ000000000000000000000000H7/workbook/worksheets('{{ encodeURIComponent($json.sheetName) }}')/usedRange?$select=address,values",
+        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/01ZZZZZZ000000000000000000000000H2/workbook/worksheets('{{ encodeURIComponent($json.sheetName) }}')/usedRange?$select=address,values",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "microsoftOAuth2Api",
         "options": {}
@@ -390,7 +390,7 @@
     {
       "parameters": {
         "method": "PATCH",
-        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/01ZZZZZZ000000000000000000000000H7/workbook/worksheets('{{ encodeURIComponent($json.sheetName) }}')/range(address='{{ $json.address }}')",
+        "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/01ZZZZZZ000000000000000000000000H2/workbook/worksheets('{{ encodeURIComponent($json.sheetName) }}')/range(address='{{ $json.address }}')",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "microsoftOAuth2Api",
         "sendBody": true,
@@ -506,7 +506,7 @@
       },
       {
         "parameters": {
-          "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/01ZZZZZZ000000000000000000000000H7/workbook/worksheets('{{ encodeURIComponent($json.sheetName) }}')/usedRange?$select=address,values",
+          "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/01ZZZZZZ000000000000000000000000H2/workbook/worksheets('{{ encodeURIComponent($json.sheetName) }}')/usedRange?$select=address,values",
           "authentication": "predefinedCredentialType",
           "nodeCredentialType": "microsoftOAuth2Api",
           "options": {}
@@ -701,7 +701,7 @@
       {
         "parameters": {
           "method": "PATCH",
-          "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/01ZZZZZZ000000000000000000000000H7/workbook/worksheets('{{ encodeURIComponent($json.sheetName) }}')/range(address='{{ $json.address }}')",
+          "url": "=https://graph.microsoft.com/v1.0/drives/b!ZZ-example-drive-id/items/01ZZZZZZ000000000000000000000000H2/workbook/worksheets('{{ encodeURIComponent($json.sheetName) }}')/range(address='{{ $json.address }}')",
           "authentication": "predefinedCredentialType",
           "nodeCredentialType": "microsoftOAuth2Api",
           "sendBody": true,
