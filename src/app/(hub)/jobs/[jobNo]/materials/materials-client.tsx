@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { TextArea, TextField } from "@/components/ui/fields";
 import { GuardedForm, SaveButton } from "@/components/ui/guarded-form";
 import { Drawer } from "@/components/ui/overlay";
@@ -59,6 +60,7 @@ export function MaterialsClient({ jobId, jobNo, initial }: { jobId: number; jobN
           <DataTable label="Materials used on this job" rows={shownTotals} columns={totalCols} rowKey={(t) => `${t.materialId}-${t.name}`}
             empty={totals.length ? "Nothing matches." : "No stock has been taken for this job yet. It's recorded when a load-up sheet is loaded, or with + New."} />
           {unpriced && <p className="mt-3 text-sm text-muted">Some materials have no cost on the register, so the value leaves them out.</p>}
+          <p className="mt-3 text-sm">Loading for this job is planned on its <Link href={`/jobs/${jobNo}/load-up`} className="text-brand underline">load-up sheets</Link>.</p>
         </>
       ) : (
         <DataTable label="Stock history for this job" rows={shownMoves} columns={moveCols} rowKey={(m) => m.id}
