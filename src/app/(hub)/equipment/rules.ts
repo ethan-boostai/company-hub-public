@@ -169,7 +169,8 @@ export type DueItem = { what: string; name: string; detail: string; tone: Due; o
 
 // The register's own "due and overdue" list. It never creates or closes tasks.
 export function equipmentDueItems(
-  assets: { id: number; name: string; assetTag: string; status: AssetStatus; nextServiceOn: string | null; testTagDue: string | null }[],
+  assets: { id: number; name: string; assetTag: string; status: AssetStatus; nextServiceOn: string | null; testTagDue: string | null;
+    onJob?: { jobNo: string; dueBack: string | null } | null }[],
   materials: { id: number; name: string; status: MaterialStatus; minLevel: number | null; total: number; unit: string }[],
   stocktakes: { id: number; locationLabel: string; status: StocktakeStatus; countedAt: string }[],
   reports: { id: number; toolName: string; kind: ToolKind; status: ReportStatus }[],
@@ -185,7 +186,12 @@ export function equipmentDueItems(
         out.push({ what, name, tone, detail: daysBetween(today, d!) < 0 ? `Was due ${niceDate(d)}` : `Due ${niceDate(d)}`, open: { kind: "asset", id: a.id } });
       }
     }
-    if (a.status === "needs_repair") out.push({ what: "Needs repair", name, tone: "overdue", detail: "", open: { kind: "asset", id: a.id } });
+    if (a.status === "needs_repair") out.push({ what: "Needs repair", name, tone: "overdue", detail: a.onJob ? `On job ${a.onJob.jobNo}` : "", open: { kind: "asset", id: a.id } });
+    if (a.onJob?.dueBack) {
+      const left = daysBetween(today, a.onJob.dueBack);
+      if (left <= 2) out.push({ what: "Due back", name, tone: left < 0 ? "overdue" : "soon", open: { kind: "asset", id: a.id },
+        detail: `Job ${a.onJob.jobNo}, ${left < 0 ? `was due back ${niceDate(a.onJob.dueBack)}` : left === 0 ? "due back today" : `due back ${niceDate(a.onJob.dueBack)}`}` });
+    }
   }
   for (const m of materials) {
     if (m.status === "active" && isLow(m.total, m.minLevel)) {

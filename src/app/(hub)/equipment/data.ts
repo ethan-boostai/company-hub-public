@@ -28,6 +28,8 @@ export type AssetRow = {
   havTriggerMins: number | null;
   havRef: string;
   notes: string;
+  // Out on a job now (its open booking on the job's Plant page).
+  onJob: { jobNo: string; dueBack: string | null; outWith: string } | null;
 };
 
 export type AssetServiceRow = {
@@ -148,6 +150,7 @@ function toAsset(r: any): AssetRow {
     purchasedOn: isoDate(r.purchased_on), serviceIntervalMonths: n(r.service_interval_months), lastServiceOn: isoDate(r.last_service_on),
     nextServiceOn: isoDate(r.next_service_on), testTagDue: isoDate(r.test_tag_due), havMagnitude: r.hav_magnitude == null ? null : String(Number(r.hav_magnitude)),
     havTriggerMins: n(r.hav_trigger_mins), havRef: s(r.hav_ref), notes: s(r.notes),
+    onJob: r.on_job_no ? { jobNo: r.on_job_no, dueBack: isoDate(r.on_job_due_back), outWith: s(r.on_job_with) } : null,
   };
 }
 
@@ -227,7 +230,9 @@ async function stocktakeRows(sql: Sql, id: number | null): Promise<StocktakeRow[
 export async function loadEquipment(given?: Sql): Promise<EquipmentData> {
   const sql = given ?? (await readDb());
   const [assets, services, materials, stock, stocktakes, reports, vehicles, people, suppliers, places, assetCats, matCats, units, reasons, usedPlaces, substances] = await Promise.all([
-    sql`select * from assets order by lower(name), asset_tag`,
+    sql`select a.*, j.job_no as on_job_no, p.due_back as on_job_due_back, p.out_with_label as on_job_with
+      from assets a left join job_plant p on p.asset_id = a.id and p.returned_at is null left join jobs j on j.id = p.job_id
+      order by lower(a.name), a.asset_tag`,
     sql`select * from asset_services order by serviced_on desc, id desc`,
     materialQuery(sql, null),
     stockFor(sql, null),
@@ -267,7 +272,8 @@ export async function loadEquipment(given?: Sql): Promise<EquipmentData> {
 
 // Single rows, read back after a save (inside or outside the save's transaction).
 export async function loadAsset(sql: Sql, id: number): Promise<AssetRow | null> {
-  const [r] = await sql`select * from assets where id = ${id}`;
+  const [r] = await sql`select a.*, j.job_no as on_job_no, p.due_back as on_job_due_back, p.out_with_label as on_job_with
+      from assets a left join job_plant p on p.asset_id = a.id and p.returned_at is null left join jobs j on j.id = p.job_id where a.id = ${id}`;
   return r ? toAsset(r) : null;
 }
 export async function loadAssetService(sql: Sql, id: number): Promise<AssetServiceRow | null> {
@@ -294,4 +300,22 @@ export async function loadMoves(sql: Sql, kind: "material" | "asset", id: number
     id: Number(r.id), at: isoTime(r.at)!, by: s(r.by), locationLabel: r.location_label, change: n(r.change), qtyAfter: n(r.qty_after),
     reason: r.reason, jobRef: s(r.job_ref), notes: s(r.notes),
   }));
+}
+
+// Just the locations (places, vehicles, people), for location dropdowns outside this page.
+export async function loadLocations(given?: Sql): Promise<Pick<EquipmentData, "places" | "vehicles" | "people">> {
+  const sql = given ?? (await readDb());
+  const [vehicles, people, places, usedPlaces] = await Promise.all([
+    sql<{ id: string; reg: string; make_model: string | null; driver: string | null; holds_stock: boolean }[]>`
+      select v.id, v.reg, v.make_model, p.name as driver, v.holds_stock from vehicles v left join people p on p.id = v.assigned_to_id order by v.reg`,
+    sql<{ id: string; name: string }[]>`select id, name from people where active order by lower(name)`,
+    optionsOf(sql, PLACE_LIST),
+    sql<{ p: string }[]>`select distinct location_place as p from assets where location_place is not null
+                         union select distinct location_place from material_stock where location_place is not null`,
+  ]);
+  return {
+    vehicles: vehicles.map((v) => ({ id: Number(v.id), reg: v.reg, makeModel: s(v.make_model), driver: s(v.driver), holdsStock: v.holds_stock })),
+    people: people.map((p) => ({ id: Number(p.id), name: p.name })),
+    places: mergeOptions(DEFAULT_PLACES, [...places, ...usedPlaces.map((r) => r.p)]),
+  };
 }
