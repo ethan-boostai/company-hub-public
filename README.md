@@ -1,3 +1,6 @@
+Copyright © 2026 Boost AI. All rights reserved.
+This repository is published for reference only. No licence is granted to use, copy, modify or distribute this code, in whole or in part, without written permission from Boost AI.
+
 # CBS Operations Hub
 
 Operations Hub for Chelmsford Building Services. Replaces the old n8n-served hub.

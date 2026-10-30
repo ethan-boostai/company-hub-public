@@ -77,6 +77,17 @@ Never commit or push to `main`; every change goes through a pull request. Every 
 - Switch-over (importing old data, or moving the team onto a new area) happens only when Ethan says so.
 - Never change Vercel, Supabase, GitHub or n8n settings, or anything in the live n8n hub, unless Ethan asks.
 
+## Client-specific settings, not hard-coded
+This codebase is a starter template that gets copied for other clients. Anything specific to CBS goes in a settings table or config file, never scattered through the code. That includes the company name, logo, address and contacts; SharePoint folder paths; ServiceM8 IDs and job rules; email and notification wording; default document wording (policy statement, RAMS standard steps, CPHSP wording); and test job numbers. When you touch existing code that hard-codes any of these, move it into settings as part of the same PR. Don't do a separate clean-up sweep unless Ethan asks.
+
+## Public copy (company-hub-public)
+`cbs-hub` stays private. `ethan-boostai/company-hub-public` is a public, cleaned copy of `main` (no PRs, no old branches).
+- After every merge to `main` in `cbs-hub`, run `node scripts/public-mirror.mjs` (scan only), then `node scripts/public-mirror.mjs --push`.
+- The script scans the new commits first: real names and companies (`private/public-denylist.txt`), vehicle registrations, phone numbers, emails, postcodes, policy and licence numbers, SharePoint links, the live n8n address and secrets. If it reports anything, stop, push nothing and tell Ethan.
+- `private/` is never published. Add any new real name you come across to `private/public-denylist.txt`.
+- Never push anything else to `company-hub-public`, and never force-push it.
+- Use fake data everywhere in code, tests, docs and seeds (ZZ names, `07700 900nnn` phones, `ZZ99` postcodes, `ZZ01ZZA` registrations, `example.com` and `example.sharepoint.com`).
+
 ## Working process
 - Explain the approach before building anything non-trivial and wait for a go-ahead.
 - Small commits, one branch per feature.
