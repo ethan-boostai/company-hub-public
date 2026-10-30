@@ -12,7 +12,7 @@ create table job_plant (
   category text,
   source text not null default 'job' check (source in ('job', 'load_up', 'yard')),
   load_up_sheet_id bigint,            -- the load-up sheet that booked it (foreign key added with load-up sheets)
-  out_with_label text,                -- where it went when booked ("Ford Transit - ZZ Person H (ZZ01ZZA)", "With Joe")
+  out_with_label text,                -- where it went when booked ("Ford Transit - ZZ Driver (ZZ33ZZZ)", "With ZZ Person")
   booked_at timestamptz not null default now(),
   booked_by text not null,
   due_back date,

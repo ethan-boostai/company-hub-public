@@ -41,12 +41,12 @@ export function labelOf(list: readonly { value: string; label: string }[], value
   return list.find((o) => o.value === value)?.label ?? value;
 }
 
-// Registration plates are stored in capitals with no spaces, so "zz03 zzc" and "ZZ03ZZC" are one van.
+// Registration plates are stored in capitals with no spaces, so "zz11 zzz" and "ZZ11ZZZ" are one van.
 export function normaliseReg(reg: string): string {
   return reg.toUpperCase().replace(/[^A-Z0-9]/g, "");
 }
 
-// How a vehicle shows as a stock location: "Ford Transit - ZZ Person H (ZZ01ZZA)".
+// How a vehicle shows as a stock location: "Ford Transit - ZZ Driver (ZZ33ZZZ)".
 export function vehicleLocationLabel(v: { reg: string; makeModel: string; driver: string }): string {
   const left = [v.makeModel, v.driver].filter(Boolean).join(" - ");
   return left ? `${left} (${v.reg})` : v.reg;

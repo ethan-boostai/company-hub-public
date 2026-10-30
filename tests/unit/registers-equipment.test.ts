@@ -22,9 +22,9 @@ describe("equipment locations", () => {
   });
 
   it("labels vehicles as Make model - Driver (REG)", () => {
-    const vans = [{ id: 3, reg: "ZZ01ZZA", makeModel: "Ford Transit", driver: "ZZ Person H" }];
-    expect(locLabel({ place: null, vehicleId: 3 }, vans, [])).toBe("Ford Transit - ZZ Person H (ZZ01ZZA)");
-    expect(locLabel({ place: null, vehicleId: null, personId: 9 }, [], [{ id: 9, name: "Joe" }])).toBe("With Joe");
+    const vans = [{ id: 3, reg: "ZZ33ZZZ", makeModel: "Ford Transit", driver: "ZZ Driver" }];
+    expect(locLabel({ place: null, vehicleId: 3 }, vans, [])).toBe("Ford Transit - ZZ Driver (ZZ33ZZZ)");
+    expect(locLabel({ place: null, vehicleId: null, personId: 9 }, [], [{ id: 9, name: "ZZ Person" }])).toBe("With ZZ Person");
     expect(locLabel(null, [], [])).toBe("No location");
   });
 });
